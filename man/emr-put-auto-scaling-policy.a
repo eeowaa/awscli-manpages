@@ -1,0 +1,580 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EMR-PUT-AUTO-SCALING-POLICY" "a" "" ""
+.SH NAME
+emr-put-auto-scaling-policy \- Creates or updates an automatic scaling policy for a core instance group or task instance group in an Amazon EMR cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates or updates an automatic scaling policy for a core instance group or task instance group in an Amazon EMR cluster. The automatic scaling policy defines how an instance group dynamically adds and terminates EC2 instances in response to the value of a CloudWatch metric.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-auto\-scaling\-policy
+\-\-cluster\-id <value>
+\-\-instance\-group\-id <value>
+\-\-auto\-scaling\-policy <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID of a cluster. The instance group to which the automatic scaling policy is applied is within this cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-group\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID of the instance group to which the automatic scaling policy is applied.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-scaling\-policy\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the definition of the automatic scaling policy.
+.sp
+Constraints \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The upper and lower EC2 instance limits for an automatic scaling policy. Automatic scaling activity will not cause an instance group to grow above or below these limits.
+.sp
+MinCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The lower boundary of EC2 instances in an instance group below which scaling activities are not allowed to shrink. Scale\-in activities will not terminate instances below this boundary.
+.UNINDENT
+.UNINDENT
+.sp
+MaxCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper boundary of EC2 instances in an instance group beyond which scaling activities are not allowed to grow. Scale\-out activities will not add instances beyond this boundary.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The scale\-in and scale\-out rules that comprise the automatic scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A scale\-in or scale\-out rule that defines scaling activity, including the CloudWatch metric alarm that triggers activity, how EC2 instances are added or removed, and the periodicity of adjustments. The automatic scaling policy for an instance group can comprise one or more automatic scaling rules.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name used to identify an automatic scaling rule. Rule names must be unique within a scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A friendly, more verbose description of the automatic scaling rule.
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The conditions that trigger an automatic scaling activity.
+.sp
+Market \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Not available for instance groups. Instance groups use the market type specified for the group.
+.UNINDENT
+.UNINDENT
+.sp
+SimpleScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The type of adjustment the automatic scaling activity makes when triggered, and the periodicity of the adjustment.
+.sp
+AdjustmentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The way in which EC2 instances are added (if \fBScalingAdjustment\fP is a positive number) or terminated (if \fBScalingAdjustment\fP is a negative number) each time the scaling activity is triggered. \fBCHANGE_IN_CAPACITY\fP is the default. \fBCHANGE_IN_CAPACITY\fP indicates that the EC2 instance count increments or decrements by \fBScalingAdjustment\fP , which should be expressed as an integer. \fBPERCENT_CHANGE_IN_CAPACITY\fP indicates the instance count increments or decrements by the percentage specified by \fBScalingAdjustment\fP , which should be expressed as an integer. For example, 20 indicates an increase in 20% increments of cluster capacity. \fBEXACT_CAPACITY\fP indicates the scaling activity results in an instance group with the number of EC2 instances specified by \fBScalingAdjustment\fP , which should be expressed as a positive integer.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingAdjustment \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount by which to scale in or scale out, based on the specified \fBAdjustmentType\fP . A positive value adds to the instance group\(aqs EC2 instance count while a negative number removes instances. If \fBAdjustmentType\fP is set to \fBEXACT_CAPACITY\fP , the number should only be a positive integer. If \fBAdjustmentType\fP is set to \fBPERCENT_CHANGE_IN_CAPACITY\fP , the value should express the percentage as an integer. For example, \-20 indicates a decrease in 20% increments of cluster capacity.
+.UNINDENT
+.UNINDENT
+.sp
+CoolDown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scaling activity completes before any further trigger\-related scaling activities can start. The default value is 0.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Trigger \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The CloudWatch alarm definition that determines when automatic scaling activity is triggered.
+.sp
+CloudWatchAlarmDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The definition of a CloudWatch metric alarm. When the defined alarm conditions are met along with other trigger parameters, scaling activity begins.
+.sp
+ComparisonOperator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines how the metric specified by \fBMetricName\fP is compared to the value specified by \fBThreshold\fP .
+.UNINDENT
+.UNINDENT
+.sp
+EvaluationPeriods \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of periods, in five\-minute increments, during which the alarm condition must exist before the alarm triggers automatic scaling activity. The default value is \fB1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch metric that is watched to determine an alarm condition.
+.UNINDENT
+.UNINDENT
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace for the CloudWatch metric. The default is \fBAWS/ElasticMapReduce\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The period, in seconds, over which the statistic is applied. EMR CloudWatch metrics are emitted every five minutes (300 seconds), so if an EMR CloudWatch metric is specified, specify \fB300\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic to apply to the metric associated with the alarm. The default is \fBAVERAGE\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Threshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value against which the specified statistic is compared.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of measure associated with the CloudWatch metric being watched. The value specified for \fBUnit\fP must correspond to the units specified in the CloudWatch metric.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A CloudWatch metric dimension.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A CloudWatch dimension, which is specified using a \fBKey\fP (known as a \fBName\fP in CloudWatch), \fBValue\fP pair. By default, Amazon EMR uses one dimension whose \fBKey\fP is \fBJobFlowID\fP and \fBValue\fP is a variable representing the cluster ID, which is \fB${emr.clusterId}\fP . This enables the rule to bootstrap when the cluster ID becomes available.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The dimension name.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The dimension value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Constraints": {
+    "MinCapacity": integer,
+    "MaxCapacity": integer
+  },
+  "Rules": [
+    {
+      "Name": "string",
+      "Description": "string",
+      "Action": {
+        "Market": "ON_DEMAND"|"SPOT",
+        "SimpleScalingPolicyConfiguration": {
+          "AdjustmentType": "CHANGE_IN_CAPACITY"|"PERCENT_CHANGE_IN_CAPACITY"|"EXACT_CAPACITY",
+          "ScalingAdjustment": integer,
+          "CoolDown": integer
+        }
+      },
+      "Trigger": {
+        "CloudWatchAlarmDefinition": {
+          "ComparisonOperator": "GREATER_THAN_OR_EQUAL"|"GREATER_THAN"|"LESS_THAN"|"LESS_THAN_OR_EQUAL",
+          "EvaluationPeriods": integer,
+          "MetricName": "string",
+          "Namespace": "string",
+          "Period": integer,
+          "Statistic": "SAMPLE_COUNT"|"AVERAGE"|"SUM"|"MINIMUM"|"MAXIMUM",
+          "Threshold": double,
+          "Unit": "NONE"|"SECONDS"|"MICRO_SECONDS"|"MILLI_SECONDS"|"BYTES"|"KILO_BYTES"|"MEGA_BYTES"|"GIGA_BYTES"|"TERA_BYTES"|"BITS"|"KILO_BITS"|"MEGA_BITS"|"GIGA_BITS"|"TERA_BITS"|"PERCENT"|"COUNT"|"BYTES_PER_SECOND"|"KILO_BYTES_PER_SECOND"|"MEGA_BYTES_PER_SECOND"|"GIGA_BYTES_PER_SECOND"|"TERA_BYTES_PER_SECOND"|"BITS_PER_SECOND"|"KILO_BITS_PER_SECOND"|"MEGA_BITS_PER_SECOND"|"GIGA_BITS_PER_SECOND"|"TERA_BITS_PER_SECOND"|"COUNT_PER_SECOND",
+          "Dimensions": [
+            {
+              "Key": "string",
+              "Value": "string"
+            }
+            ...
+          ]
+        }
+      }
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID of a cluster. The instance group to which the automatic scaling policy is applied is within this cluster.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID of the instance group to which the scaling policy is applied.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The automatic scaling policy definition.
+.sp
+Status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The status of an automatic scaling policy.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the status of the automatic scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+StateChangeReason \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The reason for a change in status.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The code indicating the reason for the change in status.\(ga\(gaUSER_REQUEST\(ga\(ga indicates that the scaling policy status was changed by a user. \fBPROVISION_FAILURE\fP indicates that the status change was because the policy failed to provision. \fBCLEANUP_FAILURE\fP indicates an error.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A friendly, more verbose message that accompanies an automatic scaling policy state change.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Constraints \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The upper and lower EC2 instance limits for an automatic scaling policy. Automatic scaling activity will not cause an instance group to grow above or below these limits.
+.sp
+MinCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The lower boundary of EC2 instances in an instance group below which scaling activities are not allowed to shrink. Scale\-in activities will not terminate instances below this boundary.
+.UNINDENT
+.UNINDENT
+.sp
+MaxCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper boundary of EC2 instances in an instance group beyond which scaling activities are not allowed to grow. Scale\-out activities will not add instances beyond this boundary.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The scale\-in and scale\-out rules that comprise the automatic scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A scale\-in or scale\-out rule that defines scaling activity, including the CloudWatch metric alarm that triggers activity, how EC2 instances are added or removed, and the periodicity of adjustments. The automatic scaling policy for an instance group can comprise one or more automatic scaling rules.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name used to identify an automatic scaling rule. Rule names must be unique within a scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A friendly, more verbose description of the automatic scaling rule.
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The conditions that trigger an automatic scaling activity.
+.sp
+Market \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Not available for instance groups. Instance groups use the market type specified for the group.
+.UNINDENT
+.UNINDENT
+.sp
+SimpleScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The type of adjustment the automatic scaling activity makes when triggered, and the periodicity of the adjustment.
+.sp
+AdjustmentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The way in which EC2 instances are added (if \fBScalingAdjustment\fP is a positive number) or terminated (if \fBScalingAdjustment\fP is a negative number) each time the scaling activity is triggered. \fBCHANGE_IN_CAPACITY\fP is the default. \fBCHANGE_IN_CAPACITY\fP indicates that the EC2 instance count increments or decrements by \fBScalingAdjustment\fP , which should be expressed as an integer. \fBPERCENT_CHANGE_IN_CAPACITY\fP indicates the instance count increments or decrements by the percentage specified by \fBScalingAdjustment\fP , which should be expressed as an integer. For example, 20 indicates an increase in 20% increments of cluster capacity. \fBEXACT_CAPACITY\fP indicates the scaling activity results in an instance group with the number of EC2 instances specified by \fBScalingAdjustment\fP , which should be expressed as a positive integer.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingAdjustment \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount by which to scale in or scale out, based on the specified \fBAdjustmentType\fP . A positive value adds to the instance group\(aqs EC2 instance count while a negative number removes instances. If \fBAdjustmentType\fP is set to \fBEXACT_CAPACITY\fP , the number should only be a positive integer. If \fBAdjustmentType\fP is set to \fBPERCENT_CHANGE_IN_CAPACITY\fP , the value should express the percentage as an integer. For example, \-20 indicates a decrease in 20% increments of cluster capacity.
+.UNINDENT
+.UNINDENT
+.sp
+CoolDown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scaling activity completes before any further trigger\-related scaling activities can start. The default value is 0.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Trigger \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The CloudWatch alarm definition that determines when automatic scaling activity is triggered.
+.sp
+CloudWatchAlarmDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The definition of a CloudWatch metric alarm. When the defined alarm conditions are met along with other trigger parameters, scaling activity begins.
+.sp
+ComparisonOperator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines how the metric specified by \fBMetricName\fP is compared to the value specified by \fBThreshold\fP .
+.UNINDENT
+.UNINDENT
+.sp
+EvaluationPeriods \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of periods, in five\-minute increments, during which the alarm condition must exist before the alarm triggers automatic scaling activity. The default value is \fB1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch metric that is watched to determine an alarm condition.
+.UNINDENT
+.UNINDENT
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace for the CloudWatch metric. The default is \fBAWS/ElasticMapReduce\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The period, in seconds, over which the statistic is applied. EMR CloudWatch metrics are emitted every five minutes (300 seconds), so if an EMR CloudWatch metric is specified, specify \fB300\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic to apply to the metric associated with the alarm. The default is \fBAVERAGE\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Threshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value against which the specified statistic is compared.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of measure associated with the CloudWatch metric being watched. The value specified for \fBUnit\fP must correspond to the units specified in the CloudWatch metric.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A CloudWatch metric dimension.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A CloudWatch dimension, which is specified using a \fBKey\fP (known as a \fBName\fP in CloudWatch), \fBValue\fP pair. By default, Amazon EMR uses one dimension whose \fBKey\fP is \fBJobFlowID\fP and \fBValue\fP is a variable representing the cluster ID, which is \fB${emr.clusterId}\fP . This enables the rule to bootstrap when the cluster ID becomes available.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The dimension name.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The dimension value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ClusterArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the cluster.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

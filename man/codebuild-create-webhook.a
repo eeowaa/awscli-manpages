@@ -1,0 +1,490 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEBUILD-CREATE-WEBHOOK" "a" "" ""
+.SH NAME
+codebuild-create-webhook \- For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, enables AWS CodeBuild to start rebuilding the source code every time a code change is pushed to the repository
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+For an existing AWS CodeBuild build project that has its source code stored in a GitHub or Bitbucket repository, enables AWS CodeBuild to start rebuilding the source code every time a code change is pushed to the repository.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you enable webhooks for an AWS CodeBuild project, and the project is used as a build step in AWS CodePipeline, then two identical builds are created for each commit. One build is triggered through webhooks, and one through AWS CodePipeline. Because billing is on a per\-build basis, you are billed for both builds. Therefore, if you are using AWS CodePipeline, we recommend that you disable webhooks in AWS CodeBuild. In the AWS CodeBuild console, clear the Webhook box. For more information, see step 5 in \fI\%Change a Build Project\(aqs Settings\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-webhook
+\-\-project\-name <value>
+[\-\-branch\-filter <value>]
+[\-\-filter\-groups <value>]
+[\-\-build\-type <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-project\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the AWS CodeBuild project.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-branch\-filter\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A regular expression used to determine which repository branches are built when a webhook is triggered. If the name of a branch matches the regular expression, then it is built. If \fBbranchFilter\fP is empty, then all branches are built.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+It is recommended that you use \fBfilterGroups\fP instead of \fBbranchFilter\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\-groups\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of arrays of \fBWebhookFilter\fP objects used to determine which webhooks are triggered. At least one \fBWebhookFilter\fP in the array must specify \fBEVENT\fP as its \fBtype\fP .
+.sp
+For a build to be triggered, at least one filter group in the \fBfilterGroups\fP array must pass. For a filter group to pass, each of its filters must pass.
+.sp
+(list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A filter used to determine which webhooks trigger a build.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of webhook filter. There are six webhook filter types: \fBEVENT\fP , \fBACTOR_ACCOUNT_ID\fP , \fBHEAD_REF\fP , \fBBASE_REF\fP , \fBFILE_PATH\fP , and \fBCOMMIT_MESSAGE\fP .
+.INDENT 0.0
+.INDENT 3.5
+EVENT
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when the provided \fBpattern\fP matches one of five event types: \fBPUSH\fP , \fBPULL_REQUEST_CREATED\fP , \fBPULL_REQUEST_UPDATED\fP , \fBPULL_REQUEST_REOPENED\fP , and \fBPULL_REQUEST_MERGED\fP . The \fBEVENT\fP patterns are specified as a comma\-separated string. For example, \fBPUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED\fP filters all push, pull request created, and pull request updated events.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBPULL_REQUEST_REOPENED\fP works with GitHub and GitHub Enterprise only.
+.sp
+ACTOR_ACCOUNT_ID
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when a GitHub, GitHub Enterprise, or Bitbucket account ID matches the regular expression \fBpattern\fP .
+.INDENT 0.0
+.INDENT 3.5
+HEAD_REF
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when the head reference matches the regular expression \fBpattern\fP . For example, \fBrefs/heads/branch\-name\fP and \fBrefs/tags/tag\-name\fP .
+.sp
+Works with GitHub and GitHub Enterprise push, GitHub and GitHub Enterprise pull request, Bitbucket push, and Bitbucket pull request events.
+.INDENT 0.0
+.INDENT 3.5
+BASE_REF
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when the base reference matches the regular expression \fBpattern\fP . For example, \fBrefs/heads/branch\-name\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Works with pull request events only.
+.sp
+FILE_PATH
+.UNINDENT
+.UNINDENT
+.sp
+A webhook triggers a build when the path of a changed file matches the regular expression \fBpattern\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.
+.sp
+COMMIT_MESSAGE
+.UNINDENT
+.UNINDENT
+.sp
+A webhook triggers a build when the head commit message matches the regular expression \fBpattern\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+pattern \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For a \fBWebHookFilter\fP that uses \fBEVENT\fP type, a comma\-separated string that specifies one or more events. For example, the webhook filter \fBPUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED\fP allows all push, pull request created, and pull request updated events to trigger a build.
+.sp
+For a \fBWebHookFilter\fP that uses any of the other filter types, a regular expression pattern. For example, a \fBWebHookFilter\fP that uses \fBHEAD_REF\fP for its \fBtype\fP and the pattern \fB^refs/heads/\fP triggers a build when the head reference is a branch with a reference name \fBrefs/heads/branch\-name\fP .
+.UNINDENT
+.UNINDENT
+.sp
+excludeMatchedPattern \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Used to indicate that the \fBpattern\fP determines which webhook events do not trigger a build. If true, then a webhook event that does not match the \fBpattern\fP triggers a build. If false, then a webhook event that matches the \fBpattern\fP triggers a build.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[{type=string,pattern=string,excludeMatchedPattern=boolean},{type=string,pattern=string,excludeMatchedPattern=boolean}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  [
+    {
+      "type": "EVENT"|"BASE_REF"|"HEAD_REF"|"ACTOR_ACCOUNT_ID"|"FILE_PATH"|"COMMIT_MESSAGE",
+      "pattern": "string",
+      "excludeMatchedPattern": true|false
+    }
+    ...
+  ]
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-build\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of build this webhook will trigger.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBBUILD\fP
+.IP \(bu 2
+\fBBUILD_BATCH\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create webhook filters for an AWS CodeBuild project\fP
+.sp
+The following \fBcreate\-webhook\fP example creates a webhook for a CodeBuild project named \fBmy\-project\fP that has two filter groups. The first filter group specifies pull requests that are created, updated, or reopened on branches with Git reference names that match the regular expression \fB^refs/heads/master$\fP and head references that match \fB^refs/heads/myBranch$\fP\&.  The second filter group specifies push requests on branches with Git reference names that do not match the regular expression \fB^refs/heads/myBranch$\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codebuild create\-webhook \e
+    \-\-project\-name my\-project \e
+    \-\-filter\-groups "[[{\e"type\e":\e"EVENT\e",\e"pattern\e":\e"PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED, PULL_REQUEST_REOPENED\e"},{\e"type\e":\e"HEAD_REF\e",\e"pattern\e":\e"^refs/heads/myBranch$\e",\e"excludeMatchedPattern\e":true},{\e"type\e":\e"BASE_REF\e",\e"pattern\e":\e"^refs/heads/master$\e",\e"excludeMatchedPattern\e":true}],[{\e"type\e":\e"EVENT\e",\e"pattern\e":\e"PUSH\e"},{\e"type\e":\e"HEAD_REF\e",\e"pattern\e":\e"^refs/heads/myBranch$\e",\e"excludeMatchedPattern\e":true}]]"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "webhook": {
+        "payloadUrl": "https://codebuild.us\-west\-2.amazonaws.com/webhooks?t=eyJlbmNyeXB0ZWREYXRhIjoiVVl5MGtoeGRwSzZFRXl2Wnh4bld1Z0tKZ291TVpQNEtFamQ3RDlDYWpRaGIreVFrdm9EQktIVk1NeHJEWEpmUDUrVUNOMUIyRHJRc1VxcHJ6QlNDSnljPSIsIml2UGFyYW1ldGVyU3BlYyI6InN4Tm1SeUt5MUhaUVRWbGciLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&v=1",
+        "url": "https://api.github.com/repos/iversonic/codedeploy\-sample/hooks/105190656",
+        "lastModifiedSecret": 1556311319.069,
+        "filterGroups": [
+            [
+                {
+                    "type": "EVENT",
+                    "pattern": "PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED, PULL_REQUEST_REOPENED",
+                    "excludeMatchedPattern": false
+                },
+                {
+                    "type": "HEAD_REF",
+                    "pattern": "refs/heads/myBranch$",
+                    "excludeMatchedPattern": true
+                },
+                {
+                    "type": "BASE_REF",
+                    "pattern": "refs/heads/master$",
+                    "excludeMatchedPattern": true
+                }
+            ],
+            [
+                {
+                    "type": "EVENT",
+                    "pattern": "PUSH",
+                    "excludeMatchedPattern": false
+                },
+                {
+                    "type": "HEAD_REF",
+                    "pattern": "refs/heads/myBranch$",
+                    "excludeMatchedPattern": true
+                }
+            ]
+        ]
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Filter GitHub Webhook Events (SDK)\fP in the \fIAWS CodeBuild User Guide\fP\&.
+.SH OUTPUT
+.sp
+webhook \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a webhook that connects repository events to a build project in AWS CodeBuild.
+.sp
+url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL to the webhook.
+.UNINDENT
+.UNINDENT
+.sp
+payloadUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS CodeBuild endpoint where webhook events are sent.
+.UNINDENT
+.UNINDENT
+.sp
+secret \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The secret token of the associated repository.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A Bitbucket webhook does not support \fBsecret\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+branchFilter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A regular expression used to determine which repository branches are built when a webhook is triggered. If the name of a branch matches the regular expression, then it is built. If \fBbranchFilter\fP is empty, then all branches are built.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+It is recommended that you use \fBfilterGroups\fP instead of \fBbranchFilter\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+filterGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of arrays of \fBWebhookFilter\fP objects used to determine which webhooks are triggered. At least one \fBWebhookFilter\fP in the array must specify \fBEVENT\fP as its \fBtype\fP .
+.sp
+For a build to be triggered, at least one filter group in the \fBfilterGroups\fP array must pass. For a filter group to pass, each of its filters must pass.
+.sp
+(list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A filter used to determine which webhooks trigger a build.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of webhook filter. There are six webhook filter types: \fBEVENT\fP , \fBACTOR_ACCOUNT_ID\fP , \fBHEAD_REF\fP , \fBBASE_REF\fP , \fBFILE_PATH\fP , and \fBCOMMIT_MESSAGE\fP .
+.INDENT 0.0
+.INDENT 3.5
+EVENT
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when the provided \fBpattern\fP matches one of five event types: \fBPUSH\fP , \fBPULL_REQUEST_CREATED\fP , \fBPULL_REQUEST_UPDATED\fP , \fBPULL_REQUEST_REOPENED\fP , and \fBPULL_REQUEST_MERGED\fP . The \fBEVENT\fP patterns are specified as a comma\-separated string. For example, \fBPUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED\fP filters all push, pull request created, and pull request updated events.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBPULL_REQUEST_REOPENED\fP works with GitHub and GitHub Enterprise only.
+.sp
+ACTOR_ACCOUNT_ID
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when a GitHub, GitHub Enterprise, or Bitbucket account ID matches the regular expression \fBpattern\fP .
+.INDENT 0.0
+.INDENT 3.5
+HEAD_REF
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when the head reference matches the regular expression \fBpattern\fP . For example, \fBrefs/heads/branch\-name\fP and \fBrefs/tags/tag\-name\fP .
+.sp
+Works with GitHub and GitHub Enterprise push, GitHub and GitHub Enterprise pull request, Bitbucket push, and Bitbucket pull request events.
+.INDENT 0.0
+.INDENT 3.5
+BASE_REF
+.UNINDENT
+.UNINDENT
+.sp
+A webhook event triggers a build when the base reference matches the regular expression \fBpattern\fP . For example, \fBrefs/heads/branch\-name\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Works with pull request events only.
+.sp
+FILE_PATH
+.UNINDENT
+.UNINDENT
+.sp
+A webhook triggers a build when the path of a changed file matches the regular expression \fBpattern\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.
+.sp
+COMMIT_MESSAGE
+.UNINDENT
+.UNINDENT
+.sp
+A webhook triggers a build when the head commit message matches the regular expression \fBpattern\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+pattern \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For a \fBWebHookFilter\fP that uses \fBEVENT\fP type, a comma\-separated string that specifies one or more events. For example, the webhook filter \fBPUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED\fP allows all push, pull request created, and pull request updated events to trigger a build.
+.sp
+For a \fBWebHookFilter\fP that uses any of the other filter types, a regular expression pattern. For example, a \fBWebHookFilter\fP that uses \fBHEAD_REF\fP for its \fBtype\fP and the pattern \fB^refs/heads/\fP triggers a build when the head reference is a branch with a reference name \fBrefs/heads/branch\-name\fP .
+.UNINDENT
+.UNINDENT
+.sp
+excludeMatchedPattern \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Used to indicate that the \fBpattern\fP determines which webhook events do not trigger a build. If true, then a webhook event that does not match the \fBpattern\fP triggers a build. If false, then a webhook event that matches the \fBpattern\fP triggers a build.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of build this webhook will trigger.
+.UNINDENT
+.UNINDENT
+.sp
+lastModifiedSecret \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp that indicates the last time a repository\(aqs secret token was modified.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

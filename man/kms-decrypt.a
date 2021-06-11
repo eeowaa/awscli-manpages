@@ -1,0 +1,349 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-DECRYPT" "a" "" ""
+.SH NAME
+kms-decrypt \- Decrypts ciphertext that was encrypted by a AWS KMS customer master key (CMK) using any of the following operations:
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Decrypts ciphertext that was encrypted by a AWS KMS customer master key (CMK) using any of the following operations:
+.INDENT 0.0
+.IP \(bu 2
+Encrypt
+.IP \(bu 2
+GenerateDataKey
+.IP \(bu 2
+GenerateDataKeyPair
+.IP \(bu 2
+GenerateDataKeyWithoutPlaintext
+.IP \(bu 2
+GenerateDataKeyPairWithoutPlaintext
+.UNINDENT
+.sp
+You can use this operation to decrypt ciphertext that was encrypted under a symmetric or asymmetric CMK. When the CMK is asymmetric, you must specify the CMK and the encryption algorithm that was used to encrypt the ciphertext. For information about symmetric and asymmetric CMKs, see \fI\%Using Symmetric and Asymmetric CMKs\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+The Decrypt operation also decrypts ciphertext that was encrypted outside of AWS KMS by the public key in an AWS KMS asymmetric CMK. However, it cannot decrypt ciphertext produced by other libraries, such as the \fI\%AWS Encryption SDK\fP or \fI\%Amazon S3 client\-side encryption\fP . These libraries return a ciphertext format that is incompatible with AWS KMS.
+.sp
+If the ciphertext was encrypted under a symmetric CMK, the \fBKeyId\fP parameter is optional. AWS KMS can get this information from metadata that it adds to the symmetric ciphertext blob. This feature adds durability to your implementation by ensuring that authorized users can decrypt ciphertext decades after it was encrypted, even if they\(aqve lost track of the CMK ID. However, specifying the CMK is always recommended as a best practice. When you use the \fBKeyId\fP parameter to specify a CMK, AWS KMS only uses the CMK you specify. If the ciphertext was encrypted under a different CMK, the \fBDecrypt\fP operation fails. This practice ensures that you use the CMK that you intend.
+.sp
+Whenever possible, use key policies to give users permission to call the \fBDecrypt\fP operation on a particular CMK, instead of using IAM policies. Otherwise, you might create an IAM user policy that gives the user \fBDecrypt\fP permission on all CMKs. This user could decrypt ciphertext that was encrypted by CMKs in other accounts if the key policy for the cross\-account CMK permits it. If you must use an IAM policy for \fBDecrypt\fP permissions, limit the user to particular CMKs or particular trusted accounts. For details, see \fI\%Best practices for IAM policies\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+The CMK that you use for this operation must be in a compatible key state. For details, see \fI\%How Key State Affects Use of a Customer Master Key\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : Yes. You can decrypt a ciphertext using a CMK in a different AWS account.
+.sp
+\fBRequired permissions\fP : \fI\%kms:Decrypt\fP (key policy)
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Encrypt
+.IP \(bu 2
+GenerateDataKey
+.IP \(bu 2
+GenerateDataKeyPair
+.IP \(bu 2
+ReEncrypt
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  decrypt
+\-\-ciphertext\-blob <value>
+[\-\-encryption\-context <value>]
+[\-\-grant\-tokens <value>]
+[\-\-key\-id <value>]
+[\-\-encryption\-algorithm <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-ciphertext\-blob\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+Ciphertext to be decrypted. The blob includes metadata.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encryption\-context\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the encryption context to use when decrypting the data. An encryption context is valid only for \fI\%cryptographic operations\fP with a symmetric CMK. The standard asymmetric encryption algorithms that AWS KMS uses do not support an encryption context.
+.sp
+An \fIencryption context\fP is a collection of non\-secret key\-value pairs that represents additional authenticated data. When you use an encryption context to encrypt data, you must specify the same (an exact case\-sensitive match) encryption context to decrypt the data. An encryption context is optional when encrypting with a symmetric CMK, but it is highly recommended.
+.sp
+For more information, see \fI\%Encryption Context\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-tokens\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of grant tokens.
+.sp
+For more information, see \fI\%Grant Tokens\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the customer master key (CMK) that AWS KMS uses to decrypt the ciphertext. Enter a key ID of the CMK that was used to encrypt the ciphertext.
+.sp
+This parameter is required only when the ciphertext was encrypted under an asymmetric CMK. If you used a symmetric CMK, AWS KMS can get the CMK from metadata that it adds to the symmetric ciphertext blob. However, it is always recommended as a best practice. This practice ensures that you use the CMK that you intend.
+.sp
+To specify a CMK, use its key ID, Amazon Resource Name (ARN), alias name, or alias ARN. When using an alias name, prefix it with \fB"alias/"\fP . To specify a CMK in a different AWS account, you must use the key ARN or alias ARN.
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Alias name: \fBalias/ExampleAlias\fP
+.IP \(bu 2
+Alias ARN: \fBarn:aws:kms:us\-east\-2:111122223333:alias/ExampleAlias\fP
+.UNINDENT
+.sp
+To get the key ID and key ARN for a CMK, use  ListKeys or  DescribeKey . To get the alias name and alias ARN, use  ListAliases .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encryption\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the encryption algorithm that will be used to decrypt the ciphertext. Specify the same algorithm that was used to encrypt the data. If you specify a different algorithm, the \fBDecrypt\fP operation fails.
+.sp
+This parameter is required only when the ciphertext was encrypted under an asymmetric CMK. The default value, \fBSYMMETRIC_DEFAULT\fP , represents the only supported algorithm that is valid for symmetric CMKs.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSYMMETRIC_DEFAULT\fP
+.IP \(bu 2
+\fBRSAES_OAEP_SHA_1\fP
+.IP \(bu 2
+\fBRSAES_OAEP_SHA_256\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To decrypt an encrypted message with a symmetric CMK (Linux and macOS)\fP
+.sp
+The following \fBdecrypt\fP command example demonstrates the recommended way to decrypt data with the AWS CLI. This version shows how to decrypt data under a symmetric customer master key (CMK).
+.INDENT 0.0
+.IP \(bu 2
+Provide the ciphertext in a file.
+.INDENT 2.0
+.INDENT 3.5
+In the value of the \fB\-\-ciphertext\-blob\fP parameter, use the \fBfileb://\fP prefix, which tells the CLI to read the data from a binary file. If the file is not in the current directory, type the full path to file. For more information about reading AWS CLI parameter values from a file, see \fILoading AWS CLI parameters from a file <https://docs.aws.amazon.com/cli/latest/userguide/cli\-usage\-parameters\-file.html>\fP in the \fIAWS Command Line Interface User Guide\fP and \fIBest Practices for Local File Parameters<https://aws.amazon.com/blogs/developer/best\-practices\-for\-local\-file\-parameters/>\fP in the \fIAWS Command Line Tool Blog\fP\&.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Specify the CMK to decrypt the ciphertext.
+.INDENT 2.0
+.INDENT 3.5
+The \fB\-\-key\-id\fP parameter is not required when decrypting with symmetric CMKs. AWS KMS can get the CMK that was used to encrypt the data from the metadata in the ciphertext blob. But it\(aqs always a best practice to specify the CMK you are using. This practice ensures that you use the CMK that you intend, and prevents you from inadvertently decrypting a ciphertext using a CMK you do not trust.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Request the plaintext output as a text value.
+.INDENT 2.0
+.INDENT 3.5
+The \fB\-\-query\fP parameter tells the CLI to get only the value of the \fBPlaintext\fP field from the output. The \fB\-\-output\fP parameter returns the output as text.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Base64\-decode the plaintext and save it in a file.
+.INDENT 2.0
+.INDENT 3.5
+The  following example pipes (|) the value of the \fBPlaintext\fP parameter to the Base64 utility, which decodes it. Then, it redirects (>) the decoded output to the \fBExamplePlaintext\fP file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Before running this command, replace the example key ID with a valid key ID from your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms decrypt \e
+    \-\-ciphertext\-blob fileb://ExampleEncryptedFile \e
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab \e
+    \-\-output text \e
+    \-\-query Plaintext | base64 \e
+    \-\-decode > ExamplePlaintextFile
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output. The output from the \fBdecrypt\fP command is base64\-decoded and saved in a file.
+.sp
+For more information, see \fI\%Decrypt\fP in the \fIAWS Key Management Service API Reference\fP\&.
+.sp
+\fBExample 2: To decrypt an encrypted message with a symmetric CMK (Windows command prompt)\fP
+.sp
+The following example is the same as the previous one except that it uses the \fBcertutil\fP utility to Base64\-decode the plaintext data. This procedure requires two commands, as shown in the following examples.
+.sp
+Before running this command, replace the example key ID with a valid key ID from your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms decrypt ^
+    \-\-ciphertext\-blob fileb://ExampleEncryptedFile ^
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab ^
+    \-\-output text ^
+    \-\-query Plaintext > ExamplePlaintextFile.base64
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Run the \fBcertutil\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+certutil \-decode ExamplePlaintextFile.base64 ExamplePlaintextFile
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Input Length = 18
+Output Length = 12
+CertUtil: \-decode command completed successfully.
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Decrypt\fP in the \fIAWS Key Management Service API Reference\fP\&.
+.SH OUTPUT
+.sp
+KeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%key ARN\fP ) of the CMK that was used to decrypt the ciphertext.
+.UNINDENT
+.UNINDENT
+.sp
+Plaintext \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Decrypted plaintext data. When you use the HTTP API or the AWS CLI, the value is Base64\-encoded. Otherwise, it is not Base64\-encoded.
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The encryption algorithm that was used to decrypt the ciphertext.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

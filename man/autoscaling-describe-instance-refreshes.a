@@ -1,0 +1,318 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-DESCRIBE-INSTANCE-REFRESHES" "a" "" ""
+.SH NAME
+autoscaling-describe-instance-refreshes \- Describes one or more instance refreshes
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes one or more instance refreshes.
+.sp
+You can determine the status of a request by looking at the \fBStatus\fP parameter. The following are the possible statuses:
+.INDENT 0.0
+.IP \(bu 2
+\fBPending\fP \- The request was created, but the operation has not started.
+.IP \(bu 2
+\fBInProgress\fP \- The operation is in progress.
+.IP \(bu 2
+\fBSuccessful\fP \- The operation completed successfully.
+.IP \(bu 2
+\fBFailed\fP \- The operation failed to complete. You can troubleshoot using the status reason and the scaling activities.
+.IP \(bu 2
+\fBCancelling\fP \- An ongoing operation is being cancelled. Cancellation does not roll back any replacements that have already been completed, but it prevents new replacements from being started.
+.IP \(bu 2
+\fBCancelled\fP \- The operation is cancelled.
+.UNINDENT
+.sp
+For more information, see \fI\%Replacing Auto Scaling instances based on an instance refresh\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-instance\-refreshes
+\-\-auto\-scaling\-group\-name <value>
+[\-\-instance\-refresh\-ids <value>]
+[\-\-next\-token <value>]
+[\-\-max\-records <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-auto\-scaling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-refresh\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more instance refresh IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The token for the next set of items to return. (You received this token from a previous call.)
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-records\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of items to return with this call. The default value is \fB50\fP and the maximum value is \fB100\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo list instance refreshes\fP
+.sp
+The following \fBdescribe\-instance\-refreshes\fP example returns a description of all instance refresh requests for the specified Auto Scaling group, including the status messsage and (if available) the status reason.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling describe\-instance\-refreshes \e
+    \-\-auto\-scaling\-group\-name my\-asg
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "InstanceRefreshes": [
+        {
+            "InstanceRefreshId": "08b91cf7\-8fa6\-48af\-b6a6\-d227f40f1b9b",
+            "AutoScalingGroupName": "my\-asg",
+            "Status": "InProgress",
+            "StartTime": "2020\-06\-02T18:11:27Z",
+            "PercentageComplete": 0,
+            "InstancesToUpdate": 5
+        },
+        {
+            "InstanceRefreshId": "dd7728d0\-5bc4\-4575\-96a3\-1b2c52bf8bb1",
+            "AutoScalingGroupName": "my\-asg",
+            "Status": "Successful",
+            "StartTime": "2020\-06\-02T16:43:19Z",
+            "EndTime": "2020\-06\-02T16:53:37Z",
+            "PercentageComplete": 100,
+            "InstancesToUpdate": 0
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Replacing Auto Scaling instances based on an instance refresh\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.SH OUTPUT
+.sp
+InstanceRefreshes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The instance refreshes for the specified group.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an instance refresh for an Auto Scaling group.
+.sp
+InstanceRefreshId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance refresh ID.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status for the instance refresh operation:
+.INDENT 0.0
+.IP \(bu 2
+\fBPending\fP \- The request was created, but the operation has not started.
+.IP \(bu 2
+\fBInProgress\fP \- The operation is in progress.
+.IP \(bu 2
+\fBSuccessful\fP \- The operation completed successfully.
+.IP \(bu 2
+\fBFailed\fP \- The operation failed to complete. You can troubleshoot using the status reason and the scaling activities.
+.IP \(bu 2
+\fBCancelling\fP \- An ongoing operation is being cancelled. Cancellation does not roll back any replacements that have already been completed, but it prevents new replacements from being started.
+.IP \(bu 2
+\fBCancelled\fP \- The operation is cancelled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StatusReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides more details about the current status of the instance refresh.
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time at which the instance refresh began.
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time at which the instance refresh ended.
+.UNINDENT
+.UNINDENT
+.sp
+PercentageComplete \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of the instance refresh that is complete. For each instance replacement, Amazon EC2 Auto Scaling tracks the instance\(aqs health status and warm\-up time. When the instance\(aqs health status changes to healthy and the specified warm\-up time passes, the instance is considered updated and is added to the percentage complete.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesToUpdate \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances remaining to update before the instance refresh is complete.
+.UNINDENT
+.UNINDENT
+.sp
+ProgressDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Additional progress details for an Auto Scaling group that has a warm pool.
+.sp
+LivePoolProgress \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the progress of an instance refresh on instances that are in the Auto Scaling group.
+.sp
+PercentageComplete \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of instances in the Auto Scaling group that have been replaced. For each instance replacement, Amazon EC2 Auto Scaling tracks the instance\(aqs health status and warm\-up time. When the instance\(aqs health status changes to healthy and the specified warm\-up time passes, the instance is considered updated and is added to the percentage complete.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesToUpdate \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances remaining to update.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+WarmPoolProgress \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the progress of an instance refresh on instances that are in the warm pool.
+.sp
+PercentageComplete \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of instances in the warm pool that have been replaced. For each instance replacement, Amazon EC2 Auto Scaling tracks the instance\(aqs health status and warm\-up time. When the instance\(aqs health status changes to healthy and the specified warm\-up time passes, the instance is considered updated and is added to the percentage complete.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesToUpdate \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances remaining to update.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that indicates that the response contains more items than can be returned in a single response. To receive additional items, specify this string for the \fBNextToken\fP value when requesting the next set of items. This value is null when there are no more items to return.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

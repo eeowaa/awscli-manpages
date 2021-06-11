@@ -1,0 +1,272 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LOGS-FILTER-LOG-EVENTS" "a" "" ""
+.SH NAME
+logs-filter-log-events \- Lists log events from the specified log group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Lists log events from the specified log group. You can list all the log events or filter the results using a filter pattern, a time range, and the name of the log stream.
+.sp
+By default, this operation returns as many log events as can fit in 1 MB (up to 10,000 log events) or all the events found within the time range that you specify. If the results include a token, then there are more log events available, and you can get additional results by specifying the token in a subsequent call. This operation can return empty results while there are more log events available through the token.
+.sp
+The returned log events are sorted by event timestamp, the timestamp when the event was ingested by CloudWatch Logs, and the ID of the \fBPutLogEvents\fP request.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBfilter\-log\-events\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBevents\fP, \fBsearchedLogStreams\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  filter\-log\-events
+\-\-log\-group\-name <value>
+[\-\-log\-stream\-names <value>]
+[\-\-log\-stream\-name\-prefix <value>]
+[\-\-start\-time <value>]
+[\-\-end\-time <value>]
+[\-\-filter\-pattern <value>]
+[\-\-interleaved | \-\-no\-interleaved]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-log\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the log group to search.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-stream\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Filters the results to only logs from the log streams in this list.
+.sp
+If you specify a value for both \fBlogStreamNamePrefix\fP and \fBlogStreamNames\fP , the action returns an \fBInvalidParameterException\fP error.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-stream\-name\-prefix\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Filters the results to include only events from log streams that have names starting with this prefix.
+.sp
+If you specify a value for both \fBlogStreamNamePrefix\fP and \fBlogStreamNames\fP , but the value for \fBlogStreamNamePrefix\fP does not match any log stream names specified in \fBlogStreamNames\fP , the action returns an \fBInvalidParameterException\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The start of the time range, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC. Events with a timestamp before this time are not returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The end of the time range, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC. Events with a timestamp later than this time are not returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\-pattern\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The filter pattern to use. For more information, see \fI\%Filter and Pattern Syntax\fP .
+.sp
+If not provided, all the events are matched.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-interleaved\fP | \fB\-\-no\-interleaved\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If the value is true, the operation makes a best effort to provide responses that contain events from multiple log streams within the log group, interleaved in a single response. If the value is false, all the matched log events in the first log stream are searched first, then those in the next log stream, and so on. The default is false.
+.INDENT 0.0
+.INDENT 3.5
+\fBImportant:\fP Starting on June 17, 2019, this parameter is ignored and the value is assumed to be true. The response from this operation always interleaves events from multiple log streams within a log group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+events \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The matched events.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a matched event.
+.sp
+logStreamName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the log stream to which this event belongs.
+.UNINDENT
+.UNINDENT
+.sp
+timestamp \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The time the event occurred, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC.
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data contained in the log event.
+.UNINDENT
+.UNINDENT
+.sp
+ingestionTime \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The time the event was ingested, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC.
+.UNINDENT
+.UNINDENT
+.sp
+eventId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the event.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+searchedLogStreams \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fBIMPORTANT\fP Starting on May 15, 2020, this parameter will be deprecated. This parameter will be an empty list after the deprecation occurs.
+.UNINDENT
+.UNINDENT
+.sp
+Indicates which log streams have been searched and whether each has been searched completely.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the search status of a log stream.
+.sp
+logStreamName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the log stream.
+.UNINDENT
+.UNINDENT
+.sp
+searchedCompletely \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether all the events in this log stream were searched.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+nextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to use when requesting the next set of items. The token expires after 24 hours.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

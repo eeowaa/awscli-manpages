@@ -1,0 +1,920 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "APPLICATION-AUTOSCALING-PUT-SCALING-POLICY" "a" "" ""
+.SH NAME
+application-autoscaling-put-scaling-policy \- Creates or updates a scaling policy for an Application Auto Scaling scalable target
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates or updates a scaling policy for an Application Auto Scaling scalable target.
+.sp
+Each scalable target is identified by a service namespace, resource ID, and scalable dimension. A scaling policy applies to the scalable target identified by those three attributes. You cannot create a scaling policy until you have registered the resource as a scalable target.
+.sp
+Multiple scaling policies can be in force at the same time for the same scalable target. You can have one or more target tracking scaling policies, one or more step scaling policies, or both. However, there is a chance that multiple policies could conflict, instructing the scalable target to scale out or in at the same time. Application Auto Scaling gives precedence to the policy that provides the largest capacity for both scale out and scale in. For example, if one policy increases capacity by 3, another policy increases capacity by 200 percent, and the current capacity is 10, Application Auto Scaling uses the policy with the highest calculated capacity (200% of 10 = 20) and scales out to 30.
+.sp
+We recommend caution, however, when using target tracking scaling policies with step scaling policies because conflicts between these policies can cause undesirable behavior. For example, if the step scaling policy initiates a scale\-in activity before the target tracking policy is ready to scale in, the scale\-in activity will not be blocked. After the scale\-in activity completes, the target tracking policy could instruct the scalable target to scale out again.
+.sp
+For more information, see \fI\%Target tracking scaling policies\fP and \fI\%Step scaling policies\fP in the \fIApplication Auto Scaling User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If a scalable target is deregistered, the scalable target is no longer available to execute scaling policies. Any scaling policies that were specified for the scalable target are deleted.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-scaling\-policy
+\-\-policy\-name <value>
+\-\-service\-namespace <value>
+\-\-resource\-id <value>
+\-\-scalable\-dimension <value>
+[\-\-policy\-type <value>]
+[\-\-step\-scaling\-policy\-configuration <value>]
+[\-\-target\-tracking\-scaling\-policy\-configuration <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-policy\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-namespace\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the AWS service that provides the resource. For a resource provided by your own application or service, use \fBcustom\-resource\fP instead.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBecs\fP
+.IP \(bu 2
+\fBelasticmapreduce\fP
+.IP \(bu 2
+\fBec2\fP
+.IP \(bu 2
+\fBappstream\fP
+.IP \(bu 2
+\fBdynamodb\fP
+.IP \(bu 2
+\fBrds\fP
+.IP \(bu 2
+\fBsagemaker\fP
+.IP \(bu 2
+\fBcustom\-resource\fP
+.IP \(bu 2
+\fBcomprehend\fP
+.IP \(bu 2
+\fBlambda\fP
+.IP \(bu 2
+\fBcassandra\fP
+.IP \(bu 2
+\fBkafka\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the resource associated with the scaling policy. This string consists of the resource type and unique identifier.
+.INDENT 0.0
+.IP \(bu 2
+ECS service \- The resource type is \fBservice\fP and the unique identifier is the cluster name and service name. Example: \fBservice/default/sample\-webapp\fP .
+.IP \(bu 2
+Spot Fleet request \- The resource type is \fBspot\-fleet\-request\fP and the unique identifier is the Spot Fleet request ID. Example: \fBspot\-fleet\-request/sfr\-73fbd2ce\-aa30\-494c\-8788\-1cee4EXAMPLE\fP .
+.IP \(bu 2
+EMR cluster \- The resource type is \fBinstancegroup\fP and the unique identifier is the cluster ID and instance group ID. Example: \fBinstancegroup/j\-2EEZNYKUA1NTV/ig\-1791Y4E1L8YI0\fP .
+.IP \(bu 2
+AppStream 2.0 fleet \- The resource type is \fBfleet\fP and the unique identifier is the fleet name. Example: \fBfleet/sample\-fleet\fP .
+.IP \(bu 2
+DynamoDB table \- The resource type is \fBtable\fP and the unique identifier is the table name. Example: \fBtable/my\-table\fP .
+.IP \(bu 2
+DynamoDB global secondary index \- The resource type is \fBindex\fP and the unique identifier is the index name. Example: \fBtable/my\-table/index/my\-table\-index\fP .
+.IP \(bu 2
+Aurora DB cluster \- The resource type is \fBcluster\fP and the unique identifier is the cluster name. Example: \fBcluster:my\-db\-cluster\fP .
+.IP \(bu 2
+Amazon SageMaker endpoint variant \- The resource type is \fBvariant\fP and the unique identifier is the resource ID. Example: \fBendpoint/my\-end\-point/variant/KMeansClustering\fP .
+.IP \(bu 2
+Custom resources are not supported with a resource type. This parameter must specify the \fBOutputValue\fP from the CloudFormation template stack used to access the resources. The unique identifier is defined by the service provider. More information is available in our \fI\%GitHub repository\fP .
+.IP \(bu 2
+Amazon Comprehend document classification endpoint \- The resource type and unique identifier are specified using the endpoint ARN. Example: \fBarn:aws:comprehend:us\-west\-2:123456789012:document\-classifier\-endpoint/EXAMPLE\fP .
+.IP \(bu 2
+Amazon Comprehend entity recognizer endpoint \- The resource type and unique identifier are specified using the endpoint ARN. Example: \fBarn:aws:comprehend:us\-west\-2:123456789012:entity\-recognizer\-endpoint/EXAMPLE\fP .
+.IP \(bu 2
+Lambda provisioned concurrency \- The resource type is \fBfunction\fP and the unique identifier is the function name with a function version or alias name suffix that is not \fB$LATEST\fP . Example: \fBfunction:my\-function:prod\fP or \fBfunction:my\-function:1\fP .
+.IP \(bu 2
+Amazon Keyspaces table \- The resource type is \fBtable\fP and the unique identifier is the table name. Example: \fBkeyspace/mykeyspace/table/mytable\fP .
+.IP \(bu 2
+Amazon MSK cluster \- The resource type and unique identifier are specified using the cluster ARN. Example: \fBarn:aws:kafka:us\-east\-1:123456789012:cluster/demo\-cluster\-1/6357e0b2\-0e6a\-4b86\-a0b4\-70df934c2e31\-5\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scalable\-dimension\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The scalable dimension. This string consists of the service namespace, resource type, and scaling property.
+.INDENT 0.0
+.IP \(bu 2
+\fBecs:service:DesiredCount\fP \- The desired task count of an ECS service.
+.IP \(bu 2
+\fBec2:spot\-fleet\-request:TargetCapacity\fP \- The target capacity of a Spot Fleet request.
+.IP \(bu 2
+\fBelasticmapreduce:instancegroup:InstanceCount\fP \- The instance count of an EMR Instance Group.
+.IP \(bu 2
+\fBappstream:fleet:DesiredCapacity\fP \- The desired capacity of an AppStream 2.0 fleet.
+.IP \(bu 2
+\fBdynamodb:table:ReadCapacityUnits\fP \- The provisioned read capacity for a DynamoDB table.
+.IP \(bu 2
+\fBdynamodb:table:WriteCapacityUnits\fP \- The provisioned write capacity for a DynamoDB table.
+.IP \(bu 2
+\fBdynamodb:index:ReadCapacityUnits\fP \- The provisioned read capacity for a DynamoDB global secondary index.
+.IP \(bu 2
+\fBdynamodb:index:WriteCapacityUnits\fP \- The provisioned write capacity for a DynamoDB global secondary index.
+.IP \(bu 2
+\fBrds:cluster:ReadReplicaCount\fP \- The count of Aurora Replicas in an Aurora DB cluster. Available for Aurora MySQL\-compatible edition and Aurora PostgreSQL\-compatible edition.
+.IP \(bu 2
+\fBsagemaker:variant:DesiredInstanceCount\fP \- The number of EC2 instances for an Amazon SageMaker model endpoint variant.
+.IP \(bu 2
+\fBcustom\-resource:ResourceType:Property\fP \- The scalable dimension for a custom resource provided by your own application or service.
+.IP \(bu 2
+\fBcomprehend:document\-classifier\-endpoint:DesiredInferenceUnits\fP \- The number of inference units for an Amazon Comprehend document classification endpoint.
+.IP \(bu 2
+\fBcomprehend:entity\-recognizer\-endpoint:DesiredInferenceUnits\fP \- The number of inference units for an Amazon Comprehend entity recognizer endpoint.
+.IP \(bu 2
+\fBlambda:function:ProvisionedConcurrency\fP \- The provisioned concurrency for a Lambda function.
+.IP \(bu 2
+\fBcassandra:table:ReadCapacityUnits\fP \- The provisioned read capacity for an Amazon Keyspaces table.
+.IP \(bu 2
+\fBcassandra:table:WriteCapacityUnits\fP \- The provisioned write capacity for an Amazon Keyspaces table.
+.IP \(bu 2
+\fBkafka:broker\-storage:VolumeSize\fP \- The provisioned volume size (in GiB) for brokers in an Amazon MSK cluster.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBecs:service:DesiredCount\fP
+.IP \(bu 2
+\fBec2:spot\-fleet\-request:TargetCapacity\fP
+.IP \(bu 2
+\fBelasticmapreduce:instancegroup:InstanceCount\fP
+.IP \(bu 2
+\fBappstream:fleet:DesiredCapacity\fP
+.IP \(bu 2
+\fBdynamodb:table:ReadCapacityUnits\fP
+.IP \(bu 2
+\fBdynamodb:table:WriteCapacityUnits\fP
+.IP \(bu 2
+\fBdynamodb:index:ReadCapacityUnits\fP
+.IP \(bu 2
+\fBdynamodb:index:WriteCapacityUnits\fP
+.IP \(bu 2
+\fBrds:cluster:ReadReplicaCount\fP
+.IP \(bu 2
+\fBsagemaker:variant:DesiredInstanceCount\fP
+.IP \(bu 2
+\fBcustom\-resource:ResourceType:Property\fP
+.IP \(bu 2
+\fBcomprehend:document\-classifier\-endpoint:DesiredInferenceUnits\fP
+.IP \(bu 2
+\fBcomprehend:entity\-recognizer\-endpoint:DesiredInferenceUnits\fP
+.IP \(bu 2
+\fBlambda:function:ProvisionedConcurrency\fP
+.IP \(bu 2
+\fBcassandra:table:ReadCapacityUnits\fP
+.IP \(bu 2
+\fBcassandra:table:WriteCapacityUnits\fP
+.IP \(bu 2
+\fBkafka:broker\-storage:VolumeSize\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy type. This parameter is required if you are creating a scaling policy.
+.sp
+The following policy types are supported:
+.INDENT 0.0
+.INDENT 3.5
+\fBTargetTrackingScaling\fP —Not supported for Amazon EMR
+.sp
+\fBStepScaling\fP —Not supported for DynamoDB, Amazon Comprehend, Lambda, Amazon Keyspaces (for Apache Cassandra), or Amazon MSK.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Target tracking scaling policies\fP and \fI\%Step scaling policies\fP in the \fIApplication Auto Scaling User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBStepScaling\fP
+.IP \(bu 2
+\fBTargetTrackingScaling\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-step\-scaling\-policy\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A step scaling policy.
+.sp
+This parameter is required if you are creating a policy and the policy type is \fBStepScaling\fP .
+.sp
+AdjustmentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how the \fBScalingAdjustment\fP value in a \fI\%StepAdjustment\fP is interpreted (for example, an absolute number or a percentage). The valid values are \fBChangeInCapacity\fP , \fBExactCapacity\fP , and \fBPercentChangeInCapacity\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBAdjustmentType\fP is required if you are adding a new step scaling policy configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StepAdjustments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of adjustments that enable you to scale based on the size of the alarm breach.
+.sp
+At least one step adjustment is required if you are adding a new step scaling policy configuration.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a step adjustment for a \fI\%StepScalingPolicyConfiguration\fP . Describes an adjustment based on the difference between the value of the aggregated CloudWatch metric and the breach threshold that you\(aqve defined for the alarm.
+.sp
+For the following examples, suppose that you have an alarm with a breach threshold of 50:
+.INDENT 0.0
+.IP \(bu 2
+To trigger the adjustment when the metric is greater than or equal to 50 and less than 60, specify a lower bound of 0 and an upper bound of 10.
+.IP \(bu 2
+To trigger the adjustment when the metric is greater than 40 and less than or equal to 50, specify a lower bound of \-10 and an upper bound of 0.
+.UNINDENT
+.sp
+There are a few rules for the step adjustments for your step policy:
+.INDENT 0.0
+.IP \(bu 2
+The ranges of your step adjustments can\(aqt overlap or have a gap.
+.IP \(bu 2
+At most one step adjustment can have a null lower bound. If one step adjustment has a negative lower bound, then there must be a step adjustment with a null lower bound.
+.IP \(bu 2
+At most one step adjustment can have a null upper bound. If one step adjustment has a positive upper bound, then there must be a step adjustment with a null upper bound.
+.IP \(bu 2
+The upper and lower bound can\(aqt be null in the same step adjustment.
+.UNINDENT
+.sp
+MetricIntervalLowerBound \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The lower bound for the difference between the alarm threshold and the CloudWatch metric. If the metric value is above the breach threshold, the lower bound is inclusive (the metric must be greater than or equal to the threshold plus the lower bound). Otherwise, it is exclusive (the metric must be greater than the threshold plus the lower bound). A null value indicates negative infinity.
+.UNINDENT
+.UNINDENT
+.sp
+MetricIntervalUpperBound \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The upper bound for the difference between the alarm threshold and the CloudWatch metric. If the metric value is above the breach threshold, the upper bound is exclusive (the metric must be less than the threshold plus the upper bound). Otherwise, it is inclusive (the metric must be less than or equal to the threshold plus the upper bound). A null value indicates positive infinity.
+.sp
+The upper bound must be greater than the lower bound.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingAdjustment \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount by which to scale, based on the specified adjustment type. A positive value adds to the current capacity while a negative number removes from the current capacity. For exact capacity, you must specify a positive value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MinAdjustmentMagnitude \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum value to scale by when the adjustment type is \fBPercentChangeInCapacity\fP . For example, suppose that you create a step scaling policy to scale out an Amazon ECS service by 25 percent and you specify a \fBMinAdjustmentMagnitude\fP of 2. If the service has 4 tasks and the scaling policy is performed, 25 percent of 4 is 1. However, because you specified a \fBMinAdjustmentMagnitude\fP of 2, Application Auto Scaling scales out the service by 2 tasks.
+.UNINDENT
+.UNINDENT
+.sp
+Cooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, to wait for a previous scaling activity to take effect.
+.sp
+With scale\-out policies, the intention is to continuously (but not excessively) scale out. After Application Auto Scaling successfully scales out using a step scaling policy, it starts to calculate the cooldown time. The scaling policy won\(aqt increase the desired capacity again unless either a larger scale out is triggered or the cooldown period ends. While the cooldown period is in effect, capacity added by the initiating scale\-out activity is calculated as part of the desired capacity for the next scale\-out activity. For example, when an alarm triggers a step scaling policy to increase the capacity by 2, the scaling activity completes successfully, and a cooldown period starts. If the alarm triggers again during the cooldown period but at a more aggressive step adjustment of 3, the previous increase of 2 is considered part of the current capacity. Therefore, only 1 is added to the capacity.
+.sp
+With scale\-in policies, the intention is to scale in conservatively to protect your application’s availability, so scale\-in activities are blocked until the cooldown period has expired. However, if another alarm triggers a scale\-out activity during the cooldown period after a scale\-in activity, Application Auto Scaling scales out the target immediately. In this case, the cooldown period for the scale\-in activity stops and doesn\(aqt complete.
+.sp
+Application Auto Scaling provides a default value of 300 for the following scalable targets:
+.INDENT 0.0
+.IP \(bu 2
+ECS services
+.IP \(bu 2
+Spot Fleet requests
+.IP \(bu 2
+EMR clusters
+.IP \(bu 2
+AppStream 2.0 fleets
+.IP \(bu 2
+Aurora DB clusters
+.IP \(bu 2
+Amazon SageMaker endpoint variants
+.IP \(bu 2
+Custom resources
+.UNINDENT
+.sp
+For all other scalable targets, the default value is 0:
+.INDENT 0.0
+.IP \(bu 2
+DynamoDB tables
+.IP \(bu 2
+DynamoDB global secondary indexes
+.IP \(bu 2
+Amazon Comprehend document classification and entity recognizer endpoints
+.IP \(bu 2
+Lambda provisioned concurrency
+.IP \(bu 2
+Amazon Keyspaces tables
+.IP \(bu 2
+Amazon MSK broker storage
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MetricAggregationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The aggregation type for the CloudWatch metrics. Valid values are \fBMinimum\fP , \fBMaximum\fP , and \fBAverage\fP . If the aggregation type is null, the value is treated as \fBAverage\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AdjustmentType=string,StepAdjustments=[{MetricIntervalLowerBound=double,MetricIntervalUpperBound=double,ScalingAdjustment=integer},{MetricIntervalLowerBound=double,MetricIntervalUpperBound=double,ScalingAdjustment=integer}],MinAdjustmentMagnitude=integer,Cooldown=integer,MetricAggregationType=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AdjustmentType": "ChangeInCapacity"|"PercentChangeInCapacity"|"ExactCapacity",
+  "StepAdjustments": [
+    {
+      "MetricIntervalLowerBound": double,
+      "MetricIntervalUpperBound": double,
+      "ScalingAdjustment": integer
+    }
+    ...
+  ],
+  "MinAdjustmentMagnitude": integer,
+  "Cooldown": integer,
+  "MetricAggregationType": "Average"|"Minimum"|"Maximum"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-tracking\-scaling\-policy\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A target tracking scaling policy. Includes support for predefined or customized metrics.
+.sp
+This parameter is required if you are creating a policy and the policy type is \fBTargetTrackingScaling\fP .
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The target value for the metric. Although this property accepts numbers of type Double, it won\(aqt accept values that are either too small or too large. Values must be in the range of \-2^360 to 2^360. The value must be a valid number based on the choice of metric. For example, if the metric is CPU utilization, then the target value is a percent value that represents how much of the CPU can be used before scaling out.
+.UNINDENT
+.UNINDENT
+.sp
+PredefinedMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A predefined metric. You can specify either a predefined metric or a customized metric.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric type. The \fBALBRequestCountPerTarget\fP metric type applies only to Spot Fleet requests and ECS services.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the resource associated with the metric type. You can\(aqt specify a resource label unless the metric type is \fBALBRequestCountPerTarget\fP and there is a target group attached to the Spot Fleet request or ECS service.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format is app/<load\-balancer\-name>/<load\-balancer\-id>/targetgroup/<target\-group\-name>/<target\-group\-id>, where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+This is an example: app/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d.
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CustomizedMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A customized metric. You can specify either a predefined metric or a customized metric.
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions of the metric.
+.sp
+Conditional: If you published your metric with dimensions, you must specify the same dimensions in your scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the dimension names and values associated with a metric.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of the metric.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ScaleOutCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, to wait for a previous scale\-out activity to take effect.
+.sp
+With the \fIscale\-out cooldown period\fP , the intention is to continuously (but not excessively) scale out. After Application Auto Scaling successfully scales out using a target tracking scaling policy, it starts to calculate the cooldown time. The scaling policy won\(aqt increase the desired capacity again unless either a larger scale out is triggered or the cooldown period ends. While the cooldown period is in effect, the capacity added by the initiating scale\-out activity is calculated as part of the desired capacity for the next scale\-out activity.
+.sp
+Application Auto Scaling provides a default value of 300 for the following scalable targets:
+.INDENT 0.0
+.IP \(bu 2
+ECS services
+.IP \(bu 2
+Spot Fleet requests
+.IP \(bu 2
+EMR clusters
+.IP \(bu 2
+AppStream 2.0 fleets
+.IP \(bu 2
+Aurora DB clusters
+.IP \(bu 2
+Amazon SageMaker endpoint variants
+.IP \(bu 2
+Custom resources
+.UNINDENT
+.sp
+For all other scalable targets, the default value is 0:
+.INDENT 0.0
+.IP \(bu 2
+DynamoDB tables
+.IP \(bu 2
+DynamoDB global secondary indexes
+.IP \(bu 2
+Amazon Comprehend document classification and entity recognizer endpoints
+.IP \(bu 2
+Lambda provisioned concurrency
+.IP \(bu 2
+Amazon Keyspaces tables
+.IP \(bu 2
+Amazon MSK broker storage
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ScaleInCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale\-in activity completes before another scale\-in activity can start.
+.sp
+With the \fIscale\-in cooldown period\fP , the intention is to scale in conservatively to protect your application’s availability, so scale\-in activities are blocked until the cooldown period has expired. However, if another alarm triggers a scale\-out activity during the scale\-in cooldown period, Application Auto Scaling scales out the target immediately. In this case, the scale\-in cooldown period stops and doesn\(aqt complete.
+.sp
+Application Auto Scaling provides a default value of 300 for the following scalable targets:
+.INDENT 0.0
+.IP \(bu 2
+ECS services
+.IP \(bu 2
+Spot Fleet requests
+.IP \(bu 2
+EMR clusters
+.IP \(bu 2
+AppStream 2.0 fleets
+.IP \(bu 2
+Aurora DB clusters
+.IP \(bu 2
+Amazon SageMaker endpoint variants
+.IP \(bu 2
+Custom resources
+.UNINDENT
+.sp
+For all other scalable targets, the default value is 0:
+.INDENT 0.0
+.IP \(bu 2
+DynamoDB tables
+.IP \(bu 2
+DynamoDB global secondary indexes
+.IP \(bu 2
+Amazon Comprehend document classification and entity recognizer endpoints
+.IP \(bu 2
+Lambda provisioned concurrency
+.IP \(bu 2
+Amazon Keyspaces tables
+.IP \(bu 2
+Amazon MSK broker storage
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DisableScaleIn \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether scale in by the target tracking scaling policy is disabled. If the value is \fBtrue\fP , scale in is disabled and the target tracking scaling policy won\(aqt remove capacity from the scalable target. Otherwise, scale in is enabled and the target tracking scaling policy can remove capacity from the scalable target. The default value is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TargetValue": double,
+  "PredefinedMetricSpecification": {
+    "PredefinedMetricType": "DynamoDBReadCapacityUtilization"|"DynamoDBWriteCapacityUtilization"|"ALBRequestCountPerTarget"|"RDSReaderAverageCPUUtilization"|"RDSReaderAverageDatabaseConnections"|"EC2SpotFleetRequestAverageCPUUtilization"|"EC2SpotFleetRequestAverageNetworkIn"|"EC2SpotFleetRequestAverageNetworkOut"|"SageMakerVariantInvocationsPerInstance"|"ECSServiceAverageCPUUtilization"|"ECSServiceAverageMemoryUtilization"|"AppStreamAverageCapacityUtilization"|"ComprehendInferenceUtilization"|"LambdaProvisionedConcurrencyUtilization"|"CassandraReadCapacityUtilization"|"CassandraWriteCapacityUtilization"|"KafkaBrokerStorageUtilization",
+    "ResourceLabel": "string"
+  },
+  "CustomizedMetricSpecification": {
+    "MetricName": "string",
+    "Namespace": "string",
+    "Dimensions": [
+      {
+        "Name": "string",
+        "Value": "string"
+      }
+      ...
+    ],
+    "Statistic": "Average"|"Minimum"|"Maximum"|"SampleCount"|"Sum",
+    "Unit": "string"
+  },
+  "ScaleOutCooldown": integer,
+  "ScaleInCooldown": integer,
+  "DisableScaleIn": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To apply a target tracking scaling policy with a predefined metric specification\fP
+.sp
+The following \fBput\-scaling\-policy\fP example applies a target tracking scaling policy with a predefined metric specification to an Amazon ECS service called web\-app in the default cluster. The policy keeps the average CPU utilization of the service at 75 percent, with scale\-out and scale\-in cooldown periods of 60 seconds. The output contains the ARNs and names of the two CloudWatch alarms created on your behalf.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling put\-scaling\-policy \-\-service\-namespace ecs \e
+\-\-scalable\-dimension ecs:service:DesiredCount \e
+\-\-resource\-id service/default/web\-app \e
+\-\-policy\-name cpu75\-target\-tracking\-scaling\-policy \-\-policy\-type TargetTrackingScaling \e
+\-\-target\-tracking\-scaling\-policy\-configuration file://config.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example assumes that you have a \fIconfig.json\fP file in the current directory with the following contents:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+     "TargetValue": 75.0,
+     "PredefinedMetricSpecification": {
+         "PredefinedMetricType": "ECSServiceAverageCPUUtilization"
+     },
+     "ScaleOutCooldown": 60,
+    "ScaleInCooldown": 60
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "PolicyARN": "arn:aws:autoscaling:us\-west\-2:012345678910:scalingPolicy:6d8972f3\-efc8\-437c\-92d1\-6270f29a66e7:resource/ecs/service/default/web\-app:policyName/cpu75\-target\-tracking\-scaling\-policy",
+    "Alarms": [
+        {
+            "AlarmARN": "arn:aws:cloudwatch:us\-west\-2:012345678910:alarm:TargetTracking\-service/default/web\-app\-AlarmHigh\-d4f0770c\-b46e\-434a\-a60f\-3b36d653feca",
+            "AlarmName": "TargetTracking\-service/default/web\-app\-AlarmHigh\-d4f0770c\-b46e\-434a\-a60f\-3b36d653feca"
+        },
+        {
+            "AlarmARN": "arn:aws:cloudwatch:us\-west\-2:012345678910:alarm:TargetTracking\-service/default/web\-app\-AlarmLow\-1b437334\-d19b\-4a63\-a812\-6c67aaf2910d",
+            "AlarmName": "TargetTracking\-service/default/web\-app\-AlarmLow\-1b437334\-d19b\-4a63\-a812\-6c67aaf2910d"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To apply a target tracking scaling policy with a customized metric specification\fP
+.sp
+The following \fBput\-scaling\-policy\fP example applies a target tracking scaling policy with a customized metric specification to an Amazon ECS service called web\-app in the default cluster. The policy keeps the average utilization of the service at 75 percent, with scale\-out and scale\-in cooldown periods of 60 seconds. The output contains the ARNs and names of the two CloudWatch alarms created on your behalf.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling put\-scaling\-policy \-\-service\-namespace ecs \e
+\-\-scalable\-dimension ecs:service:DesiredCount \e
+\-\-resource\-id service/default/web\-app \e
+\-\-policy\-name cms75\-target\-tracking\-scaling\-policy
+\-\-policy\-type TargetTrackingScaling \e
+\-\-target\-tracking\-scaling\-policy\-configuration file://config.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example assumes that you have a \fIconfig.json\fP file in the current directory with the following contents:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TargetValue":75.0,
+    "CustomizedMetricSpecification":{
+        "MetricName":"MyUtilizationMetric",
+        "Namespace":"MyNamespace",
+        "Dimensions": [
+            {
+                "Name":"MyOptionalMetricDimensionName",
+                "Value":"MyOptionalMetricDimensionValue"
+            }
+        ],
+        "Statistic":"Average",
+        "Unit":"Percent"
+    },
+    "ScaleOutCooldown": 60,
+    "ScaleInCooldown": 60
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "PolicyARN": "arn:aws:autoscaling:us\-west\-2:012345678910:scalingPolicy: 8784a896\-b2ba\-47a1\-b08c\-27301cc499a1:resource/ecs/service/default/web\-app:policyName/cms75\-target\-tracking\-scaling\-policy",
+    "Alarms": [
+        {
+            "AlarmARN": "arn:aws:cloudwatch:us\-west\-2:012345678910:alarm:TargetTracking\-service/default/web\-app\-AlarmHigh\-9bc77b56\-0571\-4276\-ba0f\-d4178882e0a0",
+            "AlarmName": "TargetTracking\-service/default/web\-app\-AlarmHigh\-9bc77b56\-0571\-4276\-ba0f\-d4178882e0a0"
+        },
+        {
+            "AlarmARN": "arn:aws:cloudwatch:us\-west\-2:012345678910:alarm:TargetTracking\-service/default/web\-app\-AlarmLow\-9b6ad934\-6d37\-438e\-9e05\-02836ddcbdc4",
+            "AlarmName": "TargetTracking\-service/default/web\-app\-AlarmLow\-9b6ad934\-6d37\-438e\-9e05\-02836ddcbdc4"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To apply a target tracking scaling policy for scale out only\fP
+.sp
+The following \fBput\-scaling\-policy\fP example applies a target tracking scaling policy to an Amazon ECS service called \fBweb\-app\fP in the default cluster. The policy is used to scale out the ECS service when the \fBRequestCountPerTarget\fP metric from the Application Load Balancer exceeds the threshold. The output contains the ARN and name of the CloudWatch alarm created on your behalf.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling put\-scaling\-policy \e
+    \-\-service\-namespace ecs \e
+    \-\-scalable\-dimension ecs:service:DesiredCount \e
+    \-\-resource\-id service/default/web\-app \e
+    \-\-policy\-name alb\-scale\-out\-target\-tracking\-scaling\-policy \e
+    \-\-policy\-type TargetTrackingScaling \e
+    \-\-target\-tracking\-scaling\-policy\-configuration file://config.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBconfig.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+     "TargetValue": 1000.0,
+     "PredefinedMetricSpecification": {
+         "PredefinedMetricType": "ALBRequestCountPerTarget",
+         "ResourceLabel": "app/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d"
+     },
+     "ScaleOutCooldown": 60,
+    "ScaleInCooldown": 60,
+    "DisableScaleIn": true
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "PolicyARN": "arn:aws:autoscaling:us\-west\-2:123456789012:scalingPolicy:6d8972f3\-efc8\-437c\-92d1\-6270f29a66e7:resource/ecs/service/default/web\-app:policyName/alb\-scale\-out\-target\-tracking\-scaling\-policy",
+    "Alarms": [
+        {
+            "AlarmName": "TargetTracking\-service/default/web\-app\-AlarmHigh\-d4f0770c\-b46e\-434a\-a60f\-3b36d653feca",
+            "AlarmARN": "arn:aws:cloudwatch:us\-west\-2:123456789012:alarm:TargetTracking\-service/default/web\-app\-AlarmHigh\-d4f0770c\-b46e\-434a\-a60f\-3b36d653feca"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Target Tracking Scaling Policies for Application Auto Scaling\fP in the \fIAWS Application Auto Scaling User Guide\fP\&.
+.SH OUTPUT
+.sp
+PolicyARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the resulting scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+Alarms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The CloudWatch alarms created for the target tracking scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a CloudWatch alarm associated with a scaling policy.
+.sp
+AlarmName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the alarm.
+.UNINDENT
+.UNINDENT
+.sp
+AlarmARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the alarm.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

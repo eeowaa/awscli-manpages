@@ -1,0 +1,606 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-CREATE-VPC" "a" "" ""
+.SH NAME
+ec2-create-vpc \- Creates a VPC with the specified IPv4 CIDR block
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a VPC with the specified IPv4 CIDR block. The smallest VPC you can create uses a /28 netmask (16 IPv4 addresses), and the largest uses a /16 netmask (65,536 IPv4 addresses). For more information about how large to make your VPC, see \fI\%Your VPC and Subnets\fP in the \fIAmazon Virtual Private Cloud User Guide\fP .
+.sp
+You can optionally request an IPv6 CIDR block for the VPC. You can request an Amazon\-provided IPv6 CIDR block from Amazon\(aqs pool of IPv6 addresses, or an IPv6 CIDR block from an IPv6 address pool that you provisioned through bring your own IP addresses (\fI\%BYOIP\fP ).
+.sp
+By default, each instance you launch in the VPC has the default DHCP options, which include only a default DNS server that we provide (AmazonProvidedDNS). For more information, see \fI\%DHCP Options Sets\fP in the \fIAmazon Virtual Private Cloud User Guide\fP .
+.sp
+You can specify the instance tenancy value for the VPC when you create it. You can\(aqt change this value for the VPC after you create it. For more information, see \fI\%Dedicated Instances\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-vpc
+\-\-cidr\-block <value>
+[\-\-amazon\-provided\-ipv6\-cidr\-block | \-\-no\-amazon\-provided\-ipv6\-cidr\-block]
+[\-\-ipv6\-pool <value>]
+[\-\-ipv6\-cidr\-block <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-instance\-tenancy <value>]
+[\-\-ipv6\-cidr\-block\-network\-border\-group <value>]
+[\-\-tag\-specifications <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cidr\-block\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 network range for the VPC, in CIDR notation. For example, \fB10.0.0.0/16\fP . We modify the specified CIDR block to its canonical form; for example, if you specify \fB100.68.0.18/18\fP , we modify it to \fB100.68.0.0/18\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-amazon\-provided\-ipv6\-cidr\-block\fP | \fB\-\-no\-amazon\-provided\-ipv6\-cidr\-block\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Requests an Amazon\-provided IPv6 CIDR block with a /56 prefix length for the VPC. You cannot specify the range of IP addresses, or the size of the CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ipv6\-pool\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of an IPv6 address pool from which to allocate the IPv6 CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ipv6\-cidr\-block\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 CIDR block from the IPv6 address pool. You must also specify \fBIpv6Pool\fP in the request.
+.sp
+To let Amazon choose the IPv6 CIDR block for you, omit this parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-tenancy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The tenancy options for instances launched into the VPC. For \fBdefault\fP , instances are launched with shared tenancy by default. You can launch instances with any tenancy into a shared tenancy VPC. For \fBdedicated\fP , instances are launched as dedicated tenancy instances by default. You can only launch instances with a tenancy of \fBdedicated\fP or \fBhost\fP into a dedicated tenancy VPC.
+.INDENT 0.0
+.INDENT 3.5
+\fBImportant:\fP The \fBhost\fP value cannot be used with this parameter. Use the \fBdefault\fP or \fBdedicated\fP values only.
+.UNINDENT
+.UNINDENT
+.sp
+Default: \fBdefault\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBdefault\fP
+.IP \(bu 2
+\fBdedicated\fP
+.IP \(bu 2
+\fBhost\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ipv6\-cidr\-block\-network\-border\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the location from which we advertise the IPV6 CIDR block. Use this parameter to limit the address to this location.
+.sp
+You must set \fBAmazonProvidedIpv6CidrBlock\fP to \fBtrue\fP to use this parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to assign to the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to a resource when the resource is being created.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to tag. Currently, the resource types that support tagging on creation are: \fBcapacity\-reservation\fP | \fBcarrier\-gateway\fP | \fBclient\-vpn\-endpoint\fP | \fBcustomer\-gateway\fP | \fBdedicated\-host\fP | \fBdhcp\-options\fP | \fBegress\-only\-internet\-gateway\fP | \fBelastic\-ip\fP | \fBelastic\-gpu\fP | \fBexport\-image\-task\fP | \fBexport\-instance\-task\fP | \fBfleet\fP | \fBfpga\-image\fP | \fBhost\-reservation\fP | \fBimage\fP | \fBimport\-image\-task\fP | \fBimport\-snapshot\-task\fP | \fBinstance\fP | \fBinternet\-gateway\fP | \fBipv4pool\-ec2\fP | \fBipv6pool\-ec2\fP | \fBkey\-pair\fP | \fBlaunch\-template\fP | \fBlocal\-gateway\-route\-table\-vpc\-association\fP | \fBplacement\-group\fP | \fBprefix\-list\fP | \fBnatgateway\fP | \fBnetwork\-acl\fP | \fBnetwork\-interface\fP | \fBreserved\-instances\fP 
+.nf
+|
+.fi
+\fBroute\-table\fP | \fBsecurity\-group\fP | \fBsnapshot\fP | \fBspot\-fleet\-request\fP | \fBspot\-instances\-request\fP | \fBsnapshot\fP | \fBsubnet\fP | \fBtraffic\-mirror\-filter\fP | \fBtraffic\-mirror\-session\fP | \fBtraffic\-mirror\-target\fP | \fBtransit\-gateway\fP | \fBtransit\-gateway\-attachment\fP | \fBtransit\-gateway\-multicast\-domain\fP | \fBtransit\-gateway\-route\-table\fP | \fBvolume\fP 
+.nf
+|
+.fi
+\fBvpc\fP | \fBvpc\-peering\-connection\fP | \fBvpc\-endpoint\fP (for interface and gateway endpoints) | \fBvpc\-endpoint\-service\fP (for AWS PrivateLink) | \fBvpc\-flow\-log\fP | \fBvpn\-connection\fP | \fBvpn\-gateway\fP .
+.IP "System Message: WARNING/2 (<string>:, line 161)"
+Inline substitution_reference start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 161)"
+Inline substitution_reference start\-string without end\-string.
+.sp
+To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResourceType=string,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ResourceType": "client\-vpn\-endpoint"|"customer\-gateway"|"dedicated\-host"|"dhcp\-options"|"egress\-only\-internet\-gateway"|"elastic\-ip"|"elastic\-gpu"|"export\-image\-task"|"export\-instance\-task"|"fleet"|"fpga\-image"|"host\-reservation"|"image"|"import\-image\-task"|"import\-snapshot\-task"|"instance"|"internet\-gateway"|"key\-pair"|"launch\-template"|"local\-gateway\-route\-table\-vpc\-association"|"natgateway"|"network\-acl"|"network\-interface"|"network\-insights\-analysis"|"network\-insights\-path"|"placement\-group"|"reserved\-instances"|"route\-table"|"security\-group"|"snapshot"|"spot\-fleet\-request"|"spot\-instances\-request"|"subnet"|"traffic\-mirror\-filter"|"traffic\-mirror\-session"|"traffic\-mirror\-target"|"transit\-gateway"|"transit\-gateway\-attachment"|"transit\-gateway\-connect\-peer"|"transit\-gateway\-multicast\-domain"|"transit\-gateway\-route\-table"|"volume"|"vpc"|"vpc\-peering\-connection"|"vpn\-connection"|"vpn\-gateway"|"vpc\-flow\-log",
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a VPC\fP
+.sp
+The following \fBcreate\-vpc\fP example creates a VPC with the specified IPv4 CIDR block.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-vpc \e
+    \-\-ipv6\-cidr\-block\-network\-border\-group us\-west\-2\-lax\-1 \e
+    \-\-cidr\-block 10.0.0.0/16
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Vpc": {
+        "CidrBlock": "10.0.0.0/16",
+        "DhcpOptionsId": "dopt\-5EXAMPLE",
+        "State": "pending",
+        "VpcId": "vpc\-0a60eb65b4EXAMPLE",
+        "OwnerId": "123456789012",
+        "InstanceTenancy": "default",
+        "Ipv6CidrBlockAssociationSet": [],
+        "CidrBlockAssociationSet": [
+            {
+                "AssociationId": "vpc\-cidr\-assoc\-07501b79ecEXAMPLE",
+                "CidrBlock": "10.0.0.0/16",
+                "CidrBlockState": {
+                    "State": "associated"
+            }
+        "NetworkBorderGroup": "us\-west\-2\-lax\-1"
+            }
+        ],
+        "IsDefault": false,
+        "Tags": []
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To create a VPC with dedicated tenancy\fP
+.sp
+The following \fBcreate\-vpc\fP example creates a VPC with the specified IPv4 CIDR block and dedicated tenancy.
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B aws ec2 create\-vpc 
+\-\-cidr\-block 10.0.0.0/16 \-\-instance\-tenancy dedicated
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Vpc": {
+        "CidrBlock": "10.0.0.0/16",
+        "DhcpOptionsId": "dopt\-19edf471",
+        "State": "pending",
+        "VpcId": "vpc\-0a53287fa4EXAMPLE",
+        "OwnerId": "111122223333",
+        "InstanceTenancy": "dedicated",
+        "Ipv6CidrBlockAssociationSet": [],
+        "CidrBlockAssociationSet": [
+            {
+                "AssociationId": "vpc\-cidr\-assoc\-00b24cc1c2EXAMPLE",
+                "CidrBlock": "10.0.0.0/16",
+                "CidrBlockState": {
+                    "State": "associated"
+                }
+            }
+        ],
+        "IsDefault": false,
+        "Tags": []
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To create a VPC with an IPv6 CIDR block\fP
+.sp
+The following \fBcreate\-vpc\fP example creates a VPC with an Amazon\-provided IPv6 CIDR block.
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B aws ec2 create\-vpc 
+\-\-cidr\-block 10.0.0.0/16 \-\-amazon\-provided\-ipv6\-cidr\-block
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Vpc": {
+        "CidrBlock": "10.0.0.0/16",
+        "DhcpOptionsId": "dopt\-dEXAMPLE",
+        "State": "pending",
+        "VpcId": "vpc\-0fc5e3406bEXAMPLE",
+        "OwnerId": "123456789012",
+        "InstanceTenancy": "default",
+        "Ipv6CidrBlockAssociationSet": [
+            {
+                "AssociationId": "vpc\-cidr\-assoc\-068432c60bEXAMPLE",
+                "Ipv6CidrBlock": "",
+                "Ipv6CidrBlockState": {
+                    "State": "associating"
+                },
+                "Ipv6Pool": "Amazon",
+                "NetworkBorderGroup": "us\-west\-2"
+            }
+        ],
+        "CidrBlockAssociationSet": [
+            {
+                "AssociationId": "vpc\-cidr\-assoc\-0669f8f9f5EXAMPLE",
+                "CidrBlock": "10.0.0.0/16",
+                "CidrBlockState": {
+                    "State": "associated"
+                }
+            }
+        ],
+        "IsDefault": false,
+        "Tags": []
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating a VPC\fP in the \fIAWS VPC User Guide\fP\&.
+.SH OUTPUT
+.sp
+Vpc \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the VPC.
+.sp
+CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The primary IPv4 CIDR block for the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+DhcpOptionsId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the set of DHCP options you\(aqve associated with the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account that owns the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceTenancy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The allowed tenancy of instances launched into the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6CidrBlockAssociationSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the IPv6 CIDR blocks associated with the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 CIDR block associated with a VPC.
+.sp
+AssociationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The association ID for the IPv6 CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6CidrBlockState \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the state of the CIDR block.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message about the status of the CIDR block, if applicable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkBorderGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the unique set of Availability Zones, Local Zones, or Wavelength Zones from which AWS advertises IP addresses, for example, \fBus\-east\-1\-wl1\-bos\-wlz\-1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6Pool \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the IPv6 address pool from which the IPv6 CIDR block is allocated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CidrBlockAssociationSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the IPv4 CIDR blocks associated with the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv4 CIDR block associated with a VPC.
+.sp
+AssociationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The association ID for the IPv4 CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+CidrBlockState \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the state of the CIDR block.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the CIDR block.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message about the status of the CIDR block, if applicable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IsDefault \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the VPC is the default VPC.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

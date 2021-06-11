@@ -1,0 +1,594 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-DESCRIBE-SNAPSHOTS" "a" "" ""
+.SH NAME
+ec2-describe-snapshots \- Describes the specified EBS snapshots available to you or all of the EBS snapshots available to you
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes the specified EBS snapshots available to you or all of the EBS snapshots available to you.
+.sp
+The snapshots available to you include public snapshots, private snapshots that you own, and private snapshots owned by other AWS accounts for which you have explicit create volume permissions.
+.sp
+The create volume permissions fall into the following categories:
+.INDENT 0.0
+.IP \(bu 2
+\fIpublic\fP : The owner of the snapshot granted create volume permissions for the snapshot to the \fBall\fP group. All AWS accounts have create volume permissions for these snapshots.
+.IP \(bu 2
+\fIexplicit\fP : The owner of the snapshot granted create volume permissions to a specific AWS account.
+.IP \(bu 2
+\fIimplicit\fP : An AWS account has implicit create volume permissions for all snapshots it owns.
+.UNINDENT
+.sp
+The list of snapshots returned can be filtered by specifying snapshot IDs, snapshot owners, or AWS accounts with create volume permissions. If no options are specified, Amazon EC2 returns all snapshots for which you have create volume permissions.
+.sp
+If you specify one or more snapshot IDs, only snapshots that have the specified IDs are returned. If you specify an invalid snapshot ID, an error is returned. If you specify a snapshot ID for which you do not have access, it is not included in the returned results.
+.sp
+If you specify one or more snapshot owners using the \fBOwnerIds\fP option, only snapshots from the specified owners and for which you have access are returned. The results can include the AWS account IDs of the specified owners, \fBamazon\fP for snapshots owned by Amazon, or \fBself\fP for snapshots that you own.
+.sp
+If you specify a list of restorable users, only snapshots with create snapshot permissions for those users are returned. You can specify AWS account IDs (if you own the snapshots), \fBself\fP for snapshots for which you own or have explicit permissions, or \fBall\fP for public snapshots.
+.sp
+If you are describing a long list of snapshots, we recommend that you paginate the output to make the list more manageable. The \fBMaxResults\fP parameter sets the maximum number of results returned in a single page. If the list of results exceeds your \fBMaxResults\fP value, then that number of results is returned along with a \fBNextToken\fP value that can be passed to a subsequent \fBDescribeSnapshots\fP request to retrieve the remaining results.
+.sp
+To get the state of fast snapshot restores for a snapshot, use  DescribeFastSnapshotRestores .
+.sp
+For more information about EBS snapshots, see \fI\%Amazon EBS snapshots\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBdescribe\-snapshots\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBSnapshots\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-snapshots
+[\-\-filters <value>]
+[\-\-owner\-ids <value>]
+[\-\-restorable\-by\-user\-ids <value>]
+[\-\-snapshot\-ids <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The filters.
+.INDENT 0.0
+.IP \(bu 2
+\fBdescription\fP \- A description of the snapshot.
+.IP \(bu 2
+\fBencrypted\fP \- Indicates whether the snapshot is encrypted (\fBtrue\fP | \fBfalse\fP )
+.IP \(bu 2
+\fBowner\-alias\fP \- The owner alias, from an Amazon\-maintained list (\fBamazon\fP ). This is not the user\-configured AWS account alias set using the IAM console. We recommend that you use the related parameter instead of this filter.
+.IP \(bu 2
+\fBowner\-id\fP \- The AWS account ID of the owner. We recommend that you use the related parameter instead of this filter.
+.IP \(bu 2
+\fBprogress\fP \- The progress of the snapshot, as a percentage (for example, 80%).
+.IP \(bu 2
+\fBsnapshot\-id\fP \- The snapshot ID.
+.IP \(bu 2
+\fBstart\-time\fP \- The time stamp when the snapshot was initiated.
+.IP \(bu 2
+\fBstatus\fP \- The status of the snapshot (\fBpending\fP | \fBcompleted\fP | \fBerror\fP ).
+.IP \(bu 2
+\fBtag\fP :<key> \- The key/value combination of a tag assigned to the resource. Use the tag key in the filter name and the tag value as the filter value. For example, to find all resources that have a tag with the key \fBOwner\fP and the value \fBTeamA\fP , specify \fBtag:Owner\fP for the filter name and \fBTeamA\fP for the filter value.
+.IP \(bu 2
+\fBtag\-key\fP \- The key of a tag assigned to the resource. Use this filter to find all resources assigned a tag with a specific key, regardless of the tag value.
+.IP \(bu 2
+\fBvolume\-id\fP \- The ID of the volume the snapshot is for.
+.IP \(bu 2
+\fBvolume\-size\fP \- The size of the volume, in GiB.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A filter name and value pair that is used to return a more specific list of results from a describe operation. Filters can be used to match a set of resources by specific criteria, such as tags, attributes, or IDs.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter. Filter names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The filter values. Filter values are case\-sensitive.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-owner\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Scopes the results to snapshots with the specified owners. You can specify a combination of AWS account IDs, \fBself\fP , and \fBamazon\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-restorable\-by\-user\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the AWS accounts that can create volumes from the snapshot.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-snapshot\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The snapshot IDs.
+.sp
+Default: Describes the snapshots for which you have create volume permissions.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To describe a snapshot\fP
+.sp
+The following \fBdescribe\-snapshots\fP example describes the specified snapshot.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-snapshots \e
+    \-\-snapshot\-ids snap\-1234567890abcdef0
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Snapshots": [
+        {
+            "Description": "This is my snapshot",
+            "Encrypted": false,
+            "VolumeId": "vol\-049df61146c4d7901",
+            "State": "completed",
+            "VolumeSize": 8,
+            "StartTime": "2019\-02\-28T21:28:32.000Z",
+            "Progress": "100%",
+            "OwnerId": "012345678910",
+            "SnapshotId": "snap\-01234567890abcdef",
+            "Tags": [
+                {
+                    "Key": "Stack",
+                    "Value": "test"
+                }
+            ]
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Amazon EBS snapshots\fP in the \fIAmazon EC2 User Guide\fP\&.
+.sp
+\fBExample 2: To describe snapshots based on filters\fP
+.sp
+The following \fBdescribe\-snapshots\fP example uses filters to scope the results to snapshots owned by your AWS account that are in the \fBpending\fP state. The example uses the \fB\-\-query\fP parameter to display only the snapshot IDs and the time the snapshot was started.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-snapshots \e
+    \-\-owner\-ids self \e
+    \-\-filters Name=status,Values=pending \e
+    \-\-query "Snapshots[*].{ID:SnapshotId,Time:StartTime}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "ID": "snap\-1234567890abcdef0",
+        "Time": "2019\-08\-04T12:48:18.000Z"
+    },
+    {
+        "ID": "snap\-066877671789bd71b",
+        "Time": "2019\-08\-04T02:45:16.000Z
+    },
+    ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following \fBdescribe\-snapshots\fP example uses filters to scope the results to snapshots created from the specified volume. The example uses the \fB\-\-query\fP parameter to display only the snapshot IDs.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-snapshots \e
+    \-\-filters Name=volume\-id,Values=049df61146c4d7901 \e
+    \-\-query "Snapshots[*].[SnapshotId]" \e
+    \-\-output text
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+snap\-1234567890abcdef0
+snap\-08637175a712c3fb9
+\&...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For additional examples using filters, see \fI\%Listing and filtering your resources\fP in the \fIAmazon EC2 User Guide\fP\&.
+.sp
+\fBExample 3: To describe snapshots based on tags\fP
+.sp
+The following \fBdescribe\-snapshots\fP example uses tag filters to scope the results to snapshots that have the tag \fBStack=Prod\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-snapshots \e
+    \-\-filters Name=tag:Stack,Values=prod
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For an example of the output for \fBdescribe\-snapshots\fP, see Example 1.
+.sp
+For additional examples using tag filters, see \fI\%Working with tags\fP in the \fIAmazon EC2 User Guide\fP\&.
+.sp
+\fBExample 4: To describe snapshots based on age\fP
+.sp
+The following \fBdescribe\-snapshots\fP example uses JMESPath expressions to describe all snapshots created by your AWS account before the specified date. It displays only the snapshot IDs.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-snapshots \e
+    \-\-owner\-ids 012345678910 \e
+    \-\-query "Snapshots[?(StartTime<=\(aq2020\-03\-31\(aq)].[SnapshotId]"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For additional examples using filters, see \fI\%Listing and filtering your resources\fP in the \fIAmazon EC2 User Guide\fP\&.
+.SH OUTPUT
+.sp
+Snapshots \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the snapshots.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a snapshot.
+.sp
+DataEncryptionKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data encryption key identifier for the snapshot. This value is a unique identifier that corresponds to the data encryption key that was used to encrypt the original volume or snapshot copy. Because data encryption keys are inherited by volumes created from snapshots, and vice versa, if snapshots share the same data encryption key identifier, then they belong to the same volume/snapshot lineage. This parameter is only returned by  DescribeSnapshots .
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description for the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the snapshot is encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the AWS Key Management Service (AWS KMS) customer master key (CMK) that was used to protect the volume encryption key for the parent volume.
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID of the EBS snapshot owner.
+.UNINDENT
+.UNINDENT
+.sp
+Progress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The progress of the snapshot, as a percentage.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the snapshot. Each snapshot receives a unique identifier when it is created.
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the snapshot was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The snapshot state.
+.UNINDENT
+.UNINDENT
+.sp
+StateMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Encrypted Amazon EBS snapshots are copied asynchronously. If a snapshot copy operation fails (for example, if the proper AWS Key Management Service (AWS KMS) permissions are not obtained) this field displays error state details to help you diagnose why the error occurred. This parameter is only returned by  DescribeSnapshots .
+.UNINDENT
+.UNINDENT
+.sp
+VolumeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the volume that was used to create the snapshot. Snapshots created by the  CopySnapshot action have an arbitrary volume ID that should not be used for any purpose.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the volume, in GiB.
+.UNINDENT
+.UNINDENT
+.sp
+OwnerAlias \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS owner alias, from an Amazon\-maintained list (\fBamazon\fP ). This is not the user\-configured AWS account alias set using the IAM console.
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the AWS Outpost on which the snapshot is stored. For more information, see \fI\%EBS Local Snapshot on Outposts\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the snapshot.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBNextToken\fP value to include in a future \fBDescribeSnapshots\fP request. When the results of a \fBDescribeSnapshots\fP request exceed \fBMaxResults\fP , this value can be used to retrieve the next page of results. This value is \fBnull\fP when there are no more results to return.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

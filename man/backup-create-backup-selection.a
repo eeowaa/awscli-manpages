@@ -1,0 +1,217 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "BACKUP-CREATE-BACKUP-SELECTION" "a" "" ""
+.SH NAME
+backup-create-backup-selection \- Creates a JSON document that specifies a set of resources to assign to a backup plan
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a JSON document that specifies a set of resources to assign to a backup plan. Resources can be included by specifying patterns for a \fBListOfTags\fP and selected \fBResources\fP .
+.sp
+For example, consider the following patterns:
+.INDENT 0.0
+.IP \(bu 2
+\fBResources: "arn:aws:ec2:region:account\-id:volume/volume\-id"\fP
+.IP \(bu 2
+\fBConditionKey:"department"\fP    \fBConditionValue:"finance"\fP    \fBConditionType:"StringEquals"\fP
+.IP \(bu 2
+\fBConditionKey:"importance"\fP    \fBConditionValue:"critical"\fP    \fBConditionType:"StringEquals"\fP
+.UNINDENT
+.sp
+Using these patterns would back up all Amazon Elastic Block Store (Amazon EBS) volumes that are tagged as \fB"department=finance"\fP , \fB"importance=critical"\fP , in addition to an EBS volume with the specified volume ID.
+.sp
+Resources and conditions are additive in that all resources that match the pattern are selected. This shouldn\(aqt be confused with a logical AND, where all conditions must match. The matching patterns are logically put together using the OR operator. In other words, all patterns that match are selected for backup.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-backup\-selection
+\-\-backup\-plan\-id <value>
+\-\-backup\-selection <value>
+[\-\-creator\-request\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-backup\-plan\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniquely identifies the backup plan to be associated with the selection of resources.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-backup\-selection\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the body of a request to assign a set of resources to a backup plan.
+.sp
+SelectionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The display name of a resource selection document.
+.UNINDENT
+.UNINDENT
+.sp
+IamRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role that AWS Backup uses to authenticate when backing up the target resource; for example, \fBarn:aws:iam::123456789012:role/S3Access\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings that contain Amazon Resource Names (ARNs) of resources to assign to a backup plan.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ListOfTags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of conditions used to specify a set of resources to assign to a backup plan; for example, \fB"StringEquals": {"ec2:ResourceTag/Department": "accounting"\fP . Assigns the backup plan to every resource with at least one matching tag.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains an array of triplets made up of a condition type (such as \fBStringEquals\fP ), a key, and a value. Conditions are used to filter resources in a selection that is assigned to a backup plan.
+.sp
+ConditionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An operation, such as \fBStringEquals\fP , that is applied to a key\-value pair used to filter resources in a selection.
+.UNINDENT
+.UNINDENT
+.sp
+ConditionKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key in a key\-value pair. For example, in \fB"ec2:ResourceTag/Department": "accounting"\fP , \fB"ec2:ResourceTag/Department"\fP is the key.
+.UNINDENT
+.UNINDENT
+.sp
+ConditionValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value in a key\-value pair. For example, in \fB"ec2:ResourceTag/Department": "accounting"\fP , \fB"accounting"\fP is the value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SelectionName=string,IamRoleArn=string,Resources=string,string,ListOfTags=[{ConditionType=string,ConditionKey=string,ConditionValue=string},{ConditionType=string,ConditionKey=string,ConditionValue=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SelectionName": "string",
+  "IamRoleArn": "string",
+  "Resources": ["string", ...],
+  "ListOfTags": [
+    {
+      "ConditionType": "STRINGEQUALS",
+      "ConditionKey": "string",
+      "ConditionValue": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-creator\-request\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique string that identifies the request and allows failed requests to be retried without the risk of running the operation twice.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+SelectionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniquely identifies the body of a request to assign a set of resources to a backup plan.
+.UNINDENT
+.UNINDENT
+.sp
+BackupPlanId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniquely identifies a backup plan.
+.UNINDENT
+.UNINDENT
+.sp
+CreationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time a backup selection is created, in Unix format and Coordinated Universal Time (UTC). The value of \fBCreationDate\fP is accurate to milliseconds. For example, the value 1516925490.087 represents Friday, January 26, 2018 12:11:30.087 AM.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

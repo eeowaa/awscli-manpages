@@ -1,0 +1,215 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ORGANIZATIONS-DESCRIBE-ORGANIZATION" "a" "" ""
+.SH NAME
+organizations-describe-organization \- Retrieves information about the organization that the user(aqs account belongs to
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves information about the organization that the user\(aqs account belongs to.
+.sp
+This operation can be called from any account in the organization.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Even if a policy type is shown as available in the organization, you can disable it separately at the root level with  DisablePolicyType . Use  ListRoots to see the status of policy types for a specified root.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-organization
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get information about the current organization\fP
+.sp
+The following example shows you how to request details about an organization:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws organizations describe\-organization
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output includes an organization object that has the details about the organization:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+        "Organization": {
+                "MasterAccountArn": "arn:aws:organizations::111111111111:account/o\-exampleorgid/111111111111",
+                "MasterAccountEmail": "bill@example.com",
+                "MasterAccountId": "111111111111",
+                "Id": "o\-exampleorgid",
+                "FeatureSet": "ALL",
+                "Arn": "arn:aws:organizations::111111111111:organization/o\-exampleorgid",
+                "AvailablePolicyTypes": [
+                        {
+                                "Status": "ENABLED",
+                                "Type": "SERVICE_CONTROL_POLICY"
+                        }
+                ]
+        }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Organization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains information about the organization.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBAvailablePolicyTypes\fP part of the response is deprecated, and you shouldn\(aqt use it in your apps. It doesn\(aqt include any policy type supported by Organizations other than SCPs. To determine which policy types are enabled in your organization, use the \(ga\(ga  ListRoots \(ga\(ga operation.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) of an organization.
+.sp
+The \fI\%regex pattern\fP for an organization ID string requires "o\-" followed by from 10 to 32 lowercase letters or digits.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an organization.
+.sp
+For more information about ARNs in Organizations, see \fI\%ARN Formats Supported by Organizations\fP in the \fIAWS Service Authorization Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+FeatureSet \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the functionality that currently is available to the organization. If set to "ALL", then all features are enabled and policies can be applied to accounts in the organization. If set to "CONSOLIDATED_BILLING", then only consolidated billing functionality is available. For more information, see \fI\%Enabling All Features in Your Organization\fP in the \fIAWS Organizations User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MasterAccountArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the account that is designated as the management account for the organization.
+.sp
+For more information about ARNs in Organizations, see \fI\%ARN Formats Supported by Organizations\fP in the \fIAWS Service Authorization Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MasterAccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) of the management account of an organization.
+.sp
+The \fI\%regex pattern\fP for an account ID string requires exactly 12 digits.
+.UNINDENT
+.UNINDENT
+.sp
+MasterAccountEmail \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address that is associated with the AWS account that is designated as the management account for the organization.
+.UNINDENT
+.UNINDENT
+.sp
+AvailablePolicyTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Do not use. This field is deprecated and doesn\(aqt provide complete information about the policies in your organization.
+.UNINDENT
+.UNINDENT
+.sp
+To determine the policies that are enabled and available for use in your organization, use the  ListRoots operation instead.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a policy type and its status in the associated root.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the policy type.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the policy type as it relates to the associated root. To attach a policy of the specified type to a root or to an OU or account in that root, it must be available in the organization and enabled for that root.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

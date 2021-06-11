@@ -1,0 +1,590 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDWATCH-GET-METRIC-STATISTICS" "a" "" ""
+.SH NAME
+cloudwatch-get-metric-statistics \- Gets statistics for the specified metric
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets statistics for the specified metric.
+.sp
+The maximum number of data points returned from a single call is 1,440. If you request more than 1,440 data points, CloudWatch returns an error. To reduce the number of data points, you can narrow the specified time range and make multiple requests across adjacent time ranges, or you can increase the specified period. Data points are not returned in chronological order.
+.sp
+CloudWatch aggregates data points based on the length of the period that you specify. For example, if you request statistics with a one\-hour period, CloudWatch aggregates all data points with time stamps that fall within each one\-hour period. Therefore, the number of values aggregated by CloudWatch is larger than the number of data points returned.
+.sp
+CloudWatch needs raw data points to calculate percentile statistics. If you publish data using a statistic set instead, you can only retrieve percentile statistics for this data if one of the following conditions is true:
+.INDENT 0.0
+.IP \(bu 2
+The SampleCount value of the statistic set is 1.
+.IP \(bu 2
+The Min and the Max values of the statistic set are equal.
+.UNINDENT
+.sp
+Percentile statistics are not available for metrics when any of the metric values are negative numbers.
+.sp
+Amazon CloudWatch retains metric data as follows:
+.INDENT 0.0
+.IP \(bu 2
+Data points with a period of less than 60 seconds are available for 3 hours. These data points are high\-resolution metrics and are available only for custom metrics that have been defined with a \fBStorageResolution\fP of 1.
+.IP \(bu 2
+Data points with a period of 60 seconds (1\-minute) are available for 15 days.
+.IP \(bu 2
+Data points with a period of 300 seconds (5\-minute) are available for 63 days.
+.IP \(bu 2
+Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months).
+.UNINDENT
+.sp
+Data points that are initially published with a shorter period are aggregated together for long\-term storage. For example, if you collect data using a period of 1 minute, the data remains available for 15 days with 1\-minute resolution. After 15 days, this data is still available, but is aggregated and retrievable only with a resolution of 5 minutes. After 63 days, the data is further aggregated and is available with a resolution of 1 hour.
+.sp
+CloudWatch started retaining 5\-minute and 1\-hour metric data as of July 9, 2016.
+.sp
+For information about metrics and dimensions supported by AWS services, see the \fI\%Amazon CloudWatch Metrics and Dimensions Reference\fP in the \fIAmazon CloudWatch User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-metric\-statistics
+\-\-namespace <value>
+\-\-metric\-name <value>
+[\-\-dimensions <value>]
+\-\-start\-time <value>
+\-\-end\-time <value>
+\-\-period <value>
+[\-\-statistics <value>]
+[\-\-extended\-statistics <value>]
+[\-\-unit <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-namespace\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the metric, with or without spaces.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metric\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric, with or without spaces.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dimensions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions. If the metric contains multiple dimensions, you must include a value for each dimension. CloudWatch treats each unique combination of dimensions as a separate metric. If a specific combination of dimensions was not published, you can\(aqt retrieve statistics for it. You must specify the same dimensions that were used when the metrics were created. For an example, see \fI\%Dimension Combinations\fP in the \fIAmazon CloudWatch User Guide\fP . For more information about specifying dimensions, see \fI\%Publishing Metrics\fP in the \fIAmazon CloudWatch User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A dimension is a name/value pair that is part of the identity of a metric. You can assign up to 10 dimensions to a metric. Because dimensions are part of the unique identifier for a metric, whenever you add a unique name/value pair to one of your metrics, you are creating a new variation of that metric.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension. Dimension names cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension. Dimension values cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp that determines the first data point to return. Start times are evaluated relative to the time that CloudWatch receives the request.
+.sp
+The value specified is inclusive; results include data points with the specified time stamp. In a raw HTTP query, the time stamp must be in ISO 8601 UTC format (for example, 2016\-10\-03T23:00:00Z).
+.sp
+CloudWatch rounds the specified time stamp as follows:
+.INDENT 0.0
+.IP \(bu 2
+Start time less than 15 days ago \- Round down to the nearest whole minute. For example, 12:32:34 is rounded down to 12:32:00.
+.IP \(bu 2
+Start time between 15 and 63 days ago \- Round down to the nearest 5\-minute clock interval. For example, 12:32:34 is rounded down to 12:30:00.
+.IP \(bu 2
+Start time greater than 63 days ago \- Round down to the nearest 1\-hour clock interval. For example, 12:32:34 is rounded down to 12:00:00.
+.UNINDENT
+.sp
+If you set \fBPeriod\fP to 5, 10, or 30, the start time of your request is rounded down to the nearest time that corresponds to even 5\-, 10\-, or 30\-second divisions of a minute. For example, if you make a query at (HH:mm:ss) 01:05:23 for the previous 10\-second period, the start time of your request is rounded down and you receive data from 01:05:10 to 01:05:20. If you make a query at 15:07:17 for the previous 5 minutes of data, using a period of 5 seconds, you receive data timestamped between 15:02:15 and 15:07:15.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp that determines the last data point to return.
+.sp
+The value specified is exclusive; results include data points up to the specified time stamp. In a raw HTTP query, the time stamp must be in ISO 8601 UTC format (for example, 2016\-10\-10T23:00:00Z).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-period\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The granularity, in seconds, of the returned data points. For metrics with regular resolution, a period can be as short as one minute (60 seconds) and must be a multiple of 60. For high\-resolution metrics that are collected at intervals of less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of 60. High\-resolution metrics are those metrics stored by a \fBPutMetricData\fP call that includes a \fBStorageResolution\fP of 1 second.
+.sp
+If the \fBStartTime\fP parameter specifies a time stamp that is greater than 3 hours ago, you must specify the period as follows or no data points in that time range is returned:
+.INDENT 0.0
+.IP \(bu 2
+Start time between 3 hours and 15 days ago \- Use a multiple of 60 seconds (1 minute).
+.IP \(bu 2
+Start time between 15 and 63 days ago \- Use a multiple of 300 seconds (5 minutes).
+.IP \(bu 2
+Start time greater than 63 days ago \- Use a multiple of 3600 seconds (1 hour).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-statistics\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The metric statistics, other than percentile. For percentile statistics, use \fBExtendedStatistics\fP . When calling \fBGetMetricStatistics\fP , you must specify either \fBStatistics\fP or \fBExtendedStatistics\fP , but not both.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  SampleCount
+  Average
+  Sum
+  Minimum
+  Maximum
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-extended\-statistics\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The percentile statistics. Specify values between p0.0 and p100. When calling \fBGetMetricStatistics\fP , you must specify either \fBStatistics\fP or \fBExtendedStatistics\fP , but not both. Percentile statistics are not available for metrics when any of the metric values are negative numbers.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-unit\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit for a given metric. If you omit \fBUnit\fP , all data that was collected with any unit is returned, along with the corresponding units that were specified when the data was reported to CloudWatch. If you specify a unit, the operation returns only data that was collected with that unit specified. If you specify a unit that does not match the data collected, the results of the operation are null. CloudWatch does not perform unit conversions.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSeconds\fP
+.IP \(bu 2
+\fBMicroseconds\fP
+.IP \(bu 2
+\fBMilliseconds\fP
+.IP \(bu 2
+\fBBytes\fP
+.IP \(bu 2
+\fBKilobytes\fP
+.IP \(bu 2
+\fBMegabytes\fP
+.IP \(bu 2
+\fBGigabytes\fP
+.IP \(bu 2
+\fBTerabytes\fP
+.IP \(bu 2
+\fBBits\fP
+.IP \(bu 2
+\fBKilobits\fP
+.IP \(bu 2
+\fBMegabits\fP
+.IP \(bu 2
+\fBGigabits\fP
+.IP \(bu 2
+\fBTerabits\fP
+.IP \(bu 2
+\fBPercent\fP
+.IP \(bu 2
+\fBCount\fP
+.IP \(bu 2
+\fBBytes/Second\fP
+.IP \(bu 2
+\fBKilobytes/Second\fP
+.IP \(bu 2
+\fBMegabytes/Second\fP
+.IP \(bu 2
+\fBGigabytes/Second\fP
+.IP \(bu 2
+\fBTerabytes/Second\fP
+.IP \(bu 2
+\fBBits/Second\fP
+.IP \(bu 2
+\fBKilobits/Second\fP
+.IP \(bu 2
+\fBMegabits/Second\fP
+.IP \(bu 2
+\fBGigabits/Second\fP
+.IP \(bu 2
+\fBTerabits/Second\fP
+.IP \(bu 2
+\fBCount/Second\fP
+.IP \(bu 2
+\fBNone\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the CPU utilization per EC2 instance\fP
+.sp
+The following example uses the \fBget\-metric\-statistics\fP command to get the CPU utilization for an EC2
+instance with the ID i\-abcdef.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudwatch get\-metric\-statistics \-\-metric\-name CPUUtilization \-\-start\-time 2014\-04\-08T23:18:00Z \-\-end\-time 2014\-04\-09T23:18:00Z \-\-period 3600 \-\-namespace AWS/EC2 \-\-statistics Maximum \-\-dimensions Name=InstanceId,Value=i\-abcdef
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Datapoints": [
+        {
+            "Timestamp": "2014\-04\-09T11:18:00Z",
+            "Maximum": 44.79,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T20:18:00Z",
+            "Maximum": 47.92,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T19:18:00Z",
+            "Maximum": 50.85,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T09:18:00Z",
+            "Maximum": 47.92,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T03:18:00Z",
+            "Maximum": 76.84,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T21:18:00Z",
+            "Maximum": 48.96,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T14:18:00Z",
+            "Maximum": 47.92,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T08:18:00Z",
+            "Maximum": 47.92,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T16:18:00Z",
+            "Maximum": 45.55,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T06:18:00Z",
+            "Maximum": 47.92,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T13:18:00Z",
+            "Maximum": 45.08,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T05:18:00Z",
+            "Maximum": 47.92,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T18:18:00Z",
+            "Maximum": 46.88,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T17:18:00Z",
+            "Maximum": 52.08,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T07:18:00Z",
+            "Maximum": 47.92,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T02:18:00Z",
+            "Maximum": 51.23,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T12:18:00Z",
+            "Maximum": 47.67,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-08T23:18:00Z",
+            "Maximum": 46.88,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T10:18:00Z",
+            "Maximum": 51.91,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T04:18:00Z",
+            "Maximum": 47.13,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T15:18:00Z",
+            "Maximum": 48.96,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T00:18:00Z",
+            "Maximum": 48.16,
+            "Unit": "Percent"
+        },
+        {
+            "Timestamp": "2014\-04\-09T01:18:00Z",
+            "Maximum": 49.18,
+            "Unit": "Percent"
+        }
+    ],
+    "Label": "CPUUtilization"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBSpecifying multiple dimensions\fP
+.sp
+The following example illustrates how to specify multiple dimensions. Each dimension is specified as a Name/Value pair, with a comma between the name and the value. Multiple dimensions are separated by a space. If a single metric includes multiple dimensions, you must specify a value for every defined dimension.
+.sp
+For more examples using the \fBget\-metric\-statistics\fP command, see 
+.nf
+\(gaGet Statistics for a Metric\(ga__
+.fi
+ in the \fIAmazon CloudWatch Developer Guide\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudwatch get\-metric\-statistics \-\-metric\-name Buffers \-\-namespace MyNameSpace \-\-dimensions Name=InstanceID,Value=i\-abcdef Name=InstanceType,Value=m1.small \-\-start\-time 2016\-10\-15T04:00:00Z \-\-end\-time 2016\-10\-19T07:00:00Z \-\-statistics Average \-\-period 60
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Label \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A label for the specified metric.
+.UNINDENT
+.UNINDENT
+.sp
+Datapoints \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The data points for the specified metric.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Encapsulates the statistical data that CloudWatch computes from metric data.
+.sp
+Timestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp used for the data point.
+.UNINDENT
+.UNINDENT
+.sp
+SampleCount \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The number of metric values that contributed to the aggregate value of this data point.
+.UNINDENT
+.UNINDENT
+.sp
+Average \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average of the metric values that correspond to the data point.
+.UNINDENT
+.UNINDENT
+.sp
+Sum \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The sum of the metric values for the data point.
+.UNINDENT
+.UNINDENT
+.sp
+Minimum \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The minimum metric value for the data point.
+.UNINDENT
+.UNINDENT
+.sp
+Maximum \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The maximum metric value for the data point.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The standard unit for the data point.
+.UNINDENT
+.UNINDENT
+.sp
+ExtendedStatistics \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The percentile statistic for the data point.
+.sp
+key \-> (string)
+.sp
+value \-> (double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH DOCUTILS SYSTEM MESSAGES
+.IP "System Message: ERROR/3 (<string>:)"
+Anonymous hyperlink mismatch: 1 references but 2 targets.
+See "backrefs" attribute for IDs.
+.\" Generated by docutils manpage writer.
+.

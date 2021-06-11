@@ -1,0 +1,621 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODECOMMIT-MERGE-PULL-REQUEST-BY-THREE-WAY" "a" "" ""
+.SH NAME
+codecommit-merge-pull-request-by-three-way \- Attempts to merge the source commit of a pull request into the specified destination branch for that pull request at the specified commit using the three-way merge strategy
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Attempts to merge the source commit of a pull request into the specified destination branch for that pull request at the specified commit using the three\-way merge strategy. If the merge is successful, it closes the pull request.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  merge\-pull\-request\-by\-three\-way
+\-\-pull\-request\-id <value>
+\-\-repository\-name <value>
+[\-\-source\-commit\-id <value>]
+[\-\-conflict\-detail\-level <value>]
+[\-\-conflict\-resolution\-strategy <value>]
+[\-\-commit\-message <value>]
+[\-\-author\-name <value>]
+[\-\-email <value>]
+[\-\-keep\-empty\-folders | \-\-no\-keep\-empty\-folders]
+[\-\-conflict\-resolution <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-pull\-request\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated ID of the pull request. To get this ID, use  ListPullRequests .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-repository\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the repository where the pull request was created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-commit\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The full commit ID of the original or updated commit in the pull request source branch. Pass this value if you want an exception thrown if the current commit ID of the tip of the source branch does not match this commit ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-conflict\-detail\-level\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The level of conflict detail to use. If unspecified, the default FILE_LEVEL is used, which returns a not\-mergeable result if the same file has differences in both branches. If LINE_LEVEL is specified, a conflict is considered not mergeable if the same file in both branches has differences on the same line.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBFILE_LEVEL\fP
+.IP \(bu 2
+\fBLINE_LEVEL\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-conflict\-resolution\-strategy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies which branch to use when resolving conflicts, or whether to attempt automatically merging two versions of a file. The default is NONE, which requires any conflicts to be resolved manually before the merge operation is successful.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP
+.IP \(bu 2
+\fBACCEPT_SOURCE\fP
+.IP \(bu 2
+\fBACCEPT_DESTINATION\fP
+.IP \(bu 2
+\fBAUTOMERGE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-commit\-message\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The commit message to include in the commit information for the merge.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-author\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the author who created the commit. This information is used as both the author and committer for the commit.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-email\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address of the person merging the branches. This information is used in the commit information for the merge.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-keep\-empty\-folders\fP | \fB\-\-no\-keep\-empty\-folders\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If the commit contains deletions, whether to keep a folder or folder structure if the changes leave the folders empty. If true, a .gitkeep file is created for empty folders. The default is false.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-conflict\-resolution\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+If AUTOMERGE is the conflict resolution strategy, a list of inputs to use when resolving conflicts during a merge.
+.sp
+replaceContents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Files to have content replaced as part of the merge conflict resolution.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a replacement content entry in the conflict of a merge or pull request operation.
+.sp
+filePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path of the conflicting file.
+.UNINDENT
+.UNINDENT
+.sp
+replacementType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The replacement type to use when determining how to resolve the conflict.
+.UNINDENT
+.UNINDENT
+.sp
+content \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The base\-64 encoded content to use when the replacement type is USE_NEW_CONTENT.
+.UNINDENT
+.UNINDENT
+.sp
+fileMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file mode to apply during conflict resoltion.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deleteFiles \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Files to be deleted as part of the merge conflict resolution.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A file that is deleted as part of a commit.
+.sp
+filePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path of the file to be deleted, including the name of the file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+setFileModes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+File modes that are set as part of the merge conflict resolution.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the file mode changes.
+.sp
+filePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to the file, including the name of the file.
+.UNINDENT
+.UNINDENT
+.sp
+fileMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file mode for the file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+replaceContents=[{filePath=string,replacementType=string,content=blob,fileMode=string},{filePath=string,replacementType=string,content=blob,fileMode=string}],deleteFiles=[{filePath=string},{filePath=string}],setFileModes=[{filePath=string,fileMode=string},{filePath=string,fileMode=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "replaceContents": [
+    {
+      "filePath": "string",
+      "replacementType": "KEEP_BASE"|"KEEP_SOURCE"|"KEEP_DESTINATION"|"USE_NEW_CONTENT",
+      "content": blob,
+      "fileMode": "EXECUTABLE"|"NORMAL"|"SYMLINK"
+    }
+    ...
+  ],
+  "deleteFiles": [
+    {
+      "filePath": "string"
+    }
+    ...
+  ],
+  "setFileModes": [
+    {
+      "filePath": "string",
+      "fileMode": "EXECUTABLE"|"NORMAL"|"SYMLINK"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo merge a pull request using the three\-way merge strategy\fP
+.sp
+The following \fBmerge\-pull\-request\-by\-three\-way\fP example merges and closes the specified pull request using the default options for conflict detail and conflict resolution strategy in a repository named \fBMyDemoRepo\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codecommit merge\-pull\-request\-by\-three\-way \e
+    \-\-pull\-request\-id 47 \e
+    \-\-source\-commit\-id 99132ab0EXAMPLE \e
+    \-\-repository\-name MyDemoRepo \e
+    \-\-name "Maria Garcia" \e
+    \-\-email "maria_garcia@example.com" \e
+    \-\-commit\-message "Merging pull request 47 by three\-way with default options"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "pullRequest": {
+        "approvalRules": [
+            {
+                "approvalRuleContent": "{\e"Version\e": \e"2018\-11\-08\e",\e"DestinationReferences\e": [\e"refs/heads/main\e"],\e"Statements\e": [{\e"Type\e": \e"Approvers\e",\e"NumberOfApprovalsNeeded\e": 2,\e"ApprovalPoolMembers\e": [\e"arn:aws:sts::123456789012:assumed\-role/CodeCommitReview/*\e"]}]}",
+                "approvalRuleId": "dd8b17fe\-EXAMPLE",
+                "approvalRuleName": "2\-approver\-rule\-for\-main",
+                "creationDate": 1571356106.936,
+                "lastModifiedDate": 571356106.936,
+                "lastModifiedUser": "arn:aws:iam::123456789012:user/Mary_Major",
+                "originApprovalRuleTemplate": {
+                    "approvalRuleTemplateId": "dd8b17fe\-EXAMPLE",
+                    "approvalRuleTemplateName": "2\-approver\-rule\-for\-main"
+                },
+                "ruleContentSha256": "4711b576EXAMPLE"
+            }
+        ],
+        "authorArn": "arn:aws:iam::123456789012:user/Li_Juan",
+        "clientRequestToken": "",
+        "creationDate": 1508530823.142,
+        "description": "Review the latest changes and updates to the global variables",
+        "lastActivityDate": 1508887223.155,
+        "pullRequestId": "47",
+        "pullRequestStatus": "CLOSED",
+        "pullRequestTargets": [
+            {
+                "destinationCommit": "9f31c968EXAMPLE",
+                "destinationReference": "refs/heads/main",
+                "mergeMetadata": {
+                    "isMerged": true,
+                    "mergedBy": "arn:aws:iam::123456789012:user/Mary_Major"
+                },
+                "repositoryName": "MyDemoRepo",
+                "sourceCommit": "99132ab0EXAMPLE",
+                "sourceReference": "refs/heads/variables\-branch"
+            }
+        ],
+        "title": "Consolidation of global variables"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Merge a Pull Request\fP in the \fIAWS CodeCommit User Guide\fP\&.
+.SH OUTPUT
+.sp
+pullRequest \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Returns information about a pull request.
+.sp
+pullRequestId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated ID of the pull request.
+.UNINDENT
+.UNINDENT
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user\-defined title of the pull request. This title is displayed in the list of pull requests to other repository users.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user\-defined description of the pull request. This description can be used to clarify what should be reviewed and other details of the request.
+.UNINDENT
+.UNINDENT
+.sp
+lastActivityDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The day and time of the last user or system activity on the pull request, in timestamp format.
+.UNINDENT
+.UNINDENT
+.sp
+creationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the pull request was originally created, in timestamp format.
+.UNINDENT
+.UNINDENT
+.sp
+pullRequestStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the pull request. Pull request status can only change from \fBOPEN\fP to \fBCLOSED\fP .
+.UNINDENT
+.UNINDENT
+.sp
+authorArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the user who created the pull request.
+.UNINDENT
+.UNINDENT
+.sp
+pullRequestTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The targets of the pull request, including the source branch and destination branch for the pull request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Returns information about a pull request target.
+.sp
+repositoryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the repository that contains the pull request source and destination branches.
+.UNINDENT
+.UNINDENT
+.sp
+sourceReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The branch of the repository that contains the changes for the pull request. Also known as the source branch.
+.UNINDENT
+.UNINDENT
+.sp
+destinationReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The branch of the repository where the pull request changes are merged. Also known as the destination branch.
+.UNINDENT
+.UNINDENT
+.sp
+destinationCommit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full commit ID that is the tip of the destination branch. This is the commit where the pull request was or will be merged.
+.UNINDENT
+.UNINDENT
+.sp
+sourceCommit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full commit ID of the tip of the source branch used to create the pull request. If the pull request branch is updated by a push while the pull request is open, the commit ID changes to reflect the new tip of the branch.
+.UNINDENT
+.UNINDENT
+.sp
+mergeBase \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The commit ID of the most recent commit that the source branch and the destination branch have in common.
+.UNINDENT
+.UNINDENT
+.sp
+mergeMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Returns metadata about the state of the merge, including whether the merge has been made.
+.sp
+isMerged \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A Boolean value indicating whether the merge has been made.
+.UNINDENT
+.UNINDENT
+.sp
+mergedBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the user who merged the branches.
+.UNINDENT
+.UNINDENT
+.sp
+mergeCommitId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The commit ID for the merge commit, if any.
+.UNINDENT
+.UNINDENT
+.sp
+mergeOption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The merge strategy used in the merge.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+clientRequestToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique, client\-generated idempotency token that, when provided in a request, ensures the request cannot be repeated with a changed parameter. If a request is received with the same parameters and a token is included, the request returns information about the initial request that used that token.
+.UNINDENT
+.UNINDENT
+.sp
+revisionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated revision ID for the pull request.
+.UNINDENT
+.UNINDENT
+.sp
+approvalRules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The approval rules applied to the pull request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Returns information about an approval rule.
+.sp
+approvalRuleId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated ID of the approval rule.
+.UNINDENT
+.UNINDENT
+.sp
+approvalRuleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the approval rule.
+.UNINDENT
+.UNINDENT
+.sp
+approvalRuleContent \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content of the approval rule.
+.UNINDENT
+.UNINDENT
+.sp
+ruleContentSha256 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA\-256 hash signature for the content of the approval rule.
+.UNINDENT
+.UNINDENT
+.sp
+lastModifiedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date the approval rule was most recently changed, in timestamp format.
+.UNINDENT
+.UNINDENT
+.sp
+creationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date the approval rule was created, in timestamp format.
+.UNINDENT
+.UNINDENT
+.sp
+lastModifiedUser \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the user who made the most recent changes to the approval rule.
+.UNINDENT
+.UNINDENT
+.sp
+originApprovalRuleTemplate \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The approval rule template used to create the rule.
+.sp
+approvalRuleTemplateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the template that created the approval rule.
+.UNINDENT
+.UNINDENT
+.sp
+approvalRuleTemplateName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the template that created the approval rule.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

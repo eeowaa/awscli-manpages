@@ -1,0 +1,252 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESIS-VIDEO-MEDIA-GET-MEDIA" "a" "" ""
+.SH NAME
+kinesis-video-media-get-media \- Use this API to retrieve media content from a Kinesis video stream
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Use this API to retrieve media content from a Kinesis video stream. In the request, you identify the stream name or stream Amazon Resource Name (ARN), and the starting chunk. Kinesis Video Streams then returns a stream of chunks in order by fragment number.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must first call the \fBGetDataEndpoint\fP API to get an endpoint. Then send the \fBGetMedia\fP requests to this endpoint using the \fI\%\-\-endpoint\-url parameter\fP .
+.UNINDENT
+.UNINDENT
+.sp
+When you put media data (fragments) on a stream, Kinesis Video Streams stores each incoming fragment and related metadata in what is called a "chunk." For more information, see \fI\%PutMedia\fP . The \fBGetMedia\fP API returns a stream of these chunks starting from the chunk that you specify in the request.
+.sp
+The following limits apply when using the \fBGetMedia\fP API:
+.INDENT 0.0
+.IP \(bu 2
+A client can call \fBGetMedia\fP up to five times per second per stream.
+.IP \(bu 2
+Kinesis Video Streams sends media data at a rate of up to 25 megabytes per second (or 200 megabits per second) during a \fBGetMedia\fP session.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If an error is thrown after invoking a Kinesis Video Streams media API, in addition to the HTTP status code and the response body, it includes the following pieces of information:
+.INDENT 0.0
+.IP \(bu 2
+\fBx\-amz\-ErrorType\fP HTTP header – contains a more specific error type in addition to what the HTTP status code provides.
+.IP \(bu 2
+\fBx\-amz\-RequestId\fP HTTP header – if you want to report an issue to AWS, the support team can better diagnose the problem if given the Request Id.
+.UNINDENT
+.sp
+Both the HTTP status code and the ErrorType header can be utilized to make programmatic decisions about whether errors are retry\-able and under what conditions, as well as provide information on what actions the client programmer might need to take in order to successfully try again.
+.sp
+For more information, see the \fBErrors\fP section at the bottom of this topic, as well as \fI\%Common Errors\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-media
+[\-\-stream\-name <value>]
+[\-\-stream\-arn <value>]
+\-\-start\-selector <value>
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Kinesis video stream name from where you want to get the media content. If you don\(aqt specify the \fBstreamName\fP , you must specify the \fBstreamARN\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stream\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the stream from where you want to get the media content. If you don\(aqt specify the \fBstreamARN\fP , you must specify the \fBstreamName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-selector\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the starting chunk to get from the specified stream.
+.sp
+StartSelectorType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the fragment on the Kinesis video stream where you want to start getting the data from.
+.INDENT 0.0
+.IP \(bu 2
+NOW \- Start with the latest chunk on the stream.
+.IP \(bu 2
+EARLIEST \- Start with earliest available chunk on the stream.
+.IP \(bu 2
+FRAGMENT_NUMBER \- Start with the chunk after a specific fragment. You must also specify the \fBAfterFragmentNumber\fP parameter.
+.IP \(bu 2
+PRODUCER_TIMESTAMP or SERVER_TIMESTAMP \- Start with the chunk containing a fragment with the specified producer or server timestamp. You specify the timestamp by adding \fBStartTimestamp\fP .
+.IP \(bu 2
+CONTINUATION_TOKEN \- Read using the specified continuation token.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you choose the NOW, EARLIEST, or CONTINUATION_TOKEN as the \fBstartSelectorType\fP , you don\(aqt provide any additional information in the \fBstartSelector\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AfterFragmentNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the fragment number from where you want the \fBGetMedia\fP API to start returning the fragments.
+.UNINDENT
+.UNINDENT
+.sp
+StartTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp value. This value is required if you choose the PRODUCER_TIMESTAMP or the SERVER_TIMESTAMP as the \fBstartSelectorType\fP . The \fBGetMedia\fP API then starts with the chunk containing the fragment that has the specified timestamp.
+.UNINDENT
+.UNINDENT
+.sp
+ContinuationToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Continuation token that Kinesis Video Streams returned in the previous \fBGetMedia\fP response. The \fBGetMedia\fP API then starts with the chunk identified by the continuation token.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+StartSelectorType=string,AfterFragmentNumber=string,StartTimestamp=timestamp,ContinuationToken=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "StartSelectorType": "FRAGMENT_NUMBER"|"SERVER_TIMESTAMP"|"PRODUCER_TIMESTAMP"|"NOW"|"EARLIEST"|"CONTINUATION_TOKEN",
+  "AfterFragmentNumber": "string",
+  "StartTimestamp": timestamp,
+  "ContinuationToken": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content type of the requested media.
+.UNINDENT
+.UNINDENT
+.sp
+Payload \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The payload Kinesis Video Streams returns is a sequence of chunks from the specified stream. For information about the chunks, see . The chunks that Kinesis Video Streams returns in the \fBGetMedia\fP call also include the following additional Matroska (MKV) tags:
+.INDENT 0.0
+.IP \(bu 2
+AWS_KINESISVIDEO_CONTINUATION_TOKEN (UTF\-8 string) \- In the event your \fBGetMedia\fP call terminates, you can use this continuation token in your next request to get the next chunk where the last request terminated.
+.IP \(bu 2
+AWS_KINESISVIDEO_MILLIS_BEHIND_NOW (UTF\-8 string) \- Client applications can use this tag value to determine how far behind the chunk returned in the response is from the latest chunk on the stream.
+.IP \(bu 2
+AWS_KINESISVIDEO_FRAGMENT_NUMBER \- Fragment number returned in the chunk.
+.IP \(bu 2
+AWS_KINESISVIDEO_SERVER_TIMESTAMP \- Server timestamp of the fragment.
+.IP \(bu 2
+AWS_KINESISVIDEO_PRODUCER_TIMESTAMP \- Producer timestamp of the fragment.
+.UNINDENT
+.sp
+The following tags will be present if an error occurs:
+.INDENT 0.0
+.IP \(bu 2
+AWS_KINESISVIDEO_ERROR_CODE \- String description of an error that caused GetMedia to stop.
+.IP \(bu 2
+AWS_KINESISVIDEO_ERROR_ID: Integer code of the error.
+.UNINDENT
+.sp
+The error codes are as follows:
+.INDENT 0.0
+.IP \(bu 2
+3002 \- Error writing to the stream
+.IP \(bu 2
+4000 \- Requested fragment is not found
+.IP \(bu 2
+4500 \- Access denied for the stream\(aqs KMS key
+.IP \(bu 2
+4501 \- Stream\(aqs KMS key is disabled
+.IP \(bu 2
+4502 \- Validation error on the stream\(aqs KMS key
+.IP \(bu 2
+4503 \- KMS key specified in the stream is unavailable
+.IP \(bu 2
+4504 \- Invalid usage of the KMS key specified in the stream
+.IP \(bu 2
+4505 \- Invalid state of the KMS key specified in the stream
+.IP \(bu 2
+4506 \- Unable to find the KMS key specified in the stream
+.IP \(bu 2
+5000 \- Internal error
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

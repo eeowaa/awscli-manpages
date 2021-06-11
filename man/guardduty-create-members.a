@@ -1,0 +1,196 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GUARDDUTY-CREATE-MEMBERS" "a" "" ""
+.SH NAME
+guardduty-create-members \- Creates member accounts of the current AWS account by specifying a list of AWS account IDs
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates member accounts of the current AWS account by specifying a list of AWS account IDs. This step is a prerequisite for managing the associated member accounts either by invitation or through an organization.
+.sp
+When using \fBCreate Members\fP as an organizations delegated administrator this action will enable GuardDuty in the added member accounts, with the exception of the organization delegated administrator account, which must enable GuardDuty prior to being added as a member.
+.sp
+If you are adding accounts by invitation use this action after GuardDuty has been enabled in potential member accounts and before using \(ga \fBInvite Members\fP \fI\%https://docs.aws.amazon.com/guardduty/latest/APIReference/API_InviteMembers\fP\&.html\(ga__ .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-members
+\-\-detector\-id <value>
+\-\-account\-details <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-detector\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID of the detector of the GuardDuty account that you want to associate member accounts with.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-account\-details\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of account ID and email address pairs of the accounts that you want to associate with the GuardDuty administrator account.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the account.
+.sp
+AccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The member account ID.
+.UNINDENT
+.UNINDENT
+.sp
+Email \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address of the member account.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AccountId=string,Email=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "AccountId": "string",
+    "Email": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo associate a new member with your GuardDuty master account in the current region.\fP
+.sp
+This example shows how to associate member accounts to be managed by the current account as the GuardDuty master.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws guardduty create\-members
+    \-\-detector\-id b6b992d6d2f48e64bc59180bfexample \e
+    \-\-account\-details AccountId=111122223333,Email=first+member@example.com AccountId=111111111111 ,Email=another+member@example.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+   "UnprocessedAccounts": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Managing multiple accounts\fP in the GuardDuty User Guide.
+.SH OUTPUT
+.sp
+UnprocessedAccounts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of objects that include the \fBaccountIds\fP of the unprocessed accounts and a result string that explains why each was unprocessed.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the accounts that weren\(aqt processed.
+.sp
+AccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID.
+.UNINDENT
+.UNINDENT
+.sp
+Result \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A reason why the account hasn\(aqt been processed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,307 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SQS-CHANGE-MESSAGE-VISIBILITY-BATCH" "a" "" ""
+.SH NAME
+sqs-change-message-visibility-batch \- Changes the visibility timeout of multiple messages
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Changes the visibility timeout of multiple messages. This is a batch version of \(ga\(ga  ChangeMessageVisibility .\(ga\(ga The result of the action on each message is reported individually in the response. You can send up to 10 \(ga\(ga  ChangeMessageVisibility \(ga\(ga requests with each \fBChangeMessageVisibilityBatch\fP action.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Because the batch request can result in a combination of successful and unsuccessful actions, you should check for batch errors even when the call returns an HTTP status code of \fB200\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Some actions take lists of parameters. These lists are specified using the \fBparam.n\fP notation. Values of \fBn\fP are integers starting from 1. For example, a parameter list with two elements looks like this:
+.INDENT 0.0
+.INDENT 3.5
+\fB&AttributeName.1=first\fP
+.sp
+\fB&AttributeName.2=second\fP
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  change\-message\-visibility\-batch
+\-\-queue\-url <value>
+\-\-entries <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-queue\-url\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of the Amazon SQS queue whose messages\(aq visibility is changed.
+.sp
+Queue URLs and names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-entries\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of receipt handles of the messages for which the visibility timeout must be changed.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Encloses a receipt handle and an entry id for each message in \(ga\(ga  ChangeMessageVisibilityBatch .\(ga\(ga
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+All of the following list parameters must be prefixed with \fBChangeMessageVisibilityBatchRequestEntry.n\fP , where \fBn\fP is an integer value starting with \fB1\fP . For example, a parameter list for this action might look like this:
+.UNINDENT
+.UNINDENT
+.sp
+\fB&ChangeMessageVisibilityBatchRequestEntry.1.Id=change_visibility_msg_2\fP
+.sp
+\fB&ChangeMessageVisibilityBatchRequestEntry.1.ReceiptHandle=your_receipt_handle\fP
+.sp
+\fB&ChangeMessageVisibilityBatchRequestEntry.1.VisibilityTimeout=45\fP
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this particular receipt handle used to communicate the result.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBId\fP s of a batch request need to be unique within a request.
+.sp
+This identifier can have up to 80 characters. The following characters are accepted: alphanumeric characters, hyphens(\-), and underscores (_).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReceiptHandle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A receipt handle.
+.UNINDENT
+.UNINDENT
+.sp
+VisibilityTimeout \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The new value (in seconds) for the message\(aqs visibility timeout.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Id=string,ReceiptHandle=string,VisibilityTimeout=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "ReceiptHandle": "string",
+    "VisibilityTimeout": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo change multiple messages\(aq timeout visibilities as a batch\fP
+.sp
+This example changes the 2 specified messages\(aq timeout visibilities to 10 hours (10 hours * 60 minutes * 60 seconds).
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sqs change\-message\-visibility\-batch \-\-queue\-url https://sqs.us\-east\-1.amazonaws.com/80398EXAMPLE/MyQueue \-\-entries file://change\-message\-visibility\-batch.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Input file (change\-message\-visibility\-batch.json):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "FirstMessage",
+        "ReceiptHandle": "AQEBhz2q...Jf3kaw==",
+        "VisibilityTimeout": 36000
+  },
+  {
+    "Id": "SecondMessage",
+        "ReceiptHandle": "AQEBkTUH...HifSnw==",
+        "VisibilityTimeout": 36000
+  }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Successful": [
+    {
+      "Id": "SecondMessage"
+    },
+    {
+      "Id": "FirstMessage"
+    }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Successful \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \(ga\(ga  ChangeMessageVisibilityBatchResultEntry \(ga\(ga items.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Encloses the \fBId\fP of an entry in \(ga\(ga  ChangeMessageVisibilityBatch .\(ga\(ga
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents a message whose visibility timeout has been changed successfully.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Failed \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \(ga\(ga  BatchResultErrorEntry \(ga\(ga items.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Gives a detailed description of the result of an action on each entry in the request.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBId\fP of an entry in a batch request.
+.UNINDENT
+.UNINDENT
+.sp
+SenderFault \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the error happened due to the caller of the batch API action.
+.UNINDENT
+.UNINDENT
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An error code representing why the action failed on this entry.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message explaining why the action failed on this entry.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

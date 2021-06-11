@@ -1,0 +1,362 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "MEDIACONVERT-CREATE-QUEUE" "a" "" ""
+.SH NAME
+mediaconvert-create-queue \- Create a new transcoding queue
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Create a new transcoding queue. For information about queues, see Working With Queues in the User Guide at \fI\%https://docs.aws.amazon.com/mediaconvert/latest/ug/working\-with\-queues.html\fP
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-queue
+[\-\-description <value>]
+\-\-name <value>
+[\-\-pricing\-plan <value>]
+[\-\-reservation\-plan\-settings <value>]
+[\-\-status <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-description\fP (string)
+Optional. A description of the queue that you are creating.
+.sp
+\fB\-\-name\fP (string)
+The name of the queue that you are creating.
+.sp
+\fB\-\-pricing\-plan\fP (string)
+Specifies whether the pricing plan for the queue is on\-demand or reserved. For on\-demand, you pay per minute, billed in increments of .01 minute. For reserved, you pay for the transcoding capacity of the entire queue, regardless of how much or how little you use it. Reserved pricing requires a 12\-month commitment. When you use the API to create a queue, the default is on\-demand.
+.INDENT 0.0
+.INDENT 3.5
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBON_DEMAND\fP
+.IP \(bu 2
+\fBRESERVED\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-reservation\-plan\-settings\fP (structure)
+Details about the pricing plan for your reserved queue. Required for reserved queues and not applicable to on\-demand queues.Commitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+The length of the term of your reserved queue pricing plan commitment.
+.UNINDENT
+.UNINDENT
+.sp
+RenewalType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the term of your reserved queue pricing plan is automatically extended (AUTO_RENEW) or expires (EXPIRE) at the end of the term. When your term is auto renewed, you extend your commitment by 12 months from the auto renew date. You can cancel this commitment.
+.UNINDENT
+.UNINDENT
+.sp
+ReservedSlots \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of reserved transcode slots (RTS) for this queue. The number of RTS determines how many jobs the queue can process in parallel; each RTS can process one job at a time. You can\(aqt decrease the number of RTS in your reserved queue. You can increase the number of RTS by extending your existing commitment with a new 12\-month commitment for the larger number. The new commitment begins when you purchase the additional capacity. You can\(aqt cancel your commitment or revert to your original commitment after you increase the capacity.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Commitment=string,RenewalType=string,ReservedSlots=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Commitment": "ONE_YEAR",
+  "RenewalType": "AUTO_RENEW"|"EXPIRE",
+  "ReservedSlots": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-status\fP (string)
+Initial state of the queue. If you create a paused queue, then jobs in that queue won\(aqt begin.
+.INDENT 0.0
+.INDENT 3.5
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBACTIVE\fP
+.IP \(bu 2
+\fBPAUSED\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+The tags that you want to add to the resource. You can tag resources with a key\-value pair or with only a key.key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a custom queue\fP
+.sp
+The following \fBcreate\-queue\fP example creates a custom transcoding queue.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws mediaconvert create\-queue \e
+    \-\-endpoint\-url https://abcd1234.mediaconvert.region\-name\-1.amazonaws.com \e
+    \-\-region region\-name\-1 \e
+    \-\-name Queue1 \e
+    \-\-description "Keep this queue empty unless job is urgent."
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+To get your account\-specific endpoint, use \fBdescribe\-endpoints\fP, or send the command without the endpoint. The service returns an error and your endpoint.
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Queue": {
+        "Status": "ACTIVE",
+        "Name": "Queue1",
+        "LastUpdated": 1518034928,
+        "Arn": "arn:aws:mediaconvert:region\-name\-1:012345678998:queues/Queue1",
+        "Type": "CUSTOM",
+        "CreatedAt": 1518034928,
+        "Description": "Keep this queue empty unless job is urgent."
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Working with AWS Elemental MediaConvert Queues\fP in the \fIAWS Elemental MediaConvert User Guide\fP\&.
+.SH OUTPUT
+.sp
+Queue \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+You can use queues to manage the resources that are available to your AWS account for running multiple transcoding jobs at the same time. If you don\(aqt specify a queue, the service sends all jobs through the default queue. For more information, see \fI\%https://docs.aws.amazon.com/mediaconvert/latest/ug/working\-with\-queues.html\fP\&.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this resource that is unique within all of AWS.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp in epoch seconds for when you created the queue.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional description that you create for each queue.
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdated \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp in epoch seconds for when you most recently updated the queue.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A name that you create for each queue. Each name must be unique within your account.
+.UNINDENT
+.UNINDENT
+.sp
+PricingPlan \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the pricing plan for the queue is on\-demand or reserved. For on\-demand, you pay per minute, billed in increments of .01 minute. For reserved, you pay for the transcoding capacity of the entire queue, regardless of how much or how little you use it. Reserved pricing requires a 12\-month commitment.
+.UNINDENT
+.UNINDENT
+.sp
+ProgressingJobsCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The estimated number of jobs with a PROGRESSING status.
+.UNINDENT
+.UNINDENT
+.sp
+ReservationPlan \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the pricing plan for your reserved queue. Required for reserved queues and not applicable to on\-demand queues.
+.sp
+Commitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The length of the term of your reserved queue pricing plan commitment.
+.UNINDENT
+.UNINDENT
+.sp
+ExpiresAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp in epoch seconds for when the current pricing plan term for this reserved queue expires.
+.UNINDENT
+.UNINDENT
+.sp
+PurchasedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp in epoch seconds for when you set up the current pricing plan for this reserved queue.
+.UNINDENT
+.UNINDENT
+.sp
+RenewalType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the term of your reserved queue pricing plan is automatically extended (AUTO_RENEW) or expires (EXPIRE) at the end of the term.
+.UNINDENT
+.UNINDENT
+.sp
+ReservedSlots \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of reserved transcode slots (RTS) for this queue. The number of RTS determines how many jobs the queue can process in parallel; each RTS can process one job at a time. When you increase this number, you extend your existing commitment with a new 12\-month commitment for a larger number of RTS. The new commitment begins when you purchase the additional capacity. You can\(aqt decrease the number of RTS in your reserved queue.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the pricing plan for your reserved queue is ACTIVE or EXPIRED.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Queues can be ACTIVE or PAUSED. If you pause a queue, the service won\(aqt begin processing jobs in that queue. Jobs that are running when you pause the queue continue to run until they finish or result in an error.
+.UNINDENT
+.UNINDENT
+.sp
+SubmittedJobsCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The estimated number of jobs with a SUBMITTED status.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether this on\-demand queue is system or custom. System queues are built in. You can\(aqt modify or delete system queues. You can create and modify custom queues.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,1553 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELASTICACHE-CREATE-CACHE-CLUSTER" "a" "" ""
+.SH NAME
+elasticache-create-cache-cluster \- Creates a cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a cluster. All nodes in the cluster run the same protocol\-compliant cache engine software, either Memcached or Redis.
+.sp
+This operation is not supported for Redis (cluster mode enabled) clusters.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-cache\-cluster
+\-\-cache\-cluster\-id <value>
+[\-\-replication\-group\-id <value>]
+[\-\-az\-mode <value>]
+[\-\-preferred\-availability\-zone <value>]
+[\-\-preferred\-availability\-zones <value>]
+[\-\-num\-cache\-nodes <value>]
+[\-\-cache\-node\-type <value>]
+[\-\-engine <value>]
+[\-\-engine\-version <value>]
+[\-\-cache\-parameter\-group\-name <value>]
+[\-\-cache\-subnet\-group\-name <value>]
+[\-\-cache\-security\-group\-names <value>]
+[\-\-security\-group\-ids <value>]
+[\-\-tags <value>]
+[\-\-snapshot\-arns <value>]
+[\-\-snapshot\-name <value>]
+[\-\-preferred\-maintenance\-window <value>]
+[\-\-port <value>]
+[\-\-notification\-topic\-arn <value>]
+[\-\-auto\-minor\-version\-upgrade | \-\-no\-auto\-minor\-version\-upgrade]
+[\-\-snapshot\-retention\-limit <value>]
+[\-\-snapshot\-window <value>]
+[\-\-auth\-token <value>]
+[\-\-outpost\-mode <value>]
+[\-\-preferred\-outpost\-arn <value>]
+[\-\-preferred\-outpost\-arns <value>]
+[\-\-log\-delivery\-configurations <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cache\-cluster\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The node group (shard) identifier. This parameter is stored as a lowercase string.
+.INDENT 0.0
+.INDENT 3.5
+\fBConstraints:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+A name must contain from 1 to 50 alphanumeric characters or hyphens.
+.IP \(bu 2
+The first character must be a letter.
+.IP \(bu 2
+A name cannot end with a hyphen or contain two consecutive hyphens.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-replication\-group\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the replication group to which this cluster should belong. If this parameter is specified, the cluster is added to the specified replication group as a read replica; otherwise, the cluster is a standalone primary that is not part of any replication group.
+.sp
+If the specified replication group is Multi\-AZ enabled and the Availability Zone is not specified, the cluster is created in Availability Zones that provide the best spread of read replicas across Availability Zones.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter is only valid if the \fBEngine\fP parameter is \fBredis\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-az\-mode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the nodes in this Memcached cluster are created in a single Availability Zone or created across multiple Availability Zones in the cluster\(aqs region.
+.sp
+This parameter is only supported for Memcached clusters.
+.sp
+If the \fBAZMode\fP and \fBPreferredAvailabilityZones\fP are not specified, ElastiCache assumes \fBsingle\-az\fP mode.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBsingle\-az\fP
+.IP \(bu 2
+\fBcross\-az\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-preferred\-availability\-zone\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 Availability Zone in which the cluster is created.
+.sp
+All nodes belonging to this cluster are placed in the preferred Availability Zone. If you want to create your nodes across multiple Availability Zones, use \fBPreferredAvailabilityZones\fP .
+.sp
+Default: System chosen Availability Zone.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-preferred\-availability\-zones\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the Availability Zones in which cache nodes are created. The order of the zones in the list is not important.
+.sp
+This option is only supported on Memcached.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you are creating your cluster in an Amazon VPC (recommended) you can only locate nodes in Availability Zones that are associated with the subnets in the selected subnet group.
+.sp
+The number of Availability Zones listed must equal the value of \fBNumCacheNodes\fP .
+.UNINDENT
+.UNINDENT
+.sp
+If you want all the nodes in the same Availability Zone, use \fBPreferredAvailabilityZone\fP instead, or repeat the Availability Zone multiple times in the list.
+.sp
+Default: System chosen Availability Zones.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-num\-cache\-nodes\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The initial number of cache nodes that the cluster has.
+.sp
+For clusters running Redis, this value must be 1. For clusters running Memcached, this value must be between 1 and 40.
+.sp
+If you need more than 40 nodes for your Memcached cluster, please fill out the ElastiCache Limit Increase Request form at \fI\%http://aws.amazon.com/contact\-us/elasticache\-node\-limit\-request/\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\-node\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The compute and memory capacity of the nodes in the node group (shard).
+.sp
+The following node types are supported by ElastiCache. Generally speaking, the current generation types provide more memory and computational power at lower cost when compared to their equivalent previous generation counterparts.
+.INDENT 0.0
+.IP \(bu 2
+General purpose:
+.INDENT 2.0
+.IP \(bu 2
+Current generation:   \fBM6g node types\fP (available only for Redis engine version 5.0.6 onward and for Memcached engine version 1.5.16 onward).  \fBcache.m6g.large\fP , \fBcache.m6g.xlarge\fP , \fBcache.m6g.2xlarge\fP , \fBcache.m6g.4xlarge\fP , \fBcache.m6g.8xlarge\fP , \fBcache.m6g.12xlarge\fP , \fBcache.m6g.16xlarge\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+For region availability, see \fI\%Supported Node Types\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBM5 node types:\fP  \fBcache.m5.large\fP , \fBcache.m5.xlarge\fP , \fBcache.m5.2xlarge\fP , \fBcache.m5.4xlarge\fP , \fBcache.m5.12xlarge\fP , \fBcache.m5.24xlarge\fP    \fBM4 node types:\fP  \fBcache.m4.large\fP , \fBcache.m4.xlarge\fP , \fBcache.m4.2xlarge\fP , \fBcache.m4.4xlarge\fP , \fBcache.m4.10xlarge\fP    \fBT3 node types:\fP  \fBcache.t3.micro\fP , \fBcache.t3.small\fP , \fBcache.t3.medium\fP    \fBT2 node types:\fP  \fBcache.t2.micro\fP , \fBcache.t2.small\fP , \fBcache.t2.medium\fP
+.UNINDENT
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBT1 node types:\fP  \fBcache.t1.micro\fP    \fBM1 node types:\fP  \fBcache.m1.small\fP , \fBcache.m1.medium\fP , \fBcache.m1.large\fP , \fBcache.m1.xlarge\fP    \fBM3 node types:\fP  \fBcache.m3.medium\fP , \fBcache.m3.large\fP , \fBcache.m3.xlarge\fP , \fBcache.m3.2xlarge\fP
+.UNINDENT
+.IP \(bu 2
+Compute optimized:
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBC1 node types:\fP  \fBcache.c1.xlarge\fP
+.UNINDENT
+.IP \(bu 2
+Memory optimized:
+.INDENT 2.0
+.IP \(bu 2
+Current generation:   \fBR6g node types\fP (available only for Redis engine version 5.0.6 onward and for Memcached engine version 1.5.16 onward).  \fBcache.r6g.large\fP , \fBcache.r6g.xlarge\fP , \fBcache.r6g.2xlarge\fP , \fBcache.r6g.4xlarge\fP , \fBcache.r6g.8xlarge\fP , \fBcache.r6g.12xlarge\fP , \fBcache.r6g.16xlarge\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+For region availability, see \fI\%Supported Node Types\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBR5 node types:\fP  \fBcache.r5.large\fP , \fBcache.r5.xlarge\fP , \fBcache.r5.2xlarge\fP , \fBcache.r5.4xlarge\fP , \fBcache.r5.12xlarge\fP , \fBcache.r5.24xlarge\fP    \fBR4 node types:\fP  \fBcache.r4.large\fP , \fBcache.r4.xlarge\fP , \fBcache.r4.2xlarge\fP , \fBcache.r4.4xlarge\fP , \fBcache.r4.8xlarge\fP , \fBcache.r4.16xlarge\fP
+.UNINDENT
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBM2 node types:\fP  \fBcache.m2.xlarge\fP , \fBcache.m2.2xlarge\fP , \fBcache.m2.4xlarge\fP    \fBR3 node types:\fP  \fBcache.r3.large\fP , \fBcache.r3.xlarge\fP , \fBcache.r3.2xlarge\fP , \fBcache.r3.4xlarge\fP , \fBcache.r3.8xlarge\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAdditional node type info\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+All current generation instance types are created in Amazon VPC by default.
+.IP \(bu 2
+Redis append\-only files (AOF) are not supported for T1 or T2 instances.
+.IP \(bu 2
+Redis Multi\-AZ with automatic failover is not supported on T1 instances.
+.IP \(bu 2
+Redis configuration variables \fBappendonly\fP and \fBappendfsync\fP are not supported on Redis version 2.8.22 and later.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-engine\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the cache engine to be used for this cluster.
+.sp
+Valid values for this parameter are: \fBmemcached\fP | \fBredis\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-engine\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the cache engine to be used for this cluster. To view the supported cache engine versions, use the DescribeCacheEngineVersions operation.
+.INDENT 0.0
+.INDENT 3.5
+\fBImportant:\fP You can upgrade to a newer engine version (see \fI\%Selecting a Cache Engine and Version\fP ), but you cannot downgrade to an earlier engine version. If you want to use an earlier engine version, you must delete the existing cluster or replication group and create it anew with the earlier engine version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\-parameter\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the parameter group to associate with this cluster. If this argument is omitted, the default parameter group for the specified engine is used. You cannot use any parameter group which has \fBcluster\-enabled=\(aqyes\(aq\fP when creating a cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\-subnet\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the subnet group to be used for the cluster.
+.sp
+Use this parameter only when you are creating a cluster in an Amazon Virtual Private Cloud (Amazon VPC).
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you\(aqre going to launch your cluster in an Amazon VPC, you need to create a subnet group before you start creating a cluster. For more information, see \fI\%Subnets and Subnet Groups\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\-security\-group\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of security group names to associate with this cluster.
+.sp
+Use this parameter only when you are creating a cluster outside of an Amazon Virtual Private Cloud (Amazon VPC).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-group\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more VPC security groups associated with the cluster.
+.sp
+Use this parameter only when you are creating a cluster in an Amazon Virtual Private Cloud (Amazon VPC).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags to be added to this resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A tag that can be added to an ElastiCache cluster or replication group. Tags are composed of a Key/Value pair. You can use tags to categorize and track all your ElastiCache resources, with the exception of global replication group. When you add or remove tags on replication groups, those actions will be replicated to all nodes in the replication group. A tag with a null Value is permitted.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag. May not be null.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag\(aqs value. May be null.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-snapshot\-arns\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A single\-element string list containing an Amazon Resource Name (ARN) that uniquely identifies a Redis RDB snapshot file stored in Amazon S3. The snapshot file is used to populate the node group (shard). The Amazon S3 object name in the ARN cannot contain any commas.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter is only valid if the \fBEngine\fP parameter is \fBredis\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Example of an Amazon S3 ARN: \fBarn:aws:s3:::my_bucket/snapshot1.rdb\fP
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-snapshot\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of a Redis snapshot from which to restore data into the new node group (shard). The snapshot status changes to \fBrestoring\fP while the new node group (shard) is being created.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter is only valid if the \fBEngine\fP parameter is \fBredis\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-preferred\-maintenance\-window\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the weekly time range during which maintenance on the cluster is performed. It is specified as a range in the format ddd:hh24:mi\-ddd:hh24:mi (24H Clock UTC). The minimum maintenance window is a 60 minute period. Valid values for \fBddd\fP are:
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-port\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number on which each of the cache nodes accepts connections.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-topic\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Amazon Simple Notification Service (SNS) topic to which notifications are sent.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The Amazon SNS topic owner must be the same as the cluster owner.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-minor\-version\-upgrade\fP | \fB\-\-no\-auto\-minor\-version\-upgrade\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is currently disabled.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-snapshot\-retention\-limit\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days for which ElastiCache retains automatic snapshots before deleting them. For example, if you set \fBSnapshotRetentionLimit\fP to 5, a snapshot taken today is retained for 5 days before being deleted.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter is only valid if the \fBEngine\fP parameter is \fBredis\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Default: 0 (i.e., automatic backups are disabled for this cache cluster).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-snapshot\-window\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The daily time range (in UTC) during which ElastiCache begins taking a daily snapshot of your node group (shard).
+.sp
+Example: \fB05:00\-09:00\fP
+.sp
+If you do not specify this parameter, ElastiCache automatically chooses an appropriate time range.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter is only valid if the \fBEngine\fP parameter is \fBredis\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auth\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fBReserved parameter.\fP The password used to access a password protected server.
+.UNINDENT
+.UNINDENT
+.sp
+Password constraints:
+.INDENT 0.0
+.IP \(bu 2
+Must be only printable ASCII characters.
+.IP \(bu 2
+Must be at least 16 characters and no more than 128 characters in length.
+.IP \(bu 2
+The only permitted printable special characters are !, &, #, $, ^, <, >, and \-. Other printable special characters cannot be used in the AUTH token.
+.UNINDENT
+.sp
+For more information, see \fI\%AUTH password\fP at \fI\%http://redis.io/commands/AUTH\fP\&.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-outpost\-mode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the nodes in the cluster are created in a single outpost or across multiple outposts.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBsingle\-outpost\fP
+.IP \(bu 2
+\fBcross\-outpost\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-preferred\-outpost\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The outpost ARN in which the cache cluster is created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-preferred\-outpost\-arns\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The outpost ARNs in which the cache cluster is created.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-delivery\-configurations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the destination, format and type of the logs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the destination, format and type of the logs.
+.sp
+LogType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Refers to \fI\%slow\-log\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify either \fBcloudwatch\-logs\fP or \fBkinesis\-firehose\fP as the destination type.
+.UNINDENT
+.UNINDENT
+.sp
+DestinationDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration details of either a CloudWatch Logs destination or Kinesis Data Firehose destination.
+.sp
+CloudWatchLogsDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the CloudWatch Logs destination.
+.sp
+LogGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch Logs log group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisFirehoseDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the Kinesis Data Firehose destination.
+.sp
+DeliveryStream \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies either JSON or TEXT
+.UNINDENT
+.UNINDENT
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specify if log delivery is enabled. Default \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LogType=string,DestinationType=string,DestinationDetails={CloudWatchLogsDetails={LogGroup=string},KinesisFirehoseDetails={DeliveryStream=string}},LogFormat=string,Enabled=boolean ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "LogType": "slow\-log",
+    "DestinationType": "cloudwatch\-logs"|"kinesis\-firehose",
+    "DestinationDetails": {
+      "CloudWatchLogsDetails": {
+        "LogGroup": "string"
+      },
+      "KinesisFirehoseDetails": {
+        "DeliveryStream": "string"
+      }
+    },
+    "LogFormat": "text"|"json",
+    "Enabled": true|false
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a cache cluster\fP
+.sp
+The following \fBcreate\-cache\-cluster\fP example creates a cache cluster using the Redis engine.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elasticache create\-cache\-cluster \e
+    \-\-cache\-cluster\-id "cluster\-test" \e
+    \-\-engine redis \e
+    \-\-cache\-node\-type cache.m5.large \e
+    \-\-num\-cache\-nodes 1
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "CacheCluster": {
+        "CacheClusterId": "cluster\-test",
+        "ClientDownloadLandingPage": "https://console.aws.amazon.com/elasticache/home#client\-download:",
+        "CacheNodeType": "cache.m5.large",
+        "Engine": "redis",
+        "EngineVersion": "5.0.5",
+        "CacheClusterStatus": "creating",
+        "NumCacheNodes": 1,
+        "PreferredMaintenanceWindow": "sat:13:00\-sat:14:00",
+        "PendingModifiedValues": {},
+        "CacheSecurityGroups": [],
+        "CacheParameterGroup": {
+            "CacheParameterGroupName": "default.redis5.0",
+            "ParameterApplyStatus": "in\-sync",
+            "CacheNodeIdsToReboot": []
+        },
+        "CacheSubnetGroupName": "default",
+        "AutoMinorVersionUpgrade": true,
+        "SnapshotRetentionLimit": 0,
+        "SnapshotWindow": "06:30\-07:30",
+        "TransitEncryptionEnabled": false,
+        "AtRestEncryptionEnabled": false
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating a Cluster\fP in the \fIElasticache User Guide\fP\&.
+.SH OUTPUT
+.sp
+CacheCluster \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains all of the attributes of a specific cluster.
+.sp
+CacheClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user\-supplied identifier of the cluster. This identifier is a unique key that identifies a cluster.
+.UNINDENT
+.UNINDENT
+.sp
+ConfigurationEndpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a Memcached cluster endpoint which can be used by an application to connect to any node in the cluster. The configuration endpoint will always have \fB\&.cfg\fP in it.
+.sp
+Example: \fBmem\-3.9dvc4r.cfg.usw2.cache.amazonaws.com:11211\fP
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS hostname of the cache node.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number that the cache engine is listening on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ClientDownloadLandingPage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of the web page where you can download the latest ElastiCache client library.
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the compute and memory capacity node type for the cluster.
+.sp
+The following node types are supported by ElastiCache. Generally speaking, the current generation types provide more memory and computational power at lower cost when compared to their equivalent previous generation counterparts.
+.INDENT 0.0
+.IP \(bu 2
+General purpose:
+.INDENT 2.0
+.IP \(bu 2
+Current generation:   \fBM6g node types\fP (available only for Redis engine version 5.0.6 onward and for Memcached engine version 1.5.16 onward).  \fBcache.m6g.large\fP , \fBcache.m6g.xlarge\fP , \fBcache.m6g.2xlarge\fP , \fBcache.m6g.4xlarge\fP , \fBcache.m6g.8xlarge\fP , \fBcache.m6g.12xlarge\fP , \fBcache.m6g.16xlarge\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+For region availability, see \fI\%Supported Node Types\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBM5 node types:\fP  \fBcache.m5.large\fP , \fBcache.m5.xlarge\fP , \fBcache.m5.2xlarge\fP , \fBcache.m5.4xlarge\fP , \fBcache.m5.12xlarge\fP , \fBcache.m5.24xlarge\fP    \fBM4 node types:\fP  \fBcache.m4.large\fP , \fBcache.m4.xlarge\fP , \fBcache.m4.2xlarge\fP , \fBcache.m4.4xlarge\fP , \fBcache.m4.10xlarge\fP    \fBT3 node types:\fP  \fBcache.t3.micro\fP , \fBcache.t3.small\fP , \fBcache.t3.medium\fP    \fBT2 node types:\fP  \fBcache.t2.micro\fP , \fBcache.t2.small\fP , \fBcache.t2.medium\fP
+.UNINDENT
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBT1 node types:\fP  \fBcache.t1.micro\fP    \fBM1 node types:\fP  \fBcache.m1.small\fP , \fBcache.m1.medium\fP , \fBcache.m1.large\fP , \fBcache.m1.xlarge\fP    \fBM3 node types:\fP  \fBcache.m3.medium\fP , \fBcache.m3.large\fP , \fBcache.m3.xlarge\fP , \fBcache.m3.2xlarge\fP
+.UNINDENT
+.IP \(bu 2
+Compute optimized:
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBC1 node types:\fP  \fBcache.c1.xlarge\fP
+.UNINDENT
+.IP \(bu 2
+Memory optimized:
+.INDENT 2.0
+.IP \(bu 2
+Current generation:   \fBR6g node types\fP (available only for Redis engine version 5.0.6 onward and for Memcached engine version 1.5.16 onward).  \fBcache.r6g.large\fP , \fBcache.r6g.xlarge\fP , \fBcache.r6g.2xlarge\fP , \fBcache.r6g.4xlarge\fP , \fBcache.r6g.8xlarge\fP , \fBcache.r6g.12xlarge\fP , \fBcache.r6g.16xlarge\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+For region availability, see \fI\%Supported Node Types\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBR5 node types:\fP  \fBcache.r5.large\fP , \fBcache.r5.xlarge\fP , \fBcache.r5.2xlarge\fP , \fBcache.r5.4xlarge\fP , \fBcache.r5.12xlarge\fP , \fBcache.r5.24xlarge\fP    \fBR4 node types:\fP  \fBcache.r4.large\fP , \fBcache.r4.xlarge\fP , \fBcache.r4.2xlarge\fP , \fBcache.r4.4xlarge\fP , \fBcache.r4.8xlarge\fP , \fBcache.r4.16xlarge\fP
+.UNINDENT
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBM2 node types:\fP  \fBcache.m2.xlarge\fP , \fBcache.m2.2xlarge\fP , \fBcache.m2.4xlarge\fP    \fBR3 node types:\fP  \fBcache.r3.large\fP , \fBcache.r3.xlarge\fP , \fBcache.r3.2xlarge\fP , \fBcache.r3.4xlarge\fP , \fBcache.r3.8xlarge\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAdditional node type info\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+All current generation instance types are created in Amazon VPC by default.
+.IP \(bu 2
+Redis append\-only files (AOF) are not supported for T1 or T2 instances.
+.IP \(bu 2
+Redis Multi\-AZ with automatic failover is not supported on T1 instances.
+.IP \(bu 2
+Redis configuration variables \fBappendonly\fP and \fBappendfsync\fP are not supported on Redis version 2.8.22 and later.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Engine \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the cache engine (\fBmemcached\fP or \fBredis\fP ) to be used for this cluster.
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the cache engine that is used in this cluster.
+.UNINDENT
+.UNINDENT
+.sp
+CacheClusterStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of this cluster, one of the following values: \fBavailable\fP , \fBcreating\fP , \fBdeleted\fP , \fBdeleting\fP , \fBincompatible\-network\fP , \fBmodifying\fP , \fBrebooting cluster nodes\fP , \fBrestore\-failed\fP , or \fBsnapshotting\fP .
+.UNINDENT
+.UNINDENT
+.sp
+NumCacheNodes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of cache nodes in the cluster.
+.sp
+For clusters running Redis, this value must be 1. For clusters running Memcached, this value must be between 1 and 40.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredAvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Availability Zone in which the cluster is located or "Multiple" if the cache nodes are located in different Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredOutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The outpost ARN in which the cache cluster is created.
+.UNINDENT
+.UNINDENT
+.sp
+CacheClusterCreateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the cluster was created.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredMaintenanceWindow \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the weekly time range during which maintenance on the cluster is performed. It is specified as a range in the format ddd:hh24:mi\-ddd:hh24:mi (24H Clock UTC). The minimum maintenance window is a 60 minute period.
+.sp
+Valid values for \fBddd\fP are:
+.INDENT 0.0
+.IP \(bu 2
+\fBsun\fP
+.IP \(bu 2
+\fBmon\fP
+.IP \(bu 2
+\fBtue\fP
+.IP \(bu 2
+\fBwed\fP
+.IP \(bu 2
+\fBthu\fP
+.IP \(bu 2
+\fBfri\fP
+.IP \(bu 2
+\fBsat\fP
+.UNINDENT
+.sp
+Example: \fBsun:23:00\-mon:01:30\fP
+.UNINDENT
+.UNINDENT
+.sp
+PendingModifiedValues \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A group of settings that are applied to the cluster in the future, or that are currently being applied.
+.sp
+NumCacheNodes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The new number of cache nodes for the cluster.
+.sp
+For clusters running Redis, this value must be 1. For clusters running Memcached, this value must be between 1 and 40.
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeIdsToRemove \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of cache node IDs that are being removed (or will be removed) from the cluster. A node ID is a 4\-digit numeric identifier (0001, 0002, etc.).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The new cache engine version that the cluster runs.
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cache node type that this cluster or replication group is scaled to.
+.UNINDENT
+.UNINDENT
+.sp
+AuthTokenStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The auth token status
+.UNINDENT
+.UNINDENT
+.sp
+LogDeliveryConfigurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The log delivery configurations being modified
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The log delivery configurations being modified
+.sp
+LogType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Refers to \fI\%slow\-log\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination type, either CloudWatch Logs or Kinesis Data Firehose.
+.UNINDENT
+.UNINDENT
+.sp
+DestinationDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration details of either a CloudWatch Logs destination or Kinesis Data Firehose destination.
+.sp
+CloudWatchLogsDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the CloudWatch Logs destination.
+.sp
+LogGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch Logs log group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisFirehoseDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the Kinesis Data Firehose destination.
+.sp
+DeliveryStream \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the log format, either JSON or TEXT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NotificationConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a notification topic and its status. Notification topics are used for publishing ElastiCache events to subscribers using Amazon Simple Notification Service (SNS).
+.sp
+TopicArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) that identifies the topic.
+.UNINDENT
+.UNINDENT
+.sp
+TopicStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the topic.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CacheSecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of cache security group elements, composed of name and status sub\-elements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a cluster\(aqs status within a particular cache security group.
+.sp
+CacheSecurityGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the cache security group.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The membership status in the cache security group. The status changes when a cache security group is modified, or when the cache security groups assigned to a cluster are modified.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CacheParameterGroup \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Status of the cache parameter group.
+.sp
+CacheParameterGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the cache parameter group.
+.UNINDENT
+.UNINDENT
+.sp
+ParameterApplyStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of parameter updates.
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeIdsToReboot \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the cache node IDs which need to be rebooted for parameter changes to be applied. A node ID is a numeric identifier (0001, 0002, etc.).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CacheSubnetGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the cache subnet group associated with the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of cache nodes that are members of the cluster.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents an individual cache node within a cluster. Each cache node runs its own instance of the cluster\(aqs protocol\-compliant caching software \- either Memcached or Redis.
+.sp
+The following node types are supported by ElastiCache. Generally speaking, the current generation types provide more memory and computational power at lower cost when compared to their equivalent previous generation counterparts.
+.INDENT 0.0
+.IP \(bu 2
+General purpose:
+.INDENT 2.0
+.IP \(bu 2
+Current generation:   \fBM6g node types\fP (available only for Redis engine version 5.0.6 onward and for Memcached engine version 1.5.16 onward).  \fBcache.m6g.large\fP , \fBcache.m6g.xlarge\fP , \fBcache.m6g.2xlarge\fP , \fBcache.m6g.4xlarge\fP , \fBcache.m6g.8xlarge\fP , \fBcache.m6g.12xlarge\fP , \fBcache.m6g.16xlarge\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+For region availability, see \fI\%Supported Node Types\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBM5 node types:\fP  \fBcache.m5.large\fP , \fBcache.m5.xlarge\fP , \fBcache.m5.2xlarge\fP , \fBcache.m5.4xlarge\fP , \fBcache.m5.12xlarge\fP , \fBcache.m5.24xlarge\fP    \fBM4 node types:\fP  \fBcache.m4.large\fP , \fBcache.m4.xlarge\fP , \fBcache.m4.2xlarge\fP , \fBcache.m4.4xlarge\fP , \fBcache.m4.10xlarge\fP    \fBT3 node types:\fP  \fBcache.t3.micro\fP , \fBcache.t3.small\fP , \fBcache.t3.medium\fP    \fBT2 node types:\fP  \fBcache.t2.micro\fP , \fBcache.t2.small\fP , \fBcache.t2.medium\fP
+.UNINDENT
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBT1 node types:\fP  \fBcache.t1.micro\fP    \fBM1 node types:\fP  \fBcache.m1.small\fP , \fBcache.m1.medium\fP , \fBcache.m1.large\fP , \fBcache.m1.xlarge\fP    \fBM3 node types:\fP  \fBcache.m3.medium\fP , \fBcache.m3.large\fP , \fBcache.m3.xlarge\fP , \fBcache.m3.2xlarge\fP
+.UNINDENT
+.IP \(bu 2
+Compute optimized:
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBC1 node types:\fP  \fBcache.c1.xlarge\fP
+.UNINDENT
+.IP \(bu 2
+Memory optimized:
+.INDENT 2.0
+.IP \(bu 2
+Current generation:   \fBR6g node types\fP (available only for Redis engine version 5.0.6 onward and for Memcached engine version 1.5.16 onward).  \fBcache.r6g.large\fP , \fBcache.r6g.xlarge\fP , \fBcache.r6g.2xlarge\fP , \fBcache.r6g.4xlarge\fP , \fBcache.r6g.8xlarge\fP , \fBcache.r6g.12xlarge\fP , \fBcache.r6g.16xlarge\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+For region availability, see \fI\%Supported Node Types\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBR5 node types:\fP  \fBcache.r5.large\fP , \fBcache.r5.xlarge\fP , \fBcache.r5.2xlarge\fP , \fBcache.r5.4xlarge\fP , \fBcache.r5.12xlarge\fP , \fBcache.r5.24xlarge\fP    \fBR4 node types:\fP  \fBcache.r4.large\fP , \fBcache.r4.xlarge\fP , \fBcache.r4.2xlarge\fP , \fBcache.r4.4xlarge\fP , \fBcache.r4.8xlarge\fP , \fBcache.r4.16xlarge\fP
+.UNINDENT
+.UNINDENT
+.INDENT 2.0
+.IP \(bu 2
+Previous generation: (not recommended)  \fBM2 node types:\fP  \fBcache.m2.xlarge\fP , \fBcache.m2.2xlarge\fP , \fBcache.m2.4xlarge\fP    \fBR3 node types:\fP  \fBcache.r3.large\fP , \fBcache.r3.xlarge\fP , \fBcache.r3.2xlarge\fP , \fBcache.r3.4xlarge\fP , \fBcache.r3.8xlarge\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAdditional node type info\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+All current generation instance types are created in Amazon VPC by default.
+.IP \(bu 2
+Redis append\-only files (AOF) are not supported for T1 or T2 instances.
+.IP \(bu 2
+Redis Multi\-AZ with automatic failover is not supported on T1 instances.
+.IP \(bu 2
+Redis configuration variables \fBappendonly\fP and \fBappendfsync\fP are not supported on Redis version 2.8.22 and later.
+.UNINDENT
+.sp
+CacheNodeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cache node identifier. A node ID is a numeric identifier (0001, 0002, etc.). The combination of cluster ID and node ID uniquely identifies every cache node used in a customer\(aqs AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of this cache node, one of the following values: \fBavailable\fP , \fBcreating\fP , \fBrebooting\fP , or \fBdeleting\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeCreateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the cache node was created.
+.UNINDENT
+.UNINDENT
+.sp
+Endpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The hostname for connecting to this cache node.
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS hostname of the cache node.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number that the cache engine is listening on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ParameterGroupStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the parameter group applied to this cache node.
+.UNINDENT
+.UNINDENT
+.sp
+SourceCacheNodeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the primary node to which this read replica node is synchronized. If this field is empty, this node is not associated with a primary cluster.
+.UNINDENT
+.UNINDENT
+.sp
+CustomerAvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone where this node was created and now resides.
+.UNINDENT
+.UNINDENT
+.sp
+CustomerOutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The customer outpost ARN of the cache node.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AutoMinorVersionUpgrade \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is currently disabled.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of VPC Security Groups associated with the cluster.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a single cache security group and its status.
+.sp
+SecurityGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the cache security group.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the cache security group membership. The status changes whenever a cache security group is modified, or when the cache security groups assigned to a cluster are modified.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReplicationGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The replication group to which this cluster belongs. If this field is empty, the cluster is not associated with any replication group.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotRetentionLimit \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days for which ElastiCache retains automatic cluster snapshots before deleting them. For example, if you set \fBSnapshotRetentionLimit\fP to 5, a snapshot that was taken today is retained for 5 days before being deleted.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the value of SnapshotRetentionLimit is set to zero (0), backups are turned off.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotWindow \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The daily time range (in UTC) during which ElastiCache begins taking a daily snapshot of your cluster.
+.sp
+Example: \fB05:00\-09:00\fP
+.UNINDENT
+.UNINDENT
+.sp
+AuthTokenEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that enables using an \fBAuthToken\fP (password) when issuing Redis commands.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+AuthTokenLastModifiedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date the auth token was last modified
+.UNINDENT
+.UNINDENT
+.sp
+TransitEncryptionEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that enables in\-transit encryption when set to \fBtrue\fP .
+.sp
+You cannot modify the value of \fBTransitEncryptionEnabled\fP after the cluster is created. To enable in\-transit encryption on a cluster you must set \fBTransitEncryptionEnabled\fP to \fBtrue\fP when you create a cluster.
+.INDENT 0.0
+.INDENT 3.5
+\fBRequired:\fP Only available when creating a replication group in an Amazon VPC using redis version \fB3.2.6\fP , \fB4.x\fP or later.
+.UNINDENT
+.UNINDENT
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+AtRestEncryptionEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that enables encryption at\-rest when set to \fBtrue\fP .
+.sp
+You cannot modify the value of \fBAtRestEncryptionEnabled\fP after the cluster is created. To enable at\-rest encryption on a cluster you must set \fBAtRestEncryptionEnabled\fP to \fBtrue\fP when you create a cluster.
+.INDENT 0.0
+.INDENT 3.5
+\fBRequired:\fP Only available when creating a replication group in an Amazon VPC using redis version \fB3.2.6\fP , \fB4.x\fP or later.
+.UNINDENT
+.UNINDENT
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+ARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN (Amazon Resource Name) of the cache cluster.
+.UNINDENT
+.UNINDENT
+.sp
+ReplicationGroupLogDeliveryEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A boolean value indicating whether log delivery is enabled for the replication group.
+.UNINDENT
+.UNINDENT
+.sp
+LogDeliveryConfigurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination, format and type of the logs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination, format and type of the logs.
+.sp
+LogType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Refers to \fI\%slow\-log\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination type, either \fBcloudwatch\-logs\fP or \fBkinesis\-firehose\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration details of either a CloudWatch Logs destination or Kinesis Data Firehose destination.
+.sp
+CloudWatchLogsDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the CloudWatch Logs destination.
+.sp
+LogGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch Logs log group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisFirehoseDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the Kinesis Data Firehose destination.
+.sp
+DeliveryStream \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the log format, either JSON or TEXT.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the log delivery configuration status. Values are one of \fBenabling\fP | \fBdisabling\fP | \fBmodifying\fP | \fBactive\fP | \fBerror\fP
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns an error message for the log delivery configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,439 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-UPLOAD-PART-COPY" "a" "" ""
+.SH NAME
+s3api-upload-part-copy \- Uploads a part by copying data from an existing object as data source
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Uploads a part by copying data from an existing object as data source. You specify the data source by adding the request header \fBx\-amz\-copy\-source\fP in your request and a byte range by adding the request header \fBx\-amz\-copy\-source\-range\fP in your request.
+.sp
+The minimum allowable part size for a multipart upload is 5 MB. For more information about multipart upload limits, go to \fI\%Quick Facts\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Instead of using an existing object as part data, you might use the \fI\%UploadPart\fP action and provide data in your request.
+.UNINDENT
+.UNINDENT
+.sp
+You must initiate a multipart upload before you can upload any part. In response to your initiate request. Amazon S3 returns a unique identifier, the upload ID, that you must include in your upload part request.
+.sp
+For more information about using the \fBUploadPartCopy\fP operation, see the following:
+.INDENT 0.0
+.IP \(bu 2
+For conceptual information about multipart uploads, see \fI\%Uploading Objects Using Multipart Upload\fP in the \fIAmazon S3 User Guide\fP .
+.IP \(bu 2
+For information about permissions required to use the multipart upload API, see \fI\%Multipart Upload and Permissions\fP in the \fIAmazon S3 User Guide\fP .
+.IP \(bu 2
+For information about copying objects using a single atomic action vs. the multipart upload, see \fI\%Operations on Objects\fP in the \fIAmazon S3 User Guide\fP .
+.IP \(bu 2
+For information about using server\-side encryption with customer\-provided encryption keys with the UploadPartCopy operation, see \fI\%CopyObject\fP and \fI\%UploadPart\fP .
+.UNINDENT
+.sp
+Note the following additional considerations about the request headers \fBx\-amz\-copy\-source\-if\-match\fP , \fBx\-amz\-copy\-source\-if\-none\-match\fP , \fBx\-amz\-copy\-source\-if\-unmodified\-since\fP , and \fBx\-amz\-copy\-source\-if\-modified\-since\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fBConsideration 1\fP \- If both of the \fBx\-amz\-copy\-source\-if\-match\fP and \fBx\-amz\-copy\-source\-if\-unmodified\-since\fP headers are present in the request as follows:  \fBx\-amz\-copy\-source\-if\-match\fP condition evaluates to \fBtrue\fP , and;  \fBx\-amz\-copy\-source\-if\-unmodified\-since\fP condition evaluates to \fBfalse\fP ; Amazon S3 returns \fB200 OK\fP and copies the data.
+.IP \(bu 2
+\fBConsideration 2\fP \- If both of the \fBx\-amz\-copy\-source\-if\-none\-match\fP and \fBx\-amz\-copy\-source\-if\-modified\-since\fP headers are present in the request as follows:  \fBx\-amz\-copy\-source\-if\-none\-match\fP condition evaluates to \fBfalse\fP , and;  \fBx\-amz\-copy\-source\-if\-modified\-since\fP condition evaluates to \fBtrue\fP ; Amazon S3 returns \fB412 Precondition Failed\fP response code.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBVersioning\fP
+.UNINDENT
+.UNINDENT
+.sp
+If your bucket has versioning enabled, you could have multiple versions of the same object. By default, \fBx\-amz\-copy\-source\fP identifies the current version of the object to copy. If the current version is a delete marker and you don\(aqt specify a versionId in the \fBx\-amz\-copy\-source\fP , Amazon S3 returns a 404 error, because the object does not exist. If you specify versionId in the \fBx\-amz\-copy\-source\fP and the versionId is a delete marker, Amazon S3 returns an HTTP 400 error, because you are not allowed to specify a delete marker as a version for the \fBx\-amz\-copy\-source\fP .
+.sp
+You can optionally specify a specific version of the source object to copy by adding the \fBversionId\fP subresource as shown in the following example:
+.INDENT 0.0
+.INDENT 3.5
+\fBx\-amz\-copy\-source: /bucket/object?versionId=version id\fP
+.sp
+\fBSpecial Errors\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode: NoSuchUpload\fP
+.IP \(bu 2
+\fICause: The specified multipart upload does not exist. The upload ID might be invalid, or the multipart upload might have been aborted or completed.\fP
+.IP \(bu 2
+\fIHTTP Status Code: 404 Not Found\fP
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fICode: InvalidRequest\fP
+.IP \(bu 2
+\fICause: The specified copy source is not supported as a byte\-range copy source.\fP
+.IP \(bu 2
+\fIHTTP Status Code: 400 Bad Request\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBRelated Resources\fP
+.IP \(bu 2
+\fI\%CreateMultipartUpload\fP
+.IP \(bu 2
+\fI\%UploadPart\fP
+.IP \(bu 2
+\fI\%CompleteMultipartUpload\fP
+.IP \(bu 2
+\fI\%AbortMultipartUpload\fP
+.IP \(bu 2
+\fI\%ListParts\fP
+.IP \(bu 2
+\fI\%ListMultipartUploads\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  upload\-part\-copy
+\-\-bucket <value>
+\-\-copy\-source <value>
+[\-\-copy\-source\-if\-match <value>]
+[\-\-copy\-source\-if\-modified\-since <value>]
+[\-\-copy\-source\-if\-none\-match <value>]
+[\-\-copy\-source\-if\-unmodified\-since <value>]
+[\-\-copy\-source\-range <value>]
+\-\-key <value>
+\-\-part\-number <value>
+\-\-upload\-id <value>
+[\-\-sse\-customer\-algorithm <value>]
+[\-\-sse\-customer\-key <value>]
+[\-\-sse\-customer\-key\-md5 <value>]
+[\-\-copy\-source\-sse\-customer\-algorithm <value>]
+[\-\-copy\-source\-sse\-customer\-key <value>]
+[\-\-copy\-source\-sse\-customer\-key\-md5 <value>]
+[\-\-request\-payer <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-expected\-source\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The bucket name.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the source object for the copy operation. You specify the value in one of two formats, depending on whether you want to access the source object through an \fI\%access point\fP :
+.INDENT 0.0
+.IP \(bu 2
+For objects not accessed through an access point, specify the name of the source bucket and key of the source object, separated by a slash (/). For example, to copy the object \fBreports/january.pdf\fP from the bucket \fBawsexamplebucket\fP , use \fBawsexamplebucket/reports/january.pdf\fP . The value must be URL encoded.
+.IP \(bu 2
+For objects accessed through access points, specify the Amazon Resource Name (ARN) of the object as accessed through the access point, in the format \fBarn:aws:s3:<Region>:<account\-id>:accesspoint/<access\-point\-name>/object/<key>\fP . For example, to copy the object \fBreports/january.pdf\fP through access point \fBmy\-access\-point\fP owned by account \fB123456789012\fP in Region \fBus\-west\-2\fP , use the URL encoding of \fBarn:aws:s3:us\-west\-2:123456789012:accesspoint/my\-access\-point/object/reports/january.pdf\fP . The value must be URL encoded.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Amazon S3 supports copy operations using access points only when the source and destination buckets are in the same AWS Region.
+.UNINDENT
+.UNINDENT
+.sp
+Alternatively, for objects accessed through Amazon S3 on Outposts, specify the ARN of the object as accessed in the format \fBarn:aws:s3\-outposts:<Region>:<account\-id>:outpost/<outpost\-id>/object/<key>\fP . For example, to copy the object \fBreports/january.pdf\fP through outpost \fBmy\-outpost\fP owned by account \fB123456789012\fP in Region \fBus\-west\-2\fP , use the URL encoding of \fBarn:aws:s3\-outposts:us\-west\-2:123456789012:outpost/my\-outpost/object/reports/january.pdf\fP . The value must be URL encoded.
+.UNINDENT
+.UNINDENT
+.sp
+To copy a specific version of an object, append \fB?versionId=<version\-id>\fP to the value (for example, \fBawsexamplebucket/reports/january.pdf?versionId=QUpfdndhfd8438MNFDN93jdnJFkdmqnh893\fP ). If you don\(aqt specify a version ID, Amazon S3 copies the latest version of the source object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-match\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if its entity tag (ETag) matches the specified tag.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-modified\-since\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if it has been modified since the specified time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-none\-match\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if its entity tag (ETag) is different than the specified ETag.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-unmodified\-since\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if it hasn\(aqt been modified since the specified time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-range\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The range of bytes to copy from the source object. The range value must use the form bytes=first\-last, where the first and last are the zero\-based byte offsets to copy. For example, bytes=0\-9 indicates that you want to copy the first 10 bytes of the source. You can copy a range only if the source object is greater than 5 MB.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key for which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-part\-number\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Part number of part being copied. This is a positive integer between 1 and 10,000.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-upload\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Upload ID identifying the multipart upload whose part is being copied.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the algorithm to use to when encrypting the object (for example, AES256).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the customer\-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon S3 does not store the encryption key. The key must be appropriate for use with the algorithm specified in the \fBx\-amz\-server\-side\-encryption\-customer\-algorithm\fP header. This must be the same encryption key specified in the initiate multipart upload request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the 128\-bit MD5 digest of the encryption key according to RFC 1321. Amazon S3 uses this header for a message integrity check to ensure that the encryption key was transmitted without error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-sse\-customer\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the algorithm to use when decrypting the source object (for example, AES256).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-sse\-customer\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the customer\-provided encryption key for Amazon S3 to use to decrypt the source object. The encryption key provided in this header must be one that was used when the source object was created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-sse\-customer\-key\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the 128\-bit MD5 digest of the encryption key according to RFC 1321. Amazon S3 uses this header for a message integrity check to ensure that the encryption key was transmitted without error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected destination bucket owner. If the destination bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-source\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected source bucket owner. If the source bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo upload part of an object by copying data from an existing object as the data source\fP
+.sp
+The following \fBupload\-part\-copy\fP example uploads a part by copying data from an existing object as a data source.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api upload\-part\-copy \e
+    \-\-bucket my\-bucket \e
+    \-\-key "Map_Data_June.mp4" \e
+    \-\-copy\-source "my\-bucket/copy_of_Map_Data_June.mp4" \e
+    \-\-part\-number 1 \e
+    \-\-upload\-id "bq0tdE1CDpWQYRPLHuNG50xAT6pA5D.m_RiBy0ggOH6b13pVRY7QjvLlf75iFdJqp_2wztk5hvpUM2SesXgrzbehG5hViyktrfANpAD0NO.Nk3XREBqvGeZF6U3ipiSm"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "CopyPartResult": {
+        "LastModified": "2019\-12\-13T23:16:03.000Z",
+        "ETag": "\e"711470fc377698c393d94aed6305e245\e""
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+CopySourceVersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the source object that was copied, if you have enabled versioning on the source bucket.
+.UNINDENT
+.UNINDENT
+.sp
+CopyPartResult \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for all response elements.
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Entity tag of the object.
+.UNINDENT
+.UNINDENT
+.sp
+LastModified \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Date and time at which the object was uploaded.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ServerSideEncryption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing this object in Amazon S3 (for example, AES256, aws:kms).
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header confirming the encryption algorithm used.
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerKeyMD5 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header to provide round\-trip message integrity verification of the customer\-provided encryption key.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the ID of the AWS Key Management Service (AWS KMS) symmetric customer managed customer master key (CMK) that was used for the object.
+.UNINDENT
+.UNINDENT
+.sp
+BucketKeyEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the multipart upload uses an S3 Bucket Key for server\-side encryption with AWS KMS (SSE\-KMS).
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

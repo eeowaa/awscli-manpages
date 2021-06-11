@@ -1,0 +1,878 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-RESTORE-OBJECT" "a" "" ""
+.SH NAME
+s3api-restore-object \- Restores an archived copy of an object back into Amazon S3
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Restores an archived copy of an object back into Amazon S3
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.sp
+This action performs the following types of requests:
+.INDENT 0.0
+.IP \(bu 2
+\fBselect\fP \- Perform a select query on an archived object
+.IP \(bu 2
+\fBrestore an archive\fP \- Restore an archived object
+.UNINDENT
+.sp
+To use this operation, you must have permissions to perform the \fBs3:RestoreObject\fP action. The bucket owner has this permission by default and can grant this permission to others. For more information about permissions, see \fI\%Permissions Related to Bucket Subresource Operations\fP and \fI\%Managing Access Permissions to Your Amazon S3 Resources\fP in the \fIAmazon S3 User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBQuerying Archives with Select Requests\fP
+.UNINDENT
+.UNINDENT
+.sp
+You use a select type of request to perform SQL queries on archived objects. The archived objects that are being queried by the select request must be formatted as uncompressed comma\-separated values (CSV) files. You can run queries and custom analytics on your archived data without having to restore your data to a hotter Amazon S3 tier. For an overview about select requests, see \fI\%Querying Archived Objects\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When making a select request, do the following:
+.INDENT 0.0
+.IP \(bu 2
+Define an output location for the select query\(aqs output. This must be an Amazon S3 bucket in the same AWS Region as the bucket that contains the archive object that is being queried. The AWS account that initiates the job must have permissions to write to the S3 bucket. You can specify the storage class and encryption for the output objects stored in the bucket. For more information about output, see \fI\%Querying Archived Objects\fP in the \fIAmazon S3 User Guide\fP . For more information about the \fBS3\fP structure in the request body, see the following:
+.INDENT 2.0
+.IP \(bu 2
+\fI\%PutObject\fP
+.IP \(bu 2
+\fI\%Managing Access with ACLs\fP in the \fIAmazon S3 User Guide\fP
+.IP \(bu 2
+\fI\%Protecting Data Using Server\-Side Encryption\fP in the \fIAmazon S3 User Guide\fP
+.UNINDENT
+.IP \(bu 2
+Define the SQL expression for the \fBSELECT\fP type of restoration for your query in the request body\(aqs \fBSelectParameters\fP structure. You can use expressions like the following examples.
+.INDENT 2.0
+.IP \(bu 2
+The following expression returns all records from the specified object.  \fBSELECT * FROM Object\fP
+.IP \(bu 2
+Assuming that you are not using any headers for data stored in the object, you can specify columns with positional headers.  \fBSELECT s._1, s._2 FROM Object s WHERE s._3 > 100\fP
+.IP \(bu 2
+If you have headers and you set the \fBfileHeaderInfo\fP in the \fBCSV\fP structure in the request body to \fBUSE\fP , you can specify headers in the query. (If you set the \fBfileHeaderInfo\fP field to \fBIGNORE\fP , the first row is skipped for the query.) You cannot mix ordinal positions with header column names.   \fBSELECT s.Id, s.FirstName, s.SSN FROM S3Object s\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information about using SQL with S3 Glacier Select restore, see \fI\%SQL Reference for Amazon S3 Select and S3 Glacier Select\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When making a select request, you can also do the following:
+.INDENT 0.0
+.IP \(bu 2
+To expedite your queries, specify the \fBExpedited\fP tier. For more information about tiers, see "Restoring Archives," later in this topic.
+.IP \(bu 2
+Specify details about the data serialization format of both the input object that is being queried and the serialization of the CSV\-encoded query results.
+.UNINDENT
+.sp
+The following are additional important facts about the select feature:
+.INDENT 0.0
+.IP \(bu 2
+The output results are new Amazon S3 objects. Unlike archive retrievals, they are stored until explicitly deleted\-manually or through a lifecycle policy.
+.IP \(bu 2
+You can issue more than one select request on the same Amazon S3 object. Amazon S3 doesn\(aqt deduplicate requests, so avoid issuing duplicate requests.
+.IP \(bu 2
+Amazon S3 accepts a select request even if the object has already been restored. A select request doesn’t return error response \fB409\fP .
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBRestoring objects\fP
+.UNINDENT
+.UNINDENT
+.sp
+Objects that you archive to the S3 Glacier or S3 Glacier Deep Archive storage class, and S3 Intelligent\-Tiering Archive or S3 Intelligent\-Tiering Deep Archive tiers are not accessible in real time. For objects in Archive Access or Deep Archive Access tiers you must first initiate a restore request, and then wait until the object is moved into the Frequent Access tier. For objects in S3 Glacier or S3 Glacier Deep Archive storage classes you must first initiate a restore request, and then wait until a temporary copy of the object is available. To access an archived object, you must restore the object for the duration (number of days) that you specify.
+.sp
+To restore a specific object version, you can provide a version ID. If you don\(aqt provide a version ID, Amazon S3 restores the current version.
+.sp
+When restoring an archived object (or using a select request), you can specify one of the following data access tier options in the \fBTier\fP element of the request body:
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBExpedited\fP ** \- Expedited retrievals allow you to quickly access your data stored in the S3 Glacier storage class or S3 Intelligent\-Tiering Archive tier when occasional urgent requests for a subset of archives are required. For all but the largest archived objects (250 MB+), data accessed using Expedited retrievals is typically made available within 1–5 minutes. Provisioned capacity ensures that retrieval capacity for Expedited retrievals is available when you need it. Expedited retrievals and provisioned capacity are not available for objects stored in the S3 Glacier Deep Archive storage class or S3 Intelligent\-Tiering Deep Archive tier.
+.IP "System Message: WARNING/2 (<string>:, line 129)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBStandard\fP ** \- Standard retrievals allow you to access any of your archived objects within several hours. This is the default option for retrieval requests that do not specify the retrieval option. Standard retrievals typically finish within 3–5 hours for objects stored in the S3 Glacier storage class or S3 Intelligent\-Tiering Archive tier. They typically finish within 12 hours for objects stored in the S3 Glacier Deep Archive storage class or S3 Intelligent\-Tiering Deep Archive tier. Standard retrievals are free for objects stored in S3 Intelligent\-Tiering.
+.IP "System Message: WARNING/2 (<string>:, line 131)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBBulk\fP ** \- Bulk retrievals are the lowest\-cost retrieval option in S3 Glacier, enabling you to retrieve large amounts, even petabytes, of data inexpensively. Bulk retrievals typically finish within 5–12 hours for objects stored in the S3 Glacier storage class or S3 Intelligent\-Tiering Archive tier. They typically finish within 48 hours for objects stored in the S3 Glacier Deep Archive storage class or S3 Intelligent\-Tiering Deep Archive tier. Bulk retrievals are free for objects stored in S3 Intelligent\-Tiering.
+.IP "System Message: WARNING/2 (<string>:, line 133)"
+Inline strong start\-string without end\-string.
+.UNINDENT
+.sp
+For more information about archive retrieval options and provisioned capacity for \fBExpedited\fP data access, see \fI\%Restoring Archived Objects\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+You can use Amazon S3 restore speed upgrade to change the restore speed to a faster speed while it is in progress. For more information, see \fI\%Upgrading the speed of an in\-progress restore\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+To get the status of object restoration, you can send a \fBHEAD\fP request. Operations return the \fBx\-amz\-restore\fP header, which provides information about the restoration status, in the response. You can use Amazon S3 event notifications to notify you when a restore is initiated or completed. For more information, see \fI\%Configuring Amazon S3 Event Notifications\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+After restoring an archived object, you can update the restoration period by reissuing the request with a new period. Amazon S3 updates the restoration period relative to the current time and charges only for the request\-there are no data transfer charges. You cannot update the restoration period when Amazon S3 is actively processing your current restore request for the object.
+.sp
+If your bucket has a lifecycle configuration with a rule that includes an expiration action, the object expiration overrides the life span that you specify in a restore request. For example, if you restore an object copy for 10 days, but the object is scheduled to expire in 3 days, Amazon S3 deletes the object in 3 days. For more information about lifecycle configuration, see \fI\%PutBucketLifecycleConfiguration\fP and \fI\%Object Lifecycle Management\fP in \fIAmazon S3 User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBResponses\fP
+.UNINDENT
+.UNINDENT
+.sp
+A successful action returns either the \fB200 OK\fP or \fB202 Accepted\fP status code.
+.INDENT 0.0
+.IP \(bu 2
+If the object is not previously restored, then Amazon S3 returns \fB202 Accepted\fP in the response.
+.IP \(bu 2
+If the object is previously restored, Amazon S3 returns \fB200 OK\fP in the response.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBSpecial Errors\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode: RestoreAlreadyInProgress\fP
+.IP \(bu 2
+\fICause: Object restore is already in progress. (This error does not apply to SELECT type requests.)\fP
+.IP \(bu 2
+\fIHTTP Status Code: 409 Conflict\fP
+.IP \(bu 2
+\fISOAP Fault Code Prefix: Client\fP
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fICode: GlacierExpeditedRetrievalNotAvailable\fP
+.IP \(bu 2
+\fICause: expedited retrievals are currently not available. Try again later. (Returned if there is insufficient capacity to process the Expedited request. This error applies only to Expedited retrievals and not to S3 Standard or Bulk retrievals.)\fP
+.IP \(bu 2
+\fIHTTP Status Code: 503\fP
+.IP \(bu 2
+\fISOAP Fault Code Prefix: N/A\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBRelated Resources\fP
+.IP \(bu 2
+\fI\%PutBucketLifecycleConfiguration\fP
+.IP \(bu 2
+\fI\%GetBucketNotificationConfiguration\fP
+.IP \(bu 2
+\fI\%SQL Reference for Amazon S3 Select and S3 Glacier Select\fP in the \fIAmazon S3 User Guide\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  restore\-object
+\-\-bucket <value>
+\-\-key <value>
+[\-\-version\-id <value>]
+[\-\-restore\-request <value>]
+[\-\-request\-payer <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The bucket name containing the object to restore.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key for which the action was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-version\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+VersionId used to reference a specific version of the object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-restore\-request\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for restore job parameters.
+.sp
+Days \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Lifetime of the active copy in days. Do not use with restores that specify \fBOutputLocation\fP .
+.sp
+The Days element is required for regular restores, and must not be provided for select requests.
+.UNINDENT
+.UNINDENT
+.sp
+GlacierJobParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+S3 Glacier related parameters pertaining to this job. Do not use with restores that specify \fBOutputLocation\fP .
+.sp
+Tier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Retrieval tier at which the restore will be processed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of restore request.
+.UNINDENT
+.UNINDENT
+.sp
+Tier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Retrieval tier at which the restore will be processed.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional description for the job.
+.UNINDENT
+.UNINDENT
+.sp
+SelectParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the parameters for Select job types.
+.sp
+InputSerialization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the serialization format of the object.
+.sp
+CSV \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the serialization of a CSV\-encoded object.
+.sp
+FileHeaderInfo \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the first line of input. Valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP : First line is not a header.
+.IP \(bu 2
+\fBIGNORE\fP : First line is a header, but you can\(aqt use the header values to indicate the column in an expression. You can use column position (such as _1, _2, …) to indicate the column (\fBSELECT s._1 FROM OBJECT s\fP ).
+.IP \(bu 2
+\fBUse\fP : First line is a header, and you can use the header value to identify a column in an expression (\fBSELECT "name" FROM OBJECT\fP ).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Comments \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used to indicate that a row should be ignored when the character is present at the start of that row. You can specify any character to indicate a comment line.
+.UNINDENT
+.UNINDENT
+.sp
+QuoteEscapeCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used for escaping the quotation mark character inside an already escaped value. For example, the value """ a , b """ is parsed as " a , b ".
+.UNINDENT
+.UNINDENT
+.sp
+RecordDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used to separate individual records in the input. Instead of the default value, you can specify an arbitrary delimiter.
+.UNINDENT
+.UNINDENT
+.sp
+FieldDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used to separate individual fields in a record. You can specify an arbitrary delimiter.
+.UNINDENT
+.UNINDENT
+.sp
+QuoteCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used for escaping when the field delimiter is part of the value. For example, if the value is \fBa, b\fP , Amazon S3 wraps this field value in quotation marks, as follows: \fB" a , b "\fP .
+.sp
+Type: String
+.sp
+Default: \fB"\fP
+.sp
+Ancestors: \fBCSV\fP
+.UNINDENT
+.UNINDENT
+.sp
+AllowQuotedRecordDelimiter \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies that CSV field values may contain quoted record delimiters and such records should be allowed. Default value is FALSE. Setting this value to TRUE may lower performance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CompressionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies object\(aqs compression format. Valid values: NONE, GZIP, BZIP2. Default Value: NONE.
+.UNINDENT
+.UNINDENT
+.sp
+JSON \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies JSON as object\(aqs input serialization format.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of JSON. Valid values: Document, Lines.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Parquet \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies Parquet as object\(aqs input serialization format.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ExpressionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the provided expression (for example, SQL).
+.UNINDENT
+.UNINDENT
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The expression that is used to query the object.
+.UNINDENT
+.UNINDENT
+.sp
+OutputSerialization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes how the results of the Select job are serialized.
+.sp
+CSV \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the serialization of CSV\-encoded Select results.
+.sp
+QuoteFields \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to use quotation marks around output fields.
+.INDENT 0.0
+.IP \(bu 2
+\fBALWAYS\fP : Always use quotation marks for output fields.
+.IP \(bu 2
+\fBASNEEDED\fP : Use quotation marks for output fields when needed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+QuoteEscapeCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The single character used for escaping the quote character inside an already escaped value.
+.UNINDENT
+.UNINDENT
+.sp
+RecordDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used to separate individual records in the output. Instead of the default value, you can specify an arbitrary delimiter.
+.UNINDENT
+.UNINDENT
+.sp
+FieldDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value used to separate individual fields in a record. You can specify an arbitrary delimiter.
+.UNINDENT
+.UNINDENT
+.sp
+QuoteCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used for escaping when the field delimiter is part of the value. For example, if the value is \fBa, b\fP , Amazon S3 wraps this field value in quotation marks, as follows: \fB" a , b "\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies JSON as request\(aqs output serialization format.
+.sp
+RecordDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value used to separate individual records in the output. If no value is specified, Amazon S3 uses a newline character (\(aqn\(aq).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OutputLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the location where the restore job\(aqs output is stored.
+.sp
+S3 \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an S3 location that will receive the results of the restore request.
+.sp
+BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket where the restore results will be placed.
+.UNINDENT
+.UNINDENT
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The prefix that is prepended to the restore results for this request.
+.UNINDENT
+.UNINDENT
+.sp
+Encryption \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the type of server\-side encryption used.
+.sp
+EncryptionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing job results in Amazon S3 (for example, AES256, aws:kms).
+.UNINDENT
+.UNINDENT
+.sp
+KMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the encryption type is \fBaws:kms\fP , this optional value specifies the ID of the symmetric customer managed AWS KMS CMK to use for encryption of job results. Amazon S3 only supports symmetric CMKs. For more information, see \fI\%Using symmetric and asymmetric keys\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+KMSContext \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the encryption type is \fBaws:kms\fP , this optional value can be used to specify the encryption context for the restore results.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CannedACL \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The canned ACL to apply to the restore results.
+.UNINDENT
+.UNINDENT
+.sp
+AccessControlList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of grants that control access to the staged results.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for grant information.
+.sp
+Grantee \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The person being granted permissions.
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Screen name of the grantee.
+.UNINDENT
+.UNINDENT
+.sp
+EmailAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Email address of the grantee.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Using email addresses to specify a grantee is only supported in the following AWS Regions:
+.INDENT 0.0
+.IP \(bu 2
+US East (N. Virginia)
+.IP \(bu 2
+US West (N. California)
+.IP \(bu 2
+US West (Oregon)
+.IP \(bu 2
+Asia Pacific (Singapore)
+.IP \(bu 2
+Asia Pacific (Sydney)
+.IP \(bu 2
+Asia Pacific (Tokyo)
+.IP \(bu 2
+Europe (Ireland)
+.IP \(bu 2
+South America (São Paulo)
+.UNINDENT
+.sp
+For a list of all the Amazon S3 supported Regions and endpoints, see \fI\%Regions and Endpoints\fP in the AWS General Reference.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The canonical user ID of the grantee.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of grantee
+.UNINDENT
+.UNINDENT
+.sp
+URI \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+URI of the grantee group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Permission \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the permission given to the grantee.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tagging \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The tag\-set that is applied to the restore results.
+.sp
+TagSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection for a set of tags
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A container of a key value name pair.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the object key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UserMetadata \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of metadata to store with the restore results in S3.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A metadata key\-value pair to store with an object.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Object.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Value of the Object.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The class of storage used to store the restore results.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Days": integer,
+  "GlacierJobParameters": {
+    "Tier": "Standard"|"Bulk"|"Expedited"
+  },
+  "Type": "SELECT",
+  "Tier": "Standard"|"Bulk"|"Expedited",
+  "Description": "string",
+  "SelectParameters": {
+    "InputSerialization": {
+      "CSV": {
+        "FileHeaderInfo": "USE"|"IGNORE"|"NONE",
+        "Comments": "string",
+        "QuoteEscapeCharacter": "string",
+        "RecordDelimiter": "string",
+        "FieldDelimiter": "string",
+        "QuoteCharacter": "string",
+        "AllowQuotedRecordDelimiter": true|false
+      },
+      "CompressionType": "NONE"|"GZIP"|"BZIP2",
+      "JSON": {
+        "Type": "DOCUMENT"|"LINES"
+      },
+      "Parquet": {
+
+      }
+    },
+    "ExpressionType": "SQL",
+    "Expression": "string",
+    "OutputSerialization": {
+      "CSV": {
+        "QuoteFields": "ALWAYS"|"ASNEEDED",
+        "QuoteEscapeCharacter": "string",
+        "RecordDelimiter": "string",
+        "FieldDelimiter": "string",
+        "QuoteCharacter": "string"
+      },
+      "JSON": {
+        "RecordDelimiter": "string"
+      }
+    }
+  },
+  "OutputLocation": {
+    "S3": {
+      "BucketName": "string",
+      "Prefix": "string",
+      "Encryption": {
+        "EncryptionType": "AES256"|"aws:kms",
+        "KMSKeyId": "string",
+        "KMSContext": "string"
+      },
+      "CannedACL": "private"|"public\-read"|"public\-read\-write"|"authenticated\-read"|"aws\-exec\-read"|"bucket\-owner\-read"|"bucket\-owner\-full\-control",
+      "AccessControlList": [
+        {
+          "Grantee": {
+            "DisplayName": "string",
+            "EmailAddress": "string",
+            "ID": "string",
+            "Type": "CanonicalUser"|"AmazonCustomerByEmail"|"Group",
+            "URI": "string"
+          },
+          "Permission": "FULL_CONTROL"|"WRITE"|"WRITE_ACP"|"READ"|"READ_ACP"
+        }
+        ...
+      ],
+      "Tagging": {
+        "TagSet": [
+          {
+            "Key": "string",
+            "Value": "string"
+          }
+          ...
+        ]
+      },
+      "UserMetadata": [
+        {
+          "Name": "string",
+          "Value": "string"
+        }
+        ...
+      ],
+      "StorageClass": "STANDARD"|"REDUCED_REDUNDANCY"|"STANDARD_IA"|"ONEZONE_IA"|"INTELLIGENT_TIERING"|"GLACIER"|"DEEP_ARCHIVE"|"OUTPOSTS"
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a restore request for an object\fP
+.sp
+The following \fBrestore\-object\fP example restores the specified Amazon S3 Glacier object for the bucket \fBmy\-glacier\-bucket\fP for 10 days.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api restore\-object \e
+    \-\-bucket my\-glacier\-bucket \e
+    \-\-key doc1.rtf \e
+    \-\-restore\-request Days=10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.SH OUTPUT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.sp
+RestoreOutputPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the path in the provided S3 output location where Select results will be restored to.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

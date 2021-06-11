@@ -1,0 +1,232 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-GENERATE-DATA-KEY-WITHOUT-PLAINTEXT" "a" "" ""
+.SH NAME
+kms-generate-data-key-without-plaintext \- Generates a unique symmetric data key
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Generates a unique symmetric data key. This operation returns a data key that is encrypted under a customer master key (CMK) that you specify. To request an asymmetric data key pair, use the  GenerateDataKeyPair or  GenerateDataKeyPairWithoutPlaintext operations.
+.INDENT 0.0
+.INDENT 3.5
+\fBGenerateDataKeyWithoutPlaintext\fP is identical to the  GenerateDataKey operation except that returns only the encrypted copy of the data key. This operation is useful for systems that need to encrypt data at some point, but not immediately. When you need to encrypt the data, you call the  Decrypt operation on the encrypted copy of the key.
+.UNINDENT
+.UNINDENT
+.sp
+It\(aqs also useful in distributed systems with different levels of trust. For example, you might store encrypted data in containers. One component of your system creates new containers and stores an encrypted data key with each container. Then, a different component puts the data into the containers. That component first decrypts the data key, uses the plaintext data key to encrypt data, puts the encrypted data into the container, and then destroys the plaintext data key. In this system, the component that creates the containers never sees the plaintext data key.
+.INDENT 0.0
+.INDENT 3.5
+\fBGenerateDataKeyWithoutPlaintext\fP returns a unique data key for each request. The bytes in the keys are not related to the caller or CMK that is used to encrypt the private key.
+.UNINDENT
+.UNINDENT
+.sp
+To generate a data key, you must specify the symmetric customer master key (CMK) that is used to encrypt the data key. You cannot use an asymmetric CMK to generate a data key. To get the type of your CMK, use the  DescribeKey operation.
+.sp
+If the operation succeeds, you will find the encrypted copy of the data key in the \fBCiphertextBlob\fP field.
+.sp
+You can use the optional encryption context to add additional security to the encryption operation. If you specify an \fBEncryptionContext\fP , you must specify the same encryption context (a case\-sensitive exact match) when decrypting the encrypted data key. Otherwise, the request to decrypt fails with an \fBInvalidCiphertextException\fP . For more information, see \fI\%Encryption Context\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+The CMK that you use for this operation must be in a compatible key state. For details, see \fI\%How Key State Affects Use of a Customer Master Key\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : Yes. To perform this operation with a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the \fBKeyId\fP parameter.
+.sp
+\fBRequired permissions\fP : \fI\%kms:GenerateDataKeyWithoutPlaintext\fP (key policy)
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Decrypt
+.IP \(bu 2
+Encrypt
+.IP \(bu 2
+GenerateDataKey
+.IP \(bu 2
+GenerateDataKeyPair
+.IP \(bu 2
+GenerateDataKeyPairWithoutPlaintext
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  generate\-data\-key\-without\-plaintext
+\-\-key\-id <value>
+[\-\-encryption\-context <value>]
+[\-\-key\-spec <value>]
+[\-\-number\-of\-bytes <value>]
+[\-\-grant\-tokens <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the symmetric customer master key (CMK) that encrypts the data key.
+.sp
+To specify a CMK, use its key ID, Amazon Resource Name (ARN), alias name, or alias ARN. When using an alias name, prefix it with \fB"alias/"\fP . To specify a CMK in a different AWS account, you must use the key ARN or alias ARN.
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Alias name: \fBalias/ExampleAlias\fP
+.IP \(bu 2
+Alias ARN: \fBarn:aws:kms:us\-east\-2:111122223333:alias/ExampleAlias\fP
+.UNINDENT
+.sp
+To get the key ID and key ARN for a CMK, use  ListKeys or  DescribeKey . To get the alias name and alias ARN, use  ListAliases .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encryption\-context\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the encryption context that will be used when encrypting the data key.
+.sp
+An \fIencryption context\fP is a collection of non\-secret key\-value pairs that represents additional authenticated data. When you use an encryption context to encrypt data, you must specify the same (an exact case\-sensitive match) encryption context to decrypt the data. An encryption context is optional when encrypting with a symmetric CMK, but it is highly recommended.
+.sp
+For more information, see \fI\%Encryption Context\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-spec\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The length of the data key. Use \fBAES_128\fP to generate a 128\-bit symmetric key, or \fBAES_256\fP to generate a 256\-bit symmetric key.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAES_256\fP
+.IP \(bu 2
+\fBAES_128\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-number\-of\-bytes\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The length of the data key in bytes. For example, use the value 64 to generate a 512\-bit data key (64 bytes is 512 bits). For common key lengths (128\-bit and 256\-bit symmetric keys), we recommend that you use the \fBKeySpec\fP field instead of this one.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-tokens\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of grant tokens.
+.sp
+For more information, see \fI\%Grant Tokens\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+CiphertextBlob \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The encrypted data key. When you use the HTTP API or the AWS CLI, the value is Base64\-encoded. Otherwise, it is not Base64\-encoded.
+.UNINDENT
+.UNINDENT
+.sp
+KeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%key ARN\fP ) of the CMK that encrypted the data key.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

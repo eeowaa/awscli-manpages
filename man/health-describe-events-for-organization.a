@@ -1,0 +1,426 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "HEALTH-DESCRIBE-EVENTS-FOR-ORGANIZATION" "a" "" ""
+.SH NAME
+health-describe-events-for-organization \- Returns information about events across your organization in AWS Organizations
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about events across your organization in AWS Organizations. You can use the\(ga\(gafilters\(ga\(ga parameter to specify the events that you want to return. Events are returned in a summary form and don\(aqt include the affected accounts, detailed description, any additional metadata that depends on the event type, or any affected resources. To retrieve that information, use the following operations:
+.INDENT 0.0
+.IP \(bu 2
+\fI\%DescribeAffectedAccountsForOrganization\fP
+.IP \(bu 2
+\fI\%DescribeEventDetailsForOrganization\fP
+.IP \(bu 2
+\fI\%DescribeAffectedEntitiesForOrganization\fP
+.UNINDENT
+.sp
+If you don\(aqt specify a \fBfilter\fP , the \fBDescribeEventsForOrganizations\fP returns all events across your organization. Results are sorted by \fBlastModifiedTime\fP , starting with the most recent event.
+.sp
+For more information about the different types of AWS Health events, see \fI\%Event\fP .
+.sp
+Before you can call this operation, you must first enable AWS Health to work with AWS Organizations. To do this, call the \fI\%EnableHealthServiceAccessForOrganization\fP operation from your organization\(aqs management account.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This API operation uses pagination. Specify the \fBnextToken\fP parameter in the next request to return more results.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBdescribe\-events\-for\-organization\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBevents\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-events\-for\-organization
+[\-\-filter <value>]
+[\-\-locale <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-filter\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Values to narrow the results returned.
+.sp
+eventTypeCodes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of unique identifiers for event types. For example, \fB"AWS_EC2_SYSTEM_MAINTENANCE_EVENT","AWS_RDS_MAINTENANCE_SCHEDULED".\fP
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+awsAccountIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of 12\-digit AWS account numbers that contains the affected entities.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+services \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS services associated with the event. For example, \fBEC2\fP , \fBRDS\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+regions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of AWS Regions.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+startTime \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A range of dates and times that is used by the \fI\%EventFilter\fP and \fI\%EntityFilter\fP objects. If \fBfrom\fP is set and \fBto\fP is set: match items where the timestamp (\fBstartTime\fP , \fBendTime\fP , or \fBlastUpdatedTime\fP ) is between \fBfrom\fP and \fBto\fP inclusive. If \fBfrom\fP is set and \fBto\fP is not set: match items where the timestamp value is equal to or after \fBfrom\fP . If \fBfrom\fP is not set and \fBto\fP is set: match items where the timestamp value is equal to or before \fBto\fP .
+.sp
+from \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The starting date and time of a time range.
+.UNINDENT
+.UNINDENT
+.sp
+to \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The ending date and time of a time range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+endTime \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A range of dates and times that is used by the \fI\%EventFilter\fP and \fI\%EntityFilter\fP objects. If \fBfrom\fP is set and \fBto\fP is set: match items where the timestamp (\fBstartTime\fP , \fBendTime\fP , or \fBlastUpdatedTime\fP ) is between \fBfrom\fP and \fBto\fP inclusive. If \fBfrom\fP is set and \fBto\fP is not set: match items where the timestamp value is equal to or after \fBfrom\fP . If \fBfrom\fP is not set and \fBto\fP is set: match items where the timestamp value is equal to or before \fBto\fP .
+.sp
+from \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The starting date and time of a time range.
+.UNINDENT
+.UNINDENT
+.sp
+to \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The ending date and time of a time range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+lastUpdatedTime \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A range of dates and times that is used by the \fI\%EventFilter\fP and \fI\%EntityFilter\fP objects. If \fBfrom\fP is set and \fBto\fP is set: match items where the timestamp (\fBstartTime\fP , \fBendTime\fP , or \fBlastUpdatedTime\fP ) is between \fBfrom\fP and \fBto\fP inclusive. If \fBfrom\fP is set and \fBto\fP is not set: match items where the timestamp value is equal to or after \fBfrom\fP . If \fBfrom\fP is not set and \fBto\fP is set: match items where the timestamp value is equal to or before \fBto\fP .
+.sp
+from \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The starting date and time of a time range.
+.UNINDENT
+.UNINDENT
+.sp
+to \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The ending date and time of a time range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+entityArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of entity ARNs (unique identifiers).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+entityValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of entity identifiers, such as EC2 instance IDs (i\-34ab692e) or EBS volumes (vol\-426ab23e).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+eventTypeCategories \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of event type category codes (issue, scheduledChange, or accountNotification).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+eventStatusCodes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of event status codes.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+eventTypeCodes=string,string,awsAccountIds=string,string,services=string,string,regions=string,string,startTime={from=timestamp,to=timestamp},endTime={from=timestamp,to=timestamp},lastUpdatedTime={from=timestamp,to=timestamp},entityArns=string,string,entityValues=string,string,eventTypeCategories=string,string,eventStatusCodes=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "eventTypeCodes": ["string", ...],
+  "awsAccountIds": ["string", ...],
+  "services": ["string", ...],
+  "regions": ["string", ...],
+  "startTime": {
+    "from": timestamp,
+    "to": timestamp
+  },
+  "endTime": {
+    "from": timestamp,
+    "to": timestamp
+  },
+  "lastUpdatedTime": {
+    "from": timestamp,
+    "to": timestamp
+  },
+  "entityArns": ["string", ...],
+  "entityValues": ["string", ...],
+  "eventTypeCategories": ["issue"|"accountNotification"|"scheduledChange"|"investigation", ...],
+  "eventStatusCodes": ["open"|"closed"|"upcoming", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-locale\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The locale (language) to return information in. English (en) is the default and the only supported value at this time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+events \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The events that match the specified filter criteria.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Summary information about an event, returned by the \fI\%DescribeEventsForOrganization\fP operation.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the event. The event ARN has the 
+.nf
+\(ga\(ga
+.fi
+arn:aws:health:\fIevent\-region\fP ::event/\fISERVICE\fP /\fIEVENT_TYPE_CODE\fP /\fIEVENT_TYPE_PLUS_ID\fP \(ga\(ga format.
+.IP "System Message: WARNING/2 (<string>:, line 420)"
+Inline literal start\-string without end\-string.
+.sp
+For example, an event ARN might look like the following:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:health:us\-east\-1::event/EC2/EC2_INSTANCE_RETIREMENT_SCHEDULED/EC2_INSTANCE_RETIREMENT_SCHEDULED_ABC123\-DEF456\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+service \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS service that is affected by the event, such as EC2 and RDS.
+.UNINDENT
+.UNINDENT
+.sp
+eventTypeCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the event type. The format is \fBAWS_SERVICE_DESCRIPTION\fP . For example, \fBAWS_EC2_SYSTEM_MAINTENANCE_EVENT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+eventTypeCategory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The category of the event type.
+.UNINDENT
+.UNINDENT
+.sp
+eventScopeCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter specifies if the AWS Health event is a public AWS service event or an account\-specific event.
+.INDENT 0.0
+.IP \(bu 2
+If the \fBeventScopeCode\fP value is \fBPUBLIC\fP , then the \fBaffectedAccounts\fP value is always empty.
+.IP \(bu 2
+If the \fBeventScopeCode\fP value is \fBACCOUNT_SPECIFIC\fP , then the \fBaffectedAccounts\fP value lists the affected AWS accounts in your organization. For example, if an event affects a service such as Amazon Elastic Compute Cloud and you have AWS accounts that use that service, those account IDs appear in the response.
+.IP \(bu 2
+If the \fBeventScopeCode\fP value is \fBNONE\fP , then the \fBeventArn\fP that you specified in the request is invalid or doesn\(aqt exist.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region name of the event.
+.UNINDENT
+.UNINDENT
+.sp
+startTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the event began.
+.UNINDENT
+.UNINDENT
+.sp
+endTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the event ended.
+.UNINDENT
+.UNINDENT
+.sp
+lastUpdatedTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The most recent date and time that the event was updated.
+.UNINDENT
+.UNINDENT
+.sp
+statusCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The most recent status of the event. Possible values are \fBopen\fP , \fBclosed\fP , and \fBupcoming\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+nextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the results of a search are large, only a portion of the results are returned, and a \fBnextToken\fP pagination token is returned in the response. To retrieve the next batch of results, reissue the search request and include the returned token. When all results have been returned, the response does not contain a pagination token value.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

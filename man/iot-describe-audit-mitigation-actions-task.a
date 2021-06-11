@@ -1,0 +1,421 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-DESCRIBE-AUDIT-MITIGATION-ACTIONS-TASK" "a" "" ""
+.SH NAME
+iot-describe-audit-mitigation-actions-task \- Gets information about an audit mitigation task that is used to apply mitigation actions to a set of audit findings
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets information about an audit mitigation task that is used to apply mitigation actions to a set of audit findings. Properties include the actions being applied, the audit checks to which they\(aqre being applied, the task status, and aggregated task statistics.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-audit\-mitigation\-actions\-task
+\-\-task\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-task\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the audit mitigation task.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo show the details of an audit mitigation actions task\fP
+.sp
+The following \fBdescribe\-audit\-mitigation\-actions\-task\fP example shows the details for the specified task, where the \fBResetPolicyVersionAction\fP was applied to a finding. The results include when the task started and ended, how many findings were targeted (and the outcome), and the definition of the action that is applied as part of this task.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot describe\-audit\-mitigation\-actions\-task \e
+    \-\-task\-id ResetPolicyTask01
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "taskStatus": "COMPLETED",
+    "startTime": "2019\-12\-10T15:13:19.457000\-08:00",
+    "endTime": "2019\-12\-10T15:13:19.947000\-08:00",
+    "taskStatistics": {
+        "IOT_POLICY_OVERLY_PERMISSIVE_CHECK": {
+            "totalFindingsCount": 1,
+            "failedFindingsCount": 0,
+            "succeededFindingsCount": 1,
+            "skippedFindingsCount": 0,
+            "canceledFindingsCount": 0
+        }
+    },
+    "target": {
+        "findingIds": [
+            "ef4826b8\-e55a\-44b9\-b460\-5c485355371b"
+        ]
+    },
+    "auditCheckToActionsMapping": {
+        "IOT_POLICY_OVERLY_PERMISSIVE_CHECK": [
+            "ResetPolicyVersionAction"
+        ]
+    },
+    "actionsDefinition": [
+        {
+            "name": "ResetPolicyVersionAction",
+            "id": "1ea0b415\-bef1\-4a01\-bd13\-72fb63c59afb",
+            "roleArn": "arn:aws:iam::123456789012:role/service\-role/ReplacePolicyVersionRole",
+            "actionParams": {
+                "replaceDefaultPolicyVersionParams": {
+                    "templateName": "BLANK_POLICY"
+                }
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%DescribeAuditMitigationActionsTask (Mitigation Action Commands)\fP in the \fIAWS IoT Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+taskStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the task.
+.UNINDENT
+.UNINDENT
+.sp
+startTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the task was started.
+.UNINDENT
+.UNINDENT
+.sp
+endTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the task was completed or canceled.
+.UNINDENT
+.UNINDENT
+.sp
+taskStatistics \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Aggregate counts of the results when the mitigation tasks were applied to the findings for this audit mitigation actions task.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An audit check name. Checks must be enabled for your account. (Use \fBDescribeAccountAuditConfiguration\fP to see the list of all checks, including those that are enabled or use \fBUpdateAccountAuditConfiguration\fP to select which checks are enabled.)
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides summary counts of how many tasks for findings are in a particular state. This information is included in the response from DescribeAuditMitigationActionsTask.
+.sp
+totalFindingsCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The total number of findings to which a task is being applied.
+.UNINDENT
+.UNINDENT
+.sp
+failedFindingsCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of findings for which at least one of the actions failed when applied.
+.UNINDENT
+.UNINDENT
+.sp
+succeededFindingsCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of findings for which all mitigation actions succeeded when applied.
+.UNINDENT
+.UNINDENT
+.sp
+skippedFindingsCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of findings skipped because of filter conditions provided in the parameters to the command.
+.UNINDENT
+.UNINDENT
+.sp
+canceledFindingsCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of findings to which the mitigation action task was canceled when applied.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+target \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the findings to which the mitigation actions are applied. This can be by audit checks, by audit task, or a set of findings.
+.sp
+auditTaskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the task will apply a mitigation action to findings from a specific audit, this value uniquely identifies the audit.
+.UNINDENT
+.UNINDENT
+.sp
+findingIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If the task will apply a mitigation action to one or more listed findings, this value uniquely identifies those findings.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+auditCheckToReasonCodeFilter \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a filter in the form of an audit check and set of reason codes that identify the findings from the audit to which the audit mitigation actions task apply.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An audit check name. Checks must be enabled for your account. (Use \fBDescribeAccountAuditConfiguration\fP to see the list of all checks, including those that are enabled or use \fBUpdateAccountAuditConfiguration\fP to select which checks are enabled.)
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+auditCheckToActionsMapping \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the mitigation actions that should be applied to specific audit checks.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An audit check name. Checks must be enabled for your account. (Use \fBDescribeAccountAuditConfiguration\fP to see the list of all checks, including those that are enabled or use \fBUpdateAccountAuditConfiguration\fP to select which checks are enabled.)
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+actionsDefinition \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the mitigation actions and their parameters that are applied as part of this task.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes which changes should be applied as part of a mitigation action.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-friendly name for the mitigation action.
+.UNINDENT
+.UNINDENT
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the mitigation action.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IAM role ARN used to apply this mitigation action.
+.UNINDENT
+.UNINDENT
+.sp
+actionParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The set of parameters for this mitigation action. The parameters vary, depending on the kind of action you apply.
+.sp
+updateDeviceCertificateParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters to define a mitigation action that changes the state of the device certificate to inactive.
+.sp
+action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action that you want to apply to the device certificate. The only supported value is \fBDEACTIVATE\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+updateCACertificateParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters to define a mitigation action that changes the state of the CA certificate to inactive.
+.sp
+action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action that you want to apply to the CA certificate. The only supported value is \fBDEACTIVATE\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+addThingsToThingGroupParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters to define a mitigation action that moves devices associated with a certificate to one or more specified thing groups, typically for quarantine.
+.sp
+thingGroupNames \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of groups to which you want to add the things that triggered the mitigation action. You can add a thing to a maximum of 10 groups, but you can\(aqt add a thing to more than one group in the same hierarchy.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+overrideDynamicGroups \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies if this mitigation action can move the things that triggered the mitigation action even if they are part of one or more dynamic thing groups.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+replaceDefaultPolicyVersionParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters to define a mitigation action that adds a blank policy to restrict permissions.
+.sp
+templateName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the template to be applied. The only supported value is \fBBLANK_POLICY\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+enableIoTLoggingParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters to define a mitigation action that enables AWS IoT logging at a specified level of detail.
+.sp
+roleArnForLogging \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM role used for logging.
+.UNINDENT
+.UNINDENT
+.sp
+logLevel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of information to be logged.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+publishFindingToSnsParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters to define a mitigation action that publishes findings to Amazon Simple Notification Service (Amazon SNS. You can implement your own custom actions in response to the Amazon SNS messages.
+.sp
+topicArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the topic to which you want to publish the findings.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

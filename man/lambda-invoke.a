@@ -1,0 +1,267 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LAMBDA-INVOKE" "a" "" ""
+.SH NAME
+lambda-invoke \- Invokes a Lambda function
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Invokes a Lambda function. You can invoke a function synchronously (and wait for the response), or asynchronously. To invoke a function asynchronously, set \fBInvocationType\fP to \fBEvent\fP .
+.sp
+For \fI\%synchronous invocation\fP , details about the function response, including errors, are included in the response body and headers. For either invocation type, you can find more information in the \fI\%execution log\fP and \fI\%trace\fP .
+.sp
+When an error occurs, your function may be invoked multiple times. Retry behavior varies by error type, client, event source, and invocation type. For example, if you invoke a function asynchronously and it returns an error, Lambda executes the function up to two more times. For more information, see \fI\%Retry Behavior\fP .
+.sp
+For \fI\%asynchronous invocation\fP , Lambda adds events to a queue before sending them to your function. If your function does not have enough capacity to keep up with the queue, events may be lost. Occasionally, your function may receive the same event multiple times, even if no error occurs. To retain events that were not processed, configure your function with a \fI\%dead\-letter queue\fP .
+.sp
+The status code in the API response doesn\(aqt reflect function errors. Error codes are reserved for errors that prevent your function from executing, such as permissions errors, \fI\%limit errors\fP , or issues with your function\(aqs code and configuration. For example, Lambda returns \fBTooManyRequestsException\fP if executing the function would cause you to exceed a concurrency limit at either the account level (\fBConcurrentInvocationLimitExceeded\fP ) or function level (\fBReservedFunctionConcurrentInvocationLimitExceeded\fP ).
+.sp
+For functions with a long timeout, your client might be disconnected during synchronous invocation while it waits for a response. Configure your HTTP client, SDK, firewall, proxy, or operating system to allow for long connections with timeout or keep\-alive settings.
+.sp
+This operation requires permission for the \fI\%lambda:InvokeFunction\fP action.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  invoke
+\-\-function\-name <value>
+[\-\-invocation\-type <value>]
+[\-\-log\-type <value>]
+[\-\-client\-context <value>]
+[\-\-payload <value>]
+[\-\-qualifier <value>]
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-function\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Lambda function, version, or alias.
+.INDENT 0.0
+.INDENT 3.5
+\fBName formats\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBFunction name\fP \- \fBmy\-function\fP (name\-only), \fBmy\-function:v1\fP (with alias).
+.IP \(bu 2
+\fBFunction ARN\fP \- \fBarn:aws:lambda:us\-west\-2:123456789012:function:my\-function\fP .
+.IP \(bu 2
+\fBPartial ARN\fP \- \fB123456789012:function:my\-function\fP .
+.UNINDENT
+.sp
+You can append a version number or alias to any of the formats. The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-invocation\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Choose from the following options.
+.INDENT 0.0
+.IP \(bu 2
+\fBRequestResponse\fP (default) \- Invoke the function synchronously. Keep the connection open until the function returns a response or times out. The API response includes the function response and additional data.
+.IP \(bu 2
+\fBEvent\fP \- Invoke the function asynchronously. Send events that fail multiple times to the function\(aqs dead\-letter queue (if it\(aqs configured). The API response only includes a status code.
+.IP \(bu 2
+\fBDryRun\fP \- Validate parameter values and verify that the user or role has permission to invoke the function.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBEvent\fP
+.IP \(bu 2
+\fBRequestResponse\fP
+.IP \(bu 2
+\fBDryRun\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Set to \fBTail\fP to include the execution log in the response.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNone\fP
+.IP \(bu 2
+\fBTail\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-context\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Up to 3583 bytes of base64\-encoded data about the invoking client to pass to the function in the context object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-payload\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The JSON that you want to provide to your Lambda function as input.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-qualifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify a version or alias to invoke a published version of the function.
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To invoke a Lambda function synchronously\fP
+.sp
+The following \fBinvoke\fP example invokes the \fBmy\-function\fP function synchronously.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws lambda invoke \e
+    \-\-cli\-binary\-format raw\-in\-base64\-out \e
+    \-\-function\-name my\-function \e
+    \-\-payload \(aq{ "name": "Bob" }\(aq \e
+    response.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ExecutedVersion": "$LATEST",
+    "StatusCode": 200
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Synchronous Invocation\fP in the \fIAWS Lambda Developer Guide\fP\&.
+.sp
+\fBExample 2: To invoke a Lambda function asynchronously\fP
+.sp
+The following \fBinvoke\fP example invokes the \fBmy\-function\fP function asynchronously.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws lambda invoke \e
+    \-\-cli\-binary\-format raw\-in\-base64\-out \e
+    \-\-function\-name my\-function \e
+    \-\-invocation\-type Event \e
+    \-\-payload \(aq{ "name": "Bob" }\(aq \e
+    response.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StatusCode": 202
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Asynchronous Invocation\fP in the \fIAWS Lambda Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+StatusCode \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The HTTP status code is in the 200 range for a successful request. For the \fBRequestResponse\fP invocation type, this status code is 200. For the \fBEvent\fP invocation type, this status code is 202. For the \fBDryRun\fP invocation type, the status code is 204.
+.UNINDENT
+.UNINDENT
+.sp
+FunctionError \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that an error occurred during function execution. Details about the error are included in the response payload.
+.UNINDENT
+.UNINDENT
+.sp
+LogResult \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The last 4 KB of the execution log, which is base64 encoded.
+.UNINDENT
+.UNINDENT
+.sp
+Payload \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The response from the function, or an error object.
+.UNINDENT
+.UNINDENT
+.sp
+ExecutedVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the function that executed. When you invoke a function with an alias, this indicates which version the alias resolved to.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

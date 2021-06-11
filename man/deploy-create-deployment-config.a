@@ -1,0 +1,297 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DEPLOY-CREATE-DEPLOYMENT-CONFIG" "a" "" ""
+.SH NAME
+deploy-create-deployment-config \- Creates a deployment configuration
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a deployment configuration.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-deployment\-config
+\-\-deployment\-config\-name <value>
+[\-\-minimum\-healthy\-hosts <value>]
+[\-\-traffic\-routing\-config <value>]
+[\-\-compute\-platform <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-deployment\-config\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the deployment configuration to create.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-minimum\-healthy\-hosts\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of healthy instances that should be available at any time during the deployment. There are two parameters expected in the input: type and value.
+.sp
+The type parameter takes either of the following values:
+.INDENT 0.0
+.IP \(bu 2
+HOST_COUNT: The value parameter represents the minimum number of healthy instances as an absolute value.
+.IP \(bu 2
+FLEET_PERCENT: The value parameter represents the minimum number of healthy instances as a percentage of the total number of instances in the deployment. If you specify FLEET_PERCENT, at the start of the deployment, AWS CodeDeploy converts the percentage to the equivalent number of instances and rounds up fractional instances.
+.UNINDENT
+.sp
+The value parameter takes an integer.
+.sp
+For example, to set a minimum of 95% healthy instance, specify a type of FLEET_PERCENT and a value of 95.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The minimum healthy instance type:
+.INDENT 0.0
+.IP \(bu 2
+\fBHOST_COUNT\fP : The minimum number of healthy instances as an absolute value.
+.IP \(bu 2
+\fBFLEET_PERCENT\fP : The minimum number of healthy instances as a percentage of the total number of instances in the deployment.
+.UNINDENT
+.sp
+In an example of nine instances, if a HOST_COUNT of six is specified, deploy to up to three instances at a time. The deployment is successful if six or more instances are deployed to successfully. Otherwise, the deployment fails. If a FLEET_PERCENT of 40 is specified, deploy to up to five instances at a time. The deployment is successful if four or more instances are deployed to successfully. Otherwise, the deployment fails.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+In a call to the \fBGetDeploymentConfig\fP , CodeDeployDefault.OneAtATime returns a minimum healthy instance type of MOST_CONCURRENCY and a value of 1. This means a deployment to only one instance at a time. (You cannot set the type to MOST_CONCURRENCY, only to HOST_COUNT or FLEET_PERCENT.) In addition, with CodeDeployDefault.OneAtATime, AWS CodeDeploy attempts to ensure that all instances but one are kept in a healthy state during the deployment. Although this allows one instance at a time to be taken offline for a new deployment, it also means that if the deployment to the last instance fails, the overall deployment is still successful.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%AWS CodeDeploy Instance Health\fP in the \fIAWS CodeDeploy User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum healthy instance value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,value=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "type": "HOST_COUNT"|"FLEET_PERCENT",
+  "value": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-traffic\-routing\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration that specifies how the deployment traffic is routed.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of traffic shifting (\fBTimeBasedCanary\fP or \fBTimeBasedLinear\fP ) used by a deployment configuration.
+.UNINDENT
+.UNINDENT
+.sp
+timeBasedCanary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A configuration that shifts traffic from one version of a Lambda function or ECS task set to another in two increments. The original and target Lambda function versions or ECS task sets are specified in the deployment\(aqs AppSpec file.
+.sp
+canaryPercentage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of traffic to shift in the first increment of a \fBTimeBasedCanary\fP deployment.
+.UNINDENT
+.UNINDENT
+.sp
+canaryInterval \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of minutes between the first and second traffic shifts of a \fBTimeBasedCanary\fP deployment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeBasedLinear \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A configuration that shifts traffic from one version of a Lambda function or ECS task set to another in equal increments, with an equal number of minutes between each increment. The original and target Lambda function versions or ECS task sets are specified in the deployment\(aqs AppSpec file.
+.sp
+linearPercentage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of traffic that is shifted at the start of each increment of a \fBTimeBasedLinear\fP deployment.
+.UNINDENT
+.UNINDENT
+.sp
+linearInterval \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of minutes between each incremental traffic shift of a \fBTimeBasedLinear\fP deployment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,timeBasedCanary={canaryPercentage=integer,canaryInterval=integer},timeBasedLinear={linearPercentage=integer,linearInterval=integer}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "type": "TimeBasedCanary"|"TimeBasedLinear"|"AllAtOnce",
+  "timeBasedCanary": {
+    "canaryPercentage": integer,
+    "canaryInterval": integer
+  },
+  "timeBasedLinear": {
+    "linearPercentage": integer,
+    "linearInterval": integer
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-compute\-platform\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The destination platform type for the deployment (\fBLambda\fP , \fBServer\fP , or \fBECS\fP ).
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBServer\fP
+.IP \(bu 2
+\fBLambda\fP
+.IP \(bu 2
+\fBECS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a custom deployment configuration\fP
+.sp
+The following \fBcreate\-deployment\-config\fP example creates a custom deployment configuration and associates it with the user\(aqs AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws deploy create\-deployment\-config \e
+    \-\-deployment\-config\-name ThreeQuartersHealthy \e
+    \-\-minimum\-healthy\-hosts type=FLEET_PERCENT,value=75
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "deploymentConfigId": "a1b2c3d4\-5678\-90ab\-cdef\-11111EXAMPLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+deploymentConfigId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique deployment configuration ID.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,233 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SWF-REGISTER-ACTIVITY-TYPE" "a" "" ""
+.SH NAME
+swf-register-activity-type \- Registers a new activity type along with its configuration settings in the specified domain
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Registers a new \fIactivity type\fP along with its configuration settings in the specified domain.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+A \fBTypeAlreadyExists\fP fault is returned if the type already exists in the domain. You cannot change any configuration settings of the type after its registration, and it must be registered as a new version.
+.UNINDENT
+.UNINDENT
+.sp
+\fBAccess Control\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can use IAM policies to control this action\(aqs access to Amazon SWF resources as follows:
+.INDENT 0.0
+.IP \(bu 2
+Use a \fBResource\fP element with the domain name to limit the action to only specified domains.
+.IP \(bu 2
+Use an \fBAction\fP element to allow or deny permission to call this action.
+.IP \(bu 2
+Constrain the following parameters by using a \fBCondition\fP element with the appropriate keys.
+.INDENT 2.0
+.IP \(bu 2
+\fBdefaultTaskList.name\fP : String constraint. The key is \fBswf:defaultTaskList.name\fP .
+.IP \(bu 2
+\fBname\fP : String constraint. The key is \fBswf:name\fP .
+.IP \(bu 2
+\fBversion\fP : String constraint. The key is \fBswf:version\fP .
+.UNINDENT
+.UNINDENT
+.sp
+If the caller doesn\(aqt have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute\(aqs \fBcause\fP parameter is set to \fBOPERATION_NOT_PERMITTED\fP . For details and example IAM policies, see \fI\%Using IAM to Manage Access to Amazon SWF Workflows\fP in the \fIAmazon SWF Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-activity\-type
+\-\-domain <value>
+\-\-name <value>
+[\-\-description <value>]
+[\-\-default\-task\-start\-to\-close\-timeout <value>]
+[\-\-default\-task\-heartbeat\-timeout <value>]
+[\-\-default\-task\-list <value>]
+[\-\-default\-task\-priority <value>]
+[\-\-default\-task\-schedule\-to\-start\-timeout <value>]
+[\-\-default\-task\-schedule\-to\-close\-timeout <value>]
+\-\-activity\-version <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain in which this activity is to be registered.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the activity type within the domain.
+.sp
+The specified string must not start or end with whitespace. It must not contain a \fB:\fP (colon), \fB/\fP (slash), \fB|\fP (vertical bar), or any control characters (\fB\eu0000\-\eu001f\fP | \fB\eu007f\-\eu009f\fP ). Also, it must not \fIbe\fP the literal string \fBarn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A textual description of the activity type.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-start\-to\-close\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default maximum duration that a worker can take to process tasks of this activity type. This default can be overridden when scheduling an activity task using the \fBScheduleActivityTask\fP   Decision .
+.sp
+The duration is specified in seconds, an integer greater than or equal to \fB0\fP . You can use \fBNONE\fP to specify unlimited duration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-heartbeat\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default maximum time before which a worker processing a task of this type must report progress by calling  RecordActivityTaskHeartbeat . If the timeout is exceeded, the activity task is automatically timed out. This default can be overridden when scheduling an activity task using the \fBScheduleActivityTask\fP   Decision . If the activity worker subsequently attempts to record a heartbeat or returns a result, the activity worker receives an \fBUnknownResource\fP fault. In this case, Amazon SWF no longer considers the activity task to be valid; the activity worker should clean up the activity task.
+.sp
+The duration is specified in seconds, an integer greater than or equal to \fB0\fP . You can use \fBNONE\fP to specify unlimited duration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-list\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default task list to use for scheduling tasks of this activity type. This default task list is used if a task list isn\(aqt provided when a task is scheduled through the \fBScheduleActivityTask\fP   Decision .
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the task list.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "name": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-priority\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The default task priority to assign to the activity type. If not assigned, then \fB0\fP is used. Valid values are integers that range from Java\(aqs \fBInteger.MIN_VALUE\fP (\-2147483648) to \fBInteger.MAX_VALUE\fP (2147483647). Higher numbers indicate higher priority.
+.sp
+For more information about setting task priority, see \fI\%Setting Task Priority\fP in the \fIin the *Amazon SWF Developer Guide\fP .* .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-schedule\-to\-start\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default maximum duration that a task of this activity type can wait before being assigned to a worker. This default can be overridden when scheduling an activity task using the \fBScheduleActivityTask\fP   Decision .
+.sp
+The duration is specified in seconds, an integer greater than or equal to \fB0\fP . You can use \fBNONE\fP to specify unlimited duration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-schedule\-to\-close\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default maximum duration for a task of this activity type. This default can be overridden when scheduling an activity task using the \fBScheduleActivityTask\fP   Decision .
+.sp
+The duration is specified in seconds, an integer greater than or equal to \fB0\fP . You can use \fBNONE\fP to specify unlimited duration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-activity\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the activity type.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The activity type consists of the name and version, the combination of which must be unique within the domain.
+.UNINDENT
+.UNINDENT
+.sp
+The specified string must not start or end with whitespace. It must not contain a \fB:\fP (colon), \fB/\fP (slash), \fB|\fP (vertical bar), or any control characters (\fB\eu0000\-\eu001f\fP | \fB\eu007f\-\eu009f\fP ). Also, it must not \fIbe\fP the literal string \fBarn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,397 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SAGEMAKER-DESCRIBE-MODEL" "a" "" ""
+.SH NAME
+sagemaker-describe-model \- Describes a model that you created using the CreateModel API
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes a model that you created using the \fBCreateModel\fP API.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-model
+\-\-model\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-model\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the model.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ModelName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Amazon SageMaker model.
+.UNINDENT
+.UNINDENT
+.sp
+PrimaryContainer \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location of the primary inference code, associated artifacts, and custom environment map that the inference code uses when it is deployed in production.
+.sp
+ContainerHostname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is ignored for models that contain only a \fBPrimaryContainer\fP .
+.sp
+When a \fBContainerDefinition\fP is part of an inference pipeline, the value of the parameter uniquely identifies the container for the purposes of logging and metrics. For information, see \fI\%Use Logs and Metrics to Monitor an Inference Pipeline\fP . If you don\(aqt specify a value for this parameter for a \fBContainerDefinition\fP that is part of an inference pipeline, a unique name is automatically assigned based on the position of the \fBContainerDefinition\fP in the pipeline. If you specify a value for the \fBContainerHostName\fP for any \fBContainerDefinition\fP that is part of an inference pipeline, you must specify a value for the \fBContainerHostName\fP parameter of every \fBContainerDefinition\fP in that pipeline.
+.UNINDENT
+.UNINDENT
+.sp
+Image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path where inference code is stored. This can be either in Amazon EC2 Container Registry or in a Docker registry that is accessible from the same VPC that you configure for your endpoint. If you are using your own custom algorithm instead of an algorithm provided by Amazon SageMaker, the inference code must meet Amazon SageMaker requirements. Amazon SageMaker supports both \fBregistry/repository[:tag]\fP and \fBregistry/repository[@digest]\fP image path formats. For more information, see \fI\%Using Your Own Algorithms with Amazon SageMaker\fP
+.UNINDENT
+.UNINDENT
+.sp
+ImageConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the model container is in Amazon ECR or a private Docker registry accessible from your Amazon Virtual Private Cloud (VPC). For information about storing containers in a private Docker registry, see \fI\%Use a Private Docker Registry for Real\-Time Inference Containers\fP
+.sp
+RepositoryAccessMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Set this to one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBPlatform\fP \- The model image is hosted in Amazon ECR.
+.IP \(bu 2
+\fBVpc\fP \- The model image is hosted in a private Docker registry in your VPC.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RepositoryAuthConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) Specifies an authentication configuration for the private docker registry where your model image is hosted. Specify a value for this property only if you specified \fBVpc\fP as the value for the \fBRepositoryAccessMode\fP field, and the private Docker registry where the model image is hosted requires authentication.
+.sp
+RepositoryCredentialsProviderArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an AWS Lambda function that provides credentials to authenticate to the private Docker registry where your model image is hosted. For information about how to create an AWS Lambda function, see \fI\%Create a Lambda function with the console\fP in the \fIAWS Lambda Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Mode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the container hosts a single model or multiple models.
+.UNINDENT
+.UNINDENT
+.sp
+ModelDataUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 path where the model artifacts, which result from model training, are stored. This path must point to a single gzip compressed tar archive (.tar.gz suffix). The S3 path is required for Amazon SageMaker built\-in algorithms, but not if you use your own algorithms. For more information on built\-in algorithms, see \fI\%Common Parameters\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The model artifacts must be in an S3 bucket that is in the same region as the model or endpoint you are creating.
+.UNINDENT
+.UNINDENT
+.sp
+If you provide a value for this parameter, Amazon SageMaker uses AWS Security Token Service to download model artifacts from the S3 path you provide. AWS STS is activated in your IAM user account by default. If you previously deactivated AWS STS for a region, you need to reactivate AWS STS for that region. For more information, see \fI\%Activating and Deactivating AWS STS in an AWS Region\fP in the \fIAWS Identity and Access Management User Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you use a built\-in algorithm to create a model, Amazon SageMaker requires that you provide a S3 path to the model artifacts in \fBModelDataUrl\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Environment \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The environment variables to set in the Docker container. Each key and value in the \fBEnvironment\fP string to string map can have length of up to 1024. We support up to 16 entries in the map.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+ModelPackageName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or Amazon Resource Name (ARN) of the model package to use to create the model.
+.UNINDENT
+.UNINDENT
+.sp
+MultiModelConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies additional configuration for multi\-model endpoints.
+.sp
+ModelCacheSetting \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to cache models for a multi\-model endpoint. By default, multi\-model endpoints cache models so that a model does not have to be loaded into memory each time it is invoked. Some use cases do not benefit from model caching. For example, if an endpoint hosts a large number of models that are each invoked infrequently, the endpoint might perform better if you disable model caching. To disable model caching, set the value of this parameter to \fBDisabled\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Containers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The containers in the inference pipeline.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the container, as part of model definition.
+.sp
+ContainerHostname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is ignored for models that contain only a \fBPrimaryContainer\fP .
+.sp
+When a \fBContainerDefinition\fP is part of an inference pipeline, the value of the parameter uniquely identifies the container for the purposes of logging and metrics. For information, see \fI\%Use Logs and Metrics to Monitor an Inference Pipeline\fP . If you don\(aqt specify a value for this parameter for a \fBContainerDefinition\fP that is part of an inference pipeline, a unique name is automatically assigned based on the position of the \fBContainerDefinition\fP in the pipeline. If you specify a value for the \fBContainerHostName\fP for any \fBContainerDefinition\fP that is part of an inference pipeline, you must specify a value for the \fBContainerHostName\fP parameter of every \fBContainerDefinition\fP in that pipeline.
+.UNINDENT
+.UNINDENT
+.sp
+Image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path where inference code is stored. This can be either in Amazon EC2 Container Registry or in a Docker registry that is accessible from the same VPC that you configure for your endpoint. If you are using your own custom algorithm instead of an algorithm provided by Amazon SageMaker, the inference code must meet Amazon SageMaker requirements. Amazon SageMaker supports both \fBregistry/repository[:tag]\fP and \fBregistry/repository[@digest]\fP image path formats. For more information, see \fI\%Using Your Own Algorithms with Amazon SageMaker\fP
+.UNINDENT
+.UNINDENT
+.sp
+ImageConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the model container is in Amazon ECR or a private Docker registry accessible from your Amazon Virtual Private Cloud (VPC). For information about storing containers in a private Docker registry, see \fI\%Use a Private Docker Registry for Real\-Time Inference Containers\fP
+.sp
+RepositoryAccessMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Set this to one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBPlatform\fP \- The model image is hosted in Amazon ECR.
+.IP \(bu 2
+\fBVpc\fP \- The model image is hosted in a private Docker registry in your VPC.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RepositoryAuthConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) Specifies an authentication configuration for the private docker registry where your model image is hosted. Specify a value for this property only if you specified \fBVpc\fP as the value for the \fBRepositoryAccessMode\fP field, and the private Docker registry where the model image is hosted requires authentication.
+.sp
+RepositoryCredentialsProviderArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an AWS Lambda function that provides credentials to authenticate to the private Docker registry where your model image is hosted. For information about how to create an AWS Lambda function, see \fI\%Create a Lambda function with the console\fP in the \fIAWS Lambda Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Mode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the container hosts a single model or multiple models.
+.UNINDENT
+.UNINDENT
+.sp
+ModelDataUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 path where the model artifacts, which result from model training, are stored. This path must point to a single gzip compressed tar archive (.tar.gz suffix). The S3 path is required for Amazon SageMaker built\-in algorithms, but not if you use your own algorithms. For more information on built\-in algorithms, see \fI\%Common Parameters\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The model artifacts must be in an S3 bucket that is in the same region as the model or endpoint you are creating.
+.UNINDENT
+.UNINDENT
+.sp
+If you provide a value for this parameter, Amazon SageMaker uses AWS Security Token Service to download model artifacts from the S3 path you provide. AWS STS is activated in your IAM user account by default. If you previously deactivated AWS STS for a region, you need to reactivate AWS STS for that region. For more information, see \fI\%Activating and Deactivating AWS STS in an AWS Region\fP in the \fIAWS Identity and Access Management User Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you use a built\-in algorithm to create a model, Amazon SageMaker requires that you provide a S3 path to the model artifacts in \fBModelDataUrl\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Environment \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The environment variables to set in the Docker container. Each key and value in the \fBEnvironment\fP string to string map can have length of up to 1024. We support up to 16 entries in the map.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+ModelPackageName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or Amazon Resource Name (ARN) of the model package to use to create the model.
+.UNINDENT
+.UNINDENT
+.sp
+MultiModelConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies additional configuration for multi\-model endpoints.
+.sp
+ModelCacheSetting \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to cache models for a multi\-model endpoint. By default, multi\-model endpoints cache models so that a model does not have to be loaded into memory each time it is invoked. Some use cases do not benefit from model caching. For example, if an endpoint hosts a large number of models that are each invoked infrequently, the endpoint might perform better if you disable model caching. To disable model caching, set the value of this parameter to \fBDisabled\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InferenceExecutionConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies details of how containers in a multi\-container endpoint are called.
+.sp
+Mode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How containers in a multi\-container are run. The following values are valid.
+.INDENT 0.0
+.IP \(bu 2
+\fBSERIAL\fP \- Containers run as a serial pipeline.
+.IP \(bu 2
+\fBDIRECT\fP \- Only the individual container that you specify is run.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ExecutionRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM role that you specified for the model.
+.UNINDENT
+.UNINDENT
+.sp
+VpcConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A  VpcConfig object that specifies the VPC that this model has access to. For more information, see \fI\%Protect Endpoints by Using an Amazon Virtual Private Cloud\fP
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The VPC security group IDs, in the form sg\-xxxxxxxx. Specify the security groups for the VPC that is specified in the \fBSubnets\fP field.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnets in the VPC to which you want to connect your training job or model. For information about the availability of specific instance types, see \fI\%Supported Instance Types and Availability Zones\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp that shows when the model was created.
+.UNINDENT
+.UNINDENT
+.sp
+ModelArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the model.
+.UNINDENT
+.UNINDENT
+.sp
+EnableNetworkIsolation \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If \fBTrue\fP , no inbound or outbound network calls can be made to or from the model container.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

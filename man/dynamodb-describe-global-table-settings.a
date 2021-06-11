@@ -1,0 +1,639 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DYNAMODB-DESCRIBE-GLOBAL-TABLE-SETTINGS" "a" "" ""
+.SH NAME
+dynamodb-describe-global-table-settings \- Describes Region-specific settings for a global table
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes Region\-specific settings for a global table.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This operation only applies to \fI\%Version 2017.11.29\fP of global tables.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-global\-table\-settings
+\-\-global\-table\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-global\-table\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the global table to describe.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get information about a DynamoDB global table\(aqs settings\fP
+.sp
+The following \fBdescribe\-global\-table\-settings\fP example displays the settings for the \fBMusicCollection\fP global table.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb describe\-global\-table\-settings \e
+    \-\-global\-table\-name MusicCollection
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "GlobalTableName": "MusicCollection",
+    "ReplicaSettings": [
+        {
+            "RegionName": "us\-east\-1",
+            "ReplicaStatus": "ACTIVE",
+            "ReplicaProvisionedReadCapacityUnits": 10,
+            "ReplicaProvisionedReadCapacityAutoScalingSettings": {
+                "AutoScalingDisabled": true
+            },
+            "ReplicaProvisionedWriteCapacityUnits": 5,
+            "ReplicaProvisionedWriteCapacityAutoScalingSettings": {
+                "AutoScalingDisabled": true
+            }
+        },
+        {
+            "RegionName": "us\-east\-2",
+            "ReplicaStatus": "ACTIVE",
+            "ReplicaProvisionedReadCapacityUnits": 10,
+            "ReplicaProvisionedReadCapacityAutoScalingSettings": {
+                "AutoScalingDisabled": true
+            },
+            "ReplicaProvisionedWriteCapacityUnits": 5,
+            "ReplicaProvisionedWriteCapacityAutoScalingSettings": {
+                "AutoScalingDisabled": true
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%DynamoDB Global Tables\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+GlobalTableName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the global table.
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaSettings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Region\-specific settings for the global table.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the properties of a replica.
+.sp
+RegionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Region name of the replica.
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the Region:
+.INDENT 0.0
+.IP \(bu 2
+\fBCREATING\fP \- The Region is being created.
+.IP \(bu 2
+\fBUPDATING\fP \- The Region is being updated.
+.IP \(bu 2
+\fBDELETING\fP \- The Region is being deleted.
+.IP \(bu 2
+\fBACTIVE\fP \- The Region is ready for use.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaBillingModeSummary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The read/write capacity mode of the replica.
+.sp
+BillingMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Controls how you are charged for read and write throughput and how you manage capacity. This setting can be changed later.
+.INDENT 0.0
+.IP \(bu 2
+\fBPROVISIONED\fP \- Sets the read/write capacity mode to \fBPROVISIONED\fP . We recommend using \fBPROVISIONED\fP for predictable workloads.
+.IP \(bu 2
+\fBPAY_PER_REQUEST\fP \- Sets the read/write capacity mode to \fBPAY_PER_REQUEST\fP . We recommend using \fBPAY_PER_REQUEST\fP for unpredictable workloads.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdateToPayPerRequestDateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Represents the time when \fBPAY_PER_REQUEST\fP was last set as the read/write capacity mode.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaProvisionedReadCapacityUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of strongly consistent reads consumed per second before DynamoDB returns a \fBThrottlingException\fP . For more information, see \fI\%Specifying Read and Write Requirements\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaProvisionedReadCapacityAutoScalingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Auto scaling settings for a global table replica\(aqs read capacity units.
+.sp
+MinimumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The minimum capacity units that a global table or global secondary index should be scaled down to.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum capacity units that a global table or global secondary index should be scaled up to.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingDisabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Disabled auto scaling for this global table or global secondary index.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Role ARN used for configuring the auto scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingPolicies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the scaling policies.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the properties of the scaling policy.
+.sp
+PolicyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+TargetTrackingScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a target tracking scaling policy configuration.
+.sp
+DisableScaleIn \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether scale in by the target tracking policy is disabled. If the value is true, scale in is disabled and the target tracking policy won\(aqt remove capacity from the scalable resource. Otherwise, scale in is enabled and the target tracking policy can remove capacity from the scalable resource. The default value is false.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleInCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale in activity completes before another scale in activity can start. The cooldown period is used to block subsequent scale in requests until it has expired. You should scale in conservatively to protect your application\(aqs availability. However, if another alarm triggers a scale out policy during the cooldown period after a scale\-in, application auto scaling scales out your scalable target immediately.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleOutCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale out activity completes before another scale out activity can start. While the cooldown period is in effect, the capacity that has been added by the previous scale out event that initiated the cooldown is calculated as part of the desired capacity for the next scale out. You should continuously (but not excessively) scale out.
+.UNINDENT
+.UNINDENT
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The target value for the metric. The range is 8.515920e\-109 to 1.174271e+108 (Base 10) or 2e\-360 to 2e360 (Base 2).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaProvisionedWriteCapacityUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of writes consumed per second before DynamoDB returns a \fBThrottlingException\fP . For more information, see \fI\%Specifying Read and Write Requirements\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaProvisionedWriteCapacityAutoScalingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Auto scaling settings for a global table replica\(aqs write capacity units.
+.sp
+MinimumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The minimum capacity units that a global table or global secondary index should be scaled down to.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum capacity units that a global table or global secondary index should be scaled up to.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingDisabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Disabled auto scaling for this global table or global secondary index.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Role ARN used for configuring the auto scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingPolicies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the scaling policies.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the properties of the scaling policy.
+.sp
+PolicyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+TargetTrackingScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a target tracking scaling policy configuration.
+.sp
+DisableScaleIn \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether scale in by the target tracking policy is disabled. If the value is true, scale in is disabled and the target tracking policy won\(aqt remove capacity from the scalable resource. Otherwise, scale in is enabled and the target tracking policy can remove capacity from the scalable resource. The default value is false.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleInCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale in activity completes before another scale in activity can start. The cooldown period is used to block subsequent scale in requests until it has expired. You should scale in conservatively to protect your application\(aqs availability. However, if another alarm triggers a scale out policy during the cooldown period after a scale\-in, application auto scaling scales out your scalable target immediately.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleOutCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale out activity completes before another scale out activity can start. While the cooldown period is in effect, the capacity that has been added by the previous scale out event that initiated the cooldown is calculated as part of the desired capacity for the next scale out. You should continuously (but not excessively) scale out.
+.UNINDENT
+.UNINDENT
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The target value for the metric. The range is 8.515920e\-109 to 1.174271e+108 (Base 10) or 2e\-360 to 2e360 (Base 2).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaGlobalSecondaryIndexSettings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Replica global secondary index settings for the global table.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the properties of a global secondary index.
+.sp
+IndexName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the global secondary index. The name must be unique among all other indexes on this table.
+.UNINDENT
+.UNINDENT
+.sp
+IndexStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the global secondary index:
+.INDENT 0.0
+.IP \(bu 2
+\fBCREATING\fP \- The global secondary index is being created.
+.IP \(bu 2
+\fBUPDATING\fP \- The global secondary index is being updated.
+.IP \(bu 2
+\fBDELETING\fP \- The global secondary index is being deleted.
+.IP \(bu 2
+\fBACTIVE\fP \- The global secondary index is ready for use.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProvisionedReadCapacityUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of strongly consistent reads consumed per second before DynamoDB returns a \fBThrottlingException\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ProvisionedReadCapacityAutoScalingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Auto scaling settings for a global secondary index replica\(aqs read capacity units.
+.sp
+MinimumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The minimum capacity units that a global table or global secondary index should be scaled down to.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum capacity units that a global table or global secondary index should be scaled up to.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingDisabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Disabled auto scaling for this global table or global secondary index.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Role ARN used for configuring the auto scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingPolicies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the scaling policies.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the properties of the scaling policy.
+.sp
+PolicyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+TargetTrackingScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a target tracking scaling policy configuration.
+.sp
+DisableScaleIn \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether scale in by the target tracking policy is disabled. If the value is true, scale in is disabled and the target tracking policy won\(aqt remove capacity from the scalable resource. Otherwise, scale in is enabled and the target tracking policy can remove capacity from the scalable resource. The default value is false.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleInCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale in activity completes before another scale in activity can start. The cooldown period is used to block subsequent scale in requests until it has expired. You should scale in conservatively to protect your application\(aqs availability. However, if another alarm triggers a scale out policy during the cooldown period after a scale\-in, application auto scaling scales out your scalable target immediately.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleOutCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale out activity completes before another scale out activity can start. While the cooldown period is in effect, the capacity that has been added by the previous scale out event that initiated the cooldown is calculated as part of the desired capacity for the next scale out. You should continuously (but not excessively) scale out.
+.UNINDENT
+.UNINDENT
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The target value for the metric. The range is 8.515920e\-109 to 1.174271e+108 (Base 10) or 2e\-360 to 2e360 (Base 2).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProvisionedWriteCapacityUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of writes consumed per second before DynamoDB returns a \fBThrottlingException\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ProvisionedWriteCapacityAutoScalingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Auto scaling settings for a global secondary index replica\(aqs write capacity units.
+.sp
+MinimumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The minimum capacity units that a global table or global secondary index should be scaled down to.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum capacity units that a global table or global secondary index should be scaled up to.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingDisabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Disabled auto scaling for this global table or global secondary index.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Role ARN used for configuring the auto scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingPolicies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the scaling policies.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the properties of the scaling policy.
+.sp
+PolicyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+TargetTrackingScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a target tracking scaling policy configuration.
+.sp
+DisableScaleIn \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether scale in by the target tracking policy is disabled. If the value is true, scale in is disabled and the target tracking policy won\(aqt remove capacity from the scalable resource. Otherwise, scale in is enabled and the target tracking policy can remove capacity from the scalable resource. The default value is false.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleInCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale in activity completes before another scale in activity can start. The cooldown period is used to block subsequent scale in requests until it has expired. You should scale in conservatively to protect your application\(aqs availability. However, if another alarm triggers a scale out policy during the cooldown period after a scale\-in, application auto scaling scales out your scalable target immediately.
+.UNINDENT
+.UNINDENT
+.sp
+ScaleOutCooldown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scale out activity completes before another scale out activity can start. While the cooldown period is in effect, the capacity that has been added by the previous scale out event that initiated the cooldown is calculated as part of the desired capacity for the next scale out. You should continuously (but not excessively) scale out.
+.UNINDENT
+.UNINDENT
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The target value for the metric. The range is 8.515920e\-109 to 1.174271e+108 (Base 10) or 2e\-360 to 2e360 (Base 2).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

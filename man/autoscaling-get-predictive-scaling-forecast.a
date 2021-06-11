@@ -1,0 +1,296 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-GET-PREDICTIVE-SCALING-FORECAST" "a" "" ""
+.SH NAME
+autoscaling-get-predictive-scaling-forecast \- Retrieves the forecast data for a predictive scaling policy
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves the forecast data for a predictive scaling policy.
+.sp
+Load forecasts are predictions of the hourly load values using historical load data from CloudWatch and an analysis of historical trends. Capacity forecasts are represented as predicted values for the minimum capacity that is needed on an hourly basis, based on the hourly load forecast.
+.sp
+A minimum of 24 hours of data is required to create the initial forecasts. However, having a full 14 days of historical data results in more accurate forecasts.
+.sp
+For more information, see \fI\%Predictive scaling for Amazon EC2 Auto Scaling\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-predictive\-scaling\-forecast
+\-\-auto\-scaling\-group\-name <value>
+\-\-policy\-name <value>
+\-\-start\-time <value>
+\-\-end\-time <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-auto\-scaling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the policy.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The inclusive start time of the time range for the forecast data to get. At most, the date and time can be one year before the current date and time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The exclusive end time of the time range for the forecast data to get. The maximum time duration between the start and end time is 30 days.
+.sp
+Although this parameter can accept a date and time that is more than two days in the future, the availability of forecast data has limits. Amazon EC2 Auto Scaling only issues forecasts for periods of two days in advance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+LoadForecast \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The load forecast.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBGetPredictiveScalingForecast\fP call returns the load forecast for a predictive scaling policy. This structure includes the data points for that load forecast, along with the timestamps of those data points and the metric specification.
+.sp
+Timestamps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The time stamps for the data points, in UTC format.
+.sp
+(timestamp)
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The values of the data points.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+MetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric specification for the load forecast.
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the target utilization.
+.UNINDENT
+.UNINDENT
+.sp
+PredefinedMetricPairSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric pair specification from which Amazon EC2 Auto Scaling determines the appropriate scaling metric and load metric to use.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates which metrics to use. There are two different types of metrics for each metric type: one is a load metric and one is a scaling metric. For example, if the metric type is \fBASGCPUUtilization\fP , the Auto Scaling group\(aqs total CPU metric is used as the load metric, and the average CPU metric is used for the scaling metric.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A label that uniquely identifies a specific Application Load Balancer target group from which to determine the request count served by your Auto Scaling group. You can\(aqt specify a resource label unless the target group is attached to the Auto Scaling group.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format of the resource label is:
+.INDENT 0.0
+.INDENT 3.5
+\fBapp/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PredefinedScalingMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The scaling metric specification.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric type.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A label that uniquely identifies a specific Application Load Balancer target group from which to determine the request count served by your Auto Scaling group. You can\(aqt specify a resource label unless the target group is attached to the Auto Scaling group.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format of the resource label is:
+.INDENT 0.0
+.INDENT 3.5
+\fBapp/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PredefinedLoadMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The load metric specification.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric type.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A label that uniquely identifies a specific Application Load Balancer target group from which to determine the request count served by your Auto Scaling group. You can\(aqt specify a resource label unless the target group is attached to the Auto Scaling group.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format of the resource label is:
+.INDENT 0.0
+.INDENT 3.5
+\fBapp/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CapacityForecast \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The capacity forecast.
+.sp
+Timestamps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The time stamps for the data points, in UTC format.
+.sp
+(timestamp)
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The values of the data points.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UpdateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the forecast was made.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

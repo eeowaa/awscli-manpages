@@ -1,0 +1,192 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RESOURCE-GROUPS-GET-GROUP-QUERY" "a" "" ""
+.SH NAME
+resource-groups-get-group-query \- Retrieves the resource query associated with the specified resource group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves the resource query associated with the specified resource group. For more information about resource queries, see \fI\%Create a tag\-based group in Resource Groups\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBMinimum permissions\fP
+.UNINDENT
+.UNINDENT
+.sp
+To run this command, you must have the following permissions:
+.INDENT 0.0
+.IP \(bu 2
+\fBresource\-groups:GetGroupQuery\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-group\-query
+[\-\-group\-name <value>]
+[\-\-group <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Don\(aqt use this parameter. Use \fBGroup\fP instead.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or the ARN of the resource group to query.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the query attached to a resource group\fP
+.sp
+The following \fBget\-group\-query\fP example displays query attached to the specified resource group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws resource\-groups get\-group\-query \e
+    \-\-group\-name tbq\-WebServer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "GroupQuery": {
+        "GroupName": "tbq\-WebServer",
+        "ResourceQuery": {
+            "Type": "TAG_FILTERS_1_0",
+            "Query": "{\e"ResourceTypeFilters\e":[\e"AWS::EC2::Instance\e"],\e"TagFilters\e":[{\e"Key\e":\e"Name\e", \e"Values\e":[\e"WebServers\e"]}]}"
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+GroupQuery \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The resource query associated with the specified group. For more information about resource queries, see \fI\%Create a tag\-based group in Resource Groups\fP .
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the resource group that is associated with the specified resource query.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceQuery \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The resource query that determines which AWS resources are members of the associated resource group.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the query. You can use the following values:
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+*
+.fi
+\fBCLOUDFORMATION_STACK_1_0:\fP * Specifies that the \fBQuery\fP contains an ARN for a CloudFormation stack.
+.IP "System Message: WARNING/2 (<string>:, line 147)"
+Inline emphasis start\-string without end\-string.
+.IP \(bu 2
+\fI\(ga\(gaTAG_FILTERS_1_0:\(ga\(ga * Specifies that the \(ga\(gaQuery\(ga\(ga parameter contains a JSON string that represents a collection of simple tag filters for resource types and tags. The JSON string uses a syntax similar to the \(ga\(ga \(gaGetResources <https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/API_GetResources.html>\(ga__ \(ga\(ga operation, but uses only the \(ga\(ga \(gaResourceTypeFilters <https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/API_GetResources.html#resourcegrouptagging\-GetResources\-request\-ResourceTypeFilters>\(ga__ \(ga\(ga and \(ga\(ga \(gaTagFilters <https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/API_GetResources.html#resourcegrouptagging\-GetResources\-request\-TagFiltersTagFilters>\(ga__ \(ga\(ga fields. If you specify more than one tag key, only resources that match all tag keys, and at least one value of each specified tag key, are returned in your query. If you specify more than one value for a tag key, a resource matches the filter if it has a tag key value that matches *any\fP of the specified values. For example, consider the following sample query for resources that have two tags, \fBStage\fP and \fBVersion\fP , with two values each:  \fB[{"Stage":["Test","Deploy"]},{"Version":["1","2"]}]\fP   The results of this query could include the following.
+.INDENT 2.0
+.IP \(bu 2
+An EC2 instance that has the following two tags: \fB{"Stage":"Deploy"}\fP , and \fB{"Version":"2"}\fP
+.IP \(bu 2
+An S3 bucket that has the following two tags: \fB{"Stage":"Test"}\fP , and \fB{"Version":"1"}\fP
+.UNINDENT
+.UNINDENT
+.sp
+The query would not include the following items in the results, however.
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+An EC2 instance that has only the following tag: \fB{"Stage":"Deploy"}\fP . The instance does not have \fBall\fP of the tag keys specified in the filter, so it is excluded from the results.
+.IP \(bu 2
+An RDS database that has the following two tags: \fB{"Stage":"Archived"}\fP and \fB{"Version":"4"}\fP   The database has all of the tag keys, but none of those keys has an associated value that matches at least one of the specified values in the filter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Query \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The query that defines a group or a search.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

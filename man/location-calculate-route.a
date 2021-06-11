@@ -1,0 +1,767 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LOCATION-CALCULATE-ROUTE" "a" "" ""
+.SH NAME
+location-calculate-route \- By default, a request that doesn(aqt specify a departure time uses the best time of day to travel with the best traffic conditions when calculating the route
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.INDENT 0.0
+.INDENT 3.5
+\fI\%Calculates a route\fP given the following required parameters: \fBDeparturePostiton\fP and \fBDestinationPosition\fP . Requires that you first \fI\%create aroute calculator resource\fP
+.UNINDENT
+.UNINDENT
+.sp
+By default, a request that doesn\(aqt specify a departure time uses the best time of day to travel with the best traffic conditions when calculating the route.
+.sp
+Additional options include:
+.INDENT 0.0
+.IP \(bu 2
+\fI\%Specifying a departure time\fP using either \fBDepartureTime\fP or \fBDepartureNow\fP . This calculates a route based on predictive traffic data at the given time.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can\(aqt specify both \fBDepartureTime\fP and \fBDepartureNow\fP in a single request. Specifying both parameters returns an error message.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fI\%Specifying a travel mode\fP using TravelMode. This lets you specify additional route preference such as \fBCarModeOptions\fP if traveling by \fBCar\fP , or \fBTruckModeOptions\fP if traveling by \fBTruck\fP .
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  calculate\-route
+\-\-calculator\-name <value>
+[\-\-car\-mode\-options <value>]
+[\-\-depart\-now | \-\-no\-depart\-now]
+\-\-departure\-position <value>
+[\-\-departure\-time <value>]
+\-\-destination\-position <value>
+[\-\-distance\-unit <value>]
+[\-\-include\-leg\-geometry | \-\-no\-include\-leg\-geometry]
+[\-\-travel\-mode <value>]
+[\-\-truck\-mode\-options <value>]
+[\-\-waypoint\-positions <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-calculator\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the route calculator resource that you want to use to calculate a route.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-car\-mode\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies route preferences when traveling by \fBCar\fP , such as avoiding routes that use ferries or tolls.
+.sp
+Requirements: \fBTravelMode\fP must be specified as \fBCar\fP .
+.sp
+AvoidFerries \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Avoids ferries when calculating routes.
+.sp
+Default Value: \fBfalse\fP
+.sp
+Valid Values: \fBfalse\fP | \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+AvoidTolls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Avoids tolls when calculating routes.
+.sp
+Default Value: \fBfalse\fP
+.sp
+Valid Values: \fBfalse\fP | \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AvoidFerries=boolean,AvoidTolls=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AvoidFerries": true|false,
+  "AvoidTolls": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-depart\-now\fP | \fB\-\-no\-depart\-now\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Sets the time of departure as the current time. Uses the current time to calculate a route. Otherwise, the best time of day to travel with the best traffic conditions is used to calculate the route.
+.sp
+Default Value: \fBfalse\fP
+.sp
+Valid Values: \fBfalse\fP | \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-departure\-position\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The start position for the route. Defined in \fI\%WGS 84\fP format: \fB[longitude, latitude]\fP .
+.INDENT 0.0
+.IP \(bu 2
+For example, \fB[\-123.115, 49.285]\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify a departure that\(aqs not located on a road, Amazon Location \fI\%moves the position to the nearest road\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Valid Values: \fB[\-180 to 180,\-90 to 90]\fP
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+double double ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-departure\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the desired time of departure. Uses the given time to calculate a route. Otherwise, the best time of day to travel with the best traffic conditions is used to calculate the route.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Setting a departure time in the past returns a \fB400 ValidationException\fP error.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+In \fI\%ISO 8601\fP format: \fBYYYY\-MM\-DDThh:mm:ss.sssZ\fP . For example, \fB2020–07\-2T12:15:20.000Z+01:00\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-destination\-position\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The finish position for the route. Defined in \fI\%WGS 84\fP format: \fB[longitude, latitude]\fP .
+.INDENT 0.0
+.IP \(bu 2
+For example, \fB[\-122.339, 47.615]\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify a destination that\(aqs not located on a road, Amazon Location \fI\%moves the position to the nearest road\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Valid Values: \fB[\-180 to 180,\-90 to 90]\fP
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+double double ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-distance\-unit\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Set the unit system to specify the distance.
+.sp
+Default Value: \fBKilometers\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBKilometers\fP
+.IP \(bu 2
+\fBMiles\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-include\-leg\-geometry\fP | \fB\-\-no\-include\-leg\-geometry\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to include the geometry details in the result for each path between a pair of positions.
+.sp
+Default Value: \fBfalse\fP
+.sp
+Valid Values: \fBfalse\fP | \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-travel\-mode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the mode of transport when calculating a route. Used in estimating the speed of travel and road compatibility.
+.sp
+The \fBTravelMode\fP you specify determines how you specify route preferences:
+.INDENT 0.0
+.IP \(bu 2
+If traveling by \fBCar\fP use the \fBCarModeOptions\fP parameter.
+.IP \(bu 2
+If traveling by \fBTruck\fP use the \fBTruckModeOptions\fP parameter.
+.UNINDENT
+.sp
+Default Value: \fBCar\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCar\fP
+.IP \(bu 2
+\fBTruck\fP
+.IP \(bu 2
+\fBWalking\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-truck\-mode\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies route preferences when traveling by \fBTruck\fP , such as avoiding routes that use ferries or tolls, and truck specifications to consider when choosing an optimal road.
+.sp
+Requirements: \fBTravelMode\fP must be specified as \fBTruck\fP .
+.sp
+AvoidFerries \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Avoids ferries when calculating routes.
+.sp
+Default Value: \fBfalse\fP
+.sp
+Valid Values: \fBfalse\fP | \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+AvoidTolls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Avoids ferries when calculating routes.
+.sp
+Default Value: \fBfalse\fP
+.sp
+Valid Values: \fBfalse\fP | \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the truck\(aqs dimension specifications including length, height, width, and unit of measurement. Used to avoid roads that can\(aqt support the truck\(aqs dimensions.
+.sp
+Height \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The height of the truck.
+.INDENT 0.0
+.IP \(bu 2
+For example, \fB4.5\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Length \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The length of the truck.
+.INDENT 0.0
+.IP \(bu 2
+For example, \fB15.5\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the unit of measurement for the truck dimensions.
+.sp
+Default Value: \fBMeters\fP
+.UNINDENT
+.UNINDENT
+.sp
+Width \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The width of the truck.
+.INDENT 0.0
+.IP \(bu 2
+For example, \fB4.5\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Weight \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the truck\(aqs weight specifications including total weight and unit of measurement. Used to avoid roads that can\(aqt support the truck\(aqs weight.
+.sp
+Total \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total weight of the truck.
+.INDENT 0.0
+.IP \(bu 2
+For example, \fB3500\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of measurement to use for the truck weight.
+.sp
+Default Value: \fBKilograms\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AvoidFerries=boolean,AvoidTolls=boolean,Dimensions={Height=double,Length=double,Unit=string,Width=double},Weight={Total=double,Unit=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AvoidFerries": true|false,
+  "AvoidTolls": true|false,
+  "Dimensions": {
+    "Height": double,
+    "Length": double,
+    "Unit": "Meters"|"Feet",
+    "Width": double
+  },
+  "Weight": {
+    "Total": double,
+    "Unit": "Kilograms"|"Pounds"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-waypoint\-positions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an ordered list of up to 23 intermediate positions to include along a route between the departure position and destination position.
+.INDENT 0.0
+.IP \(bu 2
+For example, from the \fBDeparturePosition\fP  \fB[\-123.115, 49.285]\fP , the route follows the order that the waypoint positions are given \fB[[\-122.757, 49.0021],[\-122.349, 47.620]]\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify a waypoint position that\(aqs not located on a road, Amazon Location \fI\%moves the position to the nearest road\fP .
+.sp
+Specifying more than 23 waypoints returns a \fB400 ValidationException\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+Valid Values: \fB[\-180 to 180,\-90 to 90]\fP
+.sp
+(list)
+.INDENT 0.0
+.INDENT 3.5
+(double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+double,double ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  [double, ...]
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Legs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains details about each path between a pair of positions included along a route such as: \fBStartPosition\fP , \fBEndPosition\fP , \fBDistance\fP , \fBDurationSeconds\fP , \fBGeometry\fP , and \fBSteps\fP . The number of legs returned corresponds to one less than the total number of positions in the request.
+.sp
+For example, a route with a departure position and destination position returns one leg with the positions \fI\%snapped to a nearby road\fP :
+.INDENT 0.0
+.IP \(bu 2
+The \fBStartPosition\fP is the departure position.
+.IP \(bu 2
+The \fBEndPosition\fP is the destination position.
+.UNINDENT
+.sp
+A route with a waypoint between the departure and destination position returns two legs with the positions snapped to a nearby road.:
+.INDENT 0.0
+.IP \(bu 2
+Leg 1: The \fBStartPosition\fP is the departure position . The \fBEndPosition\fP is the waypoint positon.
+.IP \(bu 2
+Leg 2: The \fBStartPosition\fP is the waypoint position. The \fBEndPosition\fP is the destination position.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the calculated route\(aqs details for each path between a pair of positions. The number of legs returned corresponds to one less than the total number of positions in the request.
+.sp
+For example, a route with a departure position and destination position returns one leg with the positions \fI\%snapped to a nearby road\fP :
+.INDENT 0.0
+.IP \(bu 2
+The \fBStartPosition\fP is the departure position.
+.IP \(bu 2
+The \fBEndPosition\fP is the destination position.
+.UNINDENT
+.sp
+A route with a waypoint between the departure and destination position returns two legs with the positions snapped to a nearby road.:
+.INDENT 0.0
+.IP \(bu 2
+Leg 1: The \fBStartPosition\fP is the departure position . The \fBEndPosition\fP is the waypoint positon.
+.IP \(bu 2
+Leg 2: The \fBStartPosition\fP is the waypoint position. The \fBEndPosition\fP is the destination position.
+.UNINDENT
+.sp
+Distance \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The distance between the leg\(aqs \fBStartPosition\fP and \fBEndPosition\fP along a calculated route.
+.INDENT 0.0
+.IP \(bu 2
+The default measurement is \fBKilometers\fP unless the request specifies a \fBDistanceUnit\fP of \fBMiles\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DurationSeconds \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The estimated travel time between the leg\(aqs \fBStartPosition\fP and \fBEndPosition\fP . The travel mode and departure time that you specify in the request determines the calculated time.
+.UNINDENT
+.UNINDENT
+.sp
+EndPosition \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The terminating position of the leg. Follows the format \fB[longitude,latitude]\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the \fBEndPosition\fP isn\(aqt located on a road, it\(aqs \fI\%snapped to a nearby road\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+Geometry \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the calculated route\(aqs path as a linestring geometry.
+.sp
+LineString \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An ordered list of positions used to plot a route on a map.
+.sp
+The first position is closest to the start position for the leg, and the last position is the closest to the end position for the leg.
+.INDENT 0.0
+.IP \(bu 2
+For example, \fB[[\-123.117, 49.284],[\-123.115, 49.285],[\-123.115, 49.285]]\fP
+.UNINDENT
+.sp
+(list)
+.INDENT 0.0
+.INDENT 3.5
+(double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StartPosition \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The starting position of the leg. Follows the format \fB[longitude,latitude]\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the \fBStartPosition\fP isn\(aqt located on a road, it\(aqs \fI\%snapped to a nearby road\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+Steps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains a list of steps, which represent subsections of a leg. Each step provides instructions for how to move to the next step in the leg such as the step\(aqs start position, end position, travel distance, travel duration, and geometry offset.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents an element of a leg within a route. A step contains instructions for how to move to the next step in the leg.
+.sp
+Distance \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The travel distance between the step\(aqs \fBStartPosition\fP and \fBEndPosition\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DurationSeconds \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The estimated travel time, in seconds, from the step\(aqs \fBStartPosition\fP to the \fBEndPosition\fP . . The travel mode and departure time that you specify in the request determines the calculated time.
+.UNINDENT
+.UNINDENT
+.sp
+EndPosition \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The end position of a step. If the position the last step in the leg, this position is the same as the end position of the leg.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+GeometryOffset \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Represents the start position, or index, in a sequence of steps within the leg\(aqs line string geometry. For example, the index of the first step in a leg geometry is \fB0\fP .
+.sp
+Included in the response for queries that set \fBIncludeLegGeometry\fP to \fBTrue\fP .
+.UNINDENT
+.UNINDENT
+.sp
+StartPosition \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The starting position of a step. If the position is the first step in the leg, this position is the same as the start position of the leg.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Summary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the whole route, such as: \fBRouteBBox\fP , \fBDataSource\fP , \fBDistance\fP , \fBDistanceUnit\fP , and \fBDurationSeconds\fP
+.sp
+DataSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data provider of traffic and road network data used to calculate the route. Indicates one of the available providers:
+.INDENT 0.0
+.IP \(bu 2
+\fBEsri\fP
+.IP \(bu 2
+\fBHere\fP
+.UNINDENT
+.sp
+For more information about data providers, see \fI\%Amazon Location Service data providers\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Distance \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total distance covered by the route. The sum of the distance travelled between every stop on the route.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The route \fBdistance\fP can\(aqt be greater than 250 km. If the route exceeds 250 km, the response returns a \fB400 RoutesValidationException\fP error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DistanceUnit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of measurement for the distance.
+.UNINDENT
+.UNINDENT
+.sp
+DurationSeconds \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total travel time for the route measured in seconds. The sum of the travel time between every stop on the route.
+.UNINDENT
+.UNINDENT
+.sp
+RouteBBox \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a geographical box surrounding a route. Used to zoom into a route when displaying it in a map. For example, \fB[min x, min y, max x, max y]\fP
+.sp
+The first 2 \fBbbox\fP parameters describe the lower southwest corner:
+.INDENT 0.0
+.IP \(bu 2
+The first \fBbbox\fP position is the X coordinate or longitude of the lower southwest corner.
+.IP \(bu 2
+The second \fBbbox\fP position is the Y coordinate or latitude of the lower southwest corner.
+.UNINDENT
+.sp
+The next 2 \fBbbox\fP parameters describe the upper northeast corner:
+.INDENT 0.0
+.IP \(bu 2
+The third \fBbbox\fP position is the X coordinate, or longitude of the upper northeast corner.
+.IP \(bu 2
+The fourth \fBbbox\fP position is the Y coordinate, or longitude of the upper northeast corner.
+.UNINDENT
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,248 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SECURITYHUB-DESCRIBE-STANDARDS-CONTROLS" "a" "" ""
+.SH NAME
+securityhub-describe-standards-controls \- Returns a list of security standards controls
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns a list of security standards controls.
+.sp
+For each control, the results include information about whether it is currently enabled, the severity, and a link to remediation information.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-standards\-controls
+\-\-standards\-subscription\-arn <value>
+[\-\-next\-token <value>]
+[\-\-max\-results <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-standards\-subscription\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a resource that represents your subscription to a supported standard. To get the subscription ARNs of the standards you have enabled, use the \(ga\(ga  GetEnabledStandards \(ga\(ga operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The token that is required for pagination. On your first call to the \fBDescribeStandardsControls\fP operation, set the value of this parameter to \fBNULL\fP .
+.sp
+For subsequent calls to the operation, to continue listing data, set the value of this parameter to the value returned from the previous response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-results\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of security standard controls to return.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo request the list of controls in an enabled standard\fP
+.sp
+The following \fBdescribe\-standards\-controls\fP example requests the list of controls in the requestor account\(aqs subscription to the PCI DSS standard. The request returns two controls at a time.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws securityhub describe\-standards\-controls \e
+    \-\-standards\-subscription\-arn "arn:aws:securityhub:us\-west\-1:123456789012:subscription/pci\-dss/v/3.2.1" \e
+    \-\-max\-results 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Controls": [
+        {
+            "StandardsControlArn": "arn:aws:securityhub:us\-west\-1:123456789012:control/pci\-dss/v/3.2.1/PCI.AutoScaling.1",
+            "ControlStatus": "ENABLED",
+            "ControlStatusUpdatedAt": "2020\-05\-15T18:49:04.473000+00:00",
+            "ControlId": "PCI.AutoScaling.1",
+            "Title": "Auto scaling groups associated with a load balancer should use health checks",
+            "Description": "This AWS control checks whether your Auto Scaling groups that are associated with a load balancer are using Elastic Load Balancing health checks.",
+            "RemediationUrl": "https://docs.aws.amazon.com/console/securityhub/PCI.AutoScaling.1/remediation",
+            "SeverityRating": "LOW",
+            "RelatedRequirements": [
+                "PCI DSS 2.2"
+            ]
+        },
+        {
+            "StandardsControlArn": "arn:aws:securityhub:us\-west\-1:123456789012:control/pci\-dss/v/3.2.1/PCI.CW.1",
+            "ControlStatus": "ENABLED",
+            "ControlStatusUpdatedAt": "2020\-05\-15T18:49:04.498000+00:00",
+            "ControlId": "PCI.CW.1",
+            "Title": "A log metric filter and alarm should exist for usage of the \e"root\e" user",
+            "Description": "This control checks for the CloudWatch metric filters using the following pattern { $.userIdentity.type = \e"Root\e" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \e"AwsServiceEvent\e" } It checks that the log group name is configured for use with active multi\-region CloudTrail, that there is at least one Event Selector for a Trail with IncludeManagementEvents set to true and ReadWriteType set to All, and that there is at least one active subscriber to an SNS topic associated with the alarm.",
+            "RemediationUrl": "https://docs.aws.amazon.com/console/securityhub/PCI.CW.1/remediation",
+            "SeverityRating": "MEDIUM",
+            "RelatedRequirements": [
+                "PCI DSS 7.2.1"
+            ]
+        }
+    ],
+    "NextToken": "U2FsdGVkX1+eNkPoZHVl11ip5HUYQPWSWZGmftcmJiHL8JoKEsCDuaKayiPDyLK+LiTkShveoOdvfxXCkOBaGhohIXhsIedN+LSjQV/l7kfCfJcq4PziNC1N9xe9aq2pjlLVZnznTfSImrodT5bRNHe4fELCQq/z+5ka+5Lzmc11axcwTd5lKgQyQqmUVoeriHZhyIiBgWKf7oNYdBVG8OEortVWvSkoUTt+B2ThcnC7l43kI0UNxlkZ6sc64AsW"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Viewing details for controls\fP in the \fIAWS Security Hub User Guide\fP\&.
+.SH OUTPUT
+.sp
+Controls \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of security standards controls.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details for an individual security standard control.
+.sp
+StandardsControlArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the security standard control.
+.UNINDENT
+.UNINDENT
+.sp
+ControlStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the security standard control. Indicates whether the control is enabled or disabled. Security Hub does not check against disabled controls.
+.UNINDENT
+.UNINDENT
+.sp
+DisabledReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason provided for the most recent change in status for the control.
+.UNINDENT
+.UNINDENT
+.sp
+ControlStatusUpdatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the status of the security standard control was most recently updated.
+.UNINDENT
+.UNINDENT
+.sp
+ControlId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the security standard control.
+.UNINDENT
+.UNINDENT
+.sp
+Title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title of the security standard control.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The longer description of the security standard control. Provides information about what the control is checking for.
+.UNINDENT
+.UNINDENT
+.sp
+RemediationUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A link to remediation information for the control in the Security Hub user documentation.
+.UNINDENT
+.UNINDENT
+.sp
+SeverityRating \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The severity of findings generated from this security standard control.
+.sp
+The finding severity is based on an assessment of how easy it would be to compromise AWS resources if the issue is detected.
+.UNINDENT
+.UNINDENT
+.sp
+RelatedRequirements \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of requirements that are related to this control.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The pagination token to use to request the next page of results.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

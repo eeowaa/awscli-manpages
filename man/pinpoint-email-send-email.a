@@ -1,0 +1,452 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "PINPOINT-EMAIL-SEND-EMAIL" "a" "" ""
+.SH NAME
+pinpoint-email-send-email \- Sends an email message
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Sends an email message. You can use the Amazon Pinpoint Email API to send two types of messages:
+.INDENT 0.0
+.IP \(bu 2
+\fBSimple\fP – A standard email message. When you create this type of message, you specify the sender, the recipient, and the message body, and Amazon Pinpoint assembles the message for you.
+.IP \(bu 2
+\fBRaw\fP – A raw, MIME\-formatted email message. When you send this type of email, you have to specify all of the message headers, as well as the message body. You can use this message type to send messages that contain attachments. The message that you specify has to be a valid MIME message.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  send\-email
+[\-\-from\-email\-address <value>]
+\-\-destination <value>
+[\-\-reply\-to\-addresses <value>]
+[\-\-feedback\-forwarding\-email\-address <value>]
+\-\-content <value>
+[\-\-email\-tags <value>]
+[\-\-configuration\-set\-name <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-from\-email\-address\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address that you want to use as the "From" address for the email. The address that you specify has to be verified.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-destination\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that contains the recipients of the email message.
+.sp
+ToAddresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array that contains the email addresses of the "To" recipients for the email.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+CcAddresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array that contains the email addresses of the "CC" (carbon copy) recipients for the email.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BccAddresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array that contains the email addresses of the "BCC" (blind carbon copy) recipients for the email.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ToAddresses=string,string,CcAddresses=string,string,BccAddresses=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ToAddresses": ["string", ...],
+  "CcAddresses": ["string", ...],
+  "BccAddresses": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-reply\-to\-addresses\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The "Reply\-to" email addresses for the message. When the recipient replies to the message, each Reply\-to address receives the reply.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-feedback\-forwarding\-email\-address\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The address that Amazon Pinpoint should send bounce and complaint notifications to.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that contains the body of the message. You can send either a Simple message or a Raw message.
+.sp
+Simple \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The simple email message. The message consists of a subject and a message body.
+.sp
+Subject \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The subject line of the email. The subject line can only contain 7\-bit ASCII characters. However, you can specify non\-ASCII characters in the subject line by using encoded\-word syntax, as described in \fI\%RFC 2047\fP .
+.sp
+Data \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content of the message itself.
+.UNINDENT
+.UNINDENT
+.sp
+Charset \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The character set for the content. Because of the constraints of the SMTP protocol, Amazon Pinpoint uses 7\-bit ASCII by default. If the text includes characters outside of the ASCII range, you have to specify a character set. For example, you could specify \fBUTF\-8\fP , \fBISO\-8859\-1\fP , or \fBShift_JIS\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Body \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The body of the message. You can specify an HTML version of the message, a text\-only version of the message, or both.
+.sp
+Text \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the version of the message that is displayed in email clients that don\(aqt support HTML, or clients where the recipient has disabled HTML rendering.
+.sp
+Data \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content of the message itself.
+.UNINDENT
+.UNINDENT
+.sp
+Charset \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The character set for the content. Because of the constraints of the SMTP protocol, Amazon Pinpoint uses 7\-bit ASCII by default. If the text includes characters outside of the ASCII range, you have to specify a character set. For example, you could specify \fBUTF\-8\fP , \fBISO\-8859\-1\fP , or \fBShift_JIS\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Html \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the version of the message that is displayed in email clients that support HTML. HTML messages can include formatted text, hyperlinks, images, and more.
+.sp
+Data \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content of the message itself.
+.UNINDENT
+.UNINDENT
+.sp
+Charset \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The character set for the content. Because of the constraints of the SMTP protocol, Amazon Pinpoint uses 7\-bit ASCII by default. If the text includes characters outside of the ASCII range, you have to specify a character set. For example, you could specify \fBUTF\-8\fP , \fBISO\-8859\-1\fP , or \fBShift_JIS\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Raw \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The raw email message. The message has to meet the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+The message has to contain a header and a body, separated by one blank line.
+.IP \(bu 2
+All of the required header fields must be present in the message.
+.IP \(bu 2
+Each part of a multipart MIME message must be formatted properly.
+.IP \(bu 2
+If you include attachments, they must be in a file format that Amazon Pinpoint supports.
+.IP \(bu 2
+The entire message must be Base64 encoded.
+.IP \(bu 2
+If any of the MIME parts in your message contain content that is outside of the 7\-bit ASCII character range, you should encode that content to ensure that recipients\(aq email clients render the message properly.
+.IP \(bu 2
+The length of any single line of text in the message can\(aqt exceed 1,000 characters. This restriction is defined in \fI\%RFC 5321\fP .
+.UNINDENT
+.sp
+Data \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The raw email message. The message has to meet the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+The message has to contain a header and a body, separated by one blank line.
+.IP \(bu 2
+All of the required header fields must be present in the message.
+.IP \(bu 2
+Each part of a multipart MIME message must be formatted properly.
+.IP \(bu 2
+Attachments must be in a file format that Amazon Pinpoint supports.
+.IP \(bu 2
+The entire message must be Base64 encoded.
+.IP \(bu 2
+If any of the MIME parts in your message contain content that is outside of the 7\-bit ASCII character range, you should encode that content to ensure that recipients\(aq email clients render the message properly.
+.IP \(bu 2
+The length of any single line of text in the message can\(aqt exceed 1,000 characters. This restriction is defined in \fI\%RFC 5321\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Template \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The template to use for the email message.
+.sp
+TemplateArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the template.
+.UNINDENT
+.UNINDENT
+.sp
+TemplateData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An object that defines the values to use for message variables in the template. This object is a set of key\-value pairs. Each key defines a message variable in the template. The corresponding value defines the value to use for that variable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Simple": {
+    "Subject": {
+      "Data": "string",
+      "Charset": "string"
+    },
+    "Body": {
+      "Text": {
+        "Data": "string",
+        "Charset": "string"
+      },
+      "Html": {
+        "Data": "string",
+        "Charset": "string"
+      }
+    }
+  },
+  "Raw": {
+    "Data": blob
+  },
+  "Template": {
+    "TemplateArn": "string",
+    "TemplateData": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-email\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags, in the form of name/value pairs, to apply to an email that you send using the \fBSendEmail\fP operation. Tags correspond to characteristics of the email that you define, so that you can publish email sending events.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the name and value of a tag that you apply to an email. You can use message tags when you publish email sending events.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the message tag. The message tag name has to meet the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+It can only contain ASCII letters (a–z, A–Z), numbers (0–9), underscores (_), or dashes (\-).
+.IP \(bu 2
+It can contain no more than 256 characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the message tag. The message tag value has to meet the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+It can only contain ASCII letters (a–z, A–Z), numbers (0–9), underscores (_), or dashes (\-).
+.IP \(bu 2
+It can contain no more than 256 characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-configuration\-set\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the configuration set that you want to use when sending the email.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+MessageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the message that is generated when Amazon Pinpoint accepts the message.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+It is possible for Amazon Pinpoint to accept a message without sending it. This can happen when the message you\(aqre trying to send has an attachment doesn\(aqt pass a virus check, or when you send a templated email that contains invalid personalization content, for example.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

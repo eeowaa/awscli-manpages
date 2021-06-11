@@ -1,0 +1,596 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-GET-OBJECT" "a" "" ""
+.SH NAME
+s3api-get-object \- Retrieves objects from Amazon S3
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves objects from Amazon S3. To use \fBGET\fP , you must have \fBREAD\fP access to the object. If you grant \fBREAD\fP access to the anonymous user, you can return the object without using an authorization header.
+.sp
+An Amazon S3 bucket has no directory hierarchy such as you would find in a typical computer file system. You can, however, create a logical hierarchy by using object key names that imply a folder structure. For example, instead of naming an object \fBsample.jpg\fP , you can name it \fBphotos/2006/February/sample.jpg\fP .
+.sp
+To get an object from such a logical hierarchy, specify the full key name for the object in the \fBGET\fP operation. For a virtual hosted\-style request example, if you have the object \fBphotos/2006/February/sample.jpg\fP , specify the resource as \fB/photos/2006/February/sample.jpg\fP . For a path\-style request example, if you have the object \fBphotos/2006/February/sample.jpg\fP in the bucket named \fBexamplebucket\fP , specify the resource as \fB/examplebucket/photos/2006/February/sample.jpg\fP . For more information about request types, see \fI\%HTTP Host Header Bucket Specification\fP .
+.sp
+To distribute large files to many people, you can save bandwidth costs by using BitTorrent. For more information, see \fI\%Amazon S3 Torrent\fP . For more information about returning the ACL of an object, see \fI\%GetObjectAcl\fP .
+.sp
+If the object you are retrieving is stored in the S3 Glacier or S3 Glacier Deep Archive storage class, or S3 Intelligent\-Tiering Archive or S3 Intelligent\-Tiering Deep Archive tiers, before you can retrieve the object you must first restore a copy using \fI\%RestoreObject\fP . Otherwise, this action returns an \fBInvalidObjectStateError\fP error. For information about restoring archived objects, see \fI\%Restoring Archived Objects\fP .
+.sp
+Encryption request headers, like \fBx\-amz\-server\-side\-encryption\fP , should not be sent for GET requests if your object uses server\-side encryption with CMKs stored in AWS KMS (SSE\-KMS) or server\-side encryption with Amazon S3–managed encryption keys (SSE\-S3). If your object does use these types of keys, you’ll get an HTTP 400 BadRequest error.
+.sp
+If you encrypt an object by using server\-side encryption with customer\-provided encryption keys (SSE\-C) when you store the object in Amazon S3, then when you GET the object, you must use the following headers:
+.INDENT 0.0
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-customer\-algorithm
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-customer\-key
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-customer\-key\-MD5
+.UNINDENT
+.sp
+For more information about SSE\-C, see \fI\%Server\-Side Encryption (Using Customer\-Provided Encryption Keys)\fP .
+.sp
+Assuming you have permission to read object tags (permission for the \fBs3:GetObjectVersionTagging\fP action), the response also returns the \fBx\-amz\-tagging\-count\fP header that provides the count of number of tags associated with the object. You can use \fI\%GetObjectTagging\fP to retrieve the tag set associated with an object.
+.INDENT 0.0
+.INDENT 3.5
+\fBPermissions\fP
+.UNINDENT
+.UNINDENT
+.sp
+You need the \fBs3:GetObject\fP permission for this operation. For more information, see \fI\%Specifying Permissions in a Policy\fP . If the object you request does not exist, the error Amazon S3 returns depends on whether you also have the \fBs3:ListBucket\fP permission.
+.INDENT 0.0
+.IP \(bu 2
+If you have the \fBs3:ListBucket\fP permission on the bucket, Amazon S3 will return an HTTP status code 404 ("no such key") error.
+.IP \(bu 2
+If you don’t have the \fBs3:ListBucket\fP permission, Amazon S3 will return an HTTP status code 403 ("access denied") error.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBVersioning\fP
+.UNINDENT
+.UNINDENT
+.sp
+By default, the GET action returns the current version of an object. To return a different version, use the \fBversionId\fP subresource.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the current version of the object is a delete marker, Amazon S3 behaves as if the object was deleted and includes \fBx\-amz\-delete\-marker: true\fP in the response.
+.UNINDENT
+.UNINDENT
+.sp
+For more information about versioning, see \fI\%PutBucketVersioning\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBOverriding Response Header Values\fP
+.UNINDENT
+.UNINDENT
+.sp
+There are times when you want to override certain response header values in a GET response. For example, you might override the Content\-Disposition response header value in your GET request.
+.sp
+You can override values for a set of response headers using the following query parameters. These response header values are sent only on a successful request, that is, when status code 200 OK is returned. The set of headers you can override using these parameters is a subset of the headers that Amazon S3 accepts when you create an object. The response headers that you can override for the GET response are \fBContent\-Type\fP , \fBContent\-Language\fP , \fBExpires\fP , \fBCache\-Control\fP , \fBContent\-Disposition\fP , and \fBContent\-Encoding\fP . To override these header values in the GET response, you use the following request parameters.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must sign the request, either using an Authorization header or a presigned URL, when using these parameters. They cannot be used with an unsigned (anonymous) request.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBresponse\-content\-type\fP
+.IP \(bu 2
+\fBresponse\-content\-language\fP
+.IP \(bu 2
+\fBresponse\-expires\fP
+.IP \(bu 2
+\fBresponse\-cache\-control\fP
+.IP \(bu 2
+\fBresponse\-content\-disposition\fP
+.IP \(bu 2
+\fBresponse\-content\-encoding\fP
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAdditional Considerations about Request Headers\fP
+.UNINDENT
+.UNINDENT
+.sp
+If both of the \fBIf\-Match\fP and \fBIf\-Unmodified\-Since\fP headers are present in the request as follows: \fBIf\-Match\fP condition evaluates to \fBtrue\fP , and; \fBIf\-Unmodified\-Since\fP condition evaluates to \fBfalse\fP ; then, S3 returns 200 OK and the data requested.
+.sp
+If both of the \fBIf\-None\-Match\fP and \fBIf\-Modified\-Since\fP headers are present in the request as follows:\fBIf\-None\-Match\fP condition evaluates to \fBfalse\fP , and; \fBIf\-Modified\-Since\fP condition evaluates to \fBtrue\fP ; then, S3 returns 304 Not Modified response code.
+.sp
+For more information about conditional requests, see \fI\%RFC 7232\fP .
+.sp
+The following operations are related to \fBGetObject\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%ListBuckets\fP
+.IP \(bu 2
+\fI\%GetObjectAcl\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-object
+\-\-bucket <value>
+[\-\-if\-match <value>]
+[\-\-if\-modified\-since <value>]
+[\-\-if\-none\-match <value>]
+[\-\-if\-unmodified\-since <value>]
+\-\-key <value>
+[\-\-range <value>]
+[\-\-response\-cache\-control <value>]
+[\-\-response\-content\-disposition <value>]
+[\-\-response\-content\-encoding <value>]
+[\-\-response\-content\-language <value>]
+[\-\-response\-content\-type <value>]
+[\-\-response\-expires <value>]
+[\-\-version\-id <value>]
+[\-\-sse\-customer\-algorithm <value>]
+[\-\-sse\-customer\-key <value>]
+[\-\-sse\-customer\-key\-md5 <value>]
+[\-\-request\-payer <value>]
+[\-\-part\-number <value>]
+[\-\-expected\-bucket\-owner <value>]
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The bucket name containing the object.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-if\-match\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Return the object only if its entity tag (ETag) is the same as the one specified, otherwise return a 412 (precondition failed).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-if\-modified\-since\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Return the object only if it has been modified since the specified time, otherwise return a 304 (not modified).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-if\-none\-match\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Return the object only if its entity tag (ETag) is different from the one specified, otherwise return a 304 (not modified).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-if\-unmodified\-since\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Return the object only if it has not been modified since the specified time, otherwise return a 412 (precondition failed).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Key of the object to get.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-range\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Downloads the specified range bytes of an object. For more information about the HTTP Range header, see \fI\%https://www.w3.org/Protocols/rfc2616/rfc2616\-sec14.html#sec14.35\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon S3 doesn\(aqt support retrieving multiple ranges of data per \fBGET\fP request.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-cache\-control\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets the \fBCache\-Control\fP header of the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-content\-disposition\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets the \fBContent\-Disposition\fP header of the response
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-content\-encoding\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets the \fBContent\-Encoding\fP header of the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-content\-language\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets the \fBContent\-Language\fP header of the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-content\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets the \fBContent\-Type\fP header of the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-expires\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Sets the \fBExpires\fP header of the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-version\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+VersionId used to reference a specific version of the object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the algorithm to use to when decrypting the object (for example, AES256).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the customer\-provided encryption key for Amazon S3 used to encrypt the data. This value is used to decrypt the object when recovering it and must match the one used when storing the data. The key must be appropriate for use with the algorithm specified in the \fBx\-amz\-server\-side\-encryption\-customer\-algorithm\fP header.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the 128\-bit MD5 digest of the encryption key according to RFC 1321. Amazon S3 uses this header for a message integrity check to ensure that the encryption key was transmitted without error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-part\-number\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Part number of the object being read. This is a positive integer between 1 and 10,000. Effectively performs a \(aqranged\(aq GET request for the part specified. Useful for downloading just a part of an object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following example uses the \fBget\-object\fP command to download an object from Amazon S3:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api get\-object \-\-bucket text\-content \-\-key dir/my_images.tar.bz2 my_images.tar.bz2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Note that the outfile parameter is specified without an option name such as "\-\-outfile". The name of the output file must be the last parameter in the command.
+.sp
+The example below demonstrates the use of \fB\-\-range\fP to download a specific byte range from an object. Note the byte ranges needs to be prefixed with "bytes=":
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api get\-object \-\-bucket text\-content \-\-key dir/my_data \-\-range bytes=8888\-9999 my_data_range
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information about retrieving objects, see \fI\%Getting Objects\fP in the \fIAmazon S3 Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Body \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Object data.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteMarker \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the object retrieved was (true) or was not (false) a Delete Marker. If false, this response header does not appear in the response.
+.UNINDENT
+.UNINDENT
+.sp
+AcceptRanges \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates that a range of bytes was specified.
+.UNINDENT
+.UNINDENT
+.sp
+Expiration \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the object expiration is configured (see PUT Bucket lifecycle), the response includes this header. It includes the expiry\-date and rule\-id key\-value pairs providing object expiration information. The value of the rule\-id is URL encoded.
+.UNINDENT
+.UNINDENT
+.sp
+Restore \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about object restoration action and expiration time of the restored object copy.
+.UNINDENT
+.UNINDENT
+.sp
+LastModified \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Creation date of the object.
+.UNINDENT
+.UNINDENT
+.sp
+ContentLength \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Size of the body in bytes.
+.UNINDENT
+.UNINDENT
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An ETag is an opaque identifier assigned by a web server to a specific version of a resource found at a URL.
+.UNINDENT
+.UNINDENT
+.sp
+MissingMeta \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+This is set to the number of metadata entries not returned in \fBx\-amz\-meta\fP headers. This can happen if you create metadata using an API like SOAP that supports more flexible metadata than the REST API. For example, using SOAP, you can create metadata whose values are not legal HTTP headers.
+.UNINDENT
+.UNINDENT
+.sp
+VersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Version of the object.
+.UNINDENT
+.UNINDENT
+.sp
+CacheControl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies caching behavior along the request/reply chain.
+.UNINDENT
+.UNINDENT
+.sp
+ContentDisposition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies presentational information for the object.
+.UNINDENT
+.UNINDENT
+.sp
+ContentEncoding \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies what content encodings have been applied to the object and thus what decoding mechanisms must be applied to obtain the media\-type referenced by the Content\-Type header field.
+.UNINDENT
+.UNINDENT
+.sp
+ContentLanguage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The language the content is in.
+.UNINDENT
+.UNINDENT
+.sp
+ContentRange \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The portion of the object returned in the response.
+.UNINDENT
+.UNINDENT
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A standard MIME type describing the format of the object data.
+.UNINDENT
+.UNINDENT
+.sp
+Expires \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time at which the object is no longer cacheable.
+.UNINDENT
+.UNINDENT
+.sp
+WebsiteRedirectLocation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is configured as a website, redirects requests for this object to another object in the same bucket or to an external URL. Amazon S3 stores the value of this header in the object metadata.
+.UNINDENT
+.UNINDENT
+.sp
+ServerSideEncryption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing this object in Amazon S3 (for example, AES256, aws:kms).
+.UNINDENT
+.UNINDENT
+.sp
+Metadata \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of metadata to store with the object in S3.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header confirming the encryption algorithm used.
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerKeyMD5 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header to provide round\-trip message integrity verification of the customer\-provided encryption key.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the ID of the AWS Key Management Service (AWS KMS) symmetric customer managed customer master key (CMK) that was used for the object.
+.UNINDENT
+.UNINDENT
+.sp
+BucketKeyEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the object uses an S3 Bucket Key for server\-side encryption with AWS KMS (SSE\-KMS).
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides storage class information of the object. Amazon S3 returns this header for all objects except for S3 Standard storage class objects.
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.sp
+ReplicationStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon S3 can return this if your request involves a bucket that is either a source or destination in a replication rule.
+.UNINDENT
+.UNINDENT
+.sp
+PartsCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The count of parts this object has.
+.UNINDENT
+.UNINDENT
+.sp
+TagCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tags, if any, on the object.
+.UNINDENT
+.UNINDENT
+.sp
+ObjectLockMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Object Lock mode currently in place for this object.
+.UNINDENT
+.UNINDENT
+.sp
+ObjectLockRetainUntilDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when this object\(aqs Object Lock will expire.
+.UNINDENT
+.UNINDENT
+.sp
+ObjectLockLegalHoldStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this object has an active legal hold. This field is only returned if you have permission to view an object\(aqs legal hold status.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,235 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-PUT-OBJECT-LOCK-CONFIGURATION" "a" "" ""
+.SH NAME
+s3api-put-object-lock-configuration \- Places an Object Lock configuration on the specified bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Places an Object Lock configuration on the specified bucket. The rule specified in the Object Lock configuration will be applied by default to every new object placed in the specified bucket. For more information, see \fI\%Locking Objects\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+The \fBDefaultRetention\fP settings require both a mode and a period.
+.IP \(bu 2
+The \fBDefaultRetention\fP period can be either \fBDays\fP or \fBYears\fP but you must select one. You cannot specify \fBDays\fP and \fBYears\fP at the same time.
+.IP \(bu 2
+You can only enable Object Lock for new buckets. If you want to turn on Object Lock for an existing bucket, contact AWS Support.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-object\-lock\-configuration
+\-\-bucket <value>
+[\-\-object\-lock\-configuration <value>]
+[\-\-request\-payer <value>]
+[\-\-token <value>]
+[\-\-content\-md5 <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The bucket whose Object Lock configuration you want to create or replace.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-object\-lock\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Object Lock configuration that you want to apply to the specified bucket.
+.sp
+ObjectLockEnabled \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this bucket has an Object Lock configuration enabled. Enable \fBObjectLockEnabled\fP when you apply \fBObjectLockConfiguration\fP to a bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Rule \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Object Lock rule for the specified object. Enable the this rule when you apply \fBObjectLockConfiguration\fP to a bucket. Bucket settings require both a mode and a period. The period can be either \fBDays\fP or \fBYears\fP but you must select one. You cannot specify \fBDays\fP and \fBYears\fP at the same time.
+.sp
+DefaultRetention \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The default Object Lock retention mode and period that you want to apply to new objects placed in the specified bucket. Bucket settings require both a mode and a period. The period can be either \fBDays\fP or \fBYears\fP but you must select one. You cannot specify \fBDays\fP and \fBYears\fP at the same time.
+.sp
+Mode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The default Object Lock retention mode you want to apply to new objects placed in the specified bucket. Must be used with either \fBDays\fP or \fBYears\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Days \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days that you want to specify for the default retention period. Must be used with \fBMode\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Years \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of years that you want to specify for the default retention period. Must be used with \fBMode\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ObjectLockEnabled=string,Rule={DefaultRetention={Mode=string,Days=integer,Years=integer}}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ObjectLockEnabled": "Enabled",
+  "Rule": {
+    "DefaultRetention": {
+      "Mode": "GOVERNANCE"|"COMPLIANCE",
+      "Days": integer,
+      "Years": integer
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to allow Object Lock to be enabled for an existing bucket.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The MD5 hash for the request body.
+.sp
+For requests made using the AWS Command Line Interface (CLI) or AWS SDKs, this field is calculated automatically.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo set an object lock configuration on a bucket\fP
+.sp
+The following \fBput\-object\-lock\-configuration\fP example sets a 50\-day object lock on the specified bucket.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-object\-lock\-configuration \e
+    \-\-bucket my\-bucket\-with\-object\-lock \e
+    \-\-object\-lock\-configuration \(aq{ "ObjectLockEnabled": "Enabled", "Rule": { "DefaultRetention": { "Mode": "COMPLIANCE", "Days": 50 }}}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.SH OUTPUT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,609 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "PI-DESCRIBE-DIMENSION-KEYS" "a" "" ""
+.SH NAME
+pi-describe-dimension-keys \- For a specific time period, retrieve the top N dimension keys for a metric
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+For a specific time period, retrieve the top \fBN\fP dimension keys for a metric.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Each response element returns a maximum of 500 bytes. For larger elements, such as SQL statements, only the first 500 bytes are returned.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-dimension\-keys
+\-\-service\-type <value>
+\-\-identifier <value>
+\-\-start\-time <value>
+\-\-end\-time <value>
+\-\-metric <value>
+[\-\-period\-in\-seconds <value>]
+\-\-group\-by <value>
+[\-\-partition\-by <value>]
+[\-\-filter <value>]
+[\-\-max\-results <value>]
+[\-\-next\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-service\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS service for which Performance Insights will return metrics. The only valid value for \fIServiceType\fP is \fBRDS\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRDS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An immutable, AWS Region\-unique identifier for a data source. Performance Insights gathers metrics from this data source.
+.sp
+To use an Amazon RDS instance as a data source, you specify its \fBDbiResourceId\fP value. For example, specify \fBdb\-FAIHNTYBKTGAUSUZQYPDS2GW4A\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time specifying the beginning of the requested time series data. You must specify a \fBStartTime\fP within the past 7 days. The value specified is \fIinclusive\fP , which means that data points equal to or greater than \fBStartTime\fP are returned.
+.sp
+The value for \fBStartTime\fP must be earlier than the value for \fBEndTime\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time specifying the end of the requested time series data. The value specified is \fIexclusive\fP , which means that data points less than (but not equal to) \fBEndTime\fP are returned.
+.sp
+The value for \fBEndTime\fP must be later than the value for \fBStartTime\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metric\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of a Performance Insights metric to be measured.
+.sp
+Valid values for \fBMetric\fP are:
+.INDENT 0.0
+.IP \(bu 2
+\fBdb.load.avg\fP \- a scaled representation of the number of active sessions for the database engine.
+.IP \(bu 2
+\fBdb.sampledload.avg\fP \- the raw number of active sessions for the database engine.
+.UNINDENT
+.sp
+If the number of active sessions is less than an internal Performance Insights threshold, \fBdb.load.avg\fP and \fBdb.sampledload.avg\fP are the same value. If the number of active sessions is greater than the internal threshold, Performance Insights samples the active sessions, with \fBdb.load.avg\fP showing the scaled values, \fBdb.sampledload.avg\fP showing the raw values, and \fBdb.sampledload.avg\fP less than \fBdb.load.avg\fP . For most use cases, you can query \fBdb.load.avg\fP only.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-period\-in\-seconds\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The granularity, in seconds, of the data points returned from Performance Insights. A period can be as short as one second, or as long as one day (86400 seconds). Valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fB1\fP (one second)
+.IP \(bu 2
+\fB60\fP (one minute)
+.IP \(bu 2
+\fB300\fP (five minutes)
+.IP \(bu 2
+\fB3600\fP (one hour)
+.IP \(bu 2
+\fB86400\fP (twenty\-four hours)
+.UNINDENT
+.sp
+If you don\(aqt specify \fBPeriodInSeconds\fP , then Performance Insights chooses a value for you, with a goal of returning roughly 100\-200 data points in the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-group\-by\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A specification for how to aggregate the data points from a query result. You must specify a valid dimension group. Performance Insights returns all dimensions within this group, unless you provide the names of specific dimensions within this group. You can also request that Performance Insights return a limited number of values for a dimension.
+.sp
+Group \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension group. Valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBdb\fP \- The name of the database to which the client is connected (only Aurora PostgreSQL, RDS PostgreSQL, Aurora MySQL, RDS MySQL, and MariaDB)
+.IP \(bu 2
+\fBdb.application\fP \- The name of the application that is connected to the database (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.host\fP \- The host name of the connected client (all engines)
+.IP \(bu 2
+\fBdb.session_type\fP \- The type of the current session (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.sql\fP \- The SQL that is currently executing (all engines)
+.IP \(bu 2
+\fBdb.sql_tokenized\fP \- The SQL digest (all engines)
+.IP \(bu 2
+\fBdb.wait_event\fP \- The event for which the database backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.wait_event_type\fP \- The type of event for which the database backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.user\fP \- The user logged in to the database (all engines)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of specific dimensions from a dimension group. If this parameter is not present, then it signifies that all of the dimensions in the group were requested, or are present in the response.
+.sp
+Valid values for elements in the \fBDimensions\fP array are:
+.INDENT 0.0
+.IP \(bu 2
+\fBdb.application.name\fP \- The name of the application that is connected to the database (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.host.id\fP \- The host ID of the connected client (all engines)
+.IP \(bu 2
+\fBdb.host.name\fP \- The host name of the connected client (all engines)
+.IP \(bu 2
+\fBdb.name\fP \- The name of the database to which the client is connected (only Aurora PostgreSQL, RDS PostgreSQL, Aurora MySQL, RDS MySQL, and MariaDB)
+.IP \(bu 2
+\fBdb.session_type.name\fP \- The type of the current session (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.sql.id\fP \- The SQL ID generated by Performance Insights (all engines)
+.IP \(bu 2
+\fBdb.sql.db_id\fP \- The SQL ID generated by the database (all engines)
+.IP \(bu 2
+\fBdb.sql.statement\fP \- The SQL text that is being executed (all engines)
+.IP \(bu 2
+\fBdb.sql.tokenized_id\fP
+.IP \(bu 2
+\fBdb.sql_tokenized.id\fP \- The SQL digest ID generated by Performance Insights (all engines)
+.IP \(bu 2
+\fBdb.sql_tokenized.db_id\fP \- SQL digest ID generated by the database (all engines)
+.IP \(bu 2
+\fBdb.sql_tokenized.statement\fP \- The SQL digest text (all engines)
+.IP \(bu 2
+\fBdb.user.id\fP \- The ID of the user logged in to the database (all engines)
+.IP \(bu 2
+\fBdb.user.name\fP \- The name of the user logged in to the database (all engines)
+.IP \(bu 2
+\fBdb.wait_event.name\fP \- The event for which the backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.wait_event.type\fP \- The type of event for which the backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.wait_event_type.name\fP \- The name of the event type for which the backend is waiting (all engines)
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Limit \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of items to fetch for this dimension group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Group=string,Dimensions=string,string,Limit=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Group": "string",
+  "Dimensions": ["string", ...],
+  "Limit": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-partition\-by\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+For each dimension specified in \fBGroupBy\fP , specify a secondary dimension to further subdivide the partition keys in the response.
+.sp
+Group \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension group. Valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBdb\fP \- The name of the database to which the client is connected (only Aurora PostgreSQL, RDS PostgreSQL, Aurora MySQL, RDS MySQL, and MariaDB)
+.IP \(bu 2
+\fBdb.application\fP \- The name of the application that is connected to the database (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.host\fP \- The host name of the connected client (all engines)
+.IP \(bu 2
+\fBdb.session_type\fP \- The type of the current session (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.sql\fP \- The SQL that is currently executing (all engines)
+.IP \(bu 2
+\fBdb.sql_tokenized\fP \- The SQL digest (all engines)
+.IP \(bu 2
+\fBdb.wait_event\fP \- The event for which the database backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.wait_event_type\fP \- The type of event for which the database backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.user\fP \- The user logged in to the database (all engines)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of specific dimensions from a dimension group. If this parameter is not present, then it signifies that all of the dimensions in the group were requested, or are present in the response.
+.sp
+Valid values for elements in the \fBDimensions\fP array are:
+.INDENT 0.0
+.IP \(bu 2
+\fBdb.application.name\fP \- The name of the application that is connected to the database (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.host.id\fP \- The host ID of the connected client (all engines)
+.IP \(bu 2
+\fBdb.host.name\fP \- The host name of the connected client (all engines)
+.IP \(bu 2
+\fBdb.name\fP \- The name of the database to which the client is connected (only Aurora PostgreSQL, RDS PostgreSQL, Aurora MySQL, RDS MySQL, and MariaDB)
+.IP \(bu 2
+\fBdb.session_type.name\fP \- The type of the current session (only Aurora PostgreSQL and RDS PostgreSQL)
+.IP \(bu 2
+\fBdb.sql.id\fP \- The SQL ID generated by Performance Insights (all engines)
+.IP \(bu 2
+\fBdb.sql.db_id\fP \- The SQL ID generated by the database (all engines)
+.IP \(bu 2
+\fBdb.sql.statement\fP \- The SQL text that is being executed (all engines)
+.IP \(bu 2
+\fBdb.sql.tokenized_id\fP
+.IP \(bu 2
+\fBdb.sql_tokenized.id\fP \- The SQL digest ID generated by Performance Insights (all engines)
+.IP \(bu 2
+\fBdb.sql_tokenized.db_id\fP \- SQL digest ID generated by the database (all engines)
+.IP \(bu 2
+\fBdb.sql_tokenized.statement\fP \- The SQL digest text (all engines)
+.IP \(bu 2
+\fBdb.user.id\fP \- The ID of the user logged in to the database (all engines)
+.IP \(bu 2
+\fBdb.user.name\fP \- The name of the user logged in to the database (all engines)
+.IP \(bu 2
+\fBdb.wait_event.name\fP \- The event for which the backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.wait_event.type\fP \- The type of event for which the backend is waiting (all engines)
+.IP \(bu 2
+\fBdb.wait_event_type.name\fP \- The name of the event type for which the backend is waiting (all engines)
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Limit \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of items to fetch for this dimension group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Group=string,Dimensions=string,string,Limit=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Group": "string",
+  "Dimensions": ["string", ...],
+  "Limit": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+One or more filters to apply in the request. Restrictions:
+.INDENT 0.0
+.IP \(bu 2
+Any number of filters by the same dimension, as specified in the \fBGroupBy\fP or \fBPartition\fP parameters.
+.IP \(bu 2
+A single filter for any other dimension in this dimension group.
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-results\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of items to return in the response. If more items exist than the specified \fBMaxRecords\fP value, a pagination token is included in the response so that the remaining results can be retrieved.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional pagination token provided by a previous request. If this parameter is specified, the response includes only records beyond the token, up to the value specified by \fBMaxRecords\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo describe dimension keys\fP
+.sp
+This example requests the names of all wait events. The data is summarized by event name, and the aggregate values of those events over the specified time period.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws pi describe\-dimension\-keys \-\-service\-type RDS \-\-identifier db\-LKCGOBK26374TPTDFXOIWVCPPM \-\-start\-time 1527026400 \-\-end\-time 1527080400 \-\-metric db.load.avg \-\-group\-by \(aq{"Group":"db.wait_event"}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AlignedEndTime": 1.5270804E9,
+    "AlignedStartTime": 1.5270264E9,
+    "Keys": [
+        {
+            "Dimensions": {"db.wait_event.name": "wait/synch/mutex/innodb/aurora_lock_thread_slot_futex"},
+            "Total": 0.05906906851195666
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "wait/io/aurora_redo_log_flush"},
+            "Total": 0.015824722186149193
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "CPU"},
+            "Total": 0.008014396230265477
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "wait/io/aurora_respond_to_client"},
+            "Total": 0.0036361612526204477
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "wait/io/table/sql/handler"},
+            "Total": 0.0019108398419382965
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "wait/synch/cond/mysys/my_thread_var::suspend"},
+            "Total": 8.533847837782684E\-4
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "wait/io/file/csv/data"},
+            "Total": 6.864181956477376E\-4
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "Unknown"},
+            "Total": 3.895887056379051E\-4
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "wait/synch/mutex/sql/FILE_AS_TABLE::LOCK_shim_lists"},
+            "Total": 3.710368625122906E\-5
+        },
+        {
+            "Dimensions": {"db.wait_event.name": "wait/lock/table/sql/handler"},
+            "Total": 0
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+AlignedStartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The start time for the returned dimension keys, after alignment to a granular boundary (as specified by \fBPeriodInSeconds\fP ). \fBAlignedStartTime\fP will be less than or equal to the value of the user\-specified \fBStartTime\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AlignedEndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The end time for the returned dimension keys, after alignment to a granular boundary (as specified by \fBPeriodInSeconds\fP ). \fBAlignedEndTime\fP will be greater than or equal to the value of the user\-specified \fBEndtime\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PartitionKeys \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If \fBPartitionBy\fP was present in the request, \fBPartitionKeys\fP contains the breakdown of dimension keys by the specified partitions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+If \fBPartitionBy\fP was specified in a \fBDescribeDimensionKeys\fP request, the dimensions are returned in an array. Each element in the array specifies one dimension.
+.sp
+Dimensions \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A dimension map that contains the dimension(s) for this partition.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Keys \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimension keys that were requested.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An array of descriptions and aggregated values for each dimension within a dimension group.
+.sp
+Dimensions \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of name\-value pairs for the dimensions in the group.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Total \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The aggregated metric value for the dimension(s), over the requested time range.
+.UNINDENT
+.UNINDENT
+.sp
+Partitions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If \fBPartitionBy\fP was specified, \fBPartitionKeys\fP contains the dimensions that were.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional pagination token provided by a previous request. If this parameter is specified, the response includes only records beyond the token, up to the value specified by \fBMaxRecords\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

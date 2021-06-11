@@ -1,0 +1,495 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SQS-SEND-MESSAGE" "a" "" ""
+.SH NAME
+sqs-send-message \- Delivers a message to the specified queue
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Delivers a message to the specified queue.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:
+.INDENT 0.0
+.INDENT 3.5
+\fB#x9\fP | \fB#xA\fP | \fB#xD\fP | \fB#x20\fP to \fB#xD7FF\fP | \fB#xE000\fP to \fB#xFFFD\fP | \fB#x10000\fP to \fB#x10FFFF\fP
+.UNINDENT
+.UNINDENT
+.sp
+Any characters not included in this list will be rejected. For more information, see the \fI\%W3C specification for characters\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  send\-message
+\-\-queue\-url <value>
+\-\-message\-body <value>
+[\-\-delay\-seconds <value>]
+[\-\-message\-attributes <value>]
+[\-\-message\-system\-attributes <value>]
+[\-\-message\-deduplication\-id <value>]
+[\-\-message\-group\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-queue\-url\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of the Amazon SQS queue to which a message is sent.
+.sp
+Queue URLs and names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-body\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send. The minimum size is one character. The maximum size is 256 KB.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+A message can include only XML, JSON, and unformatted text. The following Unicode characters are allowed:
+.INDENT 0.0
+.INDENT 3.5
+\fB#x9\fP | \fB#xA\fP | \fB#xD\fP | \fB#x20\fP to \fB#xD7FF\fP | \fB#xE000\fP to \fB#xFFFD\fP | \fB#x10000\fP to \fB#x10FFFF\fP
+.UNINDENT
+.UNINDENT
+.sp
+Any characters not included in this list will be rejected. For more information, see the \fI\%W3C specification for characters\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delay\-seconds\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The length of time, in seconds, for which to delay a specific message. Valid values: 0 to 900. Maximum: 15 minutes. Messages with a positive \fBDelaySeconds\fP value become available for processing after the delay period is finished. If you don\(aqt specify a value, the default value for the queue applies.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+When you set \fBFifoQueue\fP , you can\(aqt set \fBDelaySeconds\fP per message. You can set this parameter only on a queue level.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Each message attribute consists of a \fBName\fP , \fBType\fP , and \fBValue\fP . For more information, see \fI\%Amazon SQS Message Attributes\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.sp
+Name \-> (string)
+.sp
+Value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The user\-specified message attribute value. For string data types, the \fBValue\fP attribute has the same restrictions on the content as the message body. For more information, see \(ga\(ga  SendMessage .\(ga\(ga
+.INDENT 0.0
+.INDENT 3.5
+\fBName\fP , \fBtype\fP , \fBvalue\fP and the message body must not be empty or null. All parts of the message attribute, including \fBName\fP , \fBType\fP , and \fBValue\fP , are part of the message size restriction (256 KB or 262,144 bytes).
+.UNINDENT
+.UNINDENT
+.sp
+StringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Strings are Unicode with UTF\-8 binary encoding. For a list of code values, see \fI\%ASCII Printable Characters\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BinaryValue \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Binary type attributes can store any binary data, such as compressed data, encrypted data, or images.
+.UNINDENT
+.UNINDENT
+.sp
+StringListValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Not implemented. Reserved for future use.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BinaryListValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Not implemented. Reserved for future use.
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+DataType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon SQS supports the following logical data types: \fBString\fP , \fBNumber\fP , and \fBBinary\fP . For the \fBNumber\fP data type, you must use \fBStringValue\fP .
+.sp
+You can also append custom labels. For more information, see \fI\%Amazon SQS Message Attributes\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=StringValue=string,BinaryValue=blob,StringListValues=string,string,BinaryListValues=blob,blob,DataType=string,KeyName2=StringValue=string,BinaryValue=blob,StringListValues=string,string,BinaryListValues=blob,blob,DataType=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "StringValue": "string",
+      "BinaryValue": blob,
+      "StringListValues": ["string", ...],
+      "BinaryListValues": [blob, ...],
+      "DataType": "string"
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-system\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+The message system attribute to send. Each message system attribute consists of a \fBName\fP , \fBType\fP , and \fBValue\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+Currently, the only supported message system attribute is \fBAWSTraceHeader\fP . Its type must be \fBString\fP and its value must be a correctly formatted AWS X\-Ray trace header string.
+.IP \(bu 2
+The size of a message system attribute doesn\(aqt count towards the total size of a message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.sp
+Value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The user\-specified message system attribute value. For string data types, the \fBValue\fP attribute has the same restrictions on the content as the message body. For more information, see \(ga\(ga  SendMessage .\(ga\(ga
+.INDENT 0.0
+.INDENT 3.5
+\fBName\fP , \fBtype\fP , \fBvalue\fP and the message body must not be empty or null.
+.UNINDENT
+.UNINDENT
+.sp
+StringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Strings are Unicode with UTF\-8 binary encoding. For a list of code values, see \fI\%ASCII Printable Characters\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BinaryValue \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Binary type attributes can store any binary data, such as compressed data, encrypted data, or images.
+.UNINDENT
+.UNINDENT
+.sp
+StringListValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Not implemented. Reserved for future use.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BinaryListValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Not implemented. Reserved for future use.
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+DataType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon SQS supports the following logical data types: \fBString\fP , \fBNumber\fP , and \fBBinary\fP . For the \fBNumber\fP data type, you must use \fBStringValue\fP .
+.sp
+You can also append custom labels. For more information, see \fI\%Amazon SQS Message Attributes\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  KeyName1=StringValue=string,BinaryValue=blob,StringListValues=string,string,BinaryListValues=blob,blob,DataType=string,KeyName2=StringValue=string,BinaryValue=blob,StringListValues=string,string,BinaryListValues=blob,blob,DataType=string
+
+Where valid key names are:
+  AWSTraceHeader
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"AWSTraceHeader": {
+      "StringValue": "string",
+      "BinaryValue": blob,
+      "StringListValues": ["string", ...],
+      "BinaryListValues": [blob, ...],
+      "DataType": "string"
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-deduplication\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter applies only to FIFO (first\-in\-first\-out) queues.
+.sp
+The token used for deduplication of sent messages. If a message with a particular \fBMessageDeduplicationId\fP is sent successfully, any messages sent with the same \fBMessageDeduplicationId\fP are accepted successfully but aren\(aqt delivered during the 5\-minute deduplication interval. For more information, see \fI\%Exactly\-once processing\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.INDENT 0.0
+.IP \(bu 2
+Every message must have a unique \fBMessageDeduplicationId\fP ,
+.INDENT 2.0
+.IP \(bu 2
+You may provide a \fBMessageDeduplicationId\fP explicitly.
+.IP \(bu 2
+If you aren\(aqt able to provide a \fBMessageDeduplicationId\fP and you enable \fBContentBasedDeduplication\fP for your queue, Amazon SQS uses a SHA\-256 hash to generate the \fBMessageDeduplicationId\fP using the body of the message (but not the attributes of the message).
+.IP \(bu 2
+If you don\(aqt provide a \fBMessageDeduplicationId\fP and the queue doesn\(aqt have \fBContentBasedDeduplication\fP set, the action fails with an error.
+.IP \(bu 2
+If the queue has \fBContentBasedDeduplication\fP set, your \fBMessageDeduplicationId\fP overrides the generated one.
+.UNINDENT
+.IP \(bu 2
+When \fBContentBasedDeduplication\fP is in effect, messages with identical content sent within the deduplication interval are treated as duplicates and only one copy of the message is delivered.
+.IP \(bu 2
+If you send one message with \fBContentBasedDeduplication\fP enabled and then another message with a \fBMessageDeduplicationId\fP that is the same as the one generated for the first \fBMessageDeduplicationId\fP , the two messages are treated as duplicates and only one copy of the message is delivered.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBMessageDeduplicationId\fP is available to the consumer of the message (this can be useful for troubleshooting delivery issues).
+.sp
+If a message is sent successfully but the acknowledgement is lost and the message is resent with the same \fBMessageDeduplicationId\fP after the deduplication interval, Amazon SQS can\(aqt detect duplicate messages.
+.sp
+Amazon SQS continues to keep track of the message deduplication ID even after the message is received and deleted.
+.UNINDENT
+.UNINDENT
+.sp
+The maximum length of \fBMessageDeduplicationId\fP is 128 characters. \fBMessageDeduplicationId\fP can contain alphanumeric characters (\fBa\-z\fP , \fBA\-Z\fP , \fB0\-9\fP ) and punctuation (\fB!"#$%&\(aq()*+,\-./:;<=>?@[\e]^_\(ga{|}~\fP ).
+.sp
+For best practices of using \fBMessageDeduplicationId\fP , see \fI\%Using the MessageDeduplicationId Property\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-group\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter applies only to FIFO (first\-in\-first\-out) queues.
+.sp
+The tag that specifies that a message belongs to a specific message group. Messages that belong to the same message group are processed in a FIFO manner (however, messages in different message groups might be processed out of order). To interleave multiple ordered streams within a single queue, use \fBMessageGroupId\fP values (for example, session data for multiple users). In this scenario, multiple consumers can process the queue, but the session data of each user is processed in a FIFO fashion.
+.INDENT 0.0
+.IP \(bu 2
+You must associate a non\-empty \fBMessageGroupId\fP with a message. If you don\(aqt provide a \fBMessageGroupId\fP , the action fails.
+.IP \(bu 2
+\fBReceiveMessage\fP might return messages with multiple \fBMessageGroupId\fP values. For each \fBMessageGroupId\fP , the messages are sorted by time sent. The caller can\(aqt specify a \fBMessageGroupId\fP .
+.UNINDENT
+.sp
+The length of \fBMessageGroupId\fP is 128 characters. Valid values: alphanumeric characters and punctuation \fB(!"#$%&\(aq()*+,\-./:;<=>?@[\e]^_\(ga{|}~)\fP .
+.sp
+For best practices of using \fBMessageGroupId\fP , see \fI\%Using the MessageGroupId Property\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBMessageGroupId\fP is required for FIFO queues. You can\(aqt use it for Standard queues.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo send a message\fP
+.sp
+This example sends a message with the specified message body, delay period, and message attributes, to the specified queue.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sqs send\-message \-\-queue\-url https://sqs.us\-east\-1.amazonaws.com/80398EXAMPLE/MyQueue \-\-message\-body "Information about the largest city in Any Region." \-\-delay\-seconds 10 \-\-message\-attributes file://send\-message.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Input file (send\-message.json):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "City": {
+    "DataType": "String",
+    "StringValue": "Any City"
+  },
+  "Greeting": {
+    "DataType": "Binary",
+    "BinaryValue": "Hello, World!"
+  },
+  "Population": {
+    "DataType": "Number",
+    "StringValue": "1250800"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "MD5OfMessageBody": "51b0a325...39163aa0",
+  "MD5OfMessageAttributes": "00484c68...59e48f06",
+  "MessageId": "da68f62c\-0c07\-4bee\-bf5f\-7e856EXAMPLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+MD5OfMessageBody \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An MD5 digest of the non\-URL\-encoded message body string. You can use this attribute to verify that Amazon SQS received the message correctly. Amazon SQS URL\-decodes the message before creating the MD5 digest. For information about MD5, see \fI\%RFC1321\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MD5OfMessageAttributes \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An MD5 digest of the non\-URL\-encoded message attribute string. You can use this attribute to verify that Amazon SQS received the message correctly. Amazon SQS URL\-decodes the message before creating the MD5 digest. For information about MD5, see \fI\%RFC1321\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MD5OfMessageSystemAttributes \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An MD5 digest of the non\-URL\-encoded message system attribute string. You can use this attribute to verify that Amazon SQS received the message correctly. Amazon SQS URL\-decodes the message before creating the MD5 digest.
+.UNINDENT
+.UNINDENT
+.sp
+MessageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute containing the \fBMessageId\fP of the message sent to the queue. For more information, see \fI\%Queue and Message Identifiers\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SequenceNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter applies only to FIFO (first\-in\-first\-out) queues.
+.sp
+The large, non\-consecutive number that Amazon SQS assigns to each message.
+.sp
+The length of \fBSequenceNumber\fP is 128 bits. \fBSequenceNumber\fP continues to increase for a particular \fBMessageGroupId\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

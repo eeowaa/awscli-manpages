@@ -1,0 +1,472 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-DESCRIBE-JOB" "a" "" ""
+.SH NAME
+iot-describe-job \- Describes a job
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes a job.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-job
+\-\-job\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-job\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier you assigned to this job when it was created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get detailed status for a job\fP
+.sp
+The following \fBdescribe\-job\fP example gets detailed status for the job whose ID is \fBexample\-job\-01\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot describe\-job \e
+    \-\-job\-id "example\-job\-01"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "job": {
+        "jobArn": "arn:aws:iot:us\-west\-2:123456789012:job/example\-job\-01",
+        "jobId": "example\-job\-01",
+        "targetSelection": "SNAPSHOT",
+        "status": "IN_PROGRESS",
+        "targets": [
+            "arn:aws:iot:us\-west\-2:123456789012:thing/MyRaspberryPi"
+        ],
+        "description": "example job test",
+        "presignedUrlConfig": {},
+        "jobExecutionsRolloutConfig": {},
+        "createdAt": 1560787022.733,
+        "lastUpdatedAt": 1560787026.294,
+        "jobProcessDetails": {
+            "numberOfCanceledThings": 0,
+            "numberOfSucceededThings": 0,
+            "numberOfFailedThings": 0,
+            "numberOfRejectedThings": 0,
+            "numberOfQueuedThings": 1,
+            "numberOfInProgressThings": 0,
+            "numberOfRemovedThings": 0,
+            "numberOfTimedOutThings": 0
+        },
+        "timeoutConfig": {}
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating and Managing Jobs (CLI)\fP in the \fIAWS IoT Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+documentSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An S3 link to the job document.
+.UNINDENT
+.UNINDENT
+.sp
+job \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the job.
+.sp
+jobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An ARN identifying the job with format "arn:aws:iot:region:account:job/jobId".
+.UNINDENT
+.UNINDENT
+.sp
+jobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier you assigned to this job when it was created.
+.UNINDENT
+.UNINDENT
+.sp
+targetSelection \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the job will continue to run (CONTINUOUS), or will be complete after all those things specified as targets have completed the job (SNAPSHOT). If continuous, the job may also be run on a thing when a change is detected in a target. For example, a job will run on a device when the thing representing the device is added to a target group, even after the job was completed by all things originally in the group.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the job, one of \fBIN_PROGRESS\fP , \fBCANCELED\fP , \fBDELETION_IN_PROGRESS\fP or \fBCOMPLETED\fP .
+.UNINDENT
+.UNINDENT
+.sp
+forceCanceled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Will be \fBtrue\fP if the job was canceled with the optional \fBforce\fP parameter set to \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.sp
+reasonCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the job was updated, provides the reason code for the update.
+.UNINDENT
+.UNINDENT
+.sp
+comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the job was updated, describes the reason for the update.
+.UNINDENT
+.UNINDENT
+.sp
+targets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of IoT things and thing groups to which the job should be sent.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A short text description of the job.
+.UNINDENT
+.UNINDENT
+.sp
+presignedUrlConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for pre\-signed S3 URLs.
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of an IAM role that grants grants permission to download files from the S3 bucket where the job data/updates are stored. The role must also grant permission for IoT to download the files.
+.UNINDENT
+.UNINDENT
+.sp
+expiresInSec \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+How long (in seconds) pre\-signed URLs are valid. Valid values are 60 \- 3600, the default value is 3600 seconds. Pre\-signed URLs are generated when Jobs receives an MQTT request for the job document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+jobExecutionsRolloutConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Allows you to create a staged rollout of a job.
+.sp
+maximumPerMinute \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of things that will be notified of a pending job, per minute. This parameter allows you to create a staged rollout.
+.UNINDENT
+.UNINDENT
+.sp
+exponentialRate \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The rate of increase for a job rollout. This parameter allows you to define an exponential rate for a job rollout.
+.sp
+baseRatePerMinute \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of things that will be notified of a pending job, per minute at the start of job rollout. This parameter allows you to define the initial rate of rollout.
+.UNINDENT
+.UNINDENT
+.sp
+incrementFactor \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The exponential factor to increase the rate of rollout for a job.
+.sp
+AWS IoT supports up to one digit after the decimal (for example, 1.5, but not 1.55).
+.UNINDENT
+.UNINDENT
+.sp
+rateIncreaseCriteria \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The criteria to initiate the increase in rate of rollout for a job.
+.sp
+numberOfNotifiedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The threshold for number of notified things that will initiate the increase in rate of rollout.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfSucceededThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The threshold for number of succeeded things that will initiate the increase in rate of rollout.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+abortConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for criteria to abort the job.
+.sp
+criteriaList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of criteria that determine when and how to abort the job.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The criteria that determine when and how a job abort takes place.
+.sp
+failureType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of job execution failures that can initiate a job abort.
+.UNINDENT
+.UNINDENT
+.sp
+action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of job action to take to initiate the job abort.
+.UNINDENT
+.UNINDENT
+.sp
+thresholdPercentage \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The minimum percentage of job execution failures that must occur to initiate the job abort.
+.sp
+AWS IoT supports up to two digits after the decimal (for example, 10.9 and 10.99, but not 10.999).
+.UNINDENT
+.UNINDENT
+.sp
+minNumberOfExecutedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of things which must receive job execution notifications before the job can be aborted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time, in seconds since the epoch, when the job was created.
+.UNINDENT
+.UNINDENT
+.sp
+lastUpdatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time, in seconds since the epoch, when the job was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+completedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time, in seconds since the epoch, when the job was completed.
+.UNINDENT
+.UNINDENT
+.sp
+jobProcessDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the job process.
+.sp
+processingTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The target devices to which the job execution is being rolled out. This value will be null after the job execution has finished rolling out to all the target devices.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+numberOfCanceledThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things that cancelled the job.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfSucceededThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things which successfully completed the job.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfFailedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things that failed executing the job.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfRejectedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things that rejected the job.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfQueuedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things that are awaiting execution of the job.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfInProgressThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things currently executing the job.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfRemovedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things that are no longer scheduled to execute the job because they have been deleted or have been removed from the group that was a target of the job.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfTimedOutThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of things whose job execution status is \fBTIMED_OUT\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeoutConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the amount of time each device has to finish its execution of the job. A timer is started when the job execution status is set to \fBIN_PROGRESS\fP . If the job execution status is not set to another terminal state before the timer expires, it will be automatically set to \fBTIMED_OUT\fP .
+.sp
+inProgressTimeoutInMinutes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the amount of time, in minutes, this device has to finish execution of this job. The timeout interval can be anywhere between 1 minute and 7 days (1 to 10080 minutes). The in progress timer can\(aqt be updated and will apply to all job executions for the job. Whenever a job execution remains in the IN_PROGRESS status for longer than this interval, the job execution will fail and switch to the terminal \fBTIMED_OUT\fP status.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+namespaceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace used to indicate that a job is a customer\-managed job.
+.sp
+When you specify a value for this parameter, AWS IoT Core sends jobs notifications to MQTT topics that contain the value in the following format.
+.INDENT 0.0
+.INDENT 3.5
+\fB$aws/things/*THING_NAME* /jobs/*JOB_ID* /notify\-namespace\-*NAMESPACE_ID* /\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBnamespaceId\fP feature is in public preview.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+jobTemplateArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the job template used to create the job.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

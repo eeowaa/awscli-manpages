@@ -1,0 +1,427 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "BACKUP-GET-BACKUP-PLAN" "a" "" ""
+.SH NAME
+backup-get-backup-plan \- Returns BackupPlan details for the specified BackupPlanId 
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns \fBBackupPlan\fP details for the specified \fBBackupPlanId\fP . The details are the body of a backup plan in JSON format, in addition to plan metadata.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-backup\-plan
+\-\-backup\-plan\-id <value>
+[\-\-version\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-backup\-plan\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniquely identifies a backup plan.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-version\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, randomly generated, Unicode, UTF\-8 encoded strings that are at most 1,024 bytes long. Version IDs cannot be edited.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the details of a backup plan\fP
+.sp
+The following \fBget\-backup\-plan\fP example displays the details of the specified backup plan.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws backup get\-backup\-plan \e
+    \-\-backup\-plan\-id "fcbf5d8f\-bd77\-4f3a\-9c97\-f24fb3d373a5"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "BackupPlan": {
+        "BackupPlanName": "Example\-Backup\-Plan",
+        "Rules": [
+            {
+                "RuleName": "DailyBackups",
+                "TargetBackupVaultName": "Default",
+                "ScheduleExpression": "cron(0 5 ? * * *)",
+                "StartWindowMinutes": 480,
+                "CompletionWindowMinutes": 10080,
+                "Lifecycle": {
+                    "DeleteAfterDays": 35
+                },
+                "RuleId": "70e0ccdc\-e9df\-4e83\-82ad\-c1e5a9471cc3"
+            }
+        ]
+    },
+    "BackupPlanId": "fcbf5d8f\-bd77\-4f3a\-9c97\-f24fb3d373a5",
+    "BackupPlanArn": "arn:aws:backup:us\-west\-2:123456789012:backup\-plan:fcbf5d8f\-bd77\-4f3a\-9c97\-f24fb3d373a5",
+    "VersionId": "NjQ2ZTZkODktMGVhNy00MmQ0LWE4YjktZTkwNTQ3OTkyYTcw",
+    "CreationDate": 1568926091.57
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating a Backup Plan\fP in the \fIAWS Backup Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+BackupPlan \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the body of a backup plan. Includes a \fBBackupPlanName\fP and one or more sets of \fBRules\fP .
+.sp
+BackupPlanName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The display name of a backup plan.
+.UNINDENT
+.UNINDENT
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBBackupRule\fP objects, each of which specifies a scheduled task that is used to back up a selection of resources.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a scheduled task used to back up a selection of resources.
+.sp
+RuleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional display name for a backup rule.
+.UNINDENT
+.UNINDENT
+.sp
+TargetBackupVaultName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of a logical container where backups are stored. Backup vaults are identified by names that are unique to the account used to create them and the AWS Region where they are created. They consist of lowercase letters, numbers, and hyphens.
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleExpression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A CRON expression specifying when AWS Backup initiates a backup job. For more information about cron expressions, see \fI\%Schedule Expressions for Rules\fP in the \fIAmazon CloudWatch Events User Guide.\fP . Prior to specifying a value for this parameter, we recommend testing your cron expression using one of the many available cron generator and testing tools.
+.UNINDENT
+.UNINDENT
+.sp
+StartWindowMinutes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A value in minutes after a backup is scheduled before a job will be canceled if it doesn\(aqt start successfully. This value is optional.
+.UNINDENT
+.UNINDENT
+.sp
+CompletionWindowMinutes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A value in minutes after a backup job is successfully started before it must be completed or it will be canceled by AWS Backup. This value is optional.
+.UNINDENT
+.UNINDENT
+.sp
+Lifecycle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The lifecycle defines when a protected resource is transitioned to cold storage and when it expires. AWS Backup transitions and expires backups automatically according to the lifecycle that you define.
+.sp
+Backups transitioned to cold storage must be stored in cold storage for a minimum of 90 days. Therefore, the “expire after days” setting must be 90 days greater than the “transition to cold after days” setting. The “transition to cold after days” setting cannot be changed after a backup has been transitioned to cold.
+.sp
+Only Amazon EFS file system backups can be transitioned to cold storage.
+.sp
+MoveToColdStorageAfterDays \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days after creation that a recovery point is moved to cold storage.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteAfterDays \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days after creation that a recovery point is deleted. Must be greater than 90 days plus \fBMoveToColdStorageAfterDays\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RecoveryPointTags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An array of key\-value pair strings that are assigned to resources that are associated with this rule when restored from backup.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+RuleId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniquely identifies a rule that is used to schedule the backup of a selection of resources.
+.UNINDENT
+.UNINDENT
+.sp
+CopyActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBCopyAction\fP objects, which contains the details of the copy operation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of the copy operation.
+.sp
+Lifecycle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains an array of \fBTransition\fP objects specifying how long in days before a recovery point transitions to cold storage or is deleted.
+.sp
+Backups transitioned to cold storage must be stored in cold storage for a minimum of 90 days. Therefore, on the console, the “expire after days” setting must be 90 days greater than the “transition to cold after days” setting. The “transition to cold after days” setting cannot be changed after a backup has been transitioned to cold.
+.sp
+Only Amazon EFS file system backups can be transitioned to cold storage.
+.sp
+MoveToColdStorageAfterDays \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days after creation that a recovery point is moved to cold storage.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteAfterDays \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days after creation that a recovery point is deleted. Must be greater than 90 days plus \fBMoveToColdStorageAfterDays\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DestinationBackupVaultArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Resource Name (ARN) that uniquely identifies the destination backup vault for the copied backup. For example, \fBarn:aws:backup:us\-east\-1:123456789012:vault:aBackupVault\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EnableContinuousBackup \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether AWS Backup creates continuous backups. True causes AWS Backup to create continuous backups capable of point\-in\-time restore (PITR). False (or not specified) causes AWS Backup to create snapshot backups.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AdvancedBackupSettings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains a list of \fBBackupOptions\fP for each resource type.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of backup options for each resource type.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an object containing resource type and backup options. The only supported resource type is Amazon EC2 instances with Windows VSS. For an CloudFormation example, see the \fI\%sample CloudFormation template to enable Windows VSS\fP in the \fIAWS Backup User Guide\fP .
+.sp
+Valid values: \fBEC2\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BackupOptions \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the backup option for a selected resource. This option is only available for Windows VSS backup jobs.
+.sp
+Valid values:
+.sp
+Set to \fB"WindowsVSS":"enabled"\fP to enable the WindowsVSS backup option and create a VSS Windows backup.
+.sp
+Set to \fB"WindowsVSS":"disabled"\fP to create a regular backup. The WindowsVSS option is not enabled by default.
+.sp
+If you specify an invalid option, you get an \fBInvalidParameterValueException\fP exception.
+.sp
+For more information about Windows VSS backups, see \fI\%Creating a VSS\-Enabled Windows Backup\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BackupPlanId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniquely identifies a backup plan.
+.UNINDENT
+.UNINDENT
+.sp
+BackupPlanArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Resource Name (ARN) that uniquely identifies a backup plan; for example, \fBarn:aws:backup:us\-east\-1:123456789012:plan:8F81F553\-3A74\-4A3F\-B93D\-B3360DC80C50\fP .
+.UNINDENT
+.UNINDENT
+.sp
+VersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, randomly generated, Unicode, UTF\-8 encoded strings that are at most 1,024 bytes long. Version IDs cannot be edited.
+.UNINDENT
+.UNINDENT
+.sp
+CreatorRequestId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique string that identifies the request and allows failed requests to be retried without the risk of running the operation twice.
+.UNINDENT
+.UNINDENT
+.sp
+CreationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that a backup plan is created, in Unix format and Coordinated Universal Time (UTC). The value of \fBCreationDate\fP is accurate to milliseconds. For example, the value 1516925490.087 represents Friday, January 26, 2018 12:11:30.087 AM.
+.UNINDENT
+.UNINDENT
+.sp
+DeletionDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that a backup plan is deleted, in Unix format and Coordinated Universal Time (UTC). The value of \fBDeletionDate\fP is accurate to milliseconds. For example, the value 1516925490.087 represents Friday, January 26, 2018 12:11:30.087 AM.
+.UNINDENT
+.UNINDENT
+.sp
+LastExecutionDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last time a job to back up resources was run with this backup plan. A date and time, in Unix format and Coordinated Universal Time (UTC). The value of \fBLastExecutionDate\fP is accurate to milliseconds. For example, the value 1516925490.087 represents Friday, January 26, 2018 12:11:30.087 AM.
+.UNINDENT
+.UNINDENT
+.sp
+AdvancedBackupSettings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains a list of \fBBackupOptions\fP for each resource type. The list is populated only if the advanced option is set for the backup plan.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of backup options for each resource type.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an object containing resource type and backup options. The only supported resource type is Amazon EC2 instances with Windows VSS. For an CloudFormation example, see the \fI\%sample CloudFormation template to enable Windows VSS\fP in the \fIAWS Backup User Guide\fP .
+.sp
+Valid values: \fBEC2\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BackupOptions \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the backup option for a selected resource. This option is only available for Windows VSS backup jobs.
+.sp
+Valid values:
+.sp
+Set to \fB"WindowsVSS":"enabled"\fP to enable the WindowsVSS backup option and create a VSS Windows backup.
+.sp
+Set to \fB"WindowsVSS":"disabled"\fP to create a regular backup. The WindowsVSS option is not enabled by default.
+.sp
+If you specify an invalid option, you get an \fBInvalidParameterValueException\fP exception.
+.sp
+For more information about Windows VSS backups, see \fI\%Creating a VSS\-Enabled Windows Backup\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

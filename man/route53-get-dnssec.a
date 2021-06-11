@@ -1,0 +1,339 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ROUTE53-GET-DNSSEC" "a" "" ""
+.SH NAME
+route53-get-dnssec \- Returns information about DNSSEC for a specific hosted zone, including the key-signing keys (KSKs) in the hosted zone
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about DNSSEC for a specific hosted zone, including the key\-signing keys (KSKs) in the hosted zone.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-dnssec
+\-\-hosted\-zone\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-hosted\-zone\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique string used to identify a hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A string repesenting the status of DNSSEC.
+.sp
+ServeSignature \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that represents the current hosted zone signing status.
+.sp
+Status can have one of the following values:
+.INDENT 0.0
+.INDENT 3.5
+SIGNING
+.UNINDENT
+.UNINDENT
+.sp
+DNSSEC signing is enabled for the hosted zone.
+.INDENT 0.0
+.INDENT 3.5
+NOT_SIGNING
+.UNINDENT
+.UNINDENT
+.sp
+DNSSEC signing is not enabled for the hosted zone.
+.INDENT 0.0
+.INDENT 3.5
+DELETING
+.UNINDENT
+.UNINDENT
+.sp
+DNSSEC signing is in the process of being removed for the hosted zone.
+.INDENT 0.0
+.INDENT 3.5
+ACTION_NEEDED
+.UNINDENT
+.UNINDENT
+.sp
+There is a problem with signing in the hosted zone that requires you to take action to resolve. For example, the customer managed customer master key (CMK) might have been deleted, or the permissions for the customer managed CMK might have been changed.
+.INDENT 0.0
+.INDENT 3.5
+INTERNAL_FAILURE
+.UNINDENT
+.UNINDENT
+.sp
+There was an error during a request. Before you can continue to work with DNSSEC signing, including with key\-signing keys (KSKs), you must correct the problem by enabling or disabling DNSSEC signing for the hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status message provided for the following DNSSEC signing status: \fBINTERNAL_FAILURE\fP . The status message includes information about what the problem might be and steps that you can take to correct the issue.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KeySigningKeys \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The key\-signing keys (KSKs) in your account.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-signing key (KSK) is a complex type that represents a public/private key pair. The private key is used to generate a digital signature for the zone signing key (ZSK). The public key is stored in the DNS and is used to authenticate the ZSK. A KSK is always associated with a hosted zone; it cannot exist by itself.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string used to identify a key\-signing key (KSK). \fBName\fP can include numbers, letters, and underscores (_). \fBName\fP must be unique for each key\-signing key in the same hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+KmsArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon resource name (ARN) used to identify the customer managed customer master key (CMK) in AWS Key Management Service (AWS KMS). The \fBKmsArn\fP must be unique for each key\-signing key (KSK) in a single hosted zone.
+.sp
+You must configure the CMK as follows:
+.INDENT 0.0
+.INDENT 3.5
+Status
+.UNINDENT
+.UNINDENT
+.sp
+Enabled
+.INDENT 0.0
+.INDENT 3.5
+Key spec
+.UNINDENT
+.UNINDENT
+.sp
+ECC_NIST_P256
+.INDENT 0.0
+.INDENT 3.5
+Key usage
+.UNINDENT
+.UNINDENT
+.sp
+Sign and verify
+.INDENT 0.0
+.INDENT 3.5
+Key policy
+.UNINDENT
+.UNINDENT
+.sp
+The key policy must give permission for the following actions:
+.INDENT 0.0
+.IP \(bu 2
+DescribeKey
+.IP \(bu 2
+GetPublicKey
+.IP \(bu 2
+Sign
+.UNINDENT
+.sp
+The key policy must also include the Amazon Route 53 service in the principal for your account. Specify the following:
+.INDENT 0.0
+.IP \(bu 2
+\fB"Service": "api\-service.dnssec.route53.aws.internal"\fP
+.UNINDENT
+.sp
+For more information about working with the customer managed CMK in AWS KMS, see \fI\%AWS Key Management Service concepts\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Flag \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+An integer that specifies how the key is used. For key\-signing key (KSK), this value is always 257.
+.UNINDENT
+.UNINDENT
+.sp
+SigningAlgorithmMnemonic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string used to represent the signing algorithm. This value must follow the guidelines provided by \fI\%RFC\-8624 Section 3.1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SigningAlgorithmType \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+An integer used to represent the signing algorithm. This value must follow the guidelines provided by \fI\%RFC\-8624 Section 3.1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DigestAlgorithmMnemonic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string used to represent the delegation signer digest algorithm. This value must follow the guidelines provided by \fI\%RFC\-8624 Section 3.3\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DigestAlgorithmType \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+An integer used to represent the delegation signer digest algorithm. This value must follow the guidelines provided by \fI\%RFC\-8624 Section 3.3\fP .
+.UNINDENT
+.UNINDENT
+.sp
+KeyTag \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+An integer used to identify the DNSSEC record for the domain name. The process used to calculate the value is described in \fI\%RFC\-4034 Appendix B\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DigestValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A cryptographic digest of a DNSKEY resource record (RR). DNSKEY records are used to publish the public key that resolvers can use to verify DNSSEC signatures that are used to secure certain kinds of information provided by the DNS system.
+.UNINDENT
+.UNINDENT
+.sp
+PublicKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public key, represented as a Base64 encoding, as required by \fI\%RFC\-4034 Page 5\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DSRecord \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that represents a delegation signer (DS) record.
+.UNINDENT
+.UNINDENT
+.sp
+DNSKEYRecord \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that represents a DNSKEY record.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that represents the current key\-signing key (KSK) status.
+.sp
+Status can have one of the following values:
+.INDENT 0.0
+.INDENT 3.5
+ACTIVE
+.UNINDENT
+.UNINDENT
+.sp
+The KSK is being used for signing.
+.INDENT 0.0
+.INDENT 3.5
+INACTIVE
+.UNINDENT
+.UNINDENT
+.sp
+The KSK is not being used for signing.
+.INDENT 0.0
+.INDENT 3.5
+DELETING
+.UNINDENT
+.UNINDENT
+.sp
+The KSK is in the process of being deleted.
+.INDENT 0.0
+.INDENT 3.5
+ACTION_NEEDED
+.UNINDENT
+.UNINDENT
+.sp
+There is a problem with the KSK that requires you to take action to resolve. For example, the customer managed customer master key (CMK) might have been deleted, or the permissions for the customer managed CMK might have been changed.
+.INDENT 0.0
+.INDENT 3.5
+INTERNAL_FAILURE
+.UNINDENT
+.UNINDENT
+.sp
+There was an error during a request. Before you can continue to work with DNSSEC signing, including actions that involve this KSK, you must correct the problem. For example, you may need to activate or deactivate the KSK.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status message provided for the following key\-signing key (KSK) statuses: \fBACTION_NEEDED\fP or \fBINTERNAL_FAILURE\fP . The status message includes information about what the problem might be and steps that you can take to correct the issue.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the key\-signing key (KSK) was created.
+.UNINDENT
+.UNINDENT
+.sp
+LastModifiedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last time that the key\-signing key (KSK) was changed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

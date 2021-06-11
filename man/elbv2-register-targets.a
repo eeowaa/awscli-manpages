@@ -1,0 +1,220 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELBV2-REGISTER-TARGETS" "a" "" ""
+.SH NAME
+elbv2-register-targets \- Registers the specified targets with the specified target group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Registers the specified targets with the specified target group.
+.sp
+If the target is an EC2 instance, it must be in the \fBrunning\fP state when you register it.
+.sp
+By default, the load balancer routes requests to registered targets using the protocol and port for the target group. Alternatively, you can override the port for a target when you register it. You can register each EC2 instance or IP address with the same target group multiple times using different ports.
+.sp
+With a Network Load Balancer, you cannot register instances by instance ID if they have the following instance types: C1, CC1, CC2, CG1, CG2, CR1, CS1, G1, G2, HI1, HS1, M1, M2, M3, and T1. You can register instances of these types by IP address.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-targets
+\-\-target\-group\-arn <value>
+\-\-targets <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-target\-group\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the target group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-targets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The targets.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a target.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the target. If the target type of the target group is \fBinstance\fP , specify an instance ID. If the target type is \fBip\fP , specify an IP address. If the target type is \fBlambda\fP , specify the ARN of the Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port on which the target is listening. If the target group protocol is GENEVE, the supported port is 6081. Not used if the target is a Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Availability Zone or \fBall\fP . This determines whether the target receives traffic from the load balancer nodes in the specified Availability Zone or from all enabled Availability Zones for the load balancer.
+.sp
+This parameter is not supported if the target type of the target group is \fBinstance\fP .
+.sp
+If the target type is \fBip\fP and the IP address is in a subnet of the VPC for the target group, the Availability Zone is automatically detected and this parameter is optional. If the IP address is outside the VPC, this parameter is required.
+.sp
+With an Application Load Balancer, if the target type is \fBip\fP and the IP address is outside the VPC for the target group, the only supported value is \fBall\fP .
+.sp
+If the target type is \fBlambda\fP , this parameter is optional and the only supported value is \fBall\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Id=string,Port=integer,AvailabilityZone=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "Port": integer,
+    "AvailabilityZone": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To register targets with a target group by instance ID\fP
+.sp
+The following \fBregister\-targets\fP example registers the specified instances with a target group. The target group must have a target type of \fBinstance\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elbv2 register\-targets \e
+    \-\-target\-group\-arn arn:aws:elasticloadbalancing:us\-west\-2:123456789012:targetgroup/my\-targets/73e2d6bc24d8a067 \e
+    \-\-targets Id=i\-1234567890abcdef0 Id=i\-0abcdef1234567890
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To register targets with a target group using port overrides\fP
+.sp
+The following \fBregister\-targets\fP example registers the specified instance with a target group using multiple ports. This enables you to register containers on the same instance as targets in the target group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elbv2 register\-targets \e
+    \-\-target\-group\-arn arn:aws:elasticloadbalancing:us\-west\-2:123456789012:targetgroup/my\-internal\-targets/3bb63f11dfb0faf9 \e
+    \-\-targets Id=i\-0598c7d356eba48d7,Port=80 Id=i\-0598c7d356eba48d7,Port=766
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To register targets with a target group by IP address\fP
+.sp
+The following \fBregister\-targets\fP example registers the specified IP addresses with a target group. The target group must have a target type of \fBip\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elbv2 register\-targets \e
+    \-\-target\-group\-arn arn:aws:elasticloadbalancing:us\-west\-2:123456789012:targetgroup/my\-tcp\-ip\-targets/8518e899d173178f \e
+    \-\-targets Id=10.0.1.15 Id=10.0.1.23
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 4: To register a Lambda function as a target\fP
+.sp
+The following \fBregister\-targets\fP example registers the specified IP addresses with a target group. The target group must have a target type of \fBlambda\fP\&. You must grant Elastic Load Balancing permission to invoke the Lambda function.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elbv2 register\-targets \e
+    \-\-target\-group\-arn arn:aws:elasticloadbalancing:us\-west\-2:123456789012:targetgroup/my\-tcp\-ip\-targets/8518e899d173178f \e
+    \-\-targets Id=arn:aws:lambda:us\-west\-2:123456789012:function:my\-function
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

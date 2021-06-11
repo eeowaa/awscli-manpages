@@ -1,0 +1,449 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "STS-ASSUME-ROLE-WITH-SAML" "a" "" ""
+.SH NAME
+sts-assume-role-with-saml \- Returns a set of temporary security credentials for users who have been authenticated via a SAML authentication response
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns a set of temporary security credentials for users who have been authenticated via a SAML authentication response. This operation provides a mechanism for tying an enterprise identity store or directory to role\-based AWS access without user\-specific credentials or configuration. For a comparison of \fBAssumeRoleWithSAML\fP with the other API operations that produce temporary credentials, see \fI\%Requesting Temporary Security Credentials\fP and \fI\%Comparing the AWS STS API operations\fP in the \fIIAM User Guide\fP .
+.sp
+The temporary security credentials returned by this operation consist of an access key ID, a secret access key, and a security token. Applications can use these temporary security credentials to sign calls to AWS services.
+.INDENT 0.0
+.INDENT 3.5
+\fBSession Duration\fP
+.UNINDENT
+.UNINDENT
+.sp
+By default, the temporary security credentials created by \fBAssumeRoleWithSAML\fP last for one hour. However, you can use the optional \fBDurationSeconds\fP parameter to specify the duration of your session. Your role session lasts for the duration that you specify, or until the time specified in the SAML authentication response\(aqs \fBSessionNotOnOrAfter\fP value, whichever is shorter. You can provide a \fBDurationSeconds\fP value from 900 seconds (15 minutes) up to the maximum session duration setting for the role. This setting can have a value from 1 hour to 12 hours. To learn how to view the maximum value for your role, see \fI\%View the Maximum Session Duration Setting for a Role\fP in the \fIIAM User Guide\fP . The maximum session duration limit applies when you use the \fBAssumeRole*\fP API operations or the \fBassume\-role*\fP CLI commands. However the limit does not apply when you use those operations to create a console URL. For more information, see \fI\%Using IAM Roles\fP in the \fIIAM User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fI\%Role chaining\fP limits your AWS CLI or AWS API role session to a maximum of one hour. When you use the \fBAssumeRole\fP API operation to assume a role, you can specify the duration of your role session with the \fBDurationSeconds\fP parameter. You can specify a parameter value of up to 43200 seconds (12 hours), depending on the maximum session duration setting for your role. However, if you assume a role using role chaining and provide a \fBDurationSeconds\fP parameter value greater than one hour, the operation fails.
+.UNINDENT
+.UNINDENT
+.sp
+\fBPermissions\fP
+.UNINDENT
+.UNINDENT
+.sp
+The temporary security credentials created by \fBAssumeRoleWithSAML\fP can be used to make API calls to any AWS service with the following exception: you cannot call the STS \fBGetFederationToken\fP or \fBGetSessionToken\fP API operations.
+.sp
+(Optional) You can pass inline or managed \fI\%session policies\fP to this operation. You can pass a single JSON policy document to use as an inline session policy. You can also specify up to 10 managed policies to use as managed session policies. The plaintext that you use for both inline and managed session policies can\(aqt exceed 2,048 characters. Passing policies to this operation returns new temporary credentials. The resulting session\(aqs permissions are the intersection of the role\(aqs identity\-based policy and the session policies. You can use the role\(aqs temporary credentials in subsequent AWS API calls to access resources in the account that owns the role. You cannot use session policies to grant more permissions than those allowed by the identity\-based policy of the role that is being assumed. For more information, see \fI\%Session Policies\fP in the \fIIAM User Guide\fP .
+.sp
+Calling \fBAssumeRoleWithSAML\fP does not require the use of AWS security credentials. The identity of the caller is validated by using keys in the metadata document that is uploaded for the SAML provider entity for your identity provider.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Calling \fBAssumeRoleWithSAML\fP can result in an entry in your AWS CloudTrail logs. The entry includes the value in the \fBNameID\fP element of the SAML assertion. We recommend that you use a \fBNameIDType\fP that is not associated with any personally identifiable information (PII). For example, you could instead use the persistent identifier (\fBurn:oasis:names:tc:SAML:2.0:nameid\-format:persistent\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fBTags\fP
+.UNINDENT
+.UNINDENT
+.sp
+(Optional) You can configure your IdP to pass attributes into your SAML assertion as session tags. Each session tag consists of a key name and an associated value. For more information about session tags, see \fI\%Passing Session Tags in STS\fP in the \fIIAM User Guide\fP .
+.sp
+You can pass up to 50 session tags. The plaintext session tag keys can’t exceed 128 characters and the values can’t exceed 256 characters. For these and additional limits, see \fI\%IAM and STS Character Limits\fP in the \fIIAM User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An AWS conversion compresses the passed session policies and session tags into a packed binary format that has a separate limit. Your request can fail for this limit even if your plaintext meets the other requirements. The \fBPackedPolicySize\fP response element indicates by percentage how close the policies and tags for your request are to the upper size limit.
+.UNINDENT
+.UNINDENT
+.sp
+You can pass a session tag with the same key as a tag that is attached to the role. When you do, session tags override the role\(aqs tags with the same key.
+.sp
+An administrator must grant you the permissions necessary to pass session tags. The administrator can also create granular permissions to allow you to pass only specific session tags. For more information, see \fI\%Tutorial: Using Tags for Attribute\-Based Access Control\fP in the \fIIAM User Guide\fP .
+.sp
+You can set the session tags as transitive. Transitive tags persist during role chaining. For more information, see \fI\%Chaining Roles with Session Tags\fP in the \fIIAM User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBSAML Configuration\fP
+.UNINDENT
+.UNINDENT
+.sp
+Before your application can call \fBAssumeRoleWithSAML\fP , you must configure your SAML identity provider (IdP) to issue the claims required by AWS. Additionally, you must use AWS Identity and Access Management (IAM) to create a SAML provider entity in your AWS account that represents your identity provider. You must also create an IAM role that specifies this SAML provider in its trust policy.
+.sp
+For more information, see the following resources:
+.INDENT 0.0
+.IP \(bu 2
+\fI\%About SAML 2.0\-based Federation\fP in the \fIIAM User Guide\fP .
+.IP \(bu 2
+\fI\%Creating SAML Identity Providers\fP in the \fIIAM User Guide\fP .
+.IP \(bu 2
+\fI\%Configuring a Relying Party and Claims\fP in the \fIIAM User Guide\fP .
+.IP \(bu 2
+\fI\%Creating a Role for SAML 2.0 Federation\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  assume\-role\-with\-saml
+\-\-role\-arn <value>
+\-\-principal\-arn <value>
+\-\-saml\-assertion <value>
+[\-\-policy\-arns <value>]
+[\-\-policy <value>]
+[\-\-duration\-seconds <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the role that the caller is assuming.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-principal\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the SAML provider in IAM that describes the IdP.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-saml\-assertion\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The base64 encoded SAML authentication response provided by the IdP.
+.sp
+For more information, see \fI\%Configuring a Relying Party and Adding Claims\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-arns\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Names (ARNs) of the IAM managed policies that you want to use as managed session policies. The policies must exist in the same account as the role.
+.sp
+This parameter is optional. You can provide up to 10 managed policy ARNs. However, the plaintext that you use for both inline and managed session policies can\(aqt exceed 2,048 characters. For more information about ARNs, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the AWS General Reference.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An AWS conversion compresses the passed session policies and session tags into a packed binary format that has a separate limit. Your request can fail for this limit even if your plaintext meets the other requirements. The \fBPackedPolicySize\fP response element indicates by percentage how close the policies and tags for your request are to the upper size limit.
+.UNINDENT
+.UNINDENT
+.sp
+Passing policies to this operation returns new temporary credentials. The resulting session\(aqs permissions are the intersection of the role\(aqs identity\-based policy and the session policies. You can use the role\(aqs temporary credentials in subsequent AWS API calls to access resources in the account that owns the role. You cannot use session policies to grant more permissions than those allowed by the identity\-based policy of the role that is being assumed. For more information, see \fI\%Session Policies\fP in the \fIIAM User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A reference to the IAM managed policy that is passed as a session policy for a role session or a federated user session.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM managed policy to use as a session policy for the role. For more information about ARNs, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+arn=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "arn": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An IAM policy in JSON format that you want to use as an inline session policy.
+.sp
+This parameter is optional. Passing policies to this operation returns new temporary credentials. The resulting session\(aqs permissions are the intersection of the role\(aqs identity\-based policy and the session policies. You can use the role\(aqs temporary credentials in subsequent AWS API calls to access resources in the account that owns the role. You cannot use session policies to grant more permissions than those allowed by the identity\-based policy of the role that is being assumed. For more information, see \fI\%Session Policies\fP in the \fIIAM User Guide\fP .
+.sp
+The plaintext that you use for both inline and managed session policies can\(aqt exceed 2,048 characters. The JSON policy characters can be any ASCII character from the space character to the end of the valid character list (u0020 through u00FF). It can also include the tab (u0009), linefeed (u000A), and carriage return (u000D) characters.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An AWS conversion compresses the passed session policies and session tags into a packed binary format that has a separate limit. Your request can fail for this limit even if your plaintext meets the other requirements. The \fBPackedPolicySize\fP response element indicates by percentage how close the policies and tags for your request are to the upper size limit.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-duration\-seconds\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The duration, in seconds, of the role session. Your role session lasts for the duration that you specify for the \fBDurationSeconds\fP parameter, or until the time specified in the SAML authentication response\(aqs \fBSessionNotOnOrAfter\fP value, whichever is shorter. You can provide a \fBDurationSeconds\fP value from 900 seconds (15 minutes) up to the maximum session duration setting for the role. This setting can have a value from 1 hour to 12 hours. If you specify a value higher than this setting, the operation fails. For example, if you specify a session duration of 12 hours, but your administrator set the maximum session duration to 6 hours, your operation fails. To learn how to view the maximum value for your role, see \fI\%View the Maximum Session Duration Setting for a Role\fP in the \fIIAM User Guide\fP .
+.sp
+By default, the value is set to \fB3600\fP seconds.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBDurationSeconds\fP parameter is separate from the duration of a console session that you might request using the returned credentials. The request to the federation endpoint for a console sign\-in token takes a \fBSessionDuration\fP parameter that specifies the maximum length of the console session. For more information, see \fI\%Creating a URL that Enables Federated Users to Access the AWS Management Console\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get short\-term credentials for a role authenticated with SAML\fP
+.sp
+The following \fBassume\-role\-with\-saml\fP example retrieves a set of short\-term credentials for the  IAM role \fBTestSaml\fP\&. The request in this example is authenticated by using the SAML assertion supplied by your identity provider when you authenticate to it.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sts assume\-role\-with\-saml \e
+    \-\-role\-arn arn:aws:iam::123456789012:role/TestSaml \e
+    \-\-principal\-arn arn:aws:iam::123456789012:saml\-provider/SAML\-test \e
+    \-\-saml\-assertion "VERYLONGENCODEDASSERTIONEXAMPLExzYW1sOkF1ZGllbmNlPmJsYW5rPC9zYW1sOkF1ZGllbmNlPjwvc2FtbDpBdWRpZW5jZVJlc3RyaWN0aW9uPjwvc2FtbDpDb25kaXRpb25zPjxzYW1sOlN1YmplY3Q+PHNhbWw6TmFtZUlEIEZvcm1hdD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOm5hbWVpZC1mb3JtYXQ6dHJhbnNpZW50Ij5TYW1sRXhhbXBsZTwvc2FtbDpOYW1lSUQ+PHNhbWw6U3ViamVjdENvbmZpcm1hdGlvbiBNZXRob2Q9InVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDpjbTpiZWFyZXIiPjxzYW1sOlN1YmplY3RDb25maXJtYXRpb25EYXRhIE5vdE9uT3JBZnRlcj0iMjAxOS0xMS0wMVQyMDoyNTowNS4xNDVaIiBSZWNpcGllbnQ9Imh0dHBzOi8vc2lnbmluLmF3cy5hbWF6b24uY29tL3NhbWwiLz48L3NhbWw6U3ViamVjdENvbmZpcm1hdGlvbj48L3NhbWw6U3ViamVjdD48c2FtbDpBdXRoblN0YXRlbWVudCBBdXRoPD94bWwgdmpSZXNwb25zZT4="
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Issuer": "https://integ.example.com/idp/shibboleth</Issuer",
+    "AssumedRoleUser": {
+        "Arn": "arn:aws:sts::123456789012:assumed\-role/TestSaml",
+        "AssumedRoleId": "ARO456EXAMPLE789:TestSaml"
+    },
+    "Credentials": {
+        "AccessKeyId": "ASIAV3ZUEFP6EXAMPLE",
+        "SecretAccessKey": "8P+SQvWIuLnKhh8d++jpw0nNmQRBZvNEXAMPLEKEY",
+        "SessionToken": "IQoJb3JpZ2luX2VjEOz////////////////////wEXAMPLEtMSJHMEUCIDoKK3JH9uGQE1z0sINr5M4jk+Na8KHDcCYRVjJCZEvOAiEA3OvJGtw1EcViOleS2vhs8VdCKFJQWPQrmGdeehM4IC1NtBmUpp2wUE8phUZampKsburEDy0KPkyQDYwT7WZ0wq5VSXDvp75YU9HFvlRd8Tx6q6fE8YQcHNVXAkiY9q6d+xo0rKwT38xVqr7ZD0u0iPPkUL64lIZbqBAz+scqKmlzm8FDrypNC9Yjc8fPOLn9FX9KSYvKTr4rvx3iSIlTJabIQwj2ICCR/oLxBA==",
+        "Expiration": "2019\-11\-01T20:26:47Z"
+    },
+    "Audience": "https://signin.aws.amazon.com/saml",
+    "SubjectType": "transient",
+    "PackedPolicySize": "6",
+    "NameQualifier": "SbdGOnUkh1i4+EXAMPLExL/jEvs=",
+    "Subject": "SamlExample"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Requesting Temporary Security Credentials\fP in the \fIIAM User Guide\fP\&.
+.SH OUTPUT
+.sp
+Credentials \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The temporary security credentials, which include an access key ID, a secret access key, and a security (or session) token.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The size of the security token that STS API operations return is not fixed. We strongly recommend that you make no assumptions about the maximum size.
+.UNINDENT
+.UNINDENT
+.sp
+AccessKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The access key ID that identifies the temporary security credentials.
+.UNINDENT
+.UNINDENT
+.sp
+SecretAccessKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The secret access key that can be used to sign requests.
+.UNINDENT
+.UNINDENT
+.sp
+SessionToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token that users must pass to the service API to use the temporary credentials.
+.UNINDENT
+.UNINDENT
+.sp
+Expiration \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date on which the current credentials expire.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AssumedRoleUser \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The identifiers for the temporary security credentials that the operation returns.
+.sp
+AssumedRoleId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier that contains the role ID and the role session name of the role that is being assumed. The role ID is generated by AWS when the role is created.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the temporary security credentials that are returned from the  AssumeRole action. For more information about ARNs and how to use them in policies, see \fI\%IAM Identifiers\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PackedPolicySize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A percentage value that indicates the packed size of the session policies and session tags combined passed in the request. The request fails if the packed size is greater than 100 percent, which means the policies and tags exceeded the allowed space.
+.UNINDENT
+.UNINDENT
+.sp
+Subject \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the \fBNameID\fP element in the \fBSubject\fP element of the SAML assertion.
+.UNINDENT
+.UNINDENT
+.sp
+SubjectType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the name ID, as defined by the \fBFormat\fP attribute in the \fBNameID\fP element of the SAML assertion. Typical examples of the format are \fBtransient\fP or \fBpersistent\fP .
+.sp
+If the format includes the prefix \fBurn:oasis:names:tc:SAML:2.0:nameid\-format\fP , that prefix is removed. For example, \fBurn:oasis:names:tc:SAML:2.0:nameid\-format:transient\fP is returned as \fBtransient\fP . If the format includes any other prefix, the format is returned with no modifications.
+.UNINDENT
+.UNINDENT
+.sp
+Issuer \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the \fBIssuer\fP element of the SAML assertion.
+.UNINDENT
+.UNINDENT
+.sp
+Audience \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the \fBRecipient\fP attribute of the \fBSubjectConfirmationData\fP element of the SAML assertion.
+.UNINDENT
+.UNINDENT
+.sp
+NameQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A hash value based on the concatenation of the following:
+.INDENT 0.0
+.IP \(bu 2
+The \fBIssuer\fP response value.
+.IP \(bu 2
+The AWS account ID.
+.IP \(bu 2
+The friendly name (the last part of the ARN) of the SAML provider in IAM.
+.UNINDENT
+.sp
+The combination of \fBNameQualifier\fP and \fBSubject\fP can be used to uniquely identify a federated user.
+.sp
+The following pseudocode shows how the hash value is calculated:
+.INDENT 0.0
+.INDENT 3.5
+\fBBASE64 ( SHA1 ( "https://example.com/saml" + "123456789012" + "/MySAMLIdP" ) )\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceIdentity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value in the \fBSourceIdentity\fP attribute in the SAML assertion.
+.sp
+You can require users to set a source identity value when they assume a role. You do this by using the \fBsts:SourceIdentity\fP condition key in a role trust policy. That way, actions that are taken with the role are associated with that user. After the source identity is set, the value cannot be changed. It is present in the request for all actions that are taken by the role and persists across \fI\%chained role\fP sessions. You can configure your SAML identity provider to use an attribute associated with your users, like user name or email, as the source identity when calling \fBAssumeRoleWithSAML\fP . You do this by adding an attribute to the SAML assertion. For more information about using source identity, see \fI\%Monitor and control actions taken with assumed roles\fP in the \fIIAM User Guide\fP .
+.sp
+The regex used to validate this parameter is a string of characters consisting of upper\- and lower\-case alphanumeric characters with no spaces. You can also include underscores or any of the following characters: =,.@\-
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

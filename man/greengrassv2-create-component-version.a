@@ -1,0 +1,760 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GREENGRASSV2-CREATE-COMPONENT-VERSION" "a" "" ""
+.SH NAME
+greengrassv2-create-component-version \- Creates a component
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a component. Components are software that run on AWS IoT Greengrass core devices. After you develop and test a component on your core device, you can use this operation to upload your component to AWS IoT Greengrass. Then, you can deploy the component to other core devices.
+.sp
+You can use this operation to do the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBCreate components from recipes\fP   Create a component from a recipe, which is a file that defines the component\(aqs metadata, parameters, dependencies, lifecycle, artifacts, and platform capability. For more information, see \fI\%AWS IoT Greengrass component recipe reference\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP . To create a component from a recipe, specify \fBinlineRecipe\fP when you call this operation.
+.IP \(bu 2
+\fBCreate components from Lambda functions\fP   Create a component from an AWS Lambda function that runs on AWS IoT Greengrass. This creates a recipe and artifacts from the Lambda function\(aqs deployment package. You can use this operation to migrate Lambda functions from AWS IoT Greengrass V1 to AWS IoT Greengrass V2. This function only accepts Lambda functions that use the following runtimes:
+.INDENT 2.0
+.IP \(bu 2
+Python 2.7 – \fBpython2.7\fP
+.IP \(bu 2
+Python 3.7 – \fBpython3.7\fP
+.IP \(bu 2
+Python 3.8 – \fBpython3.8\fP
+.IP \(bu 2
+Java 8 – \fBjava8\fP
+.IP \(bu 2
+Node.js 10 – \fBnodejs10.x\fP
+.IP \(bu 2
+Node.js 12 – \fBnodejs12.x\fP
+.UNINDENT
+.UNINDENT
+.sp
+To create a component from a Lambda function, specify \fBlambdaFunction\fP when you call this operation.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-component\-version
+[\-\-inline\-recipe <value>]
+[\-\-lambda\-function <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-inline\-recipe\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The recipe to use to create the component. The recipe defines the component\(aqs metadata, parameters, dependencies, lifecycle, artifacts, and platform compatibility.
+.sp
+You must specify either \fBinlineRecipe\fP or \fBlambdaFunction\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-lambda\-function\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters to create a component from a Lambda function.
+.sp
+You must specify either \fBinlineRecipe\fP or \fBlambdaFunction\fP .
+.sp
+lambdaArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%ARN\fP of the Lambda function. The ARN must include the version of the function to import. You can\(aqt use version aliases like \fB$LATEST\fP .
+.UNINDENT
+.UNINDENT
+.sp
+componentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the component.
+.sp
+Defaults to the name of the Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+componentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the component.
+.sp
+Defaults to the version of the Lambda function as a semantic version. For example, if your function version is \fB3\fP , the component version becomes \fB3.0.0\fP .
+.UNINDENT
+.UNINDENT
+.sp
+componentPlatforms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The platforms that the component version supports.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a platform that a component supports.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The friendly name of the platform. This name helps you identify the platform.
+.sp
+If you omit this parameter, AWS IoT Greengrass creates a friendly name from the \fBos\fP and \fBarchitecture\fP of the platform.
+.UNINDENT
+.UNINDENT
+.sp
+attributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A dictionary of attributes for the platform. The AWS IoT Greengrass Core software defines the \fBos\fP and \fBplatform\fP by default. You can specify additional platform attributes for a core device when you deploy the AWS IoT Greengrass nucleus component. For more information, see the \fI\%AWS IoT Greengrass nucleus component\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+componentDependencies \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The component versions on which this Lambda function component depends.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a component dependency for a Lambda function component.
+.sp
+versionRequirement \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The component version requirement for the component dependency.
+.sp
+AWS IoT Greengrass V2 uses semantic version constraints. For more information, see \fI\%Semantic Versioning\fP .
+.UNINDENT
+.UNINDENT
+.sp
+dependencyType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of this dependency. Choose from the following options:
+.INDENT 0.0
+.IP \(bu 2
+\fBSOFT\fP – The component doesn\(aqt restart if the dependency changes state.
+.IP \(bu 2
+\fBHARD\fP – The component restarts if the dependency changes state.
+.UNINDENT
+.sp
+Default: \fBHARD\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+componentLambdaParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The system and runtime parameters for the Lambda function as it runs on the AWS IoT Greengrass core device.
+.sp
+eventSources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of event sources to which to subscribe to receive work messages. The Lambda function runs when it receives a message from an event source. You can subscribe this function to local publish/subscribe messages and AWS IoT Core MQTT messages.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about an event source for an AWS Lambda function. The event source defines the topics on which this Lambda function subscribes to receive messages that run the function.
+.sp
+topic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The topic to which to subscribe to receive event messages.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of event source. Choose from the following options:
+.INDENT 0.0
+.IP \(bu 2
+\fBPUB_SUB\fP – Subscribe to local publish/subscribe messages. This event source type doesn\(aqt support MQTT wildcards (\fB+\fP and \fB#\fP ) in the event source topic.
+.IP \(bu 2
+\fBIOT_CORE\fP – Subscribe to AWS IoT Core MQTT messages. This event source type supports MQTT wildcards (\fB+\fP and \fB#\fP ) in the event source topic.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maxQueueSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum size of the message queue for the Lambda function component. The AWS IoT Greengrass core stores messages in a FIFO (first\-in\-first\-out) queue until it can run the Lambda function to consume each message.
+.UNINDENT
+.UNINDENT
+.sp
+maxInstancesCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of instances that a non\-pinned Lambda function can run at the same time.
+.UNINDENT
+.UNINDENT
+.sp
+maxIdleTimeInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of time in seconds that a non\-pinned Lambda function can idle before the AWS IoT Greengrass Core software stops its process.
+.UNINDENT
+.UNINDENT
+.sp
+timeoutInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of time in seconds that the Lambda function can process a work item.
+.UNINDENT
+.UNINDENT
+.sp
+statusTimeoutInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The interval in seconds at which a pinned (also known as long\-lived) Lambda function component sends status updates to the Lambda manager component.
+.UNINDENT
+.UNINDENT
+.sp
+pinned \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not the Lambda function is pinned, or long\-lived.
+.INDENT 0.0
+.IP \(bu 2
+A pinned Lambda function starts when AWS IoT Greengrass starts and keeps running in its own container.
+.IP \(bu 2
+A non\-pinned Lambda function starts only when it receives a work item and exists after it idles for \fBmaxIdleTimeInSeconds\fP . If the function has multiple work items, the AWS IoT Greengrass Core software creates multiple instances of the function.
+.UNINDENT
+.sp
+Default: \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+inputPayloadEncodingType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The encoding type that the Lambda function supports.
+.sp
+Default: \fBjson\fP
+.UNINDENT
+.UNINDENT
+.sp
+execArgs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of arguments to pass to the Lambda function when it runs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+environmentVariables \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The map of environment variables that are available to the Lambda function when it runs.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+linuxProcessParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for the Linux process that contains the Lambda function.
+.sp
+isolationMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The isolation mode for the process that contains the Lambda function. The process can run in an isolated runtime environment inside the AWS IoT Greengrass container, or as a regular process outside any container.
+.sp
+Default: \fBGreengrassContainer\fP
+.UNINDENT
+.UNINDENT
+.sp
+containerParams \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for the container in which the Lambda function runs.
+.sp
+memorySizeInKB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The memory size of the container, expressed in kilobytes.
+.sp
+Default: \fB16384\fP (16 MB)
+.UNINDENT
+.UNINDENT
+.sp
+mountROSysfs \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not the container can read information from the device\(aqs \fB/sys\fP folder.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+volumes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of volumes that the container can access.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a volume that Linux processes in a container can access. When you define a volume, the AWS IoT Greengrass Core software mounts the source files to the destination inside the container.
+.sp
+sourcePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path to the physical volume in the file system.
+.UNINDENT
+.UNINDENT
+.sp
+destinationPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path to the logical volume in the file system.
+.UNINDENT
+.UNINDENT
+.sp
+permission \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The permission to access the volume: read/only (\fBro\fP ) or read/write (\fBrw\fP ).
+.sp
+Default: \fBro\fP
+.UNINDENT
+.UNINDENT
+.sp
+addGroupOwner \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not to add the AWS IoT Greengrass user group as an owner of the volume.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+devices \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of system devices that the container can access.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a device that Linux processes in a container can access.
+.sp
+path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The mount path for the device in the file system.
+.UNINDENT
+.UNINDENT
+.sp
+permission \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The permission to access the device: read/only (\fBro\fP ) or read/write (\fBrw\fP ).
+.sp
+Default: \fBro\fP
+.UNINDENT
+.UNINDENT
+.sp
+addGroupOwner \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not to add the component\(aqs system user as an owner of the device.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "lambdaArn": "string",
+  "componentName": "string",
+  "componentVersion": "string",
+  "componentPlatforms": [
+    {
+      "name": "string",
+      "attributes": {"string": "string"
+        ...}
+    }
+    ...
+  ],
+  "componentDependencies": {"string": {
+        "versionRequirement": "string",
+        "dependencyType": "HARD"|"SOFT"
+      }
+    ...},
+  "componentLambdaParameters": {
+    "eventSources": [
+      {
+        "topic": "string",
+        "type": "PUB_SUB"|"IOT_CORE"
+      }
+      ...
+    ],
+    "maxQueueSize": integer,
+    "maxInstancesCount": integer,
+    "maxIdleTimeInSeconds": integer,
+    "timeoutInSeconds": integer,
+    "statusTimeoutInSeconds": integer,
+    "pinned": true|false,
+    "inputPayloadEncodingType": "json"|"binary",
+    "execArgs": ["string", ...],
+    "environmentVariables": {"string": "string"
+      ...},
+    "linuxProcessParams": {
+      "isolationMode": "GreengrassContainer"|"NoContainer",
+      "containerParams": {
+        "memorySizeInKB": integer,
+        "mountROSysfs": true|false,
+        "volumes": [
+          {
+            "sourcePath": "string",
+            "destinationPath": "string",
+            "permission": "ro"|"rw",
+            "addGroupOwner": true|false
+          }
+          ...
+        ],
+        "devices": [
+          {
+            "path": "string",
+            "permission": "ro"|"rw",
+            "addGroupOwner": true|false
+          }
+          ...
+        ]
+      }
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of key\-value pairs that contain metadata for the resource. For more information, see \fI\%Tag your resources\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a component version from a recipe\fP
+.sp
+The following \fBcreate\-component\-version\fP example creates a version of a Hello World component from a recipe file.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrassv2 create\-component\-version \e
+    \-\-inline\-recipe fileb://com.example.HelloWorld\-1.0.0.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBcom.example.HelloWorld\-1.0.0.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "RecipeFormatVersion": "2020\-01\-25",
+    "ComponentName": "com.example.HelloWorld",
+    "ComponentVersion": "1.0.0",
+    "ComponentDescription": "My first AWS IoT Greengrass component.",
+    "ComponentPublisher": "Amazon",
+    "ComponentConfiguration": {
+        "DefaultConfiguration": {
+            "Message": "world"
+        }
+    },
+    "Manifests": [
+        {
+            "Platform": {
+                "os": "linux"
+            },
+            "Lifecycle": {
+                "Run": "echo \(aqHello {configuration:/Message}\(aq"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "arn": "arn:aws:greengrass:us\-west\-2:123456789012:components:com.example.HelloWorld:versions:1.0.0",
+    "componentName": "com.example.HelloWorld",
+    "componentVersion": "1.0.0",
+    "creationTimestamp": "2021\-01\-07T16:24:33.650000\-08:00",
+    "status": {
+        "componentState": "REQUESTED",
+        "message": "NONE",
+        "errors": {}
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Create custom components\fP and \fI\%Upload components to deploy\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP\&.
+.sp
+\fBExample 2: To create a component version from an AWS Lambda function\fP
+.sp
+The following \fBcreate\-component\-version\fP example creates a version of a Hello World component from an AWS Lambda function.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrassv2 create\-component\-version \e
+    \-\-cli\-input\-json file://lambda\-function\-component.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBlambda\-function\-component.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "lambdaFunction": {
+        "lambdaArn": "arn:aws:lambda:us\-west\-2:123456789012:function:HelloWorldPythonLambda:1",
+        "componentName": "com.example.HelloWorld",
+        "componentVersion": "1.0.0",
+        "componentLambdaParameters": {
+            "eventSources": [
+                {
+                    "topic": "hello/world/+",
+                    "type": "IOT_CORE"
+                }
+            ]
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "arn": "arn:aws:greengrass:us\-west\-2:123456789012:components:com.example.HelloWorld:versions:1.0.0",
+    "componentName": "com.example.HelloWorld",
+    "componentVersion": "1.0.0",
+    "creationTimestamp": "2021\-01\-07T17:05:27.347000\-08:00",
+    "status": {
+        "componentState": "REQUESTED",
+        "message": "NONE",
+        "errors": {}
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Run AWS Lambda functions\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%ARN\fP of the component version.
+.UNINDENT
+.UNINDENT
+.sp
+componentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the component.
+.UNINDENT
+.UNINDENT
+.sp
+componentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the component.
+.UNINDENT
+.UNINDENT
+.sp
+creationTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the component was created, expressed in ISO 8601 format.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The status of the component version in AWS IoT Greengrass V2. This status is different from the status of the component on a core device.
+.sp
+componentState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the component.
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message that communicates details, such as errors, about the status of the component.
+.UNINDENT
+.UNINDENT
+.sp
+errors \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A dictionary of errors that communicate why the component is in an error state. For example, if AWS IoT Greengrass can\(aqt access an artifact for the component, then \fBerrors\fP contains the artifact\(aqs URI as a key, and the error message as the value for that key.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

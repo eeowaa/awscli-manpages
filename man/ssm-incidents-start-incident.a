@@ -1,0 +1,300 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-INCIDENTS-START-INCIDENT" "a" "" ""
+.SH NAME
+ssm-incidents-start-incident \- Used to start an incident from CloudWatch alarms, EventBridge events, or manually
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Used to start an incident from CloudWatch alarms, EventBridge events, or manually.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-incident
+[\-\-client\-token <value>]
+[\-\-impact <value>]
+[\-\-related\-items <value>]
+\-\-response\-plan\-arn <value>
+[\-\-title <value>]
+[\-\-trigger\-details <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token ensuring that the action is called only once with the specified details.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-impact\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Defines the impact to the customers. Providing an impact overwrites the impact provided by a response plan.
+.INDENT 0.0
+.INDENT 3.5
+\fBPossible impacts:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fB1\fP \- Critical impact, this typically relates to full application failure that impacts many to all customers.
+.IP \(bu 2
+\fB2\fP \- High impact, partial application failure with impact to many customers.
+.IP \(bu 2
+\fB3\fP \- Medium impact, the application is providing reduced service to customers.
+.IP \(bu 2
+\fB4\fP \- Low impact, customer might aren\(aqt impacted by the problem yet.
+.IP \(bu 2
+\fB5\fP \- No impact, customers aren\(aqt currently impacted but urgent action is needed to avoid impact.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-related\-items\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Add related items to the incident for other responders to use. Related items are AWS resources, external links, or files uploaded to an S3 bucket.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Resources that responders use to triage and mitigate the incident.
+.sp
+identifier \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the related item.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of related item. Incident Manager supports the following types:
+.INDENT 0.0
+.IP \(bu 2
+\fBANALYSIS\fP
+.IP \(bu 2
+\fBINCIDENT\fP
+.IP \(bu 2
+\fBMETRIC\fP
+.IP \(bu 2
+\fBPARENT\fP
+.IP \(bu 2
+\fBATTACHMENT\fP
+.IP \(bu 2
+\fBOTHER\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the related item.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the related item, if the related item is an Amazon resource.
+.UNINDENT
+.UNINDENT
+.sp
+metricDefinition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric definition, if the related item is a metric in CloudWatch.
+.UNINDENT
+.UNINDENT
+.sp
+url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL, if the related item is a non\-AWS resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title of the related item.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+identifier={type=string,value={arn=string,metricDefinition=string,url=string}},title=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "identifier": {
+      "type": "ANALYSIS"|"INCIDENT"|"METRIC"|"PARENT"|"ATTACHMENT"|"OTHER",
+      "value": {
+        "arn": "string",
+        "metricDefinition": "string",
+        "url": "string"
+      }
+    },
+    "title": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-plan\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the response plan that pre\-defines summary, chat channels, SNS topics, runbooks, title, and impact of the incident.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-title\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Provide a title for the incident. Providing a title overwrites the title provided by the response plan.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-trigger\-details\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details of what created the incident record in Incident Manager.
+.sp
+rawData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Raw data passed from either EventBridge, CloudWatch, or Incident Manager when an incident is created.
+.UNINDENT
+.UNINDENT
+.sp
+source \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the service that sourced the event. All events sourced from within AWS begin with "aws." Customer\-generated events can have any value here, as long as it doesn\(aqt begin with "aws." We recommend the use of Java package\-name style reverse domain\-name strings.
+.UNINDENT
+.UNINDENT
+.sp
+timestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that the incident was detected.
+.UNINDENT
+.UNINDENT
+.sp
+triggerArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the source that detected the incident.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+rawData=string,source=string,timestamp=timestamp,triggerArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "rawData": "string",
+  "source": "string",
+  "timestamp": timestamp,
+  "triggerArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+incidentRecordArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the newly created incident record.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

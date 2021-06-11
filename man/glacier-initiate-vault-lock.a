@@ -1,0 +1,192 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLACIER-INITIATE-VAULT-LOCK" "a" "" ""
+.SH NAME
+glacier-initiate-vault-lock \- This operation initiates the vault locking process by doing the following:
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This operation initiates the vault locking process by doing the following:
+.INDENT 0.0
+.IP \(bu 2
+Installing a vault lock policy on the specified vault.
+.IP \(bu 2
+Setting the lock state of vault lock to \fBInProgress\fP .
+.IP \(bu 2
+Returning a lock ID, which is used to complete the vault locking process.
+.UNINDENT
+.sp
+You can set one vault lock policy for each vault and this policy can be up to 20 KB in size. For more information about vault lock policies, see \fI\%Amazon Glacier Access Control with Vault Lock Policies\fP .
+.sp
+You must complete the vault locking process within 24 hours after the vault lock enters the \fBInProgress\fP state. After the 24 hour window ends, the lock ID expires, the vault automatically exits the \fBInProgress\fP state, and the vault lock policy is removed from the vault. You call  CompleteVaultLock to complete the vault locking process by setting the state of the vault lock to \fBLocked\fP .
+.sp
+After a vault lock is in the \fBLocked\fP state, you cannot initiate a new vault lock for the vault.
+.sp
+You can abort the vault locking process by calling  AbortVaultLock . You can get the state of the vault lock by calling  GetVaultLock . For more information about the vault locking process, \fI\%Amazon Glacier Vault Lock\fP .
+.sp
+If this operation is called when the vault lock is in the \fBInProgress\fP state, the operation returns an \fBAccessDeniedException\fP error. When the vault lock is in the \fBInProgress\fP state you must call  AbortVaultLock before you can initiate a new vault lock policy.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  initiate\-vault\-lock
+\-\-account\-id <value>
+\-\-vault\-name <value>
+[\-\-policy <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBAccountId\fP value is the AWS account ID. This value must match the AWS account ID associated with the credentials used to sign the request. You can either specify an AWS account ID or optionally a single \(aq\fB\-\fP \(aq (hyphen), in which case Amazon Glacier uses the AWS account ID associated with the credentials used to sign the request. If you specify your account ID, do not include any hyphens (\(aq\-\(aq) in the ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vault\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the vault.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The vault lock policy as a JSON string, which uses "" as an escape character.
+.sp
+Policy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The vault lock policy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Policy=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Policy": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo initiate the vault locking process\fP
+.sp
+The following \fBinitiate\-vault\-lock\fP example installs a vault lock policy on the specified vault and sets the lock state of the vault lock to \fBInProgress\fP\&. You must complete the process by calling \fBcomplete\-vault\-lock\fP within 24 hours to set the state of the vault lock to \fBLocked\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws glacier initiate\-vault\-lock \e
+    \-\-account\-id \- \e
+    \-\-vault\-name MyVaultName \e
+    \-\-policy file://vault_lock_policy.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBvault_lock_policy.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"Policy":"{\e"Version\e":\e"2012\-10\-17\e",\e"Statement\e":[{\e"Sid\e":\e"Define\-vault\-lock\e",\e"Effect\e":\e"Deny\e",\e"Principal\e":{\e"AWS\e":\e"arn:aws:iam::999999999999:root\e"},\e"Action\e":\e"glacier:DeleteArchive\e",\e"Resource\e":\e"arn:aws:glacier:us\-west\-2:999999999999:vaults/examplevault\e",\e"Condition\e":{\e"NumericLessThanEquals\e":{\e"glacier:ArchiveAgeinDays\e":\e"365\e"}}}]}"}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output is the vault lock ID that you can use to complete the vault lock process.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "lockId": "9QZgEXAMPLEPhvL6xEXAMPLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Initiate Vault Lock (POST lock\-policy)\fP in the \fIAmazon Glacier API Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+lockId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The lock ID, which is used to complete the vault locking process.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

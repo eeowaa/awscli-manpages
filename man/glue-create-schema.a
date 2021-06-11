@@ -1,0 +1,340 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLUE-CREATE-SCHEMA" "a" "" ""
+.SH NAME
+glue-create-schema \- Creates a new schema set and registers the schema definition
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new schema set and registers the schema definition. Returns an error if the schema set already exists without actually registering the version.
+.sp
+When the schema set is created, a version checkpoint will be set to the first version. Compatibility mode "DISABLED" restricts any additional schema versions from being added after the first schema version. For all other compatibility modes, validation of compatibility settings will be applied only from the second version onwards when the \fBRegisterSchemaVersion\fP API is used.
+.sp
+When this API is called without a \fBRegistryId\fP , this will create an entry for a "default\-registry" in the registry database tables, if it is not already present.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-schema
+[\-\-registry\-id <value>]
+\-\-schema\-name <value>
+\-\-data\-format <value>
+[\-\-compatibility <value>]
+[\-\-description <value>]
+[\-\-tags <value>]
+[\-\-schema\-definition <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-registry\-id\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+This is a wrapper shape to contain the registry identity fields. If this is not provided, the default registry will be used. The ARN format for the same will be: \fBarn:aws:glue:us\-east\-2:<customer id>:registry/default\-registry:random\-5\-letter\-id\fP .
+.sp
+RegistryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the registry. Used only for lookup. One of \fBRegistryArn\fP or \fBRegistryName\fP has to be provided.
+.UNINDENT
+.UNINDENT
+.sp
+RegistryArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Arn of the registry to be updated. One of \fBRegistryArn\fP or \fBRegistryName\fP has to be provided.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+RegistryName=string,RegistryArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RegistryName": "string",
+  "RegistryArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schema\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the schema to be created of max length of 255, and may only contain letters, numbers, hyphen, underscore, dollar sign, or hash mark. No whitespace.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-data\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The data format of the schema definition. Currently only \fBAVRO\fP is supported.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAVRO\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-compatibility\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The compatibility mode of the schema. The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fINONE\fP : No compatibility mode applies. You can use this choice in development scenarios or if you do not know the compatibility mode that you want to apply to schemas. Any new version added will be accepted without undergoing a compatibility check.
+.IP \(bu 2
+\fIDISABLED\fP : This compatibility choice prevents versioning for a particular schema. You can use this choice to prevent future versioning of a schema.
+.IP \(bu 2
+\fIBACKWARD\fP : This compatibility choice is recommended as it allows data receivers to read both the current and one previous schema version. This means that for instance, a new schema version cannot drop data fields or change the type of these fields, so they can\(aqt be read by readers using the previous version.
+.IP \(bu 2
+\fIBACKWARD_ALL\fP : This compatibility choice allows data receivers to read both the current and all previous schema versions. You can use this choice when you need to delete fields or add optional fields, and check compatibility against all previous schema versions.
+.IP \(bu 2
+\fIFORWARD\fP : This compatibility choice allows data receivers to read both the current and one next schema version, but not necessarily later versions. You can use this choice when you need to add fields or delete optional fields, but only check compatibility against the last schema version.
+.IP \(bu 2
+\fIFORWARD_ALL\fP : This compatibility choice allows data receivers to read written by producers of any new registered schema. You can use this choice when you need to add fields or delete optional fields, and check compatibility against all previous schema versions.
+.IP \(bu 2
+\fIFULL\fP : This compatibility choice allows data receivers to read data written by producers using the previous or next version of the schema, but not necessarily earlier or later versions. You can use this choice when you need to add or remove optional fields, but only check compatibility against the last schema version.
+.IP \(bu 2
+\fIFULL_ALL\fP : This compatibility choice allows data receivers to read data written by producers using all previous schema versions. You can use this choice when you need to add or remove optional fields, and check compatibility against all previous schema versions.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP
+.IP \(bu 2
+\fBDISABLED\fP
+.IP \(bu 2
+\fBBACKWARD\fP
+.IP \(bu 2
+\fBBACKWARD_ALL\fP
+.IP \(bu 2
+\fBFORWARD\fP
+.IP \(bu 2
+\fBFORWARD_ALL\fP
+.IP \(bu 2
+\fBFULL\fP
+.IP \(bu 2
+\fBFULL_ALL\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional description of the schema. If description is not provided, there will not be any automatic default value for this.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+AWS tags that contain a key value pair and may be searched by console, command line, or API. If specified, follows the AWS tags\-on\-create pattern.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schema\-definition\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The schema definition using the \fBDataFormat\fP setting for \fBSchemaName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+RegistryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the registry.
+.UNINDENT
+.UNINDENT
+.sp
+RegistryArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the registry.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the schema.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the schema.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the schema if specified when created.
+.UNINDENT
+.UNINDENT
+.sp
+DataFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data format of the schema definition. Currently only \fBAVRO\fP is supported.
+.UNINDENT
+.UNINDENT
+.sp
+Compatibility \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The schema compatibility mode.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaCheckpoint \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the checkpoint (the last time the compatibility mode was changed).
+.UNINDENT
+.UNINDENT
+.sp
+LatestSchemaVersion \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The latest version of the schema associated with the returned schema definition.
+.UNINDENT
+.UNINDENT
+.sp
+NextSchemaVersion \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The next version of the schema associated with the returned schema definition.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the schema.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tags for the schema.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the first schema version.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersionStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the first schema version created.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

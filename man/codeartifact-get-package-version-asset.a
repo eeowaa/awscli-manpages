@@ -1,0 +1,229 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEARTIFACT-GET-PACKAGE-VERSION-ASSET" "a" "" ""
+.SH NAME
+codeartifact-get-package-version-asset \- Returns an asset (or file) that is in a package
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns an asset (or file) that is in a package. For example, for a Maven package version, use \fBGetPackageVersionAsset\fP to download a \fBJAR\fP file, a \fBPOM\fP file, or any other assets in the package version.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-package\-version\-asset
+\-\-domain <value>
+[\-\-domain\-owner <value>]
+\-\-repository <value>
+\-\-format <value>
+[\-\-namespace <value>]
+\-\-package <value>
+\-\-package\-version <value>
+\-\-asset <value>
+[\-\-package\-version\-revision <value>]
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain that contains the repository that contains the package version with the requested asset.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-domain\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The 12\-digit account number of the AWS account that owns the domain. It does not include dashes or spaces.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-repository\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The repository that contains the package version with the requested asset.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A format that specifies the type of the package version with the requested asset file. The valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBnpm\fP
+.IP \(bu 2
+\fBpypi\fP
+.IP \(bu 2
+\fBmaven\fP
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBnpm\fP
+.IP \(bu 2
+\fBpypi\fP
+.IP \(bu 2
+\fBmaven\fP
+.IP \(bu 2
+\fBnuget\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-namespace\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the package. The package component that specifies its namespace depends on its type. For example:
+.INDENT 0.0
+.IP \(bu 2
+The namespace of a Maven package is its \fBgroupId\fP .
+.IP \(bu 2
+The namespace of an npm package is its \fBscope\fP .
+.IP \(bu 2
+A Python package does not contain a corresponding component, so Python packages do not have a namespace.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-package\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the package that contains the requested asset.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-package\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that contains the package version (for example, \fB3.5.2\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-asset\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the requested asset.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-package\-version\-revision\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the package version revision that contains the requested asset.
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get an asset from a package version\fP
+.sp
+The following \fBget\-package\-version\-asset\fP example retrieves the package.tgz asset for version 4.0.0 of an npm package named test\-package.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codeartifact get\-package\-version\-asset \e
+    \-\-domain test\-domain \e
+    \-\-repo test\-repo \e
+    \-\-format npm \e
+    \-\-package test\-package \e
+    \-\-package\-version 4.0.0 \e
+    outfileName
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+The output for this command will also store the raw asset in the file provided in place of outfileName.
+
+{
+    "assetName": "package.tgz",
+    "packageVersion": "4.0.0",
+    "packageVersionRevision": "Ciqe5/9yicvkJT13b5/LdLpCyE6fqA7poa9qp+FilPs="
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%List package version assets\fP in the \fIAWS CodeArtifact User Guide\fP\&.
+.SH OUTPUT
+.sp
+asset \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The binary file, or asset, that is downloaded.
+.UNINDENT
+.UNINDENT
+.sp
+assetName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the asset that is downloaded.
+.UNINDENT
+.UNINDENT
+.sp
+packageVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that contains the package version (for example, \fB3.5.2\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+packageVersionRevision \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the package version revision that contains the downloaded asset.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

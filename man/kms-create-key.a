@@ -1,0 +1,577 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-CREATE-KEY" "a" "" ""
+.SH NAME
+kms-create-key \- Creates a unique customer managed %customer master key (CMK) in your AWS account and Region
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a unique customer managed \fI\%customer master key\fP (CMK) in your AWS account and Region.
+.sp
+You can use the \fBCreateKey\fP operation to create symmetric or asymmetric CMKs.
+.INDENT 0.0
+.IP \(bu 2
+\fBSymmetric CMKs\fP contain a 256\-bit symmetric key that never leaves AWS KMS unencrypted. To use the CMK, you must call AWS KMS. You can use a symmetric CMK to encrypt and decrypt small amounts of data, but they are typically used to generate \fI\%data keys\fP and \fI\%data keys pairs\fP . For details, see  GenerateDataKey and  GenerateDataKeyPair .
+.IP \(bu 2
+\fBAsymmetric CMKs\fP can contain an RSA key pair or an Elliptic Curve (ECC) key pair. The private key in an asymmetric CMK never leaves AWS KMS unencrypted. However, you can use the  GetPublicKey operation to download the public key so it can be used outside of AWS KMS. CMKs with RSA key pairs can be used to encrypt or decrypt data or sign and verify messages (but not both). CMKs with ECC key pairs can be used only to sign and verify messages.
+.UNINDENT
+.sp
+For information about symmetric and asymmetric CMKs, see \fI\%Using Symmetric and Asymmetric CMKs\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+To create different types of CMKs, use the following guidance:
+.INDENT 0.0
+.INDENT 3.5
+Asymmetric CMKs
+.UNINDENT
+.UNINDENT
+.sp
+To create an asymmetric CMK, use the \fBCustomerMasterKeySpec\fP parameter to specify the type of key material in the CMK. Then, use the \fBKeyUsage\fP parameter to determine whether the CMK will be used to encrypt and decrypt or sign and verify. You can\(aqt change these properties after the CMK is created.
+.INDENT 0.0
+.INDENT 3.5
+Symmetric CMKs
+.UNINDENT
+.UNINDENT
+.sp
+When creating a symmetric CMK, you don\(aqt need to specify the \fBCustomerMasterKeySpec\fP or \fBKeyUsage\fP parameters. The default value for \fBCustomerMasterKeySpec\fP , \fBSYMMETRIC_DEFAULT\fP , and the default value for \fBKeyUsage\fP , \fBENCRYPT_DECRYPT\fP , are the only valid values for symmetric CMKs.
+.INDENT 0.0
+.INDENT 3.5
+Imported Key Material
+.UNINDENT
+.UNINDENT
+.sp
+To import your own key material, begin by creating a symmetric CMK with no key material. To do this, use the \fBOrigin\fP parameter of \fBCreateKey\fP with a value of \fBEXTERNAL\fP . Next, use  GetParametersForImport operation to get a public key and import token, and use the public key to encrypt your key material. Then, use  ImportKeyMaterial with your import token to import the key material. For step\-by\-step instructions, see \fI\%Importing Key Material\fP in the * \fIAWS Key Management Service Developer Guide\fP * . You cannot import the key material into an asymmetric CMK.
+.INDENT 0.0
+.INDENT 3.5
+Custom Key Stores
+.UNINDENT
+.UNINDENT
+.sp
+To create a symmetric CMK in a \fI\%custom key store\fP , use the \fBCustomKeyStoreId\fP parameter to specify the custom key store. You must also use the \fBOrigin\fP parameter with a value of \fBAWS_CLOUDHSM\fP . The AWS CloudHSM cluster that is associated with the custom key store must have at least two active HSMs in different Availability Zones in the AWS Region.
+.sp
+You cannot create an asymmetric CMK in a custom key store. For information about custom key stores in AWS KMS see \fI\%Using Custom Key Stores\fP in the * \fIAWS Key Management Service Developer Guide\fP * .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : No. You cannot use this operation to create a CMK in a different AWS account.
+.sp
+\fBRequired permissions\fP : \fI\%kms:CreateKey\fP (IAM policy). To use the \fBTags\fP parameter, \fI\%kms:TagResource\fP (IAM policy). For examples and information about related permissions, see \fI\%Allow a user to create CMKs\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+DescribeKey
+.IP \(bu 2
+ListKeys
+.IP \(bu 2
+ScheduleKeyDeletion
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-key
+[\-\-policy <value>]
+[\-\-description <value>]
+[\-\-key\-usage <value>]
+[\-\-customer\-master\-key\-spec <value>]
+[\-\-origin <value>]
+[\-\-custom\-key\-store\-id <value>]
+[\-\-bypass\-policy\-lockout\-safety\-check | \-\-no\-bypass\-policy\-lockout\-safety\-check]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-policy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The key policy to attach to the CMK.
+.sp
+If you provide a key policy, it must meet the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+If you don\(aqt set \fBBypassPolicyLockoutSafetyCheck\fP to true, the key policy must allow the principal that is making the \fBCreateKey\fP request to make a subsequent  PutKeyPolicy request on the CMK. This reduces the risk that the CMK becomes unmanageable. For more information, refer to the scenario in the \fI\%Default Key Policy\fP section of the * \fIAWS Key Management Service Developer Guide\fP * .
+.IP \(bu 2
+Each statement in the key policy must contain one or more principals. The principals in the key policy must exist and be visible to AWS KMS. When you create a new AWS principal (for example, an IAM user or role), you might need to enforce a delay before including the new principal in a key policy because the new principal might not be immediately visible to AWS KMS. For more information, see \fI\%Changes that I make are not always immediately visible\fP in the \fIAWS Identity and Access Management User Guide\fP .
+.UNINDENT
+.sp
+If you do not provide a key policy, AWS KMS attaches a default key policy to the CMK. For more information, see \fI\%Default Key Policy\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+The key policy size quota is 32 kilobytes (32768 bytes).
+.sp
+For help writing and formatting a JSON policy document, see the \fI\%IAM JSON Policy Reference\fP in the * \fIIAM User Guide\fP * .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the CMK.
+.sp
+Use a description that helps you decide whether the CMK is appropriate for a task.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-usage\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines the \fI\%cryptographic operations\fP for which you can use the CMK. The default value is \fBENCRYPT_DECRYPT\fP . This parameter is required only for asymmetric CMKs. You can\(aqt change the \fBKeyUsage\fP value after the CMK is created.
+.sp
+Select only one valid value.
+.INDENT 0.0
+.IP \(bu 2
+For symmetric CMKs, omit the parameter or specify \fBENCRYPT_DECRYPT\fP .
+.IP \(bu 2
+For asymmetric CMKs with RSA key material, specify \fBENCRYPT_DECRYPT\fP or \fBSIGN_VERIFY\fP .
+.IP \(bu 2
+For asymmetric CMKs with ECC key material, specify \fBSIGN_VERIFY\fP .
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSIGN_VERIFY\fP
+.IP \(bu 2
+\fBENCRYPT_DECRYPT\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-customer\-master\-key\-spec\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of CMK to create. The default value, \fBSYMMETRIC_DEFAULT\fP , creates a CMK with a 256\-bit symmetric key for encryption and decryption. For help choosing a key spec for your CMK, see \fI\%How to Choose Your CMK Configuration\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+The \fBCustomerMasterKeySpec\fP determines whether the CMK contains a symmetric key or an asymmetric key pair. It also determines the encryption algorithms or signing algorithms that the CMK supports. You can\(aqt change the \fBCustomerMasterKeySpec\fP after the CMK is created. To further restrict the algorithms that can be used with the CMK, use a condition key in its key policy or IAM policy. For more information, see \fI\%kms:EncryptionAlgorithm\fP or \fI\%kms:Signing Algorithm\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fI\%AWS services that are integrated with AWS KMS\fP use symmetric CMKs to protect your data. These services do not support asymmetric CMKs. For help determining whether a CMK is symmetric or asymmetric, see \fI\%Identifying Symmetric and Asymmetric CMKs\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AWS KMS supports the following key specs for CMKs:
+.INDENT 0.0
+.IP \(bu 2
+Symmetric key (default)
+.INDENT 2.0
+.IP \(bu 2
+\fBSYMMETRIC_DEFAULT\fP (AES\-256\-GCM)
+.UNINDENT
+.IP \(bu 2
+Asymmetric RSA key pairs
+.INDENT 2.0
+.IP \(bu 2
+\fBRSA_2048\fP
+.IP \(bu 2
+\fBRSA_3072\fP
+.IP \(bu 2
+\fBRSA_4096\fP
+.UNINDENT
+.IP \(bu 2
+Asymmetric NIST\-recommended elliptic curve key pairs
+.INDENT 2.0
+.IP \(bu 2
+\fBECC_NIST_P256\fP (secp256r1)
+.IP \(bu 2
+\fBECC_NIST_P384\fP (secp384r1)
+.IP \(bu 2
+\fBECC_NIST_P521\fP (secp521r1)
+.UNINDENT
+.IP \(bu 2
+Other asymmetric elliptic curve key pairs
+.INDENT 2.0
+.IP \(bu 2
+\fBECC_SECG_P256K1\fP (secp256k1), commonly used for cryptocurrencies.
+.UNINDENT
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRSA_2048\fP
+.IP \(bu 2
+\fBRSA_3072\fP
+.IP \(bu 2
+\fBRSA_4096\fP
+.IP \(bu 2
+\fBECC_NIST_P256\fP
+.IP \(bu 2
+\fBECC_NIST_P384\fP
+.IP \(bu 2
+\fBECC_NIST_P521\fP
+.IP \(bu 2
+\fBECC_SECG_P256K1\fP
+.IP \(bu 2
+\fBSYMMETRIC_DEFAULT\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-origin\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the key material for the CMK. You cannot change the origin after you create the CMK. The default is \fBAWS_KMS\fP , which means AWS KMS creates the key material.
+.sp
+When the parameter value is \fBEXTERNAL\fP , AWS KMS creates a CMK without key material so that you can import key material from your existing key management infrastructure. For more information about importing key material into AWS KMS, see \fI\%Importing Key Material\fP in the \fIAWS Key Management Service Developer Guide\fP . This value is valid only for symmetric CMKs.
+.sp
+When the parameter value is \fBAWS_CLOUDHSM\fP , AWS KMS creates the CMK in an AWS KMS \fI\%custom key store\fP and creates its key material in the associated AWS CloudHSM cluster. You must also use the \fBCustomKeyStoreId\fP parameter to identify the custom key store. This value is valid only for symmetric CMKs.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAWS_KMS\fP
+.IP \(bu 2
+\fBEXTERNAL\fP
+.IP \(bu 2
+\fBAWS_CLOUDHSM\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-key\-store\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Creates the CMK in the specified \fI\%custom key store\fP and the key material in its associated AWS CloudHSM cluster. To create a CMK in a custom key store, you must also specify the \fBOrigin\fP parameter with a value of \fBAWS_CLOUDHSM\fP . The AWS CloudHSM cluster that is associated with the custom key store must have at least two active HSMs, each in a different Availability Zone in the Region.
+.sp
+This parameter is valid only for symmetric CMKs. You cannot create an asymmetric CMK in a custom key store.
+.sp
+To find the ID of a custom key store, use the  DescribeCustomKeyStores operation.
+.sp
+The response includes the custom key store ID and the ID of the AWS CloudHSM cluster.
+.sp
+This operation is part of the \fI\%Custom Key Store feature\fP feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single\-tenant key store.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bypass\-policy\-lockout\-safety\-check\fP | \fB\-\-no\-bypass\-policy\-lockout\-safety\-check\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag to indicate whether to bypass the key policy lockout safety check.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Setting this value to true increases the risk that the CMK becomes unmanageable. Do not set this value to true indiscriminately.
+.sp
+For more information, refer to the scenario in the \fI\%Default Key Policy\fP section in the * \fIAWS Key Management Service Developer Guide\fP * .
+.UNINDENT
+.UNINDENT
+.sp
+Use this parameter only when you include a policy in the request and you intend to prevent the principal that is making the request from making a subsequent  PutKeyPolicy request on the CMK.
+.sp
+The default value is false.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more tags. Each tag consists of a tag key and a tag value. Both the tag key and the tag value are required, but the tag value can be an empty (null) string.
+.sp
+When you add tags to an AWS resource, AWS generates a cost allocation report with usage and costs aggregated by tags. For information about adding, changing, deleting and listing tags for CMKs, see \fI\%Tagging Keys\fP .
+.sp
+Use this parameter to tag the CMK when it is created. To add tags to an existing CMK, use the  TagResource operation.
+.sp
+To use this parameter, you must have \fI\%kms:TagResource\fP permission in an IAM policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair. A tag consists of a tag key and a tag value. Tag keys and tag values are both required, but tag values can be empty (null) strings.
+.sp
+For information about the rules that apply to tag keys and tag values, see \fI\%User\-Defined Tag Restrictions\fP in the \fIAWS Billing and Cost Management User Guide\fP .
+.sp
+TagKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+TagValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TagKey=string,TagValue=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "TagKey": "string",
+    "TagValue": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a customer managed CMK in AWS KMS\fP
+.sp
+The following \fBcreate\-key\fP example creates a customer managed CMK.
+.INDENT 0.0
+.IP \(bu 2
+The \fB\-\-tags\fP parameter uses shorthand syntax to add a tag with a key name \fBPurpose\fP and value of \fBTest\fP\&. For information about using shorthand syntax, see \fI\%Using Shorthand Syntax with the AWS Command Line Interface\fP in the \fIAWS CLI User Guide\fP\&.
+.IP \(bu 2
+The \fB\-\-description parameter\fP adds an optional description.
+.UNINDENT
+.sp
+Because this doesn\(aqt specify a policy, the CMK gets the \fIdefault key policy <https://docs.aws.amazon.com/kms/latest/developerguide/key\-policies.html#key\-policy\-default>__. To view the key policy, use the \(ga\(gaget\-key\-policy\(ga\fP command. To change the key policy, use the \fBput\-key\-policy\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms create\-key \e
+    \-\-tags TagKey=Purpose,TagValue=Test \e
+    \-\-description "Development test key"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The \fBcreate\-key\fP command returns the key metadata, including the key ID and ARN of the new CMK. You can use these values to identify the CMK to other AWS KMS operations. The output does not include the tags. To view the tags for a CMK, use the \fBlist\-resource\-tags command\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "KeyMetadata": {
+        "AWSAccountId": "123456789012",
+        "KeyId": "1234abcd\-12ab\-34cd\-56ef\-1234567890ab",
+        "Arn": "arn:aws:kms:us\-west\-2:123456789012:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab",
+        "CreationDate": 1566160362.664,
+        "Enabled": true,
+        "Description": "Development test key",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "CUSTOMER"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Note: The \fBcreate\-key\fP command does not let you specify an alias, To create an alias that points to the new CMK, use the \fBcreate\-alias\fP command.
+.sp
+For more information, see \fI\%Creating Keys\fP in the \fIAWS Key Management Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+KeyMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata associated with the CMK.
+.sp
+AWSAccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The twelve\-digit account ID of the AWS account that owns the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+KeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The globally unique identifier for the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the CMK. For examples, see \fI\%AWS Key Management Service (AWS KMS)\fP in the Example ARNs section of the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CreationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the CMK was created.
+.UNINDENT
+.UNINDENT
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the CMK is enabled. When \fBKeyState\fP is \fBEnabled\fP this value is true, otherwise it is false.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+KeyUsage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%cryptographic operations\fP for which you can use the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+KeyState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the CMK.
+.sp
+For more information about how key state affects the use of a CMK, see \fI\%Key state: Effect on your CMK\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DeletionDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time after which AWS KMS deletes the CMK. This value is present only when \fBKeyState\fP is \fBPendingDeletion\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ValidTo \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the imported key material expires. When the key material expires, AWS KMS deletes the key material and the CMK becomes unusable. This value is present only for CMKs whose \fBOrigin\fP is \fBEXTERNAL\fP and whose \fBExpirationModel\fP is \fBKEY_MATERIAL_EXPIRES\fP , otherwise this value is omitted.
+.UNINDENT
+.UNINDENT
+.sp
+Origin \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the CMK\(aqs key material. When this value is \fBAWS_KMS\fP , AWS KMS created the key material. When this value is \fBEXTERNAL\fP , the key material was imported from your existing key management infrastructure or the CMK lacks key material. When this value is \fBAWS_CLOUDHSM\fP , the key material was created in the AWS CloudHSM cluster associated with a custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+CustomKeyStoreId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the \fI\%custom key store\fP that contains the CMK. This value is present only when the CMK is created in a custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+CloudHsmClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cluster ID of the AWS CloudHSM cluster that contains the key material for the CMK. When you create a CMK in a \fI\%custom key store\fP , AWS KMS creates the key material for the CMK in the associated AWS CloudHSM cluster. This value is present only when the CMK is created in a custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+ExpirationModel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the CMK\(aqs key material expires. This value is present only when \fBOrigin\fP is \fBEXTERNAL\fP , otherwise this value is omitted.
+.UNINDENT
+.UNINDENT
+.sp
+KeyManager \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The manager of the CMK. CMKs in your AWS account are either customer managed or AWS managed. For more information about the difference, see \fI\%Customer Master Keys\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CustomerMasterKeySpec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the type of key material in the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionAlgorithms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The encryption algorithms that the CMK supports. You cannot use the CMK with other encryption algorithms within AWS KMS.
+.sp
+This field appears only when the \fBKeyUsage\fP of the CMK is \fBENCRYPT_DECRYPT\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SigningAlgorithms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The signing algorithms that the CMK supports. You cannot use the CMK with other signing algorithms within AWS KMS.
+.sp
+This field appears only when the \fBKeyUsage\fP of the CMK is \fBSIGN_VERIFY\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

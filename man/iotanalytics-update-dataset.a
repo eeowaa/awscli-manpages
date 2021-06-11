@@ -1,0 +1,759 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOTANALYTICS-UPDATE-DATASET" "a" "" ""
+.SH NAME
+iotanalytics-update-dataset \- Updates the settings of a data set
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the settings of a data set.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-dataset
+\-\-dataset\-name <value>
+\-\-actions <value>
+[\-\-triggers <value>]
+[\-\-content\-delivery\-rules <value>]
+[\-\-retention\-period <value>]
+[\-\-versioning\-configuration <value>]
+[\-\-late\-data\-rules <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-dataset\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the data set to update.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-actions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBDatasetAction\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBDatasetAction\fP object that specifies how data set contents are automatically created.
+.sp
+actionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the data set action by which data set contents are automatically created.
+.UNINDENT
+.UNINDENT
+.sp
+queryAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An \fBSqlQueryDatasetAction\fP object that uses an SQL query to automatically create data set contents.
+.sp
+sqlQuery \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A SQL query string.
+.UNINDENT
+.UNINDENT
+.sp
+filters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Prefilters applied to message data.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information that is used to filter message data, to segregate it according to the timeframe in which it arrives.
+.sp
+deltaTime \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Used to limit data to that which has arrived since the last execution of the action.
+.sp
+offsetSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of seconds of estimated in\-flight lag time of message data. When you create dataset contents using message data from a specified timeframe, some message data might still be in flight when processing begins, and so do not arrive in time to be processed. Use this field to make allowances for the in flight time of your message data, so that data not processed from a previous timeframe is included with the next timeframe. Otherwise, missed message data would be excluded from processing during the next timeframe too, because its timestamp places it within the previous timeframe.
+.UNINDENT
+.UNINDENT
+.sp
+timeExpression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An expression by which the time of the message data might be determined. This can be the name of a timestamp field or a SQL expression that is used to derive the time the message data was generated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+containerAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information that allows the system to run a containerized application to create the dataset contents. The application must be in a Docker container along with any required support libraries.
+.sp
+image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Docker container stored in your account. The Docker container contains an application and required support libraries and is used to generate dataset contents.
+.UNINDENT
+.UNINDENT
+.sp
+executionRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that gives permission to the system to access required resources to run the \fBcontainerAction\fP . This includes, at minimum, permission to retrieve the dataset contents that are the input to the containerized application.
+.UNINDENT
+.UNINDENT
+.sp
+resourceConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration of the resource that executes the \fBcontainerAction\fP .
+.sp
+computeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the compute resource used to execute the \fBcontainerAction\fP . Possible values are: \fBACU_1\fP (vCPU=4, memory=16 GiB) or \fBACU_2\fP (vCPU=8, memory=32 GiB).
+.UNINDENT
+.UNINDENT
+.sp
+volumeSizeInGB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size, in GB, of the persistent storage available to the resource instance used to execute the \fBcontainerAction\fP (min: 1, max: 50).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+variables \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The values of variables used in the context of the execution of the containerized application (basically, parameters passed to the application). Each variable must have a name and a value given by one of \fBstringValue\fP , \fBdatasetContentVersionValue\fP , or \fBoutputFileUriValue\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An instance of a variable to be passed to the \fBcontainerAction\fP execution. Each variable must have a name and a value given by one of \fBstringValue\fP , \fBdatasetContentVersionValue\fP , or \fBoutputFileUriValue\fP .
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the variable.
+.UNINDENT
+.UNINDENT
+.sp
+stringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the variable as a string.
+.UNINDENT
+.UNINDENT
+.sp
+doubleValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value of the variable as a double (numeric).
+.UNINDENT
+.UNINDENT
+.sp
+datasetContentVersionValue \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value of the variable as a structure that specifies a dataset content version.
+.sp
+datasetName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dataset whose latest contents are used as input to the notebook or application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+outputFileUriValue \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value of the variable as a structure that specifies an output file URI.
+.sp
+fileName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URI of the location where dataset contents are stored, usually the URI of a file in an S3 bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "actionName": "string",
+    "queryAction": {
+      "sqlQuery": "string",
+      "filters": [
+        {
+          "deltaTime": {
+            "offsetSeconds": integer,
+            "timeExpression": "string"
+          }
+        }
+        ...
+      ]
+    },
+    "containerAction": {
+      "image": "string",
+      "executionRoleArn": "string",
+      "resourceConfiguration": {
+        "computeType": "ACU_1"|"ACU_2",
+        "volumeSizeInGB": integer
+      },
+      "variables": [
+        {
+          "name": "string",
+          "stringValue": "string",
+          "doubleValue": double,
+          "datasetContentVersionValue": {
+            "datasetName": "string"
+          },
+          "outputFileUriValue": {
+            "fileName": "string"
+          }
+        }
+        ...
+      ]
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-triggers\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBDatasetTrigger\fP objects. The list can be empty or can contain up to five \fBDatasetTrigger\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBDatasetTrigger\fP that specifies when the data set is automatically updated.
+.sp
+schedule \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Schedule when the trigger is initiated.
+.sp
+expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The expression that defines when to trigger an update. For more information, see \fI\%Schedule Expressions for Rules\fP in the \fIAmazon CloudWatch Events User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+dataset \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The data set whose content creation triggers the creation of this data set\(aqs contents.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dataset whose content generation triggers the new dataset content generation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+schedule={expression=string},dataset={name=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "schedule": {
+      "expression": "string"
+    },
+    "dataset": {
+      "name": "string"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-delivery\-rules\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+When dataset contents are created, they are delivered to destinations specified here.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+When dataset contents are created, they are delivered to destination specified here.
+.sp
+entryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dataset content delivery rules entry.
+.UNINDENT
+.UNINDENT
+.sp
+destination \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The destination to which dataset contents are delivered.
+.sp
+iotEventsDestinationConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration information for delivery of dataset contents to AWS IoT Events.
+.sp
+inputName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the AWS IoT Events input to which dataset contents are delivered.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants AWS IoT Analytics permission to deliver dataset contents to an AWS IoT Events input.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+s3DestinationConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration information for delivery of dataset contents to Amazon S3.
+.sp
+bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket to which dataset contents are delivered.
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the dataset contents object in an S3 bucket. Each object has a key that is a unique identifier. Each object has exactly one key.
+.sp
+You can create a unique key with the following options:
+.INDENT 0.0
+.IP \(bu 2
+Use \fB!{iotanalytics:scheduleTime}\fP to insert the time of a scheduled SQL query run.
+.IP \(bu 2
+Use \fB!{iotanalytics:versionId}\fP to insert a unique hash that identifies a dataset content.
+.IP \(bu 2
+Use \fB!{iotanalytics:creationTime}\fP to insert the creation time of a dataset content.
+.UNINDENT
+.sp
+The following example creates a unique key for a CSV file: \fBdataset/mydataset/!{iotanalytics:scheduleTime}/!{iotanalytics:versionId}.csv\fP
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you don\(aqt use \fB!{iotanalytics:versionId}\fP to specify the key, you might get duplicate keys. For example, you might have two dataset contents with the same \fBscheduleTime\fP but different \fBversionId\fP s. This means that one dataset content overwrites the other.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+glueConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration information for coordination with AWS Glue, a fully managed extract, transform and load (ETL) service.
+.sp
+tableName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the table in your AWS Glue Data Catalog that is used to perform the ETL operations. An AWS Glue Data Catalog table contains partitioned data and descriptions of data sources and targets.
+.UNINDENT
+.UNINDENT
+.sp
+databaseName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database in your AWS Glue Data Catalog in which the table is located. An AWS Glue Data Catalog database contains metadata tables.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants AWS IoT Analytics permission to interact with your Amazon S3 and AWS Glue resources.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "entryName": "string",
+    "destination": {
+      "iotEventsDestinationConfiguration": {
+        "inputName": "string",
+        "roleArn": "string"
+      },
+      "s3DestinationConfiguration": {
+        "bucket": "string",
+        "key": "string",
+        "glueConfiguration": {
+          "tableName": "string",
+          "databaseName": "string"
+        },
+        "roleArn": "string"
+      }
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-retention\-period\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+How long, in days, dataset contents are kept for the dataset.
+.sp
+unlimited \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, message data is kept indefinitely.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days that message data is kept. The \fBunlimited\fP parameter must be false.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+unlimited=boolean,numberOfDays=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "unlimited": true|false,
+  "numberOfDays": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-versioning\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Optional. How many versions of dataset contents are kept. If not specified or set to null, only the latest version plus the latest succeeded version (if they are different) are kept for the time period specified by the \fBretentionPeriod\fP parameter. For more information, see \fI\%Keeping Multiple Versions of AWS IoT Analytics Data Sets\fP in the \fIAWS IoT Analytics User Guide\fP .
+.sp
+unlimited \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, unlimited versions of dataset contents are kept.
+.UNINDENT
+.UNINDENT
+.sp
+maxVersions \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+How many versions of dataset contents are kept. The \fBunlimited\fP parameter must be \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+unlimited=boolean,maxVersions=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "unlimited": true|false,
+  "maxVersions": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-late\-data\-rules\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of data rules that send notifications to Amazon CloudWatch, when data arrives late. To specify \fBlateDataRules\fP , the dataset must use a \fI\%DeltaTimer\fP filter.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains the name and configuration information of a late data rule.
+.sp
+ruleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the late data rule.
+.UNINDENT
+.UNINDENT
+.sp
+ruleConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The information needed to configure the late data rule.
+.sp
+deltaTimeSessionWindowConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The information needed to configure a delta time session window.
+.sp
+timeoutInMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A time interval. You can use \fBtimeoutInMinutes\fP so that AWS IoT Analytics can batch up late data notifications that have been generated since the last execution. AWS IoT Analytics sends one batch of notifications to Amazon CloudWatch Events at one time.
+.sp
+For more information about how to write a timestamp expression, see \fI\%Date and Time Functions and Operators\fP , in the \fIPresto 0.172 Documentation\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ruleName=string,ruleConfiguration={deltaTimeSessionWindowConfiguration={timeoutInMinutes=integer}} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ruleName": "string",
+    "ruleConfiguration": {
+      "deltaTimeSessionWindowConfiguration": {
+        "timeoutInMinutes": integer
+      }
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update a dataset\fP
+.sp
+The following \fBupdate\-dataset\fP example modifies the settings of the specified dataset.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iotanalytics update\-dataset \e
+    \-\-cli\-input\-json file://update\-dataset.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBupdate\-dataset.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "datasetName": "mydataset",
+    "actions": [
+        {
+            "actionName": "myDatasetUpdateAction",
+            "queryAction": {
+                "sqlQuery": "SELECT * FROM mydatastore"
+            }
+        }
+    ],
+    "retentionPeriod": {
+        "numberOfDays": 92
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see 
+.nf
+\(gaUpdateDataset <https://docs.aws.amazon.com/iotanalytics/latest/APIReference/API_UpdateDataset.html
+>\(ga__
+.fi
+ in the \fIAWS IoT Analytics API Reference\fP\&.
+.SH OUTPUT
+.sp
+None
+.SH DOCUTILS SYSTEM MESSAGES
+.IP "System Message: ERROR/3 (<string>:)"
+Anonymous hyperlink mismatch: 1 references but 0 targets.
+See "backrefs" attribute for IDs.
+.\" Generated by docutils manpage writer.
+.

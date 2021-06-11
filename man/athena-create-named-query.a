@@ -1,0 +1,164 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ATHENA-CREATE-NAMED-QUERY" "a" "" ""
+.SH NAME
+athena-create-named-query \- Creates a named query in the specified workgroup
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a named query in the specified workgroup. Requires that you have access to the workgroup.
+.sp
+For code samples using the AWS SDK for Java, see \fI\%Examples and Code Samples\fP in the \fIAmazon Athena User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-named\-query
+\-\-name <value>
+[\-\-description <value>]
+\-\-database <value>
+\-\-query\-string <value>
+[\-\-client\-request\-token <value>]
+[\-\-work\-group <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The query name.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The query description.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-database\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The database to which the query belongs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-query\-string\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The contents of the query with all query statements.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique case\-sensitive string used to ensure the request to create the query is idempotent (executes only once). If another \fBCreateNamedQuery\fP request is received, the same response is returned and another query is not created. If a parameter has changed, for example, the \fBQueryString\fP , an error is returned.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+This token is listed as not required because AWS SDKs (for example the AWS SDK for Java) auto\-generate the token for users. If you are not using the AWS SDK or the AWS CLI, you must provide this token or the action will fail.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-work\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the workgroup in which the named query is being created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a named query\fP
+.sp
+The following \fBcreate\-named\-query\fP example creates a saved query in the \fBAthenaAdmin\fP workgroup that queries the \fBflights_parquet\fP table for flights from Seattle to New York in January, 2016 whose departure and arrival were both delayed by more than ten minutes. Because the airport code values in the table are strings that include double quotes (for example, "SEA"), they are escaped by backslashes and surrounded by single quotes.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws athena create\-named\-query \e
+    \-\-name "SEA to JFK delayed flights Jan 2016" \e
+    \-\-description "Both arrival and departure delayed more than 10 minutes." \e
+    \-\-database sampledb \e
+    \-\-query\-string "SELECT flightdate, carrier, flightnum, origin, dest, depdelayminutes, arrdelayminutes FROM sampledb.flights_parquet WHERE yr = 2016 AND month = 1 AND origin = \(aq\e"SEA\e"\(aq AND dest = \(aq\e"JFK\e"\(aq AND depdelayminutes > 10 AND arrdelayminutes > 10" \e
+    \-\-work\-group AthenaAdmin
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "NamedQueryId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Running SQL Queries Using Amazon Athena\fP in the \fIAmazon Athena User Guide\fP\&.
+.SH OUTPUT
+.sp
+NamedQueryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID of the query.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

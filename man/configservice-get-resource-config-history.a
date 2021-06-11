@@ -1,0 +1,584 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONFIGSERVICE-GET-RESOURCE-CONFIG-HISTORY" "a" "" ""
+.SH NAME
+configservice-get-resource-config-history \- Returns a list of configuration items for the specified resource
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns a list of configuration items for the specified resource. The list contains details about each state of the resource during the specified time interval. If you specified a retention period to retain your \fBConfigurationItems\fP between a minimum of 30 days and a maximum of 7 years (2557 days), AWS Config returns the \fBConfigurationItems\fP for the specified retention period.
+.sp
+The response is paginated. By default, AWS Config returns a limit of 10 configuration items per page. You can customize this number with the \fBlimit\fP parameter. The response includes a \fBnextToken\fP string. To get the next page of results, run the request again and specify the string for the \fBnextToken\fP parameter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Each call to the API is limited to span a duration of seven days. It is likely that the number of records returned is smaller than the specified \fBlimit\fP . In such cases, you can make another call, using the \fBnextToken\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBget\-resource\-config\-history\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBconfigurationItems\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-resource\-config\-history
+\-\-resource\-type <value>
+\-\-resource\-id <value>
+[\-\-later\-time <value>]
+[\-\-earlier\-time <value>]
+[\-\-chronological\-order <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-resource\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAWS::EC2::CustomerGateway\fP
+.IP \(bu 2
+\fBAWS::EC2::EIP\fP
+.IP \(bu 2
+\fBAWS::EC2::Host\fP
+.IP \(bu 2
+\fBAWS::EC2::Instance\fP
+.IP \(bu 2
+\fBAWS::EC2::InternetGateway\fP
+.IP \(bu 2
+\fBAWS::EC2::NetworkAcl\fP
+.IP \(bu 2
+\fBAWS::EC2::NetworkInterface\fP
+.IP \(bu 2
+\fBAWS::EC2::RouteTable\fP
+.IP \(bu 2
+\fBAWS::EC2::SecurityGroup\fP
+.IP \(bu 2
+\fBAWS::EC2::Subnet\fP
+.IP \(bu 2
+\fBAWS::CloudTrail::Trail\fP
+.IP \(bu 2
+\fBAWS::EC2::Volume\fP
+.IP \(bu 2
+\fBAWS::EC2::VPC\fP
+.IP \(bu 2
+\fBAWS::EC2::VPNConnection\fP
+.IP \(bu 2
+\fBAWS::EC2::VPNGateway\fP
+.IP \(bu 2
+\fBAWS::EC2::RegisteredHAInstance\fP
+.IP \(bu 2
+\fBAWS::EC2::NatGateway\fP
+.IP \(bu 2
+\fBAWS::EC2::EgressOnlyInternetGateway\fP
+.IP \(bu 2
+\fBAWS::EC2::VPCEndpoint\fP
+.IP \(bu 2
+\fBAWS::EC2::VPCEndpointService\fP
+.IP \(bu 2
+\fBAWS::EC2::FlowLog\fP
+.IP \(bu 2
+\fBAWS::EC2::VPCPeeringConnection\fP
+.IP \(bu 2
+\fBAWS::Elasticsearch::Domain\fP
+.IP \(bu 2
+\fBAWS::IAM::Group\fP
+.IP \(bu 2
+\fBAWS::IAM::Policy\fP
+.IP \(bu 2
+\fBAWS::IAM::Role\fP
+.IP \(bu 2
+\fBAWS::IAM::User\fP
+.IP \(bu 2
+\fBAWS::ElasticLoadBalancingV2::LoadBalancer\fP
+.IP \(bu 2
+\fBAWS::ACM::Certificate\fP
+.IP \(bu 2
+\fBAWS::RDS::DBInstance\fP
+.IP \(bu 2
+\fBAWS::RDS::DBSubnetGroup\fP
+.IP \(bu 2
+\fBAWS::RDS::DBSecurityGroup\fP
+.IP \(bu 2
+\fBAWS::RDS::DBSnapshot\fP
+.IP \(bu 2
+\fBAWS::RDS::DBCluster\fP
+.IP \(bu 2
+\fBAWS::RDS::DBClusterSnapshot\fP
+.IP \(bu 2
+\fBAWS::RDS::EventSubscription\fP
+.IP \(bu 2
+\fBAWS::S3::Bucket\fP
+.IP \(bu 2
+\fBAWS::S3::AccountPublicAccessBlock\fP
+.IP \(bu 2
+\fBAWS::Redshift::Cluster\fP
+.IP \(bu 2
+\fBAWS::Redshift::ClusterSnapshot\fP
+.IP \(bu 2
+\fBAWS::Redshift::ClusterParameterGroup\fP
+.IP \(bu 2
+\fBAWS::Redshift::ClusterSecurityGroup\fP
+.IP \(bu 2
+\fBAWS::Redshift::ClusterSubnetGroup\fP
+.IP \(bu 2
+\fBAWS::Redshift::EventSubscription\fP
+.IP \(bu 2
+\fBAWS::SSM::ManagedInstanceInventory\fP
+.IP \(bu 2
+\fBAWS::CloudWatch::Alarm\fP
+.IP \(bu 2
+\fBAWS::CloudFormation::Stack\fP
+.IP \(bu 2
+\fBAWS::ElasticLoadBalancing::LoadBalancer\fP
+.IP \(bu 2
+\fBAWS::AutoScaling::AutoScalingGroup\fP
+.IP \(bu 2
+\fBAWS::AutoScaling::LaunchConfiguration\fP
+.IP \(bu 2
+\fBAWS::AutoScaling::ScalingPolicy\fP
+.IP \(bu 2
+\fBAWS::AutoScaling::ScheduledAction\fP
+.IP \(bu 2
+\fBAWS::DynamoDB::Table\fP
+.IP \(bu 2
+\fBAWS::CodeBuild::Project\fP
+.IP \(bu 2
+\fBAWS::WAF::RateBasedRule\fP
+.IP \(bu 2
+\fBAWS::WAF::Rule\fP
+.IP \(bu 2
+\fBAWS::WAF::RuleGroup\fP
+.IP \(bu 2
+\fBAWS::WAF::WebACL\fP
+.IP \(bu 2
+\fBAWS::WAFRegional::RateBasedRule\fP
+.IP \(bu 2
+\fBAWS::WAFRegional::Rule\fP
+.IP \(bu 2
+\fBAWS::WAFRegional::RuleGroup\fP
+.IP \(bu 2
+\fBAWS::WAFRegional::WebACL\fP
+.IP \(bu 2
+\fBAWS::CloudFront::Distribution\fP
+.IP \(bu 2
+\fBAWS::CloudFront::StreamingDistribution\fP
+.IP \(bu 2
+\fBAWS::Lambda::Function\fP
+.IP \(bu 2
+\fBAWS::NetworkFirewall::Firewall\fP
+.IP \(bu 2
+\fBAWS::NetworkFirewall::FirewallPolicy\fP
+.IP \(bu 2
+\fBAWS::NetworkFirewall::RuleGroup\fP
+.IP \(bu 2
+\fBAWS::ElasticBeanstalk::Application\fP
+.IP \(bu 2
+\fBAWS::ElasticBeanstalk::ApplicationVersion\fP
+.IP \(bu 2
+\fBAWS::ElasticBeanstalk::Environment\fP
+.IP \(bu 2
+\fBAWS::WAFv2::WebACL\fP
+.IP \(bu 2
+\fBAWS::WAFv2::RuleGroup\fP
+.IP \(bu 2
+\fBAWS::WAFv2::IPSet\fP
+.IP \(bu 2
+\fBAWS::WAFv2::RegexPatternSet\fP
+.IP \(bu 2
+\fBAWS::WAFv2::ManagedRuleSet\fP
+.IP \(bu 2
+\fBAWS::XRay::EncryptionConfig\fP
+.IP \(bu 2
+\fBAWS::SSM::AssociationCompliance\fP
+.IP \(bu 2
+\fBAWS::SSM::PatchCompliance\fP
+.IP \(bu 2
+\fBAWS::Shield::Protection\fP
+.IP \(bu 2
+\fBAWS::ShieldRegional::Protection\fP
+.IP \(bu 2
+\fBAWS::Config::ConformancePackCompliance\fP
+.IP \(bu 2
+\fBAWS::Config::ResourceCompliance\fP
+.IP \(bu 2
+\fBAWS::ApiGateway::Stage\fP
+.IP \(bu 2
+\fBAWS::ApiGateway::RestApi\fP
+.IP \(bu 2
+\fBAWS::ApiGatewayV2::Stage\fP
+.IP \(bu 2
+\fBAWS::ApiGatewayV2::Api\fP
+.IP \(bu 2
+\fBAWS::CodePipeline::Pipeline\fP
+.IP \(bu 2
+\fBAWS::ServiceCatalog::CloudFormationProvisionedProduct\fP
+.IP \(bu 2
+\fBAWS::ServiceCatalog::CloudFormationProduct\fP
+.IP \(bu 2
+\fBAWS::ServiceCatalog::Portfolio\fP
+.IP \(bu 2
+\fBAWS::SQS::Queue\fP
+.IP \(bu 2
+\fBAWS::KMS::Key\fP
+.IP \(bu 2
+\fBAWS::QLDB::Ledger\fP
+.IP \(bu 2
+\fBAWS::SecretsManager::Secret\fP
+.IP \(bu 2
+\fBAWS::SNS::Topic\fP
+.IP \(bu 2
+\fBAWS::SSM::FileData\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the resource (for example., \fBsg\-xxxxxx\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-later\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp that indicates a later time. If not specified, current time is taken.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-earlier\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp that indicates an earlier time. If not specified, the action returns paginated results that contain configuration items that start when the first configuration item was recorded.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-chronological\-order\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The chronological order for configuration items listed. By default, the results are listed in reverse chronological order.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBReverse\fP
+.IP \(bu 2
+\fBForward\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the configuration history of an AWS resource\fP
+.sp
+The following command returns a list of configuration items for an EC2 instance with an ID of \fBi\-1a2b3c4d\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws configservice get\-resource\-config\-history \-\-resource\-type AWS::EC2::Instance \-\-resource\-id i\-1a2b3c4d
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+configurationItems \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list that contains the configuration history of one or more resources.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A list that contains detailed configurations of a specified resource.
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the resource configuration.
+.UNINDENT
+.UNINDENT
+.sp
+accountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The 12\-digit AWS account ID associated with the resource.
+.UNINDENT
+.UNINDENT
+.sp
+configurationItemCaptureTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time when the configuration recording was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+configurationItemStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The configuration item status. The valid values are:
+.INDENT 0.0
+.IP \(bu 2
+OK – The resource configuration has been updated
+.IP \(bu 2
+ResourceDiscovered – The resource was newly discovered
+.IP \(bu 2
+ResourceNotRecorded – The resource was discovered but its configuration was not recorded since the recorder excludes the recording of resources of this type
+.IP \(bu 2
+ResourceDeleted – The resource was deleted
+.IP \(bu 2
+ResourceDeletedNotRecorded – The resource was deleted but its configuration was not recorded since the recorder excludes the recording of resources of this type
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The CIs do not incur any cost.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+configurationStateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier that indicates the ordering of the configuration items of a resource.
+.UNINDENT
+.UNINDENT
+.sp
+configurationItemMD5Hash \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique MD5 hash that represents the configuration item\(aqs state.
+.sp
+You can use MD5 hash to compare the states of two or more configuration items that are associated with the same resource.
+.UNINDENT
+.UNINDENT
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon Resource Name (ARN) associated with the resource.
+.UNINDENT
+.UNINDENT
+.sp
+resourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of AWS resource.
+.UNINDENT
+.UNINDENT
+.sp
+resourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the resource (for example, \fBsg\-xxxxxx\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+resourceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The custom name of the resource, if available.
+.UNINDENT
+.UNINDENT
+.sp
+awsRegion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The region where the resource resides.
+.UNINDENT
+.UNINDENT
+.sp
+availabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone associated with the resource.
+.UNINDENT
+.UNINDENT
+.sp
+resourceCreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the resource was created.
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A mapping of key value tags associated with the resource.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+relatedEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of CloudTrail event IDs.
+.sp
+A populated field indicates that the current configuration was initiated by the events recorded in the CloudTrail log. For more information about CloudTrail, see \fI\%What Is AWS CloudTrail\fP .
+.sp
+An empty field indicates that the current configuration was not initiated by any event. As of Version 1.3, the relatedEvents field is empty. You can access the \fI\%LookupEvents API\fP in the \fIAWS CloudTrail API Reference\fP to retrieve the events for the resource.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+relationships \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of related AWS resources.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The relationship of the related resource to the main resource.
+.sp
+resourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type of the related resource.
+.UNINDENT
+.UNINDENT
+.sp
+resourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the related resource (for example, \fBsg\-xxxxxx\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+resourceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The custom name of the related resource, if available.
+.UNINDENT
+.UNINDENT
+.sp
+relationshipName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of relationship with the related resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+configuration \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the resource configuration.
+.UNINDENT
+.UNINDENT
+.sp
+supplementaryConfiguration \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Configuration attributes that AWS Config returns for certain resource types to supplement the information returned for the \fBconfiguration\fP parameter.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+nextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that you use in a subsequent request to get the next page of results in a paginated response.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

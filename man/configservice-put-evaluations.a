@@ -1,0 +1,227 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONFIGSERVICE-PUT-EVALUATIONS" "a" "" ""
+.SH NAME
+configservice-put-evaluations \- Used by an AWS Lambda function to deliver evaluation results to AWS Config
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Used by an AWS Lambda function to deliver evaluation results to AWS Config. This action is required in every AWS Lambda function that is invoked by an AWS Config rule.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-evaluations
+[\-\-evaluations <value>]
+\-\-result\-token <value>
+[\-\-test\-mode | \-\-no\-test\-mode]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-evaluations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The assessments that the AWS Lambda function performs. Each evaluation identifies an AWS resource and indicates whether it complies with the AWS Config rule that invokes the AWS Lambda function.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an AWS resource and indicates whether it complies with the AWS Config rule that it was evaluated against.
+.sp
+ComplianceResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of AWS resource that was evaluated.
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS resource that was evaluated.
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the AWS resource complies with the AWS Config rule that it was evaluated against.
+.sp
+For the \fBEvaluation\fP data type, AWS Config supports only the \fBCOMPLIANT\fP , \fBNON_COMPLIANT\fP , and \fBNOT_APPLICABLE\fP values. AWS Config does not support the \fBINSUFFICIENT_DATA\fP value for this data type.
+.sp
+Similarly, AWS Config does not accept \fBINSUFFICIENT_DATA\fP as the value for \fBComplianceType\fP from a \fBPutEvaluations\fP request. For example, an AWS Lambda function for a custom AWS Config rule cannot pass an \fBINSUFFICIENT_DATA\fP value to AWS Config.
+.UNINDENT
+.UNINDENT
+.sp
+Annotation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Supplementary information about how the evaluation determined the compliance.
+.UNINDENT
+.UNINDENT
+.sp
+OrderingTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time of the event in AWS Config that triggered the evaluation. For event\-based evaluations, the time indicates when AWS Config created the configuration item that triggered the evaluation. For periodic evaluations, the time indicates when AWS Config triggered the evaluation at the frequency that you specified (for example, every 24 hours).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ComplianceResourceType=string,ComplianceResourceId=string,ComplianceType=string,Annotation=string,OrderingTimestamp=timestamp ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ComplianceResourceType": "string",
+    "ComplianceResourceId": "string",
+    "ComplianceType": "COMPLIANT"|"NON_COMPLIANT"|"NOT_APPLICABLE"|"INSUFFICIENT_DATA",
+    "Annotation": "string",
+    "OrderingTimestamp": timestamp
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-result\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An encrypted token that associates an evaluation with an AWS Config rule. Identifies the rule and the event that triggered the evaluation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-test\-mode\fP | \fB\-\-no\-test\-mode\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Use this parameter to specify a test run for \fBPutEvaluations\fP . You can verify whether your AWS Lambda function will deliver evaluation results to AWS Config. No updates occur to your existing evaluations, and evaluation results are not sent to AWS Config.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+When \fBTestMode\fP is \fBtrue\fP , \fBPutEvaluations\fP doesn\(aqt require a valid value for the \fBResultToken\fP parameter, but the value cannot be null.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+FailedEvaluations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Requests that failed because of a client or server error.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an AWS resource and indicates whether it complies with the AWS Config rule that it was evaluated against.
+.sp
+ComplianceResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of AWS resource that was evaluated.
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS resource that was evaluated.
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the AWS resource complies with the AWS Config rule that it was evaluated against.
+.sp
+For the \fBEvaluation\fP data type, AWS Config supports only the \fBCOMPLIANT\fP , \fBNON_COMPLIANT\fP , and \fBNOT_APPLICABLE\fP values. AWS Config does not support the \fBINSUFFICIENT_DATA\fP value for this data type.
+.sp
+Similarly, AWS Config does not accept \fBINSUFFICIENT_DATA\fP as the value for \fBComplianceType\fP from a \fBPutEvaluations\fP request. For example, an AWS Lambda function for a custom AWS Config rule cannot pass an \fBINSUFFICIENT_DATA\fP value to AWS Config.
+.UNINDENT
+.UNINDENT
+.sp
+Annotation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Supplementary information about how the evaluation determined the compliance.
+.UNINDENT
+.UNINDENT
+.sp
+OrderingTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time of the event in AWS Config that triggered the evaluation. For event\-based evaluations, the time indicates when AWS Config created the configuration item that triggered the evaluation. For periodic evaluations, the time indicates when AWS Config triggered the evaluation at the frequency that you specified (for example, every 24 hours).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,840 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EVENTS-PUT-TARGETS" "a" "" ""
+.SH NAME
+events-put-targets \- Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds the specified targets to the specified rule, or updates the targets if they are already associated with the rule.
+.sp
+Targets are the resources that are invoked when a rule is triggered.
+.sp
+You can configure the following as targets for Events:
+.INDENT 0.0
+.IP \(bu 2
+EC2 instances
+.IP \(bu 2
+SSM Run Command
+.IP \(bu 2
+SSM Automation
+.IP \(bu 2
+AWS Lambda functions
+.IP \(bu 2
+Data streams in Amazon Kinesis Data Streams
+.IP \(bu 2
+Data delivery streams in Amazon Kinesis Data Firehose
+.IP \(bu 2
+Amazon ECS tasks
+.IP \(bu 2
+AWS Step Functions state machines
+.IP \(bu 2
+AWS Batch jobs
+.IP \(bu 2
+AWS CodeBuild projects
+.IP \(bu 2
+Pipelines in AWS CodePipeline
+.IP \(bu 2
+Amazon Inspector assessment templates
+.IP \(bu 2
+Amazon SNS topics
+.IP \(bu 2
+Amazon SQS queues, including FIFO queues
+.IP \(bu 2
+The default event bus of another AWS account
+.IP \(bu 2
+Amazon API Gateway REST APIs
+.IP \(bu 2
+Redshift Clusters to invoke Data API ExecuteStatement on
+.IP \(bu 2
+Custom/SaaS HTTPS APIs via EventBridge API Destinations
+.IP \(bu 2
+Amazon SageMaker Model Building Pipelines
+.UNINDENT
+.sp
+Creating rules with built\-in targets is supported only in the AWS Management Console. The built\-in targets are \fBEC2 CreateSnapshot API call\fP , \fBEC2 RebootInstances API call\fP , \fBEC2 StopInstances API call\fP , and \fBEC2 TerminateInstances API call\fP .
+.sp
+For some target types, \fBPutTargets\fP provides target\-specific parameters. If the target is a Kinesis data stream, you can optionally specify which shard the event goes to by using the \fBKinesisParameters\fP argument. To invoke a command on multiple EC2 instances with one rule, you can use the \fBRunCommandParameters\fP field.
+.sp
+To be able to make API calls against the resources that you own, Amazon EventBridge (CloudWatch Events) needs the appropriate permissions. For AWS Lambda and Amazon SNS resources, EventBridge relies on resource\-based policies. For EC2 instances, Kinesis data streams, AWS Step Functions state machines and API Gateway REST APIs, EventBridge relies on IAM roles that you specify in the \fBRoleARN\fP argument in \fBPutTargets\fP . For more information, see \fI\%Authentication and Access Control\fP in the \fIAmazon EventBridge User Guide\fP .
+.sp
+If another AWS account is in the same region and has granted you permission (using \fBPutPermission\fP ), you can send events to that account. Set that account\(aqs event bus as a target of the rules in your account. To send the matched events to the other account, specify that account\(aqs event bus as the \fBArn\fP value when you run \fBPutTargets\fP . If your account sends events to another account, your account is charged for each sent event. Each event sent to another account is charged as a custom event. The account receiving the event is not charged. For more information, see \fI\%Amazon EventBridge (CloudWatch Events) Pricing\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBInput\fP , \fBInputPath\fP , and \fBInputTransformer\fP are not available with \fBPutTarget\fP if the target is an event bus of a different AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a \fBRoleArn\fP with proper permissions in the \fBTarget\fP structure. For more information, see \fI\%Sending and Receiving Events Between AWS Accounts\fP in the \fIAmazon EventBridge User Guide\fP .
+.sp
+For more information about enabling cross\-account events, see  PutPermission .
+.INDENT 0.0
+.INDENT 3.5
+\fBInput\fP , \fBInputPath\fP , and \fBInputTransformer\fP are mutually exclusive and optional parameters of a target. When a rule is triggered due to a matched event:
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+If none of the following arguments are specified for a target, then the entire event is passed to the target in JSON format (unless the target is Amazon EC2 Run Command or Amazon ECS task, in which case nothing from the event is passed to the target).
+.IP \(bu 2
+If \fBInput\fP is specified in the form of valid JSON, then the matched event is overridden with this constant.
+.IP \(bu 2
+If \fBInputPath\fP is specified in the form of JSONPath (for example, \fB$.detail\fP ), then only the part of the event specified in the path is passed to the target (for example, only the detail part of the event is passed).
+.IP \(bu 2
+If \fBInputTransformer\fP is specified, then one or more specified JSONPaths are extracted from the event and used as values in a template that you specify as the input to the target.
+.UNINDENT
+.sp
+When you specify \fBInputPath\fP or \fBInputTransformer\fP , you must use JSON dot notation, not bracket notation.
+.sp
+When you add targets to a rule and the associated rule triggers soon after, new or updated targets might not be immediately invoked. Allow a short period of time for changes to take effect.
+.sp
+This action can partially fail if too many requests are made at the same time. If that happens, \fBFailedEntryCount\fP is non\-zero in the response and each entry in \fBFailedEntries\fP provides the ID of the failed target and the error code.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-targets
+\-\-rule <value>
+[\-\-event\-bus\-name <value>]
+\-\-targets <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-rule\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the rule.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-event\-bus\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or ARN of the event bus associated with the rule. If you omit this, the default event bus is used.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-targets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The targets to update or add to the rule.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Targets are the resources to be invoked when a rule is triggered. For a complete list of services and resources that can be set as a target, see  PutTargets .
+.sp
+If you are setting the event bus of another account as the target, and that account granted permission to your account through an organization instead of directly by the account ID, then you must specify a \fBRoleArn\fP with proper permissions in the \fBTarget\fP structure. For more information, see \fI\%Sending and Receiving Events Between AWS Accounts\fP in the \fIAmazon EventBridge User Guide\fP .
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the target.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the target.
+.UNINDENT
+.UNINDENT
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM role to be used for this target when the rule is triggered. If one rule triggers multiple targets, you can use a different IAM role for each target.
+.UNINDENT
+.UNINDENT
+.sp
+Input \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Valid JSON text passed to the target. In this case, nothing from the event itself is passed to the target. For more information, see \fI\%The JavaScript Object Notation (JSON) Data Interchange Format\fP .
+.UNINDENT
+.UNINDENT
+.sp
+InputPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the JSONPath that is used for extracting part of the matched event when passing it to the target. You must use JSON dot notation, not bracket notation. For more information about JSON paths, see \fI\%JSONPath\fP .
+.UNINDENT
+.UNINDENT
+.sp
+InputTransformer \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to enable you to provide custom input to a target based on certain event data. You can extract one or more key\-value pairs from the event and then use that data to send customized input to the target.
+.sp
+InputPathsMap \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Map of JSON paths to be extracted from the event. You can then insert these in the template in \fBInputTemplate\fP to produce the output you want to be sent to the target.
+.INDENT 0.0
+.INDENT 3.5
+\fBInputPathsMap\fP is an array key\-value pairs, where each value is a valid JSON path. You can have as many as 100 key\-value pairs. You must use JSON dot notation, not bracket notation.
+.UNINDENT
+.UNINDENT
+.sp
+The keys cannot start with "AWS."
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+InputTemplate \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Input template where you specify placeholders that will be filled with the values of the keys from \fBInputPathsMap\fP to customize the data sent to the target. Enclose each \fBInputPathsMaps\fP value in brackets: <\fIvalue\fP > The InputTemplate must be valid JSON.
+.sp
+If \fBInputTemplate\fP is a JSON object (surrounded by curly braces), the following restrictions apply:
+.INDENT 0.0
+.IP \(bu 2
+The placeholder cannot be used as an object key.
+.UNINDENT
+.sp
+The following example shows the syntax for using \fBInputPathsMap\fP and \fBInputTemplate\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fB"InputTransformer":\fP
+.sp
+\fB{\fP
+.sp
+\fB"InputPathsMap": {"instance": "$.detail.instance","status": "$.detail.status"},\fP
+.sp
+\fB"InputTemplate": "<instance> is in state <status>"\fP
+.sp
+\fB}\fP
+.UNINDENT
+.UNINDENT
+.sp
+To have the \fBInputTemplate\fP include quote marks within a JSON string, escape each quote marks with a slash, as in the following example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"InputTransformer":\fP
+.sp
+\fB{\fP
+.sp
+\fB"InputPathsMap": {"instance": "$.detail.instance","status": "$.detail.status"},\fP
+.sp
+\fB"InputTemplate": "<instance> is in state \e"<status>\e""\fP
+.sp
+\fB}\fP
+.UNINDENT
+.UNINDENT
+.sp
+The \fBInputTemplate\fP can also be valid JSON with varibles in quotes or out, as in the following example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"InputTransformer":\fP
+.sp
+\fB{\fP
+.sp
+\fB"InputPathsMap": {"instance": "$.detail.instance","status": "$.detail.status"},\fP
+.sp
+\fB"InputTemplate": \(aq{"myInstance": <instance>,"myStatus": "<instance> is in state \e"<status>\e""}\(aq\fP
+.sp
+\fB}\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The custom parameter you can use to control the shard assignment, when the target is a Kinesis data stream. If you do not include this parameter, the default is to use the \fBeventId\fP as the partition key.
+.sp
+PartitionKeyPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The JSON path to be extracted from the event and used as the partition key. For more information, see \fI\%Amazon Kinesis Streams Key Concepts\fP in the \fIAmazon Kinesis Streams Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RunCommandParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters used when you are using the rule to invoke Amazon EC2 Run Command.
+.sp
+RunCommandTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Currently, we support including only one RunCommandTarget block, which specifies either an array of InstanceIds or a tag.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the EC2 instances that are to be sent the command, specified as key\-value pairs. Each \fBRunCommandTarget\fP block can include only one key, but this key may specify multiple values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Can be either \fBtag:\fP  \fItag\-key\fP or \fBInstanceIds\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If \fBKey\fP is \fBtag:\fP  \fItag\-key\fP , \fBValues\fP is a list of tag values. If \fBKey\fP is \fBInstanceIds\fP , \fBValues\fP is a list of Amazon EC2 instance IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EcsParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the Amazon ECS task definition and task count to be used, if the event target is an Amazon ECS task. For more information about Amazon ECS tasks, see \fI\%Task Definitions\fP in the \fIAmazon EC2 Container Service Developer Guide\fP .
+.sp
+TaskDefinitionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the task definition to use if the event target is an Amazon ECS task.
+.UNINDENT
+.UNINDENT
+.sp
+TaskCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks to create based on \fBTaskDefinition\fP . The default is 1.
+.UNINDENT
+.UNINDENT
+.sp
+LaunchType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the launch type on which your task is running. The launch type that you specify here must match one of the launch type (compatibilities) of the target task. The \fBFARGATE\fP value is supported only in the Regions where AWS Fargate with Amazon ECS is supported. For more information, see \fI\%AWS Fargate on Amazon ECS\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+NetworkConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use this structure if the ECS task uses the \fBawsvpc\fP network mode. This structure specifies the VPC subnets and security groups associated with the task, and whether a public IP address is to be used. This structure is required if \fBLaunchType\fP is \fBFARGATE\fP because the \fBawsvpc\fP mode is required for Fargate tasks.
+.sp
+If you specify \fBNetworkConfiguration\fP when the target ECS task does not use the \fBawsvpc\fP network mode, the task fails.
+.sp
+awsvpcConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use this structure to specify the VPC subnets and security groups for the task, and whether a public IP address is to be used. This structure is relevant only for ECS tasks that use the \fBawsvpc\fP network mode.
+.sp
+Subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the subnets associated with the task. These subnets must all be in the same VPC. You can specify as many as 16 subnets.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the security groups associated with the task. These security groups must all be in the same VPC. You can specify as many as five security groups. If you do not specify a security group, the default security group for the VPC is used.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AssignPublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the task\(aqs elastic network interface receives a public IP address. You can specify \fBENABLED\fP only when \fBLaunchType\fP in \fBEcsParameters\fP is set to \fBFARGATE\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PlatformVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the platform version for the task. Specify only the numeric portion of the platform version, such as \fB1.1.0\fP .
+.sp
+This structure is used only if \fBLaunchType\fP is \fBFARGATE\fP . For more information about valid platform versions, see \fI\%AWS Fargate Platform Versions\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Group \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an ECS task group for the task. The maximum length is 255 characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BatchParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If the event target is an AWS Batch job, this contains the job definition, job name, and other parameters. For more information, see \fI\%Jobs\fP in the \fIAWS Batch User Guide\fP .
+.sp
+JobDefinition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN or name of the job definition to use if the event target is an AWS Batch job. This job definition must already exist.
+.UNINDENT
+.UNINDENT
+.sp
+JobName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name to use for this execution of the job, if the target is an AWS Batch job.
+.UNINDENT
+.UNINDENT
+.sp
+ArrayProperties \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The array properties for the submitted job, such as the size of the array. The array size can be between 2 and 10,000. If you specify array properties for a job, it becomes an array job. This parameter is used only if the target is an AWS Batch job.
+.sp
+Size \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the array, if this is an array batch job. Valid values are integers between 2 and 10,000.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RetryStrategy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The retry strategy to use for failed jobs, if the target is an AWS Batch job. The retry strategy is the number of times to retry the failed job execution. Valid values are 1–10. When you specify a retry strategy here, it overrides the retry strategy defined in the job definition.
+.sp
+Attempts \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of times to attempt to retry, if the job fails. Valid values are 1–10.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SqsParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the message group ID to use when the target is a FIFO queue.
+.sp
+If you specify an SQS FIFO queue as a target, the queue must have content\-based deduplication enabled.
+.sp
+MessageGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The FIFO message group ID to use as the target.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HttpParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the HTTP parameters to use when the target is a API Gateway REST endpoint or EventBridge ApiDestination.
+.sp
+If you specify an API Gateway REST API or EventBridge ApiDestination as a target, you can use this parameter to specify headers, path parameters, and query string keys/values as part of your target invoking request. If you\(aqre using ApiDestinations, the corresponding Connection can also have these values configured. In case of any conflicting keys, values from the Connection take precedence.
+.sp
+PathParameterValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The path parameter values to be used to populate API Gateway REST API or EventBridge ApiDestination path wildcards ("*").
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+HeaderParameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The headers that need to be sent as part of request invoking the API Gateway REST API or EventBridge ApiDestination.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+QueryStringParameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The query string keys/values that need to be sent as part of request invoking the API Gateway REST API or EventBridge ApiDestination.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RedshiftDataParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the Redshift Data API parameters to use when the target is a Redshift cluster.
+.sp
+If you specify a Redshift Cluster as a Target, you can use this to specify parameters to invoke the Redshift Data API ExecuteStatement based on EventBridge events.
+.sp
+SecretManagerArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or ARN of the secret that enables access to the database. Required when authenticating using AWS Secrets Manager.
+.UNINDENT
+.UNINDENT
+.sp
+Database \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database. Required when authenticating using temporary credentials.
+.UNINDENT
+.UNINDENT
+.sp
+DbUser \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The database user name. Required when authenticating using temporary credentials.
+.UNINDENT
+.UNINDENT
+.sp
+Sql \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SQL statement text to run.
+.UNINDENT
+.UNINDENT
+.sp
+StatementName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the SQL statement. You can name the SQL statement when you create it to identify the query.
+.UNINDENT
+.UNINDENT
+.sp
+WithEvent \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to send an event back to EventBridge after the SQL statement runs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SageMakerPipelineParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the SageMaker Model Building Pipeline parameters to start execution of a SageMaker Model Building Pipeline.
+.sp
+If you specify a SageMaker Model Building Pipeline as a target, you can use this to specify parameters to start a pipeline execution based on EventBridge events.
+.sp
+PipelineParameterList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of Parameter names and values for SageMaker Model Building Pipeline execution.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name/Value pair of a parameter to start execution of a SageMaker Model Building Pipeline.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of parameter to start execution of a SageMaker Model Building Pipeline.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Value of parameter to start execution of a SageMaker Model Building Pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DeadLetterConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBDeadLetterConfig\fP that defines the target queue to send dead\-letter queue events to.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the SQS queue specified as the target for the dead\-letter queue.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RetryPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBRetryPolicy\fP object that contains the retry policy configuration to use for the dead\-letter queue.
+.sp
+MaximumRetryAttempts \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of retry attempts to make before the request fails. Retry attempts continue until either the maximum number of attempts is made or until the duration of the \fBMaximumEventAgeInSeconds\fP is met.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumEventAgeInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of time, in seconds, to continue to make retry attempts.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "Arn": "string",
+    "RoleArn": "string",
+    "Input": "string",
+    "InputPath": "string",
+    "InputTransformer": {
+      "InputPathsMap": {"string": "string"
+        ...},
+      "InputTemplate": "string"
+    },
+    "KinesisParameters": {
+      "PartitionKeyPath": "string"
+    },
+    "RunCommandParameters": {
+      "RunCommandTargets": [
+        {
+          "Key": "string",
+          "Values": ["string", ...]
+        }
+        ...
+      ]
+    },
+    "EcsParameters": {
+      "TaskDefinitionArn": "string",
+      "TaskCount": integer,
+      "LaunchType": "EC2"|"FARGATE",
+      "NetworkConfiguration": {
+        "awsvpcConfiguration": {
+          "Subnets": ["string", ...],
+          "SecurityGroups": ["string", ...],
+          "AssignPublicIp": "ENABLED"|"DISABLED"
+        }
+      },
+      "PlatformVersion": "string",
+      "Group": "string"
+    },
+    "BatchParameters": {
+      "JobDefinition": "string",
+      "JobName": "string",
+      "ArrayProperties": {
+        "Size": integer
+      },
+      "RetryStrategy": {
+        "Attempts": integer
+      }
+    },
+    "SqsParameters": {
+      "MessageGroupId": "string"
+    },
+    "HttpParameters": {
+      "PathParameterValues": ["string", ...],
+      "HeaderParameters": {"string": "string"
+        ...},
+      "QueryStringParameters": {"string": "string"
+        ...}
+    },
+    "RedshiftDataParameters": {
+      "SecretManagerArn": "string",
+      "Database": "string",
+      "DbUser": "string",
+      "Sql": "string",
+      "StatementName": "string",
+      "WithEvent": true|false
+    },
+    "SageMakerPipelineParameters": {
+      "PipelineParameterList": [
+        {
+          "Name": "string",
+          "Value": "string"
+        }
+        ...
+      ]
+    },
+    "DeadLetterConfig": {
+      "Arn": "string"
+    },
+    "RetryPolicy": {
+      "MaximumRetryAttempts": integer,
+      "MaximumEventAgeInSeconds": integer
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo add targets for CloudWatch Events rules\fP
+.sp
+This example adds a Lambda function as the target of a rule:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws events put\-targets \-\-rule DailyLambdaFunction \-\-targets "Id"="1","Arn"="arn:aws:lambda:us\-east\-1:123456789012:function:MyFunctionName"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example sets an Amazon Kinesis stream as the target, so that events caught by this rule are relayed to the stream:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws events put\-targets \-\-rule EC2InstanceStateChanges \-\-targets "Id"="1","Arn"="arn:aws:kinesis:us\-east\-1:123456789012:stream/MyStream","RoleArn"="arn:aws:iam::123456789012:role/MyRoleForThisRule"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example sets two Amazon Kinesis streams as targets for one rule:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws events put\-targets \-\-rule DailyLambdaFunction \-\-targets "Id"="Target1","Arn"="arn:aws:kinesis:us\-east\-1:379642911888:stream/MyStream1","RoleArn"="arn:aws:iam::379642911888:role/ MyRoleToAccessLambda"  "Id"="Target2"," Arn"="arn:aws:kinesis:us\-east\-1:379642911888:stream/MyStream2","RoleArn"="arn:aws:iam::379642911888:role/MyRoleToAccessLambda"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+FailedEntryCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of failed entries.
+.UNINDENT
+.UNINDENT
+.sp
+FailedEntries \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The failed target entries.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a target that failed to be added to a rule.
+.sp
+TargetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the target.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code that indicates why the target addition failed. If the value is \fBConcurrentModificationException\fP , too many requests were made at the same time.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message that explains why the target addition failed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,661 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GREENGRASSV2-CREATE-DEPLOYMENT" "a" "" ""
+.SH NAME
+greengrassv2-create-deployment \- Creates a continuous deployment for a target, which is a AWS IoT Greengrass core device or group of core devices
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a continuous deployment for a target, which is a AWS IoT Greengrass core device or group of core devices. When you add a new core device to a group of core devices that has a deployment, AWS IoT Greengrass deploys that group\(aqs deployment to the new device.
+.sp
+You can define one deployment for each target. When you create a new deployment for a target that has an existing deployment, you replace the previous deployment. AWS IoT Greengrass applies the new deployment to the target devices.
+.sp
+Every deployment has a revision number that indicates how many deployment revisions you define for a target. Use this operation to create a new revision of an existing deployment. This operation returns the revision number of the new deployment when you create it.
+.sp
+For more information, see the \fI\%Create deployments\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-deployment
+\-\-target\-arn <value>
+[\-\-deployment\-name <value>]
+[\-\-components <value>]
+[\-\-iot\-job\-configuration <value>]
+[\-\-deployment\-policies <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-target\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%ARN\fP of the target AWS IoT thing or thing group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-deployment\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the deployment.
+.sp
+You can create deployments without names. If you create a deployment without a name, the AWS IoT Greengrass V2 console shows the deployment name as \fB<targetType>:<targetName>\fP , where \fBtargetType\fP and \fBtargetName\fP are the type and name of the deployment target.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-components\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+The components to deploy. This is a dictionary, where each key is the name of a component, and each key\(aqs value is the version and configuration to deploy for that component.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a component to deploy.
+.sp
+componentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the component.
+.UNINDENT
+.UNINDENT
+.sp
+configurationUpdate \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration updates to deploy for the component. You can define \fIreset\fP updates and \fImerge\fP updates. A reset updates the keys that you specify to the default configuration for the component. A merge updates the core device\(aqs component configuration with the keys and values that you specify. The AWS IoT Greengrass Core software applies reset updates before it applies merge updates. For more information, see \fI\%Update component configurations\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+merge \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A serialized JSON string that contains the configuration object to merge to target devices. The core device merges this configuration with the component\(aqs existing configuration. If this is the first time a component deploys on a device, the core device merges this configuration with the component\(aqs default configuration. This means that the core device keeps it\(aqs existing configuration for keys and values that you don\(aqt specify in this object. For more information, see \fI\%Merge configuration updates\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+reset \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of configuration nodes to reset to default values on target devices. Use JSON pointers to specify each node to reset. JSON pointers start with a forward slash (\fB/\fP ) and use forward slashes to separate the key for each level in the object. For more information, see the \fI\%JSON pointer specification\fP and \fI\%Reset configuration updates\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+runWith \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The system user and group that the AWS IoT Greengrass Core software uses to run component processes on the core device. If you omit this parameter, the AWS IoT Greengrass Core software uses the system user and group that you configure for the core device. For more information, see \fI\%Configure the user and group that run components\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+posixUser \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The POSIX system user and (optional) group to use to run this component. Specify the user and group separated by a colon (\fB:\fP ) in the following format: \fBuser:group\fP . The group is optional. If you don\(aqt specify a group, the AWS IoT Greengrass Core software uses the primary user for the group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=componentVersion=string,configurationUpdate={merge=string,reset=[string,string]},runWith={posixUser=string},KeyName2=componentVersion=string,configurationUpdate={merge=string,reset=[string,string]},runWith={posixUser=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "componentVersion": "string",
+      "configurationUpdate": {
+        "merge": "string",
+        "reset": ["string", ...]
+      },
+      "runWith": {
+        "posixUser": "string"
+      }
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-iot\-job\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The job configuration for the deployment configuration. The job configuration specifies the rollout, timeout, and stop configurations for the deployment configuration.
+.sp
+jobExecutionsRolloutConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The rollout configuration for the job. This configuration defines the rate at which the job rolls out to the fleet of target devices.
+.sp
+exponentialRate \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The exponential rate to increase the job rollout rate.
+.sp
+baseRatePerMinute \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of devices that receive a pending job notification, per minute, when the job starts. This parameter defines the initial rollout rate of the job.
+.UNINDENT
+.UNINDENT
+.sp
+incrementFactor \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The exponential factor to increase the rollout rate for the job.
+.sp
+This parameter supports up to one digit after the decimal (for example, you can specify \fB1.5\fP , but not \fB1.55\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+rateIncreaseCriteria \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The criteria to increase the rollout rate for the job.
+.sp
+numberOfNotifiedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of devices to receive the job notification before the rollout rate increases.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfSucceededThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of devices to successfully run the configuration job before the rollout rate increases.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maximumPerMinute \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of devices that receive a pending job notification, per minute.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+abortConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The stop configuration for the job. This configuration defines when and how to stop a job rollout.
+.sp
+criteriaList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of criteria that define when and how to cancel the configuration deployment.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains criteria that define when and how to cancel a job.
+.sp
+The deployment stops if the following conditions are true:
+.INDENT 0.0
+.IP \(bu 2
+The number of things that receive the deployment exceeds the \fBminNumberOfExecutedThings\fP .
+.IP \(bu 2
+The percentage of failures with type \fBfailureType\fP exceeds the \fBthresholdPercentage\fP .
+.UNINDENT
+.sp
+failureType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of job deployment failure that can cancel a job.
+.UNINDENT
+.UNINDENT
+.sp
+action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action to perform when the criteria are met.
+.UNINDENT
+.UNINDENT
+.sp
+thresholdPercentage \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The minimum percentage of \fBfailureType\fP failures that occur before the job can cancel.
+.sp
+This parameter supports up to two digits after the decimal (for example, you can specify \fB10.9\fP or \fB10.99\fP , but not \fB10.999\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+minNumberOfExecutedThings \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of things that receive the configuration before the job can cancel.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeoutConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The timeout configuration for the job. This configuration defines the amount of time each device has to complete the job.
+.sp
+inProgressTimeoutInMinutes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in minutes, that devices have to complete the job. The timer starts when the job status is set to \fBIN_PROGRESS\fP . If the job status doesn\(aqt change to a terminal state before the time expires, then the job status is set to \fBTIMED_OUT\fP .
+.sp
+The timeout interval must be between 1 minute and 7 days (10080 minutes).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "jobExecutionsRolloutConfig": {
+    "exponentialRate": {
+      "baseRatePerMinute": integer,
+      "incrementFactor": double,
+      "rateIncreaseCriteria": {
+        "numberOfNotifiedThings": integer,
+        "numberOfSucceededThings": integer
+      }
+    },
+    "maximumPerMinute": integer
+  },
+  "abortConfig": {
+    "criteriaList": [
+      {
+        "failureType": "FAILED"|"REJECTED"|"TIMED_OUT"|"ALL",
+        "action": "CANCEL",
+        "thresholdPercentage": double,
+        "minNumberOfExecutedThings": integer
+      }
+      ...
+    ]
+  },
+  "timeoutConfig": {
+    "inProgressTimeoutInMinutes": long
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-deployment\-policies\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The deployment policies for the deployment. These policies define how the deployment updates components and handles failure.
+.sp
+failureHandlingPolicy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The failure handling policy for the configuration deployment. This policy defines what to do if the deployment fails.
+.sp
+Default: \fBROLLBACK\fP
+.UNINDENT
+.UNINDENT
+.sp
+componentUpdatePolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The component update policy for the configuration deployment. This policy defines when it\(aqs safe to deploy the configuration to devices.
+.sp
+timeoutInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time in seconds that each component on a device has to report that it\(aqs safe to update. If the component waits for longer than this timeout, then the deployment proceeds on the device.
+.sp
+Default: \fB60\fP
+.UNINDENT
+.UNINDENT
+.sp
+action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not to notify components and wait for components to become safe to update. Choose from the following options:
+.INDENT 0.0
+.IP \(bu 2
+\fBNOTIFY_COMPONENTS\fP – The deployment notifies each component before it stops and updates that component. Components can use the \fI\%SubscribeToComponentUpdates\fP IPC operation to receive these notifications. Then, components can respond with the \fI\%DeferComponentUpdate\fP IPC operation. For more information, see \fI\%Create deployments\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.IP \(bu 2
+\fBSKIP_NOTIFY_COMPONENTS\fP – The deployment doesn\(aqt notify components or wait for them to be safe to update.
+.UNINDENT
+.sp
+Default: \fBNOTIFY_COMPONENTS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+configurationValidationPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration validation policy for the configuration deployment. This policy defines how long each component has to validate its configure updates.
+.sp
+timeoutInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time in seconds that a component can validate its configuration updates. If the validation time exceeds this timeout, then the deployment proceeds for the device.
+.sp
+Default: \fB30\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+failureHandlingPolicy=string,componentUpdatePolicy={timeoutInSeconds=integer,action=string},configurationValidationPolicy={timeoutInSeconds=integer}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "failureHandlingPolicy": "ROLLBACK"|"DO_NOTHING",
+  "componentUpdatePolicy": {
+    "timeoutInSeconds": integer,
+    "action": "NOTIFY_COMPONENTS"|"SKIP_NOTIFY_COMPONENTS"
+  },
+  "configurationValidationPolicy": {
+    "timeoutInSeconds": integer
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of key\-value pairs that contain metadata for the resource. For more information, see \fI\%Tag your resources\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a deployment\fP
+.sp
+The following \fBcreate\-deployment\fP example deploys the AWS IoT Greengrass Command Line Interface to a core device.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrassv2 create\-deployment \e
+    \-\-cli\-input\-json file://cli\-deployment.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBcli\-deployment.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "targetArn": "arn:aws:iot:us\-west\-2:123456789012:thing/MyGreengrassCore",
+    "deploymentName": "Deployment for MyGreengrassCore",
+    "components": {
+        "aws.greengrass.Cli": {
+            "componentVersion": "2.0.3"
+        }
+    },
+    "deploymentPolicies": {
+        "failureHandlingPolicy": "DO_NOTHING",
+        "componentUpdatePolicy": {
+            "timeoutInSeconds": 60,
+            "action": "NOTIFY_COMPONENTS"
+        },
+        "configurationValidationPolicy": {
+            "timeoutInSeconds": 60
+        }
+    },
+    "iotJobConfiguration": {}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "deploymentId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Create deployments\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP\&.
+.sp
+\fBExample 2: To create a deployment that updates component configurations\fP
+.sp
+The following \fBcreate\-deployment\fP example deploys the AWS IoT Greengrass nucleus component to a group of core devices. This deployment applies the following configuration updates for the nucleus component:
+.INDENT 0.0
+.IP \(bu 2
+Reset the target devices\(aq proxy settings to their default no proxy settings.
+.IP \(bu 2
+Reset the target devices\(aq MQTT settings to their defaults.
+.IP \(bu 2
+Sets the JVM options for the nucleus\(aq JVM.
+.IP \(bu 2
+Sets the logging level for the nucleus.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrassv2 create\-deployment \e
+    \-\-cli\-input\-json file://nucleus\-deployment.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBnucleus\-deployment.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "targetArn": "arn:aws:iot:us\-west\-2:123456789012:thinggroup/MyGreengrassCoreGroup",
+    "deploymentName": "Deployment for MyGreengrassCoreGroup",
+    "components": {
+        "aws.greengrass.Nucleus": {
+            "componentVersion": "2.0.3",
+            "configurationUpdate": {
+                "reset": [
+                    "/networkProxy",
+                    "/mqtt"
+                ],
+                "merge": "{\e"jvmOptions\e":\e"\-Xmx64m\e",\e"logging\e":{\e"level\e":\e"WARN\e"}}"
+            }
+        }
+    },
+    "deploymentPolicies": {
+        "failureHandlingPolicy": "ROLLBACK",
+        "componentUpdatePolicy": {
+            "timeoutInSeconds": 60,
+            "action": "NOTIFY_COMPONENTS"
+        },
+        "configurationValidationPolicy": {
+            "timeoutInSeconds": 60
+        }
+    },
+    "iotJobConfiguration": {}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "deploymentId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+    "iotJobId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222",
+    "iotJobArn": "arn:aws:iot:us\-west\-2:123456789012:job/a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Create deployments\fP and \fI\%Update component configurations\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+deploymentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the deployment.
+.UNINDENT
+.UNINDENT
+.sp
+iotJobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS IoT job that applies the deployment to target devices.
+.UNINDENT
+.UNINDENT
+.sp
+iotJobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%ARN\fP of the AWS IoT job that applies the deployment to target devices.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,187 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-CREATE-KEYS-AND-CERTIFICATE" "a" "" ""
+.SH NAME
+iot-create-keys-and-certificate \- Creates a 2048-bit RSA key pair and issues an X.509 certificate using the issued public key
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a 2048\-bit RSA key pair and issues an X.509 certificate using the issued public key. You can also call \fBCreateKeysAndCertificate\fP over MQTT from a device, for more information, see \fI\%Provisioning MQTT API\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBNote\fP This is the only time AWS IoT issues the private key for this certificate, so it is important to keep it in a secure location.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-keys\-and\-certificate
+[\-\-set\-as\-active | \-\-no\-set\-as\-active]
+[\-\-certificate\-pem\-outfile <value>]
+[\-\-public\-key\-outfile <value>]
+[\-\-private\-key\-outfile <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-set\-as\-active\fP | \fB\-\-no\-set\-as\-active\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the certificate is active.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-pem\-outfile\fP (string)
+Saves the command output contents of certificatePem to the given filename
+.sp
+\fB\-\-public\-key\-outfile\fP (string)
+Saves the command output contents of keyPair.PublicKey to the given filename
+.sp
+\fB\-\-private\-key\-outfile\fP (string)
+Saves the command output contents of keyPair.PrivateKey to the given filename
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an RSA key pair and issue an X.509 certificate\fP
+.sp
+The following \fBcreate\-keys\-and\-certificate\fP creates a 2048\-bit RSA key pair and issues an X.509 certificate using the issued public key. Because this is the only time that AWS IoT provides the private key for this certificate, be sure to keep it in a secure location.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot create\-keys\-and\-certificate \e
+    \-\-certificate\-pem\-outfile "myTest.cert.pem" \e
+    \-\-public\-key\-outfile "myTest.public.key" \e
+    \-\-private\-key\-outfile "myTest.private.key"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "certificateArn": "arn:aws:iot:us\-west\-2:123456789012:cert/9894ba17925e663f1d29c23af4582b8e3b7619c31f3fbd93adcb51ae54b83dc2",
+    "certificateId": "9894ba17925e663f1d29c23af4582b8e3b7619c31f3fbd93adcb51ae54b83dc2",
+    "certificatePem": "
+\-\-\-\-\-BEGIN CERTIFICATE\-\-\-\-\-
+MIICiTCCEXAMPLE6m7oRw0uXOjANBgkqhkiG9w0BAQUFADCBiDELMAkGA1UEBhMC
+VVMxCzAJBgNVBAgEXAMPLEAwDgYDVQQHEwdTZWF0dGxlMQ8wDQYDVQQKEwZBbWF6
+b24xFDASBgNVBAsTC0lBTSEXAMPLE2xlMRIwEAYDVQQDEwlUZXN0Q2lsYWMxHzAd
+BgkqhkiG9w0BCQEWEG5vb25lQGFtYEXAMPLEb20wHhcNMTEwNDI1MjA0NTIxWhcN
+MTIwNDI0MjA0NTIxWjCBiDELMAkGA1UEBhMCEXAMPLEJBgNVBAgTAldBMRAwDgYD
+VQQHEwdTZWF0dGxlMQ8wDQYDVQQKEwZBbWF6b24xFDAEXAMPLEsTC0lBTSBDb25z
+b2xlMRIwEAYDVQQDEwlUZXN0Q2lsYWMxHzAdBgkqhkiG9w0BCQEXAMPLE25lQGFt
+YXpvbi5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMaK0dn+aEXAMPLE
+EXAMPLEfEvySWtC2XADZ4nB+BLYgVIk60CpiwsZ3G93vUEIO3IyNoH/f0wYK8m9T
+rDHudUZEXAMPLELG5M43q7Wgc/MbQITxOUSQv7c7ugFFDzQGBzZswY6786m86gpE
+Ibb3OhjZnzcvQAEXAMPLEWIMm2nrAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAtCu4
+nUhVVxYUntneD9+h8Mg9qEXAMPLEyExzyLwaxlAoo7TJHidbtS4J5iNmZgXL0Fkb
+FFBjvSfpJIlJ00zbhNYS5f6GuoEDEXAMPLEBHjJnyp378OD8uTs7fLvjx79LjSTb
+NYiytVbZPQUQ5Yaxu2jXnimvw3rrszlaEXAMPLE=
+\-\-\-\-\-END CERTIFICATE\-\-\-\-\-\en",
+    "keyPair": {
+        "PublicKey": "\-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-\enMIIBIjANBgkqhkEXAMPLEQEFAAOCAQ8AMIIBCgKCAQEAEXAMPLE1nnyJwKSMHw4h\enMMEXAMPLEuuN/dMAS3fyce8DW/4+EXAMPLEyjmoF/YVF/gHr99VEEXAMPLE5VF13\en59VK7cEXAMPLE67GK+y+jikqXOgHh/xJTwo+sGpWEXAMPLEDz18xOd2ka4tCzuWEXAMPLEahJbYkCPUBSU8opVkR7qkEXAMPLE1DR6sx2HocliOOLtu6Fkw91swQWEXAMPLE\eGB3ZPrNh0PzQYvjUStZeccyNCx2EXAMPLEvp9mQOUXP6plfgxwKRX2fEXAMPLEDa\enhJLXkX3rHU2xbxJSq7D+XEXAMPLEcw+LyFhI5mgFRl88eGdsAEXAMPLElnI9EesG\enFQIDAQAB\en\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-\en",
+        "PrivateKey": "\-\-\-\-\-BEGIN RSA PRIVATE KEY\-\-\-\-\-\enkey omittted for security reasons\en\-\-\-\-\-END RSA PRIVATE KEY\-\-\-\-\-\en"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more infomration, see \fI\%Create and Register an AWS IoT Device Certificate\fP in the \fBAWS IoT Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+certificateArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the certificate.
+.UNINDENT
+.UNINDENT
+.sp
+certificateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the certificate. AWS IoT issues a default subject name for the certificate (for example, AWS IoT Certificate).
+.UNINDENT
+.UNINDENT
+.sp
+certificatePem \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The certificate data, in PEM format.
+.UNINDENT
+.UNINDENT
+.sp
+keyPair \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The generated key pair.
+.sp
+PublicKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public key.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private key.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

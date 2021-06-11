@@ -1,0 +1,932 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "COMPUTE-OPTIMIZER-GET-EC2-INSTANCE-RECOMMENDATIONS" "a" "" ""
+.SH NAME
+compute-optimizer-get-ec2-instance-recommendations \- Returns Amazon EC2 instance recommendations
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns Amazon EC2 instance recommendations.
+.sp
+AWS Compute Optimizer generates recommendations for Amazon Elastic Compute Cloud (Amazon EC2) instances that meet a specific set of requirements. For more information, see the \fI\%Supported resources and requirements\fP in the \fIAWS Compute Optimizer User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-ec2\-instance\-recommendations
+[\-\-instance\-arns <value>]
+[\-\-next\-token <value>]
+[\-\-max\-results <value>]
+[\-\-filters <value>]
+[\-\-account\-ids <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-instance\-arns\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the instances for which to return recommendations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to advance to the next page of instance recommendations.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-results\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of instance recommendations to return with a single request.
+.sp
+To retrieve the remaining results, make another request with the returned \fBNextToken\fP value.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe a filter that returns a more specific list of instance recommendations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a filter that returns a more specific list of recommendations. Use this filter with the \fBGetAutoScalingGroupRecommendations\fP and \fBGetEC2InstanceRecommendations\fP actions.
+.sp
+You can use \fBEBSFilter\fP with the \fBGetEBSVolumeRecommendations\fP action, \fBLambdaFunctionRecommendationFilter\fP with the \fBGetLambdaFunctionRecommendations\fP action, and \fBJobFilter\fP with the \fBDescribeRecommendationExportJobs\fP action.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter.
+.sp
+Specify \fBFinding\fP to return recommendations with a specific finding classification (e.g., \fBUnderprovisioned\fP ).
+.sp
+Specify \fBRecommendationSourceType\fP to return recommendations of a specific resource type (e.g., \fBEc2Instance\fP ).
+.sp
+Specify \fBFindingReasonCodes\fP to return recommendations with a specific finding reason code (e.g., \fBCPUUnderprovisioned\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value of the filter.
+.sp
+The valid values for this parameter are as follows, depending on what you specify for the \fBname\fP parameter and the resource type that you wish to filter results for:
+.INDENT 0.0
+.IP \(bu 2
+Specify \fBOptimized\fP or \fBNotOptimized\fP if you specify the \fBname\fP parameter as \fBFinding\fP and you want to filter results for Auto Scaling groups.
+.IP \(bu 2
+Specify \fBUnderprovisioned\fP , \fBOverprovisioned\fP , or \fBOptimized\fP if you specify the \fBname\fP parameter as \fBFinding\fP and you want to filter results for EC2 instances.
+.IP \(bu 2
+Specify \fBEc2Instance\fP or \fBAutoScalingGroup\fP if you specify the \fBname\fP parameter as \fBRecommendationSourceType\fP .
+.IP \(bu 2
+Specify one of the following options if you specify the \fBname\fP parameter as \fBFindingReasonCodes\fP :
+.INDENT 2.0
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBCPUOverprovisioned\fP ** — The instance’s CPU configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 153)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBCPUUnderprovisioned\fP ** — The instance’s CPU configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better CPU performance.
+.IP "System Message: WARNING/2 (<string>:, line 155)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBMemoryOverprovisioned\fP ** — The instance’s memory configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 157)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBMemoryUnderprovisioned\fP ** — The instance’s memory configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better memory performance.
+.IP "System Message: WARNING/2 (<string>:, line 159)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSThroughputOverprovisioned\fP ** — The instance’s EBS throughput configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 161)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSThroughputUnderprovisioned\fP ** — The instance’s EBS throughput configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better EBS throughput performance.
+.IP "System Message: WARNING/2 (<string>:, line 163)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSIOPSOverprovisioned\fP ** — The instance’s EBS IOPS configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 165)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSIOPSUnderprovisioned\fP ** — The instance’s EBS IOPS configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better EBS IOPS performance.
+.IP "System Message: WARNING/2 (<string>:, line 167)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkBandwidthOverprovisioned\fP ** — The instance’s network bandwidth configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 169)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkBandwidthUnderprovisioned\fP ** — The instance’s network bandwidth configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better network bandwidth performance. This finding reason happens when the \fBNetworkIn\fP or \fBNetworkOut\fP performance of an instance is impacted.
+.IP "System Message: WARNING/2 (<string>:, line 171)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkPPSOverprovisioned\fP ** — The instance’s network PPS (packets per second) configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 173)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkPPSUnderprovisioned\fP ** — The instance’s network PPS (packets per second) configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better network PPS performance.
+.IP "System Message: WARNING/2 (<string>:, line 175)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskIOPSOverprovisioned\fP ** — The instance’s disk IOPS configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 177)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskIOPSUnderprovisioned\fP ** — The instance’s disk IOPS configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better disk IOPS performance.
+.IP "System Message: WARNING/2 (<string>:, line 179)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskThroughputOverprovisioned\fP ** — The instance’s disk throughput configuration can be sized down while still meeting the performance requirements of your workload.
+.IP "System Message: WARNING/2 (<string>:, line 181)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskThroughputUnderprovisioned\fP ** — The instance’s disk throughput configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better disk throughput performance.
+.IP "System Message: WARNING/2 (<string>:, line 183)"
+Inline strong start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string,values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "name": "Finding"|"FindingReasonCodes"|"RecommendationSourceType",
+    "values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-account\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account for which to return instance recommendations.
+.sp
+If your account is the management account of an organization, use this parameter to specify the member account for which you want to return instance recommendations.
+.sp
+Only one account ID can be specified per request.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+nextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to use to advance to the next page of instance recommendations.
+.sp
+This value is null when there are no more pages of instance recommendations to return.
+.UNINDENT
+.UNINDENT
+.sp
+instanceRecommendations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe instance recommendations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an Amazon EC2 instance recommendation.
+.sp
+instanceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the current instance.
+.UNINDENT
+.UNINDENT
+.sp
+accountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+instanceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the current instance.
+.UNINDENT
+.UNINDENT
+.sp
+currentInstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type of the current instance.
+.UNINDENT
+.UNINDENT
+.sp
+finding \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The finding classification of the instance.
+.sp
+Findings for instances include:
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBUnderprovisioned\fP ** —An instance is considered under\-provisioned when at least one specification of your instance, such as CPU, memory, or network, does not meet the performance requirements of your workload. Under\-provisioned instances may lead to poor application performance.
+.IP "System Message: WARNING/2 (<string>:, line 350)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBOverprovisioned\fP ** —An instance is considered over\-provisioned when at least one specification of your instance, such as CPU, memory, or network, can be sized down while still meeting the performance requirements of your workload, and no specification is under\-provisioned. Over\-provisioned instances may lead to unnecessary infrastructure cost.
+.IP "System Message: WARNING/2 (<string>:, line 352)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBOptimized\fP ** —An instance is considered optimized when all specifications of your instance, such as CPU, memory, and network, meet the performance requirements of your workload and is not over provisioned. For optimized resources, AWS Compute Optimizer might recommend a new generation instance type.
+.IP "System Message: WARNING/2 (<string>:, line 354)"
+Inline strong start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+findingReasonCodes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the finding classification of the instance.
+.sp
+Finding reason codes for instances include:
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBCPUOverprovisioned\fP ** — The instance’s CPU configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the \fBCPUUtilization\fP metric of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 374)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBCPUUnderprovisioned\fP ** — The instance’s CPU configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better CPU performance. This is identified by analyzing the \fBCPUUtilization\fP metric of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 376)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBMemoryOverprovisioned\fP ** — The instance’s memory configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the memory utilization metric of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 378)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBMemoryUnderprovisioned\fP ** — The instance’s memory configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better memory performance. This is identified by analyzing the memory utilization metric of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 380)"
+Inline strong start\-string without end\-string.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Memory utilization is analyzed only for resources that have the unified CloudWatch agent installed on them. For more information, see \fI\%Enabling memory utilization with the Amazon CloudWatch Agent\fP in the \fIAWS Compute Optimizer User Guide\fP . On Linux instances, Compute Optimizer analyses the \fBmem_used_percent\fP metric in the \fBCWAgent\fP namespace, or the legacy \fBMemoryUtilization\fP metric in the \fBSystem/Linux\fP namespace. On Windows instances, Compute Optimizer analyses the \fBMemory % Committed Bytes In Use\fP metric in the \fBCWAgent\fP namespace.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSThroughputOverprovisioned\fP ** — The instance’s EBS throughput configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the \fBVolumeReadOps\fP and \fBVolumeWriteOps\fP metrics of EBS volumes attached to the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 388)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSThroughputUnderprovisioned\fP ** — The instance’s EBS throughput configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better EBS throughput performance. This is identified by analyzing the \fBVolumeReadOps\fP and \fBVolumeWriteOps\fP metrics of EBS volumes attached to the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 390)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSIOPSOverprovisioned\fP ** — The instance’s EBS IOPS configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the \fBVolumeReadBytes\fP and \fBVolumeWriteBytes\fP metric of EBS volumes attached to the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 392)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBEBSIOPSUnderprovisioned\fP ** — The instance’s EBS IOPS configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better EBS IOPS performance. This is identified by analyzing the \fBVolumeReadBytes\fP and \fBVolumeWriteBytes\fP metric of EBS volumes attached to the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 394)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkBandwidthOverprovisioned\fP ** — The instance’s network bandwidth configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the \fBNetworkIn\fP and \fBNetworkOut\fP metrics of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 396)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkBandwidthUnderprovisioned\fP ** — The instance’s network bandwidth configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better network bandwidth performance. This is identified by analyzing the \fBNetworkIn\fP and \fBNetworkOut\fP metrics of the current instance during the look\-back period. This finding reason happens when the \fBNetworkIn\fP or \fBNetworkOut\fP performance of an instance is impacted.
+.IP "System Message: WARNING/2 (<string>:, line 398)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkPPSOverprovisioned\fP ** — The instance’s network PPS (packets per second) configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the \fBNetworkPacketsIn\fP and \fBNetworkPacketsIn\fP metrics of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 400)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkPPSUnderprovisioned\fP ** — The instance’s network PPS (packets per second) configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better network PPS performance. This is identified by analyzing the \fBNetworkPacketsIn\fP and \fBNetworkPacketsIn\fP metrics of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 402)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskIOPSOverprovisioned\fP ** — The instance’s disk IOPS configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the \fBDiskReadOps\fP and \fBDiskWriteOps\fP metrics of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 404)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskIOPSUnderprovisioned\fP ** — The instance’s disk IOPS configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better disk IOPS performance. This is identified by analyzing the \fBDiskReadOps\fP and \fBDiskWriteOps\fP metrics of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 406)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskThroughputOverprovisioned\fP ** — The instance’s disk throughput configuration can be sized down while still meeting the performance requirements of your workload. This is identified by analyzing the \fBDiskReadBytes\fP and \fBDiskWriteBytes\fP metrics of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 408)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBDiskThroughputUnderprovisioned\fP ** — The instance’s disk throughput configuration doesn\(aqt meet the performance requirements of your workload and there is an alternative instance type that provides better disk throughput performance. This is identified by analyzing the \fBDiskReadBytes\fP and \fBDiskWriteBytes\fP metrics of the current instance during the look\-back period.
+.IP "System Message: WARNING/2 (<string>:, line 410)"
+Inline strong start\-string without end\-string.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For more information about instance metrics, see \fI\%List the available CloudWatch metrics for your instances\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP . For more information about EBS volume metrics, see \fI\%Amazon CloudWatch metrics for Amazon EBS\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+utilizationMetrics \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe the utilization metrics of the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a utilization metric of a resource, such as an Amazon EC2 instance.
+.sp
+Compare the utilization metric data of your resource against its projected utilization metric data to determine the performance difference between your current resource and the recommended option.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the utilization metric.
+.sp
+The following utilization metrics are available:
+.INDENT 0.0
+.IP \(bu 2
+\fBCpu\fP \- The percentage of allocated EC2 compute units that are currently in use on the instance. This metric identifies the processing power required to run an application on the instance. Depending on the instance type, tools in your operating system can show a lower percentage than CloudWatch when the instance is not allocated a full processor core. Units: Percent
+.IP \(bu 2
+\fBMemory\fP \- The percentage of memory that is currently in use on the instance. This metric identifies the amount of memory required to run an application on the instance. Units: Percent
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBMemory\fP metric is returned only for resources that have the unified CloudWatch agent installed on them. For more information, see \fI\%Enabling Memory Utilization with the CloudWatch Agent\fP .
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBEBS_READ_OPS_PER_SECOND\fP \- The completed read operations from all EBS volumes attached to the instance in a specified period of time. Unit: Count
+.IP \(bu 2
+\fBEBS_WRITE_OPS_PER_SECOND\fP \- The completed write operations to all EBS volumes attached to the instance in a specified period of time. Unit: Count
+.IP \(bu 2
+\fBEBS_READ_BYTES_PER_SECOND\fP \- The bytes read from all EBS volumes attached to the instance in a specified period of time. Unit: Bytes
+.IP \(bu 2
+\fBEBS_WRITE_BYTES_PER_SECOND\fP \- The bytes written to all EBS volumes attached to the instance in a specified period of time. Unit: Bytes
+.IP \(bu 2
+\fBDISK_READ_OPS_PER_SECOND\fP \- The completed read operations from all instance store volumes available to the instance in a specified period of time. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBDISK_WRITE_OPS_PER_SECOND\fP \- The completed write operations from all instance store volumes available to the instance in a specified period of time. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBDISK_READ_BYTES_PER_SECOND\fP \- The bytes read from all instance store volumes available to the instance. This metric is used to determine the volume of the data the application reads from the disk of the instance. This can be used to determine the speed of the application. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBDISK_WRITE_BYTES_PER_SECOND\fP \- The bytes written to all instance store volumes available to the instance. This metric is used to determine the volume of the data the application writes onto the disk of the instance. This can be used to determine the speed of the application. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBNETWORK_IN_BYTES_PER_SECOND\fP \- The number of bytes received by the instance on all network interfaces. This metric identifies the volume of incoming network traffic to a single instance.
+.IP \(bu 2
+\fBNETWORK_OUT_BYTES_PER_SECOND\fP \- The number of bytes sent out by the instance on all network interfaces. This metric identifies the volume of outgoing network traffic from a single instance.
+.IP \(bu 2
+\fBNETWORK_PACKETS_IN_PER_SECOND\fP \- The number of packets received by the instance on all network interfaces. This metric identifies the volume of incoming traffic in terms of the number of packets on a single instance.
+.IP \(bu 2
+\fBNETWORK_PACKETS_OUT_PER_SECOND\fP \- The number of packets sent out by the instance on all network interfaces. This metric identifies the volume of outgoing traffic in terms of the number of packets on a single instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic of the utilization metric.
+.sp
+The Compute Optimizer API, AWS Command Line Interface (AWS CLI), and SDKs return utilization metrics using only the \fBMaximum\fP statistic, which is the highest value observed during the specified period.
+.sp
+The Compute Optimizer console displays graphs for some utilization metrics using the \fBAverage\fP statistic, which is the value of \fBSum\fP / \fBSampleCount\fP during the specified period. For more information, see \fI\%Viewing resource recommendations\fP in the \fIAWS Compute Optimizer User Guide\fP . You can also get averaged utilization metric data for your resources using Amazon CloudWatch. For more information, see the \fI\%Amazon CloudWatch User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value of the utilization metric.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+lookBackPeriodInDays \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The number of days for which utilization metrics were analyzed for the instance.
+.UNINDENT
+.UNINDENT
+.sp
+recommendationOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe the recommendation options for the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a recommendation option for an Amazon EC2 instance.
+.sp
+instanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type of the instance recommendation.
+.UNINDENT
+.UNINDENT
+.sp
+projectedUtilizationMetrics \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe the projected utilization metrics of the instance recommendation option.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBCpu\fP and \fBMemory\fP metrics are the only projected utilization metrics returned. Additionally, the \fBMemory\fP metric is returned only for resources that have the unified CloudWatch agent installed on them. For more information, see \fI\%Enabling Memory Utilization with the CloudWatch Agent\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a utilization metric of a resource, such as an Amazon EC2 instance.
+.sp
+Compare the utilization metric data of your resource against its projected utilization metric data to determine the performance difference between your current resource and the recommended option.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the utilization metric.
+.sp
+The following utilization metrics are available:
+.INDENT 0.0
+.IP \(bu 2
+\fBCpu\fP \- The percentage of allocated EC2 compute units that are currently in use on the instance. This metric identifies the processing power required to run an application on the instance. Depending on the instance type, tools in your operating system can show a lower percentage than CloudWatch when the instance is not allocated a full processor core. Units: Percent
+.IP \(bu 2
+\fBMemory\fP \- The percentage of memory that is currently in use on the instance. This metric identifies the amount of memory required to run an application on the instance. Units: Percent
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBMemory\fP metric is returned only for resources that have the unified CloudWatch agent installed on them. For more information, see \fI\%Enabling Memory Utilization with the CloudWatch Agent\fP .
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBEBS_READ_OPS_PER_SECOND\fP \- The completed read operations from all EBS volumes attached to the instance in a specified period of time. Unit: Count
+.IP \(bu 2
+\fBEBS_WRITE_OPS_PER_SECOND\fP \- The completed write operations to all EBS volumes attached to the instance in a specified period of time. Unit: Count
+.IP \(bu 2
+\fBEBS_READ_BYTES_PER_SECOND\fP \- The bytes read from all EBS volumes attached to the instance in a specified period of time. Unit: Bytes
+.IP \(bu 2
+\fBEBS_WRITE_BYTES_PER_SECOND\fP \- The bytes written to all EBS volumes attached to the instance in a specified period of time. Unit: Bytes
+.IP \(bu 2
+\fBDISK_READ_OPS_PER_SECOND\fP \- The completed read operations from all instance store volumes available to the instance in a specified period of time. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBDISK_WRITE_OPS_PER_SECOND\fP \- The completed write operations from all instance store volumes available to the instance in a specified period of time. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBDISK_READ_BYTES_PER_SECOND\fP \- The bytes read from all instance store volumes available to the instance. This metric is used to determine the volume of the data the application reads from the disk of the instance. This can be used to determine the speed of the application. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBDISK_WRITE_BYTES_PER_SECOND\fP \- The bytes written to all instance store volumes available to the instance. This metric is used to determine the volume of the data the application writes onto the disk of the instance. This can be used to determine the speed of the application. If there are no instance store volumes, either the value is \fB0\fP or the metric is not reported.
+.IP \(bu 2
+\fBNETWORK_IN_BYTES_PER_SECOND\fP \- The number of bytes received by the instance on all network interfaces. This metric identifies the volume of incoming network traffic to a single instance.
+.IP \(bu 2
+\fBNETWORK_OUT_BYTES_PER_SECOND\fP \- The number of bytes sent out by the instance on all network interfaces. This metric identifies the volume of outgoing network traffic from a single instance.
+.IP \(bu 2
+\fBNETWORK_PACKETS_IN_PER_SECOND\fP \- The number of packets received by the instance on all network interfaces. This metric identifies the volume of incoming traffic in terms of the number of packets on a single instance.
+.IP \(bu 2
+\fBNETWORK_PACKETS_OUT_PER_SECOND\fP \- The number of packets sent out by the instance on all network interfaces. This metric identifies the volume of outgoing traffic in terms of the number of packets on a single instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic of the utilization metric.
+.sp
+The Compute Optimizer API, AWS Command Line Interface (AWS CLI), and SDKs return utilization metrics using only the \fBMaximum\fP statistic, which is the highest value observed during the specified period.
+.sp
+The Compute Optimizer console displays graphs for some utilization metrics using the \fBAverage\fP statistic, which is the value of \fBSum\fP / \fBSampleCount\fP during the specified period. For more information, see \fI\%Viewing resource recommendations\fP in the \fIAWS Compute Optimizer User Guide\fP . You can also get averaged utilization metric data for your resources using Amazon CloudWatch. For more information, see the \fI\%Amazon CloudWatch User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value of the utilization metric.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+platformDifferences \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Describes the configuration differences between the current instance and the recommended instance type. You should consider the configuration differences before migrating your workloads from the current instance to the recommended instance type. The \fI\%Change the instance type guide for Linux\fP and \fI\%Change the instance type guide for Windows\fP provide general guidance for getting started with an instance migration.
+.sp
+Platform differences include:
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBHypervisor\fP ** — The hypervisor of the recommended instance type is different than that of the current instance. For example, the recommended instance type uses a Nitro hypervisor and the current instance uses a Xen hypervisor. The differences that you should consider between these hypervisors are covered in the \fI\%Nitro Hypervisor\fP section of the Amazon EC2 frequently asked questions. For more information, see \fI\%Instances built on the Nitro System\fP in the \fIAmazon EC2 User Guide for Linux\fP , or \fI\%Instances built on the Nitro System\fP in the \fIAmazon EC2 User Guide for Windows\fP .
+.IP "System Message: WARNING/2 (<string>:, line 700)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBNetworkInterface\fP ** — The network interface of the recommended instance type is different than that of the current instance. For example, the recommended instance type supports enhanced networking and the current instance might not. To enable enhanced networking for the recommended instance type, you will need to install the Elastic Network Adapter (ENA) driver or the Intel 82599 Virtual Function driver. For more information, see \fI\%Networking and storage features\fP and \fI\%Enhanced networking on Linux\fP in the \fIAmazon EC2 User Guide for Linux\fP , or \fI\%Networking and storage features\fP and \fI\%Enhanced networking on Windows\fP in the \fIAmazon EC2 User Guide for Windows\fP .
+.IP "System Message: WARNING/2 (<string>:, line 702)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBStorageInterface\fP ** — The storage interface of the recommended instance type is different than that of the current instance. For example, the recommended instance type uses an NVMe storage interface and the current instance does not. To access NVMe volumes for the recommended instance type, you will need to install or upgrade the NVMe driver. For more information, see \fI\%Networking and storage features\fP and \fI\%Amazon EBS and NVMe on Linux instances\fP in the \fIAmazon EC2 User Guide for Linux\fP , or \fI\%Networking and storage features\fP and \fI\%Amazon EBS and NVMe on Windows instances\fP in the \fIAmazon EC2 User Guide for Windows\fP .
+.IP "System Message: WARNING/2 (<string>:, line 704)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBInstanceStoreAvailability\fP ** — The recommended instance type does not support instance store volumes and the current instance does. Before migrating, you might need to back up the data on your instance store volumes if you want to preserve them. For more information, see \fI\%How do I back up an instance store volume on my Amazon EC2 instance to Amazon EBS?\fP in the \fIAWS Premium Support Knowledge Base\fP . For more information, see \fI\%Networking and storage features\fP and \fI\%Amazon EC2 instance store\fP in the \fIAmazon EC2 User Guide for Linux\fP , or see \fI\%Networking and storage features\fP and \fI\%Amazon EC2 instance store\fP in the \fIAmazon EC2 User Guide for Windows\fP .
+.IP "System Message: WARNING/2 (<string>:, line 706)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fBVirtualizationType\fP ** — The recommended instance type uses the hardware virtual machine (HVM) virtualization type and the current instance uses the paravirtual (PV) virtualization type. For more information about the differences between these virtualization types, see \fI\%Linux AMI virtualization types\fP in the \fIAmazon EC2 User Guide for Linux\fP , or \fI\%Windows AMI virtualization types\fP in the \fIAmazon EC2 User Guide for Windows\fP .
+.IP "System Message: WARNING/2 (<string>:, line 708)"
+Inline strong start\-string without end\-string.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+performanceRisk \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The performance risk of the instance recommendation option.
+.sp
+Performance risk indicates the likelihood of the recommended instance type not meeting the resource needs of your workload. Compute Optimizer calculates an individual performance risk score for each specification of the recommended instance, including CPU, memory, EBS throughput, EBS IOPS, disk throughput, disk IOPS, network throughput, and network PPS. The performance risk of the recommended instance is calculated as the maximum performance risk score across the analyzed resource specifications.
+.sp
+The value ranges from \fB0\fP to \fB5\fP , with \fB0\fP meaning that the recommended resource is predicted to always provide enough hardware capability. The higher the performance risk is, the more likely you should validate whether the recommendation will meet the performance requirements of your workload before migrating your resource.
+.UNINDENT
+.UNINDENT
+.sp
+rank \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The rank of the instance recommendation option.
+.sp
+The top recommendation option is ranked as \fB1\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+recommendationSources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe the source resource of the recommendation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the source of a recommendation, such as an Amazon EC2 instance or Auto Scaling group.
+.sp
+recommendationSourceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the recommendation source.
+.UNINDENT
+.UNINDENT
+.sp
+recommendationSourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type of the recommendation source.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+lastRefreshTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp of when the instance recommendation was last refreshed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+errors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe errors of the request.
+.sp
+For example, an error is returned if you request recommendations for an instance of an unsupported instance family.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an error experienced when getting recommendations.
+.sp
+For example, an error is returned if you request recommendations for an unsupported Auto Scaling group, or if you request recommendations for an instance of an unsupported instance family.
+.sp
+identifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the error.
+.UNINDENT
+.UNINDENT
+.sp
+code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code.
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message, or reason, for the error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

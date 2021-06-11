@@ -1,0 +1,666 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONNECT-GET-METRIC-DATA" "a" "" ""
+.SH NAME
+connect-get-metric-data \- Gets historical metric data from the specified Amazon Connect instance
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets historical metric data from the specified Amazon Connect instance.
+.sp
+For a description of each historical metric, see \fI\%Historical Metrics Definitions\fP in the \fIAmazon Connect Administrator Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBget\-metric\-data\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBMetricResults\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-metric\-data
+\-\-instance\-id <value>
+\-\-start\-time <value>
+\-\-end\-time <value>
+\-\-filters <value>
+[\-\-groupings <value>]
+\-\-historical\-metrics <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the Amazon Connect instance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp, in UNIX Epoch time format, at which to start the reporting interval for the retrieval of historical metrics data. The time must be specified using a multiple of 5 minutes, such as 10:05, 10:10, 10:15.
+.sp
+The start time cannot be earlier than 24 hours before the time of the request. Historical metrics are available only for 24 hours.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp, in UNIX Epoch time format, at which to end the reporting interval for the retrieval of historical metrics data. The time must be specified using an interval of 5 minutes, such as 11:00, 11:05, 11:10, and must be later than the start time timestamp.
+.sp
+The time range between the start and end time must be less than 24 hours.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The queues, up to 100, or channels, to use to filter the metrics returned. Metric data is retrieved only for the resources associated with the queues or channels included in the filter. You can include both queue IDs and queue ARNs in the same request. VOICE, CHAT, and TASK channels are supported.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To filter by \fBQueues\fP , enter the queue ID/ARN, not the name of the queue.
+.UNINDENT
+.UNINDENT
+.sp
+Queues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The queues to use to filter the metrics. You can specify up to 100 queues per request.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Channels \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The channel to use to filter the metrics.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Queues=string,string,Channels=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Queues": ["string", ...],
+  "Channels": ["VOICE"|"CHAT"|"TASK", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-groupings\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The grouping applied to the metrics returned. For example, when results are grouped by queue, the metrics returned are grouped by queue. The values returned apply to the metrics for each queue rather than aggregated for all queues.
+.sp
+If no grouping is specified, a summary of metrics for all queues is returned.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  QUEUE
+  CHANNEL
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-historical\-metrics\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The metrics to retrieve. Specify the name, unit, and statistic for each metric. The following historical metrics are available. For a description of each metric, see \fI\%Historical Metrics Definitions\fP in the \fIAmazon Connect Administrator Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+ABANDON_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+AFTER_CONTACT_WORK_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+API_CONTACTS_HANDLED
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CALLBACK_CONTACTS_HANDLED
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_ABANDONED
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_AGENT_HUNG_UP_FIRST
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_CONSULTED
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_HANDLED
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_HANDLED_INCOMING
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_HANDLED_OUTBOUND
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_HOLD_ABANDONS
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_MISSED
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_QUEUED
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_TRANSFERRED_IN
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_TRANSFERRED_IN_FROM_QUEUE
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_TRANSFERRED_OUT
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+CONTACTS_TRANSFERRED_OUT_FROM_QUEUE
+.UNINDENT
+.UNINDENT
+.sp
+Unit: COUNT
+.sp
+Statistic: SUM
+.INDENT 0.0
+.INDENT 3.5
+HANDLE_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+HOLD_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+INTERACTION_AND_HOLD_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+INTERACTION_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+OCCUPANCY
+.UNINDENT
+.UNINDENT
+.sp
+Unit: PERCENT
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+QUEUE_ANSWER_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: AVG
+.INDENT 0.0
+.INDENT 3.5
+QUEUED_TIME
+.UNINDENT
+.UNINDENT
+.sp
+Unit: SECONDS
+.sp
+Statistic: MAX
+.INDENT 0.0
+.INDENT 3.5
+SERVICE_LEVEL
+.UNINDENT
+.UNINDENT
+.sp
+You can include up to 20 SERVICE_LEVEL metrics in a request.
+.sp
+Unit: PERCENT
+.sp
+Statistic: AVG
+.sp
+Threshold: For \fBThresholdValue\fP , enter any whole number from 1 to 604800 (inclusive), in seconds. For \fBComparison\fP , you must enter \fBLT\fP (for "Less than").
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.sp
+Contains information about a historical metric. For a description of each metric, see \fI\%Historical Metrics Definitions\fP in the \fIAmazon Connect Administrator Guide\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Threshold \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The threshold for the metric, used with service level metrics.
+.sp
+Comparison \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of comparison. Only "less than" (LT) comparisons are supported.
+.UNINDENT
+.UNINDENT
+.sp
+ThresholdValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The threshold value to compare.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic for the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit for the metric.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Threshold={Comparison=string,ThresholdValue=double},Statistic=string,Unit=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "CONTACTS_QUEUED"|"CONTACTS_HANDLED"|"CONTACTS_ABANDONED"|"CONTACTS_CONSULTED"|"CONTACTS_AGENT_HUNG_UP_FIRST"|"CONTACTS_HANDLED_INCOMING"|"CONTACTS_HANDLED_OUTBOUND"|"CONTACTS_HOLD_ABANDONS"|"CONTACTS_TRANSFERRED_IN"|"CONTACTS_TRANSFERRED_OUT"|"CONTACTS_TRANSFERRED_IN_FROM_QUEUE"|"CONTACTS_TRANSFERRED_OUT_FROM_QUEUE"|"CONTACTS_MISSED"|"CALLBACK_CONTACTS_HANDLED"|"API_CONTACTS_HANDLED"|"OCCUPANCY"|"HANDLE_TIME"|"AFTER_CONTACT_WORK_TIME"|"QUEUED_TIME"|"ABANDON_TIME"|"QUEUE_ANSWER_TIME"|"HOLD_TIME"|"INTERACTION_TIME"|"INTERACTION_AND_HOLD_TIME"|"SERVICE_LEVEL",
+    "Threshold": {
+      "Comparison": "LT",
+      "ThresholdValue": double
+    },
+    "Statistic": "SUM"|"MAX"|"AVG",
+    "Unit": "SECONDS"|"COUNT"|"PERCENT"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If there are additional results, this is the token for the next set of results.
+.sp
+The token expires after 5 minutes from the time it is created. Subsequent requests that use the token must use the same request parameters as the request that generated the token.
+.UNINDENT
+.UNINDENT
+.sp
+MetricResults \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the historical metrics.
+.sp
+If no grouping is specified, a summary of metric data is returned.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the historical metrics retrieved.
+.sp
+Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dimension for the metrics.
+.sp
+Queue \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the queue for which metrics are returned.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the queue.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the queue.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Channel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The channel used for grouping and filters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Collections \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The set of metrics.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the data for a historical metric.
+.sp
+Metric \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the metric.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Threshold \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The threshold for the metric, used with service level metrics.
+.sp
+Comparison \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of comparison. Only "less than" (LT) comparisons are supported.
+.UNINDENT
+.UNINDENT
+.sp
+ThresholdValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The threshold value to compare.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic for the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit for the metric.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value of the metric.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

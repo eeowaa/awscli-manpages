@@ -1,0 +1,455 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEPIPELINE-GET-PIPELINE-STATE" "a" "" ""
+.SH NAME
+codepipeline-get-pipeline-state \- Returns information about the state of a pipeline, including the stages and actions
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about the state of a pipeline, including the stages and actions.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Values returned in the \fBrevisionId\fP and \fBrevisionUrl\fP fields indicate the source revision information, such as the commit ID, for the current state.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-pipeline\-state
+\-\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the pipeline about which you want to get information.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get information about the state of a pipeline\fP
+.sp
+This example returns the most recent state of a pipeline named MyFirstPipeline.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codepipeline get\-pipeline\-state \-\-name MyFirstPipeline
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+ "created": 1446137312.204,
+ "pipelineName": "MyFirstPipeline",
+ "pipelineVersion": 1,
+ "stageStates": [
+  {
+    "actionStates": [
+      {
+        "actionName": "Source",
+        "entityUrl": "https://console.aws.amazon.com/s3/home?#",
+        "latestExecution": {
+          "lastStatusChange": 1446137358.328,
+          "status": "Succeeded"
+        }
+      }
+    ],
+    "stageName": "Source"
+  },
+  {
+    "actionStates": [
+      {
+        "actionName": "CodePipelineDemoFleet",
+        "entityUrl": "https://console.aws.amazon.com/codedeploy/home?#/applications/CodePipelineDemoApplication/deployment\-groups/CodePipelineDemoFleet",
+        "latestExecution": {
+          "externalExecutionId": "d\-EXAMPLE",
+          "externalExecutionUrl": "https://console.aws.amazon.com/codedeploy/home?#/deployments/d\-EXAMPLE",
+          "lastStatusChange": 1446137493.131,
+          "status": "Succeeded",
+          "summary": "Deployment Succeeded"
+        }
+      }
+    ],
+    "inboundTransitionState": {
+      "enabled": true
+    },
+    "stageName": "Beta"
+  }
+ ],
+ "updated": 1446137312.204
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+pipelineName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the pipeline for which you want to get the state.
+.UNINDENT
+.UNINDENT
+.sp
+pipelineVersion \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the pipeline.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A newly created pipeline is always assigned a version number of \fB1\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+stageStates \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the pipeline stage output information, including stage name, state, most recent run details, whether the stage is disabled, and other data.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents information about the state of the stage.
+.sp
+stageName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stage.
+.UNINDENT
+.UNINDENT
+.sp
+inboundExecution \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents information about the run of a stage.
+.sp
+pipelineExecutionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the pipeline execution associated with the stage.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the stage, or for a completed stage, the last status of the stage.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A status of cancelled means that the pipeline’s definition was updated before the stage execution could be completed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+inboundTransitionState \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The state of the inbound transition, which is either enabled or disabled.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the transition between stages is enabled (true) or disabled (false).
+.UNINDENT
+.UNINDENT
+.sp
+lastChangedBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the user who last changed the transition state.
+.UNINDENT
+.UNINDENT
+.sp
+lastChangedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp when the transition state was last changed.
+.UNINDENT
+.UNINDENT
+.sp
+disabledReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user\-specified reason why the transition between two stages of a pipeline was disabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+actionStates \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The state of the stage.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents information about the state of an action.
+.sp
+actionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the action.
+.UNINDENT
+.UNINDENT
+.sp
+currentRevision \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents information about the version (or revision) of an action.
+.sp
+revisionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated unique ID that identifies the revision number of the action.
+.UNINDENT
+.UNINDENT
+.sp
+revisionChangeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the change that set the state to this revision (for example, a deployment ID or timestamp).
+.UNINDENT
+.UNINDENT
+.sp
+created \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the most recent version of the action was created, in timestamp format.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+latestExecution \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents information about the run of an action.
+.sp
+actionExecutionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ID of the workflow action execution in the current stage. Use the  GetPipelineState action to retrieve the current action execution details of the current stage.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For older executions, this field might be empty. The action execution ID is available for executions run on or after March 2020.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the action, or for a completed action, the last status of the action.
+.UNINDENT
+.UNINDENT
+.sp
+summary \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A summary of the run of the action.
+.UNINDENT
+.UNINDENT
+.sp
+lastStatusChange \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last status change of the action.
+.UNINDENT
+.UNINDENT
+.sp
+token \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated token used to identify a unique approval request. The token for each open approval request can be obtained using the \fBGetPipelineState\fP command. It is used to validate that the approval request corresponding to this token is still valid.
+.UNINDENT
+.UNINDENT
+.sp
+lastUpdatedBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the user who last changed the pipeline.
+.UNINDENT
+.UNINDENT
+.sp
+externalExecutionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The external ID of the run of the action.
+.UNINDENT
+.UNINDENT
+.sp
+externalExecutionUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of a resource external to AWS that is used when running the action (for example, an external repository URL).
+.UNINDENT
+.UNINDENT
+.sp
+percentComplete \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A percentage of completeness of the action as it runs.
+.UNINDENT
+.UNINDENT
+.sp
+errorDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of an error returned by a URL external to AWS.
+.sp
+code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system ID or number code of the error.
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text of the error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+entityUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A URL link for more information about the state of the action, such as a deployment group details page.
+.UNINDENT
+.UNINDENT
+.sp
+revisionUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A URL link for more information about the revision, such as a commit details page.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+latestExecution \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the latest execution in the stage, including its ID and status.
+.sp
+pipelineExecutionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the pipeline execution associated with the stage.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the stage, or for a completed stage, the last status of the stage.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A status of cancelled means that the pipeline’s definition was updated before the stage execution could be completed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+created \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the pipeline was created, in timestamp format.
+.UNINDENT
+.UNINDENT
+.sp
+updated \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the pipeline was last updated, in timestamp format.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

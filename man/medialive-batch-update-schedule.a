@@ -1,0 +1,2133 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "MEDIALIVE-BATCH-UPDATE-SCHEDULE" "a" "" ""
+.SH NAME
+medialive-batch-update-schedule \- Update a channel schedule
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Update a channel schedule
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  batch\-update\-schedule
+\-\-channel\-id <value>
+[\-\-creates <value>]
+[\-\-deletes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-channel\-id\fP (string)
+Id of the channel whose schedule is being updated.
+.sp
+\fB\-\-creates\fP (structure)
+Schedule actions to create in the schedule.ScheduleActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of schedule actions to create.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on a single schedule action.
+.sp
+ActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the action, must be unique within the schedule. This name provides the main reference to an action once it is added to the schedule. A name is unique if it is no longer in the schedule. The schedule is automatically cleaned up to remove actions with a start time of more than 1 hour ago (approximately) so at that point a name can be reused.
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleActionSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings for this schedule action.
+.sp
+HlsId3SegmentTaggingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert HLS ID3 segment tagging
+.sp
+Tag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ID3 tag to insert into each segment. Supports special keyword identifiers to substitute in segment\-related values.nSupported keyword identifiers: \fI\%https://docs.aws.amazon.com/medialive/latest/ug/variable\-data\-identifiers.html\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HlsTimedMetadataSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert HLS metadata
+.sp
+Id3 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Base64 string formatted according to the ID3 specification: \fI\%http://id3.org/id3v2.4.0\-structure\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputPrepareSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to prepare an input for a future immediate input switch
+.sp
+InputAttachmentNameReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the input attachment that should be prepared by this action. If no name is provided, the action will stop the most recent prepare (if any) when activated.
+.UNINDENT
+.UNINDENT
+.sp
+InputClippingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to let you create a clip of the file input, in order to set up the input to ingest only a portion of the file.
+.sp
+InputTimecodeSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the timecodes in the source being clipped.
+.UNINDENT
+.UNINDENT
+.sp
+StartTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the start of the clip.
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to start the clip. Optional; if not specified, the clip starts at first frame in the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StopTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the end of the clip.
+.sp
+LastFrameClippingBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If you specify a StopTimecode in an input (in order to clip the file), you can specify if you want the clip to exclude (the default) or include the frame specified by the timecode.
+.UNINDENT
+.UNINDENT
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to stop the clip. Optional; if not specified, the clip continues to the end of the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UrlPath \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value for the variable portion of the URL for the dynamic input, for this instance of the input. Each time you use the same dynamic input in an input switch action, you can provide a different value, in order to connect the input to a different content source.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputSwitchSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to switch the input
+.sp
+InputAttachmentNameReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the input attachment (not the name of the input!) to switch to. The name is specified in the channel configuration.
+.UNINDENT
+.UNINDENT
+.sp
+InputClippingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to let you create a clip of the file input, in order to set up the input to ingest only a portion of the file.
+.sp
+InputTimecodeSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the timecodes in the source being clipped.
+.UNINDENT
+.UNINDENT
+.sp
+StartTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the start of the clip.
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to start the clip. Optional; if not specified, the clip starts at first frame in the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StopTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the end of the clip.
+.sp
+LastFrameClippingBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If you specify a StopTimecode in an input (in order to clip the file), you can specify if you want the clip to exclude (the default) or include the frame specified by the timecode.
+.UNINDENT
+.UNINDENT
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to stop the clip. Optional; if not specified, the clip continues to the end of the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UrlPath \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value for the variable portion of the URL for the dynamic input, for this instance of the input. Each time you use the same dynamic input in an input switch action, you can provide a different value, in order to connect the input to a different content source.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MotionGraphicsImageActivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to activate a motion graphics image overlay
+.sp
+Duration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Duration (in milliseconds) that motion graphics should render on to the video stream. Leaving out this property or setting to 0 will result in rendering continuing until a deactivate action is processed.
+.UNINDENT
+.UNINDENT
+.sp
+PasswordParam \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Key used to extract the password from EC2 Parameter store
+.UNINDENT
+.UNINDENT
+.sp
+Url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+URI of the HTML5 content to be rendered into the live stream.
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Documentation update needed
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MotionGraphicsImageDeactivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to deactivate a motion graphics image overlay
+.UNINDENT
+.UNINDENT
+.sp
+PauseStateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to pause or unpause one or both channel pipelines
+.sp
+Pipelines \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __listOfPipelinePauseStateSettings
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings for pausing a pipeline.
+.sp
+PipelineId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Pipeline ID to pause ("PIPELINE_0" or "PIPELINE_1").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35ReturnToNetworkSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 return_to_network message
+.sp
+SpliceEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The splice_event_id for the SCTE\-35 splice_insert, as defined in SCTE\-35.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35SpliceInsertSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 splice_insert message
+.sp
+Duration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Optional, the duration for the splice_insert, in 90 KHz ticks. To convert seconds to ticks, multiple the seconds by 90,000. If you enter a duration, there is an expectation that the downstream system can read the duration and cue in at that time. If you do not enter a duration, the splice_insert will continue indefinitely and there is an expectation that you will enter a return_to_network to end the splice_insert at the appropriate time.
+.UNINDENT
+.UNINDENT
+.sp
+SpliceEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The splice_event_id for the SCTE\-35 splice_insert, as defined in SCTE\-35.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35TimeSignalSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 time_signal message
+.sp
+Scte35Descriptors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of SCTE\-35 descriptors accompanying the SCTE\-35 time_signal.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Holds one set of SCTE\-35 Descriptor Settings.
+.sp
+Scte35DescriptorSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+SCTE\-35 Descriptor Settings.
+.sp
+SegmentationDescriptorScte35DescriptorSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+SCTE\-35 Segmentation Descriptor.
+.sp
+DeliveryRestrictions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Holds the four SCTE\-35 delivery restriction parameters.
+.sp
+ArchiveAllowedFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 archive_allowed_flag.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceRestrictions \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 device_restrictions parameter.
+.UNINDENT
+.UNINDENT
+.sp
+NoRegionalBlackoutFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 no_regional_blackout_flag parameter.
+.UNINDENT
+.UNINDENT
+.sp
+WebDeliveryAllowedFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 web_delivery_allowed_flag parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SegmentNum \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segment_num. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationCancelIndicator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_event_cancel_indicator.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationDuration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_duration. Optional. The duration for the time_signal, in 90 KHz ticks. To convert seconds to ticks, multiple the seconds by 90,000. Enter time in 90 KHz clock ticks. If you do not enter a duration, the time_signal will continue until you insert a cancellation message.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_event_id.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationTypeId \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_type_id. One of the segmentation_type_id values listed in the SCTE\-35 specification. On the console, enter the ID in decimal (for example, "52"). In the CLI, API, or an SDK, enter the ID in hex (for example, "0x34") or decimal (for example, "52").
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationUpid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_upid. Enter a string containing the hexadecimal representation of the characters that make up the SCTE\-35 segmentation_upid value. Must contain an even number of hex characters. Do not include spaces between each hex pair. For example, the ASCII "ADS Information" becomes hex "41445320496e666f726d6174696f6e.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationUpidType \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_upid_type. On the console, enter one of the types listed in the SCTE\-35 specification, converted to a decimal. For example, "0x0C" hex from the specification is "12" in decimal. In the CLI, API, or an SDK, enter one of the types listed in the SCTE\-35 specification, in either hex (for example, "0x0C" ) or in decimal (for example, "12").
+.UNINDENT
+.UNINDENT
+.sp
+SegmentsExpected \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segments_expected. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SubSegmentNum \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 sub_segment_num. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SubSegmentsExpected \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 sub_segments_expected. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StaticImageActivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to activate a static image overlay
+.sp
+Duration \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The duration in milliseconds for the image to remain on the video. If omitted or set to 0 the duration is unlimited and the image will remain until it is explicitly deactivated.
+.UNINDENT
+.UNINDENT
+.sp
+FadeIn \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time in milliseconds for the image to fade in. The fade\-in starts at the start time of the overlay. Default is 0 (no fade\-in).
+.UNINDENT
+.UNINDENT
+.sp
+FadeOut \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Applies only if a duration is specified. The time in milliseconds for the image to fade out. The fade\-out starts when the duration time is hit, so it effectively extends the duration. Default is 0 (no fade\-out).
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The height of the image when inserted into the video, in pixels. The overlay will be scaled up or down to the specified height. Leave blank to use the native height of the overlay.
+.UNINDENT
+.UNINDENT
+.sp
+Image \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location and filename of the image file to overlay on the video. The file must be a 32\-bit BMP, PNG, or TGA file, and must not be larger (in pixels) than the input video.
+.sp
+PasswordParam \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+key used to extract the password from EC2 Parameter store
+.UNINDENT
+.UNINDENT
+.sp
+Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniform Resource Identifier \- This should be a path to a file accessible to the Live system (eg. a \fI\%http://\fP URI) depending on the output type. For example, a RTMP destination should have a uri simliar to: "rtmp://fmsserver/live".
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Documentation update needed
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImageX \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Placement of the left edge of the overlay relative to the left edge of the video frame, in pixels. 0 (the default) is the left edge of the frame. If the placement causes the overlay to extend beyond the right edge of the underlying video, then the overlay is cropped on the right.
+.UNINDENT
+.UNINDENT
+.sp
+ImageY \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Placement of the top edge of the overlay relative to the top edge of the video frame, in pixels. 0 (the default) is the top edge of the frame. If the placement causes the overlay to extend beyond the bottom edge of the underlying video, then the overlay is cropped on the bottom.
+.UNINDENT
+.UNINDENT
+.sp
+Layer \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of the layer, 0 to 7. There are 8 layers that can be overlaid on the video, each layer with a different image. The layers are in Z order, which means that overlays with higher values of layer are inserted on top of overlays with lower values of layer. Default is 0.
+.UNINDENT
+.UNINDENT
+.sp
+Opacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Opacity of image where 0 is transparent and 100 is fully opaque. Default is 100.
+.UNINDENT
+.UNINDENT
+.sp
+Width \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The width of the image when inserted into the video, in pixels. The overlay will be scaled up or down to the specified width. Leave blank to use the native width of the overlay.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StaticImageDeactivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to deactivate a static image overlay
+.sp
+FadeOut \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time in milliseconds for the image to fade out. Default is 0 (no fade\-out).
+.UNINDENT
+.UNINDENT
+.sp
+Layer \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The image overlay layer to deactivate, 0 to 7. Default is 0.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The time for the action to start in the channel.
+.sp
+FixedModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying the start time for an action.
+.sp
+Time \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Start time for the action to start in the channel. (Not the time for the action to be added to the schedule: actions are always added to the schedule immediately.) UTC format: yyyy\-mm\-ddThh:mm:ss.nnnZ. All the letters are digits (for example, mm might be 01) except for the two constants "T" for time and "Z" for "UTC format".
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FollowModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying an action as relative to another action.
+.sp
+FollowPoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies whether this action starts relative to the start or relative to the end of the reference action.
+.UNINDENT
+.UNINDENT
+.sp
+ReferenceActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action name of another action that this one refers to.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImmediateModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying an action that should be applied immediately.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ScheduleActions": [
+    {
+      "ActionName": "string",
+      "ScheduleActionSettings": {
+        "HlsId3SegmentTaggingSettings": {
+          "Tag": "string"
+        },
+        "HlsTimedMetadataSettings": {
+          "Id3": "string"
+        },
+        "InputPrepareSettings": {
+          "InputAttachmentNameReference": "string",
+          "InputClippingSettings": {
+            "InputTimecodeSource": "ZEROBASED"|"EMBEDDED",
+            "StartTimecode": {
+              "Timecode": "string"
+            },
+            "StopTimecode": {
+              "LastFrameClippingBehavior": "EXCLUDE_LAST_FRAME"|"INCLUDE_LAST_FRAME",
+              "Timecode": "string"
+            }
+          },
+          "UrlPath": ["string", ...]
+        },
+        "InputSwitchSettings": {
+          "InputAttachmentNameReference": "string",
+          "InputClippingSettings": {
+            "InputTimecodeSource": "ZEROBASED"|"EMBEDDED",
+            "StartTimecode": {
+              "Timecode": "string"
+            },
+            "StopTimecode": {
+              "LastFrameClippingBehavior": "EXCLUDE_LAST_FRAME"|"INCLUDE_LAST_FRAME",
+              "Timecode": "string"
+            }
+          },
+          "UrlPath": ["string", ...]
+        },
+        "MotionGraphicsImageActivateSettings": {
+          "Duration": long,
+          "PasswordParam": "string",
+          "Url": "string",
+          "Username": "string"
+        },
+        "MotionGraphicsImageDeactivateSettings": {
+
+        },
+        "PauseStateSettings": {
+          "Pipelines": [
+            {
+              "PipelineId": "PIPELINE_0"|"PIPELINE_1"
+            }
+            ...
+          ]
+        },
+        "Scte35ReturnToNetworkSettings": {
+          "SpliceEventId": long
+        },
+        "Scte35SpliceInsertSettings": {
+          "Duration": long,
+          "SpliceEventId": long
+        },
+        "Scte35TimeSignalSettings": {
+          "Scte35Descriptors": [
+            {
+              "Scte35DescriptorSettings": {
+                "SegmentationDescriptorScte35DescriptorSettings": {
+                  "DeliveryRestrictions": {
+                    "ArchiveAllowedFlag": "ARCHIVE_NOT_ALLOWED"|"ARCHIVE_ALLOWED",
+                    "DeviceRestrictions": "NONE"|"RESTRICT_GROUP0"|"RESTRICT_GROUP1"|"RESTRICT_GROUP2",
+                    "NoRegionalBlackoutFlag": "REGIONAL_BLACKOUT"|"NO_REGIONAL_BLACKOUT",
+                    "WebDeliveryAllowedFlag": "WEB_DELIVERY_NOT_ALLOWED"|"WEB_DELIVERY_ALLOWED"
+                  },
+                  "SegmentNum": integer,
+                  "SegmentationCancelIndicator": "SEGMENTATION_EVENT_NOT_CANCELED"|"SEGMENTATION_EVENT_CANCELED",
+                  "SegmentationDuration": long,
+                  "SegmentationEventId": long,
+                  "SegmentationTypeId": integer,
+                  "SegmentationUpid": "string",
+                  "SegmentationUpidType": integer,
+                  "SegmentsExpected": integer,
+                  "SubSegmentNum": integer,
+                  "SubSegmentsExpected": integer
+                }
+              }
+            }
+            ...
+          ]
+        },
+        "StaticImageActivateSettings": {
+          "Duration": integer,
+          "FadeIn": integer,
+          "FadeOut": integer,
+          "Height": integer,
+          "Image": {
+            "PasswordParam": "string",
+            "Uri": "string",
+            "Username": "string"
+          },
+          "ImageX": integer,
+          "ImageY": integer,
+          "Layer": integer,
+          "Opacity": integer,
+          "Width": integer
+        },
+        "StaticImageDeactivateSettings": {
+          "FadeOut": integer,
+          "Layer": integer
+        }
+      },
+      "ScheduleActionStartSettings": {
+        "FixedModeScheduleActionStartSettings": {
+          "Time": "string"
+        },
+        "FollowModeScheduleActionStartSettings": {
+          "FollowPoint": "END"|"START",
+          "ReferenceActionName": "string"
+        },
+        "ImmediateModeScheduleActionStartSettings": {
+
+        }
+      }
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-deletes\fP (structure)
+Schedule actions to delete from the schedule.ActionNames \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of schedule actions to delete.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ActionNames=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ActionNames": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Creates \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Schedule actions created in the schedule.
+.sp
+ScheduleActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of actions that have been created in the schedule.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on a single schedule action.
+.sp
+ActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the action, must be unique within the schedule. This name provides the main reference to an action once it is added to the schedule. A name is unique if it is no longer in the schedule. The schedule is automatically cleaned up to remove actions with a start time of more than 1 hour ago (approximately) so at that point a name can be reused.
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleActionSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings for this schedule action.
+.sp
+HlsId3SegmentTaggingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert HLS ID3 segment tagging
+.sp
+Tag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ID3 tag to insert into each segment. Supports special keyword identifiers to substitute in segment\-related values.nSupported keyword identifiers: \fI\%https://docs.aws.amazon.com/medialive/latest/ug/variable\-data\-identifiers.html\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HlsTimedMetadataSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert HLS metadata
+.sp
+Id3 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Base64 string formatted according to the ID3 specification: \fI\%http://id3.org/id3v2.4.0\-structure\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputPrepareSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to prepare an input for a future immediate input switch
+.sp
+InputAttachmentNameReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the input attachment that should be prepared by this action. If no name is provided, the action will stop the most recent prepare (if any) when activated.
+.UNINDENT
+.UNINDENT
+.sp
+InputClippingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to let you create a clip of the file input, in order to set up the input to ingest only a portion of the file.
+.sp
+InputTimecodeSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the timecodes in the source being clipped.
+.UNINDENT
+.UNINDENT
+.sp
+StartTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the start of the clip.
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to start the clip. Optional; if not specified, the clip starts at first frame in the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StopTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the end of the clip.
+.sp
+LastFrameClippingBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If you specify a StopTimecode in an input (in order to clip the file), you can specify if you want the clip to exclude (the default) or include the frame specified by the timecode.
+.UNINDENT
+.UNINDENT
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to stop the clip. Optional; if not specified, the clip continues to the end of the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UrlPath \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value for the variable portion of the URL for the dynamic input, for this instance of the input. Each time you use the same dynamic input in an input switch action, you can provide a different value, in order to connect the input to a different content source.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputSwitchSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to switch the input
+.sp
+InputAttachmentNameReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the input attachment (not the name of the input!) to switch to. The name is specified in the channel configuration.
+.UNINDENT
+.UNINDENT
+.sp
+InputClippingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to let you create a clip of the file input, in order to set up the input to ingest only a portion of the file.
+.sp
+InputTimecodeSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the timecodes in the source being clipped.
+.UNINDENT
+.UNINDENT
+.sp
+StartTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the start of the clip.
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to start the clip. Optional; if not specified, the clip starts at first frame in the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StopTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the end of the clip.
+.sp
+LastFrameClippingBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If you specify a StopTimecode in an input (in order to clip the file), you can specify if you want the clip to exclude (the default) or include the frame specified by the timecode.
+.UNINDENT
+.UNINDENT
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to stop the clip. Optional; if not specified, the clip continues to the end of the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UrlPath \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value for the variable portion of the URL for the dynamic input, for this instance of the input. Each time you use the same dynamic input in an input switch action, you can provide a different value, in order to connect the input to a different content source.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MotionGraphicsImageActivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to activate a motion graphics image overlay
+.sp
+Duration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Duration (in milliseconds) that motion graphics should render on to the video stream. Leaving out this property or setting to 0 will result in rendering continuing until a deactivate action is processed.
+.UNINDENT
+.UNINDENT
+.sp
+PasswordParam \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Key used to extract the password from EC2 Parameter store
+.UNINDENT
+.UNINDENT
+.sp
+Url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+URI of the HTML5 content to be rendered into the live stream.
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Documentation update needed
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MotionGraphicsImageDeactivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to deactivate a motion graphics image overlay
+.UNINDENT
+.UNINDENT
+.sp
+PauseStateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to pause or unpause one or both channel pipelines
+.sp
+Pipelines \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __listOfPipelinePauseStateSettings
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings for pausing a pipeline.
+.sp
+PipelineId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Pipeline ID to pause ("PIPELINE_0" or "PIPELINE_1").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35ReturnToNetworkSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 return_to_network message
+.sp
+SpliceEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The splice_event_id for the SCTE\-35 splice_insert, as defined in SCTE\-35.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35SpliceInsertSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 splice_insert message
+.sp
+Duration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Optional, the duration for the splice_insert, in 90 KHz ticks. To convert seconds to ticks, multiple the seconds by 90,000. If you enter a duration, there is an expectation that the downstream system can read the duration and cue in at that time. If you do not enter a duration, the splice_insert will continue indefinitely and there is an expectation that you will enter a return_to_network to end the splice_insert at the appropriate time.
+.UNINDENT
+.UNINDENT
+.sp
+SpliceEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The splice_event_id for the SCTE\-35 splice_insert, as defined in SCTE\-35.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35TimeSignalSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 time_signal message
+.sp
+Scte35Descriptors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of SCTE\-35 descriptors accompanying the SCTE\-35 time_signal.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Holds one set of SCTE\-35 Descriptor Settings.
+.sp
+Scte35DescriptorSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+SCTE\-35 Descriptor Settings.
+.sp
+SegmentationDescriptorScte35DescriptorSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+SCTE\-35 Segmentation Descriptor.
+.sp
+DeliveryRestrictions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Holds the four SCTE\-35 delivery restriction parameters.
+.sp
+ArchiveAllowedFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 archive_allowed_flag.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceRestrictions \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 device_restrictions parameter.
+.UNINDENT
+.UNINDENT
+.sp
+NoRegionalBlackoutFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 no_regional_blackout_flag parameter.
+.UNINDENT
+.UNINDENT
+.sp
+WebDeliveryAllowedFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 web_delivery_allowed_flag parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SegmentNum \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segment_num. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationCancelIndicator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_event_cancel_indicator.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationDuration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_duration. Optional. The duration for the time_signal, in 90 KHz ticks. To convert seconds to ticks, multiple the seconds by 90,000. Enter time in 90 KHz clock ticks. If you do not enter a duration, the time_signal will continue until you insert a cancellation message.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_event_id.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationTypeId \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_type_id. One of the segmentation_type_id values listed in the SCTE\-35 specification. On the console, enter the ID in decimal (for example, "52"). In the CLI, API, or an SDK, enter the ID in hex (for example, "0x34") or decimal (for example, "52").
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationUpid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_upid. Enter a string containing the hexadecimal representation of the characters that make up the SCTE\-35 segmentation_upid value. Must contain an even number of hex characters. Do not include spaces between each hex pair. For example, the ASCII "ADS Information" becomes hex "41445320496e666f726d6174696f6e.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationUpidType \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_upid_type. On the console, enter one of the types listed in the SCTE\-35 specification, converted to a decimal. For example, "0x0C" hex from the specification is "12" in decimal. In the CLI, API, or an SDK, enter one of the types listed in the SCTE\-35 specification, in either hex (for example, "0x0C" ) or in decimal (for example, "12").
+.UNINDENT
+.UNINDENT
+.sp
+SegmentsExpected \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segments_expected. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SubSegmentNum \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 sub_segment_num. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SubSegmentsExpected \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 sub_segments_expected. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StaticImageActivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to activate a static image overlay
+.sp
+Duration \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The duration in milliseconds for the image to remain on the video. If omitted or set to 0 the duration is unlimited and the image will remain until it is explicitly deactivated.
+.UNINDENT
+.UNINDENT
+.sp
+FadeIn \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time in milliseconds for the image to fade in. The fade\-in starts at the start time of the overlay. Default is 0 (no fade\-in).
+.UNINDENT
+.UNINDENT
+.sp
+FadeOut \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Applies only if a duration is specified. The time in milliseconds for the image to fade out. The fade\-out starts when the duration time is hit, so it effectively extends the duration. Default is 0 (no fade\-out).
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The height of the image when inserted into the video, in pixels. The overlay will be scaled up or down to the specified height. Leave blank to use the native height of the overlay.
+.UNINDENT
+.UNINDENT
+.sp
+Image \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location and filename of the image file to overlay on the video. The file must be a 32\-bit BMP, PNG, or TGA file, and must not be larger (in pixels) than the input video.
+.sp
+PasswordParam \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+key used to extract the password from EC2 Parameter store
+.UNINDENT
+.UNINDENT
+.sp
+Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniform Resource Identifier \- This should be a path to a file accessible to the Live system (eg. a \fI\%http://\fP URI) depending on the output type. For example, a RTMP destination should have a uri simliar to: "rtmp://fmsserver/live".
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Documentation update needed
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImageX \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Placement of the left edge of the overlay relative to the left edge of the video frame, in pixels. 0 (the default) is the left edge of the frame. If the placement causes the overlay to extend beyond the right edge of the underlying video, then the overlay is cropped on the right.
+.UNINDENT
+.UNINDENT
+.sp
+ImageY \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Placement of the top edge of the overlay relative to the top edge of the video frame, in pixels. 0 (the default) is the top edge of the frame. If the placement causes the overlay to extend beyond the bottom edge of the underlying video, then the overlay is cropped on the bottom.
+.UNINDENT
+.UNINDENT
+.sp
+Layer \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of the layer, 0 to 7. There are 8 layers that can be overlaid on the video, each layer with a different image. The layers are in Z order, which means that overlays with higher values of layer are inserted on top of overlays with lower values of layer. Default is 0.
+.UNINDENT
+.UNINDENT
+.sp
+Opacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Opacity of image where 0 is transparent and 100 is fully opaque. Default is 100.
+.UNINDENT
+.UNINDENT
+.sp
+Width \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The width of the image when inserted into the video, in pixels. The overlay will be scaled up or down to the specified width. Leave blank to use the native width of the overlay.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StaticImageDeactivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to deactivate a static image overlay
+.sp
+FadeOut \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time in milliseconds for the image to fade out. Default is 0 (no fade\-out).
+.UNINDENT
+.UNINDENT
+.sp
+Layer \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The image overlay layer to deactivate, 0 to 7. Default is 0.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The time for the action to start in the channel.
+.sp
+FixedModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying the start time for an action.
+.sp
+Time \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Start time for the action to start in the channel. (Not the time for the action to be added to the schedule: actions are always added to the schedule immediately.) UTC format: yyyy\-mm\-ddThh:mm:ss.nnnZ. All the letters are digits (for example, mm might be 01) except for the two constants "T" for time and "Z" for "UTC format".
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FollowModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying an action as relative to another action.
+.sp
+FollowPoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies whether this action starts relative to the start or relative to the end of the reference action.
+.UNINDENT
+.UNINDENT
+.sp
+ReferenceActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action name of another action that this one refers to.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImmediateModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying an action that should be applied immediately.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Deletes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Schedule actions deleted from the schedule.
+.sp
+ScheduleActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of actions that have been deleted from the schedule.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on a single schedule action.
+.sp
+ActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the action, must be unique within the schedule. This name provides the main reference to an action once it is added to the schedule. A name is unique if it is no longer in the schedule. The schedule is automatically cleaned up to remove actions with a start time of more than 1 hour ago (approximately) so at that point a name can be reused.
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleActionSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings for this schedule action.
+.sp
+HlsId3SegmentTaggingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert HLS ID3 segment tagging
+.sp
+Tag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ID3 tag to insert into each segment. Supports special keyword identifiers to substitute in segment\-related values.nSupported keyword identifiers: \fI\%https://docs.aws.amazon.com/medialive/latest/ug/variable\-data\-identifiers.html\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HlsTimedMetadataSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert HLS metadata
+.sp
+Id3 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Base64 string formatted according to the ID3 specification: \fI\%http://id3.org/id3v2.4.0\-structure\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputPrepareSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to prepare an input for a future immediate input switch
+.sp
+InputAttachmentNameReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the input attachment that should be prepared by this action. If no name is provided, the action will stop the most recent prepare (if any) when activated.
+.UNINDENT
+.UNINDENT
+.sp
+InputClippingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to let you create a clip of the file input, in order to set up the input to ingest only a portion of the file.
+.sp
+InputTimecodeSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the timecodes in the source being clipped.
+.UNINDENT
+.UNINDENT
+.sp
+StartTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the start of the clip.
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to start the clip. Optional; if not specified, the clip starts at first frame in the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StopTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the end of the clip.
+.sp
+LastFrameClippingBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If you specify a StopTimecode in an input (in order to clip the file), you can specify if you want the clip to exclude (the default) or include the frame specified by the timecode.
+.UNINDENT
+.UNINDENT
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to stop the clip. Optional; if not specified, the clip continues to the end of the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UrlPath \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value for the variable portion of the URL for the dynamic input, for this instance of the input. Each time you use the same dynamic input in an input switch action, you can provide a different value, in order to connect the input to a different content source.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputSwitchSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to switch the input
+.sp
+InputAttachmentNameReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the input attachment (not the name of the input!) to switch to. The name is specified in the channel configuration.
+.UNINDENT
+.UNINDENT
+.sp
+InputClippingSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to let you create a clip of the file input, in order to set up the input to ingest only a portion of the file.
+.sp
+InputTimecodeSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the timecodes in the source being clipped.
+.UNINDENT
+.UNINDENT
+.sp
+StartTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the start of the clip.
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to start the clip. Optional; if not specified, the clip starts at first frame in the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StopTimecode \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings to identify the end of the clip.
+.sp
+LastFrameClippingBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If you specify a StopTimecode in an input (in order to clip the file), you can specify if you want the clip to exclude (the default) or include the frame specified by the timecode.
+.UNINDENT
+.UNINDENT
+.sp
+Timecode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timecode for the frame where you want to stop the clip. Optional; if not specified, the clip continues to the end of the file. Enter the timecode as HH:MM:SS:FF or HH:MM:SS;FF.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UrlPath \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value for the variable portion of the URL for the dynamic input, for this instance of the input. Each time you use the same dynamic input in an input switch action, you can provide a different value, in order to connect the input to a different content source.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MotionGraphicsImageActivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to activate a motion graphics image overlay
+.sp
+Duration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Duration (in milliseconds) that motion graphics should render on to the video stream. Leaving out this property or setting to 0 will result in rendering continuing until a deactivate action is processed.
+.UNINDENT
+.UNINDENT
+.sp
+PasswordParam \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Key used to extract the password from EC2 Parameter store
+.UNINDENT
+.UNINDENT
+.sp
+Url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+URI of the HTML5 content to be rendered into the live stream.
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Documentation update needed
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MotionGraphicsImageDeactivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to deactivate a motion graphics image overlay
+.UNINDENT
+.UNINDENT
+.sp
+PauseStateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to pause or unpause one or both channel pipelines
+.sp
+Pipelines \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Placeholder documentation for __listOfPipelinePauseStateSettings
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings for pausing a pipeline.
+.sp
+PipelineId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Pipeline ID to pause ("PIPELINE_0" or "PIPELINE_1").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35ReturnToNetworkSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 return_to_network message
+.sp
+SpliceEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The splice_event_id for the SCTE\-35 splice_insert, as defined in SCTE\-35.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35SpliceInsertSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 splice_insert message
+.sp
+Duration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Optional, the duration for the splice_insert, in 90 KHz ticks. To convert seconds to ticks, multiple the seconds by 90,000. If you enter a duration, there is an expectation that the downstream system can read the duration and cue in at that time. If you do not enter a duration, the splice_insert will continue indefinitely and there is an expectation that you will enter a return_to_network to end the splice_insert at the appropriate time.
+.UNINDENT
+.UNINDENT
+.sp
+SpliceEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The splice_event_id for the SCTE\-35 splice_insert, as defined in SCTE\-35.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Scte35TimeSignalSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to insert SCTE\-35 time_signal message
+.sp
+Scte35Descriptors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of SCTE\-35 descriptors accompanying the SCTE\-35 time_signal.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Holds one set of SCTE\-35 Descriptor Settings.
+.sp
+Scte35DescriptorSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+SCTE\-35 Descriptor Settings.
+.sp
+SegmentationDescriptorScte35DescriptorSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+SCTE\-35 Segmentation Descriptor.
+.sp
+DeliveryRestrictions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Holds the four SCTE\-35 delivery restriction parameters.
+.sp
+ArchiveAllowedFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 archive_allowed_flag.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceRestrictions \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 device_restrictions parameter.
+.UNINDENT
+.UNINDENT
+.sp
+NoRegionalBlackoutFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 no_regional_blackout_flag parameter.
+.UNINDENT
+.UNINDENT
+.sp
+WebDeliveryAllowedFlag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 web_delivery_allowed_flag parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SegmentNum \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segment_num. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationCancelIndicator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_event_cancel_indicator.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationDuration \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_duration. Optional. The duration for the time_signal, in 90 KHz ticks. To convert seconds to ticks, multiple the seconds by 90,000. Enter time in 90 KHz clock ticks. If you do not enter a duration, the time_signal will continue until you insert a cancellation message.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationEventId \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_event_id.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationTypeId \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_type_id. One of the segmentation_type_id values listed in the SCTE\-35 specification. On the console, enter the ID in decimal (for example, "52"). In the CLI, API, or an SDK, enter the ID in hex (for example, "0x34") or decimal (for example, "52").
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationUpid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_upid. Enter a string containing the hexadecimal representation of the characters that make up the SCTE\-35 segmentation_upid value. Must contain an even number of hex characters. Do not include spaces between each hex pair. For example, the ASCII "ADS Information" becomes hex "41445320496e666f726d6174696f6e.
+.UNINDENT
+.UNINDENT
+.sp
+SegmentationUpidType \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segmentation_upid_type. On the console, enter one of the types listed in the SCTE\-35 specification, converted to a decimal. For example, "0x0C" hex from the specification is "12" in decimal. In the CLI, API, or an SDK, enter one of the types listed in the SCTE\-35 specification, in either hex (for example, "0x0C" ) or in decimal (for example, "12").
+.UNINDENT
+.UNINDENT
+.sp
+SegmentsExpected \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 segments_expected. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SubSegmentNum \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 sub_segment_num. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.sp
+SubSegmentsExpected \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Corresponds to SCTE\-35 sub_segments_expected. A value that is valid for the specified segmentation_type_id.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StaticImageActivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to activate a static image overlay
+.sp
+Duration \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The duration in milliseconds for the image to remain on the video. If omitted or set to 0 the duration is unlimited and the image will remain until it is explicitly deactivated.
+.UNINDENT
+.UNINDENT
+.sp
+FadeIn \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time in milliseconds for the image to fade in. The fade\-in starts at the start time of the overlay. Default is 0 (no fade\-in).
+.UNINDENT
+.UNINDENT
+.sp
+FadeOut \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Applies only if a duration is specified. The time in milliseconds for the image to fade out. The fade\-out starts when the duration time is hit, so it effectively extends the duration. Default is 0 (no fade\-out).
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The height of the image when inserted into the video, in pixels. The overlay will be scaled up or down to the specified height. Leave blank to use the native height of the overlay.
+.UNINDENT
+.UNINDENT
+.sp
+Image \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location and filename of the image file to overlay on the video. The file must be a 32\-bit BMP, PNG, or TGA file, and must not be larger (in pixels) than the input video.
+.sp
+PasswordParam \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+key used to extract the password from EC2 Parameter store
+.UNINDENT
+.UNINDENT
+.sp
+Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Uniform Resource Identifier \- This should be a path to a file accessible to the Live system (eg. a \fI\%http://\fP URI) depending on the output type. For example, a RTMP destination should have a uri simliar to: "rtmp://fmsserver/live".
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Documentation update needed
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImageX \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Placement of the left edge of the overlay relative to the left edge of the video frame, in pixels. 0 (the default) is the left edge of the frame. If the placement causes the overlay to extend beyond the right edge of the underlying video, then the overlay is cropped on the right.
+.UNINDENT
+.UNINDENT
+.sp
+ImageY \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Placement of the top edge of the overlay relative to the top edge of the video frame, in pixels. 0 (the default) is the top edge of the frame. If the placement causes the overlay to extend beyond the bottom edge of the underlying video, then the overlay is cropped on the bottom.
+.UNINDENT
+.UNINDENT
+.sp
+Layer \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of the layer, 0 to 7. There are 8 layers that can be overlaid on the video, each layer with a different image. The layers are in Z order, which means that overlays with higher values of layer are inserted on top of overlays with lower values of layer. Default is 0.
+.UNINDENT
+.UNINDENT
+.sp
+Opacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Opacity of image where 0 is transparent and 100 is fully opaque. Default is 100.
+.UNINDENT
+.UNINDENT
+.sp
+Width \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The width of the image when inserted into the video, in pixels. The overlay will be scaled up or down to the specified width. Leave blank to use the native width of the overlay.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StaticImageDeactivateSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Action to deactivate a static image overlay
+.sp
+FadeOut \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time in milliseconds for the image to fade out. Default is 0 (no fade\-out).
+.UNINDENT
+.UNINDENT
+.sp
+Layer \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The image overlay layer to deactivate, 0 to 7. Default is 0.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The time for the action to start in the channel.
+.sp
+FixedModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying the start time for an action.
+.sp
+Time \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Start time for the action to start in the channel. (Not the time for the action to be added to the schedule: actions are always added to the schedule immediately.) UTC format: yyyy\-mm\-ddThh:mm:ss.nnnZ. All the letters are digits (for example, mm might be 01) except for the two constants "T" for time and "Z" for "UTC format".
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FollowModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying an action as relative to another action.
+.sp
+FollowPoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies whether this action starts relative to the start or relative to the end of the reference action.
+.UNINDENT
+.UNINDENT
+.sp
+ReferenceActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action name of another action that this one refers to.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImmediateModeScheduleActionStartSettings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Option for specifying an action that should be applied immediately.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

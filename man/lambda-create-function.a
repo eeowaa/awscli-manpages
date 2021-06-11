@@ -1,0 +1,1127 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LAMBDA-CREATE-FUNCTION" "a" "" ""
+.SH NAME
+lambda-create-function \- Creates a Lambda function
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a Lambda function. To create a function, you need a \fI\%deployment package\fP and an \fI\%execution role\fP . The deployment package is a .zip file archive or container image that contains your function code. The execution role grants the function permission to use AWS services, such as Amazon CloudWatch Logs for log streaming and AWS X\-Ray for request tracing.
+.sp
+When you create a function, Lambda provisions an instance of the function and its supporting resources. If your function connects to a VPC, this process can take a minute or so. During this time, you can\(aqt invoke or modify the function. The \fBState\fP , \fBStateReason\fP , and \fBStateReasonCode\fP fields in the response from  GetFunctionConfiguration indicate when the function is ready to invoke. For more information, see \fI\%Function States\fP .
+.sp
+A function has an unpublished version, and can have published versions and aliases. The unpublished version changes when you update your function\(aqs code and configuration. A published version is a snapshot of your function code and configuration that can\(aqt be changed. An alias is a named resource that maps to a version, and can be changed to map to a different version. Use the \fBPublish\fP parameter to create version \fB1\fP of your function from its initial configuration.
+.sp
+The other parameters let you configure version\-specific and function\-level settings. You can modify version\-specific settings later with  UpdateFunctionConfiguration . Function\-level settings apply to both the unpublished and published versions of the function, and include tags ( TagResource ) and per\-function concurrency limits ( PutFunctionConcurrency ).
+.sp
+You can use code signing if your deployment package is a .zip file archive. To enable code signing for this function, specify the ARN of a code\-signing configuration. When a user attempts to deploy a code package with  UpdateFunctionCode , Lambda checks that the code package has a valid signature from a trusted publisher. The code\-signing configuration includes set set of signing profiles, which define the trusted publishers for this function.
+.sp
+If another account or an AWS service invokes your function, use  AddPermission to grant permission by creating a resource\-based IAM policy. You can grant permissions at the function level, on a version, or on an alias.
+.sp
+To invoke your function directly, use  Invoke . To invoke your function in response to events in other AWS services, create an event source mapping ( CreateEventSourceMapping ), or configure a function trigger in the other service. For more information, see \fI\%Invoking Functions\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-function
+\-\-function\-name <value>
+[\-\-runtime <value>]
+\-\-role <value>
+[\-\-handler <value>]
+[\-\-code <value>]
+[\-\-description <value>]
+[\-\-timeout <value>]
+[\-\-memory\-size <value>]
+[\-\-publish | \-\-no\-publish]
+[\-\-vpc\-config <value>]
+[\-\-package\-type <value>]
+[\-\-dead\-letter\-config <value>]
+[\-\-environment <value>]
+[\-\-kms\-key\-arn <value>]
+[\-\-tracing\-config <value>]
+[\-\-tags <value>]
+[\-\-layers <value>]
+[\-\-file\-system\-configs <value>]
+[\-\-image\-config <value>]
+[\-\-code\-signing\-config\-arn <value>]
+[\-\-zip\-file <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-function\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Lambda function.
+.INDENT 0.0
+.INDENT 3.5
+\fBName formats\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBFunction name\fP \- \fBmy\-function\fP .
+.IP \(bu 2
+\fBFunction ARN\fP \- \fBarn:aws:lambda:us\-west\-2:123456789012:function:my\-function\fP .
+.IP \(bu 2
+\fBPartial ARN\fP \- \fB123456789012:function:my\-function\fP .
+.UNINDENT
+.sp
+The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-runtime\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the function\(aqs \fI\%runtime\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBnodejs\fP
+.IP \(bu 2
+\fBnodejs4.3\fP
+.IP \(bu 2
+\fBnodejs6.10\fP
+.IP \(bu 2
+\fBnodejs8.10\fP
+.IP \(bu 2
+\fBnodejs10.x\fP
+.IP \(bu 2
+\fBnodejs12.x\fP
+.IP \(bu 2
+\fBnodejs14.x\fP
+.IP \(bu 2
+\fBjava8\fP
+.IP \(bu 2
+\fBjava8.al2\fP
+.IP \(bu 2
+\fBjava11\fP
+.IP \(bu 2
+\fBpython2.7\fP
+.IP \(bu 2
+\fBpython3.6\fP
+.IP \(bu 2
+\fBpython3.7\fP
+.IP \(bu 2
+\fBpython3.8\fP
+.IP \(bu 2
+\fBdotnetcore1.0\fP
+.IP \(bu 2
+\fBdotnetcore2.0\fP
+.IP \(bu 2
+\fBdotnetcore2.1\fP
+.IP \(bu 2
+\fBdotnetcore3.1\fP
+.IP \(bu 2
+\fBnodejs4.3\-edge\fP
+.IP \(bu 2
+\fBgo1.x\fP
+.IP \(bu 2
+\fBruby2.5\fP
+.IP \(bu 2
+\fBruby2.7\fP
+.IP \(bu 2
+\fBprovided\fP
+.IP \(bu 2
+\fBprovided.al2\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the function\(aqs execution role.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-handler\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the method within your code that Lambda calls to execute your function. The format includes the file name. It can also include namespaces and other qualifiers, depending on the runtime. For more information, see \fI\%Programming Model\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-code\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The code for the function.
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon S3 bucket in the same AWS Region as your function. The bucket can be in a different AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+S3Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 key of the deployment package.
+.UNINDENT
+.UNINDENT
+.sp
+S3ObjectVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For versioned objects, the version of the deployment package object to use.
+.UNINDENT
+.UNINDENT
+.sp
+ImageUri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+URI of a container image in the Amazon ECR registry.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Bucket=string,S3Key=string,S3ObjectVersion=string,ImageUri=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Bucket": "string",
+  "S3Key": "string",
+  "S3ObjectVersion": "string",
+  "ImageUri": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the function.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-timeout\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that Lambda allows a function to run before stopping it. The default is 3 seconds. The maximum allowed value is 900 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-memory\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of memory available to the function at runtime. Increasing the function\(aqs memory also increases its CPU allocation. The default value is 128 MB. The value can be any multiple of 1 MB.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-publish\fP | \fB\-\-no\-publish\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to publish the first version of the function during creation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+For network connectivity to AWS resources in a VPC, specify a list of security groups and subnets in the VPC. When you connect a function to a VPC, it can only access resources and the internet through that VPC. For more information, see \fI\%VPC Settings\fP .
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of VPC subnet IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of VPC security groups IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SubnetIds=string,string,SecurityGroupIds=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SubnetIds": ["string", ...],
+  "SecurityGroupIds": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-package\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of deployment package. Set to \fBImage\fP for container image and set \fBZip\fP for ZIP archive.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBZip\fP
+.IP \(bu 2
+\fBImage\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dead\-letter\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A dead letter queue configuration that specifies the queue or topic where Lambda sends asynchronous events when they fail processing. For more information, see \fI\%Dead Letter Queues\fP .
+.sp
+TargetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TargetArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TargetArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-environment\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Environment variables that are accessible from function code during execution.
+.sp
+Variables \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Environment variable key\-value pairs.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Variables={KeyName1=string,KeyName2=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Variables": {"string": "string"
+    ...}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the AWS Key Management Service (AWS KMS) key that\(aqs used to encrypt your function\(aqs environment variables. If it\(aqs not provided, AWS Lambda uses a default service key.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tracing\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Set \fBMode\fP to \fBActive\fP to sample and trace a subset of incoming requests with AWS X\-Ray.
+.sp
+Mode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tracing mode.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Mode=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Mode": "Active"|"PassThrough"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fI\%tags\fP to apply to the function.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-layers\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fI\%function layers\fP to add to the function\(aqs execution environment. Specify each layer by its ARN, including the version.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-file\-system\-configs\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Connection settings for an Amazon EFS file system.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the connection between a Lambda function and an Amazon EFS file system.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Amazon EFS access point that provides access to the file system.
+.UNINDENT
+.UNINDENT
+.sp
+LocalMountPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path where the function can access the file system, starting with \fB/mnt/\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Arn=string,LocalMountPath=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Arn": "string",
+    "LocalMountPath": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-image\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fI\%Container image configuration values\fP that override the values in the container image Dockerfile.
+.UNINDENT
+.UNINDENT
+.sp
+EntryPoint \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the entry point to their application, which is typically the location of the runtime executable.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Command \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies parameters that you want to pass in with ENTRYPOINT.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+WorkingDirectory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the working directory.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+EntryPoint=string,string,Command=string,string,WorkingDirectory=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "EntryPoint": ["string", ...],
+  "Command": ["string", ...],
+  "WorkingDirectory": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-code\-signing\-config\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+To enable code signing for this function, specify the ARN of a code\-signing configuration. A code\-signing configuration includes a set of signing profiles, which define the trusted publishers for this function.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-zip\-file\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The path to the zip file of the code you are uploading. Specify \-\-zip\-file or \-\-code, but not both. Example: fileb://code.zip
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a Lambda function\fP
+.sp
+The following \fBcreate\-function\fP example creates a Lambda function named \fBmy\-function\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws lambda create\-function \e
+    \-\-function\-name my\-function \e
+    \-\-runtime nodejs10.x \e
+    \-\-zip\-file fileb://my\-function.zip \e
+    \-\-handler my\-function.handler \e
+    \-\-role arn:aws:iam::123456789012:role/service\-role/MyTestFunction\-role\-tges6bf4
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBmy\-function.zip\fP:
+This file is a deployment package that contains your function code and any dependencies.
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "CodeSha256": "PFn4S+er27qk+UuZSTKEQfNKG/XNn7QJs90mJgq6oH8=",
+    "FunctionName": "my\-function",
+    "CodeSize": 308,
+    "RevisionId": "873282ed\-4cd3\-4dc8\-a069\-d0c647e470c6",
+    "MemorySize": 128,
+    "FunctionArn": "arn:aws:lambda:us\-west\-2:123456789012:function:my\-function",
+    "Version": "$LATEST",
+    "Role": "arn:aws:iam::123456789012:role/service\-role/MyTestFunction\-role\-zgur6bf4",
+    "Timeout": 3,
+    "LastModified": "2019\-08\-14T22:26:11.234+0000",
+    "Handler": "my\-function.handler",
+    "Runtime": "nodejs10.x",
+    "Description": ""
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%AWS Lambda Function Configuration\fP in the \fIAWS Lambda Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+FunctionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the function.
+.UNINDENT
+.UNINDENT
+.sp
+FunctionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs Amazon Resource Name (ARN).
+.UNINDENT
+.UNINDENT
+.sp
+Runtime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The runtime environment for the Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+Role \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs execution role.
+.UNINDENT
+.UNINDENT
+.sp
+Handler \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The function that Lambda calls to begin executing your function.
+.UNINDENT
+.UNINDENT
+.sp
+CodeSize \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The size of the function\(aqs deployment package, in bytes.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs description.
+.UNINDENT
+.UNINDENT
+.sp
+Timeout \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time in seconds that Lambda allows a function to run before stopping it.
+.UNINDENT
+.UNINDENT
+.sp
+MemorySize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of memory available to the function at runtime.
+.UNINDENT
+.UNINDENT
+.sp
+LastModified \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the function was last updated, in \fI\%ISO\-8601 format\fP (YYYY\-MM\-DDThh:mm:ss.sTZD).
+.UNINDENT
+.UNINDENT
+.sp
+CodeSha256 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 hash of the function\(aqs deployment package.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+VpcConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs networking configuration.
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of VPC subnet IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of VPC security groups IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DeadLetterConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs dead letter queue.
+.sp
+TargetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Environment \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs environment variables.
+.sp
+Variables \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Environment variable key\-value pairs.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Error \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Error messages for environment variables that couldn\(aqt be applied.
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KMSKeyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The KMS key that\(aqs used to encrypt the function\(aqs environment variables. This key is only returned if you\(aqve configured a customer managed CMK.
+.UNINDENT
+.UNINDENT
+.sp
+TracingConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs AWS X\-Ray tracing configuration.
+.sp
+Mode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tracing mode.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MasterArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fI\%Lambda@Edge\fP functions, the ARN of the master function.
+.UNINDENT
+.UNINDENT
+.sp
+RevisionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The latest updated revision of the function or alias.
+.UNINDENT
+.UNINDENT
+.sp
+Layers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs \fI\%layers\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An \fI\%AWS Lambda layer\fP .
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the function layer.
+.UNINDENT
+.UNINDENT
+.sp
+CodeSize \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The size of the layer archive in bytes.
+.UNINDENT
+.UNINDENT
+.sp
+SigningProfileVersionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for a signing profile version.
+.UNINDENT
+.UNINDENT
+.sp
+SigningJobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of a signing job.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the function. When the state is \fBInactive\fP , you can reactivate the function by invoking it.
+.UNINDENT
+.UNINDENT
+.sp
+StateReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the function\(aqs current state.
+.UNINDENT
+.UNINDENT
+.sp
+StateReasonCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason code for the function\(aqs current state. When the code is \fBCreating\fP , you can\(aqt invoke or modify the function.
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdateStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the last update that was performed on the function. This is first set to \fBSuccessful\fP after function creation completes.
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdateStatusReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the last update that was performed on the function.
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdateStatusReasonCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason code for the last update that was performed on the function.
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Connection settings for an Amazon EFS file system.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the connection between a Lambda function and an Amazon EFS file system.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Amazon EFS access point that provides access to the file system.
+.UNINDENT
+.UNINDENT
+.sp
+LocalMountPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path where the function can access the file system, starting with \fB/mnt/\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PackageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of deployment package. Set to \fBImage\fP for container image and set \fBZip\fP for .zip file archive.
+.UNINDENT
+.UNINDENT
+.sp
+ImageConfigResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The function\(aqs image configuration values.
+.sp
+ImageConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration values that override the container image Dockerfile.
+.sp
+EntryPoint \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the entry point to their application, which is typically the location of the runtime executable.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Command \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies parameters that you want to pass in with ENTRYPOINT.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+WorkingDirectory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the working directory.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Error \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Error response to GetFunctionConfiguration.
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Error code.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SigningProfileVersionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the signing profile version.
+.UNINDENT
+.UNINDENT
+.sp
+SigningJobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the signing job.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,377 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ECS-DELETE-CAPACITY-PROVIDER" "a" "" ""
+.SH NAME
+ecs-delete-capacity-provider \- Deletes the specified capacity provider
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Deletes the specified capacity provider.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBFARGATE\fP and \fBFARGATE_SPOT\fP capacity providers are reserved and cannot be deleted. You can disassociate them from a cluster using either the  PutClusterCapacityProviders API or by deleting the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+Prior to a capacity provider being deleted, the capacity provider must be removed from the capacity provider strategy from all services. The  UpdateService API can be used to remove a capacity provider from a service\(aqs capacity provider strategy. When updating a service, the \fBforceNewDeployment\fP option can be used to ensure that any tasks using the Amazon EC2 instance capacity provided by the capacity provider are transitioned to use the capacity from the remaining capacity providers. Only capacity providers that are not associated with a cluster can be deleted. To remove a capacity provider from a cluster, you can either use  PutClusterCapacityProviders or delete the cluster.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  delete\-capacity\-provider
+\-\-capacity\-provider <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-capacity\-provider\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name or full Amazon Resource Name (ARN) of the capacity provider to delete.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To delete a capacity provider using the Amazon Resource Name (ARN)\fP
+.sp
+The following \fBdelete\-capacity\-provider\fP example deletes a capacity provider by specifying the Amazon Resource Name (ARN) of the capacity provider. The ARN as well as the status of the capacity provider deletion can be retrieved using the \fBdescribe\-capacity\-providers\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ecs delete\-capacity\-provider \e
+    \-\-capacity\-provider arn:aws:ecs:us\-west\-2:123456789012:capacity\-provider/ExampleCapacityProvider
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "capacityProvider": {
+        "capacityProviderArn": "arn:aws:ecs:us\-west\-2:123456789012:capacity\-provider/ExampleCapacityProvider",
+        "name": "ExampleCapacityProvider",
+        "status": "ACTIVE",
+        "autoScalingGroupProvider": {
+            "autoScalingGroupArn": "arn:aws:autoscaling:us\-west\-2:123456789012:autoScalingGroup:a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111:autoScalingGroupName/MyAutoScalingGroup",
+            "managedScaling": {
+                "status": "ENABLED",
+                "targetCapacity": 100,
+                "minimumScalingStepSize": 1,
+                "maximumScalingStepSize": 10000
+            },
+            "managedTerminationProtection": "DISABLED"
+        },
+        "updateStatus": "DELETE_IN_PROGRESS",
+        "tags": []
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Cluster capacity providers\fP in the \fIAmazon ECS Developer Guide\fP\&.
+.sp
+\fBExample 2: To delete a capacity provider using the name\fP
+.sp
+The following \fBdelete\-capacity\-provider\fP example deletes a capacity provider by specifying the short name of the capacity provider. The short name as well as the status of the capacity provider deletion can be retrieved using the \fBdescribe\-capacity\-providers\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ecs delete\-capacity\-provider \e
+    \-\-capacity\-provider ExampleCapacityProvider
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "capacityProvider": {
+        "capacityProviderArn": "arn:aws:ecs:us\-west\-2:123456789012:capacity\-provider/ExampleCapacityProvider",
+        "name": "ExampleCapacityProvider",
+        "status": "ACTIVE",
+        "autoScalingGroupProvider": {
+            "autoScalingGroupArn": "arn:aws:autoscaling:us\-west\-2:123456789012:autoScalingGroup:a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111:autoScalingGroupName/MyAutoScalingGroup",
+            "managedScaling": {
+                "status": "ENABLED",
+                "targetCapacity": 100,
+                "minimumScalingStepSize": 1,
+                "maximumScalingStepSize": 10000
+            },
+            "managedTerminationProtection": "DISABLED"
+        },
+        "updateStatus": "DELETE_IN_PROGRESS",
+        "tags": []
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Cluster capacity providers\fP in the \fIAmazon ECS Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+capacityProvider \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of the capacity provider.
+.sp
+capacityProviderArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) that identifies the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the capacity provider. Only capacity providers in an \fBACTIVE\fP state can be used in a cluster. When a capacity provider is successfully deleted, it will have an \fBINACTIVE\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+autoScalingGroupProvider \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Auto Scaling group settings for the capacity provider.
+.sp
+autoScalingGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) that identifies the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+managedScaling \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The managed scaling settings for the Auto Scaling group capacity provider.
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not to enable managed scaling for the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+targetCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The target capacity value for the capacity provider. The specified value must be greater than \fB0\fP and less than or equal to \fB100\fP . A value of \fB100\fP will result in the Amazon EC2 instances in your Auto Scaling group being completely utilized.
+.UNINDENT
+.UNINDENT
+.sp
+minimumScalingStepSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of container instances that Amazon ECS will scale in or scale out at one time. If this parameter is omitted, the default value of \fB1\fP is used.
+.UNINDENT
+.UNINDENT
+.sp
+maximumScalingStepSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of container instances that Amazon ECS will scale in or scale out at one time. If this parameter is omitted, the default value of \fB10000\fP is used.
+.UNINDENT
+.UNINDENT
+.sp
+instanceWarmupPeriod \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The period of time, in seconds, after a newly launched Amazon EC2 instance can contribute to CloudWatch metrics for Auto Scaling group. If this parameter is omitted, the default value of \fB300\fP seconds is used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+managedTerminationProtection \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The managed termination protection setting to use for the Auto Scaling group capacity provider. This determines whether the Auto Scaling group has managed termination protection.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+When using managed termination protection, managed scaling must also be used otherwise managed termination protection will not work.
+.UNINDENT
+.UNINDENT
+.sp
+When managed termination protection is enabled, Amazon ECS prevents the Amazon EC2 instances in an Auto Scaling group that contain tasks from being terminated during a scale\-in action. The Auto Scaling group and each instance in the Auto Scaling group must have instance protection from scale\-in actions enabled as well. For more information, see \fI\%Instance Protection\fP in the \fIAWS Auto Scaling User Guide\fP .
+.sp
+When managed termination protection is disabled, your Amazon EC2 instances are not protected from termination when the Auto Scaling group scales in.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+updateStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The update status of the capacity provider. The following are the possible states that will be returned.
+.INDENT 0.0
+.INDENT 3.5
+DELETE_IN_PROGRESS
+.UNINDENT
+.UNINDENT
+.sp
+The capacity provider is in the process of being deleted.
+.INDENT 0.0
+.INDENT 3.5
+DELETE_COMPLETE
+.UNINDENT
+.UNINDENT
+.sp
+The capacity provider has been successfully deleted and will have an \fBINACTIVE\fP status.
+.INDENT 0.0
+.INDENT 3.5
+DELETE_FAILED
+.UNINDENT
+.UNINDENT
+.sp
+The capacity provider was unable to be deleted. The update status reason will provide further details about why the delete failed.
+.UNINDENT
+.UNINDENT
+.sp
+updateStatusReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The update status reason. This provides further details about the update status for the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to the capacity provider to help you categorize and organize it. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A \fBkey\fP is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that make up a tag. A \fBvalue\fP acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

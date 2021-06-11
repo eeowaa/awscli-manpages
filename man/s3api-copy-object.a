@@ -1,0 +1,782 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-COPY-OBJECT" "a" "" ""
+.SH NAME
+s3api-copy-object \- Creates a copy of an object that is already stored in Amazon S3
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a copy of an object that is already stored in Amazon S3.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can store individual objects of up to 5 TB in Amazon S3. You create a copy of your object up to 5 GB in size in a single atomic action using this API. However, to copy an object greater than 5 GB, you must use the multipart upload Upload Part \- Copy API. For more information, see \fI\%Copy Object Using the REST Multipart Upload API\fP .
+.UNINDENT
+.UNINDENT
+.sp
+All copy requests must be authenticated. Additionally, you must have \fIread\fP access to the source object and \fIwrite\fP access to the destination bucket. For more information, see \fI\%REST Authentication\fP . Both the Region that you want to copy the object from and the Region that you want to copy the object to must be enabled for your account.
+.sp
+A copy request might return an error when Amazon S3 receives the copy request or while Amazon S3 is copying the files. If the error occurs before the copy action starts, you receive a standard Amazon S3 error. If the error occurs during the copy operation, the error response is embedded in the \fB200 OK\fP response. This means that a \fB200 OK\fP response can contain either a success or an error. Design your application to parse the contents of the response and handle it appropriately.
+.sp
+If the copy is successful, you receive a response with information about the copied object.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the request is an HTTP 1.1 request, the response is chunk encoded. If it were not, it would not contain the content\-length, and you would need to read the entire body.
+.UNINDENT
+.UNINDENT
+.sp
+The copy request charge is based on the storage class and Region that you specify for the destination object. For pricing information, see \fI\%Amazon S3 pricing\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Amazon S3 transfer acceleration does not support cross\-Region copies. If you request a cross\-Region copy using a transfer acceleration endpoint, you get a 400 \fBBad Request\fP error. For more information, see \fI\%Transfer Acceleration\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fBMetadata\fP
+.UNINDENT
+.UNINDENT
+.sp
+When copying an object, you can preserve all metadata (default) or specify new metadata. However, the ACL is not preserved and is set to private for the user making the request. To override the default ACL setting, specify a new ACL when generating a copy request. For more information, see \fI\%Using ACLs\fP .
+.sp
+To specify whether you want the object metadata copied from the source object or replaced with metadata provided in the request, you can optionally add the \fBx\-amz\-metadata\-directive\fP header. When you grant permissions, you can use the \fBs3:x\-amz\-metadata\-directive\fP condition key to enforce certain metadata behavior when objects are uploaded. For more information, see \fI\%Specifying Conditions in a Policy\fP in the \fIAmazon S3 User Guide\fP . For a complete list of Amazon S3\-specific condition keys, see \fI\%Actions, Resources, and Condition Keys for Amazon S3\fP .
+.INDENT 0.0
+.INDENT 3.5
+** \fBx\-amz\-copy\-source\-if\fP Headers**
+.UNINDENT
+.UNINDENT
+.sp
+To only copy an object under certain conditions, such as whether the \fBEtag\fP matches or whether the object was modified before or after a specified date, use the following request parameters:
+.INDENT 0.0
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-match\fP
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-none\-match\fP
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-unmodified\-since\fP
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-modified\-since\fP
+.UNINDENT
+.sp
+If both the \fBx\-amz\-copy\-source\-if\-match\fP and \fBx\-amz\-copy\-source\-if\-unmodified\-since\fP headers are present in the request and evaluate as follows, Amazon S3 returns \fB200 OK\fP and copies the data:
+.INDENT 0.0
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-match\fP condition evaluates to true
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-unmodified\-since\fP condition evaluates to false
+.UNINDENT
+.sp
+If both the \fBx\-amz\-copy\-source\-if\-none\-match\fP and \fBx\-amz\-copy\-source\-if\-modified\-since\fP headers are present in the request and evaluate as follows, Amazon S3 returns the \fB412 Precondition Failed\fP response code:
+.INDENT 0.0
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-none\-match\fP condition evaluates to false
+.IP \(bu 2
+\fBx\-amz\-copy\-source\-if\-modified\-since\fP condition evaluates to true
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+All headers with the \fBx\-amz\-\fP prefix, including \fBx\-amz\-copy\-source\fP , must be signed.
+.UNINDENT
+.UNINDENT
+.sp
+\fBServer\-side encryption\fP
+.UNINDENT
+.UNINDENT
+.sp
+When you perform a CopyObject operation, you can optionally use the appropriate encryption\-related headers to encrypt the object using server\-side encryption with AWS managed encryption keys (SSE\-S3 or SSE\-KMS) or a customer\-provided encryption key. With server\-side encryption, Amazon S3 encrypts your data as it writes it to disks in its data centers and decrypts the data when you access it. For more information about server\-side encryption, see \fI\%Using Server\-Side Encryption\fP .
+.sp
+If a target object uses SSE\-KMS, you can enable an S3 Bucket Key for the object. For more information, see \fI\%Amazon S3 Bucket Keys\fP in the \fIAmazon S3 User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBAccess Control List (ACL)\-Specific Request Headers\fP
+.UNINDENT
+.UNINDENT
+.sp
+When copying an object, you can optionally use headers to grant ACL\-based permissions. By default, all objects are private. Only the owner has full access control. When adding a new object, you can grant permissions to individual AWS accounts or to predefined groups defined by Amazon S3. These permissions are then added to the ACL on the object. For more information, see \fI\%Access Control List (ACL) Overview\fP and \fI\%Managing ACLs Using the REST API\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBStorage Class Options\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can use the \fBCopyObject\fP action to change the storage class of an object that is already stored in Amazon S3 using the \fBStorageClass\fP parameter. For more information, see \fI\%Storage Classes\fP in the \fIAmazon S3 User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBVersioning\fP
+.UNINDENT
+.UNINDENT
+.sp
+By default, \fBx\-amz\-copy\-source\fP identifies the current version of an object to copy. If the current version is a delete marker, Amazon S3 behaves as if the object was deleted. To copy a different version, use the \fBversionId\fP subresource.
+.sp
+If you enable versioning on the target bucket, Amazon S3 generates a unique version ID for the object being copied. This version ID is different from the version ID of the source object. Amazon S3 returns the version ID of the copied object in the \fBx\-amz\-version\-id\fP response header in the response.
+.sp
+If you do not enable versioning or suspend it on the target bucket, the version ID that Amazon S3 generates is always null.
+.sp
+If the source object\(aqs storage class is GLACIER, you must restore a copy of this object before you can use it as a source object for the copy operation. For more information, see \fI\%RestoreObject\fP .
+.sp
+The following operations are related to \fBCopyObject\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%PutObject\fP
+.IP \(bu 2
+\fI\%GetObject\fP
+.UNINDENT
+.sp
+For more information, see \fI\%Copying Objects\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  copy\-object
+[\-\-acl <value>]
+\-\-bucket <value>
+[\-\-cache\-control <value>]
+[\-\-content\-disposition <value>]
+[\-\-content\-encoding <value>]
+[\-\-content\-language <value>]
+[\-\-content\-type <value>]
+\-\-copy\-source <value>
+[\-\-copy\-source\-if\-match <value>]
+[\-\-copy\-source\-if\-modified\-since <value>]
+[\-\-copy\-source\-if\-none\-match <value>]
+[\-\-copy\-source\-if\-unmodified\-since <value>]
+[\-\-expires <value>]
+[\-\-grant\-full\-control <value>]
+[\-\-grant\-read <value>]
+[\-\-grant\-read\-acp <value>]
+[\-\-grant\-write\-acp <value>]
+\-\-key <value>
+[\-\-metadata <value>]
+[\-\-metadata\-directive <value>]
+[\-\-tagging\-directive <value>]
+[\-\-server\-side\-encryption <value>]
+[\-\-storage\-class <value>]
+[\-\-website\-redirect\-location <value>]
+[\-\-sse\-customer\-algorithm <value>]
+[\-\-sse\-customer\-key <value>]
+[\-\-sse\-customer\-key\-md5 <value>]
+[\-\-ssekms\-key\-id <value>]
+[\-\-ssekms\-encryption\-context <value>]
+[\-\-bucket\-key\-enabled | \-\-no\-bucket\-key\-enabled]
+[\-\-copy\-source\-sse\-customer\-algorithm <value>]
+[\-\-copy\-source\-sse\-customer\-key <value>]
+[\-\-copy\-source\-sse\-customer\-key\-md5 <value>]
+[\-\-request\-payer <value>]
+[\-\-tagging <value>]
+[\-\-object\-lock\-mode <value>]
+[\-\-object\-lock\-retain\-until\-date <value>]
+[\-\-object\-lock\-legal\-hold\-status <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-expected\-source\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-acl\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The canned ACL to apply to the object.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBprivate\fP
+.IP \(bu 2
+\fBpublic\-read\fP
+.IP \(bu 2
+\fBpublic\-read\-write\fP
+.IP \(bu 2
+\fBauthenticated\-read\fP
+.IP \(bu 2
+\fBaws\-exec\-read\fP
+.IP \(bu 2
+\fBbucket\-owner\-read\fP
+.IP \(bu 2
+\fBbucket\-owner\-full\-control\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the destination bucket.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\-control\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies caching behavior along the request/reply chain.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-disposition\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies presentational information for the object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-encoding\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies what content encodings have been applied to the object and thus what decoding mechanisms must be applied to obtain the media\-type referenced by the Content\-Type header field.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-language\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The language the content is in.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A standard MIME type describing the format of the object data.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the source object for the copy operation. You specify the value in one of two formats, depending on whether you want to access the source object through an \fI\%access point\fP :
+.INDENT 0.0
+.IP \(bu 2
+For objects not accessed through an access point, specify the name of the source bucket and the key of the source object, separated by a slash (/). For example, to copy the object \fBreports/january.pdf\fP from the bucket \fBawsexamplebucket\fP , use \fBawsexamplebucket/reports/january.pdf\fP . The value must be URL encoded.
+.IP \(bu 2
+For objects accessed through access points, specify the Amazon Resource Name (ARN) of the object as accessed through the access point, in the format \fBarn:aws:s3:<Region>:<account\-id>:accesspoint/<access\-point\-name>/object/<key>\fP . For example, to copy the object \fBreports/january.pdf\fP through access point \fBmy\-access\-point\fP owned by account \fB123456789012\fP in Region \fBus\-west\-2\fP , use the URL encoding of \fBarn:aws:s3:us\-west\-2:123456789012:accesspoint/my\-access\-point/object/reports/january.pdf\fP . The value must be URL encoded.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Amazon S3 supports copy operations using access points only when the source and destination buckets are in the same AWS Region.
+.UNINDENT
+.UNINDENT
+.sp
+Alternatively, for objects accessed through Amazon S3 on Outposts, specify the ARN of the object as accessed in the format \fBarn:aws:s3\-outposts:<Region>:<account\-id>:outpost/<outpost\-id>/object/<key>\fP . For example, to copy the object \fBreports/january.pdf\fP through outpost \fBmy\-outpost\fP owned by account \fB123456789012\fP in Region \fBus\-west\-2\fP , use the URL encoding of \fBarn:aws:s3\-outposts:us\-west\-2:123456789012:outpost/my\-outpost/object/reports/january.pdf\fP . The value must be URL encoded.
+.UNINDENT
+.UNINDENT
+.sp
+To copy a specific version of an object, append \fB?versionId=<version\-id>\fP to the value (for example, \fBawsexamplebucket/reports/january.pdf?versionId=QUpfdndhfd8438MNFDN93jdnJFkdmqnh893\fP ). If you don\(aqt specify a version ID, Amazon S3 copies the latest version of the source object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-match\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if its entity tag (ETag) matches the specified tag.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-modified\-since\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if it has been modified since the specified time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-none\-match\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if its entity tag (ETag) is different than the specified ETag.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-if\-unmodified\-since\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Copies the object if it hasn\(aqt been modified since the specified time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expires\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time at which the object is no longer cacheable.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-full\-control\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Gives the grantee READ, READ_ACP, and WRITE_ACP permissions on the object.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-read\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Allows grantee to read the object data and its metadata.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-read\-acp\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Allows grantee to read the object ACL.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-write\-acp\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Allows grantee to write the ACL for the applicable object.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the destination object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metadata\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of metadata to store with the object in S3.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metadata\-directive\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the metadata is copied from the source object or replaced with metadata provided in the request.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCOPY\fP
+.IP \(bu 2
+\fBREPLACE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tagging\-directive\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the object tag\-set are copied from the source object or replaced with tag\-set provided in the request.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCOPY\fP
+.IP \(bu 2
+\fBREPLACE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-server\-side\-encryption\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing this object in Amazon S3 (for example, AES256, aws:kms).
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAES256\fP
+.IP \(bu 2
+\fBaws:kms\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-storage\-class\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+By default, Amazon S3 uses the STANDARD Storage Class to store newly created objects. The STANDARD storage class provides high durability and high availability. Depending on performance needs, you can specify a different Storage Class. Amazon S3 on Outposts only uses the OUTPOSTS Storage Class. For more information, see \fI\%Storage Classes\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSTANDARD\fP
+.IP \(bu 2
+\fBREDUCED_REDUNDANCY\fP
+.IP \(bu 2
+\fBSTANDARD_IA\fP
+.IP \(bu 2
+\fBONEZONE_IA\fP
+.IP \(bu 2
+\fBINTELLIGENT_TIERING\fP
+.IP \(bu 2
+\fBGLACIER\fP
+.IP \(bu 2
+\fBDEEP_ARCHIVE\fP
+.IP \(bu 2
+\fBOUTPOSTS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-website\-redirect\-location\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is configured as a website, redirects requests for this object to another object in the same bucket or to an external URL. Amazon S3 stores the value of this header in the object metadata.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the algorithm to use to when encrypting the object (for example, AES256).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the customer\-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon S3 does not store the encryption key. The key must be appropriate for use with the algorithm specified in the \fBx\-amz\-server\-side\-encryption\-customer\-algorithm\fP header.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the 128\-bit MD5 digest of the encryption key according to RFC 1321. Amazon S3 uses this header for a message integrity check to ensure that the encryption key was transmitted without error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ssekms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the AWS KMS key ID to use for object encryption. All GET and PUT requests for an object protected by AWS KMS will fail if not made via SSL or using SigV4. For information about configuring using any of the officially supported AWS SDKs and AWS CLI, see \fI\%Specifying the Signature Version in Request Authentication\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ssekms\-encryption\-context\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the AWS KMS Encryption Context to use for object encryption. The value of this header is a base64\-encoded UTF\-8 string holding JSON with the encryption context key\-value pairs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bucket\-key\-enabled\fP | \fB\-\-no\-bucket\-key\-enabled\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether Amazon S3 should use an S3 Bucket Key for object encryption with server\-side encryption using AWS KMS (SSE\-KMS). Setting this header to \fBtrue\fP causes Amazon S3 to use an S3 Bucket Key for object encryption with SSE\-KMS.
+.sp
+Specifying this header with a COPY action doesn’t affect bucket\-level settings for S3 Bucket Key.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-sse\-customer\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the algorithm to use when decrypting the source object (for example, AES256).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-sse\-customer\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the customer\-provided encryption key for Amazon S3 to use to decrypt the source object. The encryption key provided in this header must be one that was used when the source object was created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-source\-sse\-customer\-key\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the 128\-bit MD5 digest of the encryption key according to RFC 1321. Amazon S3 uses this header for a message integrity check to ensure that the encryption key was transmitted without error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tagging\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag\-set for the object destination object this value must be used in conjunction with the \fBTaggingDirective\fP . The tag\-set must be encoded as URL Query parameters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-object\-lock\-mode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Object Lock mode that you want to apply to the copied object.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBGOVERNANCE\fP
+.IP \(bu 2
+\fBCOMPLIANCE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-object\-lock\-retain\-until\-date\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when you want the copied object\(aqs Object Lock to expire.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-object\-lock\-legal\-hold\-status\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether you want to apply a Legal Hold to the copied object.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBON\fP
+.IP \(bu 2
+\fBOFF\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected destination bucket owner. If the destination bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-source\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected source bucket owner. If the source bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command copies an object from \fBbucket\-1\fP to \fBbucket\-2\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api copy\-object \-\-copy\-source bucket\-1/test.txt \-\-key test.txt \-\-bucket bucket\-2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "CopyObjectResult": {
+        "LastModified": "2015\-11\-10T01:07:25.000Z",
+        "ETag": "\e"589c8b79c230a6ecd5a7e1d040a9a030\e""
+    },
+    "VersionId": "YdnYvTCVDqRRFA.NFJjy36p0hxifMlkA"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+CopyObjectResult \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for all response elements.
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the ETag of the new object. The ETag reflects only changes to the contents of an object, not its metadata. The source and destination ETag is identical for a successfully copied non\-multipart object.
+.UNINDENT
+.UNINDENT
+.sp
+LastModified \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Creation date of the object.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Expiration \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the object expiration is configured, the response includes this header.
+.UNINDENT
+.UNINDENT
+.sp
+CopySourceVersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Version of the copied object in the destination bucket.
+.UNINDENT
+.UNINDENT
+.sp
+VersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Version ID of the newly created copy.
+.UNINDENT
+.UNINDENT
+.sp
+ServerSideEncryption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing this object in Amazon S3 (for example, AES256, aws:kms).
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header confirming the encryption algorithm used.
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerKeyMD5 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header to provide round\-trip message integrity verification of the customer\-provided encryption key.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the ID of the AWS Key Management Service (AWS KMS) symmetric customer managed customer master key (CMK) that was used for the object.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMSEncryptionContext \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the AWS KMS Encryption Context to use for object encryption. The value of this header is a base64\-encoded UTF\-8 string holding JSON with the encryption context key\-value pairs.
+.UNINDENT
+.UNINDENT
+.sp
+BucketKeyEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the copied object uses an S3 Bucket Key for server\-side encryption with AWS KMS (SSE\-KMS).
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

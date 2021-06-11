@@ -1,0 +1,274 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONFIGSERVICE-DESCRIBE-COMPLIANCE-BY-CONFIG-RULE" "a" "" ""
+.SH NAME
+configservice-describe-compliance-by-config-rule \- Indicates whether the specified AWS Config rules are compliant
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Indicates whether the specified AWS Config rules are compliant. If a rule is noncompliant, this action returns the number of AWS resources that do not comply with the rule.
+.sp
+A rule is compliant if all of the evaluated resources comply with it. It is noncompliant if any of these resources do not comply.
+.sp
+If AWS Config has no current evaluation results for the rule, it returns \fBINSUFFICIENT_DATA\fP . This result might indicate one of the following conditions:
+.INDENT 0.0
+.IP \(bu 2
+AWS Config has never invoked an evaluation for the rule. To check whether it has, use the \fBDescribeConfigRuleEvaluationStatus\fP action to get the \fBLastSuccessfulInvocationTime\fP and \fBLastFailedInvocationTime\fP .
+.IP \(bu 2
+The rule\(aqs AWS Lambda function is failing to send evaluation results to AWS Config. Verify that the role you assigned to your configuration recorder includes the \fBconfig:PutEvaluations\fP permission. If the rule is a custom rule, verify that the AWS Lambda execution role includes the \fBconfig:PutEvaluations\fP permission.
+.IP \(bu 2
+The rule\(aqs AWS Lambda function has returned \fBNOT_APPLICABLE\fP for all evaluation results. This can occur if the resources were deleted or removed from the rule\(aqs scope.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBdescribe\-compliance\-by\-config\-rule\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBComplianceByConfigRules\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-compliance\-by\-config\-rule
+[\-\-config\-rule\-names <value>]
+[\-\-compliance\-types <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-config\-rule\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify one or more AWS Config rule names to filter the results by rule.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-compliance\-types\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Filters the results by compliance.
+.sp
+The allowed values are \fBCOMPLIANT\fP and \fBNON_COMPLIANT\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  COMPLIANT
+  NON_COMPLIANT
+  NOT_APPLICABLE
+  INSUFFICIENT_DATA
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get compliance information for your AWS Config rules\fP
+.sp
+The following command returns compliance information for each AWS Config rule that is violated by one or more AWS resources:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws configservice describe\-compliance\-by\-config\-rule \-\-compliance\-types NON_COMPLIANT
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+In the output, the value for each \fBCappedCount\fP attribute indicates how many resources do not comply with the related rule. For example, the following output indicates that 3 resources do not comply with the rule named \fBInstanceTypesAreT2micro\fP\&.
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ComplianceByConfigRules": [
+        {
+            "Compliance": {
+                "ComplianceContributorCount": {
+                    "CappedCount": 3,
+                    "CapExceeded": false
+                },
+                "ComplianceType": "NON_COMPLIANT"
+            },
+            "ConfigRuleName": "InstanceTypesAreT2micro"
+        },
+        {
+            "Compliance": {
+                "ComplianceContributorCount": {
+                    "CappedCount": 10,
+                    "CapExceeded": false
+                },
+                "ComplianceType": "NON_COMPLIANT"
+            },
+            "ConfigRuleName": "RequiredTagsForVolumes"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+ComplianceByConfigRules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether each of the specified AWS Config rules is compliant.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether an AWS Config rule is compliant. A rule is compliant if all of the resources that the rule evaluated comply with it. A rule is noncompliant if any of these resources do not comply.
+.sp
+ConfigRuleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the AWS Config rule.
+.UNINDENT
+.UNINDENT
+.sp
+Compliance \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the AWS Config rule is compliant.
+.sp
+ComplianceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether an AWS resource or AWS Config rule is compliant.
+.sp
+A resource is compliant if it complies with all of the AWS Config rules that evaluate it. A resource is noncompliant if it does not comply with one or more of these rules.
+.sp
+A rule is compliant if all of the resources that the rule evaluates comply with it. A rule is noncompliant if any of these resources do not comply.
+.sp
+AWS Config returns the \fBINSUFFICIENT_DATA\fP value when no evaluation results are available for the AWS resource or AWS Config rule.
+.sp
+For the \fBCompliance\fP data type, AWS Config supports only \fBCOMPLIANT\fP , \fBNON_COMPLIANT\fP , and \fBINSUFFICIENT_DATA\fP values. AWS Config does not support the \fBNOT_APPLICABLE\fP value for the \fBCompliance\fP data type.
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceContributorCount \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The number of AWS resources or AWS Config rules that cause a result of \fBNON_COMPLIANT\fP , up to a maximum number.
+.sp
+CappedCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of AWS resources or AWS Config rules responsible for the current compliance of the item.
+.UNINDENT
+.UNINDENT
+.sp
+CapExceeded \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the maximum count is reached.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that you use in a subsequent request to get the next page of results in a paginated response.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

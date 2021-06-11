@@ -1,0 +1,136 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-UPDATE-SERVICE-SETTING" "a" "" ""
+.SH NAME
+ssm-update-service-setting \- Services map a SettingId object to a setting value
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.INDENT 0.0
+.INDENT 3.5
+\fBServiceSetting\fP is an account\-level setting for an AWS service. This setting defines how a user interacts with or uses a service or a feature of a service. For example, if an AWS service charges money to the account based on feature or service usage, then the AWS service team might create a default setting of "false". This means the user can\(aqt use this feature unless they change the setting to "true" and intentionally opt in for a paid feature.
+.UNINDENT
+.UNINDENT
+.sp
+Services map a \fBSettingId\fP object to a setting value. AWS services teams define the default value for a \fBSettingId\fP . You can\(aqt create a new \fBSettingId\fP , but you can overwrite the default value if you have the \fBssm:UpdateServiceSetting\fP permission for the setting. Use the  GetServiceSetting API action to view the current value. Or, use the  ResetServiceSetting to change the value back to the original value defined by the AWS service team.
+.sp
+Update the service setting for the account.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-service\-setting
+\-\-setting\-id <value>
+\-\-setting\-value <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-setting\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the service setting to reset. For example, \fBarn:aws:ssm:us\-east\-1:111122223333:servicesetting/ssm/parameter\-store/high\-throughput\-enabled\fP . The setting ID can be one of the following.
+.INDENT 0.0
+.IP \(bu 2
+\fB/ssm/automation/customer\-script\-log\-destination\fP
+.IP \(bu 2
+\fB/ssm/automation/customer\-script\-log\-group\-name\fP
+.IP \(bu 2
+\fB/ssm/parameter\-store/default\-parameter\-tier\fP
+.IP \(bu 2
+\fB/ssm/parameter\-store/high\-throughput\-enabled\fP
+.IP \(bu 2
+\fB/ssm/managed\-instance/activation\-tier\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-setting\-value\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The new value to specify for the service setting. For the \fB/ssm/parameter\-store/default\-parameter\-tier\fP setting ID, the setting value can be one of the following.
+.INDENT 0.0
+.IP \(bu 2
+Standard
+.IP \(bu 2
+Advanced
+.IP \(bu 2
+Intelligent\-Tiering
+.UNINDENT
+.sp
+For the \fB/ssm/parameter\-store/high\-throughput\-enabled\fP , and \fB/ssm/managed\-instance/activation\-tier\fP setting IDs, the setting value can be true or false.
+.sp
+For the \fB/ssm/automation/customer\-script\-log\-destination\fP setting ID, the setting value can be CloudWatch.
+.sp
+For the \fB/ssm/automation/customer\-script\-log\-group\-name\fP setting ID, the setting value can be the name of a CloudWatch Logs log group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update the service setting for Parameter Store throughput\fP
+.sp
+The following \fBupdate\-service\-setting\fP example updates the current service setting for Parameter Store throughput in the specified region to use increased throughput.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm update\-service\-setting \e
+    \-\-setting\-id arn:aws:ssm:us\-east\-1:123456789012:servicesetting/ssm/parameter\-store/high\-throughput\-enabled \e
+    \-\-setting\-value true
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Increasing Parameter Store Throughput\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

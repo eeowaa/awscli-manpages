@@ -1,0 +1,363 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SWF-START-WORKFLOW-EXECUTION" "a" "" ""
+.SH NAME
+swf-start-workflow-execution \- Starts an execution of the workflow type in the specified domain using the provided workflowId and input data
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Starts an execution of the workflow type in the specified domain using the provided \fBworkflowId\fP and input data.
+.sp
+This action returns the newly started workflow execution.
+.INDENT 0.0
+.INDENT 3.5
+\fBAccess Control\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can use IAM policies to control this action\(aqs access to Amazon SWF resources as follows:
+.INDENT 0.0
+.IP \(bu 2
+Use a \fBResource\fP element with the domain name to limit the action to only specified domains.
+.IP \(bu 2
+Use an \fBAction\fP element to allow or deny permission to call this action.
+.IP \(bu 2
+Constrain the following parameters by using a \fBCondition\fP element with the appropriate keys.
+.INDENT 2.0
+.IP \(bu 2
+\fBtagList.member.0\fP : The key is \fBswf:tagList.member.0\fP .
+.IP \(bu 2
+\fBtagList.member.1\fP : The key is \fBswf:tagList.member.1\fP .
+.IP \(bu 2
+\fBtagList.member.2\fP : The key is \fBswf:tagList.member.2\fP .
+.IP \(bu 2
+\fBtagList.member.3\fP : The key is \fBswf:tagList.member.3\fP .
+.IP \(bu 2
+\fBtagList.member.4\fP : The key is \fBswf:tagList.member.4\fP .
+.IP \(bu 2
+\fBtaskList\fP : String constraint. The key is \fBswf:taskList.name\fP .
+.IP \(bu 2
+\fBworkflowType.name\fP : String constraint. The key is \fBswf:workflowType.name\fP .
+.IP \(bu 2
+\fBworkflowType.version\fP : String constraint. The key is \fBswf:workflowType.version\fP .
+.UNINDENT
+.UNINDENT
+.sp
+If the caller doesn\(aqt have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute\(aqs \fBcause\fP parameter is set to \fBOPERATION_NOT_PERMITTED\fP . For details and example IAM policies, see \fI\%Using IAM to Manage Access to Amazon SWF Workflows\fP in the \fIAmazon SWF Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-workflow\-execution
+\-\-domain <value>
+\-\-workflow\-id <value>
+\-\-workflow\-type <value>
+[\-\-task\-list <value>]
+[\-\-task\-priority <value>]
+[\-\-input <value>]
+[\-\-execution\-start\-to\-close\-timeout <value>]
+[\-\-tag\-list <value>]
+[\-\-task\-start\-to\-close\-timeout <value>]
+[\-\-child\-policy <value>]
+[\-\-lambda\-role <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain in which the workflow execution is created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-workflow\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The user defined identifier associated with the workflow execution. You can use this to associate a custom identifier with the workflow execution. You may specify the same identifier if a workflow execution is logically a \fIrestart\fP of a previous execution. You cannot have two open workflow executions with the same \fBworkflowId\fP at the same time within the same domain.
+.sp
+The specified string must not start or end with whitespace. It must not contain a \fB:\fP (colon), \fB/\fP (slash), \fB|\fP (vertical bar), or any control characters (\fB\eu0000\-\eu001f\fP | \fB\eu007f\-\eu009f\fP ). Also, it must not \fIbe\fP the literal string \fBarn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-workflow\-type\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The type of the workflow to start.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the workflow type.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The combination of workflow type name and version must be unique with in a domain.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the workflow type.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The combination of workflow type name and version must be unique with in a domain.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string,version=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "name": "string",
+  "version": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-list\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The task list to use for the decision tasks generated for this workflow execution. This overrides the \fBdefaultTaskList\fP specified when registering the workflow type.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A task list for this workflow execution must be specified either as a default for the workflow type or through this parameter. If neither this parameter is set nor a default task list was specified at registration time then a fault is returned.
+.UNINDENT
+.UNINDENT
+.sp
+The specified string must not start or end with whitespace. It must not contain a \fB:\fP (colon), \fB/\fP (slash), \fB|\fP (vertical bar), or any control characters (\fB\eu0000\-\eu001f\fP | \fB\eu007f\-\eu009f\fP ). Also, it must not \fIbe\fP the literal string \fBarn\fP .
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the task list.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "name": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-priority\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The task priority to use for this workflow execution. This overrides any default priority that was assigned when the workflow type was registered. If not set, then the default task priority for the workflow type is used. Valid values are integers that range from Java\(aqs \fBInteger.MIN_VALUE\fP (\-2147483648) to \fBInteger.MAX_VALUE\fP (2147483647). Higher numbers indicate higher priority.
+.sp
+For more information about setting task priority, see \fI\%Setting Task Priority\fP in the \fIAmazon SWF Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-input\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The input for the workflow execution. This is a free form string which should be meaningful to the workflow you are starting. This \fBinput\fP is made available to the new workflow execution in the \fBWorkflowExecutionStarted\fP history event.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-execution\-start\-to\-close\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The total duration for this workflow execution. This overrides the defaultExecutionStartToCloseTimeout specified when registering the workflow type.
+.sp
+The duration is specified in seconds; an integer greater than or equal to \fB0\fP . Exceeding this limit causes the workflow execution to time out. Unlike some of the other timeout parameters in Amazon SWF, you cannot specify a value of "NONE" for this timeout; there is a one\-year max limit on the time that a workflow execution can run.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An execution start\-to\-close timeout must be specified either through this parameter or as a default when the workflow type is registered. If neither this parameter nor a default execution start\-to\-close timeout is specified, a fault is returned.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of tags to associate with the workflow execution. You can specify a maximum of 5 tags. You can list workflow executions with a specific tag by calling  ListOpenWorkflowExecutions or  ListClosedWorkflowExecutions and specifying a  TagFilter .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-start\-to\-close\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the maximum duration of decision tasks for this workflow execution. This parameter overrides the \fBdefaultTaskStartToCloseTimout\fP specified when registering the workflow type using  RegisterWorkflowType .
+.sp
+The duration is specified in seconds, an integer greater than or equal to \fB0\fP . You can use \fBNONE\fP to specify unlimited duration.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A task start\-to\-close timeout for this workflow execution must be specified either as a default for the workflow type or through this parameter. If neither this parameter is set nor a default task start\-to\-close timeout was specified at registration time then a fault is returned.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-child\-policy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the policy to use for the child workflow executions of this workflow execution if it is terminated, by calling the  TerminateWorkflowExecution action explicitly or due to an expired timeout. This policy overrides the default child policy specified when registering the workflow type using  RegisterWorkflowType .
+.sp
+The supported child policies are:
+.INDENT 0.0
+.IP \(bu 2
+\fBTERMINATE\fP – The child executions are terminated.
+.IP \(bu 2
+\fBREQUEST_CANCEL\fP – A request to cancel is attempted for each child execution by recording a \fBWorkflowExecutionCancelRequested\fP event in its history. It is up to the decider to take appropriate actions when it receives an execution history with this event.
+.IP \(bu 2
+\fBABANDON\fP – No action is taken. The child executions continue to run.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A child policy for this workflow execution must be specified either as a default for the workflow type or through this parameter. If neither this parameter is set nor a default child policy was specified at registration time then a fault is returned.
+.UNINDENT
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTERMINATE\fP
+.IP \(bu 2
+\fBREQUEST_CANCEL\fP
+.IP \(bu 2
+\fBABANDON\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-lambda\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The IAM role to attach to this workflow execution.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Executions of this workflow type need IAM roles to invoke Lambda functions. If you don\(aqt attach an IAM role, any attempt to schedule a Lambda task fails. This results in a \fBScheduleLambdaFunctionFailed\fP history event. For more information, see \fI\%https://docs.aws.amazon.com/amazonswf/latest/developerguide/lambda\-task.html\fP in the \fIAmazon SWF Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+runId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBrunId\fP of a workflow execution. This ID is generated by the service and can be used to uniquely identify the workflow execution within a domain.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

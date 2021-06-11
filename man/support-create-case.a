@@ -1,0 +1,229 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SUPPORT-CREATE-CASE" "a" "" ""
+.SH NAME
+support-create-case \- Creates a case in the AWS Support Center
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a case in the AWS Support Center. This operation is similar to how you create a case in the AWS Support Center \fI\%Create Case\fP page.
+.sp
+The AWS Support API doesn\(aqt support requesting service limit increases. You can submit a service limit increase in the following ways:
+.INDENT 0.0
+.IP \(bu 2
+Submit a request from the AWS Support Center \fI\%Create Case\fP page.
+.IP \(bu 2
+Use the Service Quotas \fI\%RequestServiceQuotaIncrease\fP operation.
+.UNINDENT
+.sp
+A successful \fBCreateCase\fP request returns an AWS Support case number. You can use the  DescribeCases operation and specify the case number to get existing AWS Support cases. After you create a case, use the  AddCommunicationToCase operation to add additional communication or attachments to an existing case.
+.sp
+The \fBcaseId\fP is separate from the \fBdisplayId\fP that appears in the \fI\%AWS Support Center\fP . Use the  DescribeCases operation to get the \fBdisplayId\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+You must have a Business or Enterprise Support plan to use the AWS Support API.
+.IP \(bu 2
+If you call the AWS Support API from an account that does not have a Business or Enterprise Support plan, the \fBSubscriptionRequiredException\fP error message appears. For information about changing your support plan, see \fI\%AWS Support\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-case
+\-\-subject <value>
+[\-\-service\-code <value>]
+[\-\-severity\-code <value>]
+[\-\-category\-code <value>]
+\-\-communication\-body <value>
+[\-\-cc\-email\-addresses <value>]
+[\-\-language <value>]
+[\-\-issue\-type <value>]
+[\-\-attachment\-set\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-subject\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The title of the support case. The title appears in the \fBSubject\fP field on the AWS Support Center \fI\%Create Case\fP page.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The code for the AWS service. You can use the  DescribeServices operation to get the possible \fBserviceCode\fP values.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-severity\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates the urgency of the case. This value determines the response time according to your service level agreement with AWS Support. You can use the  DescribeSeverityLevels operation to get the possible values for \fBseverityCode\fP .
+.sp
+For more information, see  SeverityLevel and \fI\%Choosing a Severity\fP in the \fIAWS Support User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The availability of severity levels depends on the support plan for the AWS account.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-category\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The category of problem for the support case. You also use the  DescribeServices operation to get the category code for a service. Each AWS service defines its own set of category codes.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-communication\-body\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The communication body text that describes the issue. This text appears in the \fBDescription\fP field on the AWS Support Center \fI\%Create Case\fP page.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cc\-email\-addresses\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of email addresses that AWS Support copies on case correspondence. AWS Support identifies the account that creates the case when you specify your AWS credentials in an HTTP POST method or use the \fI\%AWS SDKs\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-language\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The language in which AWS Support handles the case. You must specify the ISO 639\-1 code for the \fBlanguage\fP parameter if you want support in that language. Currently, English ("en") and Japanese ("ja") are supported.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-issue\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of issue for the case. You can specify \fBcustomer\-service\fP or \fBtechnical\fP . If you don\(aqt specify a value, the default is \fBtechnical\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attachment\-set\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of a set of one or more attachments for the case. Create the set by using the  AddAttachmentsToSet operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a case\fP
+.sp
+The following \fBcreate\-case\fP example creates a support case for your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws support create\-case \e
+    \-\-category\-code "using\-aws" \e
+    \-\-cc\-email\-addresses "myemail@example.com" \e
+    \-\-communication\-body "I want to learn more about an AWS service." \e
+    \-\-issue\-type "technical" \e
+    \-\-language "en" \e
+    \-\-service\-code "general\-info" \e
+    \-\-severity\-code "low" \e
+    \-\-subject "Question about my account"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "caseId": "case\-12345678910\-2013\-c4c1d2bf33c5cf47"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Case management\fP in the \fIAWS Support User Guide\fP\&.
+.SH OUTPUT
+.sp
+caseId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The support case ID requested or returned in the call. The case ID is an alphanumeric string in the following format: case\-\fI12345678910\-2013\-c4c1d2bf33c5cf47\fP
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

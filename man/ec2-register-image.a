@@ -1,0 +1,516 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-REGISTER-IMAGE" "a" "" ""
+.SH NAME
+ec2-register-image \- Registers an AMI
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Registers an AMI. When you\(aqre creating an AMI, this is the final step you must complete before you can launch an instance from the AMI. For more information about creating AMIs, see \fI\%Creating your own AMIs\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For Amazon EBS\-backed instances,  CreateImage creates and registers the AMI in a single request, so you don\(aqt have to register the AMI yourself.
+.UNINDENT
+.UNINDENT
+.sp
+If needed, you can deregister an AMI at any time. Any modifications you make to an AMI backed by an instance store volume invalidates its registration. If you make changes to an image, deregister the previous image and register the new image.
+.INDENT 0.0
+.INDENT 3.5
+\fBRegister a snapshot of a root device volume\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can use \fBRegisterImage\fP to create an Amazon EBS\-backed Linux AMI from a snapshot of a root device volume. You specify the snapshot using a block device mapping. You can\(aqt set the encryption state of the volume using the block device mapping. If the snapshot is encrypted, or encryption by default is enabled, the root volume of an instance launched from the AMI is encrypted.
+.sp
+For more information, see \fI\%Create a Linux AMI from a snapshot\fP and \fI\%Use encryption with EBS\-backed AMIs\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBAWS Marketplace product codes\fP
+.UNINDENT
+.UNINDENT
+.sp
+If any snapshots have AWS Marketplace product codes, they are copied to the new AMI.
+.sp
+Windows and some Linux distributions, such as Red Hat Enterprise Linux (RHEL) and SUSE Linux Enterprise Server (SLES), use the EC2 billing product code associated with an AMI to verify the subscription status for package updates. To create a new AMI for operating systems that require a billing product code, instead of registering the AMI, do the following to preserve the billing product code association:
+.INDENT 0.0
+.IP \(bu 2
+Launch an instance from an existing AMI with that billing product code.
+.IP \(bu 2
+Customize the instance.
+.IP \(bu 2
+Create an AMI from the instance using  CreateImage .
+.UNINDENT
+.sp
+If you purchase a Reserved Instance to apply to an On\-Demand Instance that was launched from an AMI with a billing product code, make sure that the Reserved Instance has the matching billing product code. If you purchase a Reserved Instance without the matching billing product code, the Reserved Instance will not be applied to the On\-Demand Instance. For information about how to obtain the platform details and billing information of an AMI, see \fI\%Obtaining billing information\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-image
+[\-\-image\-location <value>]
+[\-\-architecture <value>]
+[\-\-block\-device\-mappings <value>]
+[\-\-description <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-ena\-support | \-\-no\-ena\-support]
+[\-\-kernel\-id <value>]
+\-\-name <value>
+[\-\-billing\-products <value>]
+[\-\-ramdisk\-id <value>]
+[\-\-root\-device\-name <value>]
+[\-\-sriov\-net\-support <value>]
+[\-\-virtualization\-type <value>]
+[\-\-boot\-mode <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-image\-location\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to your AMI manifest in Amazon S3 storage. The specified bucket must have the \fBaws\-exec\-read\fP canned access control list (ACL) to ensure that it can be accessed by Amazon EC2. For more information, see \fI\%Canned ACLs\fP in the \fIAmazon S3 Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-architecture\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The architecture of the AMI.
+.sp
+Default: For Amazon EBS\-backed AMIs, \fBi386\fP . For instance store\-backed AMIs, the architecture specified in the manifest file.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBi386\fP
+.IP \(bu 2
+\fBx86_64\fP
+.IP \(bu 2
+\fBarm64\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-block\-device\-mappings\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The block device mapping entries.
+.sp
+If you specify an EBS volume using the ID of an EBS snapshot, you can\(aqt specify the encryption state of the volume.
+.sp
+If you create an AMI on an Outpost, then all backing snapshots must be on the same Outpost or in the Region of that Outpost. AMIs on an Outpost that include local snapshots can be used to launch instances on the same Outpost only. For more information, \fI\%Amazon EBS local snapshots on Outposts\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a block device mapping.
+.sp
+DeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name (for example, \fB/dev/sdh\fP or \fBxvdh\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+VirtualName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual device name (\fBephemeral\fP N). Instance store volumes are numbered starting from 0. An instance type with 2 available instance store volumes can specify mappings for \fBephemeral0\fP and \fBephemeral1\fP . The number of available instance store volumes depends on the instance type. After you connect to the instance, you must mount the volume.
+.sp
+NVMe instance store volumes are automatically enumerated and assigned a device name. Including them in your block device mapping has no effect.
+.sp
+Constraints: For M3 instances, you must specify instance store volumes in the block device mapping for the instance. When you launch an M3 instance, we ignore any instance store volumes specified in the block device mapping for the AMI.
+.UNINDENT
+.UNINDENT
+.sp
+Ebs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters used to automatically set up EBS volumes when the instance is launched.
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the EBS volume is deleted on instance termination. For more information, see \fI\%Preserving Amazon EBS volumes on instance termination\fP in the \fIAmazon EC2 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of I/O operations per second (IOPS). For \fBgp3\fP , \fBio1\fP , and \fBio2\fP volumes, this represents the number of IOPS that are provisioned for the volume. For \fBgp2\fP volumes, this represents the baseline performance of the volume and the rate at which the volume accumulates I/O credits for bursting.
+.sp
+The following are the supported values for each volume type:
+.INDENT 0.0
+.IP \(bu 2
+\fBgp3\fP : 3,000\-16,000 IOPS
+.IP \(bu 2
+\fBio1\fP : 100\-64,000 IOPS
+.IP \(bu 2
+\fBio2\fP : 100\-64,000 IOPS
+.UNINDENT
+.sp
+For \fBio1\fP and \fBio2\fP volumes, we guarantee 64,000 IOPS only for \fI\%Instances built on the Nitro System\fP . Other instance families guarantee performance up to 32,000 IOPS.
+.sp
+This parameter is required for \fBio1\fP and \fBio2\fP volumes. The default for \fBgp3\fP volumes is 3,000 IOPS. This parameter is not supported for \fBgp2\fP , \fBst1\fP , \fBsc1\fP , or \fBstandard\fP volumes.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the volume, in GiBs. You must specify either a snapshot ID or a volume size. If you specify a snapshot, the default is the snapshot size. You can specify a volume size that is equal to or larger than the snapshot size.
+.sp
+The following are the supported volumes sizes for each volume type:
+.INDENT 0.0
+.IP \(bu 2
+\fBgp2\fP and \fBgp3\fP :1\-16,384
+.IP \(bu 2
+\fBio1\fP and \fBio2\fP : 4\-16,384
+.IP \(bu 2
+\fBst1\fP and \fBsc1\fP : 125\-16,384
+.IP \(bu 2
+\fBstandard\fP : 1\-1,024
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume type. For more information, see \fI\%Amazon EBS volume types\fP in the \fIAmazon EC2 User Guide\fP . If the volume type is \fBio1\fP or \fBio2\fP , you must specify the IOPS that the volume supports.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifier (key ID, key alias, ID ARN, or alias ARN) for a customer managed CMK under which the EBS volume is encrypted.
+.sp
+This parameter is only supported on \fBBlockDeviceMapping\fP objects called by \fI\%RunInstances\fP , \fI\%RequestSpotFleet\fP , and \fI\%RequestSpotInstances\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Throughput \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The throughput that the volume supports, in MiB/s.
+.sp
+This parameter is valid only for \fBgp3\fP volumes.
+.sp
+Valid Range: Minimum value of 125. Maximum value of 1000.
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Outpost on which the snapshot is stored.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the encryption state of an EBS volume is changed while being restored from a backing snapshot. The effect of setting the encryption state to \fBtrue\fP depends on the volume origin (new or from a snapshot), starting encryption state, ownership, and whether encryption by default is enabled. For more information, see \fI\%Amazon EBS encryption\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+In no case can you remove encryption from an encrypted volume.
+.sp
+Encrypted volumes can only be attached to instances that support Amazon EBS encryption. For more information, see \fI\%Supported instance types\fP .
+.sp
+This parameter is not returned by .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NoDevice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+To omit the device from the block device mapping, specify an empty string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DeviceName=string,VirtualName=string,Ebs={DeleteOnTermination=boolean,Iops=integer,SnapshotId=string,VolumeSize=integer,VolumeType=string,KmsKeyId=string,Throughput=integer,OutpostArn=string,Encrypted=boolean},NoDevice=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "DeviceName": "string",
+    "VirtualName": "string",
+    "Ebs": {
+      "DeleteOnTermination": true|false,
+      "Iops": integer,
+      "SnapshotId": "string",
+      "VolumeSize": integer,
+      "VolumeType": "standard"|"io1"|"io2"|"gp2"|"sc1"|"st1"|"gp3",
+      "KmsKeyId": "string",
+      "Throughput": integer,
+      "OutpostArn": "string",
+      "Encrypted": true|false
+    },
+    "NoDevice": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description for your AMI.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ena\-support\fP | \fB\-\-no\-ena\-support\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to \fBtrue\fP to enable enhanced networking with ENA for the AMI and any instances that you launch from the AMI.
+.sp
+This option is supported only for HVM AMIs. Specifying this option with a PV AMI can make instances launched from the AMI unreachable.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kernel\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the kernel.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A name for your AMI.
+.sp
+Constraints: 3\-128 alphanumeric characters, parentheses (()), square brackets ([]), spaces ( ), periods (.), slashes (/), dashes (\-), single quotes (\(aq), at\-signs (@), or underscores(_)
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-billing\-products\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The billing product codes. Your account must be authorized to specify billing product codes. Otherwise, you can use the AWS Marketplace to bill for the use of an AMI.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ramdisk\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the RAM disk.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-root\-device\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name of the root device volume (for example, \fB/dev/sda1\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sriov\-net\-support\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Set to \fBsimple\fP to enable enhanced networking with the Intel 82599 Virtual Function interface for the AMI and any instances that you launch from the AMI.
+.sp
+There is no way to disable \fBsriovNetSupport\fP at this time.
+.sp
+This option is supported only for HVM AMIs. Specifying this option with a PV AMI can make instances launched from the AMI unreachable.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-virtualization\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of virtualization (\fBhvm\fP | \fBparavirtual\fP ).
+.sp
+Default: \fBparavirtual\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-boot\-mode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The boot mode of the AMI. For more information, see \fI\%Boot modes\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBlegacy\-bios\fP
+.IP \(bu 2
+\fBuefi\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To register an AMI using a manifest file\fP
+.sp
+The following \fBregister\-image\fP example registers an AMI using the specified manifest file in Amazon S3.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 register\-image \e
+    \-\-name my\-image \e
+    \-\-image\-location my\-s3\-bucket/myimage/image.manifest.xml
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ImageId": "ami\-1234567890EXAMPLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Amazon Machine Images (AMI)\fP in the \fIAmazon EC2 User Guide\fP\&.
+.sp
+\fBExample 2: To register an AMI using a snapshot of a root device\fP
+.sp
+The following \fBregister\-image\fP example registers an AMI using the specified snapshot of an EBS root volume as device \fB/dev/xvda\fP\&. The block device mapping also includes an empty 100 GiB EBS volume as device \fB/dev/xvdf\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 register\-image \e
+    \-\-name my\-image \e
+    \-\-root\-device\-name /dev/xvda \e
+    \-\-block\-device\-mappings DeviceName=/dev/xvda,Ebs={SnapshotId=snap\-0db2cf683925d191f} DeviceName=/dev/xvdf,Ebs={VolumeSize=100}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ImageId": "ami\-1a2b3c4d5eEXAMPLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Amazon Machine Images (AMI)\fP in the \fIAmazon EC2 User Guide\fP\&.
+.SH OUTPUT
+.sp
+ImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the newly registered AMI.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,384 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AWS-S3-CONFIG" "a" "" ""
+.SH NAME
+aws-s3-config \- Advanced configuration for AWS S3 Commands
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.sp
+The \fBaws s3\fP transfer commands, which include the \fBcp\fP, \fBsync\fP, \fBmv\fP,
+and \fBrm\fP commands, have additional configuration values you can use to
+control S3 transfers.  This topic guide discusses these parameters as well as
+best practices and guidelines for setting these values.
+.sp
+Before discussing the specifics of these values, note that these values are
+entirely optional.  You should be able to use the \fBaws s3\fP transfer commands
+without having to configure any of these values.  These configuration values
+are provided in the case where you need to modify one of these values, either
+for performance reasons or to account for the specific environment where these
+\fBaws s3\fP commands are being run.
+.SH CONFIGURATION VALUES
+.sp
+These are the configuration values you can set specifically for the \fBaws s3\fP
+command set:
+.INDENT 0.0
+.IP \(bu 2
+\fBmax_concurrent_requests\fP \- The maximum number of concurrent requests.
+.IP \(bu 2
+\fBmax_queue_size\fP \- The maximum number of tasks in the task queue.
+.IP \(bu 2
+\fBmultipart_threshold\fP \- The size threshold the CLI uses for multipart
+transfers of individual files.
+.IP \(bu 2
+\fBmultipart_chunksize\fP \- When using multipart transfers, this is the chunk
+size that the CLI uses for multipart transfers of individual files.
+.IP \(bu 2
+\fBmax_bandwidth\fP \- The maximum bandwidth that will be consumed for uploading
+and downloading data to and from Amazon S3.
+.UNINDENT
+.sp
+For experimental \fBs3\fP configuration values, see the the
+\fI\%Experimental Configuration Values\fP
+section.
+.sp
+These are the configuration values that can be set for both \fBaws s3\fP
+and \fBaws s3api\fP:
+.INDENT 0.0
+.IP \(bu 2
+\fBuse_accelerate_endpoint\fP \- Use the Amazon S3 Accelerate endpoint for
+all \fBs3\fP and \fBs3api\fP commands. You \fBmust\fP first enable S3 Accelerate
+on your bucket before attempting to use the endpoint. This is mutually
+exclusive with the \fBuse_dualstack_endpoint\fP option.
+.IP \(bu 2
+\fBuse_dualstack_endpoint\fP \- Use the Amazon S3 dual IPv4 / IPv6 endpoint for
+all \fBs3\fP and \fBs3api\fP commands.  This is mutually exclusive with the
+\fBuse_accelerate_endpoint\fP option.
+.IP \(bu 2
+\fBaddressing_style\fP \- Specifies which addressing style to use. This controls
+if the bucket name is in the hostname or part of the URL. Value values are:
+\fBpath\fP, \fBvirtual\fP, and \fBauto\fP\&.  The default value is \fBauto\fP\&.
+.IP \(bu 2
+\fBpayload_signing_enabled\fP \- Refers to whether or not to SHA256 sign sigv4
+payloads. By default, this is disabled for streaming uploads (UploadPart
+and PutObject) when using https.
+.UNINDENT
+.sp
+These values must be set under the top level \fBs3\fP key in the AWS Config File,
+which has a default location of \fB~/.aws/config\fP\&.  Below is an example
+configuration:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[profile development]
+aws_access_key_id=foo
+aws_secret_access_key=bar
+s3 =
+  max_concurrent_requests = 20
+  max_queue_size = 10000
+  multipart_threshold = 64MB
+  multipart_chunksize = 16MB
+  max_bandwidth = 50MB/s
+  use_accelerate_endpoint = true
+  addressing_style = path
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Note that all the S3 configuration values are indented and nested under the top
+level \fBs3\fP key.
+.sp
+You can also set these values programmatically using the \fBaws configure set\fP
+command.  For example, to set the above values for the default profile, you
+could instead run these commands:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ aws configure set default.s3.max_concurrent_requests 20
+$ aws configure set default.s3.max_queue_size 10000
+$ aws configure set default.s3.multipart_threshold 64MB
+$ aws configure set default.s3.multipart_chunksize 16MB
+$ aws configure set default.s3.max_bandwidth 50MB/s
+$ aws configure set default.s3.use_accelerate_endpoint true
+$ aws configure set default.s3.addressing_style path
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+To programmatically set these values for a profile other than the default
+profile the \fB\-\-profile\fP flag can be provided. For example, to set
+configuration for a profile named \fBtest\-profile\fP you could run a command like
+this one:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ aws configure set s3.max_concurrent_requests 20 \-\-profile test\-profile
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS max_concurrent_requests
+.sp
+\fBDefault\fP \- \fB10\fP
+.sp
+The \fBaws s3\fP transfer commands are multithreaded.  At any given time,
+multiple requests to Amazon S3 are in flight.  For example, if you are
+uploading a directory via \fBaws s3 cp localdir s3://bucket/ \-\-recursive\fP, the
+AWS CLI could be uploading the local files \fBlocaldir/file1\fP,
+\fBlocaldir/file2\fP, and \fBlocaldir/file3\fP in parallel.  The
+\fBmax_concurrent_requests\fP specifies the maximum number of transfer commands
+that are allowed at any given time.
+.sp
+You may need to change this value for a few reasons:
+.INDENT 0.0
+.IP \(bu 2
+Decreasing this value \- On some environments, the default of 10 concurrent
+requests can overwhelm a system.  This may cause connection timeouts or
+slow the responsiveness of the system.  Lowering this value will make the
+S3 transfer commands less resource intensive.  The tradeoff is that
+S3 transfers may take longer to complete. Lowering this value may be
+necessary if using a tool such as \fBtrickle\fP to limit bandwidth.
+.IP \(bu 2
+Increasing this value \- In some scenarios, you may want the S3 transfers
+to complete as quickly as possible, using as much network bandwidth
+as necessary.  In this scenario, the default number of concurrent requests
+may not be sufficient to utilize all the network bandwidth available.
+Increasing this value may improve the time it takes to complete an
+S3 transfer.
+.UNINDENT
+.SS max_queue_size
+.sp
+\fBDefault\fP \- \fB1000\fP
+.sp
+The AWS CLI internally uses a producer consumer model, where we queue up S3
+tasks that are then executed by consumers, which in this case utilize a bound
+thread pool, controlled by \fBmax_concurrent_requests\fP\&.  A task generally maps
+to a single S3 operation.  For example, as task could be a \fBPutObjectTask\fP,
+or a \fBGetObjectTask\fP, or an \fBUploadPartTask\fP\&.  The enqueuing rate can be
+much faster than the rate at which consumers are executing tasks.  To avoid
+unbounded growth, the task queue size is capped to a specific size.  This
+configuration value changes the value of that maximum number.
+.sp
+You generally will not need to change this value.  This value also corresponds
+to the number of tasks we are aware of that need to be executed.  This means
+that by default we can only see 1000 tasks ahead.  Until the S3 command knows
+the total number of tasks executed, the progress line will show a total of
+\fB\&...\fP\&.  Increasing this value means that we will be able to more quickly know
+the total number of tasks needed, assuming that the enqueuing rate is quicker
+than the rate of task consumption.  The tradeoff is that a larger max queue
+size will require more memory.
+.SS multipart_threshold
+.sp
+\fBDefault\fP \- \fB8MB\fP
+.sp
+When uploading, downloading, or copying a file, the S3 commands
+will switch to multipart operations if the file reaches a given
+size threshold.  The \fBmultipart_threshold\fP controls this value.
+You can specify this value in one of two ways:
+.INDENT 0.0
+.IP \(bu 2
+The file size in bytes.  For example, \fB1048576\fP\&.
+.IP \(bu 2
+The file size with a size suffix.  You can use \fBKB\fP, \fBMB\fP, \fBGB\fP,
+\fBTB\fP\&.  For example: \fB10MB\fP, \fB1GB\fP\&.  Note that S3 imposes
+constraints on valid values that can be used for multipart
+operations.
+.UNINDENT
+.SS multipart_chunksize
+.sp
+\fBDefault\fP \- \fB8MB\fP
+.sp
+\fBMinimum For Uploads\fP \- \fB5MB\fP
+.sp
+Once the S3 commands have decided to use multipart operations, the
+file is divided into chunks.  This configuration option specifies what
+the chunk size (also referred to as the part size) should be.  This
+value can specified using the same semantics as \fBmultipart_threshold\fP,
+that is either as the number of bytes as an integer, or using a size
+suffix.
+.SS max_bandwidth
+.sp
+\fBDefault\fP \- None
+.sp
+This controls the maximum bandwidth that the S3 commands will
+utilize when streaming content data to and from S3. Thus, this value only
+applies for uploads and downloads. It does not apply to copies nor deletes
+because those data transfers take place server side. The value can be
+specified as:
+.INDENT 0.0
+.IP \(bu 2
+An integer in terms of \fBbytes\fP per second. For example, \fB1048576\fP would
+set the maximum bandwidth usage to 1 MB per second.
+.IP \(bu 2
+A rate suffix. This can be expressed in terms of either bytes per second
+(\fBB/s\fP) or bits per second (\fBb/s\fP). You can specify rate suffixes
+using: \fBKB/s\fP, \fBMB/s\fP, \fBGB/s\fP, \fBKb/s\fP, \fBMb/s\fP, \fBGb/s\fP etc.
+For example: \fB300KB/s\fP, \fB10MB/s\fP, \fB300Kb/s\fP, \fB10Mb/s\fP\&.
+.UNINDENT
+.sp
+In general, it is recommended to first use \fBmax_concurrent_requests\fP to lower
+transfers to the desired bandwidth consumption. The \fBmax_bandwidth\fP setting
+should then be used to further limit bandwidth consumption if setting
+\fBmax_concurrent_requests\fP is unable to lower bandwidth consumption to the
+desired rate. This is recommended because \fBmax_concurrent_requests\fP controls
+how many threads are currently running. So if a high \fBmax_concurrent_requests\fP
+value is set and a low \fBmax_bandwidth\fP value is set, it may result in
+threads having to wait unnecessarily which can lead to excess resource
+consumption and connection timeouts.
+.SS use_accelerate_endpoint
+.sp
+\fBDefault\fP \- \fBfalse\fP
+.sp
+If set to \fBtrue\fP, will direct all Amazon S3 requests to the S3 Accelerate
+endpoint: \fBs3\-accelerate.amazonaws.com\fP\&. To use this endpoint, your bucket
+must be enabled to use S3 Accelerate. All request will be sent using the
+virtual style of bucket addressing: \fBmy\-bucket.s3\-accelerate.amazonaws.com\fP\&.
+Any \fBListBuckets\fP, \fBCreateBucket\fP, and \fBDeleteBucket\fP requests will not
+be sent to the Accelerate endpoint as the endpoint does not support those
+operations. This behavior can also be set if \fB\-\-endpoint\-url\fP parameter
+is set to \fBhttps://s3\-accelerate.amazonaws.com\fP or
+\fBhttp://s3\-accelerate.amazonaws.com\fP for any \fBs3\fP or \fBs3api\fP command. This
+option is mutually exclusive with the \fBuse_dualstack_endpoint\fP option.
+.SS use_dualstack_endpoint
+.sp
+\fBDefault\fP \- \fBfalse\fP
+.sp
+If set to \fBtrue\fP, will direct all Amazon S3 requests to the dual IPv4 / IPv6
+endpoint for the configured region. This option is mutually exclusive with
+the \fBuse_accelerate_endpoint\fP option.
+.SS addressing_style
+.sp
+\fBDefault\fP \- \fBauto\fP
+.sp
+There\(aqs two styles of constructing an S3 endpoint.  The first is with
+the bucket included as part of the hostname.  This corresponds to the
+addressing style of \fBvirtual\fP\&.  The second is with the bucket included
+as part of the path of the URI, corresponding to the addressing style
+of \fBpath\fP\&.  The default value in the CLI is to use \fBauto\fP, which
+will attempt to use \fBvirtual\fP where possible, but will fall back to
+\fBpath\fP style if necessary.  For example, if your bucket name is not
+DNS compatible, the bucket name cannot be part of the hostname and
+must be in the path.  With \fBauto\fP, the CLI will detect this condition
+and automatically switch to \fBpath\fP style for you.  If you set the
+addressing style to \fBpath\fP, you must ensure that the AWS region you
+configured in the AWS CLI matches the same region of your bucket.
+.SS payload_signing_enabled
+.sp
+If set to \fBtrue\fP, s3 payloads will receive additional content validation in
+the form of a SHA256 checksum which will be calculated for you and included in
+the request signature. If set to \fBfalse\fP, the checksum will not be calculated.
+Disabling this can be useful to save the performance overhead that the
+checksum calculation would otherwise cause.
+.sp
+By default, this is disabled for streaming uploads (UploadPart and PutObject),
+but only if a ContentMD5 is present (it is generated by default) and the
+endpoint uses HTTPS.
+.SH EXPERIMENTAL CONFIGURATION VALUES
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+All configuration values listed in this section are considered experimental
+and are \fBnot\fP recommended for use in production. Furthermore, backwards
+compatibility or even existence of each configuration value is not
+guaranteed between versions of the AWS CLI.
+.UNINDENT
+.UNINDENT
+.SS preferred_transfer_client
+.sp
+\fBDefault\fP \- \fBdefault\fP
+.sp
+Determines the underlying Amazon S3 transfer client to use for transferring
+files to and from S3. Valid choices are:
+.INDENT 0.0
+.IP \(bu 2
+\fBdefault\fP \-  Use the builtin, Python\-based transfer client that supports
+all \fBs3\fP commands, parameters, and non\-experimental configuration values.
+.IP \(bu 2
+\fBcrt\fP \- Use the AWS Common Runtime (CRT) transfer client when
+possible. It is a C\-based S3 transfer client that can improve transfer
+throughput. Currently, the CRT transfer client does not support all of the
+functionality available in the \fBdefault\fP transfer client. The list below
+details what functionality is not supported by the \fBcrt\fP transfer client
+option and the corresponding behavior of the AWS CLI if it is configured to
+prefer the \fBcrt\fP transfer client:
+.INDENT 2.0
+.IP \(bu 2
+S3 to S3 copies \- Falls back to using the \fBdefault\fP transfer client
+.IP \(bu 2
+Streaming uploads from standard input and downloads to standard output \-
+Falls back to using \fBdefault\fP transfer client.
+.IP \(bu 2
+Region redirects \- Transfers fail for requests sent to a region that does
+not match the region of the targeted S3 bucket.
+.IP \(bu 2
+\fBmax_concurrent_requests\fP, \fBmax_queue_size\fP, \fBmultipart_threshold\fP,
+and \fBmax_bandwidth\fP configuration values \- Ignores these configuration
+values.
+.UNINDENT
+.UNINDENT
+.SS target_bandwidth
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This experimental configuration option is only supported when
+\fBpreferred_transfer_client\fP is set to \fBcrt\fP\&. The \fBdefault\fP transfer
+client does not support it.
+.UNINDENT
+.UNINDENT
+.sp
+\fBDefault\fP \- \fB5Gb/s\fP
+.sp
+Controls the target bandwidth that the transfer client will try to reach
+for S3 uploads and downloads. The value can be specified as:
+.INDENT 0.0
+.IP \(bu 2
+An integer in terms of \fBbytes\fP per second. For example,
+\fB1073741824\fP would set the target bandwidth to 1 GB per second.
+.IP \(bu 2
+A rate suffix. This can be expressed in terms of either bytes per second
+(\fBB/s\fP) or bits per second (\fBb/s\fP). You can specify rate suffixes
+using: \fBKB/s\fP, \fBMB/s\fP, \fBGB/s\fP, \fBKb/s\fP, \fBMb/s\fP, \fBGb/s\fP etc.
+For example: \fB200MB/s\fP, \fB10GB/s\fP, \fB200Mb/s\fP, \fB10Gb/s\fP\&.
+.UNINDENT
+.sp
+This difference between \fBtarget_bandwidth\fP and the \fBmax_bandwidth\fP is that
+\fBmax_bandwidth\fP is purely for rate limiting and makes no adjustments to
+increase throughput. The \fBtarget_bandwidth\fP configuration may make
+adjustments mid\-transfer command in order to increase throughput and reach the
+requested bandwidth.
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,222 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ROUTE53DOMAINS-CHECK-DOMAIN-AVAILABILITY" "a" "" ""
+.SH NAME
+route53domains-check-domain-availability \- This operation checks the availability of one domain name
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This operation checks the availability of one domain name. Note that if the availability status of a domain is pending, you must submit another request to determine the availability of the domain name.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  check\-domain\-availability
+\-\-domain\-name <value>
+[\-\-idn\-lang\-code <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain that you want to get availability for. The top\-level domain (TLD), such as .com, must be a TLD that Route 53 supports. For a list of supported TLDs, see \fI\%Domains that You Can Register with Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP .
+.sp
+The domain name can contain only the following characters:
+.INDENT 0.0
+.IP \(bu 2
+Letters a through z. Domain names are not case sensitive.
+.IP \(bu 2
+Numbers 0 through 9.
+.IP \(bu 2
+Hyphen (\-). You can\(aqt specify a hyphen at the beginning or end of a label.
+.IP \(bu 2
+Period (.) to separate the labels in the name, such as the \fB\&.\fP in \fBexample.com\fP .
+.UNINDENT
+.sp
+Internationalized domain names are not supported for some top\-level domains. To determine whether the TLD that you want to use supports internationalized domain names, see \fI\%Domains that You Can Register with Amazon Route 53\fP . For more information, see \fI\%Formatting Internationalized Domain Names\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-idn\-lang\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Reserved for future use.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo determine whether you can register a domain name with Route 53\fP
+.sp
+The following \fBcheck\-domain\-availability\fP command returns information about whether the domain name \fBexample.com\fP
+is available to be registered using Route 53.
+.sp
+This command runs only in the \fBus\-east\-1\fP Region. If your default region is set to \fBus\-east\-1\fP, you can omit the \fBregion\fP parameter.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws route53domains check\-domain\-availability \e
+    \-\-region us\-east\-1 \e
+    \-\-domain\-name example.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Availability": "UNAVAILABLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Route 53 supports a large number of top\-level domains (TLDs), such as \fB\&.com\fP and \fB\&.jp\fP, but we don\(aqt support all available TLDs. If you check the availability of a domain and Route 53 doesn\(aqt support the TLD, \fBcheck\-domain\-availability\fP returns the following message.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+An error occurred (UnsupportedTLD) when calling the CheckDomainAvailability operation: <top\-level domain> tld is not supported.
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For a list of the TLDs that you can use when registering a domain with Route 53, see \fI\%Domains That You Can Register with Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP\&.
+For more information about registering domains with Amazon Route 53, see \fI\%Registering a New Domain\fP in the \fIAmazon Route 53 Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Availability \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the domain name is available for registering.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can register only domains designated as \fBAVAILABLE\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Valid values:
+.INDENT 0.0
+.INDENT 3.5
+AVAILABLE
+.UNINDENT
+.UNINDENT
+.sp
+The domain name is available.
+.INDENT 0.0
+.INDENT 3.5
+AVAILABLE_RESERVED
+.UNINDENT
+.UNINDENT
+.sp
+The domain name is reserved under specific conditions.
+.INDENT 0.0
+.INDENT 3.5
+AVAILABLE_PREORDER
+.UNINDENT
+.UNINDENT
+.sp
+The domain name is available and can be preordered.
+.INDENT 0.0
+.INDENT 3.5
+DONT_KNOW
+.UNINDENT
+.UNINDENT
+.sp
+The TLD registry didn\(aqt reply with a definitive answer about whether the domain name is available. Route 53 can return this response for a variety of reasons, for example, the registry is performing maintenance. Try again later.
+.INDENT 0.0
+.INDENT 3.5
+PENDING
+.UNINDENT
+.UNINDENT
+.sp
+The TLD registry didn\(aqt return a response in the expected amount of time. When the response is delayed, it usually takes just a few extra seconds. You can resubmit the request immediately.
+.INDENT 0.0
+.INDENT 3.5
+RESERVED
+.UNINDENT
+.UNINDENT
+.sp
+The domain name has been reserved for another person or organization.
+.INDENT 0.0
+.INDENT 3.5
+UNAVAILABLE
+.UNINDENT
+.UNINDENT
+.sp
+The domain name is not available.
+.INDENT 0.0
+.INDENT 3.5
+UNAVAILABLE_PREMIUM
+.UNINDENT
+.UNINDENT
+.sp
+The domain name is not available.
+.INDENT 0.0
+.INDENT 3.5
+UNAVAILABLE_RESTRICTED
+.UNINDENT
+.UNINDENT
+.sp
+The domain name is forbidden.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,665 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-AUTHORIZE-SECURITY-GROUP-INGRESS" "a" "" ""
+.SH NAME
+ec2-authorize-security-group-ingress \- Adds the specified ingress rules to a security group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To specify multiple rules in a single command use the \fB\-\-ip\-permissions\fP option
+.UNINDENT
+.UNINDENT
+.SH DESCRIPTION
+.sp
+Adds the specified ingress rules to a security group.
+.sp
+An inbound rule permits instances to receive traffic from the specified IPv4 or IPv6 CIDR address ranges, or from the instances associated with the specified destination security groups.
+.sp
+You specify a protocol for each rule (for example, TCP). For TCP and UDP, you must also specify the destination port or port range. For ICMP/ICMPv6, you must also specify the ICMP/ICMPv6 type and code. You can use \-1 to mean all types or all codes.
+.sp
+Rule changes are propagated to instances within the security group as quickly as possible. However, a small delay might occur.
+.sp
+For more information about VPC security group limits, see \fI\%Amazon VPC Limits\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  authorize\-security\-group\-ingress
+[\-\-group\-id <value>]
+[\-\-group\-name <value>]
+[\-\-ip\-permissions <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-protocol <value>]
+[\-\-port <value>]
+[\-\-cidr <value>]
+[\-\-source\-group <value>]
+[\-\-group\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-group\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group. You must specify either the security group ID or the security group name in the request. For security groups in a nondefault VPC, you must specify the security group ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-Classic, default VPC] The name of the security group. You must specify either the security group ID or the security group name in the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ip\-permissions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The sets of IP permissions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a set of permissions for a security group rule.
+.sp
+FromPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The start of port range for the TCP and UDP protocols, or an ICMP/ICMPv6 type number. A value of \fB\-1\fP indicates all ICMP/ICMPv6 types. If you specify all ICMP/ICMPv6 types, you must specify all codes.
+.UNINDENT
+.UNINDENT
+.sp
+IpProtocol \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP protocol name (\fBtcp\fP , \fBudp\fP , \fBicmp\fP , \fBicmpv6\fP ) or number (see \fI\%Protocol Numbers\fP ).
+.sp
+[VPC only] Use \fB\-1\fP to specify all protocols. When authorizing security group rules, specifying \fB\-1\fP or a protocol number other than \fBtcp\fP , \fBudp\fP , \fBicmp\fP , or \fBicmpv6\fP allows traffic on all ports, regardless of any port range you specify. For \fBtcp\fP , \fBudp\fP , and \fBicmp\fP , you must specify a port range. For \fBicmpv6\fP , the port range is optional; if you omit the port range, traffic for all types and codes is allowed.
+.UNINDENT
+.UNINDENT
+.sp
+IpRanges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 ranges.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv4 range.
+.sp
+CidrIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 CIDR range. You can either specify a CIDR range or a source security group, not both. To specify a single IPv4 address, use the /32 prefix length.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description for the security group rule that references this IPv4 address range.
+.sp
+Constraints: Up to 255 characters in length. Allowed characters are a\-z, A\-Z, 0\-9, spaces, and ._\-:/()#,@[]+=&;{}!$*
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6Ranges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+[VPC only] The IPv6 ranges.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC only] Describes an IPv6 range.
+.sp
+CidrIpv6 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 CIDR range. You can either specify a CIDR range or a source security group, not both. To specify a single IPv6 address, use the /128 prefix length.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description for the security group rule that references this IPv6 address range.
+.sp
+Constraints: Up to 255 characters in length. Allowed characters are a\-z, A\-Z, 0\-9, spaces, and ._\-:/()#,@[]+=&;{}!$*
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PrefixListIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+[VPC only] The prefix list IDs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a prefix list ID.
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description for the security group rule that references this prefix list ID.
+.sp
+Constraints: Up to 255 characters in length. Allowed characters are a\-z, A\-Z, 0\-9, spaces, and ._\-:/()#,@[]+=;{}!$*
+.UNINDENT
+.UNINDENT
+.sp
+PrefixListId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the prefix.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ToPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The end of port range for the TCP and UDP protocols, or an ICMP/ICMPv6 code. A value of \fB\-1\fP indicates all ICMP/ICMPv6 codes. If you specify all ICMP/ICMPv6 types, you must specify all codes.
+.UNINDENT
+.UNINDENT
+.sp
+UserIdGroupPairs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The security group and AWS account ID pairs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group and AWS account ID pair.
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description for the security group rule that references this user ID group pair.
+.sp
+Constraints: Up to 255 characters in length. Allowed characters are a\-z, A\-Z, 0\-9, spaces, and ._\-:/()#,@[]+=;{}!$*
+.UNINDENT
+.UNINDENT
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group. In a request, use this parameter for a security group in EC2\-Classic or a default VPC only. For a security group in a nondefault VPC, use the security group ID.
+.sp
+For a referenced security group in another VPC, this value is not returned if the referenced security group is deleted.
+.UNINDENT
+.UNINDENT
+.sp
+PeeringStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of a VPC peering connection, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+UserId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of an AWS account.
+.sp
+For a referenced security group in another VPC, the account ID of the referenced security group is returned in the response. If the referenced security group is deleted, this value is not returned.
+.sp
+[EC2\-Classic] Required when adding or removing rules that reference a security group in another AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC for the referenced security group, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+VpcPeeringConnectionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC peering connection, if applicable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FromPort=integer,IpProtocol=string,IpRanges=[{CidrIp=string,Description=string},{CidrIp=string,Description=string}],Ipv6Ranges=[{CidrIpv6=string,Description=string},{CidrIpv6=string,Description=string}],PrefixListIds=[{Description=string,PrefixListId=string},{Description=string,PrefixListId=string}],ToPort=integer,UserIdGroupPairs=[{Description=string,GroupId=string,GroupName=string,PeeringStatus=string,UserId=string,VpcId=string,VpcPeeringConnectionId=string},{Description=string,GroupId=string,GroupName=string,PeeringStatus=string,UserId=string,VpcId=string,VpcPeeringConnectionId=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "FromPort": integer,
+    "IpProtocol": "string",
+    "IpRanges": [
+      {
+        "CidrIp": "string",
+        "Description": "string"
+      }
+      ...
+    ],
+    "Ipv6Ranges": [
+      {
+        "CidrIpv6": "string",
+        "Description": "string"
+      }
+      ...
+    ],
+    "PrefixListIds": [
+      {
+        "Description": "string",
+        "PrefixListId": "string"
+      }
+      ...
+    ],
+    "ToPort": integer,
+    "UserIdGroupPairs": [
+      {
+        "Description": "string",
+        "GroupId": "string",
+        "GroupName": "string",
+        "PeeringStatus": "string",
+        "UserId": "string",
+        "VpcId": "string",
+        "VpcPeeringConnectionId": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-protocol\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP protocol: \fBtcp\fP | \fBudp\fP | \fBicmp\fP
+.sp
+(VPC only) Use \fBall\fP to specify all protocols.
+.sp
+If this argument is provided without also providing the \fBport\fP argument, then it will be applied to all ports for the specified protocol.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-port\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+For TCP or UDP: The range of ports to allow. A single integer or a range (\fBmin\-max\fP ).
+.sp
+For ICMP: A single integer or a range (\fBtype\-code\fP ) representing the ICMP type number and the ICMP code number respectively. A value of \-1 indicates all ICMP codes for all ICMP types. A value of \-1 just for \fBtype\fP indicates all ICMP codes for the specified ICMP type.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cidr\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The CIDR IP range.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or ID of the source security group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-group\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID that owns the source security group. Cannot be used when specifying a CIDR IP address.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fB[EC2\-Classic] To add a rule that allows inbound SSH traffic\fP
+.sp
+The following example enables inbound traffic on TCP port 22 (SSH). If the command succeeds, no output is returned.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-name MySecurityGroup \e
+    \-\-protocol tcp \e
+    \-\-port 22 \e
+    \-\-cidr 203.0.113.0/24
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fB[EC2\-Classic] To add a rule that allows inbound HTTP traffic from a security group in another account\fP
+.sp
+The following example enables inbound traffic on TCP port 80 from a source security group (\fBotheraccountgroup\fP) in a different AWS account (123456789012). Incoming traffic is allowed based on the private IP addresses of instances that are associated with the source security group (not the public IP or Elastic IP addresses).
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-name MySecurityGroup \e
+    \-\-protocol tcp \e
+    \-\-port 80 \e
+    \-\-source\-group otheraccountgroup \e
+    \-\-group\-owner 123456789012
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fB[EC2\-Classic] To add a rule that allows inbound HTTPS traffic from an ELB\fP
+.sp
+The following example enables inbound traffic on TCP port 443 from an ELB.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-name MySecurityGroup \e
+    \-\-protocol tcp \e
+    \-\-port 443 \e
+    \-\-source\-group amazon\-elb\-sg \e
+    \-\-group\-owner amazon\-elb
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB[EC2\-VPC] To add a rule that allows inbound SSH traffic\fP
+.sp
+The following example enables inbound traffic on TCP port 22 (SSH). Note that you can\(aqt reference a security group for EC2\-VPC by name.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-id sg\-1234567890abcdef0 \e
+    \-\-protocol tcp \e
+    \-\-port 22 \e
+    \-\-cidr 203.0.113.0/24
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fB[EC2\-VPC] To add a rule that allows inbound HTTP traffic from another security group\fP
+.sp
+The following example enables inbound access on TCP port 80 from the source security group \fBsg\-1a2b3c4d\fP\&. Note that for EC2\-VPC, the source group must be in the same VPC or in a peer VPC (requires a VPC peering connection). Incoming traffic is allowed based on the private IP addresses of instances that are associated with the source security group (not the public IP or Elastic IP addresses).
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-id sg\-1234567890abcdef0 \e
+    \-\-protocol tcp \e
+    \-\-port 80 \e
+    \-\-source\-group sg\-1a2b3c4d
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fB[EC2\-VPC] To add one rule for RDP and another rule for ping/ICMP\fP
+.sp
+The following example uses the \fBip\-permissions\fP parameter to add two rules, one that enables inbound access on TCP port 3389 (RDP) and the other that enables ping/ICMP.
+.sp
+(Windows):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress ^
+    \-\-group\-id sg\-1234567890abcdef0 ^
+    \-\-ip\-permissions IpProtocol=tcp,FromPort=3389,ToPort=3389,IpRanges=[{CidrIp=172.31.0.0/16}] IpProtocol=icmp,FromPort=\-1,ToPort=\-1,IpRanges=[{CidrIp=172.31.0.0/16}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB[EC2\-VPC] To add a rule for ICMP traffic\fP
+.sp
+The following example uses the \fBip\-permissions\fP parameter to add an inbound rule that allows the ICMP message \fBDestination Unreachable: Fragmentation Needed and Don\(aqt Fragment was Set\fP (Type 3, Code 4) from anywhere.
+.sp
+(Linux):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-id sg\-1234567890abcdef0 \e
+    \-\-ip\-permissions IpProtocol=icmp,FromPort=3,ToPort=4,IpRanges=\(aq[{CidrIp=0.0.0.0/0}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+(Windows):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress ^
+    \-\-group\-id sg\-1234567890abcdef0 ^
+    \-\-ip\-permissions IpProtocol=icmp,FromPort=3,ToPort=4,IpRanges=[{CidrIp=0.0.0.0/0}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fB[EC2\-VPC] To add a rule for IPv6 traffic\fP
+.sp
+The following example grants SSH access (port 22) from the IPv6 range \fB2001:db8:1234:1a00::/64\fP\&.
+.sp
+(Linux):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-id sg\-1234567890abcdef0 \e
+    \-\-ip\-permissions IpProtocol=tcp,FromPort=22,ToPort=22,Ipv6Ranges=\(aq[{CidrIpv6=2001:db8:1234:1a00::/64}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+(Windows):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress ^
+    \-\-group\-id sg\-1234567890abcdef0 ^
+    \-\-ip\-permissions IpProtocol=tcp,FromPort=22,ToPort=22,Ipv6Ranges=[{CidrIpv6=2001:db8:1234:1a00::/64}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB[EC2\-VPC] To add a rule for ICMPv6 traffic\fP
+.sp
+The following example uses the \fBip\-permissions\fP parameter to add an inbound rule that allows ICMPv6 traffic from anywhere.
+.sp
+(Linux):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-id sg\-1234567890abcdef0 \e
+    \-\-ip\-permissions IpProtocol=icmpv6,Ipv6Ranges=\(aq[{CidrIpv6=::/0}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+(Windows):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress ^
+    \-\-group\-id sg\-1234567890abcdef0 ^
+    \-\-ip\-permissions IpProtocol=icmpv6,Ipv6Ranges=[{CidrIpv6=::/0}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBAdd a rule with a description\fP
+.sp
+The following example uses the \fBip\-permissions\fP parameter to add an inbound rule that allows RDP traffic from a specific IPv4 address range. The rule includes a description to help you identify it later.
+.sp
+(Linux):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress \e
+    \-\-group\-id sg\-1234567890abcdef0 \e
+    \-\-ip\-permissions IpProtocol=tcp,FromPort=3389,ToPort=3389,IpRanges=\(aq[{CidrIp=203.0.113.0/24,Description="RDP access from NY office"}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+(Windows):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 authorize\-security\-group\-ingress ^
+    \-\-group\-id sg\-1234567890abcdef0 ^
+    \-\-ip\-permissions IpProtocol=tcp,FromPort=3389,ToPort=3389,IpRanges=[{CidrIp=203.0.113.0/24,Description="RDP access from NY office"}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Using Security Groups\fP in the \fIAWS Command Line Interface User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

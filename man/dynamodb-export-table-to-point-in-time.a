@@ -1,0 +1,308 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DYNAMODB-EXPORT-TABLE-TO-POINT-IN-TIME" "a" "" ""
+.SH NAME
+dynamodb-export-table-to-point-in-time \- Exports table data to an S3 bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Exports table data to an S3 bucket. The table must have point in time recovery enabled, and you can export data from any time within the point in time recovery window.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  export\-table\-to\-point\-in\-time
+\-\-table\-arn <value>
+[\-\-export\-time <value>]
+[\-\-client\-token <value>]
+\-\-s3\-bucket <value>
+[\-\-s3\-bucket\-owner <value>]
+[\-\-s3\-prefix <value>]
+[\-\-s3\-sse\-algorithm <value>]
+[\-\-s3\-sse\-kms\-key\-id <value>]
+[\-\-export\-format <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-table\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) associated with the table to export.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-export\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time in the past from which to export table data. The table export will be a snapshot of the table\(aqs state at this point in time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Providing a \fBClientToken\fP makes the call to \fBExportTableToPointInTimeInput\fP idempotent, meaning that multiple identical calls have the same effect as one single call.
+.sp
+A client token is valid for 8 hours after the first request that uses it is completed. After 8 hours, any request with the same client token is treated as a new request. Do not resubmit the same request with the same client token for more than 8 hours, or the result might not be idempotent.
+.sp
+If you submit a request with the same client token but a change in other parameters within the 8\-hour idempotency window, DynamoDB returns an \fBIdempotentParameterMismatch\fP exception.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket to export the snapshot to.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account that owns the bucket the export will be stored in.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-prefix\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket prefix to use as the file name and path of the exported snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-sse\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of encryption used on the bucket where export data will be stored. Valid values for \fBS3SseAlgorithm\fP are:
+.INDENT 0.0
+.IP \(bu 2
+\fBAES256\fP \- server\-side encryption with Amazon S3 managed keys
+.IP \(bu 2
+\fBKMS\fP \- server\-side encryption with AWS KMS managed keys
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAES256\fP
+.IP \(bu 2
+\fBKMS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-sse\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS KMS managed key used to encrypt the S3 bucket where export data will be stored (if applicable).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-export\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The format for the exported data. Valid values for \fBExportFormat\fP are \fBDYNAMODB_JSON\fP or \fBION\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBDYNAMODB_JSON\fP
+.IP \(bu 2
+\fBION\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ExportDescription \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains a description of the table export.
+.sp
+ExportArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the table export.
+.UNINDENT
+.UNINDENT
+.sp
+ExportStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Export can be in one of the following states: IN_PROGRESS, COMPLETED, or FAILED.
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the export task began.
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the export task completed.
+.UNINDENT
+.UNINDENT
+.sp
+ExportManifest \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the manifest file for the export task.
+.UNINDENT
+.UNINDENT
+.sp
+TableArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the table that was exported.
+.UNINDENT
+.UNINDENT
+.sp
+TableId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique ID of the table that was exported.
+.UNINDENT
+.UNINDENT
+.sp
+ExportTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Point in time from which table data was exported.
+.UNINDENT
+.UNINDENT
+.sp
+ClientToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The client token that was provided for the export task. A client token makes calls to \fBExportTableToPointInTimeInput\fP idempotent, meaning that multiple identical calls have the same effect as one single call.
+.UNINDENT
+.UNINDENT
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket containing the export.
+.UNINDENT
+.UNINDENT
+.sp
+S3BucketOwner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account that owns the bucket containing the export.
+.UNINDENT
+.UNINDENT
+.sp
+S3Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket prefix used as the file name and path of the exported snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+S3SseAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of encryption used on the bucket where export data is stored. Valid values for \fBS3SseAlgorithm\fP are:
+.INDENT 0.0
+.IP \(bu 2
+\fBAES256\fP \- server\-side encryption with Amazon S3 managed keys
+.IP \(bu 2
+\fBKMS\fP \- server\-side encryption with AWS KMS managed keys
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+S3SseKmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS KMS managed key used to encrypt the S3 bucket where export data is stored (if applicable).
+.UNINDENT
+.UNINDENT
+.sp
+FailureCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Status code for the result of the failed export.
+.UNINDENT
+.UNINDENT
+.sp
+FailureMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Export failure reason description.
+.UNINDENT
+.UNINDENT
+.sp
+ExportFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the exported data. Valid values for \fBExportFormat\fP are \fBDYNAMODB_JSON\fP or \fBION\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BilledSizeBytes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The billable size of the table export.
+.UNINDENT
+.UNINDENT
+.sp
+ItemCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of items exported.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

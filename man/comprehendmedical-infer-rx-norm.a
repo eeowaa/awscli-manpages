@@ -1,0 +1,608 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "COMPREHENDMEDICAL-INFER-RX-NORM" "a" "" ""
+.SH NAME
+comprehendmedical-infer-rx-norm \- InferRxNorm detects medications as entities listed in a patient record and links to the normalized concept identifiers in the RxNorm database from the National Library of Medicine
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+InferRxNorm detects medications as entities listed in a patient record and links to the normalized concept identifiers in the RxNorm database from the National Library of Medicine. Amazon Comprehend Medical only detects medical entities in English language texts.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  infer\-rx\-norm
+\-\-text <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-text\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The input text used for analysis. The input for InferRxNorm is a string from 1 to 10000 characters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To detect medication entities and link to RxNorm directly from text\fP
+.sp
+The following \fBinfer\-rx\-norm\fP example shows and labels the detected medication entities and links those entities to concept identifiers (RxCUI) from the National Library of Medicine RxNorm database.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws comprehendmedical infer\-rx\-norm \e
+    \-\-text "Patient reports taking Levothyroxine 125 micrograms p.o. once daily, but denies taking Synthroid."
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Entities": [
+        {
+            "Id": 0,
+            "Text": "Levothyroxine",
+            "Category": "MEDICATION",
+            "Type": "GENERIC_NAME",
+            "Score": 0.9996285438537598,
+            "BeginOffset": 23,
+            "EndOffset": 36,
+            "Attributes": [
+                {
+                    "Type": "DOSAGE",
+                    "Score": 0.9892290830612183,
+                    "RelationshipScore": 0.9997978806495667,
+                    "Id": 1,
+                    "BeginOffset": 37,
+                    "EndOffset": 51,
+                    "Text": "125 micrograms",
+                    "Traits": []
+                },
+                {
+                    "Type": "ROUTE_OR_MODE",
+                    "Score": 0.9988924860954285,
+                    "RelationshipScore": 0.998291552066803,
+                    "Id": 2,
+                    "BeginOffset": 52,
+                    "EndOffset": 56,
+                    "Text": "p.o.",
+                    "Traits": []
+                },
+                {
+                    "Type": "FREQUENCY",
+                    "Score": 0.9953463673591614,
+                    "RelationshipScore": 0.9999889135360718,
+                    "Id": 3,
+                    "BeginOffset": 57,
+                    "EndOffset": 67,
+                    "Text": "once daily",
+                    "Traits": []
+                }
+            ],
+            "Traits": [],
+            "RxNormConcepts": [
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet",
+                    "Code": "966224",
+                    "Score": 0.9912070631980896
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Capsule",
+                    "Code": "966405",
+                    "Score": 0.8698278665542603
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet [Synthroid]",
+                    "Code": "966191",
+                    "Score": 0.7448257803916931
+                },
+                {
+                    "Description": "levothyroxine",
+                    "Code": "10582",
+                    "Score": 0.7050482630729675
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet [Levoxyl]",
+                    "Code": "966190",
+                    "Score": 0.6921631693840027
+                }
+            ]
+        },
+        {
+            "Id": 4,
+            "Text": "Synthroid",
+            "Category": "MEDICATION",
+            "Type": "BRAND_NAME",
+            "Score": 0.9946461319923401,
+            "BeginOffset": 86,
+            "EndOffset": 95,
+            "Attributes": [],
+            "Traits": [
+                {
+                    "Name": "NEGATION",
+                    "Score": 0.5167351961135864
+                }
+            ],
+            "RxNormConcepts": [
+                {
+                    "Description": "Synthroid",
+                    "Code": "224920",
+                    "Score": 0.9462039470672607
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.088 MG Oral Tablet [Synthroid]",
+                    "Code": "966282",
+                    "Score": 0.8309829235076904
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet [Synthroid]",
+                    "Code": "966191",
+                    "Score": 0.4945160448551178
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.05 MG Oral Tablet [Synthroid]",
+                    "Code": "966247",
+                    "Score": 0.3674522042274475
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.025 MG Oral Tablet [Synthroid]",
+                    "Code": "966158",
+                    "Score": 0.2588822841644287
+                }
+            ]
+        }
+    ],
+    "ModelVersion": "0.0.0"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Infer RxNorm\fP in the \fIAmazon Comprehend Medical Developer Guide\fP\&.
+.sp
+\fBExample 2: To detect medication entities and link to RxNorm from a file path.\fP
+.sp
+The following \fBinfer\-rx\-norm\fP example shows and labels the detected medication entities and links those entities to concept identifiers (RxCUI) from the National Library of Medicine RxNorm database.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws comprehendmedical infer\-rx\-norm \e
+    \-\-text file://rxnorm.txt
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBrxnorm.txt\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Patient reports taking Levothyroxine 125 micrograms p.o. once daily, but denies taking Synthroid."
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Entities": [
+        {
+            "Id": 0,
+            "Text": "Levothyroxine",
+            "Category": "MEDICATION",
+            "Type": "GENERIC_NAME",
+            "Score": 0.9996285438537598,
+            "BeginOffset": 23,
+            "EndOffset": 36,
+            "Attributes": [
+                {
+                    "Type": "DOSAGE",
+                    "Score": 0.9892290830612183,
+                    "RelationshipScore": 0.9997978806495667,
+                    "Id": 1,
+                    "BeginOffset": 37,
+                    "EndOffset": 51,
+                    "Text": "125 micrograms",
+                    "Traits": []
+                },
+                {
+                    "Type": "ROUTE_OR_MODE",
+                    "Score": 0.9988924860954285,
+                    "RelationshipScore": 0.998291552066803,
+                    "Id": 2,
+                    "BeginOffset": 52,
+                    "EndOffset": 56,
+                    "Text": "p.o.",
+                    "Traits": []
+                },
+                {
+                    "Type": "FREQUENCY",
+                    "Score": 0.9953463673591614,
+                    "RelationshipScore": 0.9999889135360718,
+                    "Id": 3,
+                    "BeginOffset": 57,
+                    "EndOffset": 67,
+                    "Text": "once daily",
+                    "Traits": []
+                }
+            ],
+            "Traits": [],
+            "RxNormConcepts": [
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet",
+                    "Code": "966224",
+                    "Score": 0.9912070631980896
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Capsule",
+                    "Code": "966405",
+                    "Score": 0.8698278665542603
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet [Synthroid]",
+                    "Code": "966191",
+                    "Score": 0.7448257803916931
+                },
+                {
+                    "Description": "levothyroxine",
+                    "Code": "10582",
+                    "Score": 0.7050482630729675
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet [Levoxyl]",
+                    "Code": "966190",
+                    "Score": 0.6921631693840027
+                }
+            ]
+        },
+        {
+            "Id": 4,
+            "Text": "Synthroid",
+            "Category": "MEDICATION",
+            "Type": "BRAND_NAME",
+            "Score": 0.9946461319923401,
+            "BeginOffset": 86,
+            "EndOffset": 95,
+            "Attributes": [],
+            "Traits": [
+                {
+                    "Name": "NEGATION",
+                    "Score": 0.5167351961135864
+                }
+            ],
+            "RxNormConcepts": [
+                {
+                    "Description": "Synthroid",
+                    "Code": "224920",
+                    "Score": 0.9462039470672607
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.088 MG Oral Tablet [Synthroid]",
+                    "Code": "966282",
+                    "Score": 0.8309829235076904
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.125 MG Oral Tablet [Synthroid]",
+                    "Code": "966191",
+                    "Score": 0.4945160448551178
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.05 MG Oral Tablet [Synthroid]",
+                    "Code": "966247",
+                    "Score": 0.3674522042274475
+                },
+                {
+                    "Description": "Levothyroxine Sodium 0.025 MG Oral Tablet [Synthroid]",
+                    "Code": "966158",
+                    "Score": 0.2588822841644287
+                }
+            ]
+        }
+    ],
+    "ModelVersion": "0.0.0"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Infer RxNorm\fP in the \fIAmazon Comprehend Medical Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Entities \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The medication entities detected in the text linked to RxNorm concepts. If the action is successful, the service sends back an HTTP 200 response, as well as the entities detected.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The collection of medical entities extracted from the input text and their associated information. For each entity, the response provides the entity text, the entity category, where the entity text begins and ends, and the level of confidence that Amazon Comprehend Medical has in the detection and analysis. Attributes and traits of the entity are also returned.
+.sp
+Id \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The numeric identifier for the entity. This is a monotonically increasing id unique within this response rather than a global unique identifier.
+.UNINDENT
+.UNINDENT
+.sp
+Text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The segment of input text extracted from which the entity was detected.
+.UNINDENT
+.UNINDENT
+.sp
+Category \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The category of the entity. The recognized categories are \fBGENERIC\fP or \fBBRAND_NAME\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the specific type of entity. For InferRxNorm, the recognized entity type is \fBMEDICATION\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Score \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend Medical has in the accuracy of the detected entity.
+.UNINDENT
+.UNINDENT
+.sp
+BeginOffset \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The 0\-based character offset in the input text that shows where the entity begins. The offset returns the UTF\-8 code point in the string.
+.UNINDENT
+.UNINDENT
+.sp
+EndOffset \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The 0\-based character offset in the input text that shows where the entity ends. The offset returns the UTF\-8 code point in the string.
+.UNINDENT
+.UNINDENT
+.sp
+Attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The extracted attributes that relate to the entity. The attributes recognized by InferRxNorm are \fBDOSAGE\fP , \fBDURATION\fP , \fBFORM\fP , \fBFREQUENCY\fP , \fBRATE\fP , \fBROUTE_OR_MODE\fP , and \fBSTRENGTH\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The extracted attributes that relate to this entity. The attributes recognized by InferRxNorm are \fBDOSAGE\fP , \fBDURATION\fP , \fBFORM\fP , \fBFREQUENCY\fP , \fBRATE\fP , \fBROUTE_OR_MODE\fP .
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of attribute. The types of attributes recognized by InferRxNorm are \fBBRAND_NAME\fP and \fBGENERIC_NAME\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Score \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Comprehend Medical has that the segment of text is correctly recognized as an attribute.
+.UNINDENT
+.UNINDENT
+.sp
+RelationshipScore \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend Medical has that the attribute is accurately linked to an entity.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The numeric identifier for this attribute. This is a monotonically increasing id unique within this response rather than a global unique identifier.
+.UNINDENT
+.UNINDENT
+.sp
+BeginOffset \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The 0\-based character offset in the input text that shows where the attribute begins. The offset returns the UTF\-8 code point in the string.
+.UNINDENT
+.UNINDENT
+.sp
+EndOffset \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The 0\-based character offset in the input text that shows where the attribute ends. The offset returns the UTF\-8 code point in the string.
+.UNINDENT
+.UNINDENT
+.sp
+Text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The segment of input text which corresponds to the detected attribute.
+.UNINDENT
+.UNINDENT
+.sp
+Traits \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contextual information for the attribute. InferRxNorm recognizes the trait \fBNEGATION\fP for attributes, i.e. that the patient is not taking a specific dose or form of a medication.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The contextual information for the entity. InferRxNorm recognizes the trait \fBNEGATION\fP , which is any indication that the patient is not taking a medication.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides a name or contextual description about the trait.
+.UNINDENT
+.UNINDENT
+.sp
+Score \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend Medical has in the accuracy of the detected trait.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Traits \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contextual information for the entity.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The contextual information for the entity. InferRxNorm recognizes the trait \fBNEGATION\fP , which is any indication that the patient is not taking a medication.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides a name or contextual description about the trait.
+.UNINDENT
+.UNINDENT
+.sp
+Score \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend Medical has in the accuracy of the detected trait.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RxNormConcepts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The RxNorm concepts that the entity could refer to, along with a score indicating the likelihood of the match.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The RxNorm concept that the entity could refer to, along with a score indicating the likelihood of the match.
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the RxNorm concept.
+.UNINDENT
+.UNINDENT
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+RxNorm concept ID, also known as the RxCUI.
+.UNINDENT
+.UNINDENT
+.sp
+Score \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend Medical has that the entity is accurately linked to the reported RxNorm concept.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PaginationToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the result of the previous request to \fBInferRxNorm\fP was truncated, include the \fBPaginationToken\fP to fetch the next page of medication entities.
+.UNINDENT
+.UNINDENT
+.sp
+ModelVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the model used to analyze the documents, in the format \fIn\fP .*n* .*n* You can use this information to track the model used for a particular batch of documents.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

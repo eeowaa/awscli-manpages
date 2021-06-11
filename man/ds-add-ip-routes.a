@@ -1,0 +1,189 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DS-ADD-IP-ROUTES" "a" "" ""
+.SH NAME
+ds-add-ip-routes \- If the DNS server for your on-premises domain uses a publicly addressable IP address, you must add a CIDR address block to correctly route traffic to and from your Microsoft AD on Amazon Web Services
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+If the DNS server for your on\-premises domain uses a publicly addressable IP address, you must add a CIDR address block to correctly route traffic to and from your Microsoft AD on Amazon Web Services. \fIAddIpRoutes\fP adds this address block. You can also use \fIAddIpRoutes\fP to facilitate routing traffic that uses public IP ranges from your Microsoft AD on AWS to a peer VPC.
+.sp
+Before you call \fIAddIpRoutes\fP , ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the \fIAddIpRoutes\fP operation, see \fI\%AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  add\-ip\-routes
+\-\-directory\-id <value>
+\-\-ip\-routes <value>
+[\-\-update\-security\-group\-for\-directory\-controllers | \-\-no\-update\-security\-group\-for\-directory\-controllers]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-directory\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifier (ID) of the directory to which to add the address block.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ip\-routes\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+IP address blocks, using CIDR format, of the traffic to route. This is often the IP address block of the DNS server used for your on\-premises domain.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+IP address block. This is often the address block of the DNS server used for your on\-premises domain.
+.sp
+CidrIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+IP address block using CIDR format, for example 10.0.0.0/24. This is often the address block of the DNS server used for your on\-premises domain. For a single IP address use a CIDR address block with /32. For example 10.0.0.0/32.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Description of the address block.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CidrIp=string,Description=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "CidrIp": "string",
+    "Description": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-update\-security\-group\-for\-directory\-controllers\fP | \fB\-\-no\-update\-security\-group\-for\-directory\-controllers\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If set to true, updates the inbound and outbound rules of the security group that has the description: "AWS created security group for \fIdirectory ID\fP directory controllers." Following are the new rules:
+.sp
+Inbound:
+.INDENT 0.0
+.IP \(bu 2
+Type: Custom UDP Rule, Protocol: UDP, Range: 88, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom UDP Rule, Protocol: UDP, Range: 123, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom UDP Rule, Protocol: UDP, Range: 138, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom UDP Rule, Protocol: UDP, Range: 389, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom UDP Rule, Protocol: UDP, Range: 464, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom UDP Rule, Protocol: UDP, Range: 445, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom TCP Rule, Protocol: TCP, Range: 88, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom TCP Rule, Protocol: TCP, Range: 135, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom TCP Rule, Protocol: TCP, Range: 445, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom TCP Rule, Protocol: TCP, Range: 464, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom TCP Rule, Protocol: TCP, Range: 636, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom TCP Rule, Protocol: TCP, Range: 1024\-65535, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: Custom TCP Rule, Protocol: TCP, Range: 3268\-33269, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: DNS (UDP), Protocol: UDP, Range: 53, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: DNS (TCP), Protocol: TCP, Range: 53, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: LDAP, Protocol: TCP, Range: 389, Source: 0.0.0.0/0
+.IP \(bu 2
+Type: All ICMP, Protocol: All, Range: N/A, Source: 0.0.0.0/0
+.UNINDENT
+.sp
+Outbound:
+.INDENT 0.0
+.IP \(bu 2
+Type: All traffic, Protocol: All, Range: All, Destination: 0.0.0.0/0
+.UNINDENT
+.sp
+These security rules impact an internal network interface that is not exposed publicly.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

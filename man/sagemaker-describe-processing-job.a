@@ -1,0 +1,658 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SAGEMAKER-DESCRIBE-PROCESSING-JOB" "a" "" ""
+.SH NAME
+sagemaker-describe-processing-job \- Returns a description of a processing job
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns a description of a processing job.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-processing\-job
+\-\-processing\-job\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-processing\-job\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the processing job. The name must be unique within an AWS Region in the AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ProcessingInputs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The inputs for a processing job.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The inputs for a processing job. The processing input must specify exactly one of either \fBS3Input\fP or \fBDatasetDefinition\fP types.
+.sp
+InputName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the processing job input.
+.UNINDENT
+.UNINDENT
+.sp
+AppManaged \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When \fBTrue\fP , input operations such as data download are managed natively by the processing job application. When \fBFalse\fP (default), input operations are managed by Amazon SageMaker.
+.UNINDENT
+.UNINDENT
+.sp
+S3Input \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for downloading input data from Amazon S3 into the processing container.
+.sp
+S3Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URI of the Amazon S3 prefix Amazon SageMaker downloads data required to run a processing job.
+.UNINDENT
+.UNINDENT
+.sp
+LocalPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The local path in your container where you want Amazon SageMaker to write input data to. \fBLocalPath\fP is an absolute path to the input data and must begin with \fB/opt/ml/processing/\fP . \fBLocalPath\fP is a required parameter when \fBAppManaged\fP is \fBFalse\fP (default).
+.UNINDENT
+.UNINDENT
+.sp
+S3DataType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether you use an \fBS3Prefix\fP or a \fBManifestFile\fP for the data type. If you choose \fBS3Prefix\fP , \fBS3Uri\fP identifies a key name prefix. Amazon SageMaker uses all objects with the specified key name prefix for the processing job. If you choose \fBManifestFile\fP , \fBS3Uri\fP identifies an object that is a manifest file containing a list of object keys that you want Amazon SageMaker to use for the processing job.
+.UNINDENT
+.UNINDENT
+.sp
+S3InputMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to use \fBFile\fP or \fBPipe\fP input mode. In File mode, Amazon SageMaker copies the data from the input source onto the local ML storage volume before starting your processing container. This is the most commonly used input mode. In \fBPipe\fP mode, Amazon SageMaker streams input data from the source directly to your processing container into named pipes without using the ML storage volume.
+.UNINDENT
+.UNINDENT
+.sp
+S3DataDistributionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to distribute the data from Amazon S3 to all processing instances with \fBFullyReplicated\fP , or whether the data from Amazon S3 is shared by Amazon S3 key, downloading one shard of data to each processing instance.
+.UNINDENT
+.UNINDENT
+.sp
+S3CompressionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to GZIP\-decompress the data in Amazon S3 as it is streamed into the processing container. \fBGzip\fP can only be used when \fBPipe\fP mode is specified as the \fBS3InputMode\fP . In \fBPipe\fP mode, Amazon SageMaker streams input data from the source directly to your container without using the EBS volume.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DatasetDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for a Dataset Definition input.
+.sp
+AthenaDatasetDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for Athena Dataset Definition input.
+.sp
+Catalog \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the data catalog used in Athena query execution.
+.UNINDENT
+.UNINDENT
+.sp
+Database \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database used in the Athena query execution.
+.UNINDENT
+.UNINDENT
+.sp
+QueryString \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SQL query statements, to be executed.
+.UNINDENT
+.UNINDENT
+.sp
+WorkGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the workgroup in which the Athena query is being started.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in Amazon S3 where Athena query results are stored.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Key Management Service (AWS KMS) key that Amazon SageMaker uses to encrypt data generated from an Athena query execution.
+.UNINDENT
+.UNINDENT
+.sp
+OutputFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data storage format for Athena query results.
+.UNINDENT
+.UNINDENT
+.sp
+OutputCompression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The compression used for Athena query results.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RedshiftDatasetDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for Redshift Dataset Definition input.
+.sp
+ClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Redshift cluster Identifier.
+.UNINDENT
+.UNINDENT
+.sp
+Database \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Redshift database used in Redshift query execution.
+.UNINDENT
+.UNINDENT
+.sp
+DbUser \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The database user name used in Redshift query execution.
+.UNINDENT
+.UNINDENT
+.sp
+QueryString \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SQL query statements to be executed.
+.UNINDENT
+.UNINDENT
+.sp
+ClusterRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IAM role attached to your Redshift cluster that Amazon SageMaker uses to generate datasets.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in Amazon S3 where the Redshift query results are stored.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Key Management Service (AWS KMS) key that Amazon SageMaker uses to encrypt data from a Redshift execution.
+.UNINDENT
+.UNINDENT
+.sp
+OutputFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data storage format for Redshift query results.
+.UNINDENT
+.UNINDENT
+.sp
+OutputCompression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The compression used for Redshift query results.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LocalPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The local path where you want Amazon SageMaker to download the Dataset Definition inputs to run a processing job. \fBLocalPath\fP is an absolute path to the input data. This is a required parameter when \fBAppManaged\fP is \fBFalse\fP (default).
+.UNINDENT
+.UNINDENT
+.sp
+DataDistributionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the generated dataset is \fBFullyReplicated\fP or \fBShardedByS3Key\fP (default).
+.UNINDENT
+.UNINDENT
+.sp
+InputMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to use \fBFile\fP or \fBPipe\fP input mode. In \fBFile\fP (default) mode, Amazon SageMaker copies the data from the input source onto the local Amazon Elastic Block Store (Amazon EBS) volumes before starting your training algorithm. This is the most commonly used input mode. In \fBPipe\fP mode, Amazon SageMaker streams input data from the source directly to your algorithm without using the EBS volume.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProcessingOutputConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Output configuration for the processing job.
+.sp
+Outputs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of outputs configuring the data to upload from the processing container.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the results of a processing job. The processing output must specify exactly one of either \fBS3Output\fP or \fBFeatureStoreOutput\fP types.
+.sp
+OutputName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the processing job output.
+.UNINDENT
+.UNINDENT
+.sp
+S3Output \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for processing job outputs in Amazon S3.
+.sp
+S3Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A URI that identifies the Amazon S3 bucket where you want Amazon SageMaker to save the results of a processing job.
+.UNINDENT
+.UNINDENT
+.sp
+LocalPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The local path of a directory where you want Amazon SageMaker to upload its contents to Amazon S3. \fBLocalPath\fP is an absolute path to a directory containing output files. This directory will be created by the platform and exist when your container\(aqs entrypoint is invoked.
+.UNINDENT
+.UNINDENT
+.sp
+S3UploadMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to upload the results of the processing job continuously or after the job completes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FeatureStoreOutput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for processing job outputs in Amazon SageMaker Feature Store. This processing output type is only supported when \fBAppManaged\fP is specified.
+.sp
+FeatureGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon SageMaker FeatureGroup to use as the destination for processing job output. Note that your processing script is responsible for putting records into your Feature Store.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AppManaged \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When \fBTrue\fP , output operations such as data upload are managed natively by the processing job application. When \fBFalse\fP (default), output operations are managed by Amazon SageMaker.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Key Management Service (AWS KMS) key that Amazon SageMaker uses to encrypt the processing job output. \fBKmsKeyId\fP can be an ID of a KMS key, ARN of a KMS key, alias of a KMS key, or alias of a KMS key. The \fBKmsKeyId\fP is applied to all outputs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProcessingJobName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the processing job. The name must be unique within an AWS Region in the AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+ProcessingResources \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the resources, ML compute instances, and ML storage volumes to deploy for a processing job. In distributed training, you specify more than one instance.
+.sp
+ClusterConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for the resources in a cluster used to run the processing job.
+.sp
+InstanceCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of ML compute instances to use in the processing job. For distributed processing jobs, specify a value greater than 1. The default value is 1.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ML compute instance type for the processing job.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeSizeInGB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the ML storage volume in gigabytes that you want to provision. You must specify sufficient ML storage for your scenario.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeKmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Key Management Service (AWS KMS) key that Amazon SageMaker uses to encrypt data on the storage volume attached to the ML compute instance(s) that run the processing job.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StoppingCondition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The time limit for how long the processing job is allowed to run.
+.sp
+MaxRuntimeInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the maximum runtime in seconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AppSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configures the processing job to run a specified container image.
+.sp
+ImageUri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The container image to be run by the processing job.
+.UNINDENT
+.UNINDENT
+.sp
+ContainerEntrypoint \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The entrypoint for a container used to run a processing job.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ContainerArguments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The arguments for a container used to run a processing job.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Environment \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The environment variables set in the Docker container.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+NetworkConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Networking options for a processing job.
+.sp
+EnableInterContainerTrafficEncryption \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to encrypt all communications between distributed processing jobs. Choose \fBTrue\fP to encrypt communications. Encryption provides greater security for distributed processing jobs, but the processing might take longer.
+.UNINDENT
+.UNINDENT
+.sp
+EnableNetworkIsolation \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to allow inbound and outbound network calls to and from the containers used for the processing job.
+.UNINDENT
+.UNINDENT
+.sp
+VpcConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a VPC that your training jobs and hosted models have access to. Control access to and from your training and model containers by configuring the VPC. For more information, see \fI\%Protect Endpoints by Using an Amazon Virtual Private Cloud\fP and \fI\%Protect Training Jobs by Using an Amazon Virtual Private Cloud\fP .
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The VPC security group IDs, in the form sg\-xxxxxxxx. Specify the security groups for the VPC that is specified in the \fBSubnets\fP field.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnets in the VPC to which you want to connect your training job or model. For information about the availability of specific instance types, see \fI\%Supported Instance Types and Availability Zones\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an IAM role that Amazon SageMaker can assume to perform tasks on your behalf.
+.UNINDENT
+.UNINDENT
+.sp
+ExperimentConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration information used to create an experiment.
+.sp
+ExperimentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an existing experiment to associate the trial component with.
+.UNINDENT
+.UNINDENT
+.sp
+TrialName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an existing trial to associate the trial component with. If not specified, a new trial is created.
+.UNINDENT
+.UNINDENT
+.sp
+TrialComponentDisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The display name for the trial component. If this key isn\(aqt specified, the display name is the trial component name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProcessingJobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the processing job.
+.UNINDENT
+.UNINDENT
+.sp
+ProcessingJobStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the status of a processing job.
+.UNINDENT
+.UNINDENT
+.sp
+ExitMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional string, up to one KB in size, that contains metadata from the processing container when the processing job exits.
+.UNINDENT
+.UNINDENT
+.sp
+FailureReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string, up to one KB in size, that contains the reason a processing job failed, if it failed.
+.UNINDENT
+.UNINDENT
+.sp
+ProcessingEndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the processing job completed.
+.UNINDENT
+.UNINDENT
+.sp
+ProcessingStartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the processing job started.
+.UNINDENT
+.UNINDENT
+.sp
+LastModifiedTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the processing job was last modified.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the processing job was created.
+.UNINDENT
+.UNINDENT
+.sp
+MonitoringScheduleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a monitoring schedule for an endpoint associated with this processing job.
+.UNINDENT
+.UNINDENT
+.sp
+AutoMLJobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of an AutoML job associated with this processing job.
+.UNINDENT
+.UNINDENT
+.sp
+TrainingJobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a training job associated with this processing job.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

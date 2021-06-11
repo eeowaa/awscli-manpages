@@ -1,0 +1,200 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-MODIFY-CERTIFICATES" "a" "" ""
+.SH NAME
+rds-modify-certificates \- Override the system-default Secure Sockets Layer/Transport Layer Security (SSL/TLS) certificate for Amazon RDS for new DB instances temporarily, or remove the override
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Override the system\-default Secure Sockets Layer/Transport Layer Security (SSL/TLS) certificate for Amazon RDS for new DB instances temporarily, or remove the override.
+.sp
+By using this operation, you can specify an RDS\-approved SSL/TLS certificate for new DB instances that is different from the default certificate provided by RDS. You can also use this operation to remove the override, so that new DB instances use the default certificate provided by RDS.
+.sp
+You might need to override the default certificate in the following situations:
+.INDENT 0.0
+.IP \(bu 2
+You already migrated your applications to support the latest certificate authority (CA) certificate, but the new CA certificate is not yet the RDS default CA certificate for the specified AWS Region.
+.IP \(bu 2
+RDS has already moved to a new default CA certificate for the specified AWS Region, but you are still in the process of supporting the new CA certificate. In this case, you temporarily need additional time to finish your application changes.
+.UNINDENT
+.sp
+For more information about rotating your SSL/TLS certificate for RDS DB engines, see \fI\%Rotating Your SSL/TLS Certificate\fP in the \fIAmazon RDS User Guide\fP .
+.sp
+For more information about rotating your SSL/TLS certificate for Aurora DB engines, see \fI\%Rotating Your SSL/TLS Certificate\fP in the \fIAmazon Aurora User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  modify\-certificates
+[\-\-certificate\-identifier <value>]
+[\-\-remove\-customer\-override | \-\-no\-remove\-customer\-override]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-certificate\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The new default certificate identifier to override the current one with.
+.sp
+To determine the valid values, use the \fBdescribe\-certificates\fP AWS CLI command or the \fBDescribeCertificates\fP API operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-remove\-customer\-override\fP | \fB\-\-no\-remove\-customer\-override\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether to remove the override for the default certificate. If the override is removed, the default certificate is the system default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo temporarily override the system\-default SSL/TLS certificate for new DB instances\fP
+.sp
+The following \fBmodify\-certificates\fP example temporarily overrides the system\-default SSL/TLS certificate for new DB instances.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds modify\-certificates \e
+    \-\-certificate\-identifier rds\-ca\-2019
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Certificate": {
+        "CertificateIdentifier": "rds\-ca\-2019",
+        "CertificateType": "CA",
+        "Thumbprint": "EXAMPLE123456789012",
+        "ValidFrom": "2019\-09\-19T18:16:53Z",
+        "ValidTill": "2024\-08\-22T17:08:50Z",
+        "CertificateArn": "arn:aws:rds:us\-east\-1::cert:rds\-ca\-2019",
+        "CustomerOverride": true,
+        "CustomerOverrideValidTill": "2024\-08\-22T17:08:50Z"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Rotating your SSL/TLS certificate\fP in the \fIAmazon RDS User Guide\fP and \fI\%Rotating your SSL/TLS certificate\fP in the \fIAmazon Aurora User Guide\fP\&.
+.SH OUTPUT
+.sp
+Certificate \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A CA certificate for an AWS account.
+.sp
+CertificateIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique key that identifies a certificate.
+.UNINDENT
+.UNINDENT
+.sp
+CertificateType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the certificate.
+.UNINDENT
+.UNINDENT
+.sp
+Thumbprint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The thumbprint of the certificate.
+.UNINDENT
+.UNINDENT
+.sp
+ValidFrom \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The starting date from which the certificate is valid.
+.UNINDENT
+.UNINDENT
+.sp
+ValidTill \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The final date that the certificate continues to be valid.
+.UNINDENT
+.UNINDENT
+.sp
+CertificateArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the certificate.
+.UNINDENT
+.UNINDENT
+.sp
+CustomerOverride \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether there is an override for the default certificate identifier.
+.UNINDENT
+.UNINDENT
+.sp
+CustomerOverrideValidTill \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+If there is an override for the default certificate identifier, when the override expires.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

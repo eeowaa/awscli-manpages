@@ -1,0 +1,397 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "NETWORK-FIREWALL-UPDATE-FIREWALL-POLICY" "a" "" ""
+.SH NAME
+network-firewall-update-firewall-policy \- Updates the properties of the specified firewall policy
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the properties of the specified firewall policy.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-firewall\-policy
+\-\-update\-token <value>
+[\-\-firewall\-policy\-arn <value>]
+[\-\-firewall\-policy\-name <value>]
+\-\-firewall\-policy <value>
+[\-\-description <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-update\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token used for optimistic locking. Network Firewall returns a token to your requests that access the firewall policy. The token marks the state of the policy resource at the time of the request.
+.sp
+To make changes to the policy, you provide the token in your request. Network Firewall uses the token to ensure that the policy hasn\(aqt changed since you last retrieved it. If it has changed, the operation fails with an \fBInvalidTokenException\fP . If this happens, retrieve the firewall policy again to get a current copy of it with current token. Reapply your changes as needed, then try the operation again using the new token.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-firewall\-policy\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the firewall policy.
+.sp
+You must specify the ARN or the name, and you can specify both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-firewall\-policy\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the firewall policy. You can\(aqt change the name of a firewall policy after you create it.
+.sp
+You must specify the ARN or the name, and you can specify both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-firewall\-policy\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The updated firewall policy to use for the firewall.
+.sp
+StatelessRuleGroupReferences \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+References to the stateless rule groups that are used in the policy. These define the matching criteria in stateless rules.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifier for a single stateless rule group, used in a firewall policy to refer to the rule group.
+.sp
+ResourceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the stateless rule group.
+.UNINDENT
+.UNINDENT
+.sp
+Priority \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+An integer setting that indicates the order in which to run the stateless rule groups in a single  FirewallPolicy . Network Firewall applies each stateless rule group to a packet starting with the group that has the lowest priority setting. You must ensure that the priority settings are unique within each policy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StatelessDefaultActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The actions to take on a packet if it doesn\(aqt match any of the stateless rules in the policy. If you want non\-matching packets to be forwarded for stateful inspection, specify \fBaws:forward_to_sfe\fP .
+.sp
+You must specify one of the standard actions: \fBaws:pass\fP , \fBaws:drop\fP , or \fBaws:forward_to_sfe\fP . In addition, you can specify custom actions that are compatible with your standard section choice.
+.sp
+For example, you could specify \fB["aws:pass"]\fP or you could specify \fB["aws:pass", “customActionName”]\fP . For information about compatibility, see the custom action descriptions under  CustomAction .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+StatelessFragmentDefaultActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The actions to take on a fragmented UDP packet if it doesn\(aqt match any of the stateless rules in the policy. Network Firewall only manages UDP packet fragments and silently drops packet fragments for other protocols. If you want non\-matching fragmented UDP packets to be forwarded for stateful inspection, specify \fBaws:forward_to_sfe\fP .
+.sp
+You must specify one of the standard actions: \fBaws:pass\fP , \fBaws:drop\fP , or \fBaws:forward_to_sfe\fP . In addition, you can specify custom actions that are compatible with your standard section choice.
+.sp
+For example, you could specify \fB["aws:pass"]\fP or you could specify \fB["aws:pass", “customActionName”]\fP . For information about compatibility, see the custom action descriptions under  CustomAction .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+StatelessCustomActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The custom action definitions that are available for use in the firewall policy\(aqs \fBStatelessDefaultActions\fP setting. You name each custom action that you define, and then you can use it by name in your default actions specifications.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An optional, non\-standard action to use for stateless packet handling. You can define this in addition to the standard action that you must specify.
+.sp
+You define and name the custom actions that you want to be able to use, and then you reference them by name in your actions settings.
+.sp
+You can use custom actions in the following places:
+.INDENT 0.0
+.IP \(bu 2
+In a rule group\(aqs  StatelessRulesAndCustomActions specification. The custom actions are available for use by name inside the \fBStatelessRulesAndCustomActions\fP where you define them. You can use them for your stateless rule actions to specify what to do with a packet that matches the rule\(aqs match attributes.
+.IP \(bu 2
+In a  FirewallPolicy specification, in \fBStatelessCustomActions\fP . The custom actions are available for use inside the policy where you define them. You can use them for the policy\(aqs default stateless actions settings to specify what to do with packets that don\(aqt match any of the policy\(aqs stateless rules.
+.UNINDENT
+.sp
+ActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the custom action. You can\(aqt change the name of a custom action after you create it.
+.UNINDENT
+.UNINDENT
+.sp
+ActionDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The custom action associated with the action name.
+.sp
+PublishMetricAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Stateless inspection criteria that publishes the specified metrics to Amazon CloudWatch for the matching packet. This setting defines a CloudWatch dimension value to be published.
+.sp
+You can pair this custom action with any of the standard stateless rule actions. For example, you could pair this in a rule action with the standard action that forwards the packet for stateful inspection. Then, when a packet matches the rule, Network Firewall publishes metrics for the packet and forwards it.
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The value to use in an Amazon CloudWatch custom metric dimension. This is used in the \fBPublishMetrics\fP   CustomAction . A CloudWatch custom metric dimension is a name/value pair that\(aqs part of the identity of a metric.
+.sp
+AWS Network Firewall sets the dimension name to \fBCustomAction\fP and you provide the dimension value.
+.sp
+For more information about CloudWatch custom metric dimensions, see \fI\%Publishing Custom Metrics\fP in the \fI\%Amazon CloudWatch User Guide\fP .
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value to use in the custom metric dimension.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StatefulRuleGroupReferences \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+References to the stateless rule groups that are used in the policy. These define the inspection criteria in stateful rules.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifier for a single stateful rule group, used in a firewall policy to refer to a rule group.
+.sp
+ResourceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the stateful rule group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "StatelessRuleGroupReferences": [
+    {
+      "ResourceArn": "string",
+      "Priority": integer
+    }
+    ...
+  ],
+  "StatelessDefaultActions": ["string", ...],
+  "StatelessFragmentDefaultActions": ["string", ...],
+  "StatelessCustomActions": [
+    {
+      "ActionName": "string",
+      "ActionDefinition": {
+        "PublishMetricAction": {
+          "Dimensions": [
+            {
+              "Value": "string"
+            }
+            ...
+          ]
+        }
+      }
+    }
+    ...
+  ],
+  "StatefulRuleGroupReferences": [
+    {
+      "ResourceArn": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the firewall policy.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether you want Network Firewall to just check the validity of the request, rather than run the request.
+.sp
+If set to \fBTRUE\fP , Network Firewall checks whether the request can run successfully, but doesn\(aqt actually make the requested changes. The call returns the value that the request would return if you ran it with dry run set to \fBFALSE\fP , but doesn\(aqt make additions or changes to your resources. This option allows you to make sure that you have the required permissions to run the request and that your request parameters are valid.
+.sp
+If set to \fBFALSE\fP , Network Firewall makes the requested changes to your resources.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+UpdateToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A token used for optimistic locking. Network Firewall returns a token to your requests that access the firewall policy. The token marks the state of the policy resource at the time of the request.
+.sp
+To make changes to the policy, you provide the token in your request. Network Firewall uses the token to ensure that the policy hasn\(aqt changed since you last retrieved it. If it has changed, the operation fails with an \fBInvalidTokenException\fP . If this happens, retrieve the firewall policy again to get a current copy of it with current token. Reapply your changes as needed, then try the operation again using the new token.
+.UNINDENT
+.UNINDENT
+.sp
+FirewallPolicyResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The high\-level properties of a firewall policy. This, along with the  FirewallPolicy , define the policy. You can retrieve all objects for a firewall policy by calling  DescribeFirewallPolicy .
+.sp
+FirewallPolicyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the firewall policy. You can\(aqt change the name of a firewall policy after you create it.
+.UNINDENT
+.UNINDENT
+.sp
+FirewallPolicyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the firewall policy.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If this response is for a create request that had \fBDryRun\fP set to \fBTRUE\fP , then this ARN is a placeholder that isn\(aqt attached to a valid resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FirewallPolicyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the firewall policy.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the firewall policy.
+.UNINDENT
+.UNINDENT
+.sp
+FirewallPolicyStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the firewall policy. You can retrieve this for a firewall policy by calling  DescribeFirewallPolicy and providing the firewall policy\(aqs name or ARN.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The key:value pairs to associate with the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key:value pair associated with an AWS resource. The key:value pair can be anything you define. Typically, the tag key represents a category (such as "environment") and the tag value represents a specific value within that category (such as "test," "development," or "production"). You can add up to 50 tags to each AWS resource.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The part of the key:value pair that defines a tag. You can use a tag key to describe a category of information, such as "customer." Tag keys are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The part of the key:value pair that defines a tag. You can use a tag value to describe a specific value within a category, such as "companyA" or "companyB." Tag values are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

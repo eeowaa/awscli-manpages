@@ -1,0 +1,348 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "MACIE2-GET-USAGE-STATISTICS" "a" "" ""
+.SH NAME
+macie2-get-usage-statistics \- Retrieves (queries) quotas and aggregated usage data for one or more accounts
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves (queries) quotas and aggregated usage data for one or more accounts.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBget\-usage\-statistics\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBrecords\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-usage\-statistics
+[\-\-filter\-by <value>]
+[\-\-sort\-by <value>]
+[\-\-time\-range <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-filter\-by\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects, one for each condition to use to filter the query results. If you specify more than one condition, Amazon Macie uses an AND operator to join the conditions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a condition for filtering the results of a query for quota and usage data for one or more Amazon Macie accounts.
+.sp
+comparator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The operator to use in the condition. If the value for the key property is accountId, this value must be CONTAINS. If the value for the key property is any other supported field, this value can be EQ, GT, GTE, LT, LTE, or NE.
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The field to use in the condition.
+.UNINDENT
+.UNINDENT
+.sp
+values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array that lists values to use in the condition, based on the value for the field specified by the key property. If the value for the key property is accountId, this array can specify multiple values. Otherwise, this array can specify only one value.
+.sp
+Valid values for each supported field are:
+.INDENT 0.0
+.IP \(bu 2
+accountId \- The unique identifier for an AWS account.
+.IP \(bu 2
+freeTrialStartDate \- The date and time, in UTC and extended ISO 8601 format, when the free trial started for an account.
+.IP \(bu 2
+serviceLimit \- A Boolean (true or false) value that indicates whether an account has reached its monthly quota.
+.IP \(bu 2
+total \- A string that represents the current estimated cost for an account.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+comparator=string,key=string,values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "comparator": "GT"|"GTE"|"LT"|"LTE"|"EQ"|"NE"|"CONTAINS",
+    "key": "accountId"|"serviceLimit"|"freeTrialStartDate"|"total",
+    "values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sort\-by\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The criteria to use to sort the query results.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The field to sort the results by.
+.UNINDENT
+.UNINDENT
+.sp
+orderBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The sort order to apply to the results, based on the value for the field specified by the key property. Valid values are: ASC, sort the results in ascending order; and, DESC, sort the results in descending order.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+key=string,orderBy=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "key": "accountId"|"total"|"serviceLimitValue"|"freeTrialStartDate",
+  "orderBy": "ASC"|"DESC"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-time\-range\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The inclusive time period to query usage data for. Valid values are: MONTH_TO_DATE, for the current calendar month to date; and, PAST_30_DAYS, for the preceding 30 days. If you don\(aqt specify a value, Amazon Macie provides usage data for the preceding 30 days.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBMONTH_TO_DATE\fP
+.IP \(bu 2
+\fBPAST_30_DAYS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+nextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string to use in a subsequent request to get the next page of results in a paginated response. This value is null if there are no additional pages.
+.UNINDENT
+.UNINDENT
+.sp
+records \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that contains the results of the query. Each object contains the data for an account that meets the filter criteria specified in the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides quota and aggregated usage data for an Amazon Macie account.
+.sp
+accountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the AWS account that the data applies to.
+.UNINDENT
+.UNINDENT
+.sp
+freeTrialStartDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time, in UTC and extended ISO 8601 format, when the free trial started for the account.
+.UNINDENT
+.UNINDENT
+.sp
+usage \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that contains usage data and quotas for the account. Each object contains the data for a specific usage metric and the corresponding quota.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides data for a specific usage metric and the corresponding quota for an Amazon Macie account.
+.sp
+currency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of currency that the value for the metric (estimatedCost) is reported in.
+.UNINDENT
+.UNINDENT
+.sp
+estimatedCost \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The estimated value for the metric.
+.UNINDENT
+.UNINDENT
+.sp
+serviceLimit \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current value for the quota that corresponds to the metric specified by the type field.
+.sp
+isServiceLimited \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the account has met the quota that corresponds to the metric specified by the UsageByAccount.type field in the response.
+.UNINDENT
+.UNINDENT
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of measurement for the value specified by the value field.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The value for the metric specified by the UsageByAccount.type field in the response.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric. Possible values are: DATA_INVENTORY_EVALUATION, for monitoring S3 buckets; and, SENSITIVE_DATA_DISCOVERY, for analyzing S3 objects to detect sensitive data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeRange \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The inclusive time period that the usage data applies to. Possible values are: MONTH_TO_DATE, for the current calendar month to date; and, PAST_30_DAYS, for the preceding 30 days.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

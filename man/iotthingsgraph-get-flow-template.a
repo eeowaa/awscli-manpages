@@ -1,0 +1,200 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOTTHINGSGRAPH-GET-FLOW-TEMPLATE" "a" "" ""
+.SH NAME
+iotthingsgraph-get-flow-template \- Gets the latest version of the DefinitionDocument and FlowTemplateSummary for the specified workflow
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets the latest version of the \fBDefinitionDocument\fP and \fBFlowTemplateSummary\fP for the specified workflow.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-flow\-template
+\-\-id <value>
+[\-\-revision\-number <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the workflow.
+.sp
+The ID should be in the following format.
+.INDENT 0.0
+.INDENT 3.5
+\fBurn:tdm:REGION/ACCOUNT ID/default:workflow:WORKFLOWNAME\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-revision\-number\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of the workflow revision to retrieve.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get a flow definition\fP
+.sp
+The following \fBget\-flow\-template\fP example gets a definition for a flow (workflow).
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iotthingsgraph get\-flow\-template \e
+    \-\-id "urn:tdm:us\-west\-2/123456789012/default:Workflow:MyFlow"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "description": {
+        "summary": {
+            "id": "urn:tdm:us\-west\-2/123456789012/default:Workflow:MyFlow",
+            "revisionNumber": 1,
+            "createdAt": 1559247540.292
+        },
+        "definition": {
+            "language": "GRAPHQL",
+            "text": "{\enquery MyFlow($camera: string!, $screen: string!) @workflowType(id: \e"urn:tdm:us\-west\-2/123456789012/default:Workflow:MyFlow\e") @annotation(type: \e"tgc:FlowEvent\e", id: \e"sledged790c1b2bcd949e09da0c9bfc077f79d\e", x: 1586, y: 653) @triggers(definition: \e"{MotionSensor(description: \e\e\e"\e\e\e") @position(x: 1045, y: 635.6666564941406) {\e\en  condition(expr: \e\e\e"devices[name == \e\e\e\e\e\e\e"motionSensor\e\e\e\e\e\e\e"].events[name == \e\e\e\e\e\e\e"StateChanged\e\e\e\e\e\e\e"].lastEvent\e\e\e")\e\en  action(expr: \e\e\e"\e\e\e")\e\en}}\e") {\en  variables {\en    cameraResult @property(id: \e"urn:tdm:aws/examples:property:CameraStateProperty\e")\en  }\en  steps {\en    step(name: \e"Camera\e", outEvent: [\e"sledged790c1b2bcd949e09da0c9bfc077f79d\e"]) @position(x: 1377, y: 638.6666564941406) {\en      DeviceActivity(deviceModel: \e"urn:tdm:aws/examples:deviceModel:Camera\e", out: \e"cameraResult\e", deviceId: \e"${camera}\e") {\en        capture\en      }\en    }\en    step(name: \e"Screen\e", inEvent: [\e"sledged790c1b2bcd949e09da0c9bfc077f79d\e"]) @position(x: 1675.6666870117188, y: 637.9999847412109) {\en      DeviceActivity(deviceModel: \e"urn:tdm:aws/examples:deviceModel:Screen\e", deviceId: \e"${screen}\e") {\en        display(imageUrl: \e"${cameraResult.lastClickedImage}\e")\en      }\en    }\en  }\en}\en}"
+        },
+        "validatedNamespaceVersion": 5
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Working with Flows\fP in the \fIAWS IoT Things Graph User Guide\fP\&.
+.SH OUTPUT
+.sp
+description \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The object that describes the specified workflow.
+.sp
+summary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that contains summary information about a workflow.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the workflow.
+.UNINDENT
+.UNINDENT
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the workflow.
+.UNINDENT
+.UNINDENT
+.sp
+revisionNumber \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The revision number of the workflow.
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the workflow was created.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+definition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A workflow\(aqs definition document.
+.sp
+language \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The language used to define the entity. \fBGRAPHQL\fP is the only valid value.
+.UNINDENT
+.UNINDENT
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The GraphQL text that defines the entity.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+validatedNamespaceVersion \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The version of the user\(aqs namespace against which the workflow was validated. Use this value in your system instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

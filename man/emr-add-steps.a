@@ -1,0 +1,566 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EMR-ADD-STEPS" "a" "" ""
+.SH NAME
+emr-add-steps \- Add a list of steps to a cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Add a list of steps to a cluster.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  add\-steps
+\-\-cluster\-id <value>
+\-\-steps <value> [<value>...]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique string that identifies a cluster. The \fBcreate\-cluster\fP command returns this identifier. You can use the \fBlist\-clusters\fP command to get cluster IDs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-steps\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a list of steps to be executed by the cluster. Steps run only on the master node after applications are installed and are used to submit work to a cluster. A step can be specified using the shorthand syntax, by referencing a JSON file or by specifying an inline JSON structure. \fBArgs\fP supplied with steps should be a comma\-separated list of values (\fBArgs=arg1,arg2,arg3\fP ) or a bracket\-enclosed list of values and key\-value pairs (\fBArgs=[arg1,arg2=value,arg4\fP ).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of a step to be added to the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the step.
+.UNINDENT
+.UNINDENT
+.sp
+ActionOnFailure \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action to take if the cluster step fails.
+.UNINDENT
+.UNINDENT
+.sp
+Jar \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A path to a JAR file run during the step.
+.UNINDENT
+.UNINDENT
+.sp
+Args \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of command line arguments to pass to the step.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MainClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the main class in the specified Java file. If not specified, the JAR file should specify a Main\-Class in its manifest file.
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A list of Java properties that are set when the step runs. You can use these properties to pass key value pairs to your main function.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type=string,Name=string,ActionOnFailure=string,Jar=string,Args=string,string,MainClass=string,Properties=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Type": "CUSTOM_JAR"|"STREAMING"|"HIVE"|"PIG"|"IMPALA",
+    "Name": "string",
+    "ActionOnFailure": "TERMINATE_CLUSTER"|"CANCEL_AND_WAIT"|"CONTINUE",
+    "Jar": "string",
+    "Args": ["string", ...],
+    "MainClass": "string",
+    "Properties": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fB1. To add Custom JAR steps to a cluster\fP
+.INDENT 0.0
+.IP \(bu 2
+Command:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-steps \-\-cluster\-id j\-XXXXXXXX \-\-steps Type=CUSTOM_JAR,Name=CustomJAR,ActionOnFailure=CONTINUE,Jar=s3://mybucket/mytest.jar,Args=arg1,arg2,arg3 Type=CUSTOM_JAR,Name=CustomJAR,ActionOnFailure=CONTINUE,Jar=s3://mybucket/mytest.jar,MainClass=mymainclass,Args=arg1,arg2,arg3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Required parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Jar
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Optional parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type, Name, ActionOnFailure, Args
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Output:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StepIds":[
+        "s\-XXXXXXXX",
+        "s\-YYYYYYYY"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB2. To add Streaming steps to a cluster\fP
+.INDENT 0.0
+.IP \(bu 2
+Command:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-steps \-\-cluster\-id j\-XXXXXXXX \-\-steps Type=STREAMING,Name=\(aqStreaming Program\(aq,ActionOnFailure=CONTINUE,Args=[\-files,s3://elasticmapreduce/samples/wordcount/wordSplitter.py,\-mapper,wordSplitter.py,\-reducer,aggregate,\-input,s3://elasticmapreduce/samples/wordcount/input,\-output,s3://mybucket/wordcount/output]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Required parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type, Args
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Optional parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name, ActionOnFailure
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+JSON equivalent (contents of step.json):
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ [
+  {
+    "Name": "JSON Streaming Step",
+    "Args": ["\-files","s3://elasticmapreduce/samples/wordcount/wordSplitter.py","\-mapper","wordSplitter.py","\-reducer","aggregate","\-input","s3://elasticmapreduce/samples/wordcount/input","\-output","s3://mybucket/wordcount/output"],
+    "ActionOnFailure": "CONTINUE",
+    "Type": "STREAMING"
+  }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NOTE: JSON arguments must include options and values as their own items in the list.
+.INDENT 0.0
+.IP \(bu 2
+Command (using step.json):
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-steps \-\-cluster\-id j\-XXXXXXXX \-\-steps file://./step.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Output:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StepIds":[
+        "s\-XXXXXXXX",
+        "s\-YYYYYYYY"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB3. To add a Streaming step with multiple files to a cluster (JSON only)\fP
+.INDENT 0.0
+.IP \(bu 2
+JSON (multiplefiles.json):
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+     "Name": "JSON Streaming Step",
+     "Type": "STREAMING",
+     "ActionOnFailure": "CONTINUE",
+     "Args": [
+         "\-files",
+         "s3://mybucket/mapper.py,s3://mybucket/reducer.py",
+         "\-mapper",
+         "mapper.py",
+         "\-reducer",
+         "reducer.py",
+         "\-input",
+         "s3://mybucket/input",
+         "\-output",
+         "s3://mybucket/output"]
+  }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Command:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-steps \-\-cluster\-id j\-XXXXXXXX  \-\-steps file://./multiplefiles.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Required parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type, Args
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Optional parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name, ActionOnFailure
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Output:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StepIds":[
+        "s\-XXXXXXXX",
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB4. To add Hive steps to a cluster\fP
+.INDENT 0.0
+.IP \(bu 2
+Command:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-steps \-\-cluster\-id j\-XXXXXXXX \-\-steps Type=HIVE,Name=\(aqHive program\(aq,ActionOnFailure=CONTINUE,Args=[\-f,s3://mybucket/myhivescript.q,\-d,INPUT=s3://mybucket/myhiveinput,\-d,OUTPUT=s3://mybucket/myhiveoutput,arg1,arg2] Type=HIVE,Name=\(aqHive steps\(aq,ActionOnFailure=TERMINATE_CLUSTER,Args=[\-f,s3://elasticmapreduce/samples/hive\-ads/libs/model\-build.q,\-d,INPUT=s3://elasticmapreduce/samples/hive\-ads/tables,\-d,OUTPUT=s3://mybucket/hive\-ads/output/2014\-04\-18/11\-07\-32,\-d,LIBS=s3://elasticmapreduce/samples/hive\-ads/libs]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Required parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type, Args
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Optional parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name, ActionOnFailure
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Output:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StepIds":[
+        "s\-XXXXXXXX",
+        "s\-YYYYYYYY"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB5. To add Pig steps to a cluster\fP
+.INDENT 0.0
+.IP \(bu 2
+Command:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-steps \-\-cluster\-id j\-XXXXXXXX \-\-steps Type=PIG,Name=\(aqPig program\(aq,ActionOnFailure=CONTINUE,Args=[\-f,s3://mybucket/mypigscript.pig,\-p,INPUT=s3://mybucket/mypiginput,\-p,OUTPUT=s3://mybucket/mypigoutput,arg1,arg2] Type=PIG,Name=\(aqPig program\(aq,Args=[\-f,s3://elasticmapreduce/samples/pig\-apache/do\-reports2.pig,\-p,INPUT=s3://elasticmapreduce/samples/pig\-apache/input,\-p,OUTPUT=s3://mybucket/pig\-apache/output,arg1,arg2]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Required parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type, Args
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Optional parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name, ActionOnFailure
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Output:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StepIds":[
+        "s\-XXXXXXXX",
+        "s\-YYYYYYYY"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB6. To add Impala steps to a cluster\fP
+.INDENT 0.0
+.IP \(bu 2
+Command:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-steps \-\-cluster\-id j\-XXXXXXXX \-\-steps Type=IMPALA,Name=\(aqImpala program\(aq,ActionOnFailure=CONTINUE,Args=\-\-impala\-script,s3://myimpala/input,\-\-console\-output\-path,s3://myimpala/output
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Required parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type, Args
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Optional parameters:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name, ActionOnFailure
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Output:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StepIds":[
+        "s\-XXXXXXXX",
+        "s\-YYYYYYYY"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

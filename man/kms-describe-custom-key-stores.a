@@ -1,0 +1,279 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-DESCRIBE-CUSTOM-KEY-STORES" "a" "" ""
+.SH NAME
+kms-describe-custom-key-stores \- Gets information about %custom key stores in the account and region
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets information about \fI\%custom key stores\fP in the account and region.
+.sp
+This operation is part of the \fI\%Custom Key Store feature\fP feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single\-tenant key store.
+.sp
+By default, this operation returns information about all custom key stores in the account and region. To get only information about a particular custom key store, use either the \fBCustomKeyStoreName\fP or \fBCustomKeyStoreId\fP parameter (but not both).
+.sp
+To determine whether the custom key store is connected to its AWS CloudHSM cluster, use the \fBConnectionState\fP element in the response. If an attempt to connect the custom key store failed, the \fBConnectionState\fP value is \fBFAILED\fP and the \fBConnectionErrorCode\fP element in the response indicates the cause of the failure. For help interpreting the \fBConnectionErrorCode\fP , see  CustomKeyStoresListEntry .
+.sp
+Custom key stores have a \fBDISCONNECTED\fP connection state if the key store has never been connected or you use the  DisconnectCustomKeyStore operation to disconnect it. If your custom key store state is \fBCONNECTED\fP but you are having trouble using it, make sure that its associated AWS CloudHSM cluster is active and contains the minimum number of HSMs required for the operation, if any.
+.sp
+For help repairing your custom key store, see the \fI\%Troubleshooting Custom Key Stores\fP topic in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : No. You cannot perform this operation on a custom key store in a different AWS account.
+.sp
+\fBRequired permissions\fP : \fI\%kms:DescribeCustomKeyStores\fP (IAM policy)
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+ConnectCustomKeyStore
+.IP \(bu 2
+CreateCustomKeyStore
+.IP \(bu 2
+DeleteCustomKeyStore
+.IP \(bu 2
+DisconnectCustomKeyStore
+.IP \(bu 2
+UpdateCustomKeyStore
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-custom\-key\-stores
+[\-\-custom\-key\-store\-id <value>]
+[\-\-custom\-key\-store\-name <value>]
+[\-\-limit <value>]
+[\-\-marker <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-custom\-key\-store\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Gets only information about the specified custom key store. Enter the key store ID.
+.sp
+By default, this operation gets information about all custom key stores in the account and region. To limit the output to a particular custom key store, you can use either the \fBCustomKeyStoreId\fP or \fBCustomKeyStoreName\fP parameter, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-key\-store\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Gets only information about the specified custom key store. Enter the friendly name of the custom key store.
+.sp
+By default, this operation gets information about all custom key stores in the account and region. To limit the output to a particular custom key store, you can use either the \fBCustomKeyStoreId\fP or \fBCustomKeyStoreName\fP parameter, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-limit\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Use this parameter to specify the maximum number of items to return. When this value is present, AWS KMS does not return more than the specified number of items, but it might return fewer.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-marker\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Use this parameter in a subsequent request after you receive a response with truncated results. Set it to the value of \fBNextMarker\fP from the truncated response you just received.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get details about a custom key store\fP
+.sp
+The following \fBdescribe\-custom\-key\-store\fP example displays details for the specified custom key store. You can use this command to get details about a particular custom key store or all custom key stores in an AWS account and Region.
+.sp
+To identify a particular custom key store, this example uses the \fBcustom\-key\-store\-name\fP parameter with the key store name. If you prefer, you can use the \fBcustom\-key\-store\-id\fP parameter with the key store ID. To get all custom key stores in the account and Region, omit all parameters.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms describe\-custom\-key\-stores \e
+    \-\-custom\-key\-store\-name ExampleKeyStore
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output of this command includes useful details about the custom key store including its connection state (\fBConnectionState\fP). If the connection state is \fBFAILED\fP, the output includes a \fBConnectionErrorCode\fP field that describes the problem.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "CustomKeyStores": [
+        {
+            "CloudHsmClusterId": "cluster\-1a23b4cdefg",
+            "ConnectionState": "CONNECTED",
+            "CreationDate": "1.599288695918E9",
+            "CustomKeyStoreId": "cks\-1234567890abcdef0",
+            "CustomKeyStoreName": "ExampleKeyStore",
+            "TrustAnchorCertificate": "<certificate appears here>"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Viewing a Custom Key Store\fP in the \fIAWS Key Management Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+CustomKeyStores \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains metadata about each custom key store.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about each custom key store in the custom key store list.
+.sp
+CustomKeyStoreId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+CustomKeyStoreName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user\-specified friendly name for the custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+CloudHsmClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the AWS CloudHSM cluster that is associated with the custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+TrustAnchorCertificate \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The trust anchor certificate of the associated AWS CloudHSM cluster. When you \fI\%initialize the cluster\fP , you create this certificate and save it in the \fBcustomerCA.crt\fP file.
+.UNINDENT
+.UNINDENT
+.sp
+ConnectionState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the custom key store is connected to its AWS CloudHSM cluster.
+.sp
+You can create and use CMKs in your custom key stores only when its connection state is \fBCONNECTED\fP .
+.sp
+The value is \fBDISCONNECTED\fP if the key store has never been connected or you use the  DisconnectCustomKeyStore operation to disconnect it. If the value is \fBCONNECTED\fP but you are having trouble using the custom key store, make sure that its associated AWS CloudHSM cluster is active and contains at least one active HSM.
+.sp
+A value of \fBFAILED\fP indicates that an attempt to connect was unsuccessful. The \fBConnectionErrorCode\fP field in the response indicates the cause of the failure. For help resolving a connection failure, see \fI\%Troubleshooting a Custom Key Store\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ConnectionErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the connection error. This field appears in the response only when the \fBConnectionState\fP is \fBFAILED\fP . For help resolving these errors, see \fI\%How to Fix a Connection Failure\fP in \fIAWS Key Management Service Developer Guide\fP .
+.sp
+Valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBCLUSTER_NOT_FOUND\fP \- AWS KMS cannot find the AWS CloudHSM cluster with the specified cluster ID.
+.IP \(bu 2
+\fBINSUFFICIENT_CLOUDHSM_HSMS\fP \- The associated AWS CloudHSM cluster does not contain any active HSMs. To connect a custom key store to its AWS CloudHSM cluster, the cluster must contain at least one active HSM.
+.IP \(bu 2
+\fBINTERNAL_ERROR\fP \- AWS KMS could not complete the request due to an internal error. Retry the request. For \fBConnectCustomKeyStore\fP requests, disconnect the custom key store before trying to connect again.
+.IP \(bu 2
+\fBINVALID_CREDENTIALS\fP \- AWS KMS does not have the correct password for the \fBkmsuser\fP crypto user in the AWS CloudHSM cluster. Before you can connect your custom key store to its AWS CloudHSM cluster, you must change the \fBkmsuser\fP account password and update the key store password value for the custom key store.
+.IP \(bu 2
+\fBNETWORK_ERRORS\fP \- Network errors are preventing AWS KMS from connecting to the custom key store.
+.IP \(bu 2
+\fBSUBNET_NOT_FOUND\fP \- A subnet in the AWS CloudHSM cluster configuration was deleted. If AWS KMS cannot find all of the subnets in the cluster configuration, attempts to connect the custom key store to the AWS CloudHSM cluster fail. To fix this error, create a cluster from a recent backup and associate it with your custom key store. (This process creates a new cluster configuration with a VPC and private subnets.) For details, see \fI\%How to Fix a Connection Failure\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.IP \(bu 2
+\fBUSER_LOCKED_OUT\fP \- The \fBkmsuser\fP CU account is locked out of the associated AWS CloudHSM cluster due to too many failed password attempts. Before you can connect your custom key store to its AWS CloudHSM cluster, you must change the \fBkmsuser\fP account password and update the key store password value for the custom key store.
+.IP \(bu 2
+\fBUSER_LOGGED_IN\fP \- The \fBkmsuser\fP CU account is logged into the the associated AWS CloudHSM cluster. This prevents AWS KMS from rotating the \fBkmsuser\fP account password and logging into the cluster. Before you can connect your custom key store to its AWS CloudHSM cluster, you must log the \fBkmsuser\fP CU out of the cluster. If you changed the \fBkmsuser\fP password to log into the cluster, you must also and update the key store password value for the custom key store. For help, see \fI\%How to Log Out and Reconnect\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.IP \(bu 2
+\fBUSER_NOT_FOUND\fP \- AWS KMS cannot find a \fBkmsuser\fP CU account in the associated AWS CloudHSM cluster. Before you can connect your custom key store to its AWS CloudHSM cluster, you must create a \fBkmsuser\fP CU account in the cluster, and then update the key store password value for the custom key store.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CreationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the custom key store was created.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextMarker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When \fBTruncated\fP is true, this element is present and contains the value to use for the \fBMarker\fP parameter in a subsequent request.
+.UNINDENT
+.UNINDENT
+.sp
+Truncated \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that indicates whether there are more items in the list. When this value is true, the list in this response is truncated. To get more items, pass the value of the \fBNextMarker\fP element in thisresponse to the \fBMarker\fP parameter in a subsequent request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

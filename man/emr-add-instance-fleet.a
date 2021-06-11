@@ -1,0 +1,548 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EMR-ADD-INSTANCE-FLEET" "a" "" ""
+.SH NAME
+emr-add-instance-fleet \- Adds an instance fleet to a running cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds an instance fleet to a running cluster.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The instance fleet configuration is available only in Amazon EMR versions 4.8.0 and later, excluding 5.0.x.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  add\-instance\-fleet
+\-\-cluster\-id <value>
+\-\-instance\-fleet <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-fleet\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the configuration of the instance fleet.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The friendly name of the instance fleet.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceFleetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The node type that the instance fleet hosts. Valid values are MASTER, CORE, and TASK.
+.UNINDENT
+.UNINDENT
+.sp
+TargetOnDemandCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The target capacity of On\-Demand units for the instance fleet, which determines how many On\-Demand Instances to provision. When the instance fleet launches, Amazon EMR tries to provision On\-Demand Instances as specified by  InstanceTypeConfig . Each instance configuration has a specified \fBWeightedCapacity\fP . When an On\-Demand Instance is provisioned, the \fBWeightedCapacity\fP units count toward the target capacity. Amazon EMR provisions instances until the target capacity is totally fulfilled, even if this results in an overage. For example, if there are 2 units remaining to fulfill capacity, and Amazon EMR can only provision an instance with a \fBWeightedCapacity\fP of 5 units, the instance is provisioned, and the target capacity is exceeded by 3 units.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If not specified or set to 0, only Spot Instances are provisioned for the instance fleet using \fBTargetSpotCapacity\fP . At least one of \fBTargetSpotCapacity\fP and \fBTargetOnDemandCapacity\fP should be greater than 0. For a master instance fleet, only one of \fBTargetSpotCapacity\fP and \fBTargetOnDemandCapacity\fP can be specified, and its value must be 1.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TargetSpotCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The target capacity of Spot units for the instance fleet, which determines how many Spot Instances to provision. When the instance fleet launches, Amazon EMR tries to provision Spot Instances as specified by  InstanceTypeConfig . Each instance configuration has a specified \fBWeightedCapacity\fP . When a Spot Instance is provisioned, the \fBWeightedCapacity\fP units count toward the target capacity. Amazon EMR provisions instances until the target capacity is totally fulfilled, even if this results in an overage. For example, if there are 2 units remaining to fulfill capacity, and Amazon EMR can only provision an instance with a \fBWeightedCapacity\fP of 5 units, the instance is provisioned, and the target capacity is exceeded by 3 units.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If not specified or set to 0, only On\-Demand Instances are provisioned for the instance fleet. At least one of \fBTargetSpotCapacity\fP and \fBTargetOnDemandCapacity\fP should be greater than 0. For a master instance fleet, only one of \fBTargetSpotCapacity\fP and \fBTargetOnDemandCapacity\fP can be specified, and its value must be 1.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstanceTypeConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The instance type configurations that define the EC2 instances in the instance fleet.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An instance type configuration for each instance type in an instance fleet, which determines the EC2 instances Amazon EMR attempts to provision to fulfill On\-Demand and Spot target capacities. There can be a maximum of five instance type configurations in a fleet.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The instance fleet configuration is available only in Amazon EMR versions 4.8.0 and later, excluding 5.0.x versions.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An EC2 instance type, such as \fBm3.xlarge\fP .
+.UNINDENT
+.UNINDENT
+.sp
+WeightedCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of units that a provisioned instance of this type provides toward fulfilling the target capacities defined in  InstanceFleetConfig . This value is 1 for a master instance fleet, and must be 1 or greater for core and task instance fleets. Defaults to 1 if not specified.
+.UNINDENT
+.UNINDENT
+.sp
+BidPrice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The bid price for each EC2 Spot Instance type as defined by \fBInstanceType\fP . Expressed in USD. If neither \fBBidPrice\fP nor \fBBidPriceAsPercentageOfOnDemandPrice\fP is provided, \fBBidPriceAsPercentageOfOnDemandPrice\fP defaults to 100%.
+.UNINDENT
+.UNINDENT
+.sp
+BidPriceAsPercentageOfOnDemandPrice \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The bid price, as a percentage of On\-Demand price, for each EC2 Spot Instance as defined by \fBInstanceType\fP . Expressed as a number (for example, 20 specifies 20%). If neither \fBBidPrice\fP nor \fBBidPriceAsPercentageOfOnDemandPrice\fP is provided, \fBBidPriceAsPercentageOfOnDemandPrice\fP defaults to 100%.
+.UNINDENT
+.UNINDENT
+.sp
+EbsConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration of Amazon Elastic Block Storage (Amazon EBS) attached to each instance as defined by \fBInstanceType\fP .
+.sp
+EbsBlockDeviceConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of Amazon EBS volume specifications attached to a cluster instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration of requested EBS block device associated with the instance group with count of volumes that will be associated to every instance.
+.sp
+VolumeSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+EBS volume specifications such as volume type, IOPS, and size (GiB) that will be requested for the EBS volume attached to an EC2 instance in the cluster.
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume type. Volume types supported are gp2, io1, standard.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of I/O operations per second (IOPS) that the volume supports.
+.UNINDENT
+.UNINDENT
+.sp
+SizeInGB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The volume size, in gibibytes (GiB). This can be a number from 1 \- 1024. If the volume type is EBS\-optimized, the minimum value is 10.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumesPerInstance \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Number of EBS volumes with a specific volume configuration that will be associated with every instance in the instance group
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EbsOptimized \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether an Amazon EBS volume is EBS\-optimized.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A configuration classification that applies when provisioning cluster instances, which can include configurations for applications and software that run on the cluster.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon EMR releases 4.x or later.
+.UNINDENT
+.UNINDENT
+.sp
+An optional configuration specification to be used when provisioning cluster instances, which can include configurations for applications and software bundled with Amazon EMR. A configuration consists of a classification, properties, and optional nested configurations. A classification refers to an application\-specific configuration file. Properties are the settings you want to change in that file. For more information, see \fI\%Configuring Applications\fP .
+.sp
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The classification within a configuration.
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of additional configurations to apply within a configuration object.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon EMR releases 4.x or later.
+.UNINDENT
+.UNINDENT
+.sp
+An optional configuration specification to be used when provisioning cluster instances, which can include configurations for applications and software bundled with Amazon EMR. A configuration consists of a classification, properties, and optional nested configurations. A classification refers to an application\-specific configuration file. Properties are the settings you want to change in that file. For more information, see \fI\%Configuring Applications\fP .
+.sp
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The classification within a configuration.
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A set of properties specified within a configuration classification.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A set of properties specified within a configuration classification.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LaunchSpecifications \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch specification for the instance fleet.
+.sp
+SpotSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch specification for Spot Instances in the fleet, which determines the defined duration, provisioning timeout behavior, and allocation strategy.
+.sp
+TimeoutDurationMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The spot provisioning timeout period in minutes. If Spot Instances are not provisioned within this time period, the \fBTimeOutAction\fP is taken. Minimum value is 5 and maximum value is 1440. The timeout applies only during initial provisioning, when the cluster is first created.
+.UNINDENT
+.UNINDENT
+.sp
+TimeoutAction \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action to take when \fBTargetSpotCapacity\fP has not been fulfilled when the \fBTimeoutDurationMinutes\fP has expired; that is, when all Spot Instances could not be provisioned within the Spot provisioning timeout. Valid values are \fBTERMINATE_CLUSTER\fP and \fBSWITCH_TO_ON_DEMAND\fP . SWITCH_TO_ON_DEMAND specifies that if no Spot Instances are available, On\-Demand Instances should be provisioned to fulfill any remaining Spot capacity.
+.UNINDENT
+.UNINDENT
+.sp
+BlockDurationMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The defined duration for Spot Instances (also known as Spot blocks) in minutes. When specified, the Spot Instance does not terminate before the defined duration expires, and defined duration pricing for Spot Instances applies. Valid values are 60, 120, 180, 240, 300, or 360. The duration period starts as soon as a Spot Instance receives its instance ID. At the end of the duration, Amazon EC2 marks the Spot Instance for termination and provides a Spot Instance termination notice, which gives the instance a two\-minute warning before it terminates.
+.UNINDENT
+.UNINDENT
+.sp
+AllocationStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the strategy to use in launching Spot Instance fleets. Currently, the only option is capacity\-optimized (the default), which launches instances from Spot Instance pools with optimal capacity for the number of instances that are launching.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OnDemandSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch specification for On\-Demand Instances in the instance fleet, which determines the allocation strategy.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The instance fleet configuration is available only in Amazon EMR versions 4.8.0 and later, excluding 5.0.x versions. On\-Demand Instances allocation strategy is available in Amazon EMR version 5.12.1 and later.
+.UNINDENT
+.UNINDENT
+.sp
+AllocationStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the strategy to use in launching On\-Demand instance fleets. Currently, the only option is \fBlowest\-price\fP (the default), which launches the lowest price first.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch specification for On\-Demand instances in the instance fleet, which determines the allocation strategy.
+.sp
+UsageStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to use unused Capacity Reservations for fulfilling On\-Demand capacity.
+.sp
+If you specify \fBuse\-capacity\-reservations\-first\fP , the fleet uses unused Capacity Reservations to fulfill On\-Demand capacity up to the target On\-Demand capacity. If multiple instance pools have unused Capacity Reservations, the On\-Demand allocation strategy (\fBlowest\-price\fP ) is applied. If the number of unused Capacity Reservations is less than the On\-Demand target capacity, the remaining On\-Demand target capacity is launched according to the On\-Demand allocation strategy (\fBlowest\-price\fP ).
+.sp
+If you do not specify a value, the fleet fulfils the On\-Demand capacity according to the chosen On\-Demand allocation strategy.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationPreference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the instance\(aqs Capacity Reservation preferences. Possible preferences include:
+.INDENT 0.0
+.IP \(bu 2
+\fBopen\fP \- The instance can run in any open Capacity Reservation that has matching attributes (instance type, platform, Availability Zone).
+.IP \(bu 2
+\fBnone\fP \- The instance avoids running in a Capacity Reservation even if one is available. The instance runs as an On\-Demand Instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Capacity Reservation resource group in which to run the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Name": "string",
+  "InstanceFleetType": "MASTER"|"CORE"|"TASK",
+  "TargetOnDemandCapacity": integer,
+  "TargetSpotCapacity": integer,
+  "InstanceTypeConfigs": [
+    {
+      "InstanceType": "string",
+      "WeightedCapacity": integer,
+      "BidPrice": "string",
+      "BidPriceAsPercentageOfOnDemandPrice": double,
+      "EbsConfiguration": {
+        "EbsBlockDeviceConfigs": [
+          {
+            "VolumeSpecification": {
+              "VolumeType": "string",
+              "Iops": integer,
+              "SizeInGB": integer
+            },
+            "VolumesPerInstance": integer
+          }
+          ...
+        ],
+        "EbsOptimized": true|false
+      },
+      "Configurations": [
+        {
+          "Classification": "string",
+          "Configurations": [
+            {
+              "Classification": "string",
+              "Configurations": ,
+              "Properties": {"string": "string"
+                ...}
+            }
+            ...
+          ],
+          "Properties": {"string": "string"
+            ...}
+        }
+        ...
+      ]
+    }
+    ...
+  ],
+  "LaunchSpecifications": {
+    "SpotSpecification": {
+      "TimeoutDurationMinutes": integer,
+      "TimeoutAction": "SWITCH_TO_ON_DEMAND"|"TERMINATE_CLUSTER",
+      "BlockDurationMinutes": integer,
+      "AllocationStrategy": "capacity\-optimized"
+    },
+    "OnDemandSpecification": {
+      "AllocationStrategy": "lowest\-price",
+      "CapacityReservationOptions": {
+        "UsageStrategy": "use\-capacity\-reservations\-first",
+        "CapacityReservationPreference": "open"|"none",
+        "CapacityReservationResourceGroupArn": "string"
+      }
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo add a task instance fleet to a cluster\fP
+.sp
+This example adds a new task instance fleet to the cluster specified.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr add\-instance\-fleet \-\-cluster\-id \(aqj\-12ABCDEFGHI34JK\(aq \-\-instance\-fleet  InstanceFleetType=TASK,TargetSpotCapacity=1,LaunchSpecifications={SpotSpecification=\(aq{TimeoutDurationMinutes=20,TimeoutAction=TERMINATE_CLUSTER}\(aq},InstanceTypeConfigs=[\(aq{InstanceType=m3.xlarge,BidPrice=0.5}\(aq]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+   "ClusterId": "j\-12ABCDEFGHI34JK",
+   "InstanceFleetId": "if\-23ABCDEFGHI45JJ"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+ClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceFleetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the instance fleet.
+.UNINDENT
+.UNINDENT
+.sp
+ClusterArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name of the cluster.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

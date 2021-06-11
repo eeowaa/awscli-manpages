@@ -1,0 +1,315 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-STOP-GAME-SESSION-PLACEMENT" "a" "" ""
+.SH NAME
+gamelift-stop-game-session-placement \- Cancels a game session placement that is in PENDING status
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Cancels a game session placement that is in \fBPENDING\fP status. To stop a placement, provide the placement ID values. If successful, the placement is moved to \fBCANCELLED\fP status.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateGameSession |  DescribeGameSessions |  DescribeGameSessionDetails |  SearchGameSessions |  UpdateGameSession |  GetGameSessionLogUrl |  StartGameSessionPlacement |  DescribeGameSessionPlacement |  StopGameSessionPlacement | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  stop\-game\-session\-placement
+\-\-placement\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-placement\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a game session placement to cancel.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+GameSessionPlacement \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Object that describes the canceled game session placement, with \fBCANCELLED\fP status and an end time stamp.
+.sp
+PlacementId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a game session placement.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionQueueName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with game session queue. Queue names must be unique within each Region.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Current status of the game session placement request.
+.INDENT 0.0
+.IP \(bu 2
+\fBPENDING\fP \-\- The placement request is currently in the queue waiting to be processed.
+.IP \(bu 2
+\fBFULFILLED\fP \-\- A new game session and player sessions (if requested) have been successfully created. Values for \fIGameSessionArn\fP and \fIGameSessionRegion\fP are available.
+.IP \(bu 2
+\fBCANCELLED\fP \-\- The placement request was canceled with a call to  StopGameSessionPlacement .
+.IP \(bu 2
+\fBTIMED_OUT\fP \-\- A new game session was not successfully created before the time limit expired. You can resubmit the placement request as needed.
+.IP \(bu 2
+\fBFAILED\fP \-\- GameLift is not able to complete the process of placing the game session. Common reasons are the game session terminated before the placement process was completed, or an unexpected internal error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GameProperties \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of custom properties for a game session, formatted as key:value pairs. These properties are passed to a game server process in the  GameSession object with a request to start a new game session (see \fI\%Start a Game Session\fP ).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Set of key\-value pairs that contain information about a game session. When included in a game session request, these properties communicate details to be used when setting up the new game session. For example, a game property might specify a game mode, level, or map. Game properties are passed to the game server process when initiating a new game session. For more information, see the \fI\%GameLift Developer Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The game property identifier.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The game property value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MaximumPlayerSessionCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of players that can be connected simultaneously to the game session.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with a game session. Session names do not need to be unique.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the game session. This value is set once the new game session is placed (placement status is \fBFULFILLED\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifier for the game session created by this placement request. This value is set once the new game session is placed (placement status is \fBFULFILLED\fP ). This identifier is unique across all Regions. You can use this value as a \fBGameSessionId\fP value as needed.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionRegion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Region where the game session created by this placement request is running. This value is set once the new game session is placed (placement status is \fBFULFILLED\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+PlayerLatencies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of values, expressed in milliseconds, that indicates the amount of latency that a player experiences when connected to AWS Regions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Regional latency information for a player, used when requesting a new game session with  StartGameSessionPlacement . This value indicates the amount of time lag that exists when the player is connected to a fleet in the specified Region. The relative difference between a player\(aqs latency values for multiple Regions are used to determine which fleets are best suited to place a new game session for the player.
+.sp
+PlayerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player associated with the latency data.
+.UNINDENT
+.UNINDENT
+.sp
+RegionIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Region that is associated with the latency value.
+.UNINDENT
+.UNINDENT
+.sp
+LatencyInMilliseconds \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Amount of time that represents the time lag experienced by the player when connected to the specified Region.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time stamp indicating when this request was placed in the queue. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time stamp indicating when this request was completed, canceled, or timed out.
+.UNINDENT
+.UNINDENT
+.sp
+IpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP address of the game session. To connect to a GameLift game server, an app needs both the IP address and port number. This value is set once the new game session is placed (placement status is \fBFULFILLED\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+DnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS identifier assigned to the instance that is running the game session. Values have the following format:
+.INDENT 0.0
+.IP \(bu 2
+TLS\-enabled fleets: \fB<unique identifier>.<region identifier>.amazongamelift.com\fP .
+.IP \(bu 2
+Non\-TLS\-enabled fleets: \fBec2\-<unique identifier>.compute.amazonaws.com\fP . (See \fI\%Amazon EC2 Instance IP Addressing\fP .)
+.UNINDENT
+.sp
+When connecting to a game session that is running on a TLS\-enabled fleet, you must use the DNS name, not the IP address.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number for the game session. To connect to a GameLift game server, an app needs both the IP address and port number. This value is set once the new game session is placed (placement status is \fBFULFILLED\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+PlacedPlayerSessions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of information on player sessions created in response to the game session placement request. These player sessions are created only once a new game session is successfully placed (placement status is \fBFULFILLED\fP ). This information includes the player ID (as provided in the placement request) and the corresponding player session ID. Retrieve full player sessions by calling  DescribePlayerSessions with the player session ID.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a player session that was created as part of a  StartGameSessionPlacement request. This object contains only the player ID and player session ID. To retrieve full details on a player session, call  DescribePlayerSessions with the player session ID.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreatePlayerSession |  CreatePlayerSessions |  DescribePlayerSessions |  StartGameSessionPlacement |  DescribeGameSessionPlacement |  StopGameSessionPlacement | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PlayerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player that is associated with this player session.
+.UNINDENT
+.UNINDENT
+.sp
+PlayerSessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player session.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A set of custom game session properties, formatted as a single string value. This data is passed to a game server process in the  GameSession object with a request to start a new game session (see \fI\%Start a Game Session\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+MatchmakerData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information on the matchmaking process for this game. Data is in JSON syntax, formatted as a string. It identifies the matchmaking configuration used to create the match, and contains data on all players assigned to the match, including player attributes and team assignments. For more details on matchmaker data, see \fI\%Match Data\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

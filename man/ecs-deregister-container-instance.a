@@ -1,0 +1,782 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ECS-DEREGISTER-CONTAINER-INSTANCE" "a" "" ""
+.SH NAME
+ecs-deregister-container-instance \- Deregisters an Amazon ECS container instance from the specified cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Deregisters an Amazon ECS container instance from the specified cluster. This instance is no longer available to run tasks.
+.sp
+If you intend to use the container instance for some other purpose after deregistration, you should stop all of the tasks running on the container instance before deregistration. That prevents any orphaned tasks from consuming resources.
+.sp
+Deregistering a container instance removes the instance from a cluster, but it does not terminate the EC2 instance. If you are finished using the instance, be sure to terminate it in the Amazon EC2 console to stop billing.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you terminate a running container instance, Amazon ECS automatically deregisters the instance from your cluster (stopped container instances or instances with disconnected agents are not automatically deregistered when terminated).
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  deregister\-container\-instance
+[\-\-cluster <value>]
+\-\-container\-instance <value>
+[\-\-force | \-\-no\-force]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name or full Amazon Resource Name (ARN) of the cluster that hosts the container instance to deregister. If you do not specify a cluster, the default cluster is assumed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-container\-instance\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The container instance ID or full ARN of the container instance to deregister. The ARN contains the \fBarn:aws:ecs\fP namespace, followed by the Region of the container instance, the AWS account ID of the container instance owner, the \fBcontainer\-instance\fP namespace, and then the container instance ID. For example, \fBarn:aws:ecs:region:aws_account_id:container\-instance/container_instance_ID\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-force\fP | \fB\-\-no\-force\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Forces the deregistration of the container instance. If you have tasks running on the container instance when you deregister it with the \fBforce\fP option, these tasks remain running until you terminate the instance or the tasks stop through some other means, but they are orphaned (no longer monitored or accounted for by Amazon ECS). If an orphaned task on your container instance is part of an Amazon ECS service, then the service scheduler starts another copy of that task, on a different container instance if possible.
+.sp
+Any containers in orphaned service tasks that are registered with a Classic Load Balancer or an Application Load Balancer target group are deregistered. They begin connection draining according to the settings on the load balancer or target group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo deregister a container instance from a cluster\fP
+.sp
+The following \fBderegister\-container\-instance\fP example deregisters a container instance from the specified cluster. If there are still tasks running in the container instance, you must either stop those tasks before deregistering, or use the \fB\-\-force\fP option.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ecs deregister\-container\-instance \e
+    \-\-cluster arn:aws:ecs:us\-west\-2:123456789012:cluster/MyCluster \e
+    \-\-container\-instance arn:aws:ecs:us\-west\-2:123456789012:container\-instance/a1b2c3d4\-5678\-90ab\-cdef\-11111EXAMPLE \e
+    \-\-force
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "containerInstance": {
+        "remainingResources": [
+            {
+                "integerValue": 1024,
+                "doubleValue": 0.0,
+                "type": "INTEGER",
+                "longValue": 0,
+                "name": "CPU"
+            },
+            {
+                "integerValue": 985,
+                "doubleValue": 0.0,
+                "type": "INTEGER",
+                "longValue": 0,
+                "name": "MEMORY"
+            },
+            {
+                "type": "STRINGSET",
+                "integerValue": 0,
+                "name": "PORTS",
+                "stringSetValue": [
+                    "22",
+                    "2376",
+                    "2375",
+                    "51678",
+                    "51679"
+                ],
+                "longValue": 0,
+                "doubleValue": 0.0
+            },
+            {
+                "type": "STRINGSET",
+                "integerValue": 0,
+                "name": "PORTS_UDP",
+                "stringSetValue": [],
+                "longValue": 0,
+                "doubleValue": 0.0
+            }
+        ],
+        "agentConnected": true,
+        "attributes": [
+            {
+                "name": "ecs.capability.secrets.asm.environment\-variables"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.logging\-driver.syslog"
+            },
+            {
+                "value": "ami\-01a82c3fce2c3ba58",
+                "name": "ecs.ami\-id"
+            },
+            {
+                "name": "ecs.capability.secrets.asm.bootstrap.log\-driver"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.logging\-driver.none"
+            },
+            {
+                "name": "ecs.capability.ecr\-endpoint"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.logging\-driver.json\-file"
+            },
+            {
+                "value": "vpc\-1234567890123467",
+                "name": "ecs.vpc\-id"
+            },
+            {
+                "name": "ecs.capability.execution\-role\-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.17"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.18"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.19"
+            },
+            {
+                "name": "ecs.capability.docker\-plugin.local"
+            },
+            {
+                "name": "ecs.capability.task\-eni"
+            },
+            {
+                "name": "ecs.capability.task\-cpu\-mem\-limit"
+            },
+            {
+                "name": "ecs.capability.secrets.ssm.bootstrap.log\-driver"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.30"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.31"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.32"
+            },
+            {
+                "name": "ecs.capability.execution\-role\-ecr\-pull"
+            },
+            {
+                "name": "ecs.capability.container\-health\-check"
+            },
+            {
+                "value": "subnet\-1234567890123467",
+                "name": "ecs.subnet\-id"
+            },
+            {
+                "value": "us\-west\-2a",
+                "name": "ecs.availability\-zone"
+            },
+            {
+                "value": "t2.micro",
+                "name": "ecs.instance\-type"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.task\-iam\-role\-network\-host"
+            },
+            {
+                "name": "ecs.capability.aws\-appmesh"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.logging\-driver.awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.24"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.25"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.26"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.27"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.privileged\-container"
+            },
+            {
+                "name": "ecs.capability.container\-ordering"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.28"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.29"
+            },
+            {
+                "value": "x86_64",
+                "name": "ecs.cpu\-architecture"
+            },
+            {
+                "value": "93f43776\-2018.10.0",
+                "name": "ecs.capability.cni\-plugin\-version"
+            },
+            {
+                "name": "ecs.capability.secrets.ssm.environment\-variables"
+            },
+            {
+                "name": "ecs.capability.pid\-ipc\-namespace\-sharing"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.ecr\-auth"
+            },
+            {
+                "value": "linux",
+                "name": "ecs.os\-type"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.20"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.21"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.22"
+            },
+            {
+                "name": "ecs.capability.task\-eia"
+            },
+            {
+                "name": "ecs.capability.private\-registry\-authentication.secretsmanager"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.task\-iam\-role"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker\-remote\-api.1.23"
+            }
+        ],
+        "pendingTasksCount": 0,
+        "tags": [],
+        "containerInstanceArn": "arn:aws:ecs:us\-west\-2:123456789012:container\-instance/a1b2c3d4\-5678\-90ab\-cdef\-11111EXAMPLE",
+        "registeredResources": [
+            {
+                "integerValue": 1024,
+                "doubleValue": 0.0,
+                "type": "INTEGER",
+                "longValue": 0,
+                "name": "CPU"
+            },
+            {
+                "integerValue": 985,
+                "doubleValue": 0.0,
+                "type": "INTEGER",
+                "longValue": 0,
+                "name": "MEMORY"
+            },
+            {
+                "type": "STRINGSET",
+                "integerValue": 0,
+                "name": "PORTS",
+                "stringSetValue": [
+                    "22",
+                    "2376",
+                    "2375",
+                    "51678",
+                    "51679"
+                ],
+                "longValue": 0,
+                "doubleValue": 0.0
+            },
+            {
+                "type": "STRINGSET",
+                "integerValue": 0,
+                "name": "PORTS_UDP",
+                "stringSetValue": [],
+                "longValue": 0,
+                "doubleValue": 0.0
+            }
+        ],
+        "status": "INACTIVE",
+        "registeredAt": 1557768075.681,
+        "version": 4,
+        "versionInfo": {
+            "agentVersion": "1.27.0",
+            "agentHash": "aabe65ee",
+            "dockerVersion": "DockerVersion: 18.06.1\-ce"
+        },
+        "attachments": [],
+        "runningTasksCount": 0,
+        "ec2InstanceId": "i\-12345678901234678"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Deregister a Container Instance\fP in the \fIECS Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+containerInstance \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The container instance that was deregistered.
+.sp
+containerInstanceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the container instance. The ARN contains the \fBarn:aws:ecs\fP namespace, followed by the Region of the container instance, the AWS account ID of the container instance owner, the \fBcontainer\-instance\fP namespace, and then the container instance ID. For example, \fBarn:aws:ecs:region:aws_account_id:container\-instance/container_instance_ID\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ec2InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 instance ID of the container instance.
+.UNINDENT
+.UNINDENT
+.sp
+capacityProviderName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The capacity provider associated with the container instance.
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The version counter for the container instance. Every time a container instance experiences a change that triggers a CloudWatch event, the version counter is incremented. If you are replicating your Amazon ECS container instance state with CloudWatch Events, you can compare the version of a container instance reported by the Amazon ECS APIs with the version reported in CloudWatch Events for the container instance (inside the \fBdetail\fP object) to verify that the version in your event stream is current.
+.UNINDENT
+.UNINDENT
+.sp
+versionInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The version information for the Amazon ECS container agent and Docker daemon running on the container instance.
+.sp
+agentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the Amazon ECS container agent.
+.UNINDENT
+.UNINDENT
+.sp
+agentHash \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Git commit hash for the Amazon ECS container agent build on the \fI\%amazon\-ecs\-agent\fP GitHub repository.
+.UNINDENT
+.UNINDENT
+.sp
+dockerVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Docker version running on the container instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+remainingResources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+For CPU and memory resource types, this parameter describes the remaining CPU and memory that has not already been allocated to tasks and is therefore available for new tasks. For port resource types, this parameter describes the ports that were reserved by the Amazon ECS container agent (at instance registration time) and any task containers that have reserved port mappings on the host (with the \fBhost\fP or \fBbridge\fP network mode). Any port that is not specified here is available for new tasks.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the resources available for a container instance.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the resource, such as \fBCPU\fP , \fBMEMORY\fP , \fBPORTS\fP , \fBPORTS_UDP\fP , or a user\-defined resource.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the resource, such as \fBINTEGER\fP , \fBDOUBLE\fP , \fBLONG\fP , or \fBSTRINGSET\fP .
+.UNINDENT
+.UNINDENT
+.sp
+doubleValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBdoubleValue\fP type is set, the value of the resource must be a double precision floating\-point type.
+.UNINDENT
+.UNINDENT
+.sp
+longValue \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBlongValue\fP type is set, the value of the resource must be an extended precision floating\-point type.
+.UNINDENT
+.UNINDENT
+.sp
+integerValue \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBintegerValue\fP type is set, the value of the resource must be an integer.
+.UNINDENT
+.UNINDENT
+.sp
+stringSetValue \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBstringSetValue\fP type is set, the value of the resource must be a string type.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+registeredResources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+For CPU and memory resource types, this parameter describes the amount of each resource that was available on the container instance when the container agent registered it with Amazon ECS. This value represents the total amount of CPU and memory that can be allocated on this container instance to tasks. For port resource types, this parameter describes the ports that were reserved by the Amazon ECS container agent when it registered the container instance with Amazon ECS.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the resources available for a container instance.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the resource, such as \fBCPU\fP , \fBMEMORY\fP , \fBPORTS\fP , \fBPORTS_UDP\fP , or a user\-defined resource.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the resource, such as \fBINTEGER\fP , \fBDOUBLE\fP , \fBLONG\fP , or \fBSTRINGSET\fP .
+.UNINDENT
+.UNINDENT
+.sp
+doubleValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBdoubleValue\fP type is set, the value of the resource must be a double precision floating\-point type.
+.UNINDENT
+.UNINDENT
+.sp
+longValue \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBlongValue\fP type is set, the value of the resource must be an extended precision floating\-point type.
+.UNINDENT
+.UNINDENT
+.sp
+integerValue \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBintegerValue\fP type is set, the value of the resource must be an integer.
+.UNINDENT
+.UNINDENT
+.sp
+stringSetValue \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+When the \fBstringSetValue\fP type is set, the value of the resource must be a string type.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the container instance. The valid values are \fBREGISTERING\fP , \fBREGISTRATION_FAILED\fP , \fBACTIVE\fP , \fBINACTIVE\fP , \fBDEREGISTERING\fP , or \fBDRAINING\fP .
+.sp
+If your account has opted in to the \fBawsvpcTrunking\fP account setting, then any newly registered container instance will transition to a \fBREGISTERING\fP status while the trunk elastic network interface is provisioned for the instance. If the registration fails, the instance will transition to a \fBREGISTRATION_FAILED\fP status. You can describe the container instance and see the reason for failure in the \fBstatusReason\fP parameter. Once the container instance is terminated, the instance transitions to a \fBDEREGISTERING\fP status while the trunk elastic network interface is deprovisioned. The instance then transitions to an \fBINACTIVE\fP status.
+.sp
+The \fBACTIVE\fP status indicates that the container instance can accept tasks. The \fBDRAINING\fP indicates that new tasks are not placed on the container instance and any service tasks running on the container instance are removed if possible. For more information, see \fI\%Container Instance Draining\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+statusReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason that the container instance reached its current status.
+.UNINDENT
+.UNINDENT
+.sp
+agentConnected \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+This parameter returns \fBtrue\fP if the agent is connected to Amazon ECS. Registered instances with an agent that may be unhealthy or stopped return \fBfalse\fP . Only instances connected to an agent can accept placement requests.
+.UNINDENT
+.UNINDENT
+.sp
+runningTasksCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks on the container instance that are in the \fBRUNNING\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+pendingTasksCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks on the container instance that are in the \fBPENDING\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+agentUpdateStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the most recent agent update. If an update has never been requested, this value is \fBNULL\fP .
+.UNINDENT
+.UNINDENT
+.sp
+attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The attributes set for the container instance, either by the Amazon ECS container agent at instance registration or manually with the  PutAttributes operation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An attribute is a name\-value pair associated with an Amazon ECS object. Attributes enable you to extend the Amazon ECS data model by adding custom metadata to your resources. For more information, see \fI\%Attributes\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attribute. The \fBname\fP must contain between 1 and 128 characters and name may contain letters (uppercase and lowercase), numbers, hyphens, underscores, forward slashes, back slashes, or periods.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the attribute. The \fBvalue\fP must contain between 1 and 128 characters and may contain letters (uppercase and lowercase), numbers, hyphens, underscores, periods, at signs (@), forward slashes, back slashes, colons, or spaces. The value cannot contain any leading or trailing whitespace.
+.UNINDENT
+.UNINDENT
+.sp
+targetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the target with which to attach the attribute. This parameter is required if you use the short form ID for a resource instead of the full ARN.
+.UNINDENT
+.UNINDENT
+.sp
+targetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the target. You can specify the short form ID for a resource or the full Amazon Resource Name (ARN).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+registeredAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the container instance was registered.
+.UNINDENT
+.UNINDENT
+.sp
+attachments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The resources attached to a container instance, such as elastic network interfaces.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object representing a container instance or task attachment.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the attachment.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the attachment, such as \fBElasticNetworkInterface\fP .
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the attachment. Valid values are \fBPRECREATED\fP , \fBCREATED\fP , \fBATTACHING\fP , \fBATTACHED\fP , \fBDETACHING\fP , \fBDETACHED\fP , and \fBDELETED\fP .
+.UNINDENT
+.UNINDENT
+.sp
+details \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Details of the attachment. For elastic network interfaces, this includes the network interface ID, the MAC address, the subnet ID, and the private IPv4 address.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair object.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key\-value pair. For environment variables, this is the name of the environment variable.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the key\-value pair. For environment variables, this is the value of the environment variable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to the container instance to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A \fBkey\fP is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that make up a tag. A \fBvalue\fP acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

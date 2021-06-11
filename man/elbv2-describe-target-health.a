@@ -1,0 +1,479 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELBV2-DESCRIBE-TARGET-HEALTH" "a" "" ""
+.SH NAME
+elbv2-describe-target-health \- Describes the health of the specified targets or all of your targets
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes the health of the specified targets or all of your targets.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-target\-health
+\-\-target\-group\-arn <value>
+[\-\-targets <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-target\-group\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the target group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-targets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The targets.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a target.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the target. If the target type of the target group is \fBinstance\fP , specify an instance ID. If the target type is \fBip\fP , specify an IP address. If the target type is \fBlambda\fP , specify the ARN of the Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port on which the target is listening. If the target group protocol is GENEVE, the supported port is 6081. Not used if the target is a Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Availability Zone or \fBall\fP . This determines whether the target receives traffic from the load balancer nodes in the specified Availability Zone or from all enabled Availability Zones for the load balancer.
+.sp
+This parameter is not supported if the target type of the target group is \fBinstance\fP .
+.sp
+If the target type is \fBip\fP and the IP address is in a subnet of the VPC for the target group, the Availability Zone is automatically detected and this parameter is optional. If the IP address is outside the VPC, this parameter is required.
+.sp
+With an Application Load Balancer, if the target type is \fBip\fP and the IP address is outside the VPC for the target group, the only supported value is \fBall\fP .
+.sp
+If the target type is \fBlambda\fP , this parameter is optional and the only supported value is \fBall\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Id=string,Port=integer,AvailabilityZone=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "Port": integer,
+    "AvailabilityZone": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To describe the health of the targets for a target group\fP
+.sp
+The following \fBdescribe\-target\-health\fP example displays health details for the targets of the specified target group. These targets are healthy.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elbv2 describe\-target\-health \e
+    \-\-target\-group\-arn arn:aws:elasticloadbalancing:us\-west\-2:123456789012:targetgroup/my\-targets/73e2d6bc24d8a067
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TargetHealthDescriptions": [
+        {
+            "HealthCheckPort": "80",
+            "Target": {
+                "Id": "i\-ceddcd4d",
+                "Port": 80
+            },
+            "TargetHealth": {
+                "State": "healthy"
+            }
+        },
+        {
+            "HealthCheckPort": "80",
+            "Target": {
+                "Id": "i\-0f76fade",
+                "Port": 80
+            },
+            "TargetHealth": {
+                "State": "healthy"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To describe the health of a target\fP
+.sp
+The following \fBdescribe\-target\-health\fP example displays health details for the specified target. This target is healthy.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elbv2 describe\-target\-health \e
+    \-\-targets Id=i\-0f76fade,Port=80 \e
+    \-\-target\-group\-arn arn:aws:elasticloadbalancing:us\-west\-2:123456789012:targetgroup/my\-targets/73e2d6bc24d8a067
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TargetHealthDescriptions": [
+        {
+            "HealthCheckPort": "80",
+            "Target": {
+                "Id": "i\-0f76fade",
+                "Port": 80
+            },
+            "TargetHealth": {
+                "State": "healthy"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example output is for a target whose target group is not specified in an action for a listener. This target can\(aqt receive traffic from the load balancer.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TargetHealthDescriptions": [
+    {
+        "HealthCheckPort": "80",
+        "Target": {
+            "Id": "i\-0f76fade",
+            "Port": 80
+        },
+            "TargetHealth": {
+                "State": "unused",
+                "Reason": "Target.NotInUse",
+                "Description": "Target group is not configured to receive traffic from the load balancer"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example output is for a target whose target group was just specified in an action for a listener. The target is still being registered.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TargetHealthDescriptions": [
+        {
+            "HealthCheckPort": "80",
+            "Target": {
+                "Id": "i\-0f76fade",
+                "Port": 80
+            },
+            "TargetHealth": {
+                "State": "initial",
+                "Reason": "Elb.RegistrationInProgress",
+                "Description": "Target registration is in progress"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example output is for an unhealthy target.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TargetHealthDescriptions": [
+        {
+            "HealthCheckPort": "80",
+            "Target": {
+                "Id": "i\-0f76fade",
+                "Port": 80
+            },
+            "TargetHealth": {
+                "State": "unhealthy",
+                "Reason": "Target.Timeout",
+                "Description": "Connection to target timed out"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example output is for a target that is a Lambda function and health checks are disabled.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TargetHealthDescriptions": [
+        {
+            "Target": {
+                "Id": "arn:aws:lambda:us\-west\-2:123456789012:function:my\-function",
+                "AvailabilityZone": "all",
+            },
+            "TargetHealth": {
+                "State": "unavailable",
+                "Reason": "Target.HealthCheckDisabled",
+                "Description": "Health checks are not enabled for this target"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+TargetHealthDescriptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the health of the targets.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the health of a target.
+.sp
+Target \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The description of the target.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the target. If the target type of the target group is \fBinstance\fP , specify an instance ID. If the target type is \fBip\fP , specify an IP address. If the target type is \fBlambda\fP , specify the ARN of the Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port on which the target is listening. If the target group protocol is GENEVE, the supported port is 6081. Not used if the target is a Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Availability Zone or \fBall\fP . This determines whether the target receives traffic from the load balancer nodes in the specified Availability Zone or from all enabled Availability Zones for the load balancer.
+.sp
+This parameter is not supported if the target type of the target group is \fBinstance\fP .
+.sp
+If the target type is \fBip\fP and the IP address is in a subnet of the VPC for the target group, the Availability Zone is automatically detected and this parameter is optional. If the IP address is outside the VPC, this parameter is required.
+.sp
+With an Application Load Balancer, if the target type is \fBip\fP and the IP address is outside the VPC for the target group, the only supported value is \fBall\fP .
+.sp
+If the target type is \fBlambda\fP , this parameter is optional and the only supported value is \fBall\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HealthCheckPort \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The port to use to connect with the target.
+.UNINDENT
+.UNINDENT
+.sp
+TargetHealth \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The health information for the target.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the target.
+.UNINDENT
+.UNINDENT
+.sp
+Reason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason code.
+.sp
+If the target state is \fBhealthy\fP , a reason code is not provided.
+.sp
+If the target state is \fBinitial\fP , the reason code can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBElb.RegistrationInProgress\fP \- The target is in the process of being registered with the load balancer.
+.IP \(bu 2
+\fBElb.InitialHealthChecking\fP \- The load balancer is still sending the target the minimum number of health checks required to determine its health status.
+.UNINDENT
+.sp
+If the target state is \fBunhealthy\fP , the reason code can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTarget.ResponseCodeMismatch\fP \- The health checks did not return an expected HTTP code. Applies only to Application Load Balancers and Gateway Load Balancers.
+.IP \(bu 2
+\fBTarget.Timeout\fP \- The health check requests timed out. Applies only to Application Load Balancers and Gateway Load Balancers.
+.IP \(bu 2
+\fBTarget.FailedHealthChecks\fP \- The load balancer received an error while establishing a connection to the target or the target response was malformed.
+.IP \(bu 2
+\fBElb.InternalError\fP \- The health checks failed due to an internal error. Applies only to Application Load Balancers.
+.UNINDENT
+.sp
+If the target state is \fBunused\fP , the reason code can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTarget.NotRegistered\fP \- The target is not registered with the target group.
+.IP \(bu 2
+\fBTarget.NotInUse\fP \- The target group is not used by any load balancer or the target is in an Availability Zone that is not enabled for its load balancer.
+.IP \(bu 2
+\fBTarget.InvalidState\fP \- The target is in the stopped or terminated state.
+.IP \(bu 2
+\fBTarget.IpUnusable\fP \- The target IP address is reserved for use by a load balancer.
+.UNINDENT
+.sp
+If the target state is \fBdraining\fP , the reason code can be the following value:
+.INDENT 0.0
+.IP \(bu 2
+\fBTarget.DeregistrationInProgress\fP \- The target is in the process of being deregistered and the deregistration delay period has not expired.
+.UNINDENT
+.sp
+If the target state is \fBunavailable\fP , the reason code can be the following value:
+.INDENT 0.0
+.IP \(bu 2
+\fBTarget.HealthCheckDisabled\fP \- Health checks are disabled for the target group. Applies only to Application Load Balancers.
+.IP \(bu 2
+\fBElb.InternalError\fP \- Target health is unavailable due to an internal error. Applies only to Network Load Balancers.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the target health that provides additional details. If the state is \fBhealthy\fP , a description is not provided.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

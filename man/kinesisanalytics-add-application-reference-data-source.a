@@ -1,0 +1,287 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESISANALYTICS-ADD-APPLICATION-REFERENCE-DATA-SOURCE" "a" "" ""
+.SH NAME
+kinesisanalytics-add-application-reference-data-source \- This documentation is for version 1 of the Amazon Kinesis Data Analytics API, which only supports SQL applications
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This documentation is for version 1 of the Amazon Kinesis Data Analytics API, which only supports SQL applications. Version 2 of the API supports SQL and Java applications. For more information about version 2, see \fI\%Amazon Kinesis Data Analytics API V2 Documentation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Adds a reference data source to an existing application.
+.sp
+Amazon Kinesis Analytics reads reference data (that is, an Amazon S3 object) and creates an in\-application table within your application. In the request, you provide the source (S3 bucket name and object key name), name of the in\-application table to create, and the necessary mapping information that describes how data in Amazon S3 object maps to columns in the resulting in\-application table.
+.sp
+For conceptual information, see \fI\%Configuring Application Input\fP . For the limits on data sources you can add to your application, see \fI\%Limits\fP .
+.sp
+This operation requires permissions to perform the \fBkinesisanalytics:AddApplicationOutput\fP action.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  add\-application\-reference\-data\-source
+\-\-application\-name <value>
+\-\-current\-application\-version\-id <value>
+\-\-reference\-data\-source <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-application\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of an existing application.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-current\-application\-version\-id\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+Version of the application for which you are adding the reference data source. You can use the \fI\%DescribeApplication\fP operation to get the current application version. If the version specified is not the current version, the \fBConcurrentModificationException\fP is returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-reference\-data\-source\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The reference data source can be an object in your Amazon S3 bucket. Amazon Kinesis Analytics reads the object and copies the data into the in\-application table that is created. You provide an S3 bucket, object key name, and the resulting in\-application table that is created. You must also provide an IAM role with the necessary permissions that Amazon Kinesis Analytics can assume to read the object from your S3 bucket on your behalf.
+.sp
+TableName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the in\-application table to create.
+.UNINDENT
+.UNINDENT
+.sp
+S3ReferenceDataSource \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the S3 bucket and object that contains the reference data. Also identifies the IAM role Amazon Kinesis Analytics can assume to read this object on your behalf. An Amazon Kinesis Analytics application loads reference data only once. If the data changes, you call the \fBUpdateApplication\fP operation to trigger reloading of data into your application.
+.sp
+BucketARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon Resource Name (ARN) of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+FileKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key name containing reference data.
+.UNINDENT
+.UNINDENT
+.sp
+ReferenceRoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role that the service can assume to read data on your behalf. This role must have permission for the \fBs3:GetObject\fP action on the object and trust policy that allows Amazon Kinesis Analytics service principal to assume this role.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReferenceSchema \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the format of the data in the streaming source, and how each data element maps to corresponding columns created in the in\-application stream.
+.sp
+RecordFormat \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the format of the records on the streaming source.
+.sp
+RecordFormatType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of record format.
+.UNINDENT
+.UNINDENT
+.sp
+MappingParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+When configuring application input at the time of creating or updating an application, provides additional mapping information specific to the record format (such as JSON, CSV, or record fields delimited by some delimiter) on the streaming source.
+.sp
+JSONMappingParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides additional mapping information when JSON is the record format on the streaming source.
+.sp
+RecordRowPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Path to the top\-level parent that contains the records.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CSVMappingParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides additional mapping information when the record format uses delimiters (for example, CSV).
+.sp
+RecordRowDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Row delimiter. For example, in a CSV format, \fI\(aqn\(aq\fP is the typical row delimiter.
+.UNINDENT
+.UNINDENT
+.sp
+RecordColumnDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Column delimiter. For example, in a CSV format, a comma (",") is the typical column delimiter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RecordEncoding \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the encoding of the records in the streaming source. For example, UTF\-8.
+.UNINDENT
+.UNINDENT
+.sp
+RecordColumns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBRecordColumn\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the mapping of each data element in the streaming source to the corresponding column in the in\-application stream.
+.sp
+Also used to describe the format of the reference data source.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the column created in the in\-application input stream or reference table.
+.UNINDENT
+.UNINDENT
+.sp
+Mapping \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Reference to the data element in the streaming input or the reference data source. This element is required if the \fI\%RecordFormatType\fP is \fBJSON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SqlType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of column created in the in\-application input stream or reference table.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TableName": "string",
+  "S3ReferenceDataSource": {
+    "BucketARN": "string",
+    "FileKey": "string",
+    "ReferenceRoleARN": "string"
+  },
+  "ReferenceSchema": {
+    "RecordFormat": {
+      "RecordFormatType": "JSON"|"CSV",
+      "MappingParameters": {
+        "JSONMappingParameters": {
+          "RecordRowPath": "string"
+        },
+        "CSVMappingParameters": {
+          "RecordRowDelimiter": "string",
+          "RecordColumnDelimiter": "string"
+        }
+      }
+    },
+    "RecordEncoding": "string",
+    "RecordColumns": [
+      {
+        "Name": "string",
+        "Mapping": "string",
+        "SqlType": "string"
+      }
+      ...
+    ]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

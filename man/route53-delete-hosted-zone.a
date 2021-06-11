@@ -1,0 +1,147 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ROUTE53-DELETE-HOSTED-ZONE" "a" "" ""
+.SH NAME
+route53-delete-hosted-zone \- Deletes a hosted zone
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Deletes a hosted zone.
+.sp
+If the hosted zone was created by another service, such as AWS Cloud Map, see \fI\%Deleting Public Hosted Zones That Were Created by Another Service\fP in the \fIAmazon Route 53 Developer Guide\fP for information about how to delete it. (The process is the same for public and private hosted zones that were created by another service.)
+.sp
+If you want to keep your domain registration but you want to stop routing internet traffic to your website or web application, we recommend that you delete resource record sets in the hosted zone instead of deleting the hosted zone.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you delete a hosted zone, you can\(aqt undelete it. You must create a new hosted zone and update the name servers for your domain registration, which can require up to 48 hours to take effect. (If you delegated responsibility for a subdomain to a hosted zone and you delete the child hosted zone, you must update the name servers in the parent hosted zone.) In addition, if you delete a hosted zone, someone could hijack the domain and route traffic to their own resources using your domain name.
+.UNINDENT
+.UNINDENT
+.sp
+If you want to avoid the monthly charge for the hosted zone, you can transfer DNS service for the domain to a free DNS service. When you transfer DNS service, you have to update the name servers for the domain registration. If the domain is registered with Route 53, see \fI\%UpdateDomainNameservers\fP for information about how to replace Route 53 name servers with name servers for the new DNS service. If the domain is registered with another registrar, use the method provided by the registrar to update name servers for the domain registration. For more information, perform an internet search on "free DNS service."
+.sp
+You can delete a hosted zone only if it contains only the default SOA record and NS resource record sets. If the hosted zone contains other resource record sets, you must delete them before you can delete the hosted zone. If you try to delete a hosted zone that contains other resource record sets, the request fails, and Route 53 returns a \fBHostedZoneNotEmpty\fP error. For information about deleting records from your hosted zone, see \fI\%ChangeResourceRecordSets\fP .
+.sp
+To verify that the hosted zone has been deleted, do one of the following:
+.INDENT 0.0
+.IP \(bu 2
+Use the \fBGetHostedZone\fP action to request information about the hosted zone.
+.IP \(bu 2
+Use the \fBListHostedZones\fP action to get a list of the hosted zones associated with the current AWS account.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  delete\-hosted\-zone
+\-\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the hosted zone you want to delete.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo delete a hosted zone\fP
+.sp
+The following \fBdelete\-hosted\-zone\fP command deletes the hosted zone with an \fBid\fP of  \fBZ36KTIQEXAMPLE\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws route53 delete\-hosted\-zone \-\-id Z36KTIQEXAMPLE
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+ChangeInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains the ID, the status, and the date and time of a request to delete a hosted zone.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the request.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the request. \fBPENDING\fP indicates that this request has not yet been applied to all Amazon Route 53 DNS servers.
+.UNINDENT
+.UNINDENT
+.sp
+SubmittedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the change request was submitted in \fI\%ISO 8601 format\fP and Coordinated Universal Time (UTC). For example, the value \fB2017\-03\-27T17:48:16.751Z\fP represents March 27, 2017 at 17:48:16.751 UTC.
+.UNINDENT
+.UNINDENT
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that describes change information about changes made to your hosted zone.
+.sp
+This element contains an ID that you use when performing a \fI\%GetChange\fP action to get detailed information about the change.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

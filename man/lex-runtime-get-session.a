@@ -1,0 +1,357 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LEX-RUNTIME-GET-SESSION" "a" "" ""
+.SH NAME
+lex-runtime-get-session \- Returns session information for a specified bot, alias, and user ID
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns session information for a specified bot, alias, and user ID.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-session
+\-\-bot\-name <value>
+\-\-bot\-alias <value>
+\-\-user\-id <value>
+[\-\-checkpoint\-label\-filter <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bot\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bot that contains the session data.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bot\-alias\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The alias in use for the bot that contains the session data.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-user\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the client application user. Amazon Lex uses this to identify a user\(aqs conversation with your bot.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-checkpoint\-label\-filter\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A string used to filter the intents returned in the \fBrecentIntentSummaryView\fP structure.
+.sp
+When you specify a filter, only intents with their \fBcheckpointLabel\fP field set to that string are returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+recentIntentSummaryView \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of information about the intents used in the session. The array can contain a maximum of three summaries. If more than three intents are used in the session, the \fBrecentIntentSummaryView\fP operation contains information about the last three intents used.
+.sp
+If you set the \fBcheckpointLabelFilter\fP parameter in the request, the array contains only the intents with the specified label.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about the state of an intent. You can use this information to get the current state of an intent so that you can process the intent, or so that you can return the intent to its previous state.
+.sp
+intentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the intent.
+.UNINDENT
+.UNINDENT
+.sp
+checkpointLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined label that identifies a particular intent. You can use this label to return to a previous intent.
+.sp
+Use the \fBcheckpointLabelFilter\fP parameter of the \fBGetSessionRequest\fP operation to filter the intents returned by the operation to those with only the specified label.
+.UNINDENT
+.UNINDENT
+.sp
+slots \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Map of the slots that have been gathered and their values.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+confirmationStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the intent after the user responds to the confirmation prompt. If the user confirms the intent, Amazon Lex sets this field to \fBConfirmed\fP . If the user denies the intent, Amazon Lex sets this value to \fBDenied\fP . The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBConfirmed\fP \- The user has responded "Yes" to the confirmation prompt, confirming that the intent is complete and that it is ready to be fulfilled.
+.IP \(bu 2
+\fBDenied\fP \- The user has responded "No" to the confirmation prompt.
+.IP \(bu 2
+\fBNone\fP \- The user has never been prompted for confirmation; or, the user was prompted but did not confirm or deny the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+dialogActionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next action that the bot should take in its interaction with the user. The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBConfirmIntent\fP \- The next action is asking the user if the intent is complete and ready to be fulfilled. This is a yes/no question such as "Place the order?"
+.IP \(bu 2
+\fBClose\fP \- Indicates that the there will not be a response from the user. For example, the statement "Your order has been placed" does not require a response.
+.IP \(bu 2
+\fBElicitIntent\fP \- The next action is to determine the intent that the user wants to fulfill.
+.IP \(bu 2
+\fBElicitSlot\fP \- The next action is to elicit a slot value from the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+fulfillmentState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fulfillment state of the intent. The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBFailed\fP \- The Lambda function associated with the intent failed to fulfill the intent.
+.IP \(bu 2
+\fBFulfilled\fP \- The intent has fulfilled by the Lambda function associated with the intent.
+.IP \(bu 2
+\fBReadyForFulfillment\fP \- All of the information necessary for the intent is present and the intent ready to be fulfilled by the client application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+slotToElicit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next slot to elicit from the user. If there is not slot to elicit, the field is blank.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+sessionAttributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Map of key/value pairs representing the session\-specific context information. It contains application information passed between Amazon Lex and a client application.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+sessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the session.
+.UNINDENT
+.UNINDENT
+.sp
+dialogAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the current state of the bot.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next action that the bot should take in its interaction with the user. The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBConfirmIntent\fP \- The next action is asking the user if the intent is complete and ready to be fulfilled. This is a yes/no question such as "Place the order?"
+.IP \(bu 2
+\fBClose\fP \- Indicates that the there will not be a response from the user. For example, the statement "Your order has been placed" does not require a response.
+.IP \(bu 2
+\fBDelegate\fP \- The next action is determined by Amazon Lex.
+.IP \(bu 2
+\fBElicitIntent\fP \- The next action is to determine the intent that the user wants to fulfill.
+.IP \(bu 2
+\fBElicitSlot\fP \- The next action is to elicit a slot value from the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+intentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the intent.
+.UNINDENT
+.UNINDENT
+.sp
+slots \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Map of the slots that have been gathered and their values.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+slotToElicit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the slot that should be elicited from the user.
+.UNINDENT
+.UNINDENT
+.sp
+fulfillmentState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fulfillment state of the intent. The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBFailed\fP \- The Lambda function associated with the intent failed to fulfill the intent.
+.IP \(bu 2
+\fBFulfilled\fP \- The intent has fulfilled by the Lambda function associated with the intent.
+.IP \(bu 2
+\fBReadyForFulfillment\fP \- All of the information necessary for the intent is present and the intent ready to be fulfilled by the client application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message that should be shown to the user. If you don\(aqt specify a message, Amazon Lex will use the message configured for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+messageFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBPlainText\fP \- The message contains plain UTF\-8 text.
+.IP \(bu 2
+\fBCustomPayload\fP \- The message is a custom format for the client.
+.IP \(bu 2
+\fBSSML\fP \- The message contains text formatted for voice output.
+.IP \(bu 2
+\fBComposite\fP \- The message contains an escaped JSON object containing one or more messages. For more information, see \fI\%Message Groups\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+activeContexts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of active contexts for the session. A context can be set when an intent is fulfilled or by calling the \fBPostContent\fP , \fBPostText\fP , or \fBPutSession\fP operation.
+.sp
+You can use a context to control the intents that can follow up an intent, or to modify the operation of your application.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A context is a variable that contains information about the current state of the conversation between a user and Amazon Lex. Context can be set automatically by Amazon Lex when an intent is fulfilled, or it can be set at runtime using the \fBPutContent\fP , \fBPutText\fP , or \fBPutSession\fP operation.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the context.
+.UNINDENT
+.UNINDENT
+.sp
+timeToLive \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The length of time or number of turns that a context remains active.
+.sp
+timeToLiveInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of seconds that the context should be active after it is first sent in a \fBPostContent\fP or \fBPostText\fP response. You can set the value between 5 and 86,400 seconds (24 hours).
+.UNINDENT
+.UNINDENT
+.sp
+turnsToLive \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of conversation turns that the context should be active. A conversation turn is one \fBPostContent\fP or \fBPostText\fP request and the corresponding response from Amazon Lex.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+State variables for the current context. You can use these values as default values for slots in subsequent events.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

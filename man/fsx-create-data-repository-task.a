@@ -1,0 +1,447 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "FSX-CREATE-DATA-REPOSITORY-TASK" "a" "" ""
+.SH NAME
+fsx-create-data-repository-task \- Creates an Amazon FSx for Lustre data repository task
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an Amazon FSx for Lustre data repository task. You use data repository tasks to perform bulk operations between your Amazon FSx file system and its linked data repository. An example of a data repository task is exporting any data and metadata changes, including POSIX metadata, to files, directories, and symbolic links (symlinks) from your FSx file system to its linked data repository. A \fBCreateDataRepositoryTask\fP operation will fail if a data repository is not linked to the FSx file system. To learn more about data repository tasks, see \fI\%Data Repository Tasks\fP . To learn more about linking a data repository to your file system, see \fI\%Linking your file system to an S3 bucket\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-data\-repository\-task
+\-\-type <value>
+[\-\-paths <value>]
+\-\-file\-system\-id <value>
+\-\-report <value>
+[\-\-client\-request\-token <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of data repository task to create.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBEXPORT_TO_REPOSITORY\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-paths\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) The path or paths on the Amazon FSx file system to use when the data repository task is processed. The default path is the file system root directory. The paths you provide need to be relative to the mount point of the file system. If the mount point is \fB/mnt/fsx\fP and \fB/mnt/fsx/path1\fP is a directory or file on the file system you want to export, then the path to provide is \fBpath1\fP . If a path that you provide isn\(aqt valid, the task fails.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-file\-system\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The globally unique ID of the file system, assigned by Amazon FSx.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-report\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines whether or not Amazon FSx provides a CompletionReport once the task has completed. A CompletionReport provides a detailed report on the files that Amazon FSx processed that meet the criteria specified by the \fBScope\fP parameter. For more information, see \fI\%Working with Task Completion Reports\fP .
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set \fBEnabled\fP to \fBTrue\fP to generate a \fBCompletionReport\fP when the task completes. If set to \fBtrue\fP , then you need to provide a report \fBScope\fP , \fBPath\fP , and \fBFormat\fP . Set \fBEnabled\fP to \fBFalse\fP if you do not want a \fBCompletionReport\fP generated when the task completes.
+.UNINDENT
+.UNINDENT
+.sp
+Path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Required if \fBEnabled\fP is set to \fBtrue\fP . Specifies the location of the report on the file system\(aqs linked S3 data repository. An absolute path that defines where the completion report will be stored in the destination location. The \fBPath\fP you provide must be located within the file system’s ExportPath. An example \fBPath\fP value is "s3://myBucket/myExportPath/optionalPrefix". The report provides the following information for each file in the report: FilePath, FileStatus, and ErrorCode. To learn more about a file system\(aqs \fBExportPath\fP , see .
+.UNINDENT
+.UNINDENT
+.sp
+Format \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Required if \fBEnabled\fP is set to \fBtrue\fP . Specifies the format of the \fBCompletionReport\fP . \fBREPORT_CSV_20191124\fP is the only format currently supported. When \fBFormat\fP is set to \fBREPORT_CSV_20191124\fP , the \fBCompletionReport\fP is provided in CSV format, and is delivered to \fB{path}/task\-{id}/failures.csv\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Scope \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Required if \fBEnabled\fP is set to \fBtrue\fP . Specifies the scope of the \fBCompletionReport\fP ; \fBFAILED_FILES_ONLY\fP is the only scope currently supported. When \fBScope\fP is set to \fBFAILED_FILES_ONLY\fP , the \fBCompletionReport\fP only contains information about files that the data repository task failed to process.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Enabled=boolean,Path=string,Format=string,Scope=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Enabled": true|false,
+  "Path": "string",
+  "Format": "REPORT_CSV_20191124",
+  "Scope": "FAILED_FILES_ONLY"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) An idempotency token for resource creation, in a string of up to 64 ASCII characters. This token is automatically filled on your behalf when you use the AWS Command Line Interface (AWS CLI) or an AWS SDK.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBTag\fP values, with a maximum of 50 elements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a key\-value pair for a resource tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagKey\fP , the name of the tag. Tag keys must be unique for the resource to which they are attached.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagValue\fP , the value assigned to the corresponding tag key. Tag values can be null and don\(aqt have to be unique in a tag set. For example, you can have a key\-value pair in a tag set of \fBfinances : April\fP and also of \fBpayroll : April\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+DataRepositoryTask \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The description of the data repository task that you just created.
+.sp
+TaskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated, unique 17\-digit ID of the data repository task.
+.UNINDENT
+.UNINDENT
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The lifecycle status of the data repository task, as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBPENDING\fP \- Amazon FSx has not started the task.
+.IP \(bu 2
+\fBEXECUTING\fP \- Amazon FSx is processing the task.
+.IP \(bu 2
+\fBFAILED\fP \- Amazon FSx was not able to complete the task. For example, there may be files the task failed to process. The  DataRepositoryTaskFailureDetails property provides more information about task failures.
+.IP \(bu 2
+\fBSUCCEEDED\fP \- FSx completed the task successfully.
+.IP \(bu 2
+\fBCANCELED\fP \- Amazon FSx canceled the task and it did not complete.
+.IP \(bu 2
+\fBCANCELING\fP \- FSx is in process of canceling the task.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You cannot delete an FSx for Lustre file system if there are data repository tasks for the file system in the \fBPENDING\fP or \fBEXECUTING\fP states. Please retry when the data repository task is finished (with a status of \fBCANCELED\fP , \fBSUCCEEDED\fP , or \fBFAILED\fP ). You can use the DescribeDataRepositoryTask action to monitor the task status. Contact the FSx team if you need to delete your file system immediately.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of data repository task; EXPORT_TO_REPOSITORY is the only type currently supported.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that the resource was created, in seconds (since 1970\-01\-01T00:00:00Z), also known as Unix time.
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that Amazon FSx began processing the task.
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that Amazon FSx completed processing the task, populated after the task is complete.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for a given resource. ARNs uniquely identify AWS resources. We require an ARN when you need to specify a resource unambiguously across all of AWS. For more information, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBTag\fP values, with a maximum of 50 elements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a key\-value pair for a resource tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagKey\fP , the name of the tag. Tag keys must be unique for the resource to which they are attached.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagValue\fP , the value assigned to the corresponding tag key. Tag values can be null and don\(aqt have to be unique in a tag set. For example, you can have a key\-value pair in a tag set of \fBfinances : April\fP and also of \fBpayroll : April\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The globally unique ID of the file system, assigned by Amazon FSx.
+.UNINDENT
+.UNINDENT
+.sp
+Paths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of paths on the Amazon FSx for Lustre file system that specify the data for the data repository task to process. For example, in an EXPORT_TO_REPOSITORY task, the paths specify which data to export to the linked data repository.
+.sp
+(Default) If \fBPaths\fP is not specified, Amazon FSx uses the file system root directory.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Failure message describing why the task failed, it is populated only when \fBLifecycle\fP is set to \fBFAILED\fP .
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the status of the number of files that the task has processed successfully and failed to process.
+.sp
+TotalCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The total number of files that the task will process. While a task is executing, the sum of \fBSucceededCount\fP plus \fBFailedCount\fP may not equal \fBTotalCount\fP . When the task is complete, \fBTotalCount\fP equals the sum of \fBSucceededCount\fP plus \fBFailedCount\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SucceededCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A running total of the number of files that the task has successfully processed.
+.UNINDENT
+.UNINDENT
+.sp
+FailedCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A running total of the number of files that the task failed to process.
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdatedTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the task status was last updated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Report \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides a report detailing the data repository task results of the files processed that match the criteria specified in the report \fBScope\fP parameter. FSx delivers the report to the file system\(aqs linked data repository in Amazon S3, using the path specified in the report \fBPath\fP parameter. You can specify whether or not a report gets generated for a task using the \fBEnabled\fP parameter.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set \fBEnabled\fP to \fBTrue\fP to generate a \fBCompletionReport\fP when the task completes. If set to \fBtrue\fP , then you need to provide a report \fBScope\fP , \fBPath\fP , and \fBFormat\fP . Set \fBEnabled\fP to \fBFalse\fP if you do not want a \fBCompletionReport\fP generated when the task completes.
+.UNINDENT
+.UNINDENT
+.sp
+Path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Required if \fBEnabled\fP is set to \fBtrue\fP . Specifies the location of the report on the file system\(aqs linked S3 data repository. An absolute path that defines where the completion report will be stored in the destination location. The \fBPath\fP you provide must be located within the file system’s ExportPath. An example \fBPath\fP value is "s3://myBucket/myExportPath/optionalPrefix". The report provides the following information for each file in the report: FilePath, FileStatus, and ErrorCode. To learn more about a file system\(aqs \fBExportPath\fP , see .
+.UNINDENT
+.UNINDENT
+.sp
+Format \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Required if \fBEnabled\fP is set to \fBtrue\fP . Specifies the format of the \fBCompletionReport\fP . \fBREPORT_CSV_20191124\fP is the only format currently supported. When \fBFormat\fP is set to \fBREPORT_CSV_20191124\fP , the \fBCompletionReport\fP is provided in CSV format, and is delivered to \fB{path}/task\-{id}/failures.csv\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Scope \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Required if \fBEnabled\fP is set to \fBtrue\fP . Specifies the scope of the \fBCompletionReport\fP ; \fBFAILED_FILES_ONLY\fP is the only scope currently supported. When \fBScope\fP is set to \fBFAILED_FILES_ONLY\fP , the \fBCompletionReport\fP only contains information about files that the data repository task failed to process.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

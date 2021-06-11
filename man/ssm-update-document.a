@@ -1,0 +1,617 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-UPDATE-DOCUMENT" "a" "" ""
+.SH NAME
+ssm-update-document \- Updates one or more values for an SSM document
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates one or more values for an SSM document.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-document
+\-\-content <value>
+[\-\-attachments <value>]
+\-\-name <value>
+[\-\-display\-name <value>]
+[\-\-version\-name <value>]
+[\-\-document\-version <value>]
+[\-\-document\-format <value>]
+[\-\-target\-type <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-content\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A valid JSON or YAML string.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attachments\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of key and value pairs that describe attachments to a version of a document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifying information about a document attachment, including the file name and a key\-value pair that identifies the location of an attachment to a document.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of a key\-value pair that identifies the location of an attachment to a document.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value of a key\-value pair that identifies the location of an attachment to a document. The format for \fBValue\fP depends on the type of key you specify.
+.INDENT 0.0
+.IP \(bu 2
+For the key \fISourceUrl\fP , the value is an S3 bucket location. For example:  \fB"Values": [ "s3://doc\-example\-bucket/my\-folder" ]\fP
+.IP \(bu 2
+For the key \fIS3FileUrl\fP , the value is a file in an S3 bucket. For example:  \fB"Values": [ "s3://doc\-example\-bucket/my\-folder/my\-file.py" ]\fP
+.IP \(bu 2
+For the key \fIAttachmentReference\fP , the value is constructed from the name of another SSM document in your account, a version number of that document, and a file attached to that document version that you want to reuse. For example:  \fB"Values": [ "MyOtherDocument/3/my\-other\-file.py" ]\fP   However, if the SSM document is shared with you from another account, the full SSM document ARN must be specified instead of the document name only. For example:  \fB"Values": [ "arn:aws:ssm:us\-east\-2:111122223333:document/OtherAccountDocument/3/their\-file.py" ]\fP
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the document attachment file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Values=string,string,Name=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "SourceUrl"|"S3FileUrl"|"AttachmentReference",
+    "Values": ["string", ...],
+    "Name": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Systems Manager document that you want to update.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-display\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The friendly name of the Systems Manager document that you want to update. This value can differ for each version of the document. If you do not specify a value for this parameter in your request, the existing value is applied to the new document version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-version\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional field specifying the version of the artifact you are updating with the document. For example, "Release 12, Update 6". This value is unique across all versions of a document, and cannot be changed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-document\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the document that you want to update. Currently, Systems Manager supports updating only the latest version of the document. You can specify the version number of the latest version or use the \fB$LATEST\fP variable.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-document\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify the document format for the new document version. Systems Manager supports JSON and YAML documents. JSON is the default format.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBYAML\fP
+.IP \(bu 2
+\fBJSON\fP
+.IP \(bu 2
+\fBTEXT\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify a new target type for the document.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a new version of a document\fP
+.sp
+The following \fBupdate\-document\fP example creates a new version of a document when run on a Windows computer. The document specified by \fB\-\-document\fP must be in JSON format. Note that \fBfile://\fP must be referenced followed by the path of the content file. Because of the \fB$\fP at the beginning of the \fB\-\-document\-version\fP parameter, On Windows you must surround the value with double quotes. On Linux, MacOS, or at a PowerShell prompt, you must surround the value with single quotes.
+.sp
+\fBWindows version\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm update\-document \e
+    \-\-name "RunShellScript" \e
+    \-\-content "file://RunShellScript.json" \e
+    \-\-document\-version "$LATEST"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBLinux/Mac version\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm update\-document \e
+    \-\-name "RunShellScript" \e
+    \-\-content "file://RunShellScript.json" \e
+    \-\-document\-version \(aq$LATEST\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "DocumentDescription": {
+      "Status": "Updating",
+      "Hash": "f775e5df4904c6fa46686c4722fae9de1950dace25cd9608ff8d622046b68d9b",
+      "Name": "RunShellScript",
+      "Parameters": [
+          {
+              "Type": "StringList",
+              "Name": "commands",
+              "Description": "(Required) Specify a shell script or a command to run."
+          }
+      ],
+      "DocumentType": "Command",
+      "PlatformTypes": [
+          "Linux"
+      ],
+      "DocumentVersion": "2",
+      "HashType": "Sha256",
+      "CreatedDate": 1487899655.152,
+      "Owner": "809632081692",
+      "SchemaVersion": "2.0",
+      "DefaultVersion": "1",
+      "LatestVersion": "2",
+      "Description": "Run an updated script"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+DocumentDescription \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A description of the document that was updated.
+.sp
+Sha1 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA1 hash of the document, which you can use for verification.
+.UNINDENT
+.UNINDENT
+.sp
+Hash \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Sha256 or Sha1 hash created by the system when the document was created.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Sha1 hashes have been deprecated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HashType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The hash type of the document. Valid values include \fBSha256\fP or \fBSha1\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Sha1 hashes have been deprecated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Systems Manager document.
+.UNINDENT
+.UNINDENT
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The friendly name of the Systems Manager document. This value can differ for each version of the document. If you want to update this value, see  UpdateDocument .
+.UNINDENT
+.UNINDENT
+.sp
+VersionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the artifact associated with the document.
+.UNINDENT
+.UNINDENT
+.sp
+Owner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS user account that created the document.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the document was created.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the Systems Manager document.
+.UNINDENT
+.UNINDENT
+.sp
+StatusInformation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message returned by AWS Systems Manager that explains the \fBStatus\fP value. For example, a \fBFailed\fP status might be explained by the \fBStatusInformation\fP message, "The specified S3 bucket does not exist. Verify that the URL of the S3 bucket is correct."
+.UNINDENT
+.UNINDENT
+.sp
+DocumentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document version.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the document.
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A description of the parameters for a document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters specified in a System Manager document that run on the server when the command is run.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of parameter. The type can be either String or StringList.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of what the parameter does, how to use it, the default value, and whether or not the parameter is optional.
+.UNINDENT
+.UNINDENT
+.sp
+DefaultValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If specified, the default values for the parameters. Parameters without a default value are required. Parameters with a default value are optional.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PlatformTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of OS platforms compatible with this Systems Manager document.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+DocumentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of document.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The schema version.
+.UNINDENT
+.UNINDENT
+.sp
+LatestVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The latest version of the document.
+.UNINDENT
+.UNINDENT
+.sp
+DefaultVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The default version.
+.UNINDENT
+.UNINDENT
+.sp
+DocumentFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document format, either JSON or YAML.
+.UNINDENT
+.UNINDENT
+.sp
+TargetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The target type which defines the kinds of resources the document can run on. For example, /AWS::EC2::Instance. For a list of valid resource types, see \fI\%AWS resource and property types reference\fP in the \fIAWS CloudFormation User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags, or metadata, that have been applied to the document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata that you assign to your AWS resources. Tags enable you to categorize your resources in different ways, for example, by purpose, owner, or environment. In Systems Manager, you can apply tags to documents, managed instances, maintenance windows, Parameter Store parameters, and patch baselines.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AttachmentsInformation \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Details about the document attachments, including names, locations, sizes, and so on.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of an attachment, such as the attachment name.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attachment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Requires \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of SSM documents required by a document. For example, an \fBApplicationConfiguration\fP document requires an \fBApplicationConfigurationSchema\fP document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An SSM document required by the current document.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the required SSM document. The name can be an Amazon Resource Name (ARN).
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document version required by the current document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Author \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user in your organization who created the document.
+.UNINDENT
+.UNINDENT
+.sp
+ReviewInformation \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Details about the review of a document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the result of a document review request.
+.sp
+ReviewedTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that the reviewer took action on the document review request.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the document review request.
+.UNINDENT
+.UNINDENT
+.sp
+Reviewer \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reviewer assigned to take action on the document review request.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ApprovedVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the document currently approved for use in the organization.
+.UNINDENT
+.UNINDENT
+.sp
+PendingReviewVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the document that is currently under review.
+.UNINDENT
+.UNINDENT
+.sp
+ReviewStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the review.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

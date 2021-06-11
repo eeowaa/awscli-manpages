@@ -1,0 +1,156 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KENDRA-UPDATE-QUERY-SUGGESTIONS-CONFIG" "a" "" ""
+.SH NAME
+kendra-update-query-suggestions-config \- Updates the settings of query suggestions for an index
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the settings of query suggestions for an index.
+.sp
+Amazon Kendra supports partial updates, so you only need to provide the fields you want to update.
+.sp
+If an update is currently processing (i.e. \(aqhappening\(aq), you need to wait for the update to finish before making another update.
+.sp
+Updates to query suggestions settings might not take effect right away. The time for your updated settings to take effect depends on the updates made and the number of search queries in your index.
+.sp
+You can still enable/disable query suggestions at any time.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-query\-suggestions\-config
+\-\-index\-id <value>
+[\-\-mode <value>]
+[\-\-query\-log\-look\-back\-window\-in\-days <value>]
+[\-\-include\-queries\-without\-user\-information | \-\-no\-include\-queries\-without\-user\-information]
+[\-\-minimum\-number\-of\-querying\-users <value>]
+[\-\-minimum\-query\-count <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-index\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the index you want to update query suggestions settings for.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-mode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Set the mode to \fBENABLED\fP or \fBLEARN_ONLY\fP .
+.sp
+By default, Amazon Kendra enables query suggestions. \fBLEARN_ONLY\fP mode allows you to turn off query suggestions. You can to update this at any time.
+.sp
+In \fBLEARN_ONLY\fP mode, Amazon Kendra continues to learn from new queries to keep suggestions up to date for when you are ready to switch to ENABLED mode again.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBENABLED\fP
+.IP \(bu 2
+\fBLEARN_ONLY\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-query\-log\-look\-back\-window\-in\-days\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+How recent your queries are in your query log time window.
+.sp
+The time window is the number of days from current day to past days.
+.sp
+By default, Amazon Kendra sets this to 180.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-include\-queries\-without\-user\-information\fP | \fB\-\-no\-include\-queries\-without\-user\-information\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fBTRUE\fP to include queries without user information (i.e. all queries, irrespective of the user), otherwise \fBFALSE\fP to only include queries with user information.
+.UNINDENT
+.UNINDENT
+.sp
+If you pass user information to Amazon Kendra along with the queries, you can set this flag to \fBFALSE\fP and instruct Amazon Kendra to only consider queries with user information.
+.sp
+If you set to \fBFALSE\fP , Amazon Kendra only considers queries searched at least \fBMinimumQueryCount\fP times across \fBMinimumNumberOfQueryingUsers\fP unique users for suggestions.
+.sp
+If you set to \fBTRUE\fP , Amazon Kendra ignores all user information and learns from all queries.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-minimum\-number\-of\-querying\-users\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of unique users who must search a query in order for the query to be eligible to suggest to your users.
+.sp
+Increasing this number might decrease the number of suggestions. However, this ensures a query is searched by many users and is truly popular to suggest to users.
+.sp
+How you tune this setting depends on your specific needs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-minimum\-query\-count\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The the minimum number of times a query must be searched in order to be eligible to suggest to your users.
+.sp
+Decreasing this number increases the number of suggestions. However, this affects the quality of suggestions as it sets a low bar for a query to be considered popular to suggest to users.
+.sp
+How you tune this setting depends on your specific needs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

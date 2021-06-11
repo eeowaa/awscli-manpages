@@ -1,0 +1,205 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "METERINGMARKETPLACE-METER-USAGE" "a" "" ""
+.SH NAME
+meteringmarketplace-meter-usage \- API to emit metering records
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+API to emit metering records. For identical requests, the API is idempotent. It simply returns the metering record ID.
+.sp
+MeterUsage is authenticated on the buyer\(aqs AWS account using credentials from the EC2 instance, ECS task, or EKS pod.
+.sp
+MeterUsage can optionally include multiple usage allocations, to provide customers with usage data split into buckets by tags that you define (or allow the customer to define).
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  meter\-usage
+\-\-product\-code <value>
+\-\-timestamp <value>
+\-\-usage\-dimension <value>
+[\-\-usage\-quantity <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-usage\-allocations <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-product\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Product code is used to uniquely identify a product in AWS Marketplace. The product code should be the same as the one used during the publishing of a new product.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-timestamp\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Timestamp, in UTC, for which the usage is being reported. Your application can meter usage for up to one hour in the past. Make sure the timestamp value is not before the start of the software usage.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-usage\-dimension\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+It will be one of the fcp dimension name provided during the publishing of the product.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-usage\-quantity\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Consumption value for the hour. Defaults to \fB0\fP if not specified.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the permissions required for the action, but does not make the request. If you have the permissions, the request returns DryRunOperation; otherwise, it returns UnauthorizedException. Defaults to \fBfalse\fP if not specified.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-usage\-allocations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The set of UsageAllocations to submit.
+.sp
+The sum of all UsageAllocation quantities must equal the UsageQuantity of the MeterUsage request, and each UsageAllocation must have a unique set of tags (include no tags).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Usage allocations allow you to split usage into buckets by tags.
+.sp
+Each UsageAllocation indicates the usage quantity for a specific set of tags.
+.sp
+AllocatedUsageQuantity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total quantity allocated to this bucket of usage.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The set of tags that define the bucket of usage. For the bucket of items with no tags, this parameter can be left out.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata assigned to an allocation. Each tag is made up of a key and a value.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that makes up a tag. A key is a label that acts like a category for the specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that makes up a tag. A value acts as a descriptor within a tag category (key). The value can be empty or null.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AllocatedUsageQuantity=integer,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "AllocatedUsageQuantity": integer,
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+MeteringRecordId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Metering record id.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

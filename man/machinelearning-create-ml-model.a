@@ -1,0 +1,214 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "MACHINELEARNING-CREATE-ML-MODEL" "a" "" ""
+.SH NAME
+machinelearning-create-ml-model \- Creates a new MLModel using the DataSource and the recipe as information sources
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new \fBMLModel\fP using the \fBDataSource\fP and the recipe as information sources.
+.sp
+An \fBMLModel\fP is nearly immutable. Users can update only the \fBMLModelName\fP and the \fBScoreThreshold\fP in an \fBMLModel\fP without creating a new \fBMLModel\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCreateMLModel\fP is an asynchronous operation. In response to \fBCreateMLModel\fP , Amazon Machine Learning (Amazon ML) immediately returns and sets the \fBMLModel\fP status to \fBPENDING\fP . After the \fBMLModel\fP has been created and ready is for use, Amazon ML sets the status to \fBCOMPLETED\fP .
+.UNINDENT
+.UNINDENT
+.sp
+You can use the \fBGetMLModel\fP operation to check the progress of the \fBMLModel\fP during the creation operation.
+.INDENT 0.0
+.INDENT 3.5
+\fBCreateMLModel\fP requires a \fBDataSource\fP with computed statistics, which can be created by setting \fBComputeStatistics\fP to \fBtrue\fP in \fBCreateDataSourceFromRDS\fP , \fBCreateDataSourceFromS3\fP , or \fBCreateDataSourceFromRedshift\fP operations.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-ml\-model
+\-\-ml\-model\-id <value>
+[\-\-ml\-model\-name <value>]
+\-\-ml\-model\-type <value>
+[\-\-parameters <value>]
+\-\-training\-data\-source\-id <value>
+[\-\-recipe <value>]
+[\-\-recipe\-uri <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-ml\-model\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-supplied ID that uniquely identifies the \fBMLModel\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ml\-model\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-supplied name or description of the \fBMLModel\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ml\-model\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The category of supervised learning that this \fBMLModel\fP will address. Choose from the following types:
+.INDENT 0.0
+.IP \(bu 2
+Choose \fBREGRESSION\fP if the \fBMLModel\fP will be used to predict a numeric value.
+.IP \(bu 2
+Choose \fBBINARY\fP if the \fBMLModel\fP result has two possible values.
+.IP \(bu 2
+Choose \fBMULTICLASS\fP if the \fBMLModel\fP result has a limited number of values.
+.UNINDENT
+.sp
+For more information, see the \fI\%Amazon Machine Learning Developer Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBREGRESSION\fP
+.IP \(bu 2
+\fBBINARY\fP
+.IP \(bu 2
+\fBMULTICLASS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parameters\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of the training parameters in the \fBMLModel\fP . The list is implemented as a map of key\-value pairs.
+.sp
+The following is the current set of training parameters:
+.INDENT 0.0
+.IP \(bu 2
+\fBsgd.maxMLModelSizeInBytes\fP \- The maximum allowed size of the model. Depending on the input data, the size of the model might affect its performance. The value is an integer that ranges from \fB100000\fP to \fB2147483648\fP . The default value is \fB33554432\fP .
+.IP \(bu 2
+\fBsgd.maxPasses\fP \- The number of times that the training process traverses the observations to build the \fBMLModel\fP . The value is an integer that ranges from \fB1\fP to \fB10000\fP . The default value is \fB10\fP .
+.IP \(bu 2
+\fBsgd.shuffleType\fP \- Whether Amazon ML shuffles the training data. Shuffling the data improves a model\(aqs ability to find the optimal solution for a variety of data types. The valid values are \fBauto\fP and \fBnone\fP . The default value is \fBnone\fP . We strongly recommend that you shuffle your data.
+.IP \(bu 2
+\fBsgd.l1RegularizationAmount\fP \- The coefficient regularization L1 norm. It controls overfitting the data by penalizing large coefficients. This tends to drive coefficients to zero, resulting in a sparse feature set. If you use this parameter, start by specifying a small value, such as \fB1.0E\-08\fP . The value is a double that ranges from \fB0\fP to \fBMAX_DOUBLE\fP . The default is to not use L1 normalization. This parameter can\(aqt be used when \fBL2\fP is specified. Use this parameter sparingly.
+.IP \(bu 2
+\fBsgd.l2RegularizationAmount\fP \- The coefficient regularization L2 norm. It controls overfitting the data by penalizing large coefficients. This tends to drive coefficients to small, nonzero values. If you use this parameter, start by specifying a small value, such as \fB1.0E\-08\fP . The value is a double that ranges from \fB0\fP to \fBMAX_DOUBLE\fP . The default is to not use L2 normalization. This parameter can\(aqt be used when \fBL1\fP is specified. Use this parameter sparingly.
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+String type.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+String type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-training\-data\-source\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBDataSource\fP that points to the training data.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-recipe\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The data recipe for creating the \fBMLModel\fP . You must specify either the recipe or its URI. If you don\(aqt specify a recipe or its URI, Amazon ML creates a default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-recipe\-uri\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Simple Storage Service (Amazon S3) location and file name that contains the \fBMLModel\fP recipe. You must specify either the recipe or its URI. If you don\(aqt specify a recipe or its URI, Amazon ML creates a default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+MLModelId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-supplied ID that uniquely identifies the \fBMLModel\fP . This value should be identical to the value of the \fBMLModelId\fP in the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

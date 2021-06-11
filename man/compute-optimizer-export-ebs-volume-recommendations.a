@@ -1,0 +1,337 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "COMPUTE-OPTIMIZER-EXPORT-EBS-VOLUME-RECOMMENDATIONS" "a" "" ""
+.SH NAME
+compute-optimizer-export-ebs-volume-recommendations \- Exports optimization recommendations for Amazon EBS volumes
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Exports optimization recommendations for Amazon EBS volumes.
+.sp
+Recommendations are exported in a comma\-separated values (.csv) file, and its metadata in a JavaScript Object Notation (.json) file, to an existing Amazon Simple Storage Service (Amazon S3) bucket that you specify. For more information, see \fI\%Exporting Recommendations\fP in the \fICompute Optimizer User Guide\fP .
+.sp
+You can have only one Amazon EBS volume export job in progress per AWS Region.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  export\-ebs\-volume\-recommendations
+[\-\-account\-ids <value>]
+[\-\-filters <value>]
+[\-\-fields\-to\-export <value>]
+\-\-s3\-destination\-config <value>
+[\-\-file\-format <value>]
+[\-\-include\-member\-accounts | \-\-no\-include\-member\-accounts]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the AWS accounts for which to export Amazon EBS volume recommendations.
+.sp
+If your account is the management account of an organization, use this parameter to specify the member account for which you want to export recommendations.
+.sp
+This parameter cannot be specified together with the include member accounts parameter. The parameters are mutually exclusive.
+.sp
+Recommendations for member accounts are not included in the export if this parameter, or the include member accounts parameter, is omitted.
+.sp
+You can specify multiple account IDs per request.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of objects that describe a filter to export a more specific set of Amazon EBS volume recommendations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a filter that returns a more specific list of Amazon Elastic Block Store (Amazon EBS) volume recommendations. Use this filter with the \fBGetEBSVolumeRecommendations\fP action.
+.sp
+You can use \fBLambdaFunctionRecommendationFilter\fP with the \fBGetLambdaFunctionRecommendations\fP action, \fBJobFilter\fP with the \fBDescribeRecommendationExportJobs\fP action, and \fBFilter\fP with the \fBGetAutoScalingGroupRecommendations\fP and \fBGetEC2InstanceRecommendations\fP actions.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter.
+.sp
+Specify \fBFinding\fP to return recommendations with a specific finding classification (e.g., \fBNotOptimized\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value of the filter.
+.sp
+The valid values are \fBOptimized\fP , or \fBNotOptimized\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string,values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "name": "Finding",
+    "values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-fields\-to\-export\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The recommendations data to include in the export file. For more information about the fields that can be exported, see \fI\%Exported files\fP in the \fICompute Optimizer User Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  AccountId
+  VolumeArn
+  Finding
+  UtilizationMetricsVolumeReadOpsPerSecondMaximum
+  UtilizationMetricsVolumeWriteOpsPerSecondMaximum
+  UtilizationMetricsVolumeReadBytesPerSecondMaximum
+  UtilizationMetricsVolumeWriteBytesPerSecondMaximum
+  LookbackPeriodInDays
+  CurrentConfigurationVolumeType
+  CurrentConfigurationVolumeBaselineIOPS
+  CurrentConfigurationVolumeBaselineThroughput
+  CurrentConfigurationVolumeBurstIOPS
+  CurrentConfigurationVolumeBurstThroughput
+  CurrentConfigurationVolumeSize
+  CurrentMonthlyPrice
+  RecommendationOptionsConfigurationVolumeType
+  RecommendationOptionsConfigurationVolumeBaselineIOPS
+  RecommendationOptionsConfigurationVolumeBaselineThroughput
+  RecommendationOptionsConfigurationVolumeBurstIOPS
+  RecommendationOptionsConfigurationVolumeBurstThroughput
+  RecommendationOptionsConfigurationVolumeSize
+  RecommendationOptionsMonthlyPrice
+  RecommendationOptionsPerformanceRisk
+  LastRefreshTimestamp
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-destination\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the destination Amazon Simple Storage Service (Amazon S3) bucket name and key prefix for a recommendations export job.
+.sp
+You must create the destination Amazon S3 bucket for your recommendations export before you create the export job. Compute Optimizer does not create the S3 bucket for you. After you create the S3 bucket, ensure that it has the required permission policy to allow Compute Optimizer to write the export file to it. If you plan to specify an object prefix when you create the export job, you must include the object prefix in the policy that you add to the S3 bucket. For more information, see \fI\%Amazon S3 Bucket Policy for Compute Optimizer\fP in the \fICompute Optimizer user guide\fP .
+.sp
+bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket to use as the destination for an export job.
+.UNINDENT
+.UNINDENT
+.sp
+keyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket prefix for an export job.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+bucket=string,keyPrefix=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "bucket": "string",
+  "keyPrefix": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-file\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the export file.
+.sp
+The only export file format currently supported is \fBCsv\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCsv\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-include\-member\-accounts\fP | \fB\-\-no\-include\-member\-accounts\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to include recommendations for resources in all member accounts of the organization if your account is the management account of an organization.
+.sp
+The member accounts must also be opted in to Compute Optimizer, and trusted access for Compute Optimizer must be enabled in the organization account. For more information, see \fI\%Compute Optimizer and AWS Organizations trusted access\fP in the \fIAWS Compute Optimizer User Guide\fP .
+.sp
+Recommendations for member accounts of the organization are not included in the export file if this parameter is omitted.
+.sp
+This parameter cannot be specified together with the account IDs parameter. The parameters are mutually exclusive.
+.sp
+Recommendations for member accounts are not included in the export if this parameter, or the account IDs parameter, is omitted.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+jobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identification number of the export job.
+.sp
+Use the \fBDescribeRecommendationExportJobs\fP action, and specify the job ID to view the status of an export job.
+.UNINDENT
+.UNINDENT
+.sp
+s3Destination \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the destination Amazon Simple Storage Service (Amazon S3) bucket name and object keys of a recommendations export file, and its associated metadata file.
+.sp
+bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket used as the destination of an export file.
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket key of an export file.
+.sp
+The key uniquely identifies the object, or export file, in the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+metadataKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket key of a metadata file.
+.sp
+The key uniquely identifies the object, or metadata file, in the S3 bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,555 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EMR-ADD-INSTANCE-GROUPS" "a" "" ""
+.SH NAME
+emr-add-instance-groups \- Adds an instance group to a running cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds an instance group to a running cluster.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  add\-instance\-groups
+\-\-cluster\-id <value>
+\-\-instance\-groups <value> [<value>...]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique string that identifies a cluster. The \fBcreate\-cluster\fP command returns this identifier. You can use the \fBlist\-clusters\fP command to get cluster IDs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-groups\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number and type of Amazon EC2 instances to create for each node type in a cluster, using uniform instance groups. You can specify either \fB\-\-instance\-groups\fP or \fB\-\-instance\-fleets\fP but not both. For more information, see the following topic in the EMR Management Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr\-instance\-group\-configuration.html\fP
+.sp
+You can specify arguments individually using multiple \fBInstanceGroupType\fP argument blocks, one for the \fBMASTER\fP instance group, one for a \fBCORE\fP instance group, and optional, multiple \fBTASK\fP instance groups.
+.sp
+If you specify inline JSON structures, enclose the entire \fBInstanceGroupType\fP argument block in single quotation marks.
+.sp
+Each \fBInstanceGroupType\fP block takes the following inline arguments. Optional arguments are shown in [square brackets].
+.INDENT 0.0
+.IP \(bu 2
+\fB[Name]\fP \- An optional friendly name for the instance group.
+.IP \(bu 2
+\fBInstanceGroupType\fP \- \fBMASTER\fP , \fBCORE\fP , or \fBTASK\fP .
+.IP \(bu 2
+\fBInstanceType\fP \- The type of EC2 instance, for example \fBm4.large\fP , to use for all nodes in the instance group.
+.IP \(bu 2
+\fBInstanceCount\fP \- The number of EC2 instances to provision in the instance group.
+.IP \(bu 2
+\fB[BidPrice]\fP \- If specified, indicates that the instance group uses Spot Instances. This is the maximum price you are willing to pay for Spot Instances. Specify OnDemandPrice to set the amount equal to the On\-Demand price, or specify an amount in USD.
+.IP \(bu 2
+\fB[EbsConfiguration]\fP \- Specifies additional Amazon EBS storage volumes attached to EC2 instances using an inline JSON structure.
+.IP \(bu 2
+\fB[AutoScalingPolicy]\fP \- Specifies an automatic scaling policy for the instance group using an inline JSON structure.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Friendly name given to the instance group.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceGroupType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the instance group in the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+BidPrice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Bid price for each Amazon EC2 instance in the instance group when launching nodes as Spot Instances, expressed in USD.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon EC2 instance type for all instances in the instance group.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Target number of Amazon EC2 instances for the instance group
+.UNINDENT
+.UNINDENT
+.sp
+EbsConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+EBS configuration that will be associated with the instance group.
+.sp
+EbsOptimized \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean flag used to tag EBS\-optimized instances.
+.UNINDENT
+.UNINDENT
+.sp
+EbsBlockDeviceConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+VolumeSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume specification that will be created and attached to every instance in this instance group.
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume type that is attached to all the instances in the instance group. Valid types are: gp2, io1, and standard.
+.UNINDENT
+.UNINDENT
+.sp
+SizeInGB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume size, in GB, that is attached to all the instances in the instance group.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The IOPS of the EBS volume that is attached to all the instances in the instance group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumesPerInstance \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of EBS volumes that will be created and attached to each instance in the instance group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Auto Scaling policy that will be associated with the instance group.
+.sp
+Constraints \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Constraints that will be associated to an Auto Scaling policy.
+.sp
+MinCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum value for the instances to scale in to in response to scaling activities.
+.UNINDENT
+.UNINDENT
+.sp
+MaxCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum value for the instances to scale out to in response to scaling activities
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Rules associated to an Auto Scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Auto Scaling rule.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Description of the Auto Scaling rule.
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Action associated to an Auto Scaling rule.
+.sp
+Market \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Market type of the Amazon EC2 instances used to create a cluster node by Auto Scaling action.
+.UNINDENT
+.UNINDENT
+.sp
+SimpleScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Simple scaling configuration that will be associatedto Auto Scaling action.
+.sp
+AdjustmentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how the ScalingAdjustment parameter is interpreted.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingAdjustment \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount by which to scale, based on the specified adjustment type.
+.UNINDENT
+.UNINDENT
+.sp
+CoolDown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Trigger \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Trigger associated to an Auto Scaling rule.
+.sp
+CloudWatchAlarmDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Alarm to be registered with CloudWatch, to trigger scaling activities.
+.sp
+ComparisonOperator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The arithmetic operation to use when comparing the specified Statistic and Threshold.
+.UNINDENT
+.UNINDENT
+.sp
+EvaluationPeriods \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of periods over which data is compared to the specified threshold.
+.UNINDENT
+.UNINDENT
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the alarm\(aqs associated metric.
+.UNINDENT
+.UNINDENT
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace for the alarm\(aqs associated metric.
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The period in seconds over which the specified statistic is applied.
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic to apply to the alarm\(aqs associated metric.
+.UNINDENT
+.UNINDENT
+.sp
+Threshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value against which the specified statistic is compared.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic\(aqs unit of measure.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions for the alarm\(aqs associated metric.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Dimension Key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Dimension Value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Instance group application configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration classification name
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration properties
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration key
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration value
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Instance group application configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration classification name
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration properties
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration key
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration value
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "InstanceGroupType": "MASTER"|"CORE"|"TASK",
+    "BidPrice": "string",
+    "InstanceType": "string",
+    "InstanceCount": integer,
+    "EbsConfiguration": {
+      "EbsOptimized": true|false,
+      "EbsBlockDeviceConfigs": [
+        {
+          "VolumeSpecification": {
+            "VolumeType": "string",
+            "SizeInGB": integer,
+            "Iops": integer
+          },
+          "VolumesPerInstance": integer
+        }
+        ...
+      ]
+    },
+    "AutoScalingPolicy": {
+      "Constraints": {
+        "MinCapacity": integer,
+        "MaxCapacity": integer
+      },
+      "Rules": [
+        {
+          "Name": "string",
+          "Description": "string",
+          "Action": {
+            "Market": "ON_DEMAND"|"SPOT",
+            "SimpleScalingPolicyConfiguration": {
+              "AdjustmentType": "CHANGE_IN_CAPACITY"|"PERCENT_CHANGE_IN_CAPACITY"|"EXACT_CAPACITY",
+              "ScalingAdjustment": integer,
+              "CoolDown": integer
+            }
+          },
+          "Trigger": {
+            "CloudWatchAlarmDefinition": {
+              "ComparisonOperator": "string",
+              "EvaluationPeriods": integer,
+              "MetricName": "string",
+              "Namespace": "string",
+              "Period": integer,
+              "Statistic": "string",
+              "Threshold": double,
+              "Unit": "string",
+              "Dimensions": [
+                {
+                  "Key": "string",
+                  "Value": "string"
+                }
+                ...
+              ]
+            }
+          }
+        }
+        ...
+      ]
+    },
+    "Configurations": [
+      {
+        "Classification": "string",
+        "Properties": {"string": "string"
+          ...},
+        "Configurations": [
+          {
+            "Classification": "string",
+            "Properties": {"string": "string"
+              ...}
+          }
+          ...
+        ]
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.\" Generated by docutils manpage writer.
+.

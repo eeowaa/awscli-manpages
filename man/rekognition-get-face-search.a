@@ -1,0 +1,863 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "REKOGNITION-GET-FACE-SEARCH" "a" "" ""
+.SH NAME
+rekognition-get-face-search \- Gets the face search results for Amazon Rekognition Video face search started by  StartFaceSearch 
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets the face search results for Amazon Rekognition Video face search started by  StartFaceSearch . The search returns faces in a collection that match the faces of persons detected in a video. It also includes the time(s) that faces are matched in the video.
+.sp
+Face search in a video is an asynchronous operation. You start face search by calling to  StartFaceSearch which returns a job identifier (\fBJobId\fP ). When the search operation finishes, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic registered in the initial call to \fBStartFaceSearch\fP . To get the search results, first check that the status value published to the Amazon SNS topic is \fBSUCCEEDED\fP . If so, call \fBGetFaceSearch\fP and pass the job identifier (\fBJobId\fP ) from the initial call to \fBStartFaceSearch\fP .
+.sp
+For more information, see Searching Faces in a Collection in the Amazon Rekognition Developer Guide.
+.sp
+The search results are retured in an array, \fBPersons\fP , of  PersonMatch objects. Each\(ga\(gaPersonMatch\(ga\(ga element contains details about the matching faces in the input collection, person information (facial attributes, bounding boxes, and person identifer) for the matched person, and the time the person was matched in the video.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBGetFaceSearch\fP only returns the default facial attributes (\fBBoundingBox\fP , \fBConfidence\fP , \fBLandmarks\fP , \fBPose\fP , and \fBQuality\fP ). The other facial attributes listed in the \fBFace\fP object of the following response syntax are not returned. For more information, see FaceDetail in the Amazon Rekognition Developer Guide.
+.UNINDENT
+.UNINDENT
+.sp
+By default, the \fBPersons\fP array is sorted by the time, in milliseconds from the start of the video, persons are matched. You can also sort by persons by specifying \fBINDEX\fP for the \fBSORTBY\fP input parameter.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-face\-search
+\-\-job\-id <value>
+[\-\-max\-results <value>]
+[\-\-next\-token <value>]
+[\-\-sort\-by <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-job\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The job identifer for the search request. You get the job identifier from an initial call to \fBStartFaceSearch\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-results\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Maximum number of results to return per paginated call. The largest value you can specify is 1000. If you specify a value greater than 1000, a maximum of 1000 results is returned. The default value is 1000.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If the previous response was incomplete (because there is more search results to retrieve), Amazon Rekognition Video returns a pagination token in the response. You can use this pagination token to retrieve the next set of search results.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sort\-by\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sort to use for grouping faces in the response. Use \fBTIMESTAMP\fP to group faces by the time that they are recognized. Use \fBINDEX\fP to sort by recognized faces.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBINDEX\fP
+.IP \(bu 2
+\fBTIMESTAMP\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the results of a face search operation\fP
+.sp
+The following \fBget\-face\-search\fP command displays the results of a face search operation that you started previously by calling \fBstart\-face\-search\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rekognition get\-face\-search  \e
+    \-\-job\-id 1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Persons": [
+        {
+            "Timestamp": 467,
+            "FaceMatches": [],
+            "Person": {
+                "Index": 0,
+                "Face": {
+                    "BoundingBox": {
+                        "Width": 0.1560753583908081,
+                        "Top": 0.13555361330509186,
+                        "Left": \-0.0952017530798912,
+                        "Height": 0.6934483051300049
+                    },
+                    "Landmarks": [
+                        {
+                            "Y": 0.4013825058937073,
+                            "X": \-0.041750285774469376,
+                            "Type": "eyeLeft"
+                        },
+                        {
+                            "Y": 0.41695496439933777,
+                            "X": 0.027979329228401184,
+                            "Type": "eyeRight"
+                        },
+                        {
+                            "Y": 0.6375303268432617,
+                            "X": \-0.04034662991762161,
+                            "Type": "mouthLeft"
+                        },
+                        {
+                            "Y": 0.6497718691825867,
+                            "X": 0.013960429467260838,
+                            "Type": "mouthRight"
+                        },
+                        {
+                            "Y": 0.5238034129142761,
+                            "X": 0.008022055961191654,
+                            "Type": "nose"
+                        }
+                    ],
+                    "Pose": {
+                        "Yaw": \-58.07863998413086,
+                        "Roll": 1.9384294748306274,
+                        "Pitch": \-24.66305160522461
+                    },
+                    "Quality": {
+                        "Sharpness": 83.14741516113281,
+                        "Brightness": 25.75942611694336
+                    },
+                    "Confidence": 87.7622299194336
+                }
+            }
+        },
+        {
+            "Timestamp": 967,
+            "FaceMatches": [
+                {
+                    "Face": {
+                        "BoundingBox": {
+                            "Width": 0.12368900328874588,
+                            "Top": 0.16007399559020996,
+                            "Left": 0.5901259779930115,
+                            "Height": 0.2514039874076843
+                        },
+                        "FaceId": "056a95fa\-2060\-4159\-9cab\-7ed4daa030fa",
+                        "ExternalImageId": "image3.jpg",
+                        "Confidence": 100.0,
+                        "ImageId": "08f8a078\-8929\-37fd\-8e8f\-aadf690e8232"
+                    },
+                    "Similarity": 98.44476318359375
+                }
+            ],
+            "Person": {
+                "Index": 1,
+                "Face": {
+                    "BoundingBox": {
+                        "Width": 0.28559377789497375,
+                        "Top": 0.19436298310756683,
+                        "Left": 0.024553587660193443,
+                        "Height": 0.7216082215309143
+                    },
+                    "Landmarks": [
+                        {
+                            "Y": 0.4650231599807739,
+                            "X": 0.16269078850746155,
+                            "Type": "eyeLeft"
+                        },
+                        {
+                            "Y": 0.4843238294124603,
+                            "X": 0.2782580852508545,
+                            "Type": "eyeRight"
+                        },
+                        {
+                            "Y": 0.71530681848526,
+                            "X": 0.1741468608379364,
+                            "Type": "mouthLeft"
+                        },
+                        {
+                            "Y": 0.7310671210289001,
+                            "X": 0.26857468485832214,
+                            "Type": "mouthRight"
+                        },
+                        {
+                            "Y": 0.582602322101593,
+                            "X": 0.2566150426864624,
+                            "Type": "nose"
+                        }
+                    ],
+                    "Pose": {
+                        "Yaw": 11.487052917480469,
+                        "Roll": 5.074230670928955,
+                        "Pitch": 15.396159172058105
+                    },
+                    "Quality": {
+                        "Sharpness": 73.32209777832031,
+                        "Brightness": 54.96497344970703
+                    },
+                    "Confidence": 99.99998474121094
+                }
+            }
+        }
+    ],
+    "NextToken": "5bkgcezyuaqhtWk3C8OTW6cjRghrwV9XDMivm5B3MXm+Lv6G+L+GejyFHPhoNa/ldXIC4c/d",
+    "JobStatus": "SUCCEEDED",
+    "VideoMetadata": {
+        "Format": "QuickTime / MOV",
+        "FrameRate": 29.970617294311523,
+        "Codec": "h264",
+        "DurationMillis": 6806,
+        "FrameHeight": 1080,
+        "FrameWidth": 1920
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Searching Stored Videos for Faces\fP in the \fIAmazon Rekognition Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+JobStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the face search job.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the job fails, \fBStatusMessage\fP provides a descriptive error message.
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the response is truncated, Amazon Rekognition Video returns this token that you can use in the subsequent request to retrieve the next set of search results.
+.UNINDENT
+.UNINDENT
+.sp
+VideoMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a video that Amazon Rekognition analyzed. \fBVideometadata\fP is returned in every page of paginated responses from a Amazon Rekognition Video operation.
+.sp
+Codec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of compression used in the analyzed video.
+.UNINDENT
+.UNINDENT
+.sp
+DurationMillis \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Length of the video in milliseconds.
+.UNINDENT
+.UNINDENT
+.sp
+Format \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Format of the analyzed video. Possible values are MP4, MOV and AVI.
+.UNINDENT
+.UNINDENT
+.sp
+FrameRate \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Number of frames per second in the video.
+.UNINDENT
+.UNINDENT
+.sp
+FrameHeight \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Vertical pixel dimension of the video.
+.UNINDENT
+.UNINDENT
+.sp
+FrameWidth \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Horizontal pixel dimension of the video.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Persons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of persons,  PersonMatch , in the video whose face(s) match the face(s) in an Amazon Rekognition collection. It also includes time information for when persons are matched in the video. You specify the input collection in an initial call to \fBStartFaceSearch\fP . Each \fBPersons\fP element includes a time the person was matched, face match details (\fBFaceMatches\fP ) for matching faces in the collection, and person information (\fBPerson\fP ) for the matched person.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a person whose face matches a face(s) in an Amazon Rekognition collection. Includes information about the faces in the Amazon Rekognition collection ( FaceMatch ), information about the person ( PersonDetail ), and the time stamp for when the person was detected in a video. An array of \fBPersonMatch\fP objects is returned by  GetFaceSearch .
+.sp
+Timestamp \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The time, in milliseconds from the beginning of the video, that the person was matched in the video.
+.UNINDENT
+.UNINDENT
+.sp
+Person \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the matched person.
+.sp
+Index \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Identifier for the person detected person within a video. Use to keep track of the person throughout the video. The identifier is not stored by Amazon Rekognition.
+.UNINDENT
+.UNINDENT
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Bounding box around the detected person.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Width of the bounding box as a ratio of the overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Height of the bounding box as a ratio of the overall image height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Left coordinate of the bounding box as a ratio of overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Top coordinate of the bounding box as a ratio of overall image height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Face \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Face details for the detected person.
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Bounding box of the face. Default attribute.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Width of the bounding box as a ratio of the overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Height of the bounding box as a ratio of the overall image height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Left coordinate of the bounding box as a ratio of overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Top coordinate of the bounding box as a ratio of overall image height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AgeRange \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The estimated age range, in years, for the face. Low represents the lowest estimated age and High represents the highest estimated age.
+.sp
+Low \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The lowest estimated age.
+.UNINDENT
+.UNINDENT
+.sp
+High \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The highest estimated age.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Smile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the face is smiling, and the confidence level in the determination.
+.sp
+Value \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that indicates whether the face is smiling or not.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Eyeglasses \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the face is wearing eye glasses, and the confidence level in the determination.
+.sp
+Value \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that indicates whether the face is wearing eye glasses or not.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Sunglasses \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the face is wearing sunglasses, and the confidence level in the determination.
+.sp
+Value \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that indicates whether the face is wearing sunglasses or not.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Gender \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The predicted gender of a detected face.
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The predicted gender of the face.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the prediction.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Beard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the face has a beard, and the confidence level in the determination.
+.sp
+Value \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that indicates whether the face has beard or not.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Mustache \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the face has a mustache, and the confidence level in the determination.
+.sp
+Value \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that indicates whether the face has mustache or not.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EyesOpen \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the eyes on the face are open, and the confidence level in the determination.
+.sp
+Value \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that indicates whether the eyes on the face are open.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MouthOpen \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the mouth on the face is open, and the confidence level in the determination.
+.sp
+Value \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that indicates whether the mouth on the face is open or not.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Emotions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The emotions that appear to be expressed on the face, and the confidence level in the determination. The API is only making a determination of the physical appearance of a person\(aqs face. It is not a determination of the person’s internal emotional state and should not be used in such a way. For example, a person pretending to have a sad face might not be sad emotionally.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The emotions that appear to be expressed on the face, and the confidence level in the determination. The API is only making a determination of the physical appearance of a person\(aqs face. It is not a determination of the person’s internal emotional state and should not be used in such a way. For example, a person pretending to have a sad face might not be sad emotionally.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of emotion detected.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence in the determination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Landmarks \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the location of landmarks on the face. Default attribute.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the location of the landmark on the face.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of landmark.
+.UNINDENT
+.UNINDENT
+.sp
+X \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The x\-coordinate of the landmark expressed as a ratio of the width of the image. The x\-coordinate is measured from the left\-side of the image. For example, if the image is 700 pixels wide and the x\-coordinate of the landmark is at 350 pixels, this value is 0.5.
+.UNINDENT
+.UNINDENT
+.sp
+Y \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The y\-coordinate of the landmark expressed as a ratio of the height of the image. The y\-coordinate is measured from the top of the image. For example, if the image height is 200 pixels and the y\-coordinate of the landmark is at 50 pixels, this value is 0.25.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Pose \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the pose of the face as determined by its pitch, roll, and yaw. Default attribute.
+.sp
+Roll \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the roll axis.
+.UNINDENT
+.UNINDENT
+.sp
+Yaw \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the yaw axis.
+.UNINDENT
+.UNINDENT
+.sp
+Pitch \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the pitch axis.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Quality \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies image brightness and sharpness. Default attribute.
+.sp
+Brightness \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing brightness of the face. The service returns a value between 0 and 100 (inclusive). A higher value indicates a brighter face image.
+.UNINDENT
+.UNINDENT
+.sp
+Sharpness \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing sharpness of the face. The service returns a value between 0 and 100 (inclusive). A higher value indicates a sharper face image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Confidence level that the bounding box contains a face (and not a different object such as a tree). Default attribute.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FaceMatches \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the faces in the input collection that match the face of a person in the video.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides face metadata. In addition, it also provides the confidence in the match of this face with the input face.
+.sp
+Similarity \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Confidence in the match of this face with the input face.
+.UNINDENT
+.UNINDENT
+.sp
+Face \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the face properties such as the bounding box, face ID, image ID of the source image, and external image ID that you assigned.
+.sp
+FaceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier that Amazon Rekognition assigns to the face.
+.UNINDENT
+.UNINDENT
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Bounding box of the face.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Width of the bounding box as a ratio of the overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Height of the bounding box as a ratio of the overall image height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Left coordinate of the bounding box as a ratio of overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Top coordinate of the bounding box as a ratio of overall image height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier that Amazon Rekognition assigns to the input image.
+.UNINDENT
+.UNINDENT
+.sp
+ExternalImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifier that you assign to all the faces in the input image.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Confidence level that the bounding box contains a face (and not a different object such as a tree).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

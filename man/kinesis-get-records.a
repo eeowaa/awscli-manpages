@@ -1,0 +1,236 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESIS-GET-RECORDS" "a" "" ""
+.SH NAME
+kinesis-get-records \- Gets data records from a Kinesis data stream(aqs shard
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets data records from a Kinesis data stream\(aqs shard.
+.sp
+Specify a shard iterator using the \fBShardIterator\fP parameter. The shard iterator specifies the position in the shard from which you want to start reading data records sequentially. If there are no records available in the portion of the shard that the iterator points to,  GetRecords returns an empty list. It might take multiple calls to get to a portion of the shard that contains records.
+.sp
+You can scale by provisioning multiple shards per stream while considering service limits (for more information, see \fI\%Amazon Kinesis Data Streams Limits\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP ). Your application should have one thread per shard, each reading continuously from its stream. To read from a stream continually, call  GetRecords in a loop. Use  GetShardIterator to get the shard iterator to specify in the first  GetRecords call.  GetRecords returns a new shard iterator in \fBNextShardIterator\fP . Specify the shard iterator returned in \fBNextShardIterator\fP in subsequent calls to  GetRecords . If the shard has been closed, the shard iterator can\(aqt return more data and  GetRecords returns \fBnull\fP in \fBNextShardIterator\fP . You can terminate the loop when the shard is closed, or when the shard iterator reaches the record with the sequence number or other attribute that marks it as the last record to process.
+.sp
+Each data record can be up to 1 MiB in size, and each shard can read up to 2 MiB per second. You can ensure that your calls don\(aqt exceed the maximum supported size or throughput by using the \fBLimit\fP parameter to specify the maximum number of records that  GetRecords can return. Consider your average record size when determining this limit. The maximum number of records that can be returned per call is 10,000.
+.sp
+The size of the data returned by  GetRecords varies depending on the utilization of the shard. The maximum size of data that  GetRecords can return is 10 MiB. If a call returns this amount of data, subsequent calls made within the next 5 seconds throw \fBProvisionedThroughputExceededException\fP . If there is insufficient provisioned throughput on the stream, subsequent calls made within the next 1 second throw \fBProvisionedThroughputExceededException\fP .  GetRecords doesn\(aqt return any data when it throws an exception. For this reason, we recommend that you wait 1 second between calls to  GetRecords . However, it\(aqs possible that the application will get exceptions for longer than 1 second.
+.sp
+To detect whether the application is falling behind in processing, you can use the \fBMillisBehindLatest\fP response attribute. You can also monitor the stream using CloudWatch metrics and other mechanisms (see \fI\%Monitoring\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP ).
+.sp
+Each Amazon Kinesis record includes a value, \fBApproximateArrivalTimestamp\fP , that is set when a stream successfully receives and stores a record. This is commonly referred to as a server\-side time stamp, whereas a client\-side time stamp is set when a data producer creates or sends the record to a stream (a data producer is any data source putting data records into a stream, for example with  PutRecords ). The time stamp has millisecond precision. There are no guarantees about the time stamp accuracy, or that the time stamp is always increasing. For example, records in a shard or across a stream might have time stamps that are out of order.
+.sp
+This operation has a limit of five transactions per second per shard.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-records
+\-\-shard\-iterator <value>
+[\-\-limit <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-shard\-iterator\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The position in the shard from which you want to start sequentially reading data records. A shard iterator specifies this position using the sequence number of a data record in the shard.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-limit\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of records to return. Specify a value of up to 10,000. If you specify a value that is greater than 10,000,  GetRecords throws \fBInvalidArgumentException\fP . The default value is 10,000.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo obtain records from a shard\fP
+.sp
+The following \fBget\-records\fP example gets data records from a Kinesis data stream\(aqs shard using the specified shard iterator.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kinesis get\-records \e
+    \-\-shard\-iterator AAAAAAAAAAF7/0mWD7IuHj1yGv/TKuNgx2ukD5xipCY4cy4gU96orWwZwcSXh3K9tAmGYeOZyLZrvzzeOFVf9iN99hUPw/w/b0YWYeehfNvnf1DYt5XpDJghLKr3DzgznkTmMymDP3R+3wRKeuEw6/kdxY2yKJH0veaiekaVc4N2VwK/GvaGP2Hh9Fg7N++q0Adg6fIDQPt4p8RpavDbk+A4sL9SWGE1
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Records": [],
+    "MillisBehindLatest": 80742000
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Developing Consumers Using the Kinesis Data Streams API with the AWS SDK for Java\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Records \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The data records retrieved from the shard.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The unit of data of the Kinesis data stream, which is composed of a sequence number, a partition key, and a data blob.
+.sp
+SequenceNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the record within its shard.
+.UNINDENT
+.UNINDENT
+.sp
+ApproximateArrivalTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The approximate time that the record was inserted into the stream.
+.UNINDENT
+.UNINDENT
+.sp
+Data \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The data blob. The data in the blob is both opaque and immutable to Kinesis Data Streams, which does not inspect, interpret, or change the data in the blob in any way. When the data blob (the payload before base64\-encoding) is added to the partition key size, the total size must not exceed the maximum record size (1 MiB).
+.UNINDENT
+.UNINDENT
+.sp
+PartitionKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies which shard in the stream the data record is assigned to.
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The encryption type used on the record. This parameter can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP : Do not encrypt the records in the stream.
+.IP \(bu 2
+\fBKMS\fP : Use server\-side encryption on the records in the stream using a customer\-managed AWS KMS key.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextShardIterator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next position in the shard from which to start sequentially reading data records. If set to \fBnull\fP , the shard has been closed and the requested iterator does not return any more data.
+.UNINDENT
+.UNINDENT
+.sp
+MillisBehindLatest \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of milliseconds the  GetRecords response is from the tip of the stream, indicating how far behind current time the consumer is. A value of zero indicates that record processing is caught up, and there are no new records to process at this moment.
+.UNINDENT
+.UNINDENT
+.sp
+ChildShards \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+ShardId \-> (string)
+.sp
+ParentShards \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+HashKeyRange \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The range of possible hash key values for the shard, which is a set of ordered contiguous positive integers.
+.sp
+StartingHashKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The starting hash key of the hash key range.
+.UNINDENT
+.UNINDENT
+.sp
+EndingHashKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ending hash key of the hash key range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

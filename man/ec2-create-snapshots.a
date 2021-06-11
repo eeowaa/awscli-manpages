@@ -1,0 +1,521 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-CREATE-SNAPSHOTS" "a" "" ""
+.SH NAME
+ec2-create-snapshots \- Creates crash-consistent snapshots of multiple EBS volumes and stores the data in S3
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates crash\-consistent snapshots of multiple EBS volumes and stores the data in S3. Volumes are chosen by specifying an instance. Any attached volumes will produce one snapshot each that is crash\-consistent across the instance. Boot volumes can be excluded by changing the parameters.
+.sp
+You can create multi\-volume snapshots of instances in a Region and instances on an Outpost. If you create snapshots from an instance in a Region, the snapshots must be stored in the same Region as the instance. If you create snapshots from an instance on an Outpost, the snapshots can be stored on the same Outpost as the instance, or in the Region for that Outpost.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-snapshots
+[\-\-description <value>]
+\-\-instance\-specification <value>
+[\-\-outpost\-arn <value>]
+[\-\-tag\-specifications <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-copy\-tags\-from\-source <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description propagated to every snapshot specified by the instance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-specification\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The instance to specify which volumes should be included in the snapshots.
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance to specify which volumes should be snapshotted.
+.UNINDENT
+.UNINDENT
+.sp
+ExcludeBootVolume \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Excludes the root volume from being snapshotted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+InstanceId=string,ExcludeBootVolume=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceId": "string",
+  "ExcludeBootVolume": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-outpost\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the AWS Outpost on which to create the local snapshots.
+.INDENT 0.0
+.IP \(bu 2
+To create snapshots from an instance in a Region, omit this parameter. The snapshots are created in the same Region as the instance.
+.IP \(bu 2
+To create snapshots from an instance on an Outpost and store the snapshots in the Region, omit this parameter. The snapshots are created in the Region for the Outpost.
+.IP \(bu 2
+To create snapshots from an instance on an Outpost and store the snapshots on an Outpost, specify the ARN of the destination Outpost. The snapshots must be created on the same Outpost as the instance.
+.UNINDENT
+.sp
+For more information, see \fI\%Creating multi\-volume local snapshots from instances on an Outpost\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Tags to apply to every snapshot specified by the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to a resource when the resource is being created.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to tag. Currently, the resource types that support tagging on creation are: \fBcapacity\-reservation\fP | \fBcarrier\-gateway\fP | \fBclient\-vpn\-endpoint\fP | \fBcustomer\-gateway\fP | \fBdedicated\-host\fP | \fBdhcp\-options\fP | \fBegress\-only\-internet\-gateway\fP | \fBelastic\-ip\fP | \fBelastic\-gpu\fP | \fBexport\-image\-task\fP | \fBexport\-instance\-task\fP | \fBfleet\fP | \fBfpga\-image\fP | \fBhost\-reservation\fP | \fBimage\fP | \fBimport\-image\-task\fP | \fBimport\-snapshot\-task\fP | \fBinstance\fP | \fBinternet\-gateway\fP | \fBipv4pool\-ec2\fP | \fBipv6pool\-ec2\fP | \fBkey\-pair\fP | \fBlaunch\-template\fP | \fBlocal\-gateway\-route\-table\-vpc\-association\fP | \fBplacement\-group\fP | \fBprefix\-list\fP | \fBnatgateway\fP | \fBnetwork\-acl\fP | \fBnetwork\-interface\fP | \fBreserved\-instances\fP 
+.nf
+|
+.fi
+\fBroute\-table\fP | \fBsecurity\-group\fP | \fBsnapshot\fP | \fBspot\-fleet\-request\fP | \fBspot\-instances\-request\fP | \fBsnapshot\fP | \fBsubnet\fP | \fBtraffic\-mirror\-filter\fP | \fBtraffic\-mirror\-session\fP | \fBtraffic\-mirror\-target\fP | \fBtransit\-gateway\fP | \fBtransit\-gateway\-attachment\fP | \fBtransit\-gateway\-multicast\-domain\fP | \fBtransit\-gateway\-route\-table\fP | \fBvolume\fP 
+.nf
+|
+.fi
+\fBvpc\fP | \fBvpc\-peering\-connection\fP | \fBvpc\-endpoint\fP (for interface and gateway endpoints) | \fBvpc\-endpoint\-service\fP (for AWS PrivateLink) | \fBvpc\-flow\-log\fP | \fBvpn\-connection\fP | \fBvpn\-gateway\fP .
+.IP "System Message: WARNING/2 (<string>:, line 144)"
+Inline substitution_reference start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 144)"
+Inline substitution_reference start\-string without end\-string.
+.sp
+To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResourceType=string,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ResourceType": "client\-vpn\-endpoint"|"customer\-gateway"|"dedicated\-host"|"dhcp\-options"|"egress\-only\-internet\-gateway"|"elastic\-ip"|"elastic\-gpu"|"export\-image\-task"|"export\-instance\-task"|"fleet"|"fpga\-image"|"host\-reservation"|"image"|"import\-image\-task"|"import\-snapshot\-task"|"instance"|"internet\-gateway"|"key\-pair"|"launch\-template"|"local\-gateway\-route\-table\-vpc\-association"|"natgateway"|"network\-acl"|"network\-interface"|"network\-insights\-analysis"|"network\-insights\-path"|"placement\-group"|"reserved\-instances"|"route\-table"|"security\-group"|"snapshot"|"spot\-fleet\-request"|"spot\-instances\-request"|"subnet"|"traffic\-mirror\-filter"|"traffic\-mirror\-session"|"traffic\-mirror\-target"|"transit\-gateway"|"transit\-gateway\-attachment"|"transit\-gateway\-connect\-peer"|"transit\-gateway\-multicast\-domain"|"transit\-gateway\-route\-table"|"volume"|"vpc"|"vpc\-peering\-connection"|"vpn\-connection"|"vpn\-gateway"|"vpc\-flow\-log",
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-tags\-from\-source\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Copies the tags from the specified volume to corresponding snapshot.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBvolume\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a multi\-volume snapshot\fP
+.sp
+The following \fBcreate\-snapshots\fP example creates snapshots of all volumes attached to the specified instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-snapshots \e
+    \-\-instance\-specification InstanceId=i\-1234567890abcdef0 \e
+    \-\-description "This is snapshot of a volume from my\-instance"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Snapshots": [
+        {
+            "Description": "This is a snapshot of a volume from my\-instance",
+            "Tags": [],
+            "Encrypted": false,
+            "VolumeId": "vol\-0a01d2d5a34697479",
+            "State": "pending",
+            "VolumeSize": 16,
+            "StartTime": "2019\-08\-05T16:58:19.000Z",
+            "Progress": "",
+            "OwnerId": "123456789012",
+            "SnapshotId": "snap\-07f30e3909aa0045e"
+        },
+        {
+            "Description": "This is a snapshot of a volume from my\-instance",
+            "Tags": [],
+            "Encrypted": false,
+            "VolumeId": "vol\-02d0d4947008cb1a2",
+            "State": "pending",
+            "VolumeSize": 20,
+            "StartTime": "2019\-08\-05T16:58:19.000Z",
+            "Progress": "",
+            "OwnerId": "123456789012",
+            "SnapshotId": "snap\-0ec20b602264aad48"
+        },
+        ...
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To create a multi\-volume snapshot with tags from the source volume\fP
+.sp
+The following \fBcreate\-snapshots\fP example creates snapshots of all volumes attached to the specified instance and copies the tags from each volume to its corresponding snapshot.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-snapshots \e
+    \-\-instance\-specification InstanceId=i\-1234567890abcdef0 \e
+    \-\-copy\-tags\-from\-source volume \e
+    \-\-description "This is snapshot of a volume from my\-instance"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Snapshots": [
+        {
+            "Description": "This is a snapshot of a volume from my\-instance",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "my\-volume"
+                }
+            ],
+            "Encrypted": false,
+            "VolumeId": "vol\-02d0d4947008cb1a2",
+            "State": "pending",
+            "VolumeSize": 20,
+            "StartTime": "2019\-08\-05T16:53:04.000Z",
+            "Progress": "",
+            "OwnerId": "123456789012",
+            "SnapshotId": "snap\-053bfaeb821a458dd"
+        }
+        ...
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To create a multi\-volume snapshot not including the root volume\fP
+.sp
+The following \fBcreate\-snapshots\fP example creates a snapshot of all volumes attached to the specified instance except for the root volume.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-snapshots \e
+    \-\-instance\-specification InstanceId=i\-1234567890abcdef0,ExcludeBootVolume=true
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 4: To create a multi\-volume snapshot and add tags\fP
+.sp
+The following \fBcreate\-snapshots\fP example creates snapshots of all volumes attached to the specified instance and adds two tags to each snapshot.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-snapshots \e
+    \-\-instance\-specification InstanceId=i\-1234567890abcdef0
+    \-\-tag\-specifications ResourceType=snapshot,Tags=[{Key=Name,Value=backup},{Key=costcenter,Value=123}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Snapshots \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of snapshots.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a snapshot.
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Description specified by the CreateSnapshotRequest that has been applied to all snapshots.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Tags associated with this snapshot.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the snapshot is encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Source volume from which this snapshot was created.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Current state of the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Size of the volume from which this snapshot was created.
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time this snapshot was started. This is the same for all snapshots initiated by the same request.
+.UNINDENT
+.UNINDENT
+.sp
+Progress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Progress this snapshot has made towards completing.
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Account id used when creating this snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Snapshot id that can be used to describe this snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the AWS Outpost on which the snapshot is stored. For more information, see \fI\%EBS Local Snapshot on Outposts\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

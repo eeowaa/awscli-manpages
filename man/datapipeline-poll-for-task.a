@@ -1,0 +1,224 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DATAPIPELINE-POLL-FOR-TASK" "a" "" ""
+.SH NAME
+datapipeline-poll-for-task \- Task runners call PollForTask to receive a task to perform from AWS Data Pipeline
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Task runners call \fBPollForTask\fP to receive a task to perform from AWS Data Pipeline. The task runner specifies which tasks it can perform by setting a value for the \fBworkerGroup\fP parameter. The task returned can come from any of the pipelines that match the \fBworkerGroup\fP value passed in by the task runner and that was launched using the IAM user credentials specified by the task runner.
+.sp
+If tasks are ready in the work queue, \fBPollForTask\fP returns a response immediately. If no tasks are available in the queue, \fBPollForTask\fP uses long\-polling and holds on to a poll connection for up to a 90 seconds, during which time the first newly scheduled task is handed to the task runner. To accomodate this, set the socket timeout in your task runner to 90 seconds. The task runner should not call \fBPollForTask\fP again on the same \fBworkerGroup\fP until it receives a response, and this can take up to 90 seconds.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  poll\-for\-task
+\-\-worker\-group <value>
+[\-\-hostname <value>]
+[\-\-instance\-identity <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-worker\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of task the task runner is configured to accept and process. The worker group is set as a field on objects in the pipeline when they are created. You can only specify a single value for \fBworkerGroup\fP in the call to \fBPollForTask\fP . There are no wildcard values permitted in \fBworkerGroup\fP ; the string must be an exact, case\-sensitive, match.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-hostname\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The public DNS name of the calling task runner.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-identity\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identity information for the EC2 instance that is hosting the task runner. You can get this value from the instance using \fBhttp://169.254.169.254/latest/meta\-data/instance\-id\fP . For more information, see \fI\%Instance Metadata\fP in the \fIAmazon Elastic Compute Cloud User Guide.\fP Passing in this value proves that your task runner is running on an EC2 instance, and ensures the proper AWS Data Pipeline service charges are applied to your pipeline.
+.sp
+document \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of an EC2 instance that is generated when the instance is launched and exposed to the instance via the instance metadata service in the form of a JSON representation of an object.
+.UNINDENT
+.UNINDENT
+.sp
+signature \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A signature which can be used to verify the accuracy and authenticity of the information provided in the instance identity document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+document=string,signature=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "document": "string",
+  "signature": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+taskObject \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The information needed to complete the task that is being assigned to the task runner. One of the fields returned in this object is \fBtaskId\fP , which contains an identifier for the task being assigned. The calling task runner uses \fBtaskId\fP in subsequent calls to  ReportTaskProgress and  SetTaskStatus .
+.sp
+taskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An internal identifier for the task. This ID is passed to the  SetTaskStatus and  ReportTaskProgress actions.
+.UNINDENT
+.UNINDENT
+.sp
+pipelineId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the pipeline that provided the task.
+.UNINDENT
+.UNINDENT
+.sp
+attemptId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the pipeline task attempt object. AWS Data Pipeline uses this value to track how many times a task is attempted.
+.UNINDENT
+.UNINDENT
+.sp
+objects \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Connection information for the location where the task runner will publish the output of the task.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a pipeline object. This can be a logical, physical, or physical attempt pipeline object. The complete set of components of a pipeline defines the pipeline.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the object.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the object.
+.UNINDENT
+.UNINDENT
+.sp
+fields \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Key\-value pairs that define the properties of the object.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair that describes a property of a pipeline object. The value is specified as either a string value (\fBStringValue\fP ) or a reference to another object (\fBRefValue\fP ) but not as both.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The field identifier.
+.UNINDENT
+.UNINDENT
+.sp
+stringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The field value, expressed as a String.
+.UNINDENT
+.UNINDENT
+.sp
+refValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The field value, expressed as the identifier of another object.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

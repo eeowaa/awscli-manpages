@@ -1,0 +1,974 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-REGISTER-TASK-WITH-MAINTENANCE-WINDOW" "a" "" ""
+.SH NAME
+ssm-register-task-with-maintenance-window \- Adds a new task to a maintenance window
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds a new task to a maintenance window.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-task\-with\-maintenance\-window
+\-\-window\-id <value>
+[\-\-targets <value>]
+\-\-task\-arn <value>
+[\-\-service\-role\-arn <value>]
+\-\-task\-type <value>
+[\-\-task\-parameters <value>]
+[\-\-task\-invocation\-parameters <value>]
+[\-\-priority <value>]
+[\-\-max\-concurrency <value>]
+[\-\-max\-errors <value>]
+[\-\-logging\-info <value>]
+[\-\-name <value>]
+[\-\-description <value>]
+[\-\-client\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-window\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the maintenance window the task should be added to.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-targets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The targets (either instances or maintenance window targets).
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+One or more targets must be specified for maintenance window Run Command\-type tasks. Depending on the task, targets are optional for other maintenance window task types (Automation, AWS Lambda, and AWS Step Functions). For more information about running tasks that do not specify targets, see \fI\%Registering maintenance window tasks without targets\fP in the \fIAWS Systems Manager User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Specify instances using the following format:
+.INDENT 0.0
+.INDENT 3.5
+\fBKey=InstanceIds,Values=<instance\-id\-1>,<instance\-id\-2>\fP
+.UNINDENT
+.UNINDENT
+.sp
+Specify maintenance window targets using the following format:
+.INDENT 0.0
+.INDENT 3.5
+\fBKey=WindowTargetIds,Values=<window\-target\-id\-1>,<window\-target\-id\-2>\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An array of search criteria that targets instances using a Key,Value combination that you specify.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+One or more targets must be specified for maintenance window Run Command\-type tasks. Depending on the task, targets are optional for other maintenance window task types (Automation, AWS Lambda, and AWS Step Functions). For more information about running tasks that do not specify targets, see \fI\%Registering maintenance window tasks without targets\fP in the \fIAWS Systems Manager User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Supported formats include the following.
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=InstanceIds,Values=*instance\-id\-1* ,*instance\-id\-2* ,*instance\-id\-3* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 119)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=tag:\fImy\-tag\-key\fP ,Values=*my\-tag\-value\-1* ,*my\-tag\-value\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 121)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=tag\-key,Values=*my\-tag\-key\-1* ,*my\-tag\-key\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 123)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBRun Command and Maintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:Name,Values=*resource\-group\-name* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 125)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBMaintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:ResourceTypeFilters,Values=*resource\-type\-1* ,*resource\-type\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 127)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBAutomation targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=ResourceGroup;Values=*resource\-group\-name* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 129)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+\fBKey=InstanceIds,Values=i\-02573cafcfEXAMPLE,i\-0471e04240EXAMPLE,i\-07782c72faEXAMPLE\fP
+.IP \(bu 2
+\fBKey=tag:CostCenter,Values=CostCenter1,CostCenter2,CostCenter3\fP
+.IP \(bu 2
+\fBKey=tag\-key,Values=Name,Instance\-Type,CostCenter\fP
+.IP \(bu 2
+\fBRun Command and Maintenance window targets only\fP : \fBKey=resource\-groups:Name,Values=ProductionResourceGroup\fP   This example demonstrates how to target all resources in the resource group \fBProductionResourceGroup\fP in your maintenance window.
+.IP \(bu 2
+\fBMaintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:ResourceTypeFilters,Values=*AWS::EC2::INSTANCE* ,*AWS::EC2::VPC* \(ga\(ga   This example demonstrates how to target only EC2 instances and VPCs in your maintenance window.
+.IP "System Message: WARNING/2 (<string>:, line 147)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBAutomation targets only\fP : \fBKey=ResourceGroup,Values=MyResourceGroup\fP
+.IP \(bu 2
+\fBState Manager association targets only\fP : \fBKey=InstanceIds,Values=*\fP   This example demonstrates how to target all managed instances in the AWS Region where the association was created.
+.UNINDENT
+.sp
+For more information about how to send commands that target instances using \fBKey,Value\fP parameters, see \fI\%Targeting multiple instances\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+User\-defined criteria for sending commands that target instances that meet the criteria.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+User\-defined criteria that maps to \fBKey\fP . For example, if you specified \fBtag:ServerRole\fP , you could specify \fBvalue:WebServer\fP to run a command on instances that include EC2 tags of \fBServerRole,WebServer\fP .
+.sp
+Depending on the type of \fBTarget\fP , the maximum number of values for a \fBKey\fP might be lower than the global maximum of 50.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the task to run.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM service role for Systems Manager to assume when running a maintenance window task. If you do not specify a service role ARN, Systems Manager uses your account\(aqs service\-linked role. If no service\-linked role for Systems Manager exists in your account, it is created when you run \fBRegisterTaskWithMaintenanceWindow\fP .
+.sp
+For more information, see the following topics in the in the \fIAWS Systems Manager User Guide\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%Using service\-linked roles for Systems Manager\fP
+.IP \(bu 2
+\fI\%Should I use a service\-linked role or a custom service role to run maintenance window tasks?\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of task being registered.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRUN_COMMAND\fP
+.IP \(bu 2
+\fBAUTOMATION\fP
+.IP \(bu 2
+\fBSTEP_FUNCTIONS\fP
+.IP \(bu 2
+\fBLAMBDA\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-parameters\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+The parameters that should be passed to the task when it is run.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBTaskParameters\fP has been deprecated. To specify parameters to pass to a task when it runs, instead use the \fBParameters\fP option in the \fBTaskInvocationParameters\fP structure. For information about how Systems Manager handles these options for the supported maintenance window task types, see  MaintenanceWindowTaskInvocationParameters .
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines the values for a task parameter.
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+This field contains an array of 0 or more strings, each 1 to 255 characters in length.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=Values=string,string,KeyName2=Values=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "Values": ["string", ...]
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-invocation\-parameters\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters that the task should use during execution. Populate only the fields that match the task type. All other fields should be empty.
+.sp
+RunCommand \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for a RUN_COMMAND task type.
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the commands to run.
+.UNINDENT
+.UNINDENT
+.sp
+CloudWatchOutputConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration options for sending command output to CloudWatch Logs.
+.sp
+CloudWatchLogGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch log group where you want to send command output. If you don\(aqt specify a group name, Systems Manager automatically creates a log group for you. The log group uses the following naming format: aws/ssm/\fISystemsManagerDocumentName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CloudWatchOutputEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables Systems Manager to send command output to CloudWatch Logs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DocumentHash \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA\-256 or SHA\-1 hash created by the system when the document was created. SHA\-1 hashes have been deprecated.
+.UNINDENT
+.UNINDENT
+.sp
+DocumentHashType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+SHA\-256 or SHA\-1. SHA\-1 hashes have been deprecated.
+.UNINDENT
+.UNINDENT
+.sp
+DocumentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSM document version to use in the request. You can specify $DEFAULT, $LATEST, or a specific version number. If you run commands by using the AWS CLI, then you must escape the first two options by using a backslash. If you specify a version number, then you don\(aqt need to use the backslash. For example:
+\(em document\-version "$DEFAULT"
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\-\-document\-version "$LATEST"
+\(em document\-version "3"
+.UNINDENT
+.UNINDENT
+.sp
+NotificationConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configurations for sending notifications about command status changes on a per\-instance basis.
+.sp
+NotificationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Resource Name (ARN) for an Amazon Simple Notification Service (Amazon SNS) topic. Run Command pushes notifications about command status changes to this topic.
+.UNINDENT
+.UNINDENT
+.sp
+NotificationEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The different events for which you can receive notifications. These events include the following: All (events), InProgress, Success, TimedOut, Cancelled, Failed. To learn more about these events, see \fI\%Monitoring Systems Manager status changes using Amazon SNS notifications\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NotificationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Command: Receive notification when the status of a command changes. Invocation: For commands sent to multiple instances, receive notification on a per\-instance basis when the status of a command changes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket subfolder.
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for the RUN_COMMAND task execution.
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ServiceRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM service role to use to publish Amazon Simple Notification Service (Amazon SNS) notifications for maintenance window Run Command tasks.
+.UNINDENT
+.UNINDENT
+.sp
+TimeoutSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If this time is reached and the command has not already started running, it doesn\(aqt run.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Automation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for an AUTOMATION task type.
+.sp
+DocumentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of an Automation document to use during task execution.
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for the AUTOMATION task.
+.sp
+For information about specifying and updating task parameters, see  RegisterTaskWithMaintenanceWindow and  UpdateMaintenanceWindowTask .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fBLoggingInfo\fP has been deprecated. To specify an S3 bucket to contain logs, instead use the \fBOutputS3BucketName\fP and \fBOutputS3KeyPrefix\fP options in the \fBTaskInvocationParameters\fP structure. For information about how Systems Manager handles these options for the supported maintenance window task types, see  MaintenanceWindowTaskInvocationParameters .
+.sp
+\fBTaskParameters\fP has been deprecated. To specify parameters to pass to a task when it runs, instead use the \fBParameters\fP option in the \fBTaskInvocationParameters\fP structure. For information about how Systems Manager handles these options for the supported maintenance window task types, see  MaintenanceWindowTaskInvocationParameters .
+.UNINDENT
+.UNINDENT
+.sp
+For AUTOMATION task types, Systems Manager ignores any values specified for these parameters.
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StepFunctions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for a STEP_FUNCTIONS task type.
+.sp
+Input \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The inputs for the STEP_FUNCTIONS task.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the STEP_FUNCTIONS task.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Lambda \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for a LAMBDA task type.
+.sp
+ClientContext \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Pass client\-specific information to the Lambda function that you are invoking. You can then process the client information in your Lambda function as you choose through the context variable.
+.UNINDENT
+.UNINDENT
+.sp
+Qualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) Specify a Lambda function version or alias name. If you specify a function version, the action uses the qualified function ARN to invoke a specific Lambda function. If you specify an alias name, the action uses the alias ARN to invoke the Lambda function version to which the alias points.
+.UNINDENT
+.UNINDENT
+.sp
+Payload \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+JSON to provide to your Lambda function as input.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RunCommand": {
+    "Comment": "string",
+    "CloudWatchOutputConfig": {
+      "CloudWatchLogGroupName": "string",
+      "CloudWatchOutputEnabled": true|false
+    },
+    "DocumentHash": "string",
+    "DocumentHashType": "Sha256"|"Sha1",
+    "DocumentVersion": "string",
+    "NotificationConfig": {
+      "NotificationArn": "string",
+      "NotificationEvents": ["All"|"InProgress"|"Success"|"TimedOut"|"Cancelled"|"Failed", ...],
+      "NotificationType": "Command"|"Invocation"
+    },
+    "OutputS3BucketName": "string",
+    "OutputS3KeyPrefix": "string",
+    "Parameters": {"string": ["string", ...]
+      ...},
+    "ServiceRoleArn": "string",
+    "TimeoutSeconds": integer
+  },
+  "Automation": {
+    "DocumentVersion": "string",
+    "Parameters": {"string": ["string", ...]
+      ...}
+  },
+  "StepFunctions": {
+    "Input": "string",
+    "Name": "string"
+  },
+  "Lambda": {
+    "ClientContext": "string",
+    "Qualifier": "string",
+    "Payload": blob
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-priority\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The priority of the task in the maintenance window, the lower the number the higher the priority. Tasks in a maintenance window are scheduled in priority order with tasks that have the same priority scheduled in parallel.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-concurrency\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of targets this task can be run for in parallel.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For maintenance window tasks without a target specified, you cannot supply a value for this option. Instead, the system inserts a placeholder value of \fB1\fP . This value does not affect the running of your task.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-errors\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of errors allowed before this task stops being scheduled.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For maintenance window tasks without a target specified, you cannot supply a value for this option. Instead, the system inserts a placeholder value of \fB1\fP . This value does not affect the running of your task.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-logging\-info\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure containing information about an S3 bucket to write instance\-level logs to.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBLoggingInfo\fP has been deprecated. To specify an S3 bucket to contain logs, instead use the \fBOutputS3BucketName\fP and \fBOutputS3KeyPrefix\fP options in the \fBTaskInvocationParameters\fP structure. For information about how Systems Manager handles these options for the supported maintenance window task types, see  MaintenanceWindowTaskInvocationParameters .
+.UNINDENT
+.UNINDENT
+.sp
+S3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an S3 bucket where execution logs are stored .
+.UNINDENT
+.UNINDENT
+.sp
+S3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) The S3 bucket subfolder.
+.UNINDENT
+.UNINDENT
+.sp
+S3Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Region where the S3 bucket is located.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3BucketName=string,S3KeyPrefix=string,S3Region=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3BucketName": "string",
+  "S3KeyPrefix": "string",
+  "S3Region": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional name for the task.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional description for the task.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+User\-provided idempotency token.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To register an Automation task with a maintenance window\fP
+.sp
+The following \fBregister\-task\-with\-maintenance\-window\fP example registers an Automation task with a maintenance window that is targeted at an instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm register\-task\-with\-maintenance\-window \e
+    \-\-cli\-binary\-format raw\-in\-base64\-out \e
+    \-\-window\-id "mw\-082dcd7649EXAMPLE" \e
+    \-\-targets Key=InstanceIds,Values=i\-1234520122EXAMPLE \e
+    \-\-task\-arn AWS\-RestartEC2Instance \e
+    \-\-service\-role\-arn arn:aws:iam::111222333444:role/SSM \-\-task\-type AUTOMATION \e
+    \-\-task\-invocation\-parameters "{\e"Automation\e":{\e"DocumentVersion\e":\e"\e$LATEST\e",\e"Parameters\e":{\e"InstanceId\e":[\e"{{RESOURCE_ID}}\e"]}}}" \e
+    \-\-priority 0 \e
+    \-\-max\-concurrency 1 \e
+    \-\-max\-errors 1 \e
+    \-\-name "AutomationExample" \e
+    \-\-description "Restarting EC2 Instance for maintenance"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WindowTaskId":"11144444\-5555\-6666\-7777\-88888888"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Register a Task with the Maintenance Window (AWS CLI)\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.sp
+\fBExample 2: To register a Lambda task with a Maintenance Window\fP
+.sp
+The following \fBregister\-task\-with\-maintenance\-window\fP example registers a Lambda task with a Maintenance Window that is targeted at an instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm register\-task\-with\-maintenance\-window \e
+    \-\-cli\-binary\-format raw\-in\-base64\-out \e
+    \-\-window\-id "mw\-082dcd7649dee04e4" \e
+    \-\-targets Key=InstanceIds,Values=i\-12344d305eEXAMPLE \e
+    \-\-task\-arn arn:aws:lambda:us\-east\-1:111222333444:function:SSMTestLAMBDA \e
+    \-\-service\-role\-arn arn:aws:iam::111222333444:role/SSM \e
+    \-\-task\-type LAMBDA \e
+    \-\-task\-invocation\-parameters \(aq{"Lambda":{"Payload":"{\e"InstanceId\e":\e"{{RESOURCE_ID}}\e",\e"targetType\e":\e"{{TARGET_TYPE}}\e"}","Qualifier":"$LATEST"}}\(aq \e
+    \-\-priority 0 \e
+    \-\-max\-concurrency 10 \e
+    \-\-max\-errors 5 \e
+    \-\-name "Lambda_Example" \e
+    \-\-description "My Lambda Example"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WindowTaskId":"22244444\-5555\-6666\-7777\-88888888"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Register a Task with the Maintenance Window (AWS CLI)\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.sp
+\fBExample 3: To register a Run Command task with a maintenance window\fP
+.sp
+The following \fBregister\-task\-with\-maintenance\-window\fP example registers a Run Command task with a maintenance window that is targeted at an instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm register\-task\-with\-maintenance\-window \e
+    \-\-cli\-binary\-format raw\-in\-base64\-out \e
+    \-\-window\-id "mw\-082dcd7649dee04e4" \e
+    \-\-targets "Key=InstanceIds,Values=i\-12344d305eEXAMPLE" \e
+    \-\-service\-role\-arn "arn:aws:iam::111222333444:role/SSM" \e
+    \-\-task\-type "RUN_COMMAND" \e
+    \-\-name "SSMInstallPowerShellModule" \e
+    \-\-task\-arn "AWS\-InstallPowerShellModule" \e
+    \-\-task\-invocation\-parameters "{\e"RunCommand\e":{\e"Comment\e":\e"\e",\e"OutputS3BucketName\e":\e"runcommandlogs\e",\e"Parameters\e":{\e"commands\e":[\e"Get\-Module \-ListAvailable\e"],\e"executionTimeout\e":[\e"3600\e"],\e"source\e":[\e"https:\e/\e/gallery.technet.microsoft.com\e/EZOut\-33ae0fb7\e/file\e/110351\e/1\e/EZOut.zip\e"],\e"workingDirectory\e":[\e"\e\e\e\e\e"]},\e"TimeoutSeconds\e":600}}" \e
+    \-\-max\-concurrency 1 \e
+    \-\-max\-errors 1 \e
+    \-\-priority 10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WindowTaskId":"33344444\-5555\-6666\-7777\-88888888"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Register a Task with the Maintenance Window (AWS CLI)\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.sp
+\fBExample 4: To register a Step Functions task with a maintenance window\fP
+.sp
+The following \fBregister\-task\-with\-maintenance\-window\fP example registers a Step Functions task with a maintenance window that is targeted at an instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm register\-task\-with\-maintenance\-window \e
+    \-\-cli\-binary\-format raw\-in\-base64\-out \e
+    \-\-window\-id "mw\-1234d787d6EXAMPLE" \e
+    \-\-targets Key=WindowTargetIds,Values=12347414\-69c3\-49f8\-95b8\-ed2dcEXAMPLE \e
+    \-\-task\-arn arn:aws:states:us\-east\-1:111222333444:stateMachine:SSMTestStateMachine \e
+    \-\-service\-role\-arn arn:aws:iam::111222333444:role/MaintenanceWindows \e
+    \-\-task\-type STEP_FUNCTIONS \e
+    \-\-task\-invocation\-parameters \(aq{"StepFunctions":{"Input":"{\e"InstanceId\e":\e"{{RESOURCE_ID}}\e"}"}}\(aq \e
+    \-\-priority 0 \e
+    \-\-max\-concurrency 10 \e
+    \-\-max\-errors 5 \e
+    \-\-name "Step_Functions_Example" \e
+    \-\-description "My Step Functions Example"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WindowTaskId":"44444444\-5555\-6666\-7777\-88888888"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Register a Task with the Maintenance Window (AWS CLI)\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.sp
+\fBExample 5: To register a task using a maintenance windows target ID\fP
+.sp
+The following \fBregister\-task\-with\-maintenance\-window\fP example registers a task using a maintenance window target ID. The maintenance window target ID was in the output of the \fBaws ssm register\-target\-with\-maintenance\-window\fP command. You can also retrieve it from the output of the \fBaws ssm describe\-maintenance\-window\-targets\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm register\-task\-with\-maintenance\-window \e
+    \-\-cli\-binary\-format raw\-in\-base64\-out \e
+    \-\-targets "Key=WindowTargetIds,Values=350d44e6\-28cc\-44e2\-951f\-4b2c9EXAMPLE" \e
+    \-\-task\-arn "AWS\-RunShellScript" \e
+    \-\-service\-role\-arn "arn:aws:iam::111222333444:role/MaintenanceWindowsRole" \e
+    \-\-window\-id "mw\-ab12cd34eEXAMPLE" \e
+    \-\-task\-type "RUN_COMMAND" \e
+    \-\-task\-parameters  "{\e"commands\e":{\e"Values\e":[\e"df\e"]}}" \e
+    \-\-max\-concurrency 1 \e
+    \-\-max\-errors 1 \e
+    \-\-priority 10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WindowTaskId":"33344444\-5555\-6666\-7777\-88888888"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Register a Task with the Maintenance Window (AWS CLI)\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+WindowTaskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the task in the maintenance window.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

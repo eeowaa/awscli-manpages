@@ -1,0 +1,768 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "REKOGNITION-COMPARE-FACES" "a" "" ""
+.SH NAME
+rekognition-compare-faces \- Compares a face in the source input image with each of the 100 largest faces detected in the target input image
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Compares a face in the \fIsource\fP input image with each of the 100 largest faces detected in the \fItarget\fP input image.
+.sp
+If the source image contains multiple faces, the service detects the largest face and compares it with each face detected in the target image.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+CompareFaces uses machine learning algorithms, which are probabilistic. A false negative is an incorrect prediction that a face in the target image has a low similarity confidence score when compared to the face in the source image. To reduce the probability of false negatives, we recommend that you compare the target image against multiple source images. If you plan to use \fBCompareFaces\fP to make a decision that impacts an individual\(aqs rights, privacy, or access to services, we recommend that you pass the result to a human for review and further validation before taking action.
+.UNINDENT
+.UNINDENT
+.sp
+You pass the input and target images either as base64\-encoded image bytes or as references to images in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes isn\(aqt supported. The image must be formatted as a PNG or JPEG file.
+.sp
+In response, the operation returns an array of face matches ordered by similarity score in descending order. For each face match, the response provides a bounding box of the face, facial landmarks, pose details (pitch, role, and yaw), quality (brightness and sharpness), and confidence value (indicating the level of confidence that the bounding box contains a face). The response also provides a similarity score, which indicates how closely the faces match.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+By default, only faces with a similarity score of greater than or equal to 80% are returned in the response. You can change this value by specifying the \fBSimilarityThreshold\fP parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fBCompareFaces\fP also returns an array of faces that don\(aqt match the source image. For each face, it returns a bounding box, confidence value, landmarks, pose details, and quality. The response also returns information about the face in the source image, including the bounding box of the face and confidence value.
+.UNINDENT
+.UNINDENT
+.sp
+The \fBQualityFilter\fP input parameter allows you to filter out detected faces that don’t meet a required quality bar. The quality bar is based on a variety of common use cases. Use \fBQualityFilter\fP to set the quality bar by specifying \fBLOW\fP , \fBMEDIUM\fP , or \fBHIGH\fP . If you do not want to filter detected faces, specify \fBNONE\fP . The default value is \fBNONE\fP .
+.sp
+If the image doesn\(aqt contain Exif metadata, \fBCompareFaces\fP returns orientation information for the source and target images. Use these values to display the images with the correct image orientation.
+.sp
+If no faces are detected in the source or target images, \fBCompareFaces\fP returns an \fBInvalidParameterException\fP error.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This is a stateless API operation. That is, data returned by this operation doesn\(aqt persist.
+.UNINDENT
+.UNINDENT
+.sp
+For an example, see Comparing Faces in Images in the Amazon Rekognition Developer Guide.
+.sp
+This operation requires permissions to perform the \fBrekognition:CompareFaces\fP action.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  compare\-faces
+[\-\-source\-image <value>]
+[\-\-target\-image <value>]
+[\-\-similarity\-threshold <value>]
+[\-\-quality\-filter <value>]
+[\-\-source\-image\-bytes <value>]
+[\-\-target\-image\-bytes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-source\-image\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The input image as base64\-encoded bytes or an S3 object. If you use the AWS CLI to call Amazon Rekognition operations, passing base64\-encoded image bytes is not supported.
+.sp
+If you are using an AWS SDK to call Amazon Rekognition, you might not need to base64\-encode image bytes passed using the \fBBytes\fP field. For more information, see Images in the Amazon Rekognition developer guide.
+.sp
+To specify a local file use \fB\-\-source\-image\-bytes\fP instead.
+.sp
+Bytes \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Blob of image bytes up to 5 MBs.
+.UNINDENT
+.UNINDENT
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an S3 object as the image source.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+S3 object key name.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Bytes=blob,S3Object={Bucket=string,Name=string,Version=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Bytes": blob,
+  "S3Object": {
+    "Bucket": "string",
+    "Name": "string",
+    "Version": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-image\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The target image as base64\-encoded bytes or an S3 object. If you use the AWS CLI to call Amazon Rekognition operations, passing base64\-encoded image bytes is not supported.
+.sp
+If you are using an AWS SDK to call Amazon Rekognition, you might not need to base64\-encode image bytes passed using the \fBBytes\fP field. For more information, see Images in the Amazon Rekognition developer guide.
+.sp
+To specify a local file use \fB\-\-target\-image\-bytes\fP instead.
+.sp
+Bytes \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Blob of image bytes up to 5 MBs.
+.UNINDENT
+.UNINDENT
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an S3 object as the image source.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+S3 object key name.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Bytes=blob,S3Object={Bucket=string,Name=string,Version=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Bytes": blob,
+  "S3Object": {
+    "Bucket": "string",
+    "Name": "string",
+    "Version": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-similarity\-threshold\fP (float)
+.INDENT 0.0
+.INDENT 3.5
+The minimum level of confidence in the face matches that a match must meet to be included in the \fBFaceMatches\fP array.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-quality\-filter\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A filter that specifies a quality bar for how much filtering is done to identify faces. Filtered faces aren\(aqt compared. If you specify \fBAUTO\fP , Amazon Rekognition chooses the quality bar. If you specify \fBLOW\fP , \fBMEDIUM\fP , or \fBHIGH\fP , filtering removes all faces that don’t meet the chosen quality bar. The quality bar is based on a variety of common use cases. Low\-quality detections can occur for a number of reasons. Some examples are an object that\(aqs misidentified as a face, a face that\(aqs too blurry, or a face with a pose that\(aqs too extreme to use. If you specify \fBNONE\fP , no filtering is performed. The default value is \fBNONE\fP .
+.sp
+To use quality filtering, the collection you are using must be associated with version 3 of the face model or higher.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP
+.IP \(bu 2
+\fBAUTO\fP
+.IP \(bu 2
+\fBLOW\fP
+.IP \(bu 2
+\fBMEDIUM\fP
+.IP \(bu 2
+\fBHIGH\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-image\-bytes\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The content of the image to be uploaded. To specify the content of a local file use the fileb:// prefix. Example: fileb://image.png
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-image\-bytes\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The content of the image to be uploaded. To specify the content of a local file use the fileb:// prefix. Example: fileb://image.png
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo compare faces in two images\fP
+.sp
+The following \fBcompare\-faces\fP command compares faces in two images stored in an Amazon S3 bucket.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rekognition compare\-faces \e
+    \-\-source\-image \(aq{"S3Object":{"Bucket":"MyImageS3Bucket","Name":"source.jpg"}}\(aq \e
+    \-\-target\-image \(aq{"S3Object":{"Bucket":"MyImageS3Bucket","Name":"target.jpg"}}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "UnmatchedFaces": [],
+    "FaceMatches": [
+        {
+            "Face": {
+                "BoundingBox": {
+                    "Width": 0.12368916720151901,
+                    "Top": 0.16007372736930847,
+                    "Left": 0.5901257991790771,
+                    "Height": 0.25140416622161865
+                },
+                "Confidence": 100.0,
+                "Pose": {
+                    "Yaw": \-3.7351467609405518,
+                    "Roll": \-0.10309021919965744,
+                    "Pitch": 0.8637830018997192
+                },
+                "Quality": {
+                    "Sharpness": 95.51618957519531,
+                    "Brightness": 65.29893493652344
+                },
+                "Landmarks": [
+                    {
+                        "Y": 0.26721030473709106,
+                        "X": 0.6204193830490112,
+                        "Type": "eyeLeft"
+                    },
+                    {
+                        "Y": 0.26831310987472534,
+                        "X": 0.6776827573776245,
+                        "Type": "eyeRight"
+                    },
+                    {
+                        "Y": 0.3514654338359833,
+                        "X": 0.6241428852081299,
+                        "Type": "mouthLeft"
+                    },
+                    {
+                        "Y": 0.35258132219314575,
+                        "X": 0.6713621020317078,
+                        "Type": "mouthRight"
+                    },
+                    {
+                        "Y": 0.3140771687030792,
+                        "X": 0.6428444981575012,
+                        "Type": "nose"
+                    }
+                ]
+            },
+            "Similarity": 100.0
+        }
+    ],
+    "SourceImageFace": {
+        "BoundingBox": {
+            "Width": 0.12368916720151901,
+            "Top": 0.16007372736930847,
+            "Left": 0.5901257991790771,
+            "Height": 0.25140416622161865
+        },
+        "Confidence": 100.0
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Comparing Faces in Images\fP in the \fIAmazon Rekognition Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+SourceImageFace \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The face in the source image that was used for comparison.
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Bounding box of the face.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Width of the bounding box as a ratio of the overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Height of the bounding box as a ratio of the overall image height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Left coordinate of the bounding box as a ratio of overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Top coordinate of the bounding box as a ratio of overall image height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Confidence level that the selected bounding box contains a face.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FaceMatches \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of faces in the target image that match the source image face. Each \fBCompareFacesMatch\fP object provides the bounding box, the confidence level that the bounding box contains a face, and the similarity score for the face in the bounding box and the face in the source image.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about a face in a target image that matches the source image face analyzed by \fBCompareFaces\fP . The \fBFace\fP property contains the bounding box of the face in the target image. The \fBSimilarity\fP property is the confidence that the source image face matches the face in the bounding box.
+.sp
+Similarity \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence that the faces match.
+.UNINDENT
+.UNINDENT
+.sp
+Face \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides face metadata (bounding box and confidence that the bounding box actually contains a face).
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Bounding box of the face.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Width of the bounding box as a ratio of the overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Height of the bounding box as a ratio of the overall image height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Left coordinate of the bounding box as a ratio of overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Top coordinate of the bounding box as a ratio of overall image height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence that what the bounding box contains is a face.
+.UNINDENT
+.UNINDENT
+.sp
+Landmarks \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of facial landmarks.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the location of the landmark on the face.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of landmark.
+.UNINDENT
+.UNINDENT
+.sp
+X \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The x\-coordinate of the landmark expressed as a ratio of the width of the image. The x\-coordinate is measured from the left\-side of the image. For example, if the image is 700 pixels wide and the x\-coordinate of the landmark is at 350 pixels, this value is 0.5.
+.UNINDENT
+.UNINDENT
+.sp
+Y \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The y\-coordinate of the landmark expressed as a ratio of the height of the image. The y\-coordinate is measured from the top of the image. For example, if the image height is 200 pixels and the y\-coordinate of the landmark is at 50 pixels, this value is 0.25.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Pose \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the pose of the face as determined by its pitch, roll, and yaw.
+.sp
+Roll \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the roll axis.
+.UNINDENT
+.UNINDENT
+.sp
+Yaw \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the yaw axis.
+.UNINDENT
+.UNINDENT
+.sp
+Pitch \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the pitch axis.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Quality \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies face image brightness and sharpness.
+.sp
+Brightness \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing brightness of the face. The service returns a value between 0 and 100 (inclusive). A higher value indicates a brighter face image.
+.UNINDENT
+.UNINDENT
+.sp
+Sharpness \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing sharpness of the face. The service returns a value between 0 and 100 (inclusive). A higher value indicates a sharper face image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UnmatchedFaces \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of faces in the target image that did not match the source image face.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides face metadata for target image faces that are analyzed by \fBCompareFaces\fP and \fBRecognizeCelebrities\fP .
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Bounding box of the face.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Width of the bounding box as a ratio of the overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Height of the bounding box as a ratio of the overall image height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Left coordinate of the bounding box as a ratio of overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Top coordinate of the bounding box as a ratio of overall image height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Level of confidence that what the bounding box contains is a face.
+.UNINDENT
+.UNINDENT
+.sp
+Landmarks \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of facial landmarks.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the location of the landmark on the face.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of landmark.
+.UNINDENT
+.UNINDENT
+.sp
+X \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The x\-coordinate of the landmark expressed as a ratio of the width of the image. The x\-coordinate is measured from the left\-side of the image. For example, if the image is 700 pixels wide and the x\-coordinate of the landmark is at 350 pixels, this value is 0.5.
+.UNINDENT
+.UNINDENT
+.sp
+Y \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The y\-coordinate of the landmark expressed as a ratio of the height of the image. The y\-coordinate is measured from the top of the image. For example, if the image height is 200 pixels and the y\-coordinate of the landmark is at 50 pixels, this value is 0.25.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Pose \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the pose of the face as determined by its pitch, roll, and yaw.
+.sp
+Roll \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the roll axis.
+.UNINDENT
+.UNINDENT
+.sp
+Yaw \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the yaw axis.
+.UNINDENT
+.UNINDENT
+.sp
+Pitch \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing the face rotation on the pitch axis.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Quality \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies face image brightness and sharpness.
+.sp
+Brightness \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing brightness of the face. The service returns a value between 0 and 100 (inclusive). A higher value indicates a brighter face image.
+.UNINDENT
+.UNINDENT
+.sp
+Sharpness \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Value representing sharpness of the face. The service returns a value between 0 and 100 (inclusive). A higher value indicates a sharper face image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceImageOrientationCorrection \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of \fBSourceImageOrientationCorrection\fP is always null.
+.sp
+If the input image is in .jpeg format, it might contain exchangeable image file format (Exif) metadata that includes the image\(aqs orientation. Amazon Rekognition uses this orientation information to perform image correction. The bounding box coordinates are translated to represent object locations after the orientation information in the Exif metadata is used to correct the image orientation. Images in .png format don\(aqt contain Exif metadata.
+.sp
+Amazon Rekognition doesn’t perform image correction for images in .png format and .jpeg images without orientation information in the image Exif metadata. The bounding box coordinates aren\(aqt translated and represent the object locations before the image is rotated.
+.UNINDENT
+.UNINDENT
+.sp
+TargetImageOrientationCorrection \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of \fBTargetImageOrientationCorrection\fP is always null.
+.sp
+If the input image is in .jpeg format, it might contain exchangeable image file format (Exif) metadata that includes the image\(aqs orientation. Amazon Rekognition uses this orientation information to perform image correction. The bounding box coordinates are translated to represent object locations after the orientation information in the Exif metadata is used to correct the image orientation. Images in .png format don\(aqt contain Exif metadata.
+.sp
+Amazon Rekognition doesn’t perform image correction for images in .png format and .jpeg images without orientation information in the image Exif metadata. The bounding box coordinates aren\(aqt translated and represent the object locations before the image is rotated.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

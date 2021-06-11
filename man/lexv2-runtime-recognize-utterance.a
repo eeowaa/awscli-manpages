@@ -1,0 +1,249 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LEXV2-RUNTIME-RECOGNIZE-UTTERANCE" "a" "" ""
+.SH NAME
+lexv2-runtime-recognize-utterance \- Sends user input to Amazon Lex
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Sends user input to Amazon Lex. You can send text or speech. Clients use this API to send text and audio requests to Amazon Lex at runtime. Amazon Lex interprets the user input using the machine learning model built for the bot.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  recognize\-utterance
+\-\-bot\-id <value>
+\-\-bot\-alias\-id <value>
+\-\-locale\-id <value>
+\-\-session\-id <value>
+[\-\-session\-state <value>]
+[\-\-request\-attributes <value>]
+\-\-request\-content\-type <value>
+[\-\-response\-content\-type <value>]
+[\-\-input\-stream <value>]
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bot\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the bot that should receive the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bot\-alias\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The alias identifier in use for the bot that should receive the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-locale\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The locale where the session is in use.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-session\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the session in use.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-session\-state\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets the state of the session with the user. You can use this to set the current intent, attributes, context, and dialog action. Use the dialog action to determine the next step that Amazon Lex should use in the conversation with the user.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-attributes\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Request\-specific information passed between the client application and Amazon Lex
+.sp
+The namespace \fBx\-amz\-lex:\fP is reserved for special attributes. Don\(aqt create any request attributes for prefix \fBx\-amz\-lex:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-content\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the format for audio input or that the content is text. The header must start with one of the following prefixes:
+.INDENT 0.0
+.IP \(bu 2
+PCM format, audio data must be in little\-endian byte order.
+.INDENT 2.0
+.IP \(bu 2
+audio/l16; rate=16000; channels=1
+.IP \(bu 2
+audio/x\-l16; sample\-rate=16000; channel\-count=1
+.IP \(bu 2
+audio/lpcm; sample\-rate=8000; sample\-size\-bits=16; channel\-count=1; is\-big\-endian=false
+.UNINDENT
+.IP \(bu 2
+Opus format
+.INDENT 2.0
+.IP \(bu 2
+audio/x\-cbr\-opus\-with\-preamble;preamble\-size=0;bit\-rate=256000;frame\-size\-milliseconds=4
+.UNINDENT
+.IP \(bu 2
+Text format
+.INDENT 2.0
+.IP \(bu 2
+text/plain; charset=utf\-8
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-response\-content\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The message that Amazon Lex returns in the response can be either text or speech based on the \fBresponseContentType\fP value.
+.INDENT 0.0
+.IP \(bu 2
+If the value is \fBtext/plain;charset=utf\-8\fP , Amazon Lex returns text in the response.
+.IP \(bu 2
+If the value begins with \fBaudio/\fP , Amazon Lex returns speech in the response. Amazon Lex uses Amazon Polly to generate the speech using the configuration that you specified in the \fBrequestContentType\fP parameter. For example, if you specify \fBaudio/mpeg\fP as the value, Amazon Lex returns speech in the MPEG format.
+.IP \(bu 2
+If the value is \fBaudio/pcm\fP , the speech returned is \fBaudio/pcm\fP at 16 KHz in 16\-bit, little\-endian format.
+.IP \(bu 2
+The following are the accepted values:
+.INDENT 2.0
+.IP \(bu 2
+audio/mpeg
+.IP \(bu 2
+audio/ogg
+.IP \(bu 2
+audio/pcm (16 KHz)
+.IP \(bu 2
+audio/* (defaults to mpeg)
+.IP \(bu 2
+text/plain; charset=utf\-8
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-input\-stream\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+User input in PCM or Opus audio format or text format as described in the \fBrequestContentType\fP parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+inputMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the input mode to the operation was text or speech.
+.UNINDENT
+.UNINDENT
+.sp
+contentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Content type as specified in the \fBresponseContentType\fP in the request.
+.UNINDENT
+.UNINDENT
+.sp
+messages \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A list of messages that were last sent to the user. The messages are ordered based on the order that you returned the messages from your Lambda function or the order that the messages are defined in the bot.
+.UNINDENT
+.UNINDENT
+.sp
+interpretations \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A list of intents that Amazon Lex determined might satisfy the user\(aqs utterance.
+.sp
+Each interpretation includes the intent, a score that indicates how confident Amazon Lex is that the interpretation is the correct one, and an optional sentiment response that indicates the sentiment expressed in the utterance.
+.UNINDENT
+.UNINDENT
+.sp
+sessionState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents the current state of the dialog between the user and the bot.
+.sp
+Use this to determine the progress of the conversation and what the next action might be.
+.UNINDENT
+.UNINDENT
+.sp
+requestAttributes \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The attributes sent in the request.
+.UNINDENT
+.UNINDENT
+.sp
+sessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the session in use.
+.UNINDENT
+.UNINDENT
+.sp
+inputTranscript \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text used to process the request.
+.sp
+If the input was an audio stream, the \fBinputTranscript\fP field contains the text extracted from the audio stream. This is the text that is actually processed to recognize intents and slot values. You can use this information to determine if Amazon Lex is correctly processing the audio that you send.
+.UNINDENT
+.UNINDENT
+.sp
+audioStream \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The prompt or statement to send to the user. This is based on the bot configuration and context. For example, if Amazon Lex did not understand the user intent, it sends the \fBclarificationPrompt\fP configured for the bot. If the intent requires confirmation before taking the fulfillment action, it sends the \fBconfirmationPrompt\fP . Another example: Suppose that the Lambda function successfully fulfilled the intent, and sent a message to convey to the user. Then Amazon Lex sends that message in the response.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

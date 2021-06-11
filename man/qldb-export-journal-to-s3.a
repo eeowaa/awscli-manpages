@@ -1,0 +1,278 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "QLDB-EXPORT-JOURNAL-TO-S3" "a" "" ""
+.SH NAME
+qldb-export-journal-to-s3 \- Exports journal contents within a date and time range from a ledger into a specified Amazon Simple Storage Service (Amazon S3) bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Exports journal contents within a date and time range from a ledger into a specified Amazon Simple Storage Service (Amazon S3) bucket. The data is written as files in Amazon Ion format.
+.sp
+If the ledger with the given \fBName\fP doesn\(aqt exist, then throws \fBResourceNotFoundException\fP .
+.sp
+If the ledger with the given \fBName\fP is in \fBCREATING\fP status, then throws \fBResourcePreconditionNotMetException\fP .
+.sp
+You can initiate up to two concurrent journal export requests for each ledger. Beyond this limit, journal export requests throw \fBLimitExceededException\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  export\-journal\-to\-s3
+\-\-name <value>
+\-\-inclusive\-start\-time <value>
+\-\-exclusive\-end\-time <value>
+\-\-s3\-export\-configuration <value>
+\-\-role\-arn <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the ledger.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-inclusive\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The inclusive start date and time for the range of journal contents that you want to export.
+.sp
+The \fBInclusiveStartTime\fP must be in \fBISO 8601\fP date and time format and in Universal Coordinated Time (UTC). For example: \fB2019\-06\-13T21:36:34Z\fP
+.sp
+The \fBInclusiveStartTime\fP must be before \fBExclusiveEndTime\fP .
+.sp
+If you provide an \fBInclusiveStartTime\fP that is before the ledger\(aqs \fBCreationDateTime\fP , Amazon QLDB defaults it to the ledger\(aqs \fBCreationDateTime\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-exclusive\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The exclusive end date and time for the range of journal contents that you want to export.
+.sp
+The \fBExclusiveEndTime\fP must be in \fBISO 8601\fP date and time format and in Universal Coordinated Time (UTC). For example: \fB2019\-06\-13T21:36:34Z\fP
+.sp
+The \fBExclusiveEndTime\fP must be less than or equal to the current UTC date and time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-export\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration settings of the Amazon S3 bucket destination for your export request.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket name in which a journal export job writes the journal contents.
+.sp
+The bucket name must comply with the Amazon S3 bucket naming conventions. For more information, see \fI\%Bucket Restrictions and Limitations\fP in the \fIAmazon S3 Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The prefix for the Amazon S3 bucket in which a journal export job writes the journal contents.
+.sp
+The prefix must comply with Amazon S3 key naming rules and restrictions. For more information, see \fI\%Object Key and Metadata\fP in the \fIAmazon S3 Developer Guide\fP .
+.sp
+The following are examples of valid \fBPrefix\fP values:
+.INDENT 0.0
+.IP \(bu 2
+\fBJournalExports\-ForMyLedger/Testing/\fP
+.IP \(bu 2
+\fBJournalExports\fP
+.IP \(bu 2
+\fBMy:Tests/\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The encryption settings that are used by a journal export job to write data in an Amazon S3 bucket.
+.sp
+ObjectEncryptionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 object encryption type.
+.sp
+To learn more about server\-side encryption options in Amazon S3, see \fI\%Protecting Data Using Server\-Side Encryption\fP in the \fIAmazon S3 Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for a symmetric customer master key (CMK) in AWS Key Management Service (AWS KMS). Amazon QLDB does not support asymmetric CMKs.
+.sp
+You must provide a \fBKmsKeyArn\fP if you specify \fBSSE_KMS\fP as the \fBObjectEncryptionType\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBKmsKeyArn\fP is not required if you specify \fBSSE_S3\fP as the \fBObjectEncryptionType\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Bucket=string,Prefix=string,EncryptionConfiguration={ObjectEncryptionType=string,KmsKeyArn=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Bucket": "string",
+  "Prefix": "string",
+  "EncryptionConfiguration": {
+    "ObjectEncryptionType": "SSE_KMS"|"SSE_S3"|"NO_ENCRYPTION",
+    "KmsKeyArn": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM role that grants QLDB permissions for a journal export job to do the following:
+.INDENT 0.0
+.IP \(bu 2
+Write objects into your Amazon Simple Storage Service (Amazon S3) bucket.
+.IP \(bu 2
+(Optional) Use your customer master key (CMK) in AWS Key Management Service (AWS KMS) for server\-side encryption of your exported data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo export journal blocks to S3\fP
+.sp
+The following \fBexport\-journal\-to\-s3\fP example creates an export job for journal blocks within a specified date and time range from a ledger with the name \fBmyExampleLedger\fP\&. The export job writes the blocks into a specified Amazon S3 bucket.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws qldb export\-journal\-to\-s3 \e
+    \-\-name myExampleLedger \e
+    \-\-inclusive\-start\-time 2019\-09\-18T00:00:00Z \e
+    \-\-exclusive\-end\-time 2019\-09\-18T22:59:59Z \e
+    \-\-role\-arn arn:aws:iam::123456789012:role/my\-s3\-export\-role \e
+    \-\-s3\-export\-configuration file://my\-s3\-export\-config.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBmy\-s3\-export\-config.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Bucket": "awsExampleBucket",
+    "Prefix": "ledgerexport1/",
+    "EncryptionConfiguration": {
+        "ObjectEncryptionType": "SSE_S3"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ExportId": "ADR2ONPKN5LINYGb4dp7yZ"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Exporting Your Journal in Amazon QLDB\fP in the \fIAmazon QLDB Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+ExportId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID that QLDB assigns to each journal export job.
+.sp
+To describe your export request and check the status of the job, you can use \fBExportId\fP to call \fBDescribeJournalS3Export\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

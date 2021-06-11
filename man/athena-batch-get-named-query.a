@@ -1,0 +1,235 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ATHENA-BATCH-GET-NAMED-QUERY" "a" "" ""
+.SH NAME
+athena-batch-get-named-query \- Returns the details of a single named query or a list of up to 50 queries, which you provide as an array of query ID strings
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the details of a single named query or a list of up to 50 queries, which you provide as an array of query ID strings. Requires you to have access to the workgroup in which the queries were saved. Use  ListNamedQueriesInput to get the list of named query IDs in the specified workgroup. If information could not be retrieved for a submitted query ID, information about the query ID submitted is listed under  UnprocessedNamedQueryId . Named queries differ from executed queries. Use  BatchGetQueryExecutionInput to get details about each unique query execution, and  ListQueryExecutionsInput to get a list of query execution IDs.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  batch\-get\-named\-query
+\-\-named\-query\-ids <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-named\-query\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of query IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo return information about more than one query\fP
+.sp
+The following \fBbatch\-get\-named\-query\fP example returns information about the named queries that have the specified IDs.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws athena batch\-get\-named\-query \e
+    \-\-named\-query\-ids a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111 a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222 a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE33333
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "NamedQueries": [
+        {
+            "Name": "Flights Select Query",
+            "Description": "Sample query to get the top 10 airports with the most number of departures since 2000",
+            "Database": "sampledb",
+            "QueryString": "SELECT origin, count(*) AS total_departures\enFROM\enflights_parquet\enWHERE year >= \(aq2000\(aq\enGROUP BY origin\enORDER BY total_departures DESC\enLIMIT 10;",
+            "NamedQueryId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+            "WorkGroup": "primary"
+        },
+        {
+            "Name": "Load flights table partitions",
+            "Description": "Sample query to load flights table partitions using MSCK REPAIR TABLE statement",
+            "Database": "sampledb",
+            "QueryString": "MSCK REPAIR TABLE flights_parquet;",
+            "NamedQueryId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222",
+            "WorkGroup": "primary"
+        },
+        {
+            "Name": "CloudFront Select Query",
+            "Description": "Sample query to view requests per operating system during a particular time frame",
+            "Database": "sampledb",
+            "QueryString": "SELECT os, COUNT(*) count FROM cloudfront_logs WHERE date BETWEEN date \(aq2014\-07\-05\(aq AND date \(aq2014\-08\-05\(aq GROUP BY os;",
+            "NamedQueryId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE33333",
+            "WorkGroup": "primary"
+        }
+    ],
+    "UnprocessedNamedQueryIds": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Running SQL Queries Using Amazon Athena\fP in the \fIAmazon Athena User Guide\fP\&.
+.SH OUTPUT
+.sp
+NamedQueries \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the named query IDs submitted.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A query, where \fBQueryString\fP is the list of SQL query statements that comprise the query.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The query name.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The query description.
+.UNINDENT
+.UNINDENT
+.sp
+Database \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The database to which the query belongs.
+.UNINDENT
+.UNINDENT
+.sp
+QueryString \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SQL query statements that comprise the query.
+.UNINDENT
+.UNINDENT
+.sp
+NamedQueryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the query.
+.UNINDENT
+.UNINDENT
+.sp
+WorkGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the workgroup that contains the named query.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UnprocessedNamedQueryIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about provided query IDs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a named query ID that could not be processed.
+.sp
+NamedQueryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the named query.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code returned when the processing request for the named query failed, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message returned when the processing request for the named query failed, if applicable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

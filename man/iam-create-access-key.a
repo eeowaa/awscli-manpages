@@ -1,0 +1,166 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IAM-CREATE-ACCESS-KEY" "a" "" ""
+.SH NAME
+iam-create-access-key \- Creates a new AWS secret access key and corresponding AWS access key ID for the specified user
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new AWS secret access key and corresponding AWS access key ID for the specified user. The default status for new keys is \fBActive\fP .
+.sp
+If you do not specify a user name, IAM determines the user name implicitly based on the AWS access key ID signing the request. This operation works for access keys under the AWS account. Consequently, you can use this operation to manage AWS account root user credentials. This is true even if the AWS account has no associated users.
+.sp
+For information about quotas on the number of keys you can create, see \fI\%IAM and STS quotas\fP in the \fIIAM User Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+To ensure the security of your AWS account, the secret access key is accessible only during key and user creation. You must save the key (for example, in a text file) if you want to be able to access it again. If a secret key is lost, you can delete the access keys for the associated user and then create new keys.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-access\-key
+[\-\-user\-name <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-user\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the IAM user that the new key will belong to.
+.sp
+This parameter allows (through its \fI\%regex pattern\fP ) a string of characters consisting of upper and lowercase alphanumeric characters with no spaces. You can also include any of the following characters: _+=,.@\-
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an access key for an IAM user\fP
+.sp
+The following \fBcreate\-access\-key\fP command creates an access key (access key ID and secret access key) for the IAM user named \fBBob\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam create\-access\-key \-\-user\-name Bob
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AccessKey": {
+        "UserName": "Bob",
+        "Status": "Active",
+        "CreateDate": "2015\-03\-09T18:39:23.411Z",
+        "SecretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY",
+        "AccessKeyId": "AKIAIOSFODNN7EXAMPLE"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Store the secret access key in a secure location. If it is lost, it cannot be recovered, and you must create a new access key.
+.sp
+For more information, see \fI\%Managing Access Keys for IAM Users\fP in the \fIUsing IAM\fP guide.
+.SH OUTPUT
+.sp
+AccessKey \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure with details about the access key.
+.sp
+UserName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the IAM user that the access key is associated with.
+.UNINDENT
+.UNINDENT
+.sp
+AccessKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for this access key.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the access key. \fBActive\fP means that the key is valid for API calls, while \fBInactive\fP means it is not.
+.UNINDENT
+.UNINDENT
+.sp
+SecretAccessKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The secret key used to sign requests.
+.UNINDENT
+.UNINDENT
+.sp
+CreateDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the access key was created.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

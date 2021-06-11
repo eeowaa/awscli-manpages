@@ -1,0 +1,557 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "COGNITO-IDP-ADMIN-INITIATE-AUTH" "a" "" ""
+.SH NAME
+cognito-idp-admin-initiate-auth \- Initiates the authentication flow, as an administrator
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Initiates the authentication flow, as an administrator.
+.sp
+Calling this action requires developer credentials.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  admin\-initiate\-auth
+\-\-user\-pool\-id <value>
+\-\-client\-id <value>
+\-\-auth\-flow <value>
+[\-\-auth\-parameters <value>]
+[\-\-client\-metadata <value>]
+[\-\-analytics\-metadata <value>]
+[\-\-context\-data <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-user\-pool\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Amazon Cognito user pool.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The app client ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auth\-flow\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The authentication flow for this call to execute. The API action will depend on this value. For example:
+.INDENT 0.0
+.IP \(bu 2
+\fBREFRESH_TOKEN_AUTH\fP will take in a valid refresh token and return new tokens.
+.IP \(bu 2
+\fBUSER_SRP_AUTH\fP will take in \fBUSERNAME\fP and \fBSRP_A\fP and return the SRP variables to be used for next challenge execution.
+.IP \(bu 2
+\fBUSER_PASSWORD_AUTH\fP will take in \fBUSERNAME\fP and \fBPASSWORD\fP and return the next challenge or tokens.
+.UNINDENT
+.sp
+Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBUSER_SRP_AUTH\fP : Authentication flow for the Secure Remote Password (SRP) protocol.
+.IP \(bu 2
+\fBREFRESH_TOKEN_AUTH\fP /\fBREFRESH_TOKEN\fP : Authentication flow for refreshing the access token and ID token by supplying a valid refresh token.
+.IP \(bu 2
+\fBCUSTOM_AUTH\fP : Custom authentication flow.
+.IP \(bu 2
+\fBADMIN_NO_SRP_AUTH\fP : Non\-SRP authentication flow; you can pass in the USERNAME and PASSWORD directly if the flow is enabled for calling the app client.
+.IP \(bu 2
+\fBUSER_PASSWORD_AUTH\fP : Non\-SRP authentication flow; USERNAME and PASSWORD are passed directly. If a user migration Lambda trigger is set, this flow will invoke the user migration Lambda if the USERNAME is not found in the user pool.
+.IP \(bu 2
+\fBADMIN_USER_PASSWORD_AUTH\fP : Admin\-based user password authentication. This replaces the \fBADMIN_NO_SRP_AUTH\fP authentication flow. In this flow, Cognito receives the password in the request instead of using the SRP process to verify passwords.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBUSER_SRP_AUTH\fP
+.IP \(bu 2
+\fBREFRESH_TOKEN_AUTH\fP
+.IP \(bu 2
+\fBREFRESH_TOKEN\fP
+.IP \(bu 2
+\fBCUSTOM_AUTH\fP
+.IP \(bu 2
+\fBADMIN_NO_SRP_AUTH\fP
+.IP \(bu 2
+\fBUSER_PASSWORD_AUTH\fP
+.IP \(bu 2
+\fBADMIN_USER_PASSWORD_AUTH\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auth\-parameters\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+The authentication parameters. These are inputs corresponding to the \fBAuthFlow\fP that you are invoking. The required values depend on the value of \fBAuthFlow\fP :
+.INDENT 0.0
+.IP \(bu 2
+For \fBUSER_SRP_AUTH\fP : \fBUSERNAME\fP (required), \fBSRP_A\fP (required), \fBSECRET_HASH\fP (required if the app client is configured with a client secret), \fBDEVICE_KEY\fP .
+.IP \(bu 2
+For \fBREFRESH_TOKEN_AUTH/REFRESH_TOKEN\fP : \fBREFRESH_TOKEN\fP (required), \fBSECRET_HASH\fP (required if the app client is configured with a client secret), \fBDEVICE_KEY\fP .
+.IP \(bu 2
+For \fBADMIN_NO_SRP_AUTH\fP : \fBUSERNAME\fP (required), \fBSECRET_HASH\fP (if app client is configured with client secret), \fBPASSWORD\fP (required), \fBDEVICE_KEY\fP .
+.IP \(bu 2
+For \fBCUSTOM_AUTH\fP : \fBUSERNAME\fP (required), \fBSECRET_HASH\fP (if app client is configured with client secret), \fBDEVICE_KEY\fP . To start the authentication flow with password verification, include \fBChallengeName: SRP_A\fP and \fBSRP_A: (The SRP_A Value)\fP .
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-metadata\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of custom key\-value pairs that you can provide as input for certain custom workflows that this action triggers.
+.sp
+You create custom workflows by assigning AWS Lambda functions to user pool triggers. When you use the AdminInitiateAuth API action, Amazon Cognito invokes the AWS Lambda functions that are specified for various triggers. The ClientMetadata value is passed as input to the functions for only the following triggers:
+.INDENT 0.0
+.IP \(bu 2
+Pre signup
+.IP \(bu 2
+Pre authentication
+.IP \(bu 2
+User migration
+.UNINDENT
+.sp
+When Amazon Cognito invokes the functions for these triggers, it passes a JSON payload, which the function receives as input. This payload contains a \fBvalidationData\fP attribute, which provides the data that you assigned to the ClientMetadata parameter in your AdminInitiateAuth request. In your function code in AWS Lambda, you can process the \fBvalidationData\fP value to enhance your workflow for your specific needs.
+.sp
+When you use the AdminInitiateAuth API action, Amazon Cognito also invokes the functions for the following triggers, but it does not provide the ClientMetadata value as input:
+.INDENT 0.0
+.IP \(bu 2
+Post authentication
+.IP \(bu 2
+Custom message
+.IP \(bu 2
+Pre token generation
+.IP \(bu 2
+Create auth challenge
+.IP \(bu 2
+Define auth challenge
+.IP \(bu 2
+Verify auth challenge
+.UNINDENT
+.sp
+For more information, see \fI\%Customizing User Pool Workflows with Lambda Triggers\fP in the \fIAmazon Cognito Developer Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Take the following limitations into consideration when you use the ClientMetadata parameter:
+.INDENT 0.0
+.IP \(bu 2
+Amazon Cognito does not store the ClientMetadata value. This data is available only to AWS Lambda triggers that are assigned to a user pool to support custom workflows. If your user pool configuration does not include triggers, the ClientMetadata parameter serves no purpose.
+.IP \(bu 2
+Amazon Cognito does not validate the ClientMetadata value.
+.IP \(bu 2
+Amazon Cognito does not encrypt the the ClientMetadata value, so don\(aqt use it to provide sensitive information.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-analytics\-metadata\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The analytics metadata for collecting Amazon Pinpoint metrics for \fBAdminInitiateAuth\fP calls.
+.sp
+AnalyticsEndpointId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The endpoint ID.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AnalyticsEndpointId=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AnalyticsEndpointId": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-context\-data\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contextual data such as the user\(aqs device fingerprint, IP address, or location used for evaluating the risk of an unexpected event by Amazon Cognito advanced security.
+.sp
+IpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Source IP address of your user.
+.UNINDENT
+.UNINDENT
+.sp
+ServerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Your server endpoint where this API is invoked.
+.UNINDENT
+.UNINDENT
+.sp
+ServerPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Your server path where this API is invoked.
+.UNINDENT
+.UNINDENT
+.sp
+HttpHeaders \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+HttpHeaders received on your server in same order.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The HTTP header.
+.sp
+headerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The header name
+.UNINDENT
+.UNINDENT
+.sp
+headerValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The header value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EncodedData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Encoded data containing device fingerprinting details, collected using the Amazon Cognito context data collection library.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+IpAddress=string,ServerName=string,ServerPath=string,HttpHeaders=[{headerName=string,headerValue=string},{headerName=string,headerValue=string}],EncodedData=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "IpAddress": "string",
+  "ServerName": "string",
+  "ServerPath": "string",
+  "HttpHeaders": [
+    {
+      "headerName": "string",
+      "headerValue": "string"
+    }
+    ...
+  ],
+  "EncodedData": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo initiate authorization\fP
+.sp
+This example initiates authorization using the ADMIN_NO_SRP_AUTH flow for username \fI\%jane@example.com\fP
+.sp
+The client must have sign\-in API for server\-based authentication (ADMIN_NO_SRP_AUTH) enabled.
+.sp
+Use the session information in the return value to call \fI\%admin\-respond\-to\-auth\-challenge\fP\&.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cognito\-idp admin\-initiate\-auth \-\-user\-pool\-id us\-west\-2_aaaaaaaaa \-\-client\-id 3n4b5urk1ft4fl3mg5e62d9ado \-\-auth\-flow ADMIN_NO_SRP_AUTH \-\-auth\-parameters USERNAME=jane@example.com,PASSWORD=password
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ChallengeName": "NEW_PASSWORD_REQUIRED",
+  "Session": "SESSION",
+  "ChallengeParameters": {
+      "USER_ID_FOR_SRP": "84514837\-dcbc\-4af1\-abff\-f3c109334894",
+      "requiredAttributes": "[]",
+      "userAttributes": "{\e"email_verified\e":\e"true\e",\e"phone_number_verified\e":\e"true\e",\e"phone_number\e":\e"+01xxx5550100\e",\e"email\e":\e"jane@example.com\e"}"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+ChallengeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the challenge which you are responding to with this call. This is returned to you in the \fBAdminInitiateAuth\fP response if you need to pass another challenge.
+.INDENT 0.0
+.IP \(bu 2
+\fBMFA_SETUP\fP : If MFA is required, users who do not have at least one of the MFA methods set up are presented with an \fBMFA_SETUP\fP challenge. The user must set up at least one MFA type to continue to authenticate.
+.IP \(bu 2
+\fBSELECT_MFA_TYPE\fP : Selects the MFA type. Valid MFA options are \fBSMS_MFA\fP for text SMS MFA, and \fBSOFTWARE_TOKEN_MFA\fP for TOTP software token MFA.
+.IP \(bu 2
+\fBSMS_MFA\fP : Next challenge is to supply an \fBSMS_MFA_CODE\fP , delivered via SMS.
+.IP \(bu 2
+\fBPASSWORD_VERIFIER\fP : Next challenge is to supply \fBPASSWORD_CLAIM_SIGNATURE\fP , \fBPASSWORD_CLAIM_SECRET_BLOCK\fP , and \fBTIMESTAMP\fP after the client\-side SRP calculations.
+.IP \(bu 2
+\fBCUSTOM_CHALLENGE\fP : This is returned if your custom authentication flow determines that the user should pass another challenge before tokens are issued.
+.IP \(bu 2
+\fBDEVICE_SRP_AUTH\fP : If device tracking was enabled on your user pool and the previous challenges were passed, this challenge is returned so that Amazon Cognito can start tracking this device.
+.IP \(bu 2
+\fBDEVICE_PASSWORD_VERIFIER\fP : Similar to \fBPASSWORD_VERIFIER\fP , but for devices only.
+.IP \(bu 2
+\fBADMIN_NO_SRP_AUTH\fP : This is returned if you need to authenticate with \fBUSERNAME\fP and \fBPASSWORD\fP directly. An app client must be enabled to use this flow.
+.IP \(bu 2
+\fBNEW_PASSWORD_REQUIRED\fP : For users who are required to change their passwords after successful first login. This challenge should be passed with \fBNEW_PASSWORD\fP and any other required attributes.
+.IP \(bu 2
+\fBMFA_SETUP\fP : For users who are required to setup an MFA factor before they can sign\-in. The MFA types enabled for the user pool will be listed in the challenge parameters \fBMFA_CAN_SETUP\fP value.  To setup software token MFA, use the session returned here from \fBInitiateAuth\fP as an input to \fBAssociateSoftwareToken\fP , and use the session returned by \fBVerifySoftwareToken\fP as an input to \fBRespondToAuthChallenge\fP with challenge name \fBMFA_SETUP\fP to complete sign\-in. To setup SMS MFA, users will need help from an administrator to add a phone number to their account and then call \fBInitiateAuth\fP again to restart sign\-in.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Session \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The session which should be passed both ways in challenge\-response calls to the service. If \fBAdminInitiateAuth\fP or \fBAdminRespondToAuthChallenge\fP API call determines that the caller needs to go through another challenge, they return a session with other challenge parameters. This session should be passed as it is to the next \fBAdminRespondToAuthChallenge\fP API call.
+.UNINDENT
+.UNINDENT
+.sp
+ChallengeParameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The challenge parameters. These are returned to you in the \fBAdminInitiateAuth\fP response if you need to pass another challenge. The responses in this parameter should be used to compute inputs to the next call (\fBAdminRespondToAuthChallenge\fP ).
+.sp
+All challenges require \fBUSERNAME\fP and \fBSECRET_HASH\fP (if applicable).
+.sp
+The value of the \fBUSER_ID_FOR_SRP\fP attribute will be the user\(aqs actual username, not an alias (such as email address or phone number), even if you specified an alias in your call to \fBAdminInitiateAuth\fP . This is because, in the \fBAdminRespondToAuthChallenge\fP API \fBChallengeResponses\fP , the \fBUSERNAME\fP attribute cannot be an alias.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+AuthenticationResult \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The result of the authentication response. This is only returned if the caller does not need to pass another challenge. If the caller does need to pass another challenge before it gets tokens, \fBChallengeName\fP , \fBChallengeParameters\fP , and \fBSession\fP are returned.
+.sp
+AccessToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The access token.
+.UNINDENT
+.UNINDENT
+.sp
+ExpiresIn \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The expiration period of the authentication result in seconds.
+.UNINDENT
+.UNINDENT
+.sp
+TokenType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token type.
+.UNINDENT
+.UNINDENT
+.sp
+RefreshToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The refresh token.
+.UNINDENT
+.UNINDENT
+.sp
+IdToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID token.
+.UNINDENT
+.UNINDENT
+.sp
+NewDeviceMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The new device metadata from an authentication result.
+.sp
+DeviceKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device key.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceGroupKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device group key.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

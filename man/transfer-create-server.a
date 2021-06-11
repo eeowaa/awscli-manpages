@@ -1,0 +1,491 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "TRANSFER-CREATE-SERVER" "a" "" ""
+.SH NAME
+transfer-create-server \- Instantiates an auto-scaling virtual server based on the selected file transfer protocol in AWS
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Instantiates an auto\-scaling virtual server based on the selected file transfer protocol in AWS. When you make updates to your file transfer protocol\-enabled server or when you work with users, use the service\-generated \fBServerId\fP property that is assigned to the newly created server.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-server
+[\-\-certificate <value>]
+[\-\-domain <value>]
+[\-\-endpoint\-details <value>]
+[\-\-endpoint\-type <value>]
+[\-\-host\-key <value>]
+[\-\-identity\-provider\-details <value>]
+[\-\-identity\-provider\-type <value>]
+[\-\-logging\-role <value>]
+[\-\-protocols <value>]
+[\-\-security\-policy\-name <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-certificate\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the AWS Certificate Manager (ACM) certificate. Required when \fBProtocols\fP is set to \fBFTPS\fP .
+.sp
+To request a new public certificate, see \fI\%Request a public certificate\fP in the \fIAWS Certificate Manager User Guide\fP .
+.sp
+To import an existing certificate into ACM, see \fI\%Importing certificates into ACM\fP in the \fIAWS Certificate Manager User Guide\fP .
+.sp
+To request a private certificate to use FTPS through private IP addresses, see \fI\%Request a private certificate\fP in the \fIAWS Certificate Manager User Guide\fP .
+.sp
+Certificates with the following cryptographic algorithms and key sizes are supported:
+.INDENT 0.0
+.IP \(bu 2
+2048\-bit RSA (RSA_2048)
+.IP \(bu 2
+4096\-bit RSA (RSA_4096)
+.IP \(bu 2
+Elliptic Prime Curve 256 bit (EC_prime256v1)
+.IP \(bu 2
+Elliptic Prime Curve 384 bit (EC_secp384r1)
+.IP \(bu 2
+Elliptic Prime Curve 521 bit (EC_secp521r1)
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The certificate must be a valid SSL/TLS X.509 version 3 certificate with FQDN or IP address specified and information about the issuer.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The domain of the storage system that is used for file transfers. There are two domains available: Amazon Simple Storage Service (Amazon S3) and Amazon Elastic File System (Amazon EFS). The default value is S3.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+After the server is created, the domain cannot be changed.
+.UNINDENT
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBS3\fP
+.IP \(bu 2
+\fBEFS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-endpoint\-details\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The virtual private cloud (VPC) endpoint settings that are configured for your server. When you host your endpoint within your VPC, you can make it accessible only to resources within your VPC, or you can attach Elastic IP addresses and make it accessible to clients over the internet. Your VPC\(aqs default security groups are automatically assigned to your endpoint.
+.sp
+AddressAllocationIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of address allocation IDs that are required to attach an Elastic IP address to your server\(aqs endpoint.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This property can only be set when \fBEndpointType\fP is set to \fBVPC\fP and it is only valid in the \fBUpdateServer\fP API.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of subnet IDs that are required to host your server endpoint in your VPC.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This property can only be set when \fBEndpointType\fP is set to \fBVPC\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+VpcEndpointId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC endpoint.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This property can only be set when \fBEndpointType\fP is set to \fBVPC_ENDPOINT\fP .
+.sp
+For more information, see \fI\%https://docs.aws.amazon.com/transfer/latest/userguide/create\-server\-in\-vpc.html#deprecate\-vpc\-endpoint\fP\&.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The VPC ID of the VPC in which a server\(aqs endpoint will be hosted.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This property can only be set when \fBEndpointType\fP is set to \fBVPC\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of security groups IDs that are available to attach to your server\(aqs endpoint.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This property can only be set when \fBEndpointType\fP is set to \fBVPC\fP .
+.sp
+You can edit the \fBSecurityGroupIds\fP property in the \fI\%UpdateServer\fP API only if you are changing the \fBEndpointType\fP from \fBPUBLIC\fP or \fBVPC_ENDPOINT\fP to \fBVPC\fP . To change security groups associated with your server\(aqs VPC endpoint after creation, use the Amazon EC2 \fI\%ModifyVpcEndpoint\fP API.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AddressAllocationIds=string,string,SubnetIds=string,string,VpcEndpointId=string,VpcId=string,SecurityGroupIds=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AddressAllocationIds": ["string", ...],
+  "SubnetIds": ["string", ...],
+  "VpcEndpointId": "string",
+  "VpcId": "string",
+  "SecurityGroupIds": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-endpoint\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of endpoint that you want your server to use. You can choose to make your server\(aqs endpoint publicly accessible (PUBLIC) or host it inside your VPC. With an endpoint that is hosted in a VPC, you can restrict access to your server and resources only within your VPC or choose to make it internet facing by attaching Elastic IP addresses directly to it.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+After March 31, 2021, you won\(aqt be able to create a server using \fBEndpointType=VPC_ENDPOINT\fP in your AWS account if your account hasn\(aqt already done so before March 31, 2021. If you have already created servers with \fBEndpointType=VPC_ENDPOINT\fP in your AWS account on or before March 31, 2021, you will not be affected. After this date, use \fBEndpointType\fP =\(ga\(gaVPC\(ga\(ga .
+.sp
+For more information, see \fI\%https://docs.aws.amazon.com/transfer/latest/userguide/create\-server\-in\-vpc.html#deprecate\-vpc\-endpoint\fP\&.
+.sp
+It is recommended that you use \fBVPC\fP as the \fBEndpointType\fP . With this endpoint type, you have the option to directly associate up to three Elastic IPv4 addresses (BYO IP included) with your server\(aqs endpoint and use VPC security groups to restrict traffic by the client\(aqs public IP address. This is not possible with \fBEndpointType\fP set to \fBVPC_ENDPOINT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBPUBLIC\fP
+.IP \(bu 2
+\fBVPC\fP
+.IP \(bu 2
+\fBVPC_ENDPOINT\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-host\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The RSA private key as generated by the \fBssh\-keygen \-N "" \-m PEM \-f my\-new\-server\-key\fP command.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you aren\(aqt planning to migrate existing users from an existing SFTP\-enabled server to a new server, don\(aqt update the host key. Accidentally changing a server\(aqs host key can be disruptive.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Change the host key for your SFTP\-enabled server\fP in the \fIAWS Transfer Family User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-identity\-provider\-details\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Required when \fBIdentityProviderType\fP is set to \fBAWS_DIRECTORY_SERVICE\fP or \fBAPI_GATEWAY\fP . Accepts an array containing all of the information required to use a directory in \fBAWS_DIRECTORY_SERVICE\fP or invoke a customer\-supplied authentication API, including the API Gateway URL. Not required when \fBIdentityProviderType\fP is set to \fBSERVICE_MANAGED\fP .
+.sp
+Url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the location of the service endpoint used to authenticate users.
+.UNINDENT
+.UNINDENT
+.sp
+InvocationRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the type of \fBInvocationRole\fP used to authenticate the user account.
+.UNINDENT
+.UNINDENT
+.sp
+DirectoryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the AWS Directory Service directory that you want to stop sharing.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Url=string,InvocationRole=string,DirectoryId=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Url": "string",
+  "InvocationRole": "string",
+  "DirectoryId": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-identity\-provider\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the mode of authentication for a server. The default value is \fBSERVICE_MANAGED\fP , which allows you to store and access user credentials within the AWS Transfer Family service. Use \fBAWS_DIRECTORY_SERVICE\fP to provide access to Active Directory groups in AWS Managed Active Directory or Microsoft Active Directory in your on\-premises environment or in AWS using AD Connectors. This option also requires you to provide a Directory ID using the \fBIdentityProviderDetails\fP parameter. Use the \fBAPI_GATEWAY\fP value to integrate with an identity provider of your choosing. The \fBAPI_GATEWAY\fP setting requires you to provide an API Gateway endpoint URL to call for authentication using the \fBIdentityProviderDetails\fP parameter.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSERVICE_MANAGED\fP
+.IP \(bu 2
+\fBAPI_GATEWAY\fP
+.IP \(bu 2
+\fBAWS_DIRECTORY_SERVICE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-logging\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Allows the service to write your users\(aq activity to your Amazon CloudWatch logs for monitoring and auditing purposes.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-protocols\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the file transfer protocol or protocols over which your file transfer protocol client can connect to your server\(aqs endpoint. The available protocols are:
+.INDENT 0.0
+.IP \(bu 2
+\fBSFTP\fP (Secure Shell (SSH) File Transfer Protocol): File transfer over SSH
+.IP \(bu 2
+\fBFTPS\fP (File Transfer Protocol Secure): File transfer with TLS encryption
+.IP \(bu 2
+\fBFTP\fP (File Transfer Protocol): Unencrypted file transfer
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you select \fBFTPS\fP , you must choose a certificate stored in AWS Certificate Manager (ACM) which will be used to identify your server when clients connect to it over FTPS.
+.sp
+If \fBProtocol\fP includes either \fBFTP\fP or \fBFTPS\fP , then the \fBEndpointType\fP must be \fBVPC\fP and the \fBIdentityProviderType\fP must be \fBAWS_DIRECTORY_SERVICE\fP or \fBAPI_GATEWAY\fP .
+.sp
+If \fBProtocol\fP includes \fBFTP\fP , then \fBAddressAllocationIds\fP cannot be associated.
+.sp
+If \fBProtocol\fP is set only to \fBSFTP\fP , the \fBEndpointType\fP can be set to \fBPUBLIC\fP and the \fBIdentityProviderType\fP can be set to \fBSERVICE_MANAGED\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  SFTP
+  FTP
+  FTPS
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-policy\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the security policy that is attached to the server.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Key\-value pairs that can be used to group and search for servers.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Creates a key\-value pair for a specific resource. Tags are metadata that you can use to search for and group a resource for various purposes. You can apply tags to servers, users, and roles. A tag key can take more than one value. For example, to group servers for accounting purposes, you might create a tag called \fBGroup\fP and assign the values \fBResearch\fP and \fBAccounting\fP to that group.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name assigned to the tag that you create.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains one or more values that you assigned to the key name you create.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ServerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The service\-assigned ID of the server that is created.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

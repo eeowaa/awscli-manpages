@@ -1,0 +1,583 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-DATA-BATCH-EXECUTE-STATEMENT" "a" "" ""
+.SH NAME
+rds-data-batch-execute-statement \- Runs a batch SQL statement over an array of data
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Runs a batch SQL statement over an array of data.
+.sp
+You can run bulk update and insert operations for multiple records using a DML statement with different parameter sets. Bulk operations can provide a significant performance improvement over individual insert and update operations.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If a call isn\(aqt part of a transaction because it doesn\(aqt include the \fBtransactionID\fP parameter, changes that result from the call are committed automatically.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  batch\-execute\-statement
+[\-\-database <value>]
+[\-\-parameter\-sets <value>]
+\-\-resource\-arn <value>
+[\-\-schema <value>]
+\-\-secret\-arn <value>
+\-\-sql <value>
+[\-\-transaction\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-database\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parameter\-sets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The parameter set for the batch operation.
+.sp
+The SQL statement is executed as many times as the number of parameter sets provided. To execute a SQL statement with no parameters, use one of the following options:
+.INDENT 0.0
+.IP \(bu 2
+Specify one or more empty parameter sets.
+.IP \(bu 2
+Use the \fBExecuteStatement\fP operation instead of the \fBBatchExecuteStatement\fP operation.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Array parameters are not supported.
+.UNINDENT
+.UNINDENT
+.sp
+(list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A parameter used in a SQL statement.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+typeHint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A hint that specifies the correct object type for data type mapping. Possible values are as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBDATE\fP \- The corresponding \fBString\fP parameter value is sent as an object of \fBDATE\fP type to the database. The accepted format is \fBYYYY\-MM\-DD\fP .
+.IP \(bu 2
+\fBDECIMAL\fP \- The corresponding \fBString\fP parameter value is sent as an object of \fBDECIMAL\fP type to the database.
+.IP \(bu 2
+\fBJSON\fP \- The corresponding \fBString\fP parameter value is sent as an object of \fBJSON\fP type to the database.
+.IP \(bu 2
+\fBTIME\fP \- The corresponding \fBString\fP parameter value is sent as an object of \fBTIME\fP type to the database. The accepted format is \fBHH:MM:SS[.FFF]\fP .
+.IP \(bu 2
+\fBTIMESTAMP\fP \- The corresponding \fBString\fP parameter value is sent as an object of \fBTIMESTAMP\fP type to the database. The accepted format is \fBYYYY\-MM\-DD HH:MM:SS[.FFF]\fP .
+.IP \(bu 2
+\fBUUID\fP \- The corresponding \fBString\fP parameter value is sent as an object of \fBUUID\fP type to the database.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value of the parameter.
+.sp
+arrayValue \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An array of values.
+.sp
+arrayValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of arrays.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains an array.
+.sp
+arrayValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of arrays.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+booleanValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of Boolean values.
+.sp
+(boolean)
+.UNINDENT
+.UNINDENT
+.sp
+doubleValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of integers.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+longValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of floating point numbers.
+.sp
+(long)
+.UNINDENT
+.UNINDENT
+.sp
+stringValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+booleanValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of Boolean values.
+.sp
+(boolean)
+.UNINDENT
+.UNINDENT
+.sp
+doubleValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of integers.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+longValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of floating point numbers.
+.sp
+(long)
+.UNINDENT
+.UNINDENT
+.sp
+stringValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+blobValue \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+A value of BLOB data type.
+.UNINDENT
+.UNINDENT
+.sp
+booleanValue \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value of Boolean data type.
+.UNINDENT
+.UNINDENT
+.sp
+doubleValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+A value of double data type.
+.UNINDENT
+.UNINDENT
+.sp
+isNull \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A NULL value.
+.UNINDENT
+.UNINDENT
+.sp
+longValue \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A value of long data type.
+.UNINDENT
+.UNINDENT
+.sp
+stringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value of string data type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  [
+    {
+      "name": "string",
+      "typeHint": "JSON"|"UUID"|"TIMESTAMP"|"DATE"|"TIME"|"DECIMAL",
+      "value": {
+        "arrayValue": {
+          "arrayValues": [
+            {
+              "arrayValues": [
+                { ... recursive ... }
+                ...
+              ],
+              "booleanValues": [true|false, ...],
+              "doubleValues": [double, ...],
+              "longValues": [long, ...],
+              "stringValues": ["string", ...]
+            }
+            ...
+          ],
+          "booleanValues": [true|false, ...],
+          "doubleValues": [double, ...],
+          "longValues": [long, ...],
+          "stringValues": ["string", ...]
+        },
+        "blobValue": blob,
+        "booleanValue": true|false,
+        "doubleValue": double,
+        "isNull": true|false,
+        "longValue": long,
+        "stringValue": "string"
+      }
+    }
+    ...
+  ]
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Aurora Serverless DB cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schema\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database schema.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-secret\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or ARN of the secret that enables access to the DB cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sql\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The SQL statement to run.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-transaction\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of a transaction that was started by using the \fBBeginTransaction\fP operation. Specify the transaction ID of the transaction that you want to include the SQL statement in.
+.sp
+If the SQL statement is not part of a transaction, don\(aqt set this parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo execute a batch SQL statement\fP
+.sp
+The following \fBbatch\-execute\-statement\fP example executes a batch SQL statement over an array of data with a parameter set.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds\-data batch\-execute\-statement \e
+    \-\-resource\-arn "arn:aws:rds:us\-west\-2:123456789012:cluster:mydbcluster" \e
+    \-\-database "mydb" \e
+    \-\-secret\-arn "arn:aws:secretsmanager:us\-west\-2:123456789012:secret:mysecret" \e
+    \-\-sql "insert into mytable values (:id, :val)" \e
+    \-\-parameter\-sets "[[{\e"name\e": \e"id\e", \e"value\e": {\e"longValue\e": 1}},{\e"name\e": \e"val\e", \e"value\e": {\e"stringValue\e": \e"ValueOne\e"}}],
+        [{\e"name\e": \e"id\e", \e"value\e": {\e"longValue\e": 2}},{\e"name\e": \e"val\e", \e"value\e": {\e"stringValue\e": \e"ValueTwo\e"}}],
+        [{\e"name\e": \e"id\e", \e"value\e": {\e"longValue\e": 3}},{\e"name\e": \e"val\e", \e"value\e": {\e"stringValue\e": \e"ValueThree\e"}}]]"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Using the Data API for Aurora Serverless\fP in the \fIAmazon RDS User Guide\fP\&.
+.SH OUTPUT
+.sp
+updateResults \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The execution results of each batch entry.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The response elements represent the results of an update.
+.sp
+generatedFields \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Values for fields generated during the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains a value.
+.sp
+arrayValue \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An array of values.
+.sp
+arrayValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of arrays.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains an array.
+.sp
+arrayValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of arrays.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+booleanValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of Boolean values.
+.sp
+(boolean)
+.UNINDENT
+.UNINDENT
+.sp
+doubleValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of integers.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+longValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of floating point numbers.
+.sp
+(long)
+.UNINDENT
+.UNINDENT
+.sp
+stringValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+booleanValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of Boolean values.
+.sp
+(boolean)
+.UNINDENT
+.UNINDENT
+.sp
+doubleValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of integers.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+longValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of floating point numbers.
+.sp
+(long)
+.UNINDENT
+.UNINDENT
+.sp
+stringValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+blobValue \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+A value of BLOB data type.
+.UNINDENT
+.UNINDENT
+.sp
+booleanValue \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value of Boolean data type.
+.UNINDENT
+.UNINDENT
+.sp
+doubleValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+A value of double data type.
+.UNINDENT
+.UNINDENT
+.sp
+isNull \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A NULL value.
+.UNINDENT
+.UNINDENT
+.sp
+longValue \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A value of long data type.
+.UNINDENT
+.UNINDENT
+.sp
+stringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value of string data type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

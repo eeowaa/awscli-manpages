@@ -1,0 +1,272 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESIS-PUT-RECORDS" "a" "" ""
+.SH NAME
+kinesis-put-records \- Writes multiple data records into a Kinesis data stream in a single call (also referred to as a PutRecords request)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Writes multiple data records into a Kinesis data stream in a single call (also referred to as a \fBPutRecords\fP request). Use this operation to send data into the stream for data ingestion and processing.
+.sp
+Each \fBPutRecords\fP request can support up to 500 records. Each record in the request can be as large as 1 MiB, up to a limit of 5 MiB for the entire request, including partition keys. Each shard can support writes up to 1,000 records per second, up to a maximum data write total of 1 MiB per second.
+.sp
+You must specify the name of the stream that captures, stores, and transports the data; and an array of request \fBRecords\fP , with each record in the array requiring a partition key and data blob. The record size limit applies to the total size of the partition key and data blob.
+.sp
+The data blob can be any type of data; for example, a segment from a log file, geographic/location data, website clickstream data, and so on.
+.sp
+The partition key is used by Kinesis Data Streams as input to a hash function that maps the partition key and associated data to a specific shard. An MD5 hash function is used to map partition keys to 128\-bit integer values and to map associated data records to shards. As a result of this hashing mechanism, all data records with the same partition key map to the same shard within the stream. For more information, see \fI\%Adding Data to a Stream\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP .
+.sp
+Each record in the \fBRecords\fP array may include an optional parameter, \fBExplicitHashKey\fP , which overrides the partition key to shard mapping. This parameter allows a data producer to determine explicitly the shard where the record is stored. For more information, see \fI\%Adding Multiple Records with PutRecords\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP .
+.sp
+The \fBPutRecords\fP response includes an array of response \fBRecords\fP . Each record in the response array directly correlates with a record in the request array using natural ordering, from the top to the bottom of the request and response. The response \fBRecords\fP array always includes the same number of records as the request array.
+.sp
+The response \fBRecords\fP array includes both successfully and unsuccessfully processed records. Kinesis Data Streams attempts to process all records in each \fBPutRecords\fP request. A single record failure does not stop the processing of subsequent records. As a result, PutRecords doesn\(aqt guarantee the ordering of records. If you need to read records in the same order they are written to the stream, use  PutRecord instead of \fBPutRecords\fP , and write to the same shard.
+.sp
+A successfully processed record includes \fBShardId\fP and \fBSequenceNumber\fP values. The \fBShardId\fP parameter identifies the shard in the stream where the record is stored. The \fBSequenceNumber\fP parameter is an identifier assigned to the put record, unique to all records in the stream.
+.sp
+An unsuccessfully processed record includes \fBErrorCode\fP and \fBErrorMessage\fP values. \fBErrorCode\fP reflects the type of error and can be one of the following values: \fBProvisionedThroughputExceededException\fP or \fBInternalFailure\fP . \fBErrorMessage\fP provides more detailed information about the \fBProvisionedThroughputExceededException\fP exception including the account ID, stream name, and shard ID of the record that was throttled. For more information about partially successful responses, see \fI\%Adding Multiple Records with PutRecords\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+After you write a record to a stream, you cannot modify that record or its order within the stream.
+.UNINDENT
+.UNINDENT
+.sp
+By default, data records are accessible for 24 hours from the time that they are added to a stream. You can use  IncreaseStreamRetentionPeriod or  DecreaseStreamRetentionPeriod to modify this retention period.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-records
+\-\-records <value>
+\-\-stream\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-records\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The records associated with the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the output for \fBPutRecords\fP .
+.sp
+Data \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The data blob to put into the record, which is base64\-encoded when the blob is serialized. When the data blob (the payload before base64\-encoding) is added to the partition key size, the total size must not exceed the maximum record size (1 MiB).
+.UNINDENT
+.UNINDENT
+.sp
+ExplicitHashKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The hash value used to determine explicitly the shard that the data record is assigned to by overriding the partition key hash.
+.UNINDENT
+.UNINDENT
+.sp
+PartitionKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines which shard in the stream the data record is assigned to. Partition keys are Unicode strings with a maximum length limit of 256 characters for each key. Amazon Kinesis Data Streams uses the partition key as input to a hash function that maps the partition key and associated data to a specific shard. Specifically, an MD5 hash function is used to map partition keys to 128\-bit integer values and to map associated data records to shards. As a result of this hashing mechanism, all data records with the same partition key map to the same shard within the stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Data=blob,ExplicitHashKey=string,PartitionKey=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Data": blob,
+    "ExplicitHashKey": "string",
+    "PartitionKey": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The stream name associated with the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo write multiple records into a data stream\fP
+.sp
+The following \fBput\-records\fP example writes a data record using the specified partition key and another data record using a different partition key in a single call.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kinesis put\-records \e
+    \-\-stream\-name samplestream \e
+    \-\-records Data=blob1,PartitionKey=partitionkey1 Data=blob2,PartitionKey=partitionkey2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "FailedRecordCount": 0,
+    "Records": [
+        {
+            "SequenceNumber": "49600883331171471519674795588238531498465399900093808706",
+            "ShardId": "shardId\-000000000004"
+        },
+        {
+            "SequenceNumber": "49600902273357540915989931256902715169698037101720764562",
+            "ShardId": "shardId\-000000000009"
+        }
+    ],
+    "EncryptionType": "KMS"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Developing Producers Using the Amazon Kinesis Data Streams API with the AWS SDK for Java\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+FailedRecordCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of unsuccessfully processed records in a \fBPutRecords\fP request.
+.UNINDENT
+.UNINDENT
+.sp
+Records \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of successfully and unsuccessfully processed record results, correlated with the request by natural ordering. A record that is successfully added to a stream includes \fBSequenceNumber\fP and \fBShardId\fP in the result. A record that fails to be added to a stream includes \fBErrorCode\fP and \fBErrorMessage\fP in the result.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the result of an individual record from a \fBPutRecords\fP request. A record that is successfully added to a stream includes \fBSequenceNumber\fP and \fBShardId\fP in the result. A record that fails to be added to the stream includes \fBErrorCode\fP and \fBErrorMessage\fP in the result.
+.sp
+SequenceNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The sequence number for an individual record result.
+.UNINDENT
+.UNINDENT
+.sp
+ShardId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The shard ID for an individual record result.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code for an individual record result. \fBErrorCodes\fP can be either \fBProvisionedThroughputExceededException\fP or \fBInternalFailure\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message for an individual record result. An \fBErrorCode\fP value of \fBProvisionedThroughputExceededException\fP has an error message that includes the account ID, stream name, and shard ID. An \fBErrorCode\fP value of \fBInternalFailure\fP has the error message \fB"Internal Service Failure"\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The encryption type used on the records. This parameter can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP : Do not encrypt the records.
+.IP \(bu 2
+\fBKMS\fP : Use server\-side encryption on the records using a customer\-managed AWS KMS key.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,157 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "QUICKSIGHT-DESCRIBE-ACCOUNT-CUSTOMIZATION" "a" "" ""
+.SH NAME
+quicksight-describe-account-customization \- Describes the customizations associated with the provided AWS account and Amazon QuickSight namespace in an AWS Region
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes the customizations associated with the provided AWS account and Amazon QuickSight namespace in an AWS Region. The QuickSight console evaluates which customizations to apply by running this API operation with the \fBResolved\fP flag included.
+.sp
+To determine what customizations display when you run this command, it can help to visualize the relationship of the entities involved.
+.INDENT 0.0
+.IP \(bu 2
+\fBAWS Account\fP \- The AWS account exists at the top of the hierarchy. It has the potential to use all of the AWS Regions and AWS Services. When you subscribe to QuickSight, you choose one AWS Region to use as your home Region. That\(aqs where your free SPICE capacity is located. You can use QuickSight in any supported AWS Region.
+.IP \(bu 2
+\fBAWS Region\fP \- In each AWS Region where you sign in to QuickSight at least once, QuickSight acts as a separate instance of the same service. If you have a user directory, it resides in us\-east\-1, which is the US East (N. Virginia). Generally speaking, these users have access to QuickSight in any AWS Region, unless they are constrained to a namespace.  To run the command in a different AWS Region, you change your Region settings. If you\(aqre using the AWS CLI, you can use one of the following options:
+.INDENT 2.0
+.IP \(bu 2
+Use \fI\%command line options\fP .
+.IP \(bu 2
+Use \fI\%named profiles\fP .
+.IP \(bu 2
+Run \fBaws configure\fP to change your default AWS Region. Use Enter to key the same settings for your keys. For more information, see \fI\%Configuring the AWS CLI\fP .
+.UNINDENT
+.IP \(bu 2
+\fBNamespace\fP \- A QuickSight namespace is a partition that contains users and assets (data sources, datasets, dashboards, and so on). To access assets that are in a specific namespace, users and groups must also be part of the same namespace. People who share a namespace are completely isolated from users and assets in other namespaces, even if they are in the same AWS account and AWS Region.
+.IP \(bu 2
+\fBApplied customizations\fP \- Within an AWS Region, a set of QuickSight customizations can apply to an AWS account or to a namespace. Settings that you apply to a namespace override settings that you apply to an AWS account. All settings are isolated to a single AWS Region. To apply them in other AWS Regions, run the \fBCreateAccountCustomization\fP command in each AWS Region where you want to apply the same customizations.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-account\-customization
+\-\-aws\-account\-id <value>
+[\-\-namespace <value>]
+[\-\-resolved | \-\-no\-resolved]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-aws\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for the AWS account that you want to describe QuickSight customizations for.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-namespace\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The QuickSight namespace that you want to describe QuickSight customizations for.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resolved\fP | \fB\-\-no\-resolved\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+The \fBResolved\fP flag works with the other parameters to determine which view of QuickSight customizations is returned. You can add this flag to your command to use the same view that QuickSight uses to identify which customizations to apply to the console. Omit this flag, or set it to \fBno\-resolved\fP , to reveal customizations that are configured at different levels.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the customization that\(aqs associated with this AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+AwsAccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for the AWS account that you\(aqre describing.
+.UNINDENT
+.UNINDENT
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The QuickSight namespace that you\(aqre describing.
+.UNINDENT
+.UNINDENT
+.sp
+AccountCustomization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The QuickSight customizations that exist in the current AWS Region.
+.sp
+DefaultTheme \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The default theme for this QuickSight subscription.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RequestId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS request ID for this operation.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The HTTP status of the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

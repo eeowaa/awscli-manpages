@@ -1,0 +1,366 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDTRAIL-LOOKUP-EVENTS" "a" "" ""
+.SH NAME
+cloudtrail-lookup-events \- Looks up %management events or %CloudTrail Insights events that are captured by CloudTrail
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Looks up \fI\%management events\fP or \fI\%CloudTrail Insights events\fP that are captured by CloudTrail. You can look up events that occurred in a region within the last 90 days. Lookup supports the following attributes for management events:
+.INDENT 0.0
+.IP \(bu 2
+AWS access key
+.IP \(bu 2
+Event ID
+.IP \(bu 2
+Event name
+.IP \(bu 2
+Event source
+.IP \(bu 2
+Read only
+.IP \(bu 2
+Resource name
+.IP \(bu 2
+Resource type
+.IP \(bu 2
+User name
+.UNINDENT
+.sp
+Lookup supports the following attributes for Insights events:
+.INDENT 0.0
+.IP \(bu 2
+Event ID
+.IP \(bu 2
+Event name
+.IP \(bu 2
+Event source
+.UNINDENT
+.sp
+All attributes are optional. The default number of results returned is 50, with a maximum of 50 possible. The response includes a token that you can use to get the next page of results.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+The rate of lookup requests is limited to two per second, per account, per region. If this limit is exceeded, a throttling error occurs.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlookup\-events\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBEvents\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  lookup\-events
+[\-\-lookup\-attributes <value>]
+[\-\-start\-time <value>]
+[\-\-end\-time <value>]
+[\-\-event\-category <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-lookup\-attributes\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains a list of lookup attributes. Currently the list can contain only one item.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an attribute and value that filter the events returned.
+.sp
+AttributeKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an attribute on which to filter the events returned.
+.UNINDENT
+.UNINDENT
+.sp
+AttributeValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a value for the specified AttributeKey.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AttributeKey=string,AttributeValue=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "AttributeKey": "EventId"|"EventName"|"ReadOnly"|"Username"|"ResourceType"|"ResourceName"|"EventSource"|"AccessKeyId",
+    "AttributeValue": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies that only events that occur after or at the specified time are returned. If the specified start time is after the specified end time, an error is returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies that only events that occur before or at the specified time are returned. If the specified end time is before the specified start time, an error is returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-event\-category\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the event category. If you do not specify an event category, events of the category are not returned in the response. For example, if you do not specify \fBinsight\fP as the value of \fBEventCategory\fP , no Insights events are returned.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBinsight\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo look up events for a trail\fP
+.sp
+The following \fBlookup\-events\fP command looks up API activity events by the attribute \fBEventName\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudtrail lookup\-events \-\-lookup\-attributes AttributeKey=EventName,AttributeValue=ConsoleLogin
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Events": [
+     {
+         "EventId": "654ccbc0\-ba0d\-486a\-9076\-dbf7274677a7",
+         "Username": "my\-session\-name",
+         "EventTime": 1453844532.0,
+         "CloudTrailEvent": "{\e"eventVersion\e":\e"1.02\e",\e"userIdentity\e":{\e"type\e":\e"AssumedRole\e",\e"principalId\e":\e"AROAJIKPFTA72SWU4L7T4:my\-session\-name\e",\e"arn\e":\e"arn:aws:sts::123456789012:assumed\-role/my\-role/my\-session\-name\e",\e"accountId\e":\e"123456789012\e",\e"sessionContext\e":{\e"attributes\e":{\e"mfaAuthenticated\e":\e"false\e",\e"creationDate\e":\e"2016\-01\-26T21:42:12Z\e"},\e"sessionIssuer\e":{\e"type\e":\e"Role\e",\e"principalId\e":\e"AROAJIKPFTA72SWU4L7T4\e",\e"arn\e":\e"arn:aws:iam::123456789012:role/my\-role\e",\e"accountId\e":\e"123456789012\e",\e"userName\e":\e"my\-role\e"}}},\e"eventTime\e":\e"2016\-01\-26T21:42:12Z\e",\e"eventSource\e":\e"signin.amazonaws.com\e",\e"eventName\e":\e"ConsoleLogin\e",\e"awsRegion\e":\e"us\-east\-1\e",\e"sourceIPAddress\e":\e"72.21.198.70\e",\e"userAgent\e":\e"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36\e",\e"requestParameters\e":null,\e"responseElements\e":{\e"ConsoleLogin\e":\e"Success\e"},\e"additionalEventData\e":{\e"MobileVersion\e":\e"No\e",\e"MFAUsed\e":\e"No\e"},\e"eventID\e":\e"654ccbc0\-ba0d\-486a\-9076\-dbf7274677a7\e",\e"eventType\e":\e"AwsConsoleSignIn\e",\e"recipientAccountId\e":\e"123456789012\e"}",
+         "EventName": "ConsoleLogin",
+         "Resources": []
+     }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Events \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of events returned based on the lookup attributes specified and the CloudTrail event. The events list is sorted by time. The most recent event is listed first.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about an event that was returned by a lookup request. The result includes a representation of a CloudTrail event.
+.sp
+EventId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The CloudTrail ID of the event returned.
+.UNINDENT
+.UNINDENT
+.sp
+EventName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the event returned.
+.UNINDENT
+.UNINDENT
+.sp
+ReadOnly \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about whether the event is a write event or a read event.
+.UNINDENT
+.UNINDENT
+.sp
+AccessKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS access key ID that was used to sign the request. If the request was made with temporary security credentials, this is the access key ID of the temporary credentials.
+.UNINDENT
+.UNINDENT
+.sp
+EventTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time of the event returned.
+.UNINDENT
+.UNINDENT
+.sp
+EventSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS service that the request was made to.
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A user name or role name of the requester that called the API in the event returned.
+.UNINDENT
+.UNINDENT
+.sp
+Resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of resources referenced by the event returned.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type and name of a resource referenced by an event.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of a resource referenced by the event returned. When the resource type cannot be determined, null is returned. Some examples of resource types are: \fBInstance\fP for EC2, \fBTrail\fP for CloudTrail, \fBDBInstance\fP for RDS, and \fBAccessKey\fP for IAM. To learn more about how to look up and filter events by the resource types supported for a service, see \fI\%Filtering CloudTrail Events\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ResourceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the resource referenced by the event returned. These are user\-created names whose values will depend on the environment. For example, the resource name might be "auto\-scaling\-test\-group" for an Auto Scaling Group or "i\-1234567" for an EC2 Instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CloudTrailEvent \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A JSON string that contains a representation of the event returned.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to use to get the next page of results after a previous API call. If the token does not appear, there are no more results to return. The token must be passed in with the same parameters as the previous call. For example, if the original call specified an AttributeKey of \(aqUsername\(aq with a value of \(aqroot\(aq, the call with NextToken should include those same parameters.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

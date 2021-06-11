@@ -1,0 +1,186 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GREENGRASSV2-GET-COMPONENT" "a" "" ""
+.SH NAME
+greengrassv2-get-component \- Gets the recipe for a version of a component
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets the recipe for a version of a component. Core devices can call this operation to identify the artifacts and requirements to install a component.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-component
+[\-\-recipe\-output\-format <value>]
+\-\-arn <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-recipe\-output\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the recipe.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBJSON\fP
+.IP \(bu 2
+\fBYAML\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%ARN\fP of the component version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To download a component\(aqs recipe in YAML format (Linux, macOS, or Unix)\fP
+.sp
+The following \fBget\-component\fP example downloads a Hello World component\(aqs recipe to a file in YAML format. This command does the following:
+.INDENT 0.0
+.IP 1. 3
+Uses the \fB\-\-output\fP and \fB\-\-query\fP parameters to control the command\(aqs output. These parameters extract the recipe blob from the command\(aqs output. For more information about controlling output, see \fI\%Controlling Command Output\fP in the \fIAWS Command Line Interface User Guide\fP\&.
+.IP 2. 3
+Uses the \fBbase64\fP utility. This utility decodes the extracted blob to the original text. The blob that is returned by a successful \fBget\-component\fP command is base64\-encoded text. You must decode this blob to obtain the original text.
+.IP 3. 3
+Saves the decoded text to a file. The final section of the command (\fB> com.example.HelloWorld\-1.0.0.json\fP) saves the decoded text to a file.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrassv2 get\-component \e
+    \-\-arn arn:aws:greengrass:us\-west\-2:123456789012:components:com.example.HelloWorld:versions:1.0.0 \e
+    \-\-recipe\-output\-format YAML \e
+    \-\-query recipe \e
+    \-\-output text | base64 \-\-decode > com.example.HelloWorld\-1.0.0.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Manage components\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP\&.
+.sp
+\fBExample 2: To download a component\(aqs recipe in YAML format (Windows CMD)\fP
+.sp
+The following \fBget\-component\fP example downloads a Hello World component\(aqs recipe to a file in YAML format. This command uses the \fBcertutil\fP utility.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrassv2 get\-component ^
+    \-\-arn arn:aws:greengrass:us\-west\-2:675946970638:components:com.example.HelloWorld:versions:1.0.0 ^
+    \-\-recipe\-output\-format YAML ^
+    \-\-query recipe ^
+    \-\-output text > com.example.HelloWorld\-1.0.0.yaml.b64
+
+certutil \-decode com.example.HelloWorld\-1.0.0.yaml.b64 com.example.HelloWorld\-1.0.0.yaml
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Manage components\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP\&.
+.sp
+\fBExample 3: To download a component\(aqs recipe in YAML format (Windows PowerShell)\fP
+.sp
+The following \fBget\-component\fP example downloads a Hello World component\(aqs recipe to a file in YAML format. This command uses the \fBcertutil\fP utility.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrassv2 get\-component \(ga
+    \-\-arn arn:aws:greengrass:us\-west\-2:675946970638:components:com.example.HelloWorld:versions:1.0.0 \(ga
+    \-\-recipe\-output\-format YAML \(ga
+    \-\-query recipe \(ga
+    \-\-output text > com.example.HelloWorld\-1.0.0.yaml.b64
+
+certutil \-decode com.example.HelloWorld\-1.0.0.yaml.b64 com.example.HelloWorld\-1.0.0.yaml
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Manage components\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+recipeOutputFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the recipe.
+.UNINDENT
+.UNINDENT
+.sp
+recipe \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The recipe of the component version.
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of key\-value pairs that contain metadata for the resource. For more information, see \fI\%Tag your resources\fP in the \fIAWS IoT Greengrass V2 Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

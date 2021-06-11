@@ -1,0 +1,398 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-LIST-MULTIPART-UPLOADS" "a" "" ""
+.SH NAME
+s3api-list-multipart-uploads \- This action lists in-progress multipart uploads
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This action lists in\-progress multipart uploads. An in\-progress multipart upload is a multipart upload that has been initiated using the Initiate Multipart Upload request, but has not yet been completed or aborted.
+.sp
+This action returns at most 1,000 multipart uploads in the response. 1,000 multipart uploads is the maximum number of uploads a response can include, which is also the default value. You can further limit the number of uploads in a response by specifying the \fBmax\-uploads\fP parameter in the response. If additional multipart uploads satisfy the list criteria, the response will contain an \fBIsTruncated\fP element with the value true. To list the additional multipart uploads, use the \fBkey\-marker\fP and \fBupload\-id\-marker\fP request parameters.
+.sp
+In the response, the uploads are sorted by key. If your application has initiated more than one multipart upload using the same object key, then uploads in the response are first sorted by key. Additionally, uploads are sorted in ascending order within each key by the upload initiation time.
+.sp
+For more information on multipart uploads, see \fI\%Uploading Objects Using Multipart Upload\fP .
+.sp
+For information on permissions required to use the multipart upload API, see \fI\%Multipart Upload and Permissions\fP .
+.sp
+The following operations are related to \fBListMultipartUploads\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%CreateMultipartUpload\fP
+.IP \(bu 2
+\fI\%UploadPart\fP
+.IP \(bu 2
+\fI\%CompleteMultipartUpload\fP
+.IP \(bu 2
+\fI\%ListParts\fP
+.IP \(bu 2
+\fI\%AbortMultipartUpload\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-multipart\-uploads\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBUploads\fP, \fBCommonPrefixes\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-multipart\-uploads
+\-\-bucket <value>
+[\-\-delimiter <value>]
+[\-\-encoding\-type <value>]
+[\-\-prefix <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket to which the multipart upload was initiated.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delimiter\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Character you use to group keys.
+.sp
+All keys that contain the same string between the prefix, if specified, and the first occurrence of the delimiter after the prefix are grouped under a single result element, \fBCommonPrefixes\fP . If you don\(aqt specify the prefix parameter, then the substring starts at the beginning of the key. The keys that are grouped under \fBCommonPrefixes\fP result element are not returned elsewhere in the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encoding\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Requests Amazon S3 to encode the object keys in the response and specifies the encoding method to use. An object key may contain any Unicode character; however, XML 1.0 parser cannot parse some characters, such as characters with an ASCII value from 0 to 10. For characters that are not supported in XML 1.0, you can add this parameter to request that Amazon S3 encode the keys in the response.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBurl\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-prefix\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Lists in\-progress uploads only for those keys that begin with the specified prefix. You can use prefixes to separate a bucket into different grouping of keys. (You can think of using prefix to make groups in the same way you\(aqd use a folder in a file system.)
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command lists all of the active multipart uploads for a bucket named \fBmy\-bucket\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api list\-multipart\-uploads \-\-bucket my\-bucket
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Uploads": [
+        {
+            "Initiator": {
+                "DisplayName": "username",
+                "ID": "arn:aws:iam::0123456789012:user/username"
+            },
+            "Initiated": "2015\-06\-02T18:01:30.000Z",
+            "UploadId": "dfRtDYU0WWCCcH43C3WFbkRONycyCpTJJvxu2i5GYkZljF.Yxwh6XG7WfS2vC4to6HiV6Yjlx.cph0gtNBtJ8P3URCSbB7rjxI5iEwVDmgaXZOGgkk5nVTW16HOQ5l0R",
+            "StorageClass": "STANDARD",
+            "Key": "multipart/01",
+            "Owner": {
+                "DisplayName": "aws\-account\-name",
+                "ID": "100719349fc3b6dcd7c820a124bf7aecd408092c3d7b51b38494939801fc248b"
+            }
+        }
+    ],
+    "CommonPrefixes": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+In progress multipart uploads incur storage costs in Amazon S3. Complete or abort an active multipart upload to remove its parts from your account.
+.SH OUTPUT
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket to which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+KeyMarker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key at or after which the listing began.
+.UNINDENT
+.UNINDENT
+.sp
+UploadIdMarker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Upload ID after which listing began.
+.UNINDENT
+.UNINDENT
+.sp
+NextKeyMarker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When a list is truncated, this element specifies the value that should be used for the key\-marker request parameter in a subsequent request.
+.UNINDENT
+.UNINDENT
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When a prefix is provided in the request, this field contains the specified prefix. The result contains only keys starting with the specified prefix.
+.UNINDENT
+.UNINDENT
+.sp
+Delimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the delimiter you specified in the request. If you don\(aqt specify a delimiter in your request, this element is absent from the response.
+.UNINDENT
+.UNINDENT
+.sp
+NextUploadIdMarker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When a list is truncated, this element specifies the value that should be used for the \fBupload\-id\-marker\fP request parameter in a subsequent request.
+.UNINDENT
+.UNINDENT
+.sp
+MaxUploads \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Maximum number of multipart uploads that could have been included in the response.
+.UNINDENT
+.UNINDENT
+.sp
+IsTruncated \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the returned list of multipart uploads is truncated. A value of true indicates that the list was truncated. The list can be truncated if the number of multipart uploads exceeds the limit allowed or specified by max uploads.
+.UNINDENT
+.UNINDENT
+.sp
+Uploads \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Container for elements related to a particular multipart upload. A response can contain zero or more \fBUpload\fP elements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for the \fBMultipartUpload\fP for the Amazon S3 object.
+.sp
+UploadId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Upload ID that identifies the multipart upload.
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Key of the object for which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+Initiated \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Date and time at which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The class of storage used to store the object.
+.UNINDENT
+.UNINDENT
+.sp
+Owner \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the owner of the object that is part of the multipart upload.
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Container for the display name of the owner.
+.UNINDENT
+.UNINDENT
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Container for the ID of the owner.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Initiator \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies who initiated the multipart upload.
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the principal is an AWS account, it provides the Canonical User ID. If the principal is an IAM User, it provides a user ARN value.
+.UNINDENT
+.UNINDENT
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Principal.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CommonPrefixes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If you specify a delimiter in the request, then the result returns each distinct key prefix containing the delimiter in a \fBCommonPrefixes\fP element. The distinct key prefixes are returned in the \fBPrefix\fP child element.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for all (if there are any) keys between Prefix and the next occurrence of the string specified by a delimiter. CommonPrefixes lists keys that act like subdirectories in the directory specified by Prefix. For example, if the prefix is notes/ and the delimiter is a slash (/) as in notes/summer/july, the common prefix is notes/summer/.
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Container for the specified common prefix.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EncodingType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Encoding type used by Amazon S3 to encode object keys in the response.
+.sp
+If you specify \fBencoding\-type\fP request parameter, Amazon S3 includes this element in the response, and returns encoded key name values in the following response elements:
+.INDENT 0.0
+.INDENT 3.5
+\fBDelimiter\fP , \fBKeyMarker\fP , \fBPrefix\fP , \fBNextKeyMarker\fP , \fBKey\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

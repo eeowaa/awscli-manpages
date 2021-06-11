@@ -1,0 +1,233 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLOBALACCELERATOR" "a" "" ""
+.SH NAME
+globalaccelerator \- This is the AWS Global Accelerator API Reference 
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This is the \fIAWS Global Accelerator API Reference\fP . This guide is for developers who need detailed information about AWS Global Accelerator API actions, data types, and errors. For more information about Global Accelerator features, see the \fI\%AWS Global Accelerator Developer Guide\fP .
+.sp
+AWS Global Accelerator is a service in which you create \fIaccelerators\fP to improve the performance of your applications for local and global users. Depending on the type of accelerator you choose, you can gain additional benefits.
+.INDENT 0.0
+.IP \(bu 2
+By using a standard accelerator, you can improve availability of your internet applications that are used by a global audience. With a standard accelerator, Global Accelerator directs traffic to optimal endpoints over the AWS global network.
+.IP \(bu 2
+For other scenarios, you might choose a custom routing accelerator. With a custom routing accelerator, you can use application logic to directly map one or more users to a specific endpoint among many endpoints.
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Global Accelerator is a global service that supports endpoints in multiple AWS Regions but you must specify the US West (Oregon) Region to create or update accelerators.
+.UNINDENT
+.UNINDENT
+.sp
+By default, Global Accelerator provides you with two static IP addresses that you associate with your accelerator. With a standard accelerator, instead of using the IP addresses that Global Accelerator provides, you can configure these entry points to be IPv4 addresses from your own IP address ranges that you bring to Global Accelerator. The static IP addresses are anycast from the AWS edge network. For a standard accelerator, they distribute incoming application traffic across multiple endpoint resources in multiple AWS Regions, which increases the availability of your applications. Endpoints for standard accelerators can be Network Load Balancers, Application Load Balancers, Amazon EC2 instances, or Elastic IP addresses that are located in one AWS Region or multiple Regions. For custom routing accelerators, you map traffic that arrives to the static IP addresses to specific Amazon EC2 servers in endpoints that are virtual private cloud (VPC) subnets.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+The static IP addresses remain assigned to your accelerator for as long as it exists, even if you disable the accelerator and it no longer accepts or routes traffic. However, when you \fIdelete\fP an accelerator, you lose the static IP addresses that are assigned to it, so you can no longer route traffic by using them. You can use IAM policies like tag\-based permissions with Global Accelerator to limit the users who have permissions to delete an accelerator. For more information, see \fI\%Tag\-based policies\fP .
+.UNINDENT
+.UNINDENT
+.sp
+For standard accelerators, Global Accelerator uses the AWS global network to route traffic to the optimal regional endpoint based on health, client location, and policies that you configure. The service reacts instantly to changes in health or configuration to ensure that internet traffic from clients is always directed to healthy endpoints.
+.sp
+For a list of the AWS Regions where Global Accelerator and other services are currently supported, see the \fI\%AWS Region Table\fP .
+.sp
+AWS Global Accelerator includes the following components:
+.INDENT 0.0
+.INDENT 3.5
+Static IP addresses
+.UNINDENT
+.UNINDENT
+.sp
+Global Accelerator provides you with a set of two static IP addresses that are anycast from the AWS edge network. If you bring your own IP address range to AWS (BYOIP) to use with a standard accelerator, you can instead assign IP addresses from your own pool to use with your accelerator. For more information, see \fI\%Bring your own IP addresses (BYOIP) in AWS Global Accelerator\fP .
+.sp
+The IP addresses serve as single fixed entry points for your clients. If you already have Elastic Load Balancing load balancers, Amazon EC2 instances, or Elastic IP address resources set up for your applications, you can easily add those to a standard accelerator in Global Accelerator. This allows Global Accelerator to use static IP addresses to access the resources.
+.sp
+The static IP addresses remain assigned to your accelerator for as long as it exists, even if you disable the accelerator and it no longer accepts or routes traffic. However, when you \fIdelete\fP an accelerator, you lose the static IP addresses that are assigned to it, so you can no longer route traffic by using them. You can use IAM policies like tag\-based permissions with Global Accelerator to delete an accelerator. For more information, see \fI\%Tag\-based policies\fP .
+.INDENT 0.0
+.INDENT 3.5
+Accelerator
+.UNINDENT
+.UNINDENT
+.sp
+An accelerator directs traffic to endpoints over the AWS global network to improve the performance of your internet applications. Each accelerator includes one or more listeners.
+.sp
+There are two types of accelerators:
+.INDENT 0.0
+.IP \(bu 2
+A \fIstandard\fP accelerator directs traffic to the optimal AWS endpoint based on several factors, including the user’s location, the health of the endpoint, and the endpoint weights that you configure. This improves the availability and performance of your applications. Endpoints can be Network Load Balancers, Application Load Balancers, Amazon EC2 instances, or Elastic IP addresses.
+.IP \(bu 2
+A \fIcustom routing\fP accelerator directs traffic to one of possibly thousands of Amazon EC2 instances running in a single or multiple virtual private clouds (VPCs). With custom routing, listener ports are mapped to statically associate port ranges with VPC subnets, which allows Global Accelerator to determine an EC2 instance IP address at the time of connection. By default, all port mapping destinations in a VPC subnet can\(aqt receive traffic. You can choose to configure all destinations in the subnet to receive traffic, or to specify individual port mappings that can receive traffic.
+.UNINDENT
+.sp
+For more information, see \fI\%Types of accelerators\fP .
+.INDENT 0.0
+.INDENT 3.5
+DNS name
+.UNINDENT
+.UNINDENT
+.sp
+Global Accelerator assigns each accelerator a default Domain Name System (DNS) name, similar to \fBa1234567890abcdef.awsglobalaccelerator.com\fP , that points to the static IP addresses that Global Accelerator assigns to you or that you choose from your own IP address range. Depending on the use case, you can use your accelerator\(aqs static IP addresses or DNS name to route traffic to your accelerator, or set up DNS records to route traffic using your own custom domain name.
+.INDENT 0.0
+.INDENT 3.5
+Network zone
+.UNINDENT
+.UNINDENT
+.sp
+A network zone services the static IP addresses for your accelerator from a unique IP subnet. Similar to an AWS Availability Zone, a network zone is an isolated unit with its own set of physical infrastructure. When you configure an accelerator, by default, Global Accelerator allocates two IPv4 addresses for it. If one IP address from a network zone becomes unavailable due to IP address blocking by certain client networks, or network disruptions, then client applications can retry on the healthy static IP address from the other isolated network zone.
+.INDENT 0.0
+.INDENT 3.5
+Listener
+.UNINDENT
+.UNINDENT
+.sp
+A listener processes inbound connections from clients to Global Accelerator, based on the port (or port range) and protocol (or protocols) that you configure. A listener can be configured for TCP, UDP, or both TCP and UDP protocols. Each listener has one or more endpoint groups associated with it, and traffic is forwarded to endpoints in one of the groups. You associate endpoint groups with listeners by specifying the Regions that you want to distribute traffic to. With a standard accelerator, traffic is distributed to optimal endpoints within the endpoint groups associated with a listener.
+.INDENT 0.0
+.INDENT 3.5
+Endpoint group
+.UNINDENT
+.UNINDENT
+.sp
+Each endpoint group is associated with a specific AWS Region. Endpoint groups include one or more endpoints in the Region. With a standard accelerator, you can increase or reduce the percentage of traffic that would be otherwise directed to an endpoint group by adjusting a setting called a \fItraffic dial\fP . The traffic dial lets you easily do performance testing or blue/green deployment testing, for example, for new releases across different AWS Regions.
+.INDENT 0.0
+.INDENT 3.5
+Endpoint
+.UNINDENT
+.UNINDENT
+.sp
+An endpoint is a resource that Global Accelerator directs traffic to.
+.sp
+Endpoints for standard accelerators can be Network Load Balancers, Application Load Balancers, Amazon EC2 instances, or Elastic IP addresses. An Application Load Balancer endpoint can be internet\-facing or internal. Traffic for standard accelerators is routed to endpoints based on the health of the endpoint along with configuration options that you choose, such as endpoint weights. For each endpoint, you can configure weights, which are numbers that you can use to specify the proportion of traffic to route to each one. This can be useful, for example, to do performance testing within a Region.
+.sp
+Endpoints for custom routing accelerators are virtual private cloud (VPC) subnets with one or many EC2 instances.
+.SH AVAILABLE COMMANDS
+.INDENT 0.0
+.IP \(bu 2
+add\-custom\-routing\-endpoints
+.IP \(bu 2
+advertise\-byoip\-cidr
+.IP \(bu 2
+allow\-custom\-routing\-traffic
+.IP \(bu 2
+create\-accelerator
+.IP \(bu 2
+create\-custom\-routing\-accelerator
+.IP \(bu 2
+create\-custom\-routing\-endpoint\-group
+.IP \(bu 2
+create\-custom\-routing\-listener
+.IP \(bu 2
+create\-endpoint\-group
+.IP \(bu 2
+create\-listener
+.IP \(bu 2
+delete\-accelerator
+.IP \(bu 2
+delete\-custom\-routing\-accelerator
+.IP \(bu 2
+delete\-custom\-routing\-endpoint\-group
+.IP \(bu 2
+delete\-custom\-routing\-listener
+.IP \(bu 2
+delete\-endpoint\-group
+.IP \(bu 2
+delete\-listener
+.IP \(bu 2
+deny\-custom\-routing\-traffic
+.IP \(bu 2
+deprovision\-byoip\-cidr
+.IP \(bu 2
+describe\-accelerator
+.IP \(bu 2
+describe\-accelerator\-attributes
+.IP \(bu 2
+describe\-custom\-routing\-accelerator
+.IP \(bu 2
+describe\-custom\-routing\-accelerator\-attributes
+.IP \(bu 2
+describe\-custom\-routing\-endpoint\-group
+.IP \(bu 2
+describe\-custom\-routing\-listener
+.IP \(bu 2
+describe\-endpoint\-group
+.IP \(bu 2
+describe\-listener
+.IP \(bu 2
+help
+.IP \(bu 2
+list\-accelerators
+.IP \(bu 2
+list\-byoip\-cidrs
+.IP \(bu 2
+list\-custom\-routing\-accelerators
+.IP \(bu 2
+list\-custom\-routing\-endpoint\-groups
+.IP \(bu 2
+list\-custom\-routing\-listeners
+.IP \(bu 2
+list\-custom\-routing\-port\-mappings
+.IP \(bu 2
+list\-custom\-routing\-port\-mappings\-by\-destination
+.IP \(bu 2
+list\-endpoint\-groups
+.IP \(bu 2
+list\-listeners
+.IP \(bu 2
+list\-tags\-for\-resource
+.IP \(bu 2
+provision\-byoip\-cidr
+.IP \(bu 2
+remove\-custom\-routing\-endpoints
+.IP \(bu 2
+tag\-resource
+.IP \(bu 2
+untag\-resource
+.IP \(bu 2
+update\-accelerator
+.IP \(bu 2
+update\-accelerator\-attributes
+.IP \(bu 2
+update\-custom\-routing\-accelerator
+.IP \(bu 2
+update\-custom\-routing\-accelerator\-attributes
+.IP \(bu 2
+update\-custom\-routing\-listener
+.IP \(bu 2
+update\-endpoint\-group
+.IP \(bu 2
+update\-listener
+.IP \(bu 2
+withdraw\-byoip\-cidr
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

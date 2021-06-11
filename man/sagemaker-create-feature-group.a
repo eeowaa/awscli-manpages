@@ -1,0 +1,492 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SAGEMAKER-CREATE-FEATURE-GROUP" "a" "" ""
+.SH NAME
+sagemaker-create-feature-group \- Create a new FeatureGroup 
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Create a new \fBFeatureGroup\fP . A \fBFeatureGroup\fP is a group of \fBFeatures\fP defined in the \fBFeatureStore\fP to describe a \fBRecord\fP .
+.sp
+The \fBFeatureGroup\fP defines the schema and features contained in the FeatureGroup. A \fBFeatureGroup\fP definition is composed of a list of \fBFeatures\fP , a \fBRecordIdentifierFeatureName\fP , an \fBEventTimeFeatureName\fP and configurations for its \fBOnlineStore\fP and \fBOfflineStore\fP . Check \fI\%AWS service quotas\fP to see the \fBFeatureGroup\fP s quota for your AWS account.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must include at least one of \fBOnlineStoreConfig\fP and \fBOfflineStoreConfig\fP to create a \fBFeatureGroup\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-feature\-group
+\-\-feature\-group\-name <value>
+\-\-record\-identifier\-feature\-name <value>
+\-\-event\-time\-feature\-name <value>
+\-\-feature\-definitions <value>
+[\-\-online\-store\-config <value>]
+[\-\-offline\-store\-config <value>]
+[\-\-role\-arn <value>]
+[\-\-description <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-feature\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBFeatureGroup\fP . The name must be unique within an AWS Region in an AWS account. The name:
+.INDENT 0.0
+.IP \(bu 2
+Must start and end with an alphanumeric character.
+.IP \(bu 2
+Can only contain alphanumeric character and hyphens. Spaces are not allowed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-record\-identifier\-feature\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBFeature\fP whose value uniquely identifies a \fBRecord\fP defined in the \fBFeatureStore\fP . Only the latest record per identifier value will be stored in the \fBOnlineStore\fP . \fBRecordIdentifierFeatureName\fP must be one of feature definitions\(aq names.
+.sp
+You use the \fBRecordIdentifierFeatureName\fP to access data in a \fBFeatureStore\fP .
+.sp
+This name:
+.INDENT 0.0
+.IP \(bu 2
+Must start and end with an alphanumeric character.
+.IP \(bu 2
+Can only contains alphanumeric characters, hyphens, underscores. Spaces are not allowed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-event\-time\-feature\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the feature that stores the \fBEventTime\fP of a \fBRecord\fP in a \fBFeatureGroup\fP .
+.sp
+An \fBEventTime\fP is a point in time when a new event occurs that corresponds to the creation or update of a \fBRecord\fP in a \fBFeatureGroup\fP . All \fBRecords\fP in the \fBFeatureGroup\fP must have a corresponding \fBEventTime\fP .
+.sp
+An \fBEventTime\fP can be a \fBString\fP or \fBFractional\fP .
+.INDENT 0.0
+.IP \(bu 2
+\fBFractional\fP : \fBEventTime\fP feature values must be a Unix timestamp in seconds.
+.IP \(bu 2
+\fBString\fP : \fBEventTime\fP feature values must be an ISO\-8601 string in the format. The following formats are supported \fByyyy\-MM\-dd\(aqT\(aqHH:mm:ssZ\fP and \fByyyy\-MM\-dd\(aqT\(aqHH:mm:ss.SSSZ\fP where \fByyyy\fP , \fBMM\fP , and \fBdd\fP represent the year, month, and day respectively and \fBHH\fP , \fBmm\fP , \fBss\fP , and if applicable, \fBSSS\fP represent the hour, month, second and milliseconds respsectively. \fB\(aqT\(aq\fP and \fBZ\fP are constants.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-feature\-definitions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBFeature\fP names and types. \fBName\fP and \fBType\fP is compulsory per \fBFeature\fP .
+.sp
+Valid feature \fBFeatureType\fP s are \fBIntegral\fP , \fBFractional\fP and \fBString\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBFeatureName\fP s cannot be any of the following: \fBis_deleted\fP , \fBwrite_time\fP , \fBapi_invocation_time\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can create up to 2,500 \fBFeatureDefinition\fP s per \fBFeatureGroup\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of features. You must include \fBFeatureName\fP and \fBFeatureType\fP . Valid feature \fBFeatureType\fP s are \fBIntegral\fP , \fBFractional\fP and \fBString\fP .
+.sp
+FeatureName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of a feature. The type must be a string. \fBFeatureName\fP cannot be any of the following: \fBis_deleted\fP , \fBwrite_time\fP , \fBapi_invocation_time\fP .
+.UNINDENT
+.UNINDENT
+.sp
+FeatureType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value type of a feature. Valid values are Integral, Fractional, or String.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FeatureName=string,FeatureType=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "FeatureName": "string",
+    "FeatureType": "Integral"|"Fractional"|"String"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-online\-store\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+You can turn the \fBOnlineStore\fP on or off by specifying \fBTrue\fP for the \fBEnableOnlineStore\fP flag in \fBOnlineStoreConfig\fP ; the default value is \fBFalse\fP .
+.sp
+You can also include an AWS KMS key ID (\fBKMSKeyId\fP ) for at\-rest encryption of the \fBOnlineStore\fP .
+.sp
+SecurityConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use to specify KMS Key ID (\fBKMSKeyId\fP ) for at\-rest encryption of your \fBOnlineStore\fP .
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS Key Management Service (AWS KMS) key that SageMaker Feature Store uses to encrypt the Amazon S3 objects at rest using Amazon S3 server\-side encryption.
+.sp
+The caller (either IAM user or IAM role) of \fBCreateFeatureGroup\fP must have below permissions to the \fBOnlineStore\fP  \fBKmsKeyId\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fB"kms:Encrypt"\fP
+.IP \(bu 2
+\fB"kms:Decrypt"\fP
+.IP \(bu 2
+\fB"kms:DescribeKey"\fP
+.IP \(bu 2
+\fB"kms:CreateGrant"\fP
+.IP \(bu 2
+\fB"kms:RetireGrant"\fP
+.IP \(bu 2
+\fB"kms:ReEncryptFrom"\fP
+.IP \(bu 2
+\fB"kms:ReEncryptTo"\fP
+.IP \(bu 2
+\fB"kms:GenerateDataKey"\fP
+.IP \(bu 2
+\fB"kms:ListAliases"\fP
+.IP \(bu 2
+\fB"kms:ListGrants"\fP
+.IP \(bu 2
+\fB"kms:RevokeGrant"\fP
+.UNINDENT
+.sp
+The caller (either IAM user or IAM role) to all DataPlane operations (\fBPutRecord\fP , \fBGetRecord\fP , \fBDeleteRecord\fP ) must have the following permissions to the \fBKmsKeyId\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fB"kms:Decrypt"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EnableOnlineStore \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Turn \fBOnlineStore\fP off by specifying \fBFalse\fP for the \fBEnableOnlineStore\fP flag. Turn \fBOnlineStore\fP on by specifying \fBTrue\fP for the \fBEnableOnlineStore\fP flag.
+.sp
+The default value is \fBFalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SecurityConfig={KmsKeyId=string},EnableOnlineStore=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SecurityConfig": {
+    "KmsKeyId": "string"
+  },
+  "EnableOnlineStore": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-offline\-store\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use this to configure an \fBOfflineFeatureStore\fP . This parameter allows you to specify:
+.INDENT 0.0
+.IP \(bu 2
+The Amazon Simple Storage Service (Amazon S3) location of an \fBOfflineStore\fP .
+.IP \(bu 2
+A configuration for an AWS Glue or AWS Hive data cataolgue.
+.IP \(bu 2
+An KMS encryption key to encrypt the Amazon S3 location used for \fBOfflineStore\fP .
+.UNINDENT
+.sp
+To learn more about this parameter, see  OfflineStoreConfig .
+.sp
+S3StorageConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Simple Storage (Amazon S3) location of \fBOfflineStore\fP .
+.sp
+S3Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 URI, or location in Amazon S3, of \fBOfflineStore\fP .
+.sp
+S3 URIs have a format similar to the following: \fBs3://example\-bucket/prefix/\fP .
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Key Management Service (KMS) key ID of the key used to encrypt any objects written into the \fBOfflineStore\fP S3 location.
+.sp
+The IAM \fBroleARN\fP that is passed as a parameter to \fBCreateFeatureGroup\fP must have below permissions to the \fBKmsKeyId\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fB"kms:GenerateDataKey"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResolvedOutputS3Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 path where offline records are written.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DisableGlueTableCreation \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to \fBTrue\fP to disable the automatic creation of an AWS Glue table when configuring an \fBOfflineStore\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DataCatalogConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The meta data of the Glue table that is autogenerated when an \fBOfflineStore\fP is created.
+.sp
+TableName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Glue table.
+.UNINDENT
+.UNINDENT
+.sp
+Catalog \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Glue table catalog.
+.UNINDENT
+.UNINDENT
+.sp
+Database \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Glue table database.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3StorageConfig={S3Uri=string,KmsKeyId=string,ResolvedOutputS3Uri=string},DisableGlueTableCreation=boolean,DataCatalogConfig={TableName=string,Catalog=string,Database=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3StorageConfig": {
+    "S3Uri": "string",
+    "KmsKeyId": "string",
+    "ResolvedOutputS3Uri": "string"
+  },
+  "DisableGlueTableCreation": true|false,
+  "DataCatalogConfig": {
+    "TableName": "string",
+    "Catalog": "string",
+    "Database": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM execution role used to persist data into the \fBOfflineStore\fP if an \fBOfflineStoreConfig\fP is provided.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A free\-form description of a \fBFeatureGroup\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Tags used to identify \fBFeatures\fP in each \fBFeatureGroup\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+FeatureGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the \fBFeatureGroup\fP . This is a unique identifier for the feature group.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

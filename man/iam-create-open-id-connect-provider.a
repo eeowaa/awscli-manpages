@@ -1,0 +1,340 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IAM-CREATE-OPEN-ID-CONNECT-PROVIDER" "a" "" ""
+.SH NAME
+iam-create-open-id-connect-provider \- Creates an IAM entity to describe an identity provider (IdP) that supports %OpenID Connect (OIDC) 
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an IAM entity to describe an identity provider (IdP) that supports \fI\%OpenID Connect (OIDC)\fP .
+.sp
+The OIDC provider that you create with this operation can be used as a principal in a role\(aqs trust policy. Such a policy establishes a trust relationship between AWS and the OIDC provider.
+.sp
+If you are using an OIDC identity provider from Google, Facebook, or Amazon Cognito, you don\(aqt need to create a separate IAM identity provider. These OIDC identity providers are already built\-in to AWS and are available for your use. Instead, you can move directly to creating new roles using your identity provider. To learn more, see \fI\%Creating a role for web identity or OpenID connect federation\fP in the \fIIAM User Guide\fP .
+.sp
+When you create the IAM OIDC provider, you specify the following:
+.INDENT 0.0
+.IP \(bu 2
+The URL of the OIDC identity provider (IdP) to trust
+.IP \(bu 2
+A list of client IDs (also known as audiences) that identify the application or applications that are allowed to authenticate using the OIDC provider
+.IP \(bu 2
+A list of thumbprints of one or more server certificates that the IdP uses
+.UNINDENT
+.sp
+You get all of this information from the OIDC IdP that you want to use to access AWS.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The trust for the OIDC provider is derived from the IAM provider that this operation creates. Therefore, it is best to limit access to the  CreateOpenIDConnectProvider operation to highly privileged users.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-open\-id\-connect\-provider
+\-\-url <value>
+[\-\-client\-id\-list <value>]
+\-\-thumbprint\-list <value>
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-url\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of the identity provider. The URL must begin with \fBhttps://\fP and should correspond to the \fBiss\fP claim in the provider\(aqs OpenID Connect ID tokens. Per the OIDC standard, path components are allowed but query parameters are not. Typically the URL consists of only a hostname, like \fBhttps://server.example.org\fP or \fBhttps://example.com\fP .
+.sp
+You cannot register the same provider multiple times in a single AWS account. If you try to submit a URL that has already been used for an OpenID Connect provider in the AWS account, you will get an error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-id\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of client IDs (also known as audiences). When a mobile or web app registers with an OpenID Connect provider, they establish a value that identifies the application. (This is the value that\(aqs sent as the \fBclient_id\fP parameter on OAuth requests.)
+.sp
+You can register multiple client IDs with the same provider. For example, you might have multiple applications that use the same OIDC provider. You cannot register more than 100 client IDs with a single IAM OIDC provider.
+.sp
+There is no defined format for a client ID. The \fBCreateOpenIDConnectProviderRequest\fP operation accepts client IDs up to 255 characters long.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-thumbprint\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of server certificate thumbprints for the OpenID Connect (OIDC) identity provider\(aqs server certificates. Typically this list includes only one entry. However, IAM lets you have up to five thumbprints for an OIDC provider. This lets you maintain multiple thumbprints if the identity provider is rotating certificates.
+.sp
+The server certificate thumbprint is the hex\-encoded SHA\-1 hash value of the X.509 certificate used by the domain where the OpenID Connect provider makes its keys available. It is always a 40\-character string.
+.sp
+You must provide at least one thumbprint when creating an IAM OIDC provider. For example, assume that the OIDC provider is \fBserver.example.com\fP and the provider stores its keys at \fI\%https://keys.server.example.com/openid\-connect\fP\&. In that case, the thumbprint string would be the hex\-encoded SHA\-1 hash value of the certificate used by \fI\%https://keys.server.example.com\fP\&.
+.sp
+For more information about obtaining the OIDC provider\(aqs thumbprint, see \fI\%Obtaining the thumbprint for an OpenID Connect provider\fP in the \fIIAM User Guide\fP .
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+Contains a thumbprint for an identity provider\(aqs server certificate.
+.sp
+The identity provider\(aqs server certificate thumbprint is the hex\-encoded SHA\-1 hash value of the self\-signed X.509 certificate. This thumbprint is used by the domain where the OpenID Connect provider makes its keys available. The thumbprint is always a 40\-character string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags that you want to attach to the new IAM OpenID Connect (OIDC) provider. Each tag consists of a key name and an associated value. For more information about tagging, see \fI\%Tagging IAM resources\fP in the \fIIAM User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If any one of the tags is invalid or if you exceed the allowed maximum number of tags, then the entire request fails and the resource is not created.
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that represents user\-provided metadata that can be associated with an IAM resource. For more information about tagging, see \fI\%Tagging IAM resources\fP in the \fIIAM User Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key name that can be used to look up or retrieve the associated value. For example, \fBDepartment\fP or \fBCost Center\fP are common choices.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value associated with this tag. For example, tags with a key name of \fBDepartment\fP could have values such as \fBHuman Resources\fP , \fBAccounting\fP , and \fBSupport\fP . Tags with a key name of \fBCost Center\fP might have values that consist of the number associated with the different cost centers in your company. Typically, many resources have tags with the same key name but with different values.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+AWS always interprets the tag \fBValue\fP as a single string. If you need to store an array, you can store comma\-separated values in the string. However, you must interpret the value in your code.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an OpenID Connect (OIDC) provider\fP
+.sp
+To create an OpenID Connect (OIDC) provider, we recommend using the \fB\-\-cli\-input\-json\fP parameter to pass a JSON file that contains the required parameters. When you create an OIDC provider, you must pass the URL of the provider, and the URL must begin with \fBhttps://\fP\&. It can be difficult to pass the URL as a command line parameter, because the colon (:) and forward slash (/) characters have special meaning in some command line environments. Using the \fB\-\-cli\-input\-json\fP parameter gets around this limitation.
+.sp
+To use the \fB\-\-cli\-input\-json\fP parameter, start by using the \fBcreate\-open\-id\-connect\-provider\fP command with the \fB\-\-generate\-cli\-skeleton\fP parameter, as in the following example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam create\-open\-id\-connect\-provider \-\-generate\-cli\-skeleton > create\-open\-id\-connect\-provider.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The previous command creates a JSON file called create\-open\-id\-connect\-provider.json that you can use to fill in the information for a subsequent \fBcreate\-open\-id\-connect\-provider\fP command. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Url": "https://server.example.com",
+    "ClientIDList": [
+        "example\-application\-ID"
+    ],
+    "ThumbprintList": [
+        "c3768084dfb3d2b68b7897bf5f565da8eEXAMPLE"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Next, to create the OpenID Connect (OIDC) provider, use the \fBcreate\-open\-id\-connect\-provider\fP command again, this time passing the \fB\-\-cli\-input\-json\fP parameter to specify your JSON file. The following \fBcreate\-open\-id\-connect\-provider\fP command uses the \fB\-\-cli\-input\-json\fP parameter with a JSON file called create\-open\-id\-connect\-provider.json:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam create\-open\-id\-connect\-provider \-\-cli\-input\-json file://create\-open\-id\-connect\-provider.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "OpenIDConnectProviderArn": "arn:aws:iam::123456789012:oidc\-provider/server.example.com"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information about OIDC providers, see \fI\%Using OpenID Connect Identity Providers\fP in the \fIUsing IAM\fP guide.
+.sp
+For more information about obtaining thumbprints for an OIDC provider, see \fI\%Obtaining the Thumbprint for an OpenID Connect Provider\fP in the \fIUsing IAM\fP guide.
+.SH OUTPUT
+.sp
+OpenIDConnectProviderArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the new IAM OpenID Connect provider that is created. For more information, see  OpenIDConnectProviderListEntry .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags that are attached to the new IAM OIDC provider. The returned list of tags is sorted by tag key. For more information about tagging, see \fI\%Tagging IAM resources\fP in the \fIIAM User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that represents user\-provided metadata that can be associated with an IAM resource. For more information about tagging, see \fI\%Tagging IAM resources\fP in the \fIIAM User Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key name that can be used to look up or retrieve the associated value. For example, \fBDepartment\fP or \fBCost Center\fP are common choices.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value associated with this tag. For example, tags with a key name of \fBDepartment\fP could have values such as \fBHuman Resources\fP , \fBAccounting\fP , and \fBSupport\fP . Tags with a key name of \fBCost Center\fP might have values that consist of the number associated with the different cost centers in your company. Typically, many resources have tags with the same key name but with different values.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+AWS always interprets the tag \fBValue\fP as a single string. If you need to store an array, you can store comma\-separated values in the string. However, you must interpret the value in your code.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

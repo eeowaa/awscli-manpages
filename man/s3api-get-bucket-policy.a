@@ -1,0 +1,160 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-GET-BUCKET-POLICY" "a" "" ""
+.SH NAME
+s3api-get-bucket-policy \- Returns the policy of a specified bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the policy of a specified bucket. If you are using an identity other than the root user of the AWS account that owns the bucket, the calling identity must have the \fBGetBucketPolicy\fP permissions on the specified bucket and belong to the bucket owner\(aqs account in order to use this operation.
+.sp
+If you don\(aqt have \fBGetBucketPolicy\fP permissions, Amazon S3 returns a \fB403 Access Denied\fP error. If you have the correct permissions, but you\(aqre not using an identity that belongs to the bucket owner\(aqs account, Amazon S3 returns a \fB405 Method Not Allowed\fP error.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+As a security precaution, the root user of the AWS account that owns a bucket can always use this operation, even if the policy explicitly denies the root user the ability to perform this action.
+.UNINDENT
+.UNINDENT
+.sp
+For more information about bucket policies, see \fI\%Using Bucket Policies and User Policies\fP .
+.sp
+The following action is related to \fBGetBucketPolicy\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%GetObject\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-bucket\-policy
+\-\-bucket <value>
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The bucket name for which to get the bucket policy.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command retrieves the bucket policy for a bucket named \fBmy\-bucket\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api get\-bucket\-policy \-\-bucket my\-bucket
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Policy": "{\e"Version\e":\e"2008\-10\-17\e",\e"Statement\e":[{\e"Sid\e":\e"\e",\e"Effect\e":\e"Allow\e",\e"Principal\e":\e"*\e",\e"Action\e":\e"s3:GetObject\e",\e"Resource\e":\e"arn:aws:s3:::my\-bucket/*\e"},{\e"Sid\e":\e"\e",\e"Effect\e":\e"Deny\e",\e"Principal\e":\e"*\e",\e"Action\e":\e"s3:GetObject\e",\e"Resource\e":\e"arn:aws:s3:::my\-bucket/secret/*\e"}]}"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Get and put a bucket policy
+.sp
+The following example shows how you can download an Amazon S3 bucket policy,
+make modifications to the file, and then use \fBput\-bucket\-policy\fP to
+apply the modified bucket policy.  To download the bucket policy to a file,
+you can run:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api get\-bucket\-policy \-\-bucket mybucket \-\-query Policy \-\-output text > policy.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can then modify the \fBpolicy.json\fP file as needed.  Finally you can apply
+this modified policy back to the S3 bucket by running:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-bucket\-policy \-\-bucket mybucket \-\-policy file://policy.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Policy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The bucket policy as a JSON document.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,705 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-CREATE-GAME-SESSION-QUEUE" "a" "" ""
+.SH NAME
+gamelift-create-game-session-queue \- Creates a placement queue that processes requests for new game sessions
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a placement queue that processes requests for new game sessions. A queue uses FleetIQ algorithms to determine the best placement locations and find an available game server there, then prompts the game server process to start a new game session.
+.sp
+A game session queue is configured with a set of destinations (GameLift fleets or aliases), which determine the locations where the queue can place new game sessions. These destinations can span multiple fleet types (Spot and On\-Demand), instance types, and AWS Regions. If the queue includes multi\-location fleets, the queue is able to place game sessions in all of a fleet\(aqs remote locations. You can opt to filter out individual locations if needed.
+.sp
+The queue configuration also determines how FleetIQ selects the best available placement for a new game session. Before searching for an available game server, FleetIQ first prioritizes the queue\(aqs destinations and locations, with the best placement locations on top. You can set up the queue to use the FleetIQ default prioritization or provide an alternate set of priorities.
+.sp
+To create a new queue, provide a name, timeout value, and a list of destinations. Optionally, specify a sort configuration and/or a filter, and define a set of latency cap policies. You can also include the ARN for an Amazon Simple Notification Service (SNS) topic to receive notifications of game session placement activity. Notifications using SNS or CloudWatch events is the preferred way to track placement activity.
+.sp
+If successful, a new \fBGameSessionQueue\fP object is returned with an assigned queue ARN. New game session requests, which are submitted to the queue with  StartGameSessionPlacement or  StartMatchmaking , reference a queue\(aqs name or ARN.
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Design a game session queue\fP
+.sp
+\fI\%Create a game session queue\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateGameSessionQueue |  DescribeGameSessionQueues |  UpdateGameSessionQueue |  DeleteGameSessionQueue | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-game\-session\-queue
+\-\-name <value>
+[\-\-timeout\-in\-seconds <value>]
+[\-\-player\-latency\-policies <value>]
+[\-\-destinations <value>]
+[\-\-filter\-configuration <value>]
+[\-\-priority\-configuration <value>]
+[\-\-custom\-event\-data <value>]
+[\-\-notification\-target <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with game session queue. Queue names must be unique within each Region.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-timeout\-in\-seconds\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum time, in seconds, that a new game session placement request remains in the queue. When a request exceeds this time, the game session placement changes to a \fBTIMED_OUT\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-player\-latency\-policies\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of policies that act as a sliding cap on player latency. FleetIQ works to deliver low latency for most players in a game session. These policies ensure that no individual player can be placed into a game with unreasonably high latency. Use multiple policies to gradually relax latency requirements a step at a time. Multiple policies are applied based on their maximum allowed latency, starting with the lowest value.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Sets a latency cap for individual players when placing a game session. With a latency policy in force, a game session cannot be placed in a fleet location where a player reports latency higher than the cap. Latency policies are used only with placement request that provide player latency information. Player latency policies can be stacked to gradually relax latency requirements over time.
+.sp
+Latency policies are part of a  GameSessionQueue .
+.sp
+MaximumIndividualPlayerLatencyMilliseconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum latency value that is allowed for any player, in milliseconds. All policies must have a value set for this property.
+.UNINDENT
+.UNINDENT
+.sp
+PolicyDurationSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The length of time, in seconds, that the policy is enforced while placing a new game session. A null value for this property means that the policy is enforced until the queue times out.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+MaximumIndividualPlayerLatencyMilliseconds=integer,PolicyDurationSeconds=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "MaximumIndividualPlayerLatencyMilliseconds": integer,
+    "PolicyDurationSeconds": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-destinations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of fleets and/or fleet aliases that can be used to fulfill game session placement requests in the queue. Destinations are identified by either a fleet ARN or a fleet alias ARN, and are listed in order of placement preference.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A fleet or alias designated in a game session queue. Queues fulfill requests for new game sessions by placing a new game session on any of the queue\(aqs destinations.
+.sp
+Destinations are part of a  GameSessionQueue .
+.sp
+DestinationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) that is assigned to fleet or fleet alias. ARNs, which include a fleet ID or alias ID and a Region name, provide a unique identifier across all Regions.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DestinationArn=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "DestinationArn": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of locations where a queue is allowed to place new game sessions. Locations are specified in the form of AWS Region codes, such as \fBus\-west\-2\fP . If this parameter is not set, game sessions can be placed in any queue location.
+.sp
+AllowedLocations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of locations to allow game session placement in, in the form of AWS Region codes such as \fBus\-west\-2\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AllowedLocations=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AllowedLocations": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-priority\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Custom settings to use when prioritizing destinations and locations for game session placements. This configuration replaces the FleetIQ default prioritization process. Priority types that are not explicitly named will be automatically applied at the end of the prioritization process.
+.sp
+PriorityOrder \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The recommended sequence to use when prioritizing where to place new game sessions. Each type can only be listed once.
+.INDENT 0.0
+.IP \(bu 2
+\fBLATENCY\fP \-\- FleetIQ prioritizes locations where the average player latency (provided in each game session request) is lowest.
+.IP \(bu 2
+\fBCOST\fP \-\- FleetIQ prioritizes destinations with the lowest current hosting costs. Cost is evaluated based on the location, instance type, and fleet type (Spot or On\-Demand) for each destination in the queue.
+.IP \(bu 2
+\fBDESTINATION\fP \-\- FleetIQ prioritizes based on the order that destinations are listed in the queue configuration.
+.IP \(bu 2
+\fBLOCATION\fP \-\- FleetIQ prioritizes based on the provided order of locations, as defined in \fBLocationOrder\fP .
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+LocationOrder \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The prioritization order to use for fleet locations, when the \fBPriorityOrder\fP property includes \fBLOCATION\fP . Locations are identified by AWS Region codes such as \fBus\-west\-2\fP . Each location can only be listed once.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+PriorityOrder=string,string,LocationOrder=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "PriorityOrder": ["LATENCY"|"COST"|"DESTINATION"|"LOCATION", ...],
+  "LocationOrder": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-event\-data\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Information to be added to all events that are related to this game session queue.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-target\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An SNS topic ARN that is set up to receive game session placement notifications. See \fI\%Setting up notifications for game session placement\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of labels to assign to the new game session queue resource. Tags are developer\-defined key\-value pairs. Tagging AWS resources are useful for resource management, access management and cost allocation. For more information, see \fI\%Tagging AWS Resources\fP in the \fIAWS General Reference\fP . Once the resource is created, you can use  TagResource ,  UntagResource , and  ListTagsForResource to add, remove, and view tags. The maximum tag limit may be lower than stated. See the AWS General Reference for actual tagging limits.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A label that can be assigned to a GameLift resource.
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Tagging AWS Resources\fP in the \fIAWS General Reference\fP
+.sp
+\fI\%AWS Tagging Strategies\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+TagResource |  UntagResource |  ListTagsForResource | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for a developer\-defined key:value pair for tagging an AWS resource.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value for a developer\-defined key:value pair for tagging an AWS resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample1: To set up an ordered game session queue\fP
+.sp
+The following \fBcreate\-game\-session\-queue\fP example creates a new game session queue with destinations in two regions. It also configures the queue so that game session requests time out after waiting 10 minutes for placement. Since no latency policies are defined, GameLift attempts to place all game sessions with the first destination listed.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-game\-session\-queue \e
+    \-\-name MegaFrogRaceServer\-NA \e
+    \-\-destinations file://destinations.json \e
+    \-\-timeout\-in\-seconds 600
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBdestinations.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Destinations": [
+        {"DestinationArn": "arn:aws:gamelift:us\-west\-2::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111" },
+        {"DestinationArn": "arn:aws:gamelift:us\-west\-1::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222" }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "GameSessionQueues": [
+        {
+            "Name": "MegaFrogRaceServer\-NA",
+            "GameSessionQueueArn": "arn:aws:gamelift:us\-west\-2:123456789012:gamesessionqueue/MegaFrogRaceServer\-NA",
+            "TimeoutInSeconds": 600,
+            "Destinations": [
+                {"DestinationArn": "arn:aws:gamelift:us\-west\-2::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111"},
+                {"DestinationArn": "arn:aws:gamelift:us\-west\-1::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222"}
+            ]
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample2: To set up a game session queue with player latency policies\fP
+.sp
+The following \fBcreate\-game\-session\-queue\fP example creates a new game session queue with two player latency policies. The first policy sets a 100ms latency cap that is enforced during the first minute of a game session placement attempt. The second policy raises the latency cap to 200ms until the placement request times out at 3 minutes.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-game\-session\-queue \e
+    \-\-name MegaFrogRaceServer\-NA \e
+    \-\-destinations file://destinations.json \e
+    \-\-player\-latency\-policies file://latency\-policies.json \e
+    \-\-timeout\-in\-seconds 180
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBdestinations.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Destinations": [
+        { "DestinationArn": "arn:aws:gamelift:us\-west\-2::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111" },
+        { "DestinationArn": "arn:aws:gamelift:us\-east\-1::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222" }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBlatency\-policies.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "PlayerLatencyPolicies": [
+        {"MaximumIndividualPlayerLatencyMilliseconds": 200},
+        {"MaximumIndividualPlayerLatencyMilliseconds": 100, "PolicyDurationSeconds": 60}
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "GameSessionQueue": {
+        "Name": "MegaFrogRaceServer\-NA",
+        "GameSessionQueueArn": "arn:aws:gamelift:us\-west\-2:111122223333:gamesessionqueue/MegaFrogRaceServer\-NA",
+        "TimeoutInSeconds": 600,
+        "PlayerLatencyPolicies": [
+            {
+                "MaximumIndividualPlayerLatencyMilliseconds": 100,
+                "PolicyDurationSeconds": 60
+            },
+            {
+                "MaximumIndividualPlayerLatencyMilliseconds": 200
+            }
+        ]
+        "Destinations": [
+            {"DestinationArn": "arn:aws:gamelift:us\-west\-2::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111"},
+            {"DestinationArn": "arn:aws:gamelift:us\-east\-1::fleet/fleet\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222"}
+        ],
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Create a Queue\fP in the \fIAmazon GameLift Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+GameSessionQueue \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that describes the newly created game session queue.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with game session queue. Queue names must be unique within each Region.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionQueueArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) that is assigned to a GameLift game session queue resource and uniquely identifies it. ARNs are unique across all Regions. Format is \fBarn:aws:gamelift:<region>::gamesessionqueue/<queue name>\fP . In a GameLift game session queue ARN, the resource ID matches the \fIName\fP value.
+.UNINDENT
+.UNINDENT
+.sp
+TimeoutInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum time, in seconds, that a new game session placement request remains in the queue. When a request exceeds this time, the game session placement changes to a \fBTIMED_OUT\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+PlayerLatencyPolicies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of policies that act as a sliding cap on player latency. FleetIQ works to deliver low latency for most players in a game session. These policies ensure that no individual player can be placed into a game with unreasonably high latency. Use multiple policies to gradually relax latency requirements a step at a time. Multiple policies are applied based on their maximum allowed latency, starting with the lowest value.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Sets a latency cap for individual players when placing a game session. With a latency policy in force, a game session cannot be placed in a fleet location where a player reports latency higher than the cap. Latency policies are used only with placement request that provide player latency information. Player latency policies can be stacked to gradually relax latency requirements over time.
+.sp
+Latency policies are part of a  GameSessionQueue .
+.sp
+MaximumIndividualPlayerLatencyMilliseconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum latency value that is allowed for any player, in milliseconds. All policies must have a value set for this property.
+.UNINDENT
+.UNINDENT
+.sp
+PolicyDurationSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The length of time, in seconds, that the policy is enforced while placing a new game session. A null value for this property means that the policy is enforced until the queue times out.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Destinations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of fleets and/or fleet aliases that can be used to fulfill game session placement requests in the queue. Destinations are identified by either a fleet ARN or a fleet alias ARN, and are listed in order of placement preference.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A fleet or alias designated in a game session queue. Queues fulfill requests for new game sessions by placing a new game session on any of the queue\(aqs destinations.
+.sp
+Destinations are part of a  GameSessionQueue .
+.sp
+DestinationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) that is assigned to fleet or fleet alias. ARNs, which include a fleet ID or alias ID and a Region name, provide a unique identifier across all Regions.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FilterConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of locations where a queue is allowed to place new game sessions. Locations are specified in the form of AWS Region codes, such as \fBus\-west\-2\fP . If this parameter is not set, game sessions can be placed in any queue location.
+.sp
+AllowedLocations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of locations to allow game session placement in, in the form of AWS Region codes such as \fBus\-west\-2\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PriorityConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Custom settings to use when prioritizing destinations and locations for game session placements. This configuration replaces the FleetIQ default prioritization process. Priority types that are not explicitly named will be automatically applied at the end of the prioritization process.
+.sp
+PriorityOrder \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The recommended sequence to use when prioritizing where to place new game sessions. Each type can only be listed once.
+.INDENT 0.0
+.IP \(bu 2
+\fBLATENCY\fP \-\- FleetIQ prioritizes locations where the average player latency (provided in each game session request) is lowest.
+.IP \(bu 2
+\fBCOST\fP \-\- FleetIQ prioritizes destinations with the lowest current hosting costs. Cost is evaluated based on the location, instance type, and fleet type (Spot or On\-Demand) for each destination in the queue.
+.IP \(bu 2
+\fBDESTINATION\fP \-\- FleetIQ prioritizes based on the order that destinations are listed in the queue configuration.
+.IP \(bu 2
+\fBLOCATION\fP \-\- FleetIQ prioritizes based on the provided order of locations, as defined in \fBLocationOrder\fP .
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+LocationOrder \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The prioritization order to use for fleet locations, when the \fBPriorityOrder\fP property includes \fBLOCATION\fP . Locations are identified by AWS Region codes such as \fBus\-west\-2\fP . Each location can only be listed once.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CustomEventData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information that is added to all events that are related to this game session queue.
+.UNINDENT
+.UNINDENT
+.sp
+NotificationTarget \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An SNS topic ARN that is set up to receive game session placement notifications. See \fI\%Setting up notifications for game session placement\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

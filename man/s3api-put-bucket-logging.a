@@ -1,0 +1,343 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-PUT-BUCKET-LOGGING" "a" "" ""
+.SH NAME
+s3api-put-bucket-logging \- Set the logging parameters for a bucket and to specify permissions for who can view and modify the logging parameters
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Set the logging parameters for a bucket and to specify permissions for who can view and modify the logging parameters. All logs are saved to buckets in the same AWS Region as the source bucket. To set the logging status of a bucket, you must be the bucket owner.
+.sp
+The bucket owner is automatically granted FULL_CONTROL to all logs. You use the \fBGrantee\fP request element to grant access to other people. The \fBPermissions\fP request element specifies the kind of access the grantee has to the logs.
+.INDENT 0.0
+.INDENT 3.5
+\fBGrantee Values\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can specify the person (grantee) to whom you\(aqre assigning access rights (using request elements) in the following ways:
+.INDENT 0.0
+.IP \(bu 2
+By the person\(aqs ID:  \fB<Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema\-instance" xsi:type="CanonicalUser"><ID><>ID<></ID><DisplayName><>GranteesEmail<></DisplayName> </Grantee>\fP   DisplayName is optional and ignored in the request.
+.IP \(bu 2
+By Email address:  \fB<Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema\-instance" xsi:type="AmazonCustomerByEmail"><EmailAddress><>Grantees@email.com<></EmailAddress></Grantee>\fP   The grantee is resolved to the CanonicalUser and, in a response to a GET Object acl request, appears as the CanonicalUser.
+.IP \(bu 2
+By URI:  \fB<Grantee xmlns:xsi="http://www.w3.org/2001/XMLSchema\-instance" xsi:type="Group"><URI><>http://acs.amazonaws.com/groups/global/AuthenticatedUsers<></URI></Grantee>\fP
+.UNINDENT
+.sp
+To enable logging, you use LoggingEnabled and its children request elements. To disable logging, you use an empty BucketLoggingStatus request element:
+.INDENT 0.0
+.INDENT 3.5
+\fB<BucketLoggingStatus xmlns="http://doc.s3.amazonaws.com/2006\-03\-01" />\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information about server access logging, see \fI\%Server Access Logging\fP .
+.sp
+For more information about creating a bucket, see \fI\%CreateBucket\fP . For more information about returning the logging status of a bucket, see \fI\%GetBucketLogging\fP .
+.sp
+The following operations are related to \fBPutBucketLogging\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%PutObject\fP
+.IP \(bu 2
+\fI\%DeleteBucket\fP
+.IP \(bu 2
+\fI\%CreateBucket\fP
+.IP \(bu 2
+\fI\%GetBucketLogging\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-bucket\-logging
+\-\-bucket <value>
+\-\-bucket\-logging\-status <value>
+[\-\-content\-md5 <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket for which to set the logging parameters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bucket\-logging\-status\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for logging status information.
+.sp
+LoggingEnabled \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes where logs are stored and the prefix that Amazon S3 assigns to all log object keys for a bucket. For more information, see \fI\%PUT Bucket logging\fP in the \fIAmazon S3 API Reference\fP .
+.sp
+TargetBucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the bucket where you want Amazon S3 to store server access logs. You can have your logs delivered to any bucket that you own, including the same bucket that is being logged. You can also configure multiple buckets to deliver their logs to the same target bucket. In this case, you should choose a different \fBTargetPrefix\fP for each source bucket so that the delivered log files can be distinguished by key.
+.UNINDENT
+.UNINDENT
+.sp
+TargetGrants \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Container for granting information.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for granting information.
+.sp
+Grantee \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for the person being granted permissions.
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Screen name of the grantee.
+.UNINDENT
+.UNINDENT
+.sp
+EmailAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Email address of the grantee.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Using email addresses to specify a grantee is only supported in the following AWS Regions:
+.INDENT 0.0
+.IP \(bu 2
+US East (N. Virginia)
+.IP \(bu 2
+US West (N. California)
+.IP \(bu 2
+US West (Oregon)
+.IP \(bu 2
+Asia Pacific (Singapore)
+.IP \(bu 2
+Asia Pacific (Sydney)
+.IP \(bu 2
+Asia Pacific (Tokyo)
+.IP \(bu 2
+Europe (Ireland)
+.IP \(bu 2
+South America (São Paulo)
+.UNINDENT
+.sp
+For a list of all the Amazon S3 supported Regions and endpoints, see \fI\%Regions and Endpoints\fP in the AWS General Reference.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The canonical user ID of the grantee.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of grantee
+.UNINDENT
+.UNINDENT
+.sp
+URI \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+URI of the grantee group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Permission \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Logging permissions assigned to the grantee for the bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TargetPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A prefix for all log object keys. If you store log files from multiple Amazon S3 buckets in a single bucket, you can use a prefix to distinguish which log files came from which bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "LoggingEnabled": {
+    "TargetBucket": "string",
+    "TargetGrants": [
+      {
+        "Grantee": {
+          "DisplayName": "string",
+          "EmailAddress": "string",
+          "ID": "string",
+          "Type": "CanonicalUser"|"AmazonCustomerByEmail"|"Group",
+          "URI": "string"
+        },
+        "Permission": "FULL_CONTROL"|"READ"|"WRITE"
+      }
+      ...
+    ],
+    "TargetPrefix": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The MD5 hash of the \fBPutBucketLogging\fP request body.
+.sp
+For requests made using the AWS Command Line Interface (CLI) or AWS SDKs, this field is calculated automatically.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The example below sets the logging policy for \fIMyBucket\fP\&. The AWS user \fIbob@example.com\fP will have full control over
+the log files, and no one else has any access. First, grant S3 permission with \fBput\-bucket\-acl\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-bucket\-acl \-\-bucket MyBucket \-\-grant\-write URI=http://acs.amazonaws.com/groups/s3/LogDelivery \-\-grant\-read\-acp URI=http://acs.amazonaws.com/groups/s3/LogDelivery
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Then apply the logging policy:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-bucket\-logging \-\-bucket MyBucket \-\-bucket\-logging\-status file://logging.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBlogging.json\fP is a JSON document in the current folder that contains the logging policy:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "LoggingEnabled": {
+    "TargetBucket": "MyBucket",
+    "TargetPrefix": "MyBucketLogs/",
+    "TargetGrants": [
+      {
+        "Grantee": {
+          "Type": "AmazonCustomerByEmail",
+          "EmailAddress": "bob@example.com"
+        },
+        "Permission": "FULL_CONTROL"
+      }
+    ]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+the \fBput\-bucket\-acl\fP command is required to grant S3\(aqs log delivery system the necessary permissions (write
+and read\-acp permissions).
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Amazon S3 Server Access Logging\fP in the \fIAmazon S3 Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

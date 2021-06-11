@@ -1,0 +1,350 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ORGANIZATIONS-CREATE-GOV-CLOUD-ACCOUNT" "a" "" ""
+.SH NAME
+organizations-create-gov-cloud-account \- This action is available if all of the following are true:
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This action is available if all of the following are true:
+.INDENT 0.0
+.IP \(bu 2
+You\(aqre authorized to create accounts in the AWS GovCloud (US) Region. For more information on the AWS GovCloud (US) Region, see the \(ga \fIAWS GovCloud User Guide\fP . <\fI\%http://docs.aws.amazon.com/govcloud\-us/latest/UserGuide/welcome.html\fP>\(ga__
+.IP \(bu 2
+You already have an account in the AWS GovCloud (US) Region that is paired with a management account of an organization in the commercial Region.
+.IP \(bu 2
+You call this action from the management account of your organization in the commercial Region.
+.IP \(bu 2
+You have the \fBorganizations:CreateGovCloudAccount\fP permission.
+.UNINDENT
+.sp
+AWS Organizations automatically creates the required service\-linked role named \fBAWSServiceRoleForOrganizations\fP . For more information, see \fI\%AWS Organizations and Service\-Linked Roles\fP in the \fIAWS Organizations User Guide.\fP
+.sp
+AWS automatically enables AWS CloudTrail for AWS GovCloud (US) accounts, but you should also do the following:
+.INDENT 0.0
+.IP \(bu 2
+Verify that AWS CloudTrail is enabled to store logs.
+.IP \(bu 2
+Create an S3 bucket for AWS CloudTrail log storage. For more information, see \fI\%Verifying AWS CloudTrail Is Enabled\fP in the \fIAWS GovCloud User Guide\fP .
+.UNINDENT
+.sp
+If the request includes tags, then the requester must have the \fBorganizations:TagResource\fP permission. The tags are attached to the commercial account associated with the GovCloud account, rather than the GovCloud account itself. To add tags to the GovCloud account, call the  TagResource operation in the GovCloud Region after the new GovCloud account exists.
+.sp
+You call this action from the management account of your organization in the commercial Region to create a standalone AWS account in the AWS GovCloud (US) Region. After the account is created, the management account of an organization in the AWS GovCloud (US) Region can invite it to that organization. For more information on inviting standalone accounts in the AWS GovCloud (US) to join an organization, see \fI\%AWS Organizations\fP in the \fIAWS GovCloud User Guide.\fP
+.sp
+Calling \fBCreateGovCloudAccount\fP is an asynchronous request that AWS performs in the background. Because \fBCreateGovCloudAccount\fP operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:
+.INDENT 0.0
+.IP \(bu 2
+Use the \fBOperationId\fP response element from this operation to provide as a parameter to the  DescribeCreateAccountStatus operation.
+.IP \(bu 2
+Check the AWS CloudTrail log for the \fBCreateAccountResult\fP event. For information on using AWS CloudTrail with Organizations, see \fI\%Monitoring the Activity in Your Organization\fP in the \fIAWS Organizations User Guide.\fP
+.UNINDENT
+.sp
+When you call the \fBCreateGovCloudAccount\fP action, you create two accounts: a standalone account in the AWS GovCloud (US) Region and an associated account in the commercial Region for billing and support purposes. The account in the commercial Region is automatically a member of the organization whose credentials made the request. Both accounts are associated with the same email address.
+.sp
+A role is created in the new account in the commercial Region that allows the management account in the organization in the commercial Region to assume it. An AWS GovCloud (US) account is then created and associated with the commercial account that you just created. A role is also created in the new AWS GovCloud (US) account that can be assumed by the AWS GovCloud (US) account that is associated with the management account of the commercial organization. For more information and to view a diagram that explains how account access works, see \fI\%AWS Organizations\fP in the \fIAWS GovCloud User Guide.\fP
+.sp
+For more information about creating accounts, see \fI\%Creating an AWS Account in Your Organization\fP in the \fIAWS Organizations User Guide.\fP
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account is \fInot\fP automatically collected. This includes a payment method and signing the end user license agreement (EULA). If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at \fI\%To leave an organization as a member account\fP in the \fIAWS Organizations User Guide.\fP
+.IP \(bu 2
+If you get an exception that indicates that you exceeded your account limits for the organization, contact \fI\%AWS Support\fP .
+.IP \(bu 2
+If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact \fI\%AWS Support\fP .
+.IP \(bu 2
+Using \fBCreateGovCloudAccount\fP to create multiple temporary accounts isn\(aqt recommended. You can only close an account from the AWS Billing and Cost Management console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see \fI\%Closing an AWS Account\fP in the \fIAWS Organizations User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+When you create a member account with this operation, you can choose whether to create the account with the \fBIAM User and Role Access to Billing Information\fP switch enabled. If you enable it, IAM users and roles that have appropriate permissions can view billing information for the account. If you disable it, only the account root user can access billing information. For information about how to disable this switch for an account, see \fI\%Granting Access to Your Billing Information and Tools\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-gov\-cloud\-account
+\-\-email <value>
+\-\-account\-name <value>
+[\-\-role\-name <value>]
+[\-\-iam\-user\-access\-to\-billing <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-email\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address of the owner to assign to the new member account in the commercial Region. This email address must not already be associated with another AWS account. You must use a valid email address to complete account creation. You can\(aqt access the root user of the account or remove an account that was created with an invalid email address. Like all request parameters for \fBCreateGovCloudAccount\fP , the request for the email address for the AWS GovCloud (US) account originates from the commercial Region, not from the AWS GovCloud (US) Region.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-account\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The friendly name of the member account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+(Optional)
+.sp
+The name of an IAM role that AWS Organizations automatically preconfigures in the new member accounts in both the AWS GovCloud (US) Region and in the commercial Region. This role trusts the management account, allowing users in the management account to assume the role, as permitted by the management account administrator. The role has administrator permissions in the new member account.
+.sp
+If you don\(aqt specify this parameter, the role name defaults to \fBOrganizationAccountAccessRole\fP .
+.sp
+For more information about how to use this role to access the member account, see \fI\%Accessing and Administering the Member Accounts in Your Organization\fP in the \fIAWS Organizations User Guide\fP and steps 2 and 3 in \fI\%Tutorial: Delegate Access Across AWS Accounts Using IAM Roles\fP in the \fIIAM User Guide.\fP
+.sp
+The \fI\%regex pattern\fP that is used to validate this parameter. The pattern can include uppercase letters, lowercase letters, digits with no spaces, and any of the following characters: =,.@\-
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-iam\-user\-access\-to\-billing\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set to \fBALLOW\fP , the new linked account in the commercial Region enables IAM users to access account billing information \fIif\fP they have the required permissions. If set to \fBDENY\fP , only the root user of the new account can access account billing information. For more information, see \fI\%Activating Access to the Billing and Cost Management Console\fP in the \fIAWS Billing and Cost Management User Guide.\fP
+.sp
+If you don\(aqt specify this parameter, the value defaults to \fBALLOW\fP , and IAM users and roles with the required permissions can access billing information for the new account.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBALLOW\fP
+.IP \(bu 2
+\fBDENY\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags that you want to attach to the newly created account. These tags are attached to the commercial account associated with the GovCloud account, and not to the GovCloud account itself. To add tags to the actual GovCloud account, call the  TagResource operation in the GovCloud region after the new GovCloud account exists.
+.sp
+For each tag in the list, you must specify both a tag key and a value. You can set the value to an empty string, but you can\(aqt set it to \fBnull\fP . For more information about tagging, see \fI\%Tagging AWS Organizations resources\fP in the AWS Organizations User Guide.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If any one of the tags is invalid or if you exceed the allowed number of tags for an account, then the entire request fails and the account is not created.
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A custom key\-value pair associated with a resource within your organization.
+.sp
+You can attach tags to any of the following organization resources.
+.INDENT 0.0
+.IP \(bu 2
+AWS account
+.IP \(bu 2
+Organizational unit (OU)
+.IP \(bu 2
+Organization root
+.IP \(bu 2
+Policy
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key identifier, or name, of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string value that\(aqs associated with the key of the tag. You can set the value of a tag to an empty string, but you can\(aqt set the value of a tag to null.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+CreateAccountStatus \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the status about a  CreateAccount or  CreateGovCloudAccount request to create an AWS account or an AWS GovCloud (US) account in an organization.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) that references this request. You get this value from the response of the initial  CreateAccount request to create the account.
+.sp
+The \fI\%regex pattern\fP for a create account request ID string requires "car\-" followed by from 8 to 32 lowercase letters or digits.
+.UNINDENT
+.UNINDENT
+.sp
+AccountName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The account name given to the account when it was created.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the asynchronous request to create an AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+RequestedTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the request was made for the account creation.
+.UNINDENT
+.UNINDENT
+.sp
+CompletedTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the account was created and the request completed.
+.UNINDENT
+.UNINDENT
+.sp
+AccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the account was created successfully, the unique identifier (ID) of the new account.
+.sp
+The \fI\%regex pattern\fP for an account ID string requires exactly 12 digits.
+.UNINDENT
+.UNINDENT
+.sp
+GovCloudAccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the account was created successfully, the unique identifier (ID) of the new account in the AWS GovCloud (US) Region.
+.UNINDENT
+.UNINDENT
+.sp
+FailureReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the request failed, a description of the reason for the failure.
+.INDENT 0.0
+.IP \(bu 2
+ACCOUNT_LIMIT_EXCEEDED: The account couldn\(aqt be created because you reached the limit on the number of accounts in your organization.
+.IP \(bu 2
+CONCURRENT_ACCOUNT_MODIFICATION: You already submitted a request with the same information.
+.IP \(bu 2
+EMAIL_ALREADY_EXISTS: The account could not be created because another AWS account with that email address already exists.
+.IP \(bu 2
+FAILED_BUSINESS_VALIDATION: The AWS account that owns your organization failed to receive business license validation.
+.IP \(bu 2
+GOVCLOUD_ACCOUNT_ALREADY_EXISTS: The account in the AWS GovCloud (US) Region could not be created because this Region already includes an account with that email address.
+.IP \(bu 2
+IDENTITY_INVALID_BUSINESS_VALIDATION: The AWS account that owns your organization can\(aqt complete business license validation because it doesn\(aqt have valid identity data.
+.IP \(bu 2
+INVALID_ADDRESS: The account could not be created because the address you provided is not valid.
+.IP \(bu 2
+INVALID_EMAIL: The account could not be created because the email address you provided is not valid.
+.IP \(bu 2
+INTERNAL_FAILURE: The account could not be created because of an internal failure. Try again later. If the problem persists, contact AWS Customer Support.
+.IP \(bu 2
+MISSING_BUSINESS_VALIDATION: The AWS account that owns your organization has not received Business Validation.
+.IP \(bu 2
+MISSING_PAYMENT_INSTRUMENT: You must configure the management account with a valid payment method, such as a credit card.
+.IP \(bu 2
+PENDING_BUSINESS_VALIDATION: The AWS account that owns your organization is still in the process of completing business license validation.
+.IP \(bu 2
+UNKNOWN_BUSINESS_VALIDATION: The AWS account that owns your organization has an unknown issue with business license validation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

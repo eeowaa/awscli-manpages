@@ -1,0 +1,165 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESISANALYTICS-START-APPLICATION" "a" "" ""
+.SH NAME
+kinesisanalytics-start-application \- This documentation is for version 1 of the Amazon Kinesis Data Analytics API, which only supports SQL applications
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This documentation is for version 1 of the Amazon Kinesis Data Analytics API, which only supports SQL applications. Version 2 of the API supports SQL and Java applications. For more information about version 2, see \fI\%Amazon Kinesis Data Analytics API V2 Documentation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Starts the specified Amazon Kinesis Analytics application. After creating an application, you must exclusively call this operation to start your application.
+.sp
+After the application starts, it begins consuming the input data, processes it, and writes the output to the configured destination.
+.sp
+The application status must be \fBREADY\fP for you to start an application. You can get the application status in the console or using the \fI\%DescribeApplication\fP operation.
+.sp
+After you start the application, you can stop the application from processing the input by calling the \fI\%StopApplication\fP operation.
+.sp
+This operation requires permissions to perform the \fBkinesisanalytics:StartApplication\fP action.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-application
+\-\-application\-name <value>
+\-\-input\-configurations <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-application\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the application.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-input\-configurations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the specific input, by ID, that the application starts consuming. Amazon Kinesis Analytics starts reading the streaming source associated with the input. You can also specify where in the streaming source you want Amazon Kinesis Analytics to start reading.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+When you start your application, you provide this configuration, which identifies the input source and the point in the input source at which you want the application to start processing records.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Input source ID. You can get this ID by calling the \fI\%DescribeApplication\fP operation.
+.UNINDENT
+.UNINDENT
+.sp
+InputStartingPositionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Point at which you want the application to start processing records from the streaming source.
+.sp
+InputStartingPosition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The starting position on the stream.
+.INDENT 0.0
+.IP \(bu 2
+\fBNOW\fP \- Start reading just after the most recent record in the stream, start at the request time stamp that the customer issued.
+.IP \(bu 2
+\fBTRIM_HORIZON\fP \- Start reading at the last untrimmed record in the stream, which is the oldest record available in the stream. This option is not available for an Amazon Kinesis Firehose delivery stream.
+.IP \(bu 2
+\fBLAST_STOPPED_POINT\fP \- Resume reading from where the application last stopped reading.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Id=string,InputStartingPositionConfiguration={InputStartingPosition=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "InputStartingPositionConfiguration": {
+      "InputStartingPosition": "NOW"|"TRIM_HORIZON"|"LAST_STOPPED_POINT"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,159 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IAM-GET-CONTEXT-KEYS-FOR-PRINCIPAL-POLICY" "a" "" ""
+.SH NAME
+iam-get-context-keys-for-principal-policy \- Gets a list of all of the context keys referenced in all the IAM policies that are attached to the specified IAM entity
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets a list of all of the context keys referenced in all the IAM policies that are attached to the specified IAM entity. The entity can be an IAM user, group, or role. If you specify a user, then the request also includes all of the policies attached to groups that the user is a member of.
+.sp
+You can optionally include a list of one or more additional policies, specified as strings. If you want to include \fIonly\fP a list of policies by string, use  GetContextKeysForCustomPolicy instead.
+.INDENT 0.0
+.INDENT 3.5
+\fBNote:\fP This operation discloses information about the permissions granted to other users. If you do not want users to see other user\(aqs permissions, then consider allowing them to use  GetContextKeysForCustomPolicy instead.
+.UNINDENT
+.UNINDENT
+.sp
+Context keys are variables maintained by AWS and its services that provide details about the context of an API query request. Context keys can be evaluated by testing against a value in an IAM policy. Use  GetContextKeysForPrincipalPolicy to understand what key names and values you must supply when you call  SimulatePrincipalPolicy .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-context\-keys\-for\-principal\-policy
+\-\-policy\-source\-arn <value>
+[\-\-policy\-input\-list <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-policy\-source\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a user, group, or role whose policies contain the context keys that you want listed. If you specify a user, the list includes context keys that are found in all policies that are attached to the user. The list also includes all groups that the user is a member of. If you pick a group or a role, then it includes only those context keys that are found in policies attached to that entity. Note that all parameters are shown in unencoded form here for clarity, but must be URL encoded to be included as a part of a real HTML request.
+.sp
+For more information about ARNs, see \fI\%Amazon Resource Names (ARNs)\fP in the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-input\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An optional list of additional policies for which you want the list of context keys that are referenced.
+.sp
+The \fI\%regex pattern\fP used to validate this parameter is a string of characters consisting of the following:
+.INDENT 0.0
+.IP \(bu 2
+Any printable ASCII character ranging from the space character (\fB\eu0020\fP ) through the end of the ASCII character range
+.IP \(bu 2
+The printable characters in the Basic Latin and Latin\-1 Supplement character set (through \fB\eu00FF\fP )
+.IP \(bu 2
+The special characters tab (\fB\eu0009\fP ), line feed (\fB\eu000A\fP ), and carriage return (\fB\eu000D\fP )
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo list the context keys referenced by all policies associated with an IAM principal\fP
+.sp
+The following \fBget\-context\-keys\-for\-principal\-policy\fP command retrieves all policies that are attached to the user \fBsaanvi\fP and any groups she is a member of. It then parses each and lists the context keys used by those policies. Use this command to identify which context key values you must supply to successfully use the \fBsimulate\-custom\-policy\fP and \fBsimulate\-principal\-policy\fP commands. You can also retrieve the list of context keys used by an arbitrary JSON policy by using the \fBget\-context\-keys\-for\-custom\-policy\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam get\-context\-keys\-for\-principal\-policy \e
+   \-\-policy\-source\-arn arn:aws:iam::123456789012:user/saanvi
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ContextKeyNames": [
+        "aws:username",
+        "aws:CurrentTime"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Using the IAM Policy Simulator (AWS CLI and AWS API)\fP in the \fIUsing IAM\fP guide.
+.SH OUTPUT
+.sp
+ContextKeyNames \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of context keys that are referenced in the input policies.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

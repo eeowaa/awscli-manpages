@@ -1,0 +1,715 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-CREATE-VOLUME" "a" "" ""
+.SH NAME
+ec2-create-volume \- Creates an EBS volume that can be attached to an instance in the same Availability Zone
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an EBS volume that can be attached to an instance in the same Availability Zone.
+.sp
+You can create a new empty volume or restore a volume from an EBS snapshot. Any AWS Marketplace product codes from the snapshot are propagated to the volume.
+.sp
+You can create encrypted volumes. Encrypted volumes must be attached to instances that support Amazon EBS encryption. Volumes that are created from encrypted snapshots are also automatically encrypted. For more information, see \fI\%Amazon EBS encryption\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+You can tag your volumes during creation. For more information, see \fI\%Tagging your Amazon EC2 resources\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+For more information, see \fI\%Creating an Amazon EBS volume\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-volume
+\-\-availability\-zone <value>
+[\-\-encrypted | \-\-no\-encrypted]
+[\-\-iops <value>]
+[\-\-kms\-key\-id <value>]
+[\-\-outpost\-arn <value>]
+[\-\-size <value>]
+[\-\-snapshot\-id <value>]
+[\-\-volume\-type <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-tag\-specifications <value>]
+[\-\-multi\-attach\-enabled | \-\-no\-multi\-attach\-enabled]
+[\-\-throughput <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-availability\-zone\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone in which to create the volume.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encrypted\fP | \fB\-\-no\-encrypted\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the volume should be encrypted. The effect of setting the encryption state to \fBtrue\fP depends on the volume origin (new or from a snapshot), starting encryption state, ownership, and whether encryption by default is enabled. For more information, see \fI\%Encryption by default\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+Encrypted Amazon EBS volumes must be attached to instances that support Amazon EBS encryption. For more information, see \fI\%Supported instance types\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-iops\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of I/O operations per second (IOPS). For \fBgp3\fP , \fBio1\fP , and \fBio2\fP volumes, this represents the number of IOPS that are provisioned for the volume. For \fBgp2\fP volumes, this represents the baseline performance of the volume and the rate at which the volume accumulates I/O credits for bursting.
+.sp
+The following are the supported values for each volume type:
+.INDENT 0.0
+.IP \(bu 2
+\fBgp3\fP : 3,000\-16,000 IOPS
+.IP \(bu 2
+\fBio1\fP : 100\-64,000 IOPS
+.IP \(bu 2
+\fBio2\fP : 100\-64,000 IOPS
+.UNINDENT
+.sp
+For \fBio1\fP and \fBio2\fP volumes, we guarantee 64,000 IOPS only for \fI\%Instances built on the Nitro System\fP . Other instance families guarantee performance up to 32,000 IOPS.
+.sp
+This parameter is required for \fBio1\fP and \fBio2\fP volumes. The default for \fBgp3\fP volumes is 3,000 IOPS. This parameter is not supported for \fBgp2\fP , \fBst1\fP , \fBsc1\fP , or \fBstandard\fP volumes.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the AWS Key Management Service (AWS KMS) customer master key (CMK) to use for Amazon EBS encryption. If this parameter is not specified, your AWS managed CMK for EBS is used. If \fBKmsKeyId\fP is specified, the encrypted state must be \fBtrue\fP .
+.sp
+You can specify the CMK using any of the following:
+.INDENT 0.0
+.IP \(bu 2
+Key ID. For example, 1234abcd\-12ab\-34cd\-56ef\-1234567890ab.
+.IP \(bu 2
+Key alias. For example, alias/ExampleAlias.
+.IP \(bu 2
+Key ARN. For example, arn:aws:kms:us\-east\-1:012345678910:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab.
+.IP \(bu 2
+Alias ARN. For example, arn:aws:kms:us\-east\-1:012345678910:alias/ExampleAlias.
+.UNINDENT
+.sp
+AWS authenticates the CMK asynchronously. Therefore, if you specify an ID, alias, or ARN that is not valid, the action can appear to complete, but eventually fails.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-outpost\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Outpost.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the volume, in GiBs. You must specify either a snapshot ID or a volume size. If you specify a snapshot, the default is the snapshot size. You can specify a volume size that is equal to or larger than the snapshot size.
+.sp
+The following are the supported volumes sizes for each volume type:
+.INDENT 0.0
+.IP \(bu 2
+\fBgp2\fP and \fBgp3\fP : 1\-16,384
+.IP \(bu 2
+\fBio1\fP and \fBio2\fP : 4\-16,384
+.IP \(bu 2
+\fBst1\fP and \fBsc1\fP : 125\-16,384
+.IP \(bu 2
+\fBstandard\fP : 1\-1,024
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-snapshot\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The snapshot from which to create the volume. You must specify either a snapshot ID or a volume size.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-volume\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume type. This parameter can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+General Purpose SSD: \fBgp2\fP | \fBgp3\fP
+.IP \(bu 2
+Provisioned IOPS SSD: \fBio1\fP | \fBio2\fP
+.IP \(bu 2
+Throughput Optimized HDD: \fBst1\fP
+.IP \(bu 2
+Cold HDD: \fBsc1\fP
+.IP \(bu 2
+Magnetic: \fBstandard\fP
+.UNINDENT
+.sp
+For more information, see \fI\%Amazon EBS volume types\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+Default: \fBgp2\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBstandard\fP
+.IP \(bu 2
+\fBio1\fP
+.IP \(bu 2
+\fBio2\fP
+.IP \(bu 2
+\fBgp2\fP
+.IP \(bu 2
+\fBsc1\fP
+.IP \(bu 2
+\fBst1\fP
+.IP \(bu 2
+\fBgp3\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the volume during creation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to a resource when the resource is being created.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to tag. Currently, the resource types that support tagging on creation are: \fBcapacity\-reservation\fP | \fBcarrier\-gateway\fP | \fBclient\-vpn\-endpoint\fP | \fBcustomer\-gateway\fP | \fBdedicated\-host\fP | \fBdhcp\-options\fP | \fBegress\-only\-internet\-gateway\fP | \fBelastic\-ip\fP | \fBelastic\-gpu\fP | \fBexport\-image\-task\fP | \fBexport\-instance\-task\fP | \fBfleet\fP | \fBfpga\-image\fP | \fBhost\-reservation\fP | \fBimage\fP | \fBimport\-image\-task\fP | \fBimport\-snapshot\-task\fP | \fBinstance\fP | \fBinternet\-gateway\fP | \fBipv4pool\-ec2\fP | \fBipv6pool\-ec2\fP | \fBkey\-pair\fP | \fBlaunch\-template\fP | \fBlocal\-gateway\-route\-table\-vpc\-association\fP | \fBplacement\-group\fP | \fBprefix\-list\fP | \fBnatgateway\fP | \fBnetwork\-acl\fP | \fBnetwork\-interface\fP | \fBreserved\-instances\fP 
+.nf
+|
+.fi
+\fBroute\-table\fP | \fBsecurity\-group\fP | \fBsnapshot\fP | \fBspot\-fleet\-request\fP | \fBspot\-instances\-request\fP | \fBsnapshot\fP | \fBsubnet\fP | \fBtraffic\-mirror\-filter\fP | \fBtraffic\-mirror\-session\fP | \fBtraffic\-mirror\-target\fP | \fBtransit\-gateway\fP | \fBtransit\-gateway\-attachment\fP | \fBtransit\-gateway\-multicast\-domain\fP | \fBtransit\-gateway\-route\-table\fP | \fBvolume\fP 
+.nf
+|
+.fi
+\fBvpc\fP | \fBvpc\-peering\-connection\fP | \fBvpc\-endpoint\fP (for interface and gateway endpoints) | \fBvpc\-endpoint\-service\fP (for AWS PrivateLink) | \fBvpc\-flow\-log\fP | \fBvpn\-connection\fP | \fBvpn\-gateway\fP .
+.IP "System Message: WARNING/2 (<string>:, line 263)"
+Inline substitution_reference start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 263)"
+Inline substitution_reference start\-string without end\-string.
+.sp
+To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResourceType=string,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ResourceType": "client\-vpn\-endpoint"|"customer\-gateway"|"dedicated\-host"|"dhcp\-options"|"egress\-only\-internet\-gateway"|"elastic\-ip"|"elastic\-gpu"|"export\-image\-task"|"export\-instance\-task"|"fleet"|"fpga\-image"|"host\-reservation"|"image"|"import\-image\-task"|"import\-snapshot\-task"|"instance"|"internet\-gateway"|"key\-pair"|"launch\-template"|"local\-gateway\-route\-table\-vpc\-association"|"natgateway"|"network\-acl"|"network\-interface"|"network\-insights\-analysis"|"network\-insights\-path"|"placement\-group"|"reserved\-instances"|"route\-table"|"security\-group"|"snapshot"|"spot\-fleet\-request"|"spot\-instances\-request"|"subnet"|"traffic\-mirror\-filter"|"traffic\-mirror\-session"|"traffic\-mirror\-target"|"transit\-gateway"|"transit\-gateway\-attachment"|"transit\-gateway\-connect\-peer"|"transit\-gateway\-multicast\-domain"|"transit\-gateway\-route\-table"|"volume"|"vpc"|"vpc\-peering\-connection"|"vpn\-connection"|"vpn\-gateway"|"vpc\-flow\-log",
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-multi\-attach\-enabled\fP | \fB\-\-no\-multi\-attach\-enabled\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to enable Amazon EBS Multi\-Attach. If you enable Multi\-Attach, you can attach the volume to up to 16 \fI\%Instances built on the Nitro System\fP in the same Availability Zone. This parameter is supported with \fBio1\fP and \fBio2\fP volumes only. For more information, see \fI\%Amazon EBS Multi\-Attach\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-throughput\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The throughput to provision for a volume, with a maximum of 1,000 MiB/s.
+.sp
+This parameter is valid only for \fBgp3\fP volumes.
+.sp
+Valid Range: Minimum value of 125. Maximum value of 1000.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an empty General Purpose SSD (gp2) volume\fP
+.sp
+The following \fBcreate\-volume\fP example creates an 80 GiB General Purpose SSD (gp2) volume in the specified Availability Zone. Note that the current Region must be \fBus\-east\-1\fP, or you can add the \fB\-\-region\fP parameter to specify the Region for the command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-volume \e
+    \-\-volume\-type gp2 \e
+    \-\-size 80 \e
+    \-\-availability\-zone us\-east\-1a
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AvailabilityZone": "us\-east\-1a",
+    "Tags": [],
+    "Encrypted": false,
+    "VolumeType": "gp2",
+    "VolumeId": "vol\-1234567890abcdef0",
+    "State": "creating",
+    "Iops": 240,
+    "SnapshotId": "",
+    "CreateTime": "YYYY\-MM\-DDTHH:MM:SS.000Z",
+    "Size": 80
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If you do not specify a volume type, the default volume type is \fBgp2\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-volume \e
+    \-\-size 80 \e
+    \-\-availability\-zone us\-east\-1a
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To create a Provisioned IOPS SSD (io1) volume from a snapshot\fP
+.sp
+The following \fBcreate\-volume\fP example creates a Provisioned IOPS SSD (io1) volume with 1000 provisioned IOPS in the specified Availability Zone using the specified snapshot.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-volume \e
+    \-\-volume\-type io1 \e
+    \-\-iops 1000 \e
+    \-\-snapshot\-id snap\-066877671789bd71b \e
+    \-\-availability\-zone us\-east\-1a
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AvailabilityZone": "us\-east\-1a",
+    "Tags": [],
+    "Encrypted": false,
+    "VolumeType": "io1",
+    "VolumeId": "vol\-1234567890abcdef0",
+    "State": "creating",
+    "Iops": 1000,
+    "SnapshotId": "snap\-066877671789bd71b",
+    "CreateTime": "YYYY\-MM\-DDTHH:MM:SS.000Z",
+    "Size": 500
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To create an encrypted volume\fP
+.sp
+The following \fBcreate\-volume\fP example creates an encrypted volume using the default CMK for EBS encryption. If encryption by default is disabled, you must specify the \fB\-\-encrypted\fP parameter as follows.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-volume \e
+    \-\-size 80 \e
+    \-\-encrypted \e
+    \-\-availability\-zone us\-east\-1a
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AvailabilityZone": "us\-east\-1a",
+    "Tags": [],
+    "Encrypted": true,
+    "VolumeType": "gp2",
+    "VolumeId": "vol\-1234567890abcdef0",
+    "State": "creating",
+    "Iops": 240,
+    "SnapshotId": "",
+    "CreateTime": "YYYY\-MM\-DDTHH:MM:SS.000Z",
+    "Size": 80
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If encryption by default is enabled, the following example command creates an encrypted volume, even without the \fB\-\-encrypted\fP parameter.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-volume \e
+    \-\-size 80 \e
+    \-\-availability\-zone us\-east\-1a
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If you use the \fB\-\-kms\-key\-id\fP parameter to specify a customer managed CMK, you must specify the \fB\-\-encrypted\fP parameter even if encryption by default is enabled.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-volume \e
+    \-\-volume\-type gp2 \e
+    \-\-size 80 \e
+    \-\-encrypted \e
+    \-\-kms\-key\-id 0ea3fef3\-80a7\-4778\-9d8c\-1c0c6EXAMPLE \e
+    \-\-availability\-zone us\-east\-1a
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 4: To create a volume with tags\fP
+.sp
+The following \fBcreate\-volume\fP example creates a volume and adds two tags.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-volume \e
+    \-\-availability\-zone us\-east\-1a \e
+    \-\-volume\-type gp2 \e
+    \-\-size 80 \e
+    \-\-tag\-specifications \(aqResourceType=volume,Tags=[{Key=purpose,Value=production},{Key=cost\-center,Value=cc123}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Attachments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the volume attachments.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes volume attachment details.
+.sp
+AttachTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the attachment initiated.
+.UNINDENT
+.UNINDENT
+.sp
+Device \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The attachment state of the volume.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the volume.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the EBS volume is deleted on instance termination.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone for the volume.
+.UNINDENT
+.UNINDENT
+.sp
+CreateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when volume creation was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the volume is encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the AWS Key Management Service (AWS KMS) customer master key (CMK) that was used to protect the volume encryption key for the volume.
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Outpost.
+.UNINDENT
+.UNINDENT
+.sp
+Size \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the volume, in GiBs.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The snapshot from which the volume was created, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume state.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the volume.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of I/O operations per second (IOPS). For \fBgp3\fP , \fBio1\fP , and \fBio2\fP volumes, this represents the number of IOPS that are provisioned for the volume. For \fBgp2\fP volumes, this represents the baseline performance of the volume and the rate at which the volume accumulates I/O credits for bursting.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the volume.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume type.
+.UNINDENT
+.UNINDENT
+.sp
+FastRestored \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the volume was created using fast snapshot restore.
+.UNINDENT
+.UNINDENT
+.sp
+MultiAttachEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether Amazon EBS Multi\-Attach is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+Throughput \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The throughput that the volume supports, in MiB/s.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

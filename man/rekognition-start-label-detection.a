@@ -1,0 +1,250 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "REKOGNITION-START-LABEL-DETECTION" "a" "" ""
+.SH NAME
+rekognition-start-label-detection \- Starts asynchronous detection of labels in a stored video
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Starts asynchronous detection of labels in a stored video.
+.sp
+Amazon Rekognition Video can detect labels in a video. Labels are instances of real\-world entities. This includes objects like flower, tree, and table; events like wedding, graduation, and birthday party; concepts like landscape, evening, and nature; and activities like a person getting out of a car or a person skiing.
+.sp
+The video must be stored in an Amazon S3 bucket. Use  Video to specify the bucket name and the filename of the video. \fBStartLabelDetection\fP returns a job identifier (\fBJobId\fP ) which you use to get the results of the operation. When label detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in \fBNotificationChannel\fP .
+.sp
+To get the results of the label detection operation, first check that the status value published to the Amazon SNS topic is \fBSUCCEEDED\fP . If so, call  GetLabelDetection and pass the job identifier (\fBJobId\fP ) from the initial call to \fBStartLabelDetection\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-label\-detection
+\-\-video <value>
+[\-\-client\-request\-token <value>]
+[\-\-min\-confidence <value>]
+[\-\-notification\-channel <value>]
+[\-\-job\-tag <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-video\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The video in which you want to detect labels. The video must be stored in an Amazon S3 bucket.
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket name and file name for the video.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+S3 object key name.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Object={Bucket=string,Name=string,Version=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Object": {
+    "Bucket": "string",
+    "Name": "string",
+    "Version": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Idempotent token used to identify the start request. If you use the same token with multiple \fBStartLabelDetection\fP requests, the same \fBJobId\fP is returned. Use \fBClientRequestToken\fP to prevent the same job from being accidently started more than once.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-min\-confidence\fP (float)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the minimum confidence that Amazon Rekognition Video must have in order to return a detected label. Confidence represents how certain Amazon Rekognition is that a label is correctly identified.0 is the lowest confidence. 100 is the highest confidence. Amazon Rekognition Video doesn\(aqt return any labels with a confidence level lower than this specified value.
+.sp
+If you don\(aqt specify \fBMinConfidence\fP , the operation returns labels with confidence values greater than or equal to 50 percent.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-channel\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon SNS topic ARN you want Amazon Rekognition Video to publish the completion status of the label detection operation to.
+.sp
+SNSTopicArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon SNS topic to which Amazon Rekognition to posts the completion status.
+.UNINDENT
+.UNINDENT
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of an IAM role that gives Amazon Rekognition publishing permissions to the Amazon SNS topic.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SNSTopicArn=string,RoleArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SNSTopicArn": "string",
+  "RoleArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-job\-tag\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier you specify that\(aqs returned in the completion notification that\(aqs published to your Amazon Simple Notification Service topic. For example, you can use \fBJobTag\fP to group related jobs and identify them in the completion notification.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo detect objects and scenes in a video\fP
+.sp
+The following \fBstart\-label\-detection\fP command starts a job to detect objects and scenes in the specified video file stored in an Amazon S3 bucket.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rekognition start\-label\-detection \e
+    \-\-video "S3Object={Bucket=MyVideoS3Bucket,Name=MyVideoFile.mpg}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "JobId": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Detecting Labels in a Video\fP in the \fIAmazon Rekognition Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+JobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the label detection job. Use \fBJobId\fP to identify the job in a subsequent call to \fBGetLabelDetection\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

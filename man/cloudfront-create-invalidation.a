@@ -1,0 +1,334 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFRONT-CREATE-INVALIDATION" "a" "" ""
+.SH NAME
+cloudfront-create-invalidation \- Create a new invalidation
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Create a new invalidation.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-invalidation
+\-\-distribution\-id <value>
+[\-\-invalidation\-batch <value>]
+[\-\-paths <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-distribution\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The distribution\(aqs id.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-invalidation\-batch\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The batch information for the invalidation.
+.sp
+Paths \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains information about the objects that you want to invalidate. For more information, see \fI\%Specifying the Objects to Invalidate\fP in the \fIAmazon CloudFront Developer Guide\fP .
+.sp
+Quantity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of invalidation paths specified for the objects that you want to invalidate.
+.UNINDENT
+.UNINDENT
+.sp
+Items \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains a list of the paths that you want to invalidate.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CallerReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that you specify to uniquely identify an invalidation request. CloudFront uses the value to prevent you from accidentally resubmitting an identical request. Whenever you create a new invalidation request, you must specify a new value for \fBCallerReference\fP and change other values in the request as applicable. One way to ensure that the value of \fBCallerReference\fP is unique is to use a \fBtimestamp\fP , for example, \fB20120301090000\fP .
+.sp
+If you make a second invalidation request with the same value for \fBCallerReference\fP , and if the rest of the request is the same, CloudFront doesn\(aqt create a new invalidation request. Instead, CloudFront returns information about the invalidation request that you previously created with the same \fBCallerReference\fP .
+.sp
+If \fBCallerReference\fP is a value you already sent in a previous invalidation batch request but the content of any \fBPath\fP is different from the original request, CloudFront returns an \fBInvalidationBatchAlreadyExists\fP error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Paths={Quantity=integer,Items=[string,string]},CallerReference=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Paths": {
+    "Quantity": integer,
+    "Items": ["string", ...]
+  },
+  "CallerReference": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-paths\fP (string)
+The space\-separated paths to be invalidated. Note: \-\-invalidation\-batch and \-\-paths are mututally exclusive.
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an invalidation for a CloudFront distribution\fP
+.sp
+The following \fBcreate\-invalidation\fP example creates an invalidation for the specified files in the specified CloudFront distribution:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudfront create\-invalidation \e
+    \-\-distribution\-id EDFDVBD6EXAMPLE \e
+    \-\-paths "/example\-path/example\-file.jpg" "/example\-path/example\-file2.png"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Location": "https://cloudfront.amazonaws.com/2019\-03\-26/distribution/EDFDVBD6EXAMPLE/invalidation/I1JLWSDAP8FU89",
+    "Invalidation": {
+        "Id": "I1JLWSDAP8FU89",
+        "Status": "InProgress",
+        "CreateTime": "2019\-12\-05T18:24:51.407Z",
+        "InvalidationBatch": {
+            "Paths": {
+                "Quantity": 2,
+                "Items": [
+                    "/example\-path/example\-file2.png",
+                    "/example\-path/example\-file.jpg"
+                ]
+            },
+            "CallerReference": "cli\-1575570291\-670203"
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+In the previous example, the AWS CLI automatically generated a random \fBCallerReference\fP\&. To specify your own \fBCallerReference\fP, or to avoid passing the invalidation parameters as command line arguments, you can use a JSON file. The following example creates an invalidation for two files, by providing the invalidation parameters in a JSON file named \fBinv\-batch.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudfront create\-invalidation \e
+    \-\-distribution\-id EDFDVBD6EXAMPLE \e
+    \-\-invalidation\-batch file://inv\-batch.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBinv\-batch.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Paths": {
+        "Quantity": 2,
+        "Items": [
+            "/example\-path/example\-file.jpg",
+            "/example\-path/example\-file2.png"
+        ]
+    },
+    "CallerReference": "cli\-example"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Location": "https://cloudfront.amazonaws.com/2019\-03\-26/distribution/EDFDVBD6EXAMPLE/invalidation/I2J0I21PCUYOIK",
+    "Invalidation": {
+        "Id": "I2J0I21PCUYOIK",
+        "Status": "InProgress",
+        "CreateTime": "2019\-12\-05T18:40:49.413Z",
+        "InvalidationBatch": {
+            "Paths": {
+                "Quantity": 2,
+                "Items": [
+                    "/example\-path/example\-file.jpg",
+                    "/example\-path/example\-file2.png"
+                ]
+            },
+            "CallerReference": "cli\-example"
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified URI of the distribution and invalidation batch request, including the \fBInvalidation ID\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Invalidation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The invalidation\(aqs information.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the invalidation request. For example: \fBIDFDVBD632BHDS5\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the invalidation request. When the invalidation batch is finished, the status is \fBCompleted\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CreateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the invalidation request was first made.
+.UNINDENT
+.UNINDENT
+.sp
+InvalidationBatch \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current invalidation information for the batch request.
+.sp
+Paths \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains information about the objects that you want to invalidate. For more information, see \fI\%Specifying the Objects to Invalidate\fP in the \fIAmazon CloudFront Developer Guide\fP .
+.sp
+Quantity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of invalidation paths specified for the objects that you want to invalidate.
+.UNINDENT
+.UNINDENT
+.sp
+Items \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains a list of the paths that you want to invalidate.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CallerReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that you specify to uniquely identify an invalidation request. CloudFront uses the value to prevent you from accidentally resubmitting an identical request. Whenever you create a new invalidation request, you must specify a new value for \fBCallerReference\fP and change other values in the request as applicable. One way to ensure that the value of \fBCallerReference\fP is unique is to use a \fBtimestamp\fP , for example, \fB20120301090000\fP .
+.sp
+If you make a second invalidation request with the same value for \fBCallerReference\fP , and if the rest of the request is the same, CloudFront doesn\(aqt create a new invalidation request. Instead, CloudFront returns information about the invalidation request that you previously created with the same \fBCallerReference\fP .
+.sp
+If \fBCallerReference\fP is a value you already sent in a previous invalidation batch request but the content of any \fBPath\fP is different from the original request, CloudFront returns an \fBInvalidationBatchAlreadyExists\fP error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

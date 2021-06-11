@@ -1,0 +1,3679 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DYNAMODB-PUT-ITEM" "a" "" ""
+.SH NAME
+dynamodb-put-item \- Creates a new item, or replaces an old item with a new item
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new item, or replaces an old item with a new item. If an item that has the same primary key as the new item already exists in the specified table, the new item completely replaces the existing item. You can perform a conditional put operation (add a new item if one with the specified primary key doesn\(aqt exist), or replace an existing item if it has certain attribute values. You can return the item\(aqs attribute values in the same operation, using the \fBReturnValues\fP parameter.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+This topic provides general information about the \fBPutItem\fP API.
+.sp
+For information on how to call the \fBPutItem\fP API using the AWS SDK in specific languages, see the following:
+.INDENT 0.0
+.IP \(bu 2
+\fI\%PutItem in the AWS Command Line Interface\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for .NET\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for C++\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for Go\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for Java\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for JavaScript\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for PHP V3\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for Python\fP
+.IP \(bu 2
+\fI\%PutItem in the AWS SDK for Ruby V2\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+When you add an item, the primary key attributes are the only required attributes. Attribute values cannot be null.
+.sp
+Empty String and Binary attribute values are allowed. Attribute values of type String and Binary must have a length greater than zero if the attribute is used as a key attribute for a table or index. Set type attributes cannot be empty.
+.sp
+Invalid Requests with empty values will be rejected with a \fBValidationException\fP exception.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To prevent a new item from replacing an existing item, use a conditional expression that contains the \fBattribute_not_exists\fP function with the name of the attribute being used as the partition key for the table. Since every record must contain that attribute, the \fBattribute_not_exists\fP function will only succeed if no matching item exists.
+.UNINDENT
+.UNINDENT
+.sp
+For more information about \fBPutItem\fP , see \fI\%Working with Items\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-item
+\-\-table\-name <value>
+\-\-item <value>
+[\-\-expected <value>]
+[\-\-return\-values <value>]
+[\-\-return\-consumed\-capacity <value>]
+[\-\-return\-item\-collection\-metrics <value>]
+[\-\-conditional\-operator <value>]
+[\-\-condition\-expression <value>]
+[\-\-expression\-attribute\-names <value>]
+[\-\-expression\-attribute\-values <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-table\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the table to contain the item.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-item\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of attribute name/value pairs, one for each attribute. Only the primary key attributes are required; you can optionally provide other attribute name\-value pairs for the item.
+.sp
+You must provide all of the attributes for the primary key. For example, with a simple primary key, you only need to provide a value for the partition key. For a composite primary key, you must provide both values for both the partition key and the sort key.
+.sp
+If you specify any attributes that are part of an index key, then the data types for those attributes must match those of the schema in the table\(aqs attribute definition.
+.sp
+Empty String and Binary attribute values are allowed. Attribute values of type String and Binary must have a length greater than zero if the attribute is used as a key attribute for a table or index.
+.sp
+For more information about primary keys, see \fI\%Primary Key\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+Each element in the \fBItem\fP map is an \fBAttributeValue\fP object.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "S": "string",
+      "N": "string",
+      "B": blob,
+      "SS": ["string", ...],
+      "NS": ["string", ...],
+      "BS": [blob, ...],
+      "M": {"string": {
+            "S": "string",
+            "N": "string",
+            "B": blob,
+            "SS": ["string", ...],
+            "NS": ["string", ...],
+            "BS": [blob, ...],
+            "M": {"string": { ... recursive ... }
+              ...},
+            "L": [
+              { ... recursive ... }
+              ...
+            ],
+            "NULL": true|false,
+            "BOOL": true|false
+          }
+        ...},
+      "L": [
+        {
+          "S": "string",
+          "N": "string",
+          "B": blob,
+          "SS": ["string", ...],
+          "NS": ["string", ...],
+          "BS": [blob, ...],
+          "M": {"string": { ... recursive ... }
+            ...},
+          "L": [
+            { ... recursive ... }
+            ...
+          ],
+          "NULL": true|false,
+          "BOOL": true|false
+        }
+        ...
+      ],
+      "NULL": true|false,
+      "BOOL": true|false
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+This is a legacy parameter. Use \fBConditionExpression\fP instead. For more information, see \fI\%Expected\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a condition to be compared with an attribute value. This condition can be used with \fBDeleteItem\fP , \fBPutItem\fP , or \fBUpdateItem\fP operations; if the comparison evaluates to true, the operation succeeds; if not, the operation fails. You can use \fBExpectedAttributeValue\fP in one of two different ways:
+.INDENT 0.0
+.IP \(bu 2
+Use \fBAttributeValueList\fP to specify one or more values to compare against an attribute. Use \fBComparisonOperator\fP to specify how you want to perform the comparison. If the comparison evaluates to true, then the conditional operation succeeds.
+.IP \(bu 2
+Use \fBValue\fP to specify a value that DynamoDB will compare against an attribute. If the values match, then \fBExpectedAttributeValue\fP evaluates to true and the conditional operation succeeds. Optionally, you can also set \fBExists\fP to false, indicating that you \fIdo not\fP expect to find the attribute value in the table. In this case, the conditional operation succeeds only if the comparison evaluates to false.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBValue\fP and \fBExists\fP are incompatible with \fBAttributeValueList\fP and \fBComparisonOperator\fP . Note that if you use both sets of parameters at once, DynamoDB will return a \fBValidationException\fP exception.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for the expected attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Exists \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Causes DynamoDB to evaluate the value before attempting a conditional operation:
+.INDENT 0.0
+.IP \(bu 2
+If \fBExists\fP is \fBtrue\fP , DynamoDB will check to see if that attribute value already exists in the table. If it is found, then the operation succeeds. If it is not found, the operation fails with a \fBConditionCheckFailedException\fP .
+.IP \(bu 2
+If \fBExists\fP is \fBfalse\fP , DynamoDB assumes that the attribute value does not exist in the table. If in fact the value does not exist, then the assumption is valid and the operation succeeds. If the value is found, despite the assumption that it does not exist, the operation fails with a \fBConditionCheckFailedException\fP .
+.UNINDENT
+.sp
+The default setting for \fBExists\fP is \fBtrue\fP . If you supply a \fBValue\fP all by itself, DynamoDB assumes the attribute exists: You don\(aqt have to set \fBExists\fP to \fBtrue\fP , because it is implied.
+.sp
+DynamoDB returns a \fBValidationException\fP if:
+.INDENT 0.0
+.IP \(bu 2
+\fBExists\fP is \fBtrue\fP but there is no \fBValue\fP to check. (You expect a value to exist, but don\(aqt specify what that value is.)
+.IP \(bu 2
+\fBExists\fP is \fBfalse\fP but you also provide a \fBValue\fP . (You cannot expect an attribute to have a value, while also expecting it not to exist.)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ComparisonOperator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A comparator for evaluating attributes in the \fBAttributeValueList\fP . For example, equals, greater than, less than, etc.
+.sp
+The following comparison operators are available:
+.INDENT 0.0
+.INDENT 3.5
+\fBEQ | NE | LE | LT | GE | GT | NOT_NULL | NULL | CONTAINS | NOT_CONTAINS | BEGINS_WITH | IN | BETWEEN\fP
+.UNINDENT
+.UNINDENT
+.sp
+The following are descriptions of each comparison operator.
+.INDENT 0.0
+.IP \(bu 2
+\fBEQ\fP : Equal. \fBEQ\fP is supported for all data types, including lists and maps.  \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP element of type String, Number, Binary, String Set, Number Set, or Binary Set. If an item contains an \fBAttributeValue\fP element of a different type than the one provided in the request, the value does not match. For example, \fB{"S":"6"}\fP does not equal \fB{"N":"6"}\fP . Also, \fB{"N":"6"}\fP does not equal \fB{"NS":["6", "2", "1"]}\fP .
+.IP \(bu 2
+\fBNE\fP : Not equal. \fBNE\fP is supported for all data types, including lists and maps.  \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP of type String, Number, Binary, String Set, Number Set, or Binary Set. If an item contains an \fBAttributeValue\fP of a different type than the one provided in the request, the value does not match. For example, \fB{"S":"6"}\fP does not equal \fB{"N":"6"}\fP . Also, \fB{"N":"6"}\fP does not equal \fB{"NS":["6", "2", "1"]}\fP .
+.IP \(bu 2
+\fBLE\fP : Less than or equal.   \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP element of type String, Number, or Binary (not a set type). If an item contains an \fBAttributeValue\fP element of a different type than the one provided in the request, the value does not match. For example, \fB{"S":"6"}\fP does not equal \fB{"N":"6"}\fP . Also, \fB{"N":"6"}\fP does not compare to \fB{"NS":["6", "2", "1"]}\fP .
+.IP \(bu 2
+\fBLT\fP : Less than.   \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP of type String, Number, or Binary (not a set type). If an item contains an \fBAttributeValue\fP element of a different type than the one provided in the request, the value does not match. For example, \fB{"S":"6"}\fP does not equal \fB{"N":"6"}\fP . Also, \fB{"N":"6"}\fP does not compare to \fB{"NS":["6", "2", "1"]}\fP .
+.IP \(bu 2
+\fBGE\fP : Greater than or equal.   \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP element of type String, Number, or Binary (not a set type). If an item contains an \fBAttributeValue\fP element of a different type than the one provided in the request, the value does not match. For example, \fB{"S":"6"}\fP does not equal \fB{"N":"6"}\fP . Also, \fB{"N":"6"}\fP does not compare to \fB{"NS":["6", "2", "1"]}\fP .
+.IP \(bu 2
+\fBGT\fP : Greater than.   \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP element of type String, Number, or Binary (not a set type). If an item contains an \fBAttributeValue\fP element of a different type than the one provided in the request, the value does not match. For example, \fB{"S":"6"}\fP does not equal \fB{"N":"6"}\fP . Also, \fB{"N":"6"}\fP does not compare to \fB{"NS":["6", "2", "1"]}\fP .
+.IP \(bu 2
+\fBNOT_NULL\fP : The attribute exists. \fBNOT_NULL\fP is supported for all data types, including lists and maps.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This operator tests for the existence of an attribute, not its data type. If the data type of attribute "\fBa\fP " is null, and you evaluate it using \fBNOT_NULL\fP , the result is a Boolean \fBtrue\fP . This result is because the attribute "\fBa\fP " exists; its data type is not relevant to the \fBNOT_NULL\fP comparison operator.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBNULL\fP : The attribute does not exist. \fBNULL\fP is supported for all data types, including lists and maps.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This operator tests for the nonexistence of an attribute, not its data type. If the data type of attribute "\fBa\fP " is null, and you evaluate it using \fBNULL\fP , the result is a Boolean \fBfalse\fP . This is because the attribute "\fBa\fP " exists; its data type is not relevant to the \fBNULL\fP comparison operator.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBCONTAINS\fP : Checks for a subsequence, or value in a set.  \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP element of type String, Number, or Binary (not a set type). If the target attribute of the comparison is of type String, then the operator checks for a substring match. If the target attribute of the comparison is of type Binary, then the operator looks for a subsequence of the target that matches the input. If the target attribute of the comparison is a set ("\fBSS\fP ", "\fBNS\fP ", or "\fBBS\fP "), then the operator evaluates to true if it finds an exact match with any member of the set. CONTAINS is supported for lists: When evaluating "\fBa CONTAINS b\fP ", "\fBa\fP " can be a list; however, "\fBb\fP " cannot be a set, a map, or a list.
+.IP \(bu 2
+\fBNOT_CONTAINS\fP : Checks for absence of a subsequence, or absence of a value in a set.  \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP element of type String, Number, or Binary (not a set type). If the target attribute of the comparison is a String, then the operator checks for the absence of a substring match. If the target attribute of the comparison is Binary, then the operator checks for the absence of a subsequence of the target that matches the input. If the target attribute of the comparison is a set ("\fBSS\fP ", "\fBNS\fP ", or "\fBBS\fP "), then the operator evaluates to true if it \fIdoes not\fP find an exact match with any member of the set. NOT_CONTAINS is supported for lists: When evaluating "\fBa NOT CONTAINS b\fP ", "\fBa\fP " can be a list; however, "\fBb\fP " cannot be a set, a map, or a list.
+.IP \(bu 2
+\fBBEGINS_WITH\fP : Checks for a prefix.   \fBAttributeValueList\fP can contain only one \fBAttributeValue\fP of type String or Binary (not a Number or a set type). The target attribute of the comparison must be of type String or Binary (not a Number or a set type).
+.IP \(bu 2
+\fBIN\fP : Checks for matching elements in a list.  \fBAttributeValueList\fP can contain one or more \fBAttributeValue\fP elements of type String, Number, or Binary. These attributes are compared against an existing attribute of an item. If any elements of the input are equal to the item attribute, the expression evaluates to true.
+.IP \(bu 2
+\fBBETWEEN\fP : Greater than or equal to the first value, and less than or equal to the second value.   \fBAttributeValueList\fP must contain two \fBAttributeValue\fP elements of the same type, either String, Number, or Binary (not a set type). A target attribute matches if the target value is greater than, or equal to, the first element and less than, or equal to, the second element. If an item contains an \fBAttributeValue\fP element of a different type than the one provided in the request, the value does not match. For example, \fB{"S":"6"}\fP does not compare to \fB{"N":"6"}\fP . Also, \fB{"N":"6"}\fP does not compare to \fB{"NS":["6", "2", "1"]}\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AttributeValueList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more values to evaluate against the supplied attribute. The number of values in the list depends on the \fBComparisonOperator\fP being used.
+.sp
+For type Number, value comparisons are numeric.
+.sp
+String value comparisons for greater than, equals, or less than are based on ASCII character code values. For example, \fBa\fP is greater than \fBA\fP , and \fBa\fP is greater than \fBB\fP . For a list of code values, see \fI\%http://en.wikipedia.org/wiki/ASCII#ASCII_printable_characters\fP .
+.sp
+For Binary, DynamoDB treats each byte of the binary data as unsigned when it compares binary values.
+.sp
+For information on specifying data types in JSON, see \fI\%JSON Data Format\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "Value": {
+        "S": "string",
+        "N": "string",
+        "B": blob,
+        "SS": ["string", ...],
+        "NS": ["string", ...],
+        "BS": [blob, ...],
+        "M": {"string": {
+              "S": "string",
+              "N": "string",
+              "B": blob,
+              "SS": ["string", ...],
+              "NS": ["string", ...],
+              "BS": [blob, ...],
+              "M": {"string": { ... recursive ... }
+                ...},
+              "L": [
+                { ... recursive ... }
+                ...
+              ],
+              "NULL": true|false,
+              "BOOL": true|false
+            }
+          ...},
+        "L": [
+          {
+            "S": "string",
+            "N": "string",
+            "B": blob,
+            "SS": ["string", ...],
+            "NS": ["string", ...],
+            "BS": [blob, ...],
+            "M": {"string": { ... recursive ... }
+              ...},
+            "L": [
+              { ... recursive ... }
+              ...
+            ],
+            "NULL": true|false,
+            "BOOL": true|false
+          }
+          ...
+        ],
+        "NULL": true|false,
+        "BOOL": true|false
+      },
+      "Exists": true|false,
+      "ComparisonOperator": "EQ"|"NE"|"IN"|"LE"|"LT"|"GE"|"GT"|"BETWEEN"|"NOT_NULL"|"NULL"|"CONTAINS"|"NOT_CONTAINS"|"BEGINS_WITH",
+      "AttributeValueList": [
+        {
+          "S": "string",
+          "N": "string",
+          "B": blob,
+          "SS": ["string", ...],
+          "NS": ["string", ...],
+          "BS": [blob, ...],
+          "M": {"string": {
+                "S": "string",
+                "N": "string",
+                "B": blob,
+                "SS": ["string", ...],
+                "NS": ["string", ...],
+                "BS": [blob, ...],
+                "M": {"string": { ... recursive ... }
+                  ...},
+                "L": [
+                  { ... recursive ... }
+                  ...
+                ],
+                "NULL": true|false,
+                "BOOL": true|false
+              }
+            ...},
+          "L": [
+            {
+              "S": "string",
+              "N": "string",
+              "B": blob,
+              "SS": ["string", ...],
+              "NS": ["string", ...],
+              "BS": [blob, ...],
+              "M": {"string": { ... recursive ... }
+                ...},
+              "L": [
+                { ... recursive ... }
+                ...
+              ],
+              "NULL": true|false,
+              "BOOL": true|false
+            }
+            ...
+          ],
+          "NULL": true|false,
+          "BOOL": true|false
+        }
+        ...
+      ]
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-return\-values\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Use \fBReturnValues\fP if you want to get the item attributes as they appeared before they were updated with the \fBPutItem\fP request. For \fBPutItem\fP , the valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP \- If \fBReturnValues\fP is not specified, or if its value is \fBNONE\fP , then nothing is returned. (This setting is the default for \fBReturnValues\fP .)
+.IP \(bu 2
+\fBALL_OLD\fP \- If \fBPutItem\fP overwrote an attribute name\-value pair, then the content of the old item is returned.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBReturnValues\fP parameter is used by several DynamoDB operations; however, \fBPutItem\fP does not recognize any values other than \fBNONE\fP or \fBALL_OLD\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP
+.IP \(bu 2
+\fBALL_OLD\fP
+.IP \(bu 2
+\fBUPDATED_OLD\fP
+.IP \(bu 2
+\fBALL_NEW\fP
+.IP \(bu 2
+\fBUPDATED_NEW\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-return\-consumed\-capacity\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines the level of detail about provisioned throughput consumption that is returned in the response:
+.INDENT 0.0
+.IP \(bu 2
+\fBINDEXES\fP \- The response includes the aggregate \fBConsumedCapacity\fP for the operation, together with \fBConsumedCapacity\fP for each table and secondary index that was accessed. Note that some operations, such as \fBGetItem\fP and \fBBatchGetItem\fP , do not access any indexes at all. In these cases, specifying \fBINDEXES\fP will only return \fBConsumedCapacity\fP information for table(s).
+.IP \(bu 2
+\fBTOTAL\fP \- The response includes only the aggregate \fBConsumedCapacity\fP for the operation.
+.IP \(bu 2
+\fBNONE\fP \- No \fBConsumedCapacity\fP details are included in the response.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBINDEXES\fP
+.IP \(bu 2
+\fBTOTAL\fP
+.IP \(bu 2
+\fBNONE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-return\-item\-collection\-metrics\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines whether item collection metrics are returned. If set to \fBSIZE\fP , the response includes statistics about item collections, if any, that were modified during the operation are returned in the response. If set to \fBNONE\fP (the default), no statistics are returned.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSIZE\fP
+.IP \(bu 2
+\fBNONE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-conditional\-operator\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This is a legacy parameter. Use \fBConditionExpression\fP instead. For more information, see \fI\%ConditionalOperator\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAND\fP
+.IP \(bu 2
+\fBOR\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-condition\-expression\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A condition that must be satisfied in order for a conditional \fBPutItem\fP operation to succeed.
+.sp
+An expression can contain any of the following:
+.INDENT 0.0
+.IP \(bu 2
+Functions: \fBattribute_exists | attribute_not_exists | attribute_type | contains | begins_with | size\fP   These function names are case\-sensitive.
+.IP \(bu 2
+Comparison operators: \fB= | <> | < | > | <= | >= | BETWEEN | IN\fP
+.IP \(bu 2
+Logical operators: \fBAND | OR | NOT\fP
+.UNINDENT
+.sp
+For more information on condition expressions, see \fI\%Condition Expressions\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expression\-attribute\-names\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+One or more substitution tokens for attribute names in an expression. The following are some use cases for using \fBExpressionAttributeNames\fP :
+.INDENT 0.0
+.IP \(bu 2
+To access an attribute whose name conflicts with a DynamoDB reserved word.
+.IP \(bu 2
+To create a placeholder for repeating occurrences of an attribute name in an expression.
+.IP \(bu 2
+To prevent special characters in an attribute name from being misinterpreted in an expression.
+.UNINDENT
+.sp
+Use the \fB#\fP character in an expression to dereference an attribute name. For example, consider the following attribute name:
+.INDENT 0.0
+.IP \(bu 2
+\fBPercentile\fP
+.UNINDENT
+.sp
+The name of this attribute conflicts with a reserved word, so it cannot be used directly in an expression. (For the complete list of reserved words, see \fI\%Reserved Words\fP in the \fIAmazon DynamoDB Developer Guide\fP ). To work around this, you could specify the following for \fBExpressionAttributeNames\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fB{"#P":"Percentile"}\fP
+.UNINDENT
+.sp
+You could then use this substitution in an expression, as in this example:
+.INDENT 0.0
+.IP \(bu 2
+\fB#P = :val\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Tokens that begin with the \fB:\fP character are \fIexpression attribute values\fP , which are placeholders for the actual value at runtime.
+.UNINDENT
+.UNINDENT
+.sp
+For more information on expression attribute names, see \fI\%Specifying Item Attributes\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expression\-attribute\-values\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+One or more values that can be substituted in an expression.
+.sp
+Use the \fB:\fP (colon) character in an expression to dereference an attribute value. For example, suppose that you wanted to check whether the value of the \fIProductStatus\fP attribute was one of the following:
+.INDENT 0.0
+.INDENT 3.5
+\fBAvailable | Backordered | Discontinued\fP
+.UNINDENT
+.UNINDENT
+.sp
+You would first need to specify \fBExpressionAttributeValues\fP as follows:
+.INDENT 0.0
+.INDENT 3.5
+\fB{ ":avail":{"S":"Available"}, ":back":{"S":"Backordered"}, ":disc":{"S":"Discontinued"} }\fP
+.UNINDENT
+.UNINDENT
+.sp
+You could then use these values in an expression, such as this:
+.INDENT 0.0
+.INDENT 3.5
+\fBProductStatus IN (:avail, :back, :disc)\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information on expression attribute values, see \fI\%Condition Expressions\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "S": "string",
+      "N": "string",
+      "B": blob,
+      "SS": ["string", ...],
+      "NS": ["string", ...],
+      "BS": [blob, ...],
+      "M": {"string": {
+            "S": "string",
+            "N": "string",
+            "B": blob,
+            "SS": ["string", ...],
+            "NS": ["string", ...],
+            "BS": [blob, ...],
+            "M": {"string": { ... recursive ... }
+              ...},
+            "L": [
+              { ... recursive ... }
+              ...
+            ],
+            "NULL": true|false,
+            "BOOL": true|false
+          }
+        ...},
+      "L": [
+        {
+          "S": "string",
+          "N": "string",
+          "B": blob,
+          "SS": ["string", ...],
+          "NS": ["string", ...],
+          "BS": [blob, ...],
+          "M": {"string": { ... recursive ... }
+            ...},
+          "L": [
+            { ... recursive ... }
+            ...
+          ],
+          "NULL": true|false,
+          "BOOL": true|false
+        }
+        ...
+      ],
+      "NULL": true|false,
+      "BOOL": true|false
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To add an item to a table\fP
+.sp
+The following \fBput\-item\fP example adds a new item to the \fIMusicCollection\fP table.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb put\-item \e
+    \-\-table\-name MusicCollection \e
+    \-\-item file://item.json \e
+    \-\-return\-consumed\-capacity TOTAL \e
+    \-\-return\-item\-collection\-metrics SIZE
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBitem.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Artist": {"S": "No One You Know"},
+    "SongTitle": {"S": "Call Me Today"},
+    "AlbumTitle": {"S": "Greatest Hits"}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ConsumedCapacity": {
+        "TableName": "MusicCollection",
+        "CapacityUnits": 1.0
+    },
+    "ItemCollectionMetrics": {
+        "ItemCollectionKey": {
+            "Artist": {
+                "S": "No One You Know"
+            }
+        },
+        "SizeEstimateRangeGB": [
+            0.0,
+            1.0
+        ]
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Writing an Item\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.sp
+\fBExample 2: To conditionally overwrite an item in a table\fP
+.sp
+The following \fBput\-item\fP example overwrites an existing item in the \fBMusicCollection\fP table only if that existing item has an \fBAlbumTitle\fP attribute with a value of \fBGreatest Hits\fP\&. The command returns the previous value of the item.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb put\-item \e
+    \-\-table\-name MusicCollection \e
+    \-\-item file://item.json \e
+    \-\-condition\-expression "#A = :A" \e
+    \-\-expression\-attribute\-names file://names.json \e
+    \-\-expression\-attribute\-values file://values.json \e
+    \-\-return\-values ALL_OLD
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBitem.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Artist": {"S": "No One You Know"},
+    "SongTitle": {"S": "Call Me Today"},
+    "AlbumTitle": {"S": "Somewhat Famous"}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBnames.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "#A": "AlbumTitle"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBvalues.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    ":A": {"S": "Greatest Hits"}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Attributes": {
+        "AlbumTitle": {
+            "S": "Greatest Hits"
+        },
+        "Artist": {
+            "S": "No One You Know"
+        },
+        "SongTitle": {
+            "S": "Call Me Today"
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If the key already exists, you should see the following output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+A client error (ConditionalCheckFailedException) occurred when calling the PutItem operation: The conditional request failed.
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Writing an Item\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Attributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The attribute values as they appeared before the \fBPutItem\fP operation, but only if \fBReturnValues\fP is specified as \fBALL_OLD\fP in the request. Each element consists of an attribute name and an attribute value.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ConsumedCapacity \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The capacity units consumed by the \fBPutItem\fP operation. The data returned includes the total provisioned throughput consumed, along with statistics for the table and any indexes involved in the operation. \fBConsumedCapacity\fP is only returned if the \fBReturnConsumedCapacity\fP parameter was specified. For more information, see \fI\%Read/Write Capacity Mode\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+TableName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the table that was affected by the operation.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of capacity units consumed by the operation.
+.UNINDENT
+.UNINDENT
+.sp
+ReadCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of read capacity units consumed by the operation.
+.UNINDENT
+.UNINDENT
+.sp
+WriteCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of write capacity units consumed by the operation.
+.UNINDENT
+.UNINDENT
+.sp
+Table \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The amount of throughput consumed on the table affected by the operation.
+.sp
+ReadCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of read capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.sp
+WriteCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of write capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LocalSecondaryIndexes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The amount of throughput consumed on each local index affected by the operation.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the amount of provisioned throughput capacity consumed on a table or an index.
+.sp
+ReadCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of read capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.sp
+WriteCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of write capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GlobalSecondaryIndexes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The amount of throughput consumed on each global index affected by the operation.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the amount of provisioned throughput capacity consumed on a table or an index.
+.sp
+ReadCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of read capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.sp
+WriteCapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of write capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityUnits \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The total number of capacity units consumed on a table or an index.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ItemCollectionMetrics \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about item collections, if any, that were affected by the \fBPutItem\fP operation. \fBItemCollectionMetrics\fP is only returned if the \fBReturnItemCollectionMetrics\fP parameter was specified. If the table does not have any local secondary indexes, this information is not returned in the response.
+.sp
+Each \fBItemCollectionMetrics\fP element consists of:
+.INDENT 0.0
+.IP \(bu 2
+\fBItemCollectionKey\fP \- The partition key value of the item collection. This is the same as the partition key value of the item itself.
+.IP \(bu 2
+\fBSizeEstimateRangeGB\fP \- An estimate of item collection size, in gigabytes. This value is a two\-element array containing a lower bound and an upper bound for the estimate. The estimate includes the size of all the items in the table, plus the size of all attributes projected into all of the local secondary indexes on that table. Use this estimate to measure whether a local secondary index is approaching its size limit. The estimate is subject to change over time; therefore, do not rely on the precision or accuracy of the estimate.
+.UNINDENT
+.sp
+ItemCollectionKey \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The partition key value of the item collection. This value is the same as the partition key value of the item.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the data for an attribute.
+.sp
+Each attribute value is described as a name\-value pair. The name is the data type, and the value is the data itself.
+.sp
+For more information, see \fI\%Data Types\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"S": "Hello"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"N": "123.45"\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.UNINDENT
+.UNINDENT
+.sp
+B \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type String Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"SS": ["Giraffe", "Hippo" ,"Zebra"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Number Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NS": ["42.2", "\-19", "7.5", "3.14"]\fP
+.UNINDENT
+.UNINDENT
+.sp
+Numbers are sent across the network to DynamoDB as strings, to maximize compatibility across languages and libraries. However, DynamoDB treats them as number type attributes for mathematical operations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+BS \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Binary Set. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(blob)
+.UNINDENT
+.UNINDENT
+.sp
+M \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Map. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+L \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type List. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"L": [ {"S": "Cookies"} , {"S": "Coffee"}, {"N", "3.14159"}]\fP
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NULL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Null. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"NULL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BOOL \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of type Boolean. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB"BOOL": true\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SizeEstimateRangeGB \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An estimate of item collection size, in gigabytes. This value is a two\-element array containing a lower bound and an upper bound for the estimate. The estimate includes the size of all the items in the table, plus the size of all attributes projected into all of the local secondary indexes on that table. Use this estimate to measure whether a local secondary index is approaching its size limit.
+.sp
+The estimate is subject to change over time; therefore, do not rely on the precision or accuracy of the estimate.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

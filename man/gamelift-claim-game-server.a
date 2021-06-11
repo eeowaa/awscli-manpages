@@ -1,0 +1,217 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-CLAIM-GAME-SERVER" "a" "" ""
+.SH NAME
+gamelift-claim-game-server \- Locates an available game server and temporarily reserves it to host gameplay and players
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.INDENT 0.0
+.INDENT 3.5
+\fBThis operation is used with the GameLift FleetIQ solution and game server groups.\fP
+.UNINDENT
+.UNINDENT
+.sp
+Locates an available game server and temporarily reserves it to host gameplay and players. This operation is called from a game client or client service (such as a matchmaker) to request hosting resources for a new game session. In response, GameLift FleetIQ locates an available game server, places it in \fBCLAIMED\fP status for 60 seconds, and returns connection information that players can use to connect to the game server.
+.sp
+To claim a game server, identify a game server group. You can also specify a game server ID, although this approach bypasses GameLift FleetIQ placement optimization. Optionally, include game data to pass to the game server at the start of a game session, such as a game map or player information.
+.sp
+When a game server is successfully claimed, connection information is returned. A claimed game server\(aqs utilization status remains \fBAVAILABLE\fP while the claim status is set to \fBCLAIMED\fP for up to 60 seconds. This time period gives the game server time to update its status to \fBUTILIZED\fP (using  UpdateGameServer ) once players join. If the game server\(aqs status is not updated within 60 seconds, the game server reverts to unclaimed status and is available to be claimed by another request. The claim time period is a fixed value and is not configurable.
+.sp
+If you try to claim a specific game server, this request will fail in the following cases:
+.INDENT 0.0
+.IP \(bu 2
+If the game server utilization status is \fBUTILIZED\fP .
+.IP \(bu 2
+If the game server claim status is \fBCLAIMED\fP .
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+When claiming a specific game server, this request will succeed even if the game server is running on an instance in \fBDRAINING\fP status. To avoid this, first check the instance status by calling  DescribeGameServerInstances .
+.UNINDENT
+.UNINDENT
+.sp
+\fBLearn more\fP
+.sp
+\fI\%GameLift FleetIQ Guide\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+RegisterGameServer |  ListGameServers |  ClaimGameServer |  DescribeGameServer |  UpdateGameServer |  DeregisterGameServer | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  claim\-game\-server
+\-\-game\-server\-group\-name <value>
+[\-\-game\-server\-id <value>]
+[\-\-game\-server\-data <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-game\-server\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the game server group where the game server is running. Use either the  GameServerGroup name or ARN value. If you are not specifying a game server to claim, this value identifies where you want GameLift FleetIQ to look for an available game server to claim.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-game\-server\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A custom string that uniquely identifies the game server to claim. If this parameter is left empty, GameLift FleetIQ searches for an available game server in the specified game server group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-game\-server\-data\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A set of custom game server properties, formatted as a single string value. This data is passed to a game client or service when it requests information on game servers using  ListGameServers or  ClaimGameServer .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+GameServer \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Object that describes the newly claimed game server.
+.sp
+GameServerGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the game server group where the game server is running. Use either the  GameServerGroup name or ARN value.
+.UNINDENT
+.UNINDENT
+.sp
+GameServerGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN identifier for the game server group where the game server is located.
+.UNINDENT
+.UNINDENT
+.sp
+GameServerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A custom string that uniquely identifies the game server. Game server IDs are developer\-defined and are unique across all game server groups in an AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the instance where the game server is running. This ID is available in the instance metadata. EC2 instance IDs use a 17\-character format, for example: \fBi\-1234567890abcdef0\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ConnectionInfo \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The port and IP address that must be used to establish a client connection to the game server.
+.UNINDENT
+.UNINDENT
+.sp
+GameServerData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A set of custom game server properties, formatted as a single string value. This data is passed to a game client or service when it requests information on game servers using  ListGameServers or  ClaimGameServer .
+.UNINDENT
+.UNINDENT
+.sp
+ClaimStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates when an available game server has been reserved for gameplay but has not yet started hosting a game. Once it is claimed, the game server remains in \fBCLAIMED\fP status for a maximum of one minute. During this time, game clients connect to the game server to start the game and trigger the game server to update its utilization status. After one minute, the game server claim status reverts to null.
+.UNINDENT
+.UNINDENT
+.sp
+UtilizationStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the game server is currently available for new games or is busy. Possible statuses include:
+.INDENT 0.0
+.IP \(bu 2
+\fBAVAILABLE\fP \- The game server is available to be claimed. A game server that has been claimed remains in this status until it reports game hosting activity.
+.IP \(bu 2
+\fBUTILIZED\fP \- The game server is currently hosting a game session with players.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RegistrationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Timestamp that indicates when the game server was created with a  RegisterGameServer request. The format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+LastClaimTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Timestamp that indicates the last time the game server was claimed with a  ClaimGameServer request. The format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ). This value is used to calculate when a claimed game server\(aqs status should revert to null.
+.UNINDENT
+.UNINDENT
+.sp
+LastHealthCheckTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Timestamp that indicates the last time the game server was updated with health status using an  UpdateGameServer request. The format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ). After game server registration, this property is only changed when a game server update specifies a health check value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,405 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "OPSWORKS-CREATE-DEPLOYMENT" "a" "" ""
+.SH NAME
+opsworks-create-deployment \- Runs deployment or stack commands
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Runs deployment or stack commands. For more information, see \fI\%Deploying Apps\fP and \fI\%Run Stack Commands\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBRequired Permissions\fP : To use this action, an IAM user must have a Deploy or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see \fI\%Managing User Permissions\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-deployment
+\-\-stack\-id <value>
+[\-\-app\-id <value>]
+[\-\-instance\-ids <value>]
+[\-\-layer\-ids <value>]
+\-\-command <value>
+[\-\-comment <value>]
+[\-\-custom\-json <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stack\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The stack ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-app\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The app ID. This parameter is required for app deployments, but not for other deployment commands.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The instance IDs for the deployment targets.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-layer\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The layer IDs for the deployment targets.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-command\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBDeploymentCommand\fP object that specifies the deployment command and any associated arguments.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the operation. You can specify only one command.
+.sp
+For stacks, the following commands are available:
+.INDENT 0.0
+.IP \(bu 2
+\fBexecute_recipes\fP : Execute one or more recipes. To specify the recipes, set an \fBArgs\fP parameter named \fBrecipes\fP to the list of recipes to be executed. For example, to execute \fBphpapp::appsetup\fP , set \fBArgs\fP to \fB{"recipes":["phpapp::appsetup"]}\fP .
+.IP \(bu 2
+\fBinstall_dependencies\fP : Install the stack\(aqs dependencies.
+.IP \(bu 2
+\fBupdate_custom_cookbooks\fP : Update the stack\(aqs custom cookbooks.
+.IP \(bu 2
+\fBupdate_dependencies\fP : Update the stack\(aqs dependencies.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The update_dependencies and install_dependencies commands are supported only for Linux instances. You can run the commands successfully on Windows instances, but they do nothing.
+.UNINDENT
+.UNINDENT
+.sp
+For apps, the following commands are available:
+.INDENT 0.0
+.IP \(bu 2
+\fBdeploy\fP : Deploy an app. Ruby on Rails apps have an optional \fBArgs\fP parameter named \fBmigrate\fP . Set \fBArgs\fP to {"migrate":["true"]} to migrate the database. The default setting is {"migrate":["false"]}.
+.IP \(bu 2
+\fBrollback\fP Roll the app back to the previous version. When you update an app, AWS OpsWorks Stacks stores the previous version, up to a maximum of five versions. You can use this command to roll an app back as many as four versions.
+.IP \(bu 2
+\fBstart\fP : Start the app\(aqs web or application server.
+.IP \(bu 2
+\fBstop\fP : Stop the app\(aqs web or application server.
+.IP \(bu 2
+\fBrestart\fP : Restart the app\(aqs web or application server.
+.IP \(bu 2
+\fBundeploy\fP : Undeploy the app.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Args \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The arguments of those commands that take arguments. It should be set to a JSON object with the following format:
+.INDENT 0.0
+.INDENT 3.5
+\fB{"arg_name1" : ["value1", "value2", ...], "arg_name2" : ["value1", "value2", ...], ...}\fP
+.UNINDENT
+.UNINDENT
+.sp
+The \fBupdate_dependencies\fP command takes two arguments:
+.INDENT 0.0
+.IP \(bu 2
+\fBupgrade_os_to\fP \- Specifies the desired Amazon Linux version for instances whose OS you want to upgrade, such as \fBAmazon Linux 2016.09\fP . You must also set the \fBallow_reboot\fP argument to true.
+.IP \(bu 2
+\fBallow_reboot\fP \- Specifies whether to allow AWS OpsWorks Stacks to reboot the instances if necessary, after installing the updates. This argument can be set to either \fBtrue\fP or \fBfalse\fP . The default value is \fBfalse\fP .
+.UNINDENT
+.sp
+For example, to upgrade an instance to Amazon Linux 2016.09, set \fBArgs\fP to the following.
+.INDENT 0.0
+.INDENT 3.5
+\fB{ "upgrade_os_to":["Amazon Linux 2016.09"], "allow_reboot":["true"] }\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Args={KeyName1=string,string,KeyName2=string,string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Name": "install_dependencies"|"update_dependencies"|"update_custom_cookbooks"|"execute_recipes"|"configure"|"setup"|"deploy"|"rollback"|"start"|"stop"|"restart"|"undeploy",
+  "Args": {"string": ["string", ...]
+    ...}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-comment\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined comment.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-json\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that contains user\-defined, custom JSON. You can use this parameter to override some corresponding default stack configuration JSON values. The string should be in the following format:
+.INDENT 0.0
+.INDENT 3.5
+\fB"{\e"key1\e": \e"value1\e", \e"key2\e": \e"value2\e",...}"\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information about custom JSON, see \fI\%Use Custom JSON to Modify the Stack Configuration Attributes\fP and \fI\%Overriding Attributes With Custom JSON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To deploy apps and run stack commands\fP
+.sp
+The following examples show how to use the \fBcreate\-deployment\fP command to deploy apps and run stack commands.  Notice that the quote (\fB"\fP) characters in the JSON object that specifies the command are all preceded by escape characters (\e). Without the escape characters, the command might return an invalid JSON error.
+.sp
+The following \fBcreate\-deployment\fP example deploys an app to a specified stack.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws opsworks create\-deployment \e
+    \-\-stack\-id cfb7e082\-ad1d\-4599\-8e81\-de1c39ab45bf \e
+    \-\-app\-id 307be5c8\-d55d\-47b5\-bd6e\-7bd417c6c7eb
+    \-\-command "{\e"Name\e":\e"deploy\e"}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DeploymentId": "5746c781\-df7f\-4c87\-84a7\-65a119880560"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To deploy a Rails App and Migrate the Database\fP
+.sp
+The following \fBcreate\-deployment\fP command deploys a Ruby on Rails app to a specified stack and migrates the database.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws opsworks create\-deployment \e
+    \-\-stack\-id cfb7e082\-ad1d\-4599\-8e81\-de1c39ab45bf \e
+    \-\-app\-id 307be5c8\-d55d\-47b5\-bd6e\-7bd417c6c7eb \e
+    \-\-command "{\e"Name\e":\e"deploy\e", \e"Args\e":{\e"migrate\e":[\e"true\e"]}}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DeploymentId": "5746c781\-df7f\-4c87\-84a7\-65a119880560"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information on deployment, see \fI\%Deploying Apps\fP in the \fIAWS OpsWorks User Guide\fP\&.
+.sp
+\fBExample 3: Run a Recipe\fP
+.sp
+The following \fBcreate\-deployment\fP command runs a custom recipe, \fBphpapp::appsetup\fP, on the instances in a specified stack.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws opsworks create\-deployment \e
+    \-\-stack\-id 935450cc\-61e0\-4b03\-a3e0\-160ac817d2bb \e
+    \-\-command "{\e"Name\e":\e"execute_recipes\e", \e"Args\e":{\e"recipes\e":[\e"phpapp::appsetup\e"]}}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DeploymentId": "5cbaa7b9\-4e09\-4e53\-aa1b\-314fbd106038"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Run Stack Commands\fP in the \fIAWS OpsWorks User Guide\fP\&.
+.sp
+\fBExample 4: Install Dependencies\fP
+.sp
+The following \fBcreate\-deployment\fP command installs dependencies, such as packages or Ruby gems, on the instances in a
+specified stack.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws opsworks create\-deployment \e
+    \-\-stack\-id 935450cc\-61e0\-4b03\-a3e0\-160ac817d2bb \e
+    \-\-command "{\e"Name\e":\e"install_dependencies\e"}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DeploymentId": "aef5b255\-8604\-4928\-81b3\-9b0187f962ff"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Run Stack Commands\fP in the \fIAWS OpsWorks User Guide\fP\&.
+.SH OUTPUT
+.sp
+DeploymentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment ID, which can be used with other requests to identify the deployment.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

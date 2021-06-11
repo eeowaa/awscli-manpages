@@ -1,0 +1,352 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "OPSWORKS-SET-LOAD-BASED-AUTO-SCALING" "a" "" ""
+.SH NAME
+opsworks-set-load-based-auto-scaling \- Specify the load-based auto scaling configuration for a specified layer
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Specify the load\-based auto scaling configuration for a specified layer. For more information, see \fI\%Managing Load with Time\-based and Load\-based Instances\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+To use load\-based auto scaling, you must create a set of load\-based auto scaling instances. Load\-based auto scaling operates only on the instances from that set, so you must ensure that you have created enough instances to handle the maximum anticipated load.
+.UNINDENT
+.UNINDENT
+.sp
+\fBRequired Permissions\fP : To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see \fI\%Managing User Permissions\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  set\-load\-based\-auto\-scaling
+\-\-layer\-id <value>
+[\-\-enable | \-\-no\-enable]
+[\-\-up\-scaling <value>]
+[\-\-down\-scaling <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-layer\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The layer ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enable\fP | \fB\-\-no\-enable\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables load\-based auto scaling for the layer.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-up\-scaling\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An \fBAutoScalingThresholds\fP object with the upscaling threshold configuration. If the load exceeds these thresholds for a specified amount of time, AWS OpsWorks Stacks starts a specified number of instances.
+.sp
+InstanceCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances to add or remove when the load exceeds a threshold.
+.UNINDENT
+.UNINDENT
+.sp
+ThresholdsWaitTime \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in minutes, that the load must exceed a threshold before more instances are added or removed.
+.UNINDENT
+.UNINDENT
+.sp
+IgnoreMetricsTime \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time (in minutes) after a scaling event occurs that AWS OpsWorks Stacks should ignore metrics and suppress additional scaling events. For example, AWS OpsWorks Stacks adds new instances following an upscaling event but the instances won\(aqt start reducing the load until they have been booted and configured. There is no point in raising additional scaling events during that operation, which typically takes several minutes. \fBIgnoreMetricsTime\fP allows you to direct AWS OpsWorks Stacks to suppress scaling events long enough to get the new instances online.
+.UNINDENT
+.UNINDENT
+.sp
+CpuThreshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The CPU utilization threshold, as a percent of the available CPU. A value of \-1 disables the threshold.
+.UNINDENT
+.UNINDENT
+.sp
+MemoryThreshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The memory utilization threshold, as a percent of the available memory. A value of \-1 disables the threshold.
+.UNINDENT
+.UNINDENT
+.sp
+LoadThreshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The load threshold. A value of \-1 disables the threshold. For more information about how load is computed, see \fI\%Load (computing)\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Alarms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Custom Cloudwatch auto scaling alarms, to be used as thresholds. This parameter takes a list of up to five alarm names, which are case sensitive and must be in the same region as the stack.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To use custom alarms, you must update your service role to allow \fBcloudwatch:DescribeAlarms\fP . You can either have AWS OpsWorks Stacks update the role for you when you first use this feature or you can edit the role manually. For more information, see \fI\%Allowing AWS OpsWorks Stacks to Act on Your Behalf\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+InstanceCount=integer,ThresholdsWaitTime=integer,IgnoreMetricsTime=integer,CpuThreshold=double,MemoryThreshold=double,LoadThreshold=double,Alarms=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceCount": integer,
+  "ThresholdsWaitTime": integer,
+  "IgnoreMetricsTime": integer,
+  "CpuThreshold": double,
+  "MemoryThreshold": double,
+  "LoadThreshold": double,
+  "Alarms": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-down\-scaling\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An \fBAutoScalingThresholds\fP object with the downscaling threshold configuration. If the load falls below these thresholds for a specified amount of time, AWS OpsWorks Stacks stops a specified number of instances.
+.sp
+InstanceCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances to add or remove when the load exceeds a threshold.
+.UNINDENT
+.UNINDENT
+.sp
+ThresholdsWaitTime \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in minutes, that the load must exceed a threshold before more instances are added or removed.
+.UNINDENT
+.UNINDENT
+.sp
+IgnoreMetricsTime \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time (in minutes) after a scaling event occurs that AWS OpsWorks Stacks should ignore metrics and suppress additional scaling events. For example, AWS OpsWorks Stacks adds new instances following an upscaling event but the instances won\(aqt start reducing the load until they have been booted and configured. There is no point in raising additional scaling events during that operation, which typically takes several minutes. \fBIgnoreMetricsTime\fP allows you to direct AWS OpsWorks Stacks to suppress scaling events long enough to get the new instances online.
+.UNINDENT
+.UNINDENT
+.sp
+CpuThreshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The CPU utilization threshold, as a percent of the available CPU. A value of \-1 disables the threshold.
+.UNINDENT
+.UNINDENT
+.sp
+MemoryThreshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The memory utilization threshold, as a percent of the available memory. A value of \-1 disables the threshold.
+.UNINDENT
+.UNINDENT
+.sp
+LoadThreshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The load threshold. A value of \-1 disables the threshold. For more information about how load is computed, see \fI\%Load (computing)\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Alarms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Custom Cloudwatch auto scaling alarms, to be used as thresholds. This parameter takes a list of up to five alarm names, which are case sensitive and must be in the same region as the stack.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To use custom alarms, you must update your service role to allow \fBcloudwatch:DescribeAlarms\fP . You can either have AWS OpsWorks Stacks update the role for you when you first use this feature or you can edit the role manually. For more information, see \fI\%Allowing AWS OpsWorks Stacks to Act on Your Behalf\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+InstanceCount=integer,ThresholdsWaitTime=integer,IgnoreMetricsTime=integer,CpuThreshold=double,MemoryThreshold=double,LoadThreshold=double,Alarms=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceCount": integer,
+  "ThresholdsWaitTime": integer,
+  "IgnoreMetricsTime": integer,
+  "CpuThreshold": double,
+  "MemoryThreshold": double,
+  "LoadThreshold": double,
+  "Alarms": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo set the load\-based scaling configuration for a layer\fP
+.sp
+The following example enables load\-based scaling for a specified layer and sets the configuration
+for that layer.
+You must use \fBcreate\-instance\fP to add load\-based instances to the layer.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws opsworks \-\-region us\-east\-1 set\-load\-based\-auto\-scaling \-\-layer\-id 523569ae\-2faf\-47ac\-b39e\-f4c4b381f36d \-\-enable \-\-up\-scaling file://upscale.json \-\-down\-scaling file://downscale.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The example puts the upscaling threshold settings in a separate file in the working directory named \fBupscale.json\fP, which contains the following.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceCount": 2,
+  "ThresholdsWaitTime": 3,
+  "IgnoreMetricsTime": 3,
+  "CpuThreshold": 85,
+  "MemoryThreshold": 85,
+  "LoadThreshold": 85
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The example puts the downscaling threshold settings in a separate file in the working directory named \fBdownscale.json\fP, which contains the following.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+"InstanceCount": 2,
+"ThresholdsWaitTime": 3,
+"IgnoreMetricsTime": 3,
+"CpuThreshold": 35,
+"MemoryThreshold": 30,
+"LoadThreshold": 30
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fIOutput\fP: None.
+.sp
+\fBMore Information\fP
+.sp
+For more information, see \fI\%Using Automatic Load\-based Scaling\fP in the \fIAWS OpsWorks User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,630 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLUE-GET-PARTITIONS" "a" "" ""
+.SH NAME
+glue-get-partitions \- Retrieves information about the partitions in a table
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves information about the partitions in a table.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBget\-partitions\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBPartitions\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-partitions
+[\-\-catalog\-id <value>]
+\-\-database\-name <value>
+\-\-table\-name <value>
+[\-\-expression <value>]
+[\-\-segment <value>]
+[\-\-exclude\-column\-schema | \-\-no\-exclude\-column\-schema]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-catalog\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Data Catalog where the partitions in question reside. If none is provided, the AWS account ID is used by default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-database\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the catalog database where the partitions reside.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-table\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the partitions\(aq table.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expression\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An expression that filters the partitions to be returned.
+.sp
+The expression uses SQL syntax similar to the SQL \fBWHERE\fP filter clause. The SQL statement parser \fI\%JSQLParser\fP parses the expression.
+.INDENT 0.0
+.INDENT 3.5
+\fIOperators\fP : The following are the operators that you can use in the \fBExpression\fP API call:
+.INDENT 0.0
+.INDENT 3.5
+=
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Checks whether the values of the two operands are equal; if yes, then the condition becomes true.
+.sp
+Example: Assume \(aqvariable a\(aq holds 10 and \(aqvariable b\(aq holds 20.
+.sp
+(a = b) is not true.
+.INDENT 0.0
+.INDENT 3.5
+< >
+.UNINDENT
+.UNINDENT
+.sp
+Checks whether the values of two operands are equal; if the values are not equal, then the condition becomes true.
+.sp
+Example: (a < > b) is true.
+.INDENT 0.0
+.INDENT 3.5
+>
+.UNINDENT
+.UNINDENT
+.sp
+Checks whether the value of the left operand is greater than the value of the right operand; if yes, then the condition becomes true.
+.sp
+Example: (a > b) is not true.
+.INDENT 0.0
+.INDENT 3.5
+<
+.UNINDENT
+.UNINDENT
+.sp
+Checks whether the value of the left operand is less than the value of the right operand; if yes, then the condition becomes true.
+.sp
+Example: (a < b) is true.
+.INDENT 0.0
+.INDENT 3.5
+>=
+.UNINDENT
+.UNINDENT
+.sp
+Checks whether the value of the left operand is greater than or equal to the value of the right operand; if yes, then the condition becomes true.
+.sp
+Example: (a >= b) is not true.
+.INDENT 0.0
+.INDENT 3.5
+<=
+.UNINDENT
+.UNINDENT
+.sp
+Checks whether the value of the left operand is less than or equal to the value of the right operand; if yes, then the condition becomes true.
+.sp
+Example: (a <= b) is true.
+.INDENT 0.0
+.INDENT 3.5
+AND, OR, IN, BETWEEN, LIKE, NOT, IS NULL
+.UNINDENT
+.UNINDENT
+.sp
+Logical operators.
+.INDENT 0.0
+.INDENT 3.5
+\fISupported Partition Key Types\fP : The following are the supported partition keys.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBstring\fP
+.IP \(bu 2
+\fBdate\fP
+.IP \(bu 2
+\fBtimestamp\fP
+.IP \(bu 2
+\fBint\fP
+.IP \(bu 2
+\fBbigint\fP
+.IP \(bu 2
+\fBlong\fP
+.IP \(bu 2
+\fBtinyint\fP
+.IP \(bu 2
+\fBsmallint\fP
+.IP \(bu 2
+\fBdecimal\fP
+.UNINDENT
+.sp
+If an invalid type is encountered, an exception is thrown.
+.sp
+The following list shows the valid operators on each type. When you define a crawler, the \fBpartitionKey\fP type is created as a \fBSTRING\fP , to be compatible with the catalog partitions.
+.INDENT 0.0
+.INDENT 3.5
+\fISample API Call\fP :
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-segment\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The segment of the table\(aqs partitions to scan in this request.
+.sp
+SegmentNumber \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The zero\-based index number of the segment. For example, if the total number of segments is 4, \fBSegmentNumber\fP values range from 0 through 3.
+.UNINDENT
+.UNINDENT
+.sp
+TotalSegments \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of segments.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SegmentNumber=integer,TotalSegments=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SegmentNumber": integer,
+  "TotalSegments": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-exclude\-column\-schema\fP | \fB\-\-no\-exclude\-column\-schema\fP (boolean)
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Partitions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of requested partitions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a slice of table data.
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The values of the partition.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+DatabaseName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the catalog database in which to create the partition.
+.UNINDENT
+.UNINDENT
+.sp
+TableName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database table in which to create the partition.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the partition was created.
+.UNINDENT
+.UNINDENT
+.sp
+LastAccessTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last time at which the partition was accessed.
+.UNINDENT
+.UNINDENT
+.sp
+StorageDescriptor \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about the physical location where the partition is stored.
+.sp
+Columns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the \fBColumns\fP in the table.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A column in a \fBTable\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBColumn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data type of the \fBColumn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A free\-form text comment.
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+These key\-value pairs define properties associated with the column.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The physical location of the table. By default, this takes the form of the warehouse location, followed by the database location in the warehouse, followed by the table name.
+.UNINDENT
+.UNINDENT
+.sp
+InputFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The input format: \fBSequenceFileInputFormat\fP (binary), or \fBTextInputFormat\fP , or a custom format.
+.UNINDENT
+.UNINDENT
+.sp
+OutputFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The output format: \fBSequenceFileOutputFormat\fP (binary), or \fBIgnoreKeyTextOutputFormat\fP , or a custom format.
+.UNINDENT
+.UNINDENT
+.sp
+Compressed \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+\fBTrue\fP if the data in the table is compressed, or \fBFalse\fP if not.
+.UNINDENT
+.UNINDENT
+.sp
+NumberOfBuckets \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Must be specified if the table contains any dimension columns.
+.UNINDENT
+.UNINDENT
+.sp
+SerdeInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The serialization/deserialization (SerDe) information.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the SerDe.
+.UNINDENT
+.UNINDENT
+.sp
+SerializationLibrary \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Usually the class that implements the SerDe. An example is \fBorg.apache.hadoop.hive.serde2.columnar.ColumnarSerDe\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+These key\-value pairs define initialization parameters for the SerDe.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BucketColumns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of reducer grouping columns, clustering columns, and bucketing columns in the table.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SortColumns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list specifying the sort order of each bucket in the table.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the sort order of a sorted column.
+.sp
+Column \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the column.
+.UNINDENT
+.UNINDENT
+.sp
+SortOrder \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Indicates that the column is sorted in ascending order (\fB== 1\fP ), or in descending order (\fB==0\fP ).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The user\-supplied properties in key\-value form.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+SkewedInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The information about values that appear frequently in a column (skewed values).
+.sp
+SkewedColumnNames \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of names of columns that contain skewed values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SkewedColumnValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of values that appear so frequently as to be considered skewed.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SkewedColumnValueLocationMaps \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A mapping of skewed values to the columns that contain them.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StoredAsSubDirectories \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+\fBTrue\fP if the table data is stored in subdirectories, or \fBFalse\fP if not.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaReference \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that references a schema stored in the AWS Glue Schema Registry.
+.sp
+When creating a table, you can pass an empty list of columns for the schema, and instead use a schema reference.
+.sp
+SchemaId \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains schema identity fields. Either this or the \fBSchemaVersionId\fP has to be provided.
+.sp
+SchemaArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the schema. One of \fBSchemaArn\fP or \fBSchemaName\fP has to be provided.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the schema. One of \fBSchemaArn\fP or \fBSchemaName\fP has to be provided.
+.UNINDENT
+.UNINDENT
+.sp
+RegistryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the schema registry that contains the schema.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID assigned to a version of the schema. Either this or the \fBSchemaId\fP has to be provided.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersionNumber \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the schema.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+These key\-value pairs define partition parameters.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+LastAnalyzedTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last time at which column statistics were computed for this partition.
+.UNINDENT
+.UNINDENT
+.sp
+CatalogId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Data Catalog in which the partition resides.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A continuation token, if the returned list of partitions does not include the last one.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

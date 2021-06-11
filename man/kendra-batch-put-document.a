@@ -1,0 +1,338 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KENDRA-BATCH-PUT-DOCUMENT" "a" "" ""
+.SH NAME
+kendra-batch-put-document \- Adds one or more documents to an index
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds one or more documents to an index.
+.sp
+The \fBBatchPutDocument\fP operation enables you to ingest inline documents or a set of documents stored in an Amazon S3 bucket. Use this operation to ingest your text and unstructured text into an index, add custom attributes to the documents, and to attach an access control list to the documents added to the index.
+.sp
+The documents are indexed asynchronously. You can see the progress of the batch using AWS CloudWatch. Any error messages related to processing the batch are sent to your AWS CloudWatch log.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  batch\-put\-document
+\-\-index\-id <value>
+[\-\-role\-arn <value>]
+\-\-documents <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-index\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the index to add the documents to. You need to create the index first using the \fBCreateIndex\fP operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of a role that is allowed to run the \fBBatchPutDocument\fP operation. For more information, see \fI\%IAM Roles for Amazon Kendra\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-documents\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more documents to add to the index.
+.sp
+Documents can include custom attributes. For example, \(aqDataSourceId\(aq and \(aqDataSourceSyncJobId\(aq are custom attributes that provide information on the synchronization of documents running on a data source. Note, \(aqDataSourceSyncJobId\(aq could be an optional custom attribute as Amazon Kendra will use the ID of a running sync job.
+.sp
+Documents have the following file size limits.
+.INDENT 0.0
+.IP \(bu 2
+5 MB total size for inline documents
+.IP \(bu 2
+50 MB total size for files from an S3 bucket
+.IP \(bu 2
+5 MB extracted text for any file
+.UNINDENT
+.sp
+For more information about file size and transaction per second quotas, see \fI\%Quotas\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A document in an index.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier of the document in the index.
+.UNINDENT
+.UNINDENT
+.sp
+Title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title of the document.
+.UNINDENT
+.UNINDENT
+.sp
+Blob \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The contents of the document.
+.sp
+Documents passed to the \fBBlob\fP parameter must be base64 encoded. Your code might not need to encode the document file bytes if you\(aqre using an AWS SDK to call Amazon Kendra operations. If you are calling the Amazon Kendra endpoint directly using REST, you must base64 encode the contents before sending.
+.UNINDENT
+.UNINDENT
+.sp
+S3Path \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information required to find a specific file in an Amazon S3 bucket.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket that contains the file.
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Custom attributes to apply to the document. Use the custom attributes to provide additional information for searching, to provide facets for refining searches, and to provide additional information in the query response.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A custom attribute value assigned to a document.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the attribute.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value of the attribute.
+.sp
+StringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string, such as "department".
+.UNINDENT
+.UNINDENT
+.sp
+StringListValue \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of strings.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+LongValue \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A long integer value.
+.UNINDENT
+.UNINDENT
+.sp
+DateValue \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A date expressed as an ISO 8601 string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AccessControlList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information to use for user context filtering.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides user and group information for document access filtering.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the user or group.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of principal.
+.UNINDENT
+.UNINDENT
+.sp
+Access \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether to allow or deny access to the principal.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file type of the document in the \fBBlob\fP field.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "Title": "string",
+    "Blob": blob,
+    "S3Path": {
+      "Bucket": "string",
+      "Key": "string"
+    },
+    "Attributes": [
+      {
+        "Key": "string",
+        "Value": {
+          "StringValue": "string",
+          "StringListValue": ["string", ...],
+          "LongValue": long,
+          "DateValue": timestamp
+        }
+      }
+      ...
+    ],
+    "AccessControlList": [
+      {
+        "Name": "string",
+        "Type": "USER"|"GROUP",
+        "Access": "ALLOW"|"DENY"
+      }
+      ...
+    ],
+    "ContentType": "PDF"|"HTML"|"MS_WORD"|"PLAIN_TEXT"|"PPT"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+FailedDocuments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of documents that were not added to the index because the document failed a validation check. Each document contains an error message that indicates why the document couldn\(aqt be added to the index.
+.sp
+If there was an error adding a document to an index the error is reported in your AWS CloudWatch log. For more information, see \fI\%Monitoring Amazon Kendra with Amazon CloudWatch Logs\fP
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about a document that could not be indexed.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the document.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of error that caused the document to fail to be indexed.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the reason why the document could not be indexed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

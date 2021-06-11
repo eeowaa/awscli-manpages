@@ -1,0 +1,592 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-GET-INVENTORY" "a" "" ""
+.SH NAME
+ssm-get-inventory \- Query inventory information
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Query inventory information.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBget\-inventory\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBEntities\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-inventory
+[\-\-filters <value>]
+[\-\-aggregators <value>]
+[\-\-result\-attributes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more filters. Use a filter to return a more specific list of results.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+One or more filters. Use a filter to return a more specific list of results.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter key.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Inventory filter values. Example: inventory filter where instance IDs are specified as values Key=AWS:InstanceInformation.InstanceId,Values= i\-a12b3c4d5e6g, i\-1a2b3c4d5e6,Type=Equal
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of filter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBExists\fP filter must be used with aggregators. For more information, see \fI\%Aggregating inventory data\fP in the \fIAWS Systems Manager User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Values=string,string,Type=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Values": ["string", ...],
+    "Type": "Equal"|"NotEqual"|"BeginWith"|"LessThan"|"GreaterThan"|"Exists"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-aggregators\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Returns counts of inventory types based on one or more expressions. For example, if you aggregate by using an expression that uses the \fBAWS:InstanceInformation.PlatformType\fP type, you can see a count of how many Windows and Linux instances exist in your inventoried fleet.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the inventory type and attribute for the aggregation execution.
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The inventory type and attribute name for aggregation.
+.UNINDENT
+.UNINDENT
+.sp
+Aggregators \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Nested aggregators to further refine aggregation for an inventory type.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the inventory type and attribute for the aggregation execution.
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The inventory type and attribute name for aggregation.
+.UNINDENT
+.UNINDENT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined set of one or more filters on which to aggregate inventory data. Groups return a count of resources that match and don\(aqt match the specified criteria.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined set of one or more filters on which to aggregate inventory data. Groups return a count of resources that match and don\(aqt match the specified criteria.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the group.
+.UNINDENT
+.UNINDENT
+.sp
+Filters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Filters define the criteria for the group. The \fBmatchingCount\fP field displays the number of resources that match the criteria. The \fBnotMatchingCount\fP field displays the number of resources that don\(aqt match the criteria.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+One or more filters. Use a filter to return a more specific list of results.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter key.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Inventory filter values. Example: inventory filter where instance IDs are specified as values Key=AWS:InstanceInformation.InstanceId,Values= i\-a12b3c4d5e6g, i\-1a2b3c4d5e6,Type=Equal
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of filter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBExists\fP filter must be used with aggregators. For more information, see \fI\%Aggregating inventory data\fP in the \fIAWS Systems Manager User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined set of one or more filters on which to aggregate inventory data. Groups return a count of resources that match and don\(aqt match the specified criteria.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined set of one or more filters on which to aggregate inventory data. Groups return a count of resources that match and don\(aqt match the specified criteria.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the group.
+.UNINDENT
+.UNINDENT
+.sp
+Filters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Filters define the criteria for the group. The \fBmatchingCount\fP field displays the number of resources that match the criteria. The \fBnotMatchingCount\fP field displays the number of resources that don\(aqt match the criteria.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+One or more filters. Use a filter to return a more specific list of results.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter key.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Inventory filter values. Example: inventory filter where instance IDs are specified as values Key=AWS:InstanceInformation.InstanceId,Values= i\-a12b3c4d5e6g, i\-1a2b3c4d5e6,Type=Equal
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of filter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBExists\fP filter must be used with aggregators. For more information, see \fI\%Aggregating inventory data\fP in the \fIAWS Systems Manager User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Expression": "string",
+    "Aggregators": [
+      {
+        "Expression": "string",
+        "Aggregators": ,
+        "Groups": [
+          {
+            "Name": "string",
+            "Filters": [
+              {
+                "Key": "string",
+                "Values": ["string", ...],
+                "Type": "Equal"|"NotEqual"|"BeginWith"|"LessThan"|"GreaterThan"|"Exists"
+              }
+              ...
+            ]
+          }
+          ...
+        ]
+      }
+      ...
+    ],
+    "Groups": [
+      {
+        "Name": "string",
+        "Filters": [
+          {
+            "Key": "string",
+            "Values": ["string", ...],
+            "Type": "Equal"|"NotEqual"|"BeginWith"|"LessThan"|"GreaterThan"|"Exists"
+          }
+          ...
+        ]
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-result\-attributes\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of inventory item types to return.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The inventory item result attribute.
+.sp
+TypeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the inventory item type. Valid value: AWS:InstanceInformation. Default Value: AWS:InstanceInformation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TypeName=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "TypeName": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo view your inventory\fP
+.sp
+This example gets the custom metadata for your inventory.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm get\-inventory
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Entities": [
+      {
+          "Data": {
+              "AWS:InstanceInformation": {
+                  "Content": [
+                      {
+                          "ComputerName": "ip\-172\-31\-44\-222.us\-west\-2.compute.internal",
+                          "InstanceId": "i\-0cb2b964d3e14fd9f",
+                          "IpAddress": "172.31.44.222",
+                          "AgentType": "amazon\-ssm\-agent",
+                          "ResourceType": "EC2Instance",
+                          "AgentVersion": "2.0.672.0",
+                          "PlatformVersion": "2016.09",
+                          "PlatformName": "Amazon Linux AMI",
+                          "PlatformType": "Linux"
+                      }
+                  ],
+                  "TypeName": "AWS:InstanceInformation",
+                  "SchemaVersion": "1.0",
+                  "CaptureTime": "2017\-02\-20T18:03:58Z"
+              }
+          },
+          "Id": "i\-0cb2b964d3e14fd9f"
+      }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Entities \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Collection of inventory entities such as a collection of instance inventory.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Inventory query results.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ID of the inventory result entity. For example, for managed instance inventory the result will be the managed instance ID. For EC2 instance inventory, the result will be the instance ID.
+.UNINDENT
+.UNINDENT
+.sp
+Data \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The data section in the inventory result entity JSON.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The inventory result item.
+.sp
+TypeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the inventory result item type.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The schema version for the inventory result item/
+.UNINDENT
+.UNINDENT
+.sp
+CaptureTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time inventory item data was captured.
+.UNINDENT
+.UNINDENT
+.sp
+ContentHash \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+MD5 hash of the inventory item type contents. The content hash is used to determine whether to update inventory information. The PutInventory API does not update the inventory item type contents if the MD5 hash has not changed since last update.
+.UNINDENT
+.UNINDENT
+.sp
+Content \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains all the inventory data of the item type. Results include attribute names and values.
+.sp
+(map)
+.INDENT 0.0
+.INDENT 3.5
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to use when requesting the next set of items. If there are no additional items to return, the string is empty.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

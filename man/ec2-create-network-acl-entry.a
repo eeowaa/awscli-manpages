@@ -1,0 +1,275 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-CREATE-NETWORK-ACL-ENTRY" "a" "" ""
+.SH NAME
+ec2-create-network-acl-entry \- Creates an entry (a rule) in a network ACL with the specified rule number
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an entry (a rule) in a network ACL with the specified rule number. Each network ACL has a set of numbered ingress rules and a separate set of numbered egress rules. When determining whether a packet should be allowed in or out of a subnet associated with the ACL, we process the entries in the ACL according to the rule numbers, in ascending order. Each network ACL has a set of ingress rules and a separate set of egress rules.
+.sp
+We recommend that you leave room between the rule numbers (for example, 100, 110, 120, ...), and not number them one right after the other (for example, 101, 102, 103, ...). This makes it easier to add a rule between existing ones without having to renumber the rules.
+.sp
+After you add an entry, you can\(aqt modify it; you must either replace it, or create an entry and delete the old one.
+.sp
+For more information about network ACLs, see \fI\%Network ACLs\fP in the \fIAmazon Virtual Private Cloud User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-network\-acl\-entry
+[\-\-cidr\-block <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+\-\-egress | \-\-ingress
+[\-\-icmp\-type\-code <value>]
+[\-\-ipv6\-cidr\-block <value>]
+\-\-network\-acl\-id <value>
+[\-\-port\-range <value>]
+\-\-protocol <value>
+\-\-rule\-action <value>
+\-\-rule\-number <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cidr\-block\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 network range to allow or deny, in CIDR notation (for example \fB172.16.0.0/24\fP ). We modify the specified CIDR block to its canonical form; for example, if you specify \fB100.68.0.18/18\fP , we modify it to \fB100.68.0.0/18\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-egress\fP | \fB\-\-ingress\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this is an egress rule (rule is applied to traffic leaving the subnet).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-icmp\-type\-code\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+ICMP protocol: The ICMP or ICMPv6 type and code. Required if specifying protocol 1 (ICMP) or protocol 58 (ICMPv6) with an IPv6 CIDR block.
+.sp
+Code \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The ICMP code. A value of \-1 means all codes for the specified ICMP type.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The ICMP type. A value of \-1 means all types.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Code=integer,Type=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Code": integer,
+  "Type": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ipv6\-cidr\-block\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 network range to allow or deny, in CIDR notation (for example \fB2001:db8:1234:1a00::/64\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-network\-acl\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network ACL.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-port\-range\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+TCP or UDP protocols: The range of ports the rule applies to. Required if specifying protocol 6 (TCP) or 17 (UDP).
+.sp
+From \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The first port in the range.
+.UNINDENT
+.UNINDENT
+.sp
+To \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The last port in the range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+From=integer,To=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "From": integer,
+  "To": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-protocol\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The protocol number. A value of "\-1" means all protocols. If you specify "\-1" or a protocol number other than "6" (TCP), "17" (UDP), or "1" (ICMP), traffic on all ports is allowed, regardless of any ports or ICMP types or codes that you specify. If you specify protocol "58" (ICMPv6) and specify an IPv4 CIDR block, traffic for all ICMP types and codes allowed, regardless of any that you specify. If you specify protocol "58" (ICMPv6) and specify an IPv6 CIDR block, you must specify an ICMP type and code.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-rule\-action\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to allow or deny the traffic that matches the rule.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBallow\fP
+.IP \(bu 2
+\fBdeny\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-rule\-number\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The rule number for the entry (for example, 100). ACL entries are processed in ascending order by rule number.
+.sp
+Constraints: Positive integer from 1 to 32766. The range 32767 to 65535 is reserved for internal use.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a network ACL entry\fP
+.sp
+This example creates an entry for the specified network ACL. The rule allows ingress traffic from any IPv4 address (0.0.0.0/0) on UDP port 53 (DNS) into any associated subnet. If the command succeeds, no output is returned.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-network\-acl\-entry \-\-network\-acl\-id acl\-5fb85d36 \-\-ingress \-\-rule\-number 100 \-\-protocol udp \-\-port\-range From=53,To=53 \-\-cidr\-block 0.0.0.0/0 \-\-rule\-action allow
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example creates a rule for the specified network ACL that allows ingress traffic from any IPv6 address (::/0) on TCP port 80 (HTTP).
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-network\-acl\-entry \-\-network\-acl\-id acl\-5fb85d36 \-\-ingress \-\-rule\-number 120 \-\-protocol tcp \-\-port\-range From=80,To=80 \-\-ipv6\-cidr\-block ::/0 \-\-rule\-action allow
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

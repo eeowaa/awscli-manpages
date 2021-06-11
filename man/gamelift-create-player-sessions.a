@@ -1,0 +1,275 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-CREATE-PLAYER-SESSIONS" "a" "" ""
+.SH NAME
+gamelift-create-player-sessions \- Reserves open slots in a game session for a group of players
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Reserves open slots in a game session for a group of players. New player sessions can be created in any game session with an open slot that is in \fBACTIVE\fP status and has a player creation policy of \fBACCEPT_ALL\fP . To add a single player to a game session, use  CreatePlayerSession .
+.sp
+To create player sessions, specify a game session ID and a list of player IDs. Optionally, provide a set of player data for each player ID.
+.sp
+If successful, a slot is reserved in the game session for each player, and new  PlayerSession objects are returned with player session IDs. Each player references their player session ID when sending a connection request to the game session, and the game server can use it to validate the player reservation with the GameLift service. Player sessions cannot be updated.
+.INDENT 0.0
+.INDENT 3.5
+\fIAvailable in Amazon GameLift Local.\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreatePlayerSession |  CreatePlayerSessions |  DescribePlayerSessions |  StartGameSessionPlacement |  DescribeGameSessionPlacement | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-player\-sessions
+\-\-game\-session\-id <value>
+\-\-player\-ids <value>
+[\-\-player\-data\-map <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-game\-session\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the game session to add players to.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-player\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+List of unique identifiers for the players to be added.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-player\-data\-map\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Map of string pairs, each specifying a player ID and a set of developer\-defined information related to the player. Amazon GameLift does not use this data, so it can be formatted as needed for use in the game. Any player data strings for player IDs that are not included in the \fBPlayerIds\fP parameter are ignored.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+PlayerSessions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of player session objects created for the added players.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a player session. Player sessions are created either for a specific game session, or as part of a game session placement or matchmaking request. A player session can represents a reserved player slot in a game session (when status is \fBRESERVED\fP ) or actual player activity in a game session (when status is \fBACTIVE\fP ). A player session object, including player data, is automatically passed to a game session when the player connects to the game session and is validated. After the game session ends, player sessions information is retained for 30 days and then removed.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreatePlayerSession |  CreatePlayerSessions |  DescribePlayerSessions |  StartGameSessionPlacement |  DescribeGameSessionPlacement | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PlayerSessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player session.
+.UNINDENT
+.UNINDENT
+.sp
+PlayerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player that is associated with this player session.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the game session that the player session is connected to.
+.UNINDENT
+.UNINDENT
+.sp
+FleetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the fleet that the player\(aqs game session is running on.
+.UNINDENT
+.UNINDENT
+.sp
+FleetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) associated with the GameLift fleet that the player\(aqs game session is running on.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A time stamp indicating when this data object was created. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+TerminationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A time stamp indicating when this data object was terminated. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Current status of the player session.
+.sp
+Possible player session statuses include the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBRESERVED\fP \-\- The player session request has been received, but the player has not yet connected to the server process and/or been validated.
+.IP \(bu 2
+\fBACTIVE\fP \-\- The player has been validated by the server process and is currently connected.
+.IP \(bu 2
+\fBCOMPLETED\fP \-\- The player connection has been dropped.
+.IP \(bu 2
+\fBTIMEDOUT\fP \-\- A player session request was received, but the player did not connect and/or was not validated within the timeout limit (60 seconds).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP address of the game session. To connect to a GameLift game server, an app needs both the IP address and port number.
+.UNINDENT
+.UNINDENT
+.sp
+DnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS identifier assigned to the instance that is running the game session. Values have the following format:
+.INDENT 0.0
+.IP \(bu 2
+TLS\-enabled fleets: \fB<unique identifier>.<region identifier>.amazongamelift.com\fP .
+.IP \(bu 2
+Non\-TLS\-enabled fleets: \fBec2\-<unique identifier>.compute.amazonaws.com\fP . (See \fI\%Amazon EC2 Instance IP Addressing\fP .)
+.UNINDENT
+.sp
+When connecting to a game session that is running on a TLS\-enabled fleet, you must use the DNS name, not the IP address.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Port number for the game session. To connect to a Amazon GameLift server process, an app needs both the IP address and port number.
+.UNINDENT
+.UNINDENT
+.sp
+PlayerData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Developer\-defined information related to a player. GameLift does not use this data, so it can be formatted as needed for use in the game.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

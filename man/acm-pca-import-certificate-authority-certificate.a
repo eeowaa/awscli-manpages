@@ -1,0 +1,205 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ACM-PCA-IMPORT-CERTIFICATE-AUTHORITY-CERTIFICATE" "a" "" ""
+.SH NAME
+acm-pca-import-certificate-authority-certificate \- Imports a signed private CA certificate into ACM Private CA
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Imports a signed private CA certificate into ACM Private CA. This action is used when you are using a chain of trust whose root is located outside ACM Private CA. Before you can call this action, the following preparations must in place:
+.INDENT 0.0
+.IP \(bu 2
+In ACM Private CA, call the \fI\%CreateCertificateAuthority\fP action to create the private CA that you plan to back with the imported certificate.
+.IP \(bu 2
+Call the \fI\%GetCertificateAuthorityCsr\fP action to generate a certificate signing request (CSR).
+.IP \(bu 2
+Sign the CSR using a root or intermediate CA hosted by either an on\-premises PKI hierarchy or by a commercial CA.
+.IP \(bu 2
+Create a certificate chain and copy the signed certificate and the certificate chain to your working directory.
+.UNINDENT
+.sp
+ACM Private CA supports three scenarios for installing a CA certificate:
+.INDENT 0.0
+.IP \(bu 2
+Installing a certificate for a root CA hosted by ACM Private CA.
+.IP \(bu 2
+Installing a subordinate CA certificate whose parent authority is hosted by ACM Private CA.
+.IP \(bu 2
+Installing a subordinate CA certificate whose parent authority is externally hosted.
+.UNINDENT
+.sp
+The following additional requirements apply when you import a CA certificate.
+.INDENT 0.0
+.IP \(bu 2
+Only a self\-signed certificate can be imported as a root CA.
+.IP \(bu 2
+A self\-signed certificate cannot be imported as a subordinate CA.
+.IP \(bu 2
+Your certificate chain must not include the private CA certificate that you are importing.
+.IP \(bu 2
+Your root CA must be the last certificate in your chain. The subordinate certificate, if any, that your root CA signed must be next to last. The subordinate certificate signed by the preceding subordinate CA must come next, and so on until your chain is built.
+.IP \(bu 2
+The chain must be PEM\-encoded.
+.IP \(bu 2
+The maximum allowed size of a certificate is 32 KB.
+.IP \(bu 2
+The maximum allowed size of a certificate chain is 2 MB.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fIEnforcement of Critical Constraints\fP
+.UNINDENT
+.UNINDENT
+.sp
+ACM Private CA allows the following extensions to be marked critical in the imported CA certificate or chain.
+.INDENT 0.0
+.IP \(bu 2
+Basic constraints (\fImust\fP be marked critical)
+.IP \(bu 2
+Subject alternative names
+.IP \(bu 2
+Key usage
+.IP \(bu 2
+Extended key usage
+.IP \(bu 2
+Authority key identifier
+.IP \(bu 2
+Subject key identifier
+.IP \(bu 2
+Issuer alternative name
+.IP \(bu 2
+Subject directory attributes
+.IP \(bu 2
+Subject information access
+.IP \(bu 2
+Certificate policies
+.IP \(bu 2
+Policy mappings
+.IP \(bu 2
+Inhibit anyPolicy
+.UNINDENT
+.sp
+ACM Private CA rejects the following extensions when they are marked critical in an imported CA certificate or chain.
+.INDENT 0.0
+.IP \(bu 2
+Name constraints
+.IP \(bu 2
+Policy constraints
+.IP \(bu 2
+CRL distribution points
+.IP \(bu 2
+Authority information access
+.IP \(bu 2
+Freshest CRL
+.IP \(bu 2
+Any other extension
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  import\-certificate\-authority\-certificate
+\-\-certificate\-authority\-arn <value>
+\-\-certificate <value>
+[\-\-certificate\-chain <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-certificate\-authority\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) that was returned when you called \fI\%CreateCertificateAuthority\fP . This must be of the form:
+.INDENT 0.0
+.INDENT 3.5
+
+.nf
+\(ga\(ga
+.fi
+arn:aws:acm\-pca:\fIregion\fP :\fIaccount\fP :certificate\-authority/\fI12345678\-1234\-1234\-1234\-123456789012\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 158)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The PEM\-encoded certificate for a private CA. This may be a self\-signed certificate in the case of a root CA, or it may be signed by another CA that you control.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-chain\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+A PEM\-encoded file that contains all of your certificates, other than the certificate you\(aqre importing, chaining up to your root CA. Your ACM Private CA\-hosted or on\-premises root certificate is the last in the chain, and each certificate in the chain signs the one preceding.
+.sp
+This parameter must be supplied when you import a subordinate CA. When you import a root CA, there is no chain.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo import your certificate authority certificate into ACM PCA\fP
+.sp
+The following \fBimport\-certificate\-authority\-certificate\fP command imports the signed private CA certificate for the CA specified by the ARN into ACM PCA.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm\-pca import\-certificate\-authority\-certificate \-\-certificate\-authority\-arn arn:aws:acm\-pca:us\-west\-2:123456789012:certificate\-authority/12345678\-1234\-1234\-1234\-123456789012 \-\-certificate fileb://C:\eca_cert.pem \-\-certificate\-chain fileb://C:\eca_cert_chain.pem
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

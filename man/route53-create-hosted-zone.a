@@ -1,0 +1,414 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ROUTE53-CREATE-HOSTED-ZONE" "a" "" ""
+.SH NAME
+route53-create-hosted-zone \- Creates a new public or private hosted zone
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new public or private hosted zone. You create records in a public hosted zone to define how you want to route traffic on the internet for a domain, such as example.com, and its subdomains (apex.example.com, acme.example.com). You create records in a private hosted zone to define how you want to route traffic for a domain and its subdomains within one or more Amazon Virtual Private Clouds (Amazon VPCs).
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can\(aqt convert a public hosted zone to a private hosted zone or vice versa. Instead, you must create a new hosted zone with the same name and create new resource record sets.
+.UNINDENT
+.UNINDENT
+.sp
+For more information about charges for hosted zones, see \fI\%Amazon Route 53 Pricing\fP .
+.sp
+Note the following:
+.INDENT 0.0
+.IP \(bu 2
+You can\(aqt create a hosted zone for a top\-level domain (TLD) such as .com.
+.IP \(bu 2
+For public hosted zones, Route 53 automatically creates a default SOA record and four NS records for the zone. For more information about SOA and NS records, see \fI\%NS and SOA Records that Route 53 Creates for a Hosted Zone\fP in the \fIAmazon Route 53 Developer Guide\fP . If you want to use the same name servers for multiple public hosted zones, you can optionally associate a reusable delegation set with the hosted zone. See the \fBDelegationSetId\fP element.
+.IP \(bu 2
+If your domain is registered with a registrar other than Route 53, you must update the name servers with your registrar to make Route 53 the DNS service for the domain. For more information, see \fI\%Migrating DNS Service for an Existing Domain to Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP .
+.UNINDENT
+.sp
+When you submit a \fBCreateHostedZone\fP request, the initial status of the hosted zone is \fBPENDING\fP . For public hosted zones, this means that the NS and SOA records are not yet available on all Route 53 DNS servers. When the NS and SOA records are available, the status of the zone changes to \fBINSYNC\fP .
+.sp
+The \fBCreateHostedZone\fP request requires the caller to have an \fBec2:DescribeVpcs\fP permission.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-hosted\-zone
+\-\-name <value>
+[\-\-vpc <value>]
+\-\-caller\-reference <value>
+[\-\-hosted\-zone\-config <value>]
+[\-\-delegation\-set\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain. Specify a fully qualified domain name, for example, \fIwww.example.com\fP . The trailing dot is optional; Amazon Route 53 assumes that the domain name is fully qualified. This means that Route 53 treats \fIwww.example.com\fP (without a trailing dot) and \fIwww.example.com.\fP (with a trailing dot) as identical.
+.sp
+If you\(aqre creating a public hosted zone, this is the name you have registered with your DNS registrar. If your domain name is registered with a registrar other than Route 53, change the name servers for your domain to the set of \fBNameServers\fP that \fBCreateHostedZone\fP returns in \fBDelegationSet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+(Private hosted zones only) A complex type that contains information about the Amazon VPC that you\(aqre associating with this hosted zone.
+.sp
+You can specify only one Amazon VPC when you create a private hosted zone. To associate additional Amazon VPCs with the hosted zone, use \fI\%AssociateVPCWithHostedZone\fP after you create a hosted zone.
+.sp
+VPCRegion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Private hosted zones only) The region that an Amazon VPC was created in.
+.UNINDENT
+.UNINDENT
+.sp
+VPCId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Private hosted zones only) The ID of an Amazon VPC.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+VPCRegion=string,VPCId=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "VPCRegion": "us\-east\-1"|"us\-east\-2"|"us\-west\-1"|"us\-west\-2"|"eu\-west\-1"|"eu\-west\-2"|"eu\-west\-3"|"eu\-central\-1"|"ap\-east\-1"|"me\-south\-1"|"us\-gov\-west\-1"|"us\-gov\-east\-1"|"us\-iso\-east\-1"|"us\-isob\-east\-1"|"ap\-southeast\-1"|"ap\-southeast\-2"|"ap\-south\-1"|"ap\-northeast\-1"|"ap\-northeast\-2"|"ap\-northeast\-3"|"eu\-north\-1"|"sa\-east\-1"|"ca\-central\-1"|"cn\-north\-1"|"af\-south\-1"|"eu\-south\-1",
+  "VPCId": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-caller\-reference\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique string that identifies the request and that allows failed \fBCreateHostedZone\fP requests to be retried without the risk of executing the operation twice. You must use a unique \fBCallerReference\fP string every time you submit a \fBCreateHostedZone\fP request. \fBCallerReference\fP can be any unique string, for example, a date/time stamp.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-hosted\-zone\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) A complex type that contains the following optional values:
+.INDENT 0.0
+.IP \(bu 2
+For public and private hosted zones, an optional comment
+.IP \(bu 2
+For private hosted zones, an optional \fBPrivateZone\fP element
+.UNINDENT
+.sp
+If you don\(aqt specify a comment or the \fBPrivateZone\fP element, omit \fBHostedZoneConfig\fP and the other elements.
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Any comments that you want to include about the hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateZone \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether this is a private hosted zone.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Note do \fBnot\fP include \fBPrivateZone\fP in this input structure. Its value is returned in the output to the command.
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Comment=string,PrivateZone=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Comment": "string",
+  "PrivateZone": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delegation\-set\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If you want to associate a reusable delegation set with this hosted zone, the ID that Amazon Route 53 assigned to the reusable delegation set when you created it. For more information about reusable delegation sets, see \fI\%CreateReusableDelegationSet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a hosted zone\fP
+.sp
+The following \fBcreate\-hosted\-zone\fP command adds a hosted zone named \fBexample.com\fP using the caller reference \fB2014\-04\-01\-18:47\fP\&. The optional comment includes a space, so it must be enclosed in quotation marks:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws route53 create\-hosted\-zone \-\-name example.com \-\-caller\-reference 2014\-04\-01\-18:47 \-\-hosted\-zone\-config Comment="command\-line version"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Working with Hosted Zones\fP in the \fIAmazon Route 53 Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+HostedZone \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains general information about the hosted zone.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID that Amazon Route 53 assigned to the hosted zone when you created it.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain. For public hosted zones, this is the name that you have registered with your DNS registrar.
+.sp
+For information about how to specify characters other than \fBa\-z\fP , \fB0\-9\fP , and \fB\-\fP (hyphen) and how to specify internationalized domain names, see \fI\%CreateHostedZone\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CallerReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that you specified for \fBCallerReference\fP when you created the hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+Config \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that includes the \fBComment\fP and \fBPrivateZone\fP elements. If you omitted the \fBHostedZoneConfig\fP and \fBComment\fP elements from the request, the \fBConfig\fP and \fBComment\fP elements don\(aqt appear in the response.
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Any comments that you want to include about the hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateZone \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether this is a private hosted zone.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResourceRecordSetCount \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of resource record sets in the hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+LinkedService \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If the hosted zone was created by another service, the service that created the hosted zone. When a hosted zone is created by another service, you can\(aqt edit or delete it using Route 53.
+.sp
+ServicePrincipal \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the health check or hosted zone was created by another service, the service that created the resource. When a resource is created by another service, you can\(aqt edit or delete it using Amazon Route 53.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the health check or hosted zone was created by another service, an optional description that can be provided by the other service. When a resource is created by another service, you can\(aqt edit or delete it using Amazon Route 53.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ChangeInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains information about the \fBCreateHostedZone\fP request.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the request.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the request. \fBPENDING\fP indicates that this request has not yet been applied to all Amazon Route 53 DNS servers.
+.UNINDENT
+.UNINDENT
+.sp
+SubmittedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the change request was submitted in \fI\%ISO 8601 format\fP and Coordinated Universal Time (UTC). For example, the value \fB2017\-03\-27T17:48:16.751Z\fP represents March 27, 2017 at 17:48:16.751 UTC.
+.UNINDENT
+.UNINDENT
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that describes change information about changes made to your hosted zone.
+.sp
+This element contains an ID that you use when performing a \fI\%GetChange\fP action to get detailed information about the change.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DelegationSet \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that describes the name servers for this hosted zone.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID that Amazon Route 53 assigns to a reusable delegation set.
+.UNINDENT
+.UNINDENT
+.sp
+CallerReference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that you specified for \fBCallerReference\fP when you created the reusable delegation set.
+.UNINDENT
+.UNINDENT
+.sp
+NameServers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains a list of the authoritative name servers for a hosted zone or for a reusable delegation set.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VPC \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains information about an Amazon VPC that you associated with this hosted zone.
+.sp
+VPCRegion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Private hosted zones only) The region that an Amazon VPC was created in.
+.UNINDENT
+.UNINDENT
+.sp
+VPCId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Private hosted zones only) The ID of an Amazon VPC.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique URL representing the new hosted zone.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

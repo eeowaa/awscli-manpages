@@ -1,0 +1,433 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ACM-REQUEST-CERTIFICATE" "a" "" ""
+.SH NAME
+acm-request-certificate \- Requests an ACM certificate for use with other AWS services
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Requests an ACM certificate for use with other AWS services. To request an ACM certificate, you must specify a fully qualified domain name (FQDN) in the \fBDomainName\fP parameter. You can also specify additional FQDNs in the \fBSubjectAlternativeNames\fP parameter.
+.sp
+If you are requesting a private certificate, domain validation is not required. If you are requesting a public certificate, each domain name that you specify must be validated to verify that you own or control the domain. You can use \fI\%DNS validation\fP or \fI\%email validation\fP . We recommend that you use DNS validation. ACM issues public certificates after receiving approval from the domain owner.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  request\-certificate
+\-\-domain\-name <value>
+[\-\-validation\-method <value>]
+[\-\-subject\-alternative\-names <value>]
+[\-\-idempotency\-token <value>]
+[\-\-domain\-validation\-options <value>]
+[\-\-options <value>]
+[\-\-certificate\-authority\-arn <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Fully qualified domain name (FQDN), such as www.example.com, that you want to secure with an ACM certificate. Use an asterisk (*) to create a wildcard certificate that protects several sites in the same domain. For example, 
+.nf
+*
+.fi
+\&.example.com protects www.example.com, site.example.com, and images.example.com.
+.IP "System Message: WARNING/2 (<string>:, line 59)"
+Inline emphasis start\-string without end\-string.
+.sp
+The first domain name you enter cannot exceed 64 octets, including periods. Each subsequent Subject Alternative Name (SAN), however, can be up to 253 octets in length.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-validation\-method\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The method you want to use if you are requesting a public certificate to validate that you own or control domain. You can \fI\%validate with DNS\fP or \fI\%validate with email\fP . We recommend that you use DNS validation.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBEMAIL\fP
+.IP \(bu 2
+\fBDNS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-subject\-alternative\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Additional FQDNs to be included in the Subject Alternative Name extension of the ACM certificate. For example, add the name www.example.net to a certificate for which the \fBDomainName\fP field is www.example.com if users can reach your site by using either name. The maximum number of domain names that you can add to an ACM certificate is 100. However, the initial quota is 10 domain names. If you need more than 10 names, you must request a quota increase. For more information, see \fI\%Quotas\fP .
+.sp
+The maximum length of a SAN DNS name is 253 octets. The name is made up of multiple labels separated by periods. No label can be longer than 63 octets. Consider the following examples:
+.INDENT 0.0
+.IP \(bu 2
+\fB(63 octets).(63 octets).(63 octets).(61 octets)\fP is legal because the total length is 253 octets (63+1+63+1+63+1+61) and no label exceeds 63 octets.
+.IP \(bu 2
+\fB(64 octets).(63 octets).(63 octets).(61 octets)\fP is not legal because the total length exceeds 253 octets (64+1+63+1+63+1+61) and the first label exceeds 63 octets.
+.IP \(bu 2
+\fB(63 octets).(63 octets).(63 octets).(62 octets)\fP is not legal because the total length of the DNS name (63+1+63+1+63+1+62) exceeds 253 octets.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-idempotency\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Customer chosen string that can be used to distinguish between calls to \fBRequestCertificate\fP . Idempotency tokens time out after one hour. Therefore, if you call \fBRequestCertificate\fP multiple times with the same idempotency token within one hour, ACM recognizes that you are requesting only one certificate and will issue only one. If you change the idempotency token for each call, ACM recognizes that you are requesting multiple certificates.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-domain\-validation\-options\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The domain name that you want ACM to use to send you emails so that you can validate domain ownership.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the domain names that you want ACM to use to send you emails that enable you to validate domain ownership.
+.sp
+DomainName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A fully qualified domain name (FQDN) in the certificate request.
+.UNINDENT
+.UNINDENT
+.sp
+ValidationDomain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The domain name that you want ACM to use to send you validation emails. This domain name is the suffix of the email addresses that you want ACM to use. This must be the same as the \fBDomainName\fP value or a superdomain of the \fBDomainName\fP value. For example, if you request a certificate for \fBtesting.example.com\fP , you can specify \fBexample.com\fP for this value. In that case, ACM sends domain validation emails to the following five addresses:
+.INDENT 0.0
+.IP \(bu 2
+\fI\%admin@example.com\fP
+.IP \(bu 2
+\fI\%administrator@example.com\fP
+.IP \(bu 2
+\fI\%hostmaster@example.com\fP
+.IP \(bu 2
+\fI\%postmaster@example.com\fP
+.IP \(bu 2
+\fI\%webmaster@example.com\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DomainName=string,ValidationDomain=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "DomainName": "string",
+    "ValidationDomain": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Currently, you can use this parameter to specify whether to add the certificate to a certificate transparency log. Certificate transparency makes it possible to detect SSL/TLS certificates that have been mistakenly or maliciously issued. Certificates that have not been logged typically produce an error message in a browser. For more information, see \fI\%Opting Out of Certificate Transparency Logging\fP .
+.sp
+CertificateTransparencyLoggingPreference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+You can opt out of certificate transparency logging by specifying the \fBDISABLED\fP option. Opt in by specifying \fBENABLED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CertificateTransparencyLoggingPreference=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CertificateTransparencyLoggingPreference": "ENABLED"|"DISABLED"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-authority\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the private certificate authority (CA) that will be used to issue the certificate. If you do not provide an ARN and you are trying to request a private certificate, ACM will attempt to issue a public certificate. For more information about private CAs, see the \fI\%AWS Certificate Manager Private Certificate Authority (PCA)\fP user guide. The ARN must have the following form:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:acm\-pca:region:account:certificate\-authority/12345678\-1234\-1234\-1234\-123456789012\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more resource tags to associate with the certificate.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair that identifies or specifies metadata about an ACM resource.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo request a new ACM certificate\fP
+.sp
+The following \fBrequest\-certificate\fP command requests a new certificate for the www.example.com domain using DNS validation:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name www.example.com \-\-validation\-method DNS
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can enter an idempotency token to distinguish between calls to \fBrequest\-certificate\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name www.example.com \-\-validation\-method DNS \-\-idempotency\-token 91adc45q
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can enter one or more subject alternative names to request a certificate that will protect more than one apex domain:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name example.com \-\-validation\-method DNS \-\-idempotency\-token 91adc45q \-\-subject\-alternative\-names www.example.net
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can enter an alternative name that can also be used to reach your website:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name example.com \-\-validation\-method DNS \-\-idempotency\-token 91adc45q \-\-subject\-alternative\-names www.example.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can use an asterisk (*) as a wildcard to create a certificate for several subdomains in the same domain:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name example.com \-\-validation\-method DNS \-\-idempotency\-token 91adc45q \-\-subject\-alternative\-names *.example.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can also enter multiple alternative names:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name example.com \-\-validation\-method DNS \-\-subject\-alternative\-names b.example.com c.example.com d.example.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If you are using email for validation, you can enter domain validation options to specify the domain to which the validation email will be sent:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name example.com \-\-validation\-method EMAIL \-\-subject\-alternative\-names www.example.com \-\-domain\-validation\-options DomainName=example.com,ValidationDomain=example.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following command opts out of certificate transparency logging when you request a new certificate:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm request\-certificate \-\-domain\-name www.example.com \-\-validation\-method DNS \-\-options CertificateTransparencyLoggingPreference=DISABLED \-\-idempotency\-token 184627
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+CertificateArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+String that contains the ARN of the issued certificate. This must be of the form:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:acm:us\-east\-1:123456789012:certificate/12345678\-1234\-1234\-1234\-123456789012\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

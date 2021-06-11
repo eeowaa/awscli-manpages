@@ -1,0 +1,588 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELASTICBEANSTALK-CREATE-APPLICATION-VERSION" "a" "" ""
+.SH NAME
+elasticbeanstalk-create-application-version \- Creates an application version for the specified application
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an application version for the specified application. You can create an application version from a source bundle in Amazon S3, a commit in AWS CodeCommit, or the output of an AWS CodeBuild build as follows:
+.sp
+Specify a commit in an AWS CodeCommit repository with \fBSourceBuildInformation\fP .
+.sp
+Specify a build in an AWS CodeBuild with \fBSourceBuildInformation\fP and \fBBuildConfiguration\fP .
+.sp
+Specify a source bundle in S3 with \fBSourceBundle\fP
+.sp
+Omit both \fBSourceBuildInformation\fP and \fBSourceBundle\fP to use the default sample application.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+After you create an application version with a specified Amazon S3 bucket and key location, you can\(aqt change that Amazon S3 location. If you change the Amazon S3 location, you receive an exception when you attempt to launch an environment from the application version.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-application\-version
+\-\-application\-name <value>
+\-\-version\-label <value>
+[\-\-description <value>]
+[\-\-source\-build\-information <value>]
+[\-\-source\-bundle <value>]
+[\-\-build\-configuration <value>]
+[\-\-auto\-create\-application | \-\-no\-auto\-create\-application]
+[\-\-process | \-\-no\-process]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-application\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the application. If no application is found with this name, and \fBAutoCreateApplication\fP is \fBfalse\fP , returns an \fBInvalidParameterValue\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-version\-label\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A label identifying this version.
+.sp
+Constraint: Must be unique per application. If an application version already exists with this label for the specified application, AWS Elastic Beanstalk returns an \fBInvalidParameterValue\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of this application version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-build\-information\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specify a commit in an AWS CodeCommit Git repository to use as the source code for the application version.
+.sp
+SourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of repository.
+.INDENT 0.0
+.IP \(bu 2
+\fBGit\fP
+.IP \(bu 2
+\fBZip\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceRepository \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Location where the repository is stored.
+.INDENT 0.0
+.IP \(bu 2
+\fBCodeCommit\fP
+.IP \(bu 2
+\fBS3\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceLocation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location of the source code, as a formatted string, depending on the value of \fBSourceRepository\fP
+.INDENT 0.0
+.IP \(bu 2
+For \fBCodeCommit\fP , the format is the repository name and commit ID, separated by a forward slash. For example, \fBmy\-git\-repo/265cfa0cf6af46153527f55d6503ec030551f57a\fP .
+.IP \(bu 2
+For \fBS3\fP , the format is the S3 bucket name and object key, separated by a forward slash. For example, \fBmy\-s3\-bucket/Folders/my\-source\-file\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SourceType=string,SourceRepository=string,SourceLocation=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SourceType": "Git"|"Zip",
+  "SourceRepository": "CodeCommit"|"S3",
+  "SourceLocation": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-bundle\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket and key that identify the location of the source bundle for this version.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket must be in the same region as the environment.
+.UNINDENT
+.UNINDENT
+.sp
+Specify a source bundle in S3 or a commit in an AWS CodeCommit repository (with \fBSourceBuildInformation\fP ), but not both. If neither \fBSourceBundle\fP nor \fBSourceBuildInformation\fP are provided, Elastic Beanstalk uses a sample application.
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket where the data is located.
+.UNINDENT
+.UNINDENT
+.sp
+S3Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 key where the data is located.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Bucket=string,S3Key=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Bucket": "string",
+  "S3Key": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-build\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings for an AWS CodeBuild build.
+.sp
+ArtifactName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the artifact of the CodeBuild build. If provided, Elastic Beanstalk stores the build artifact in the S3 location \fIS3\-bucket\fP /resources/\fIapplication\-name\fP /codebuild/codebuild\-\fIversion\-label\fP \-\fIartifact\-name\fP .zip. If not provided, Elastic Beanstalk stores the build artifact in the S3 location \fIS3\-bucket\fP /resources/\fIapplication\-name\fP /codebuild/codebuild\-\fIversion\-label\fP .zip.
+.UNINDENT
+.UNINDENT
+.sp
+CodeBuildServiceRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the AWS Identity and Access Management (IAM) role that enables AWS CodeBuild to interact with dependent AWS services on behalf of the AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+ComputeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the compute resources the build project will use.
+.INDENT 0.0
+.IP \(bu 2
+\fBBUILD_GENERAL1_SMALL: Use up to 3 GB memory and 2 vCPUs for builds\fP
+.IP \(bu 2
+\fBBUILD_GENERAL1_MEDIUM: Use up to 7 GB memory and 4 vCPUs for builds\fP
+.IP \(bu 2
+\fBBUILD_GENERAL1_LARGE: Use up to 15 GB memory and 8 vCPUs for builds\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Docker image to use for this build project.
+.UNINDENT
+.UNINDENT
+.sp
+TimeoutInMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+How long in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait until timing out any related build that does not get marked as completed. The default is 60 minutes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ArtifactName=string,CodeBuildServiceRole=string,ComputeType=string,Image=string,TimeoutInMinutes=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ArtifactName": "string",
+  "CodeBuildServiceRole": "string",
+  "ComputeType": "BUILD_GENERAL1_SMALL"|"BUILD_GENERAL1_MEDIUM"|"BUILD_GENERAL1_LARGE",
+  "Image": "string",
+  "TimeoutInMinutes": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-create\-application\fP | \fB\-\-no\-auto\-create\-application\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to \fBtrue\fP to create an application with the specified name if it doesn\(aqt already exist.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-process\fP | \fB\-\-no\-process\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Pre\-processes and validates the environment manifest (\fBenv.yaml\fP ) and configuration files (\fB*.config\fP files in the \fB\&.ebextensions\fP folder) in the source bundle. Validating configuration files can identify issues prior to deploying the application version to an environment.
+.sp
+You must turn processing on for application versions that you create using AWS CodeBuild or AWS CodeCommit. For application versions built from a source bundle in Amazon S3, processing is optional.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBProcess\fP option validates Elastic Beanstalk configuration files. It doesn\(aqt validate your application\(aqs configuration files, like proxy server or Docker configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the tags applied to the application version.
+.sp
+Elastic Beanstalk applies these tags only to the application version. Environments that use the application version don\(aqt inherit the tags.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag applied to a resource in an environment.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a new application version\fP
+.sp
+The following command creates a new version, "v1" of an application named "MyApp":
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elasticbeanstalk create\-application\-version \-\-application\-name MyApp \-\-version\-label v1 \-\-description MyAppv1 \-\-source\-bundle S3Bucket="my\-bucket",S3Key="sample.war" \-\-auto\-create\-application
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The application will be created automatically if it does not already exist, due to the auto\-create\-application option. The source bundle is a .war file stored in an s3 bucket named "my\-bucket" that contains the Apache Tomcat sample application.
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ApplicationVersion": {
+      "ApplicationName": "MyApp",
+      "VersionLabel": "v1",
+      "Description": "MyAppv1",
+      "DateCreated": "2015\-02\-03T23:01:25.412Z",
+      "DateUpdated": "2015\-02\-03T23:01:25.412Z",
+      "SourceBundle": {
+          "S3Bucket": "my\-bucket",
+          "S3Key": "sample.war"
+      }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+ApplicationVersion \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The  ApplicationVersionDescription of the application version.
+.sp
+ApplicationVersionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the application version.
+.UNINDENT
+.UNINDENT
+.sp
+ApplicationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the application to which the application version belongs.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the application version.
+.UNINDENT
+.UNINDENT
+.sp
+VersionLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the application version.
+.UNINDENT
+.UNINDENT
+.sp
+SourceBuildInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If the version\(aqs source code was retrieved from AWS CodeCommit, the location of the source code for the application version.
+.sp
+SourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of repository.
+.INDENT 0.0
+.IP \(bu 2
+\fBGit\fP
+.IP \(bu 2
+\fBZip\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceRepository \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Location where the repository is stored.
+.INDENT 0.0
+.IP \(bu 2
+\fBCodeCommit\fP
+.IP \(bu 2
+\fBS3\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceLocation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location of the source code, as a formatted string, depending on the value of \fBSourceRepository\fP
+.INDENT 0.0
+.IP \(bu 2
+For \fBCodeCommit\fP , the format is the repository name and commit ID, separated by a forward slash. For example, \fBmy\-git\-repo/265cfa0cf6af46153527f55d6503ec030551f57a\fP .
+.IP \(bu 2
+For \fBS3\fP , the format is the S3 bucket name and object key, separated by a forward slash. For example, \fBmy\-s3\-bucket/Folders/my\-source\-file\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BuildArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Reference to the artifact from the AWS CodeBuild build.
+.UNINDENT
+.UNINDENT
+.sp
+SourceBundle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The storage location of the application version\(aqs source bundle in Amazon S3.
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket where the data is located.
+.UNINDENT
+.UNINDENT
+.sp
+S3Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 key where the data is located.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DateCreated \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The creation date of the application version.
+.UNINDENT
+.UNINDENT
+.sp
+DateUpdated \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last modified date of the application version.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The processing status of the application version. Reflects the state of the application version during its creation. Many of the values are only applicable if you specified \fBTrue\fP for the \fBProcess\fP parameter of the \fBCreateApplicationVersion\fP action. The following list describes the possible values.
+.INDENT 0.0
+.IP \(bu 2
+\fBUnprocessed\fP – Application version wasn\(aqt pre\-processed or validated. Elastic Beanstalk will validate configuration files during deployment of the application version to an environment.
+.IP \(bu 2
+\fBProcessing\fP – Elastic Beanstalk is currently processing the application version.
+.IP \(bu 2
+\fBBuilding\fP – Application version is currently undergoing an AWS CodeBuild build.
+.IP \(bu 2
+\fBProcessed\fP – Elastic Beanstalk was successfully pre\-processed and validated.
+.IP \(bu 2
+\fBFailed\fP – Either the AWS CodeBuild build failed or configuration files didn\(aqt pass validation. This application version isn\(aqt usable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

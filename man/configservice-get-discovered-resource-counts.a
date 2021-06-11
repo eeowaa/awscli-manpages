@@ -1,0 +1,204 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONFIGSERVICE-GET-DISCOVERED-RESOURCE-COUNTS" "a" "" ""
+.SH NAME
+configservice-get-discovered-resource-counts \- Returns the resource types, the number of each resource type, and the total number of resources that AWS Config is recording in this region for your AWS account
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the resource types, the number of each resource type, and the total number of resources that AWS Config is recording in this region for your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+\fBExample\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+AWS Config is recording three resource types in the US East (Ohio) Region for your account: 25 EC2 instances, 20 IAM users, and 15 S3 buckets.
+.IP \(bu 2
+You make a call to the \fBGetDiscoveredResourceCounts\fP action and specify that you want all resource types.
+.IP \(bu 2
+AWS Config returns the following:
+.INDENT 2.0
+.IP \(bu 2
+The resource types (EC2 instances, IAM users, and S3 buckets).
+.IP \(bu 2
+The number of each resource type (25, 20, and 15).
+.IP \(bu 2
+The total number of all resources (60).
+.UNINDENT
+.UNINDENT
+.sp
+The response is paginated. By default, AWS Config lists 100  ResourceCount objects on each page. You can customize this number with the \fBlimit\fP parameter. The response includes a \fBnextToken\fP string. To get the next page of results, run the request again and specify the string for the \fBnextToken\fP parameter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you make a call to the  GetDiscoveredResourceCounts action, you might not immediately receive resource counts in the following situations:
+.INDENT 0.0
+.IP \(bu 2
+You are a new AWS Config customer.
+.IP \(bu 2
+You just enabled resource recording.
+.UNINDENT
+.sp
+It might take a few minutes for AWS Config to record and count your resources. Wait a few minutes and then retry the  GetDiscoveredResourceCounts action.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-discovered\-resource\-counts
+[\-\-resource\-types <value>]
+[\-\-limit <value>]
+[\-\-next\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-resource\-types\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The comma\-separated list that specifies the resource types that you want AWS Config to return (for example, \fB"AWS::EC2::Instance"\fP , \fB"AWS::IAM::User"\fP ).
+.sp
+If a value for \fBresourceTypes\fP is not specified, AWS Config returns all resource types that AWS Config is recording in the region for your account.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the configuration recorder is turned off, AWS Config returns an empty list of  ResourceCount objects. If the configuration recorder is not recording a specific resource type (for example, S3 buckets), that resource type is not returned in the list of  ResourceCount objects.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-limit\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of  ResourceCount objects returned on each page. The default is 100. You cannot specify a number greater than 100. If you specify 0, AWS Config uses the default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBnextToken\fP string returned on a previous page that you use to get the next page of results in a paginated response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+totalDiscoveredResources \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The total number of resources that AWS Config is recording in the region for your account. If you specify resource types in the request, AWS Config returns only the total number of resources for those resource types.
+.INDENT 0.0
+.INDENT 3.5
+\fBExample\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+AWS Config is recording three resource types in the US East (Ohio) Region for your account: 25 EC2 instances, 20 IAM users, and 15 S3 buckets, for a total of 60 resources.
+.IP \(bu 2
+You make a call to the \fBGetDiscoveredResourceCounts\fP action and specify the resource type, \fB"AWS::EC2::Instances"\fP , in the request.
+.IP \(bu 2
+AWS Config returns 25 for \fBtotalDiscoveredResources\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+resourceCounts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of \fBResourceCount\fP objects. Each object is listed in descending order by the number of resources.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that contains the resource type and the number of resources.
+.sp
+resourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type (for example, \fB"AWS::EC2::Instance"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+count \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of resources.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+nextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that you use in a subsequent request to get the next page of results in a paginated response.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

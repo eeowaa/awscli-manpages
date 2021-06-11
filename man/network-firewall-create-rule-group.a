@@ -1,0 +1,1015 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "NETWORK-FIREWALL-CREATE-RULE-GROUP" "a" "" ""
+.SH NAME
+network-firewall-create-rule-group \- Creates the specified stateless or stateful rule group, which includes the rules for network traffic inspection, a capacity setting, and tags
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates the specified stateless or stateful rule group, which includes the rules for network traffic inspection, a capacity setting, and tags.
+.sp
+You provide your rule group specification in your request using either \fBRuleGroup\fP or \fBRules\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-rule\-group
+\-\-rule\-group\-name <value>
+[\-\-rule\-group <value>]
+[\-\-rules <value>]
+\-\-type <value>
+[\-\-description <value>]
+\-\-capacity <value>
+[\-\-tags <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-rule\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the rule group. You can\(aqt change the name of a rule group after you create it.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-rule\-group\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that defines the rule group rules.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must provide either this rule group setting or a \fBRules\fP setting, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+RuleVariables \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Settings that are available for use in the rules in the rule group. You can only use these for stateful rule groups.
+.sp
+IPSets \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of IP addresses and address ranges, in CIDR notation.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of IP addresses and address ranges, in CIDR notation. This is part of a  RuleVariables .
+.sp
+Definition \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of IP addresses and address ranges, in CIDR notation.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PortSets \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of port ranges.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A set of port ranges for use in the rules in a rule group.
+.sp
+Definition \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The set of port ranges.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RulesSource \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The stateful rules or stateless rules for the rule group.
+.sp
+RulesString \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Stateful inspection criteria, provided in Suricata compatible intrusion prevention system (IPS) rules. Suricata is an open\-source network IPS that includes a standard rule\-based language for network traffic inspection.
+.sp
+These rules contain the inspection criteria and the action to take for traffic that matches the criteria, so this type of rule group doesn\(aqt have a separate action setting.
+.UNINDENT
+.UNINDENT
+.sp
+RulesSourceList \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Stateful inspection criteria for a domain list rule group.
+.sp
+Targets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The domains that you want to inspect for in your traffic flows. To provide multiple domains, separate them with commas. Valid domain specifications are the following:
+.INDENT 0.0
+.IP \(bu 2
+Explicit names. For example, \fBabc.example.com\fP matches only the domain \fBabc.example.com\fP .
+.IP \(bu 2
+Names that use a domain wildcard, which you indicate with an initial \(aq\fB\&.\fP \(aq. For example,\(ga\(ga.example.com\(ga\(ga matches \fBexample.com\fP and matches all subdomains of \fBexample.com\fP , such as \fBabc.example.com\fP and \fBwww.example.com\fP .
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+TargetTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The protocols you want to inspect. Specify \fBTLS_SNI\fP for \fBHTTPS\fP . Specity \fBHTTP_HOST\fP for \fBHTTP\fP . You can specify either or both.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+GeneratedRulesType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether you want to allow or deny access to the domains in your target list.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StatefulRules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The 5\-tuple stateful inspection criteria. This contains an array of individual 5\-tuple stateful rules to be used together in a stateful rule group.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single 5\-tuple stateful rule, for use in a stateful rule group.
+.sp
+Action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines what Network Firewall should do with the packets in a traffic flow when the flow matches the stateful rule criteria. For all actions, Network Firewall performs the specified action and discontinues stateful inspection of the traffic flow.
+.sp
+The actions for a stateful rule are defined as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBPASS\fP \- Permits the packets to go to the intended destination.
+.IP \(bu 2
+\fBDROP\fP \- Blocks the packets from going to the intended destination and sends an alert log message, if alert logging is configured in the  Firewall   LoggingConfiguration .
+.IP \(bu 2
+\fBALERT\fP \- Permits the packets to go to the intended destination and sends an alert log message, if alert logging is configured in the  Firewall   LoggingConfiguration .  You can use this action to test a rule that you intend to use to drop traffic. You can enable the rule with \fBALERT\fP action, verify in the logs that the rule is filtering as you want, then change the action to \fBDROP\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Header \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The stateful 5\-tuple inspection criteria for this rule, used to inspect traffic flows.
+.sp
+Protocol \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The protocol to inspect for. To specify all, you can use \fBIP\fP , because all traffic on AWS and on the internet is IP.
+.UNINDENT
+.UNINDENT
+.sp
+Source \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source IP address or address range to inspect for, in CIDR notation. To match with any address, specify \fBANY\fP .
+.sp
+Specify an IP address or a block of IP addresses in Classless Inter\-Domain Routing (CIDR) notation. Network Firewall supports all address ranges for IPv4.
+.sp
+Examples:
+.INDENT 0.0
+.IP \(bu 2
+To configure Network Firewall to inspect for the IP address 192.0.2.44, specify \fB192.0.2.44/32\fP .
+.IP \(bu 2
+To configure Network Firewall to inspect for IP addresses from 192.0.2.0 to 192.0.2.255, specify \fB192.0.2.0/24\fP .
+.UNINDENT
+.sp
+For more information about CIDR notation, see the Wikipedia entry \fI\%Classless Inter\-Domain Routing\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SourcePort \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source port to inspect for. You can specify an individual port, for example \fB1994\fP and you can specify a port range, for example \fB1990\-1994\fP . To match with any port, specify \fBANY\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Direction \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The direction of traffic flow to inspect. If set to \fBANY\fP , the inspection matches bidirectional traffic, both from the source to the destination and from the destination to the source. If set to \fBFORWARD\fP , the inspection only matches traffic going from the source to the destination.
+.UNINDENT
+.UNINDENT
+.sp
+Destination \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The destination IP address or address range to inspect for, in CIDR notation. To match with any address, specify \fBANY\fP .
+.sp
+Specify an IP address or a block of IP addresses in Classless Inter\-Domain Routing (CIDR) notation. Network Firewall supports all address ranges for IPv4.
+.sp
+Examples:
+.INDENT 0.0
+.IP \(bu 2
+To configure Network Firewall to inspect for the IP address 192.0.2.44, specify \fB192.0.2.44/32\fP .
+.IP \(bu 2
+To configure Network Firewall to inspect for IP addresses from 192.0.2.0 to 192.0.2.255, specify \fB192.0.2.0/24\fP .
+.UNINDENT
+.sp
+For more information about CIDR notation, see the Wikipedia entry \fI\%Classless Inter\-Domain Routing\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationPort \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The destination port to inspect for. You can specify an individual port, for example \fB1994\fP and you can specify a port range, for example \fB1990\-1994\fP . To match with any port, specify \fBANY\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RuleOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Additional settings for a stateful rule. This is part of the  StatefulRule configuration.
+.sp
+Keyword \-> (string)
+.sp
+Settings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StatelessRulesAndCustomActions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Stateless inspection criteria to be used in a stateless rule group.
+.sp
+StatelessRules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Defines the set of stateless rules for use in a stateless rule group.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single stateless rule. This is used in  StatelessRulesAndCustomActions .
+.sp
+RuleDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines the stateless 5\-tuple packet inspection criteria and the action to take on a packet that matches the criteria.
+.sp
+MatchAttributes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Criteria for Network Firewall to use to inspect an individual packet in stateless rule inspection. Each match attributes set can include one or more items such as IP address, CIDR range, port number, protocol, and TCP flags.
+.sp
+Sources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The source IP addresses and address ranges to inspect for, in CIDR notation. If not specified, this matches with any source address.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single IP address specification. This is used in the  MatchAttributes source and destination specifications.
+.sp
+AddressDefinition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify an IP address or a block of IP addresses in Classless Inter\-Domain Routing (CIDR) notation. Network Firewall supports all address ranges for IPv4.
+.sp
+Examples:
+.INDENT 0.0
+.IP \(bu 2
+To configure Network Firewall to inspect for the IP address 192.0.2.44, specify \fB192.0.2.44/32\fP .
+.IP \(bu 2
+To configure Network Firewall to inspect for IP addresses from 192.0.2.0 to 192.0.2.255, specify \fB192.0.2.0/24\fP .
+.UNINDENT
+.sp
+For more information about CIDR notation, see the Wikipedia entry \fI\%Classless Inter\-Domain Routing\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Destinations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The destination IP addresses and address ranges to inspect for, in CIDR notation. If not specified, this matches with any destination address.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single IP address specification. This is used in the  MatchAttributes source and destination specifications.
+.sp
+AddressDefinition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify an IP address or a block of IP addresses in Classless Inter\-Domain Routing (CIDR) notation. Network Firewall supports all address ranges for IPv4.
+.sp
+Examples:
+.INDENT 0.0
+.IP \(bu 2
+To configure Network Firewall to inspect for the IP address 192.0.2.44, specify \fB192.0.2.44/32\fP .
+.IP \(bu 2
+To configure Network Firewall to inspect for IP addresses from 192.0.2.0 to 192.0.2.255, specify \fB192.0.2.0/24\fP .
+.UNINDENT
+.sp
+For more information about CIDR notation, see the Wikipedia entry \fI\%Classless Inter\-Domain Routing\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourcePorts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The source ports to inspect for. If not specified, this matches with any source port. This setting is only used for protocols 6 (TCP) and 17 (UDP).
+.sp
+You can specify individual ports, for example \fB1994\fP and you can specify port ranges, for example \fB1990\-1994\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single port range specification. This is used for source and destination port ranges in the stateless rule  MatchAttributes , \fBSourcePorts\fP , and \fBDestinationPorts\fP settings.
+.sp
+FromPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The lower limit of the port range. This must be less than or equal to the \fBToPort\fP specification.
+.UNINDENT
+.UNINDENT
+.sp
+ToPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper limit of the port range. This must be greater than or equal to the \fBFromPort\fP specification.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DestinationPorts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The destination ports to inspect for. If not specified, this matches with any destination port. This setting is only used for protocols 6 (TCP) and 17 (UDP).
+.sp
+You can specify individual ports, for example \fB1994\fP and you can specify port ranges, for example \fB1990\-1994\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single port range specification. This is used for source and destination port ranges in the stateless rule  MatchAttributes , \fBSourcePorts\fP , and \fBDestinationPorts\fP settings.
+.sp
+FromPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The lower limit of the port range. This must be less than or equal to the \fBToPort\fP specification.
+.UNINDENT
+.UNINDENT
+.sp
+ToPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper limit of the port range. This must be greater than or equal to the \fBFromPort\fP specification.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Protocols \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The protocols to inspect for, specified using each protocol\(aqs assigned internet protocol number (IANA). If not specified, this matches with any protocol.
+.sp
+(integer)
+.UNINDENT
+.UNINDENT
+.sp
+TCPFlags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The TCP flags and masks to inspect for. If not specified, this matches with any settings. This setting is only used for protocol 6 (TCP).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+TCP flags and masks to inspect packets for, used in stateless rules  MatchAttributes settings.
+.sp
+Flags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Used in conjunction with the \fBMasks\fP setting to define the flags that must be set and flags that must not be set in order for the packet to match. This setting can only specify values that are also specified in the \fBMasks\fP setting.
+.sp
+For the flags that are specified in the masks setting, the following must be true for the packet to match:
+.INDENT 0.0
+.IP \(bu 2
+The ones that are set in this flags setting must be set in the packet.
+.IP \(bu 2
+The ones that are not set in this flags setting must also not be set in the packet.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Masks \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The set of flags to consider in the inspection. To inspect all flags in the valid values list, leave this with no setting.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Actions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The actions to take on a packet that matches one of the stateless rule definition\(aqs match attributes. You must specify a standard action and you can add custom actions.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Network Firewall only forwards a packet for stateful rule inspection if you specify \fBaws:forward_to_sfe\fP for a rule that the packet matches, or if the packet doesn\(aqt match any stateless rule and you specify \fBaws:forward_to_sfe\fP for the \fBStatelessDefaultActions\fP setting for the  FirewallPolicy .
+.UNINDENT
+.UNINDENT
+.sp
+For every rule, you must specify exactly one of the following standard actions.
+.INDENT 0.0
+.IP \(bu 2
+\fBaws:pass\fP \- Discontinues all inspection of the packet and permits it to go to its intended destination.
+.IP \(bu 2
+\fBaws:drop\fP \- Discontinues all inspection of the packet and blocks it from going to its intended destination.
+.IP \(bu 2
+\fBaws:forward_to_sfe\fP \- Discontinues stateless inspection of the packet and forwards it to the stateful rule engine for inspection.
+.UNINDENT
+.sp
+Additionally, you can specify a custom action. To do this, you define a custom action by name and type, then provide the name you\(aqve assigned to the action in this \fBActions\fP setting. For information about the options, see  CustomAction .
+.sp
+To provide more than one action in this setting, separate the settings with a comma. For example, if you have a custom \fBPublishMetrics\fP action that you\(aqve named \fBMyMetricsAction\fP , then you could specify the standard action \fBaws:pass\fP and the custom action with \fB[“aws:pass”, “MyMetricsAction”]\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Priority \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A setting that indicates the order in which to run this rule relative to all of the rules that are defined for a stateless rule group. Network Firewall evaluates the rules in a rule group starting with the lowest priority setting. You must ensure that the priority settings are unique for the rule group.
+.sp
+Each stateless rule group uses exactly one \fBStatelessRulesAndCustomActions\fP object, and each \fBStatelessRulesAndCustomActions\fP contains exactly one \fBStatelessRules\fP object. To ensure unique priority settings for your rule groups, set unique priorities for the stateless rules that you define inside any single \fBStatelessRules\fP object.
+.sp
+You can change the priority settings of your rules at any time. To make it easier to insert rules later, number them so there\(aqs a wide range in between, for example use 100, 200, and so on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CustomActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Defines an array of individual custom action definitions that are available for use by the stateless rules in this \fBStatelessRulesAndCustomActions\fP specification. You name each custom action that you define, and then you can use it by name in your  StatelessRule   RuleDefinition  \fBActions\fP specification.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An optional, non\-standard action to use for stateless packet handling. You can define this in addition to the standard action that you must specify.
+.sp
+You define and name the custom actions that you want to be able to use, and then you reference them by name in your actions settings.
+.sp
+You can use custom actions in the following places:
+.INDENT 0.0
+.IP \(bu 2
+In a rule group\(aqs  StatelessRulesAndCustomActions specification. The custom actions are available for use by name inside the \fBStatelessRulesAndCustomActions\fP where you define them. You can use them for your stateless rule actions to specify what to do with a packet that matches the rule\(aqs match attributes.
+.IP \(bu 2
+In a  FirewallPolicy specification, in \fBStatelessCustomActions\fP . The custom actions are available for use inside the policy where you define them. You can use them for the policy\(aqs default stateless actions settings to specify what to do with packets that don\(aqt match any of the policy\(aqs stateless rules.
+.UNINDENT
+.sp
+ActionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the custom action. You can\(aqt change the name of a custom action after you create it.
+.UNINDENT
+.UNINDENT
+.sp
+ActionDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The custom action associated with the action name.
+.sp
+PublishMetricAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Stateless inspection criteria that publishes the specified metrics to Amazon CloudWatch for the matching packet. This setting defines a CloudWatch dimension value to be published.
+.sp
+You can pair this custom action with any of the standard stateless rule actions. For example, you could pair this in a rule action with the standard action that forwards the packet for stateful inspection. Then, when a packet matches the rule, Network Firewall publishes metrics for the packet and forwards it.
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The value to use in an Amazon CloudWatch custom metric dimension. This is used in the \fBPublishMetrics\fP   CustomAction . A CloudWatch custom metric dimension is a name/value pair that\(aqs part of the identity of a metric.
+.sp
+AWS Network Firewall sets the dimension name to \fBCustomAction\fP and you provide the dimension value.
+.sp
+For more information about CloudWatch custom metric dimensions, see \fI\%Publishing Custom Metrics\fP in the \fI\%Amazon CloudWatch User Guide\fP .
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value to use in the custom metric dimension.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RuleVariables": {
+    "IPSets": {"string": {
+          "Definition": ["string", ...]
+        }
+      ...},
+    "PortSets": {"string": {
+          "Definition": ["string", ...]
+        }
+      ...}
+  },
+  "RulesSource": {
+    "RulesString": "string",
+    "RulesSourceList": {
+      "Targets": ["string", ...],
+      "TargetTypes": ["TLS_SNI"|"HTTP_HOST", ...],
+      "GeneratedRulesType": "ALLOWLIST"|"DENYLIST"
+    },
+    "StatefulRules": [
+      {
+        "Action": "PASS"|"DROP"|"ALERT",
+        "Header": {
+          "Protocol": "IP"|"TCP"|"UDP"|"ICMP"|"HTTP"|"FTP"|"TLS"|"SMB"|"DNS"|"DCERPC"|"SSH"|"SMTP"|"IMAP"|"MSN"|"KRB5"|"IKEV2"|"TFTP"|"NTP"|"DHCP",
+          "Source": "string",
+          "SourcePort": "string",
+          "Direction": "FORWARD"|"ANY",
+          "Destination": "string",
+          "DestinationPort": "string"
+        },
+        "RuleOptions": [
+          {
+            "Keyword": "string",
+            "Settings": ["string", ...]
+          }
+          ...
+        ]
+      }
+      ...
+    ],
+    "StatelessRulesAndCustomActions": {
+      "StatelessRules": [
+        {
+          "RuleDefinition": {
+            "MatchAttributes": {
+              "Sources": [
+                {
+                  "AddressDefinition": "string"
+                }
+                ...
+              ],
+              "Destinations": [
+                {
+                  "AddressDefinition": "string"
+                }
+                ...
+              ],
+              "SourcePorts": [
+                {
+                  "FromPort": integer,
+                  "ToPort": integer
+                }
+                ...
+              ],
+              "DestinationPorts": [
+                {
+                  "FromPort": integer,
+                  "ToPort": integer
+                }
+                ...
+              ],
+              "Protocols": [integer, ...],
+              "TCPFlags": [
+                {
+                  "Flags": ["FIN"|"SYN"|"RST"|"PSH"|"ACK"|"URG"|"ECE"|"CWR", ...],
+                  "Masks": ["FIN"|"SYN"|"RST"|"PSH"|"ACK"|"URG"|"ECE"|"CWR", ...]
+                }
+                ...
+              ]
+            },
+            "Actions": ["string", ...]
+          },
+          "Priority": integer
+        }
+        ...
+      ],
+      "CustomActions": [
+        {
+          "ActionName": "string",
+          "ActionDefinition": {
+            "PublishMetricAction": {
+              "Dimensions": [
+                {
+                  "Value": "string"
+                }
+                ...
+              ]
+            }
+          }
+        }
+        ...
+      ]
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-rules\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A string containing stateful rule group rules specifications in Suricata flat format, with one rule per line. Use this to import your existing Suricata compatible rule groups.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must provide either this rules setting or a populated \fBRuleGroup\fP setting, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+You can provide your rule group specification in Suricata flat format through this setting when you create or update your rule group. The call response returns a  RuleGroup object that Network Firewall has populated from your string.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the rule group is stateless or stateful. If the rule group is stateless, it contains stateless rules. If it is stateful, it contains stateful rules.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSTATELESS\fP
+.IP \(bu 2
+\fBSTATEFUL\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the rule group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-capacity\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum operating resources that this rule group can use. Rule group capacity is fixed at creation. When you update a rule group, you are limited to this capacity. When you reference a rule group from a firewall policy, Network Firewall reserves this capacity for the rule group.
+.sp
+You can retrieve the capacity that would be required for a rule group before you create the rule group by calling  CreateRuleGroup with \fBDryRun\fP set to \fBTRUE\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+You can\(aqt change or exceed this capacity when you update the rule group, so leave room for your rule group to grow.
+.UNINDENT
+.UNINDENT
+.sp
+\fBCapacity for a stateless rule group\fP
+.UNINDENT
+.UNINDENT
+.sp
+For a stateless rule group, the capacity required is the sum of the capacity requirements of the individual rules that you expect to have in the rule group.
+.sp
+To calculate the capacity requirement of a single rule, multiply the capacity requirement values of each of the rule\(aqs match settings:
+.INDENT 0.0
+.IP \(bu 2
+A match setting with no criteria specified has a value of 1.
+.IP \(bu 2
+A match setting with \fBAny\fP specified has a value of 1.
+.IP \(bu 2
+All other match settings have a value equal to the number of elements provided in the setting. For example, a protocol setting ["UDP"] and a source setting ["10.0.0.0/24"] each have a value of 1. A protocol setting ["UDP","TCP"] has a value of 2. A source setting ["10.0.0.0/24","10.0.0.1/24","10.0.0.2/24"] has a value of 3.
+.UNINDENT
+.sp
+A rule with no criteria specified in any of its match settings has a capacity requirement of 1. A rule with protocol setting ["UDP","TCP"], source setting ["10.0.0.0/24","10.0.0.1/24","10.0.0.2/24"], and a single specification or no specification for each of the other match settings has a capacity requirement of 6.
+.INDENT 0.0
+.INDENT 3.5
+\fBCapacity for a stateful rule group\fP
+.UNINDENT
+.UNINDENT
+.sp
+For a stateful rule group, the minimum capacity required is the number of individual rules that you expect to have in the rule group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The key:value pairs to associate with the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key:value pair associated with an AWS resource. The key:value pair can be anything you define. Typically, the tag key represents a category (such as "environment") and the tag value represents a specific value within that category (such as "test," "development," or "production"). You can add up to 50 tags to each AWS resource.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The part of the key:value pair that defines a tag. You can use a tag key to describe a category of information, such as "customer." Tag keys are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The part of the key:value pair that defines a tag. You can use a tag value to describe a specific value within a category, such as "companyA" or "companyB." Tag values are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether you want Network Firewall to just check the validity of the request, rather than run the request.
+.sp
+If set to \fBTRUE\fP , Network Firewall checks whether the request can run successfully, but doesn\(aqt actually make the requested changes. The call returns the value that the request would return if you ran it with dry run set to \fBFALSE\fP , but doesn\(aqt make additions or changes to your resources. This option allows you to make sure that you have the required permissions to run the request and that your request parameters are valid.
+.sp
+If set to \fBFALSE\fP , Network Firewall makes the requested changes to your resources.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+UpdateToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A token used for optimistic locking. Network Firewall returns a token to your requests that access the rule group. The token marks the state of the rule group resource at the time of the request.
+.sp
+To make changes to the rule group, you provide the token in your request. Network Firewall uses the token to ensure that the rule group hasn\(aqt changed since you last retrieved it. If it has changed, the operation fails with an \fBInvalidTokenException\fP . If this happens, retrieve the rule group again to get a current copy of it with a current token. Reapply your changes as needed, then try the operation again using the new token.
+.UNINDENT
+.UNINDENT
+.sp
+RuleGroupResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The high\-level properties of a rule group. This, along with the  RuleGroup , define the rule group. You can retrieve all objects for a rule group by calling  DescribeRuleGroup .
+.sp
+RuleGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the rule group.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If this response is for a create request that had \fBDryRun\fP set to \fBTRUE\fP , then this ARN is a placeholder that isn\(aqt attached to a valid resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RuleGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the rule group. You can\(aqt change the name of a rule group after you create it.
+.UNINDENT
+.UNINDENT
+.sp
+RuleGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the rule group.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the rule group.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the rule group is stateless or stateful. If the rule group is stateless, it contains stateless rules. If it is stateful, it contains stateful rules.
+.UNINDENT
+.UNINDENT
+.sp
+Capacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum operating resources that this rule group can use. Rule group capacity is fixed at creation. When you update a rule group, you are limited to this capacity. When you reference a rule group from a firewall policy, Network Firewall reserves this capacity for the rule group.
+.sp
+You can retrieve the capacity that would be required for a rule group before you create the rule group by calling  CreateRuleGroup with \fBDryRun\fP set to \fBTRUE\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RuleGroupStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Detailed information about the current status of a rule group.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The key:value pairs to associate with the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key:value pair associated with an AWS resource. The key:value pair can be anything you define. Typically, the tag key represents a category (such as "environment") and the tag value represents a specific value within that category (such as "test," "development," or "production"). You can add up to 50 tags to each AWS resource.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The part of the key:value pair that defines a tag. You can use a tag key to describe a category of information, such as "customer." Tag keys are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The part of the key:value pair that defines a tag. You can use a tag value to describe a specific value within a category, such as "companyA" or "companyB." Tag values are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

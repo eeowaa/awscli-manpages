@@ -1,0 +1,198 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SWF-DESCRIBE-DOMAIN" "a" "" ""
+.SH NAME
+swf-describe-domain \- Returns information about the specified domain, including description and status
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about the specified domain, including description and status.
+.INDENT 0.0
+.INDENT 3.5
+\fBAccess Control\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can use IAM policies to control this action\(aqs access to Amazon SWF resources as follows:
+.INDENT 0.0
+.IP \(bu 2
+Use a \fBResource\fP element with the domain name to limit the action to only specified domains.
+.IP \(bu 2
+Use an \fBAction\fP element to allow or deny permission to call this action.
+.IP \(bu 2
+You cannot use an IAM policy to constrain this action\(aqs parameters.
+.UNINDENT
+.sp
+If the caller doesn\(aqt have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute\(aqs \fBcause\fP parameter is set to \fBOPERATION_NOT_PERMITTED\fP . For details and example IAM policies, see \fI\%Using IAM to Manage Access to Amazon SWF Workflows\fP in the \fIAmazon SWF Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-domain
+\-\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain to describe.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.SS Getting Information About a Domain
+.sp
+To get detailed information about a particular domain, use the
+\fBswf describe\-domain\fP command. There is one required parameter:
+\fB\-\-name\fP, which takes the name of the domain you want information
+about. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ aws swf describe\-domain \-\-name DataFrobotz
+{
+    "domainInfo": {
+        "status": "REGISTERED",
+        "name": "DataFrobotz"
+    },
+    "configuration": {
+        "workflowExecutionRetentionPeriodInDays": "1"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can also use \fBdescribe\-domain\fP to get information about deprecated
+domains:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ aws swf describe\-domain \-\-name MyNeatNewDomain
+{
+    "domainInfo": {
+        "status": "DEPRECATED",
+        "name": "MyNeatNewDomain"
+    },
+    "configuration": {
+        "workflowExecutionRetentionPeriodInDays": "0"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS See Also
+.INDENT 0.0
+.IP \(bu 2
+\fI\%DescribeDomain\fP
+in the \fIAmazon Simple Workflow Service API Reference\fP
+.UNINDENT
+.SH OUTPUT
+.sp
+domainInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The basic information about a domain, such as its name, status, and description.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain. This name is unique within the account.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the domain:
+.INDENT 0.0
+.IP \(bu 2
+\fBREGISTERED\fP – The domain is properly registered and available. You can use this domain for registering types and creating new workflow executions.
+.IP \(bu 2
+\fBDEPRECATED\fP – The domain was deprecated using  DeprecateDomain , but is still in use. You should not create new workflow executions in this domain.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the domain provided through  RegisterDomain .
+.UNINDENT
+.UNINDENT
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the domain.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+configuration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The domain configuration. Currently, this includes only the domain\(aqs retention period.
+.sp
+workflowExecutionRetentionPeriodInDays \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The retention period for workflow executions in this domain.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

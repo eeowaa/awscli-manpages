@@ -1,0 +1,145 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEARTIFACT-GET-AUTHORIZATION-TOKEN" "a" "" ""
+.SH NAME
+codeartifact-get-authorization-token \- Generates a temporary authorization token for accessing repositories in the domain
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Generates a temporary authorization token for accessing repositories in the domain. This API requires the \fBcodeartifact:GetAuthorizationToken\fP and \fBsts:GetServiceBearerToken\fP permissions. For more information about authorization tokens, see \fI\%AWS CodeArtifact authentication and tokens\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+CodeArtifact authorization tokens are valid for a period of 12 hours when created with the \fBlogin\fP command. You can call \fBlogin\fP periodically to refresh the token. When you create an authorization token with the \fBGetAuthorizationToken\fP API, you can set a custom authorization period, up to a maximum of 12 hours, with the \fBdurationSeconds\fP parameter.
+.sp
+The authorization period begins after \fBlogin\fP or \fBGetAuthorizationToken\fP is called. If \fBlogin\fP or \fBGetAuthorizationToken\fP is called while assuming a role, the token lifetime is independent of the maximum session duration of the role. For example, if you call \fBsts assume\-role\fP and specify a session duration of 15 minutes, then generate a CodeArtifact authorization token, the token will be valid for the full authorization period even though this is longer than the 15\-minute session duration.
+.sp
+See \fI\%Using IAM Roles\fP for more information on controlling session duration.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-authorization\-token
+\-\-domain <value>
+[\-\-domain\-owner <value>]
+[\-\-duration\-seconds <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain that is in scope for the generated authorization token.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-domain\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The 12\-digit account number of the AWS account that owns the domain. It does not include dashes or spaces.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-duration\-seconds\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The time, in seconds, that the generated authorization token is valid. Valid values are \fB0\fP and any number between \fB900\fP (15 minutes) and \fB43200\fP (12 hours). A value of \fB0\fP will set the expiration of the authorization token to the same expiration of the user\(aqs role\(aqs temporary credentials.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get an authorization token\fP
+.sp
+The following \fBget\-authorization\-token\fP example retrieves a CodeArtifact authorization token.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codeartifact get\-authorization\-token \e
+    \-\-domain test\-domain \e
+    \-\-query authorizationToken \e
+    \-\-output text
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+This command will return the authorization token. You can store the output in an environment variable when calling the command.
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Configure pip without the login command\fP in the \fIAWS CodeArtifact User Guide\fP\&.
+.SH OUTPUT
+.sp
+authorizationToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The returned authentication token.
+.UNINDENT
+.UNINDENT
+.sp
+expiration \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp that specifies the date and time the authorization token expires.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

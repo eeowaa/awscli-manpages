@@ -1,0 +1,388 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONFIGSERVICE-PUT-CONFIGURATION-AGGREGATOR" "a" "" ""
+.SH NAME
+configservice-put-configuration-aggregator \- Creates and updates the configuration aggregator with the selected source accounts and regions
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates and updates the configuration aggregator with the selected source accounts and regions. The source account can be individual account(s) or an organization.
+.INDENT 0.0
+.INDENT 3.5
+\fBaccountIds\fP that are passed will be replaced with existing accounts. If you want to add additional accounts into the aggregator, call \fBDescribeAggregator\fP to get the previous accounts and then append new ones.
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+AWS Config should be enabled in source accounts and regions you want to aggregate.
+.sp
+If your source type is an organization, you must be signed in to the management account or a registered delegated administrator and all the features must be enabled in your organization. If the caller is a management account, AWS Config calls \fBEnableAwsServiceAccess\fP API to enable integration between AWS Config and AWS Organizations. If the caller is a registered delegated administrator, AWS Config calls \fBListDelegatedAdministrators\fP API to verify whether the caller is a valid delegated administrator.
+.sp
+To register a delegated administrator, see \fI\%Register a Delegated Administrator\fP in the AWS Config developer guide.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-configuration\-aggregator
+\-\-configuration\-aggregator\-name <value>
+[\-\-account\-aggregation\-sources <value>]
+[\-\-organization\-aggregation\-source <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-configuration\-aggregator\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the configuration aggregator.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-account\-aggregation\-sources\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of AccountAggregationSource object.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A collection of accounts and regions.
+.sp
+AccountIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The 12\-digit account ID of the account being aggregated.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AllAwsRegions \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, aggregate existing AWS Config regions and future regions.
+.UNINDENT
+.UNINDENT
+.sp
+AwsRegions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The source regions being aggregated.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AccountIds=string,string,AllAwsRegions=boolean,AwsRegions=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "AccountIds": ["string", ...],
+    "AllAwsRegions": true|false,
+    "AwsRegions": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-organization\-aggregation\-source\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An OrganizationAggregationSource object.
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role used to retrieve AWS Organization details associated with the aggregator account.
+.UNINDENT
+.UNINDENT
+.sp
+AwsRegions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The source regions being aggregated.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AllAwsRegions \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, aggregate existing AWS Config regions and future regions.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+RoleArn=string,AwsRegions=string,string,AllAwsRegions=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RoleArn": "string",
+  "AwsRegions": ["string", ...],
+  "AllAwsRegions": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of tag object.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags for the resource. The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define. Tag keys can have a maximum character length of 128 characters, and tag values can have a maximum length of 256 characters.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A key is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that make up a tag. A value acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ConfigurationAggregator \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Returns a ConfigurationAggregator object.
+.sp
+ConfigurationAggregatorName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the aggregator.
+.UNINDENT
+.UNINDENT
+.sp
+ConfigurationAggregatorArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the aggregator.
+.UNINDENT
+.UNINDENT
+.sp
+AccountAggregationSources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Provides a list of source accounts and regions to be aggregated.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A collection of accounts and regions.
+.sp
+AccountIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The 12\-digit account ID of the account being aggregated.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AllAwsRegions \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, aggregate existing AWS Config regions and future regions.
+.UNINDENT
+.UNINDENT
+.sp
+AwsRegions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The source regions being aggregated.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationAggregationSource \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides an organization and list of regions to be aggregated.
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role used to retrieve AWS Organization details associated with the aggregator account.
+.UNINDENT
+.UNINDENT
+.sp
+AwsRegions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The source regions being aggregated.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AllAwsRegions \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, aggregate existing AWS Config regions and future regions.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the configuration aggregator was created.
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdatedTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time of the last update.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+AWS service that created the configuration aggregator.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,228 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-PUT-BUCKET-ENCRYPTION" "a" "" ""
+.SH NAME
+s3api-put-bucket-encryption \- This action uses the encryption subresource to configure default encryption and Amazon S3 Bucket Key for an existing bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This action uses the \fBencryption\fP subresource to configure default encryption and Amazon S3 Bucket Key for an existing bucket.
+.sp
+Default encryption for a bucket can use server\-side encryption with Amazon S3\-managed keys (SSE\-S3) or AWS KMS customer master keys (SSE\-KMS). If you specify default encryption using SSE\-KMS, you can also configure Amazon S3 Bucket Key. For information about default encryption, see \fI\%Amazon S3 default bucket encryption\fP in the \fIAmazon S3 User Guide\fP . For more information about S3 Bucket Keys, see \fI\%Amazon S3 Bucket Keys\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+This action requires AWS Signature Version 4. For more information, see \fI\%Authenticating Requests (AWS Signature Version 4)\fP .
+.UNINDENT
+.UNINDENT
+.sp
+To use this operation, you must have permissions to perform the \fBs3:PutEncryptionConfiguration\fP action. The bucket owner has this permission by default. The bucket owner can grant this permission to others. For more information about permissions, see \fI\%Permissions Related to Bucket Subresource Operations\fP and \fI\%Managing Access Permissions to Your Amazon S3 Resources\fP in the Amazon S3 User Guide.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated Resources\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fI\%GetBucketEncryption\fP
+.IP \(bu 2
+\fI\%DeleteBucketEncryption\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-bucket\-encryption
+\-\-bucket <value>
+[\-\-content\-md5 <value>]
+\-\-server\-side\-encryption\-configuration <value>
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies default encryption for a bucket using server\-side encryption with Amazon S3\-managed keys (SSE\-S3) or customer master keys stored in AWS KMS (SSE\-KMS). For information about the Amazon S3 default encryption feature, see \fI\%Amazon S3 Default Bucket Encryption\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The base64\-encoded 128\-bit MD5 digest of the server\-side encryption configuration.
+.sp
+For requests made using the AWS Command Line Interface (CLI) or AWS SDKs, this field is calculated automatically.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-server\-side\-encryption\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the default server\-side\-encryption configuration.
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Container for information about a particular server\-side encryption configuration rule.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the default server\-side encryption configuration.
+.sp
+ApplyServerSideEncryptionByDefault \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the default server\-side encryption to apply to new objects in the bucket. If a PUT Object request doesn\(aqt specify any server\-side encryption, this default encryption will be applied.
+.sp
+SSEAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Server\-side encryption algorithm to use for the default encryption.
+.UNINDENT
+.UNINDENT
+.sp
+KMSMasterKeyID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+AWS Key Management Service (KMS) customer AWS KMS key ID to use for the default encryption. This parameter is allowed if and only if \fBSSEAlgorithm\fP is set to \fBaws:kms\fP .
+.sp
+You can specify the key ID or the Amazon Resource Name (ARN) of the KMS key. However, if you are using encryption with cross\-account operations, you must use a fully qualified KMS key ARN. For more information, see \fI\%Using encryption for cross\-account operations\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBFor example:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon S3 only supports symmetric KMS keys and not asymmetric KMS keys. For more information, see \fI\%Using symmetric and asymmetric keys\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BucketKeyEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether Amazon S3 should use an S3 Bucket Key with server\-side encryption using KMS (SSE\-KMS) for new objects in the bucket. Existing objects are not affected. Setting the \fBBucketKeyEnabled\fP element to \fBtrue\fP causes Amazon S3 to use an S3 Bucket Key. By default, S3 Bucket Key is not enabled.
+.sp
+For more information, see \fI\%Amazon S3 Bucket Keys\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Rules": [
+    {
+      "ApplyServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"|"aws:kms",
+        "KMSMasterKeyID": "string"
+      },
+      "BucketKeyEnabled": true|false
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo configure server\-side encryption for a bucket\fP
+.sp
+The following \fBput\-bucket\-encryption\fP example sets AES256 encryption as the default for the specified bucket.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-bucket\-encryption \e
+    \-\-bucket my\-bucket \e
+    \-\-server\-side\-encryption\-configuration \(aq{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

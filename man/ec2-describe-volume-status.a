@@ -1,0 +1,522 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-DESCRIBE-VOLUME-STATUS" "a" "" ""
+.SH NAME
+ec2-describe-volume-status \- Describes the status of the specified volumes
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes the status of the specified volumes. Volume status provides the result of the checks performed on your volumes to determine events that can impair the performance of your volumes. The performance of a volume can be affected if an issue occurs on the volume\(aqs underlying host. If the volume\(aqs underlying host experiences a power outage or system issue, after the system is restored, there could be data inconsistencies on the volume. Volume events notify you if this occurs. Volume actions notify you if any action needs to be taken in response to the event.
+.sp
+The \fBDescribeVolumeStatus\fP operation provides the following information about the specified volumes:
+.INDENT 0.0
+.INDENT 3.5
+\fIStatus\fP : Reflects the current status of the volume. The possible values are \fBok\fP , \fBimpaired\fP , \fBwarning\fP , or \fBinsufficient\-data\fP . If all checks pass, the overall status of the volume is \fBok\fP . If the check fails, the overall status is \fBimpaired\fP . If the status is \fBinsufficient\-data\fP , then the checks might still be taking place on your volume at the time. We recommend that you retry the request. For more information about volume status, see \fI\%Monitoring the status of your volumes\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+\fIEvents\fP : Reflect the cause of a volume status and might require you to take action. For example, if your volume returns an \fBimpaired\fP status, then the volume event might be \fBpotential\-data\-inconsistency\fP . This means that your volume has been affected by an issue with the underlying host, has all I/O operations disabled, and might have inconsistent data.
+.sp
+\fIActions\fP : Reflect the actions you might have to take in response to an event. For example, if the status of the volume is \fBimpaired\fP and the volume event shows \fBpotential\-data\-inconsistency\fP , then the action shows \fBenable\-volume\-io\fP . This means that you may want to enable the I/O operations for the volume by calling the  EnableVolumeIO action and then check the volume for data consistency.
+.UNINDENT
+.UNINDENT
+.sp
+Volume status is based on the volume status checks, and does not reflect the volume state. Therefore, volume status does not indicate volumes in the \fBerror\fP state (for example, when a volume is incapable of accepting I/O.)
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBdescribe\-volume\-status\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBVolumeStatuses\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-volume\-status
+[\-\-filters <value>]
+[\-\-volume\-ids <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The filters.
+.INDENT 0.0
+.IP \(bu 2
+\fBaction.code\fP \- The action code for the event (for example, \fBenable\-volume\-io\fP ).
+.IP \(bu 2
+\fBaction.description\fP \- A description of the action.
+.IP \(bu 2
+\fBaction.event\-id\fP \- The event ID associated with the action.
+.IP \(bu 2
+\fBavailability\-zone\fP \- The Availability Zone of the instance.
+.IP \(bu 2
+\fBevent.description\fP \- A description of the event.
+.IP \(bu 2
+\fBevent.event\-id\fP \- The event ID.
+.IP \(bu 2
+\fBevent.event\-type\fP \- The event type (for \fBio\-enabled\fP : \fBpassed\fP | \fBfailed\fP ; for \fBio\-performance\fP : \fBio\-performance:degraded\fP | \fBio\-performance:severely\-degraded\fP | \fBio\-performance:stalled\fP ).
+.IP \(bu 2
+\fBevent.not\-after\fP \- The latest end time for the event.
+.IP \(bu 2
+\fBevent.not\-before\fP \- The earliest start time for the event.
+.IP \(bu 2
+\fBvolume\-status.details\-name\fP \- The cause for \fBvolume\-status.status\fP (\fBio\-enabled\fP | \fBio\-performance\fP ).
+.IP \(bu 2
+\fBvolume\-status.details\-status\fP \- The status of \fBvolume\-status.details\-name\fP (for \fBio\-enabled\fP : \fBpassed\fP | \fBfailed\fP ; for \fBio\-performance\fP : \fBnormal\fP | \fBdegraded\fP | \fBseverely\-degraded\fP | \fBstalled\fP ).
+.IP \(bu 2
+\fBvolume\-status.status\fP \- The status of the volume (\fBok\fP | \fBimpaired\fP | \fBwarning\fP | \fBinsufficient\-data\fP ).
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A filter name and value pair that is used to return a more specific list of results from a describe operation. Filters can be used to match a set of resources by specific criteria, such as tags, attributes, or IDs.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter. Filter names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The filter values. Filter values are case\-sensitive.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-volume\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the volumes.
+.sp
+Default: Describes all your volumes.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo describe the status of a single volume\fP
+.sp
+This example command describes the status for the volume \fBvol\-1234567890abcdef0\fP\&.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-volume\-status \-\-volume\-ids vol\-1234567890abcdef0
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "VolumeStatuses": [
+        {
+            "VolumeStatus": {
+                "Status": "ok",
+                "Details": [
+                    {
+                        "Status": "passed",
+                        "Name": "io\-enabled"
+                    },
+                    {
+                        "Status": "not\-applicable",
+                        "Name": "io\-performance"
+                    }
+                ]
+            },
+            "AvailabilityZone": "us\-east\-1a",
+            "VolumeId": "vol\-1234567890abcdef0",
+            "Actions": [],
+            "Events": []
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBTo describe the status of impaired volumes\fP
+.sp
+This example command describes the status for all volumes that are impaired. In this example output, there are no impaired volumes.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-volume\-status \-\-filters Name=volume\-status.status,Values=impaired
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "VolumeStatuses": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If you have a volume with a failed status check (status is impaired), see \fI\%Working with an Impaired Volume\fP in the \fIAmazon EC2 User Guide\fP\&.
+.SH OUTPUT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to use to retrieve the next page of results. This value is \fBnull\fP when there are no more results to return.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeStatuses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the status of the volumes.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the volume status.
+.sp
+Actions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The details of the operation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a volume status operation code.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The code identifying the operation, for example, \fBenable\-volume\-io\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the operation.
+.UNINDENT
+.UNINDENT
+.sp
+EventId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the event associated with this operation.
+.UNINDENT
+.UNINDENT
+.sp
+EventType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The event type associated with this operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone of the volume.
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Outpost.
+.UNINDENT
+.UNINDENT
+.sp
+Events \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of events associated with the volume.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a volume status event.
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the event.
+.UNINDENT
+.UNINDENT
+.sp
+EventId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of this event.
+.UNINDENT
+.UNINDENT
+.sp
+EventType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of this event.
+.UNINDENT
+.UNINDENT
+.sp
+NotAfter \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The latest end time of the event.
+.UNINDENT
+.UNINDENT
+.sp
+NotBefore \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The earliest start time of the event.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance associated with the event.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume ID.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeStatus \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The volume status.
+.sp
+Details \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The details of the volume status.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a volume status.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the volume status.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The intended status of the volume status.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the volume.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AttachmentStatuses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the instances to which the volume is attached.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the instances to which the volume is attached.
+.sp
+IoPerformance \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum IOPS supported by the attached instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the attached instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

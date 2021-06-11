@@ -1,0 +1,533 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-CREATE-BUILD" "a" "" ""
+.SH NAME
+gamelift-create-build \- Creates a new Amazon GameLift build resource for your game server binary files
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new Amazon GameLift build resource for your game server binary files. Game server binaries must be combined into a zip file for use with Amazon GameLift.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+When setting up a new game build for GameLift, we recommend using the AWS CLI command ** \fI\%upload\-build\fP ** . This helper command combines two tasks: (1) it uploads your build files from a file directory to a GameLift Amazon S3 location, and (2) it creates a new build resource.
+.UNINDENT
+.UNINDENT
+.sp
+The \fBCreateBuild\fP operation can used in the following scenarios:
+.INDENT 0.0
+.IP \(bu 2
+To create a new game build with build files that are in an Amazon S3 location under an AWS account that you control. To use this option, you must first give Amazon GameLift access to the Amazon S3 bucket. With permissions in place, call \fBCreateBuild\fP and specify a build name, operating system, and the Amazon S3 storage location of your game build.
+.IP \(bu 2
+To directly upload your build files to a GameLift Amazon S3 location. To use this option, first call \fBCreateBuild\fP and specify a build name and operating system. This operation creates a new build resource and also returns an Amazon S3 location with temporary access credentials. Use the credentials to manually upload your build files to the specified Amazon S3 location. For more information, see \fI\%Uploading Objects\fP in the \fIAmazon S3 Developer Guide\fP . Build files can be uploaded to the GameLift Amazon S3 location once only; that can\(aqt be updated.
+.UNINDENT
+.sp
+If successful, this operation creates a new build resource with a unique build ID and places it in \fBINITIALIZED\fP status. A build must be in \fBREADY\fP status before you can create fleets with it.
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Uploading Your Game\fP
+.sp
+\fI\%Create a Build with Files in Amazon S3\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateBuild |  ListBuilds |  DescribeBuild |  UpdateBuild |  DeleteBuild | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-build
+[\-\-name <value>]
+[\-\-storage\-location <value>]
+[\-\-operating\-system <value>]
+[\-\-tags <value>]
+[\-\-build\-version <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with a build. Build names do not need to be unique. You can use  UpdateBuild to change this value later.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-storage\-location\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information indicating where your game build files are stored. Use this parameter only when creating a build with files stored in an Amazon S3 bucket that you own. The storage location must specify an Amazon S3 bucket name and key. The location must also specify a role ARN that you set up to allow Amazon GameLift to access your Amazon S3 bucket. The S3 bucket and your new build must be in the same Region.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon S3 bucket identifier. This is the name of the S3 bucket.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+GameLift currently does not support uploading from Amazon S3 buckets with names that contain a dot (.).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the zip file that contains the build files or script files.
+.UNINDENT
+.UNINDENT
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) for an IAM role that allows Amazon GameLift to access the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+ObjectVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the file, if object versioning is turned on for the bucket. Amazon GameLift uses this information when retrieving files from an S3 bucket that you own. Use this parameter to specify a specific version of the file. If not set, the latest version of the file is retrieved.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Bucket=string,Key=string,RoleArn=string,ObjectVersion=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Bucket": "string",
+  "Key": "string",
+  "RoleArn": "string",
+  "ObjectVersion": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-operating\-system\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The operating system that the game server binaries are built to run on. This value determines the type of fleet resources that you can use for this build. If your game build contains multiple executables, they all must run on the same operating system. If an operating system is not specified when creating a build, Amazon GameLift uses the default value (WINDOWS_2012). This value cannot be changed later.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBWINDOWS_2012\fP
+.IP \(bu 2
+\fBAMAZON_LINUX\fP
+.IP \(bu 2
+\fBAMAZON_LINUX_2\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of labels to assign to the new build resource. Tags are developer\-defined key\-value pairs. Tagging AWS resources are useful for resource management, access management and cost allocation. For more information, see \fI\%Tagging AWS Resources\fP in the \fIAWS General Reference\fP . Once the resource is created, you can use  TagResource ,  UntagResource , and  ListTagsForResource to add, remove, and view tags. The maximum tag limit may be lower than stated. See the AWS General Reference for actual tagging limits.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A label that can be assigned to a GameLift resource.
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Tagging AWS Resources\fP in the \fIAWS General Reference\fP
+.sp
+\fI\%AWS Tagging Strategies\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+TagResource |  UntagResource |  ListTagsForResource | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for a developer\-defined key:value pair for tagging an AWS resource.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value for a developer\-defined key:value pair for tagging an AWS resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-build\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Version information that is associated with a build or script. Version strings do not need to be unique. You can use  UpdateBuild to change this value later.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample1: To create a game build from files in an S3 bucket\fP
+.sp
+The following \fBcreate\-build\fP example creates a custom game build resource. It uses zipped files that are stored in an S3 location in an AWS account that you control. This example assumes that you\(aqve already created an IAM role that gives Amazon GameLift permission to access the S3 location. Since the request does not specify an operating system, the new build resource defaults to WINDOWS_2012.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-build \e
+    \-\-storage\-location file://storage\-loc.json \e
+    \-\-name MegaFrogRaceServer.NA \e
+    \-\-build\-version 12345.678
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBstorage\-loc.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Bucket":"MegaFrogRaceServer_NA_build_files"
+    "Key":"MegaFrogRaceServer_build_123.zip"
+    "RoleArn":"arn:aws:iam::123456789012:role/gamelift"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Build": {
+        "BuildArn": "arn:aws:gamelift:us\-west\-2::build/build\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+        "BuildId": "build\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+        "CreationTime": 1496708916.18,
+        "Name": "MegaFrogRaceServer.NA",
+        "OperatingSystem": "WINDOWS_2012",
+        "SizeOnDisk": 479303,
+        "Status": "INITIALIZED",
+        "Version": "12345.678"
+    },
+    "StorageLocation": {
+        "Bucket": "MegaFrogRaceServer_NA_build_files",
+        "Key": "MegaFrogRaceServer_build_123.zip"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample2: To create a game build resource for manually uploading files to GameLift\fP
+.sp
+The following \fBcreate\-build\fP example creates a new build resource. It also gets a storage location and temporary credentials that allow you to manually upload your game build to the GameLift location in Amazon S3. Once you\(aqve successfully uploaded your build, the GameLift service validates the build and updates the new build\(aqs status.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-build \e
+    \-\-name MegaFrogRaceServer.NA \e
+    \-\-build\-version 12345.678 \e
+    \-\-operating\-system AMAZON_LINUX
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Build": {
+        "BuildArn": "arn:aws:gamelift:us\-west\-2::build/build\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+        "BuildId": "build\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+        "CreationTime": 1496708916.18,
+        "Name": "MegaFrogRaceServer.NA",
+        "OperatingSystem": "AMAZON_LINUX",
+        "SizeOnDisk": 0,
+        "Status": "INITIALIZED",
+        "Version": "12345.678"
+    },
+    "StorageLocation": {
+        "Bucket": "gamelift\-builds\-us\-west\-2",
+        "Key": "123456789012/build\-a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111"
+    },
+    "UploadCredentials": {
+        "AccessKeyId": "AKIAIOSFODNN7EXAMPLE",
+        "SecretAccessKey": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        "SessionToken": "AgoGb3JpZ2luENz...EXAMPLETOKEN=="
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Upload a Custom Server Build to GameLift\fP in the \fIAmazon GameLift Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Build \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The newly created build resource, including a unique build IDs and status.
+.sp
+BuildId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the build.
+.UNINDENT
+.UNINDENT
+.sp
+BuildArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) that is assigned to a GameLift build resource and uniquely identifies it. ARNs are unique across all Regions. Format is \fBarn:aws:gamelift:<region>::build/build\-a1234567\-b8c9\-0d1e\-2fa3\-b45c6d7e8912\fP . In a GameLift build ARN, the resource ID matches the \fIBuildId\fP value.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with a build. Build names do not need to be unique. It can be set using  CreateBuild or  UpdateBuild .
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Version information that is associated with a build or script. Version strings do not need to be unique. This value can be set using  CreateBuild or  UpdateBuild .
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Current status of the build.
+.sp
+Possible build statuses include the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBINITIALIZED\fP \-\- A new build has been defined, but no files have been uploaded. You cannot create fleets for builds that are in this status. When a build is successfully created, the build status is set to this value.
+.IP \(bu 2
+\fBREADY\fP \-\- The game build has been successfully uploaded. You can now create new fleets for this build.
+.IP \(bu 2
+\fBFAILED\fP \-\- The game build upload failed. You cannot create new fleets for this build.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SizeOnDisk \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+File size of the uploaded game build, expressed in bytes. When the build status is \fBINITIALIZED\fP , this value is 0.
+.UNINDENT
+.UNINDENT
+.sp
+OperatingSystem \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Operating system that the game server binaries are built to run on. This value determines the type of fleet resources that you can use for this build.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A time stamp indicating when this data object was created. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UploadCredentials \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+This element is returned only when the operation is called without a storage location. It contains credentials to use when you are uploading a build file to an Amazon S3 bucket that is owned by Amazon GameLift. Credentials have a limited life span. To refresh these credentials, call  RequestUploadCredentials .
+.sp
+AccessKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Temporary key allowing access to the Amazon GameLift S3 account.
+.UNINDENT
+.UNINDENT
+.sp
+SecretAccessKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Temporary secret key allowing access to the Amazon GameLift S3 account.
+.UNINDENT
+.UNINDENT
+.sp
+SessionToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Token used to associate a specific build ID with the files uploaded using these credentials.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StorageLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Amazon S3 location for your game build file, including bucket name and key.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon S3 bucket identifier. This is the name of the S3 bucket.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+GameLift currently does not support uploading from Amazon S3 buckets with names that contain a dot (.).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the zip file that contains the build files or script files.
+.UNINDENT
+.UNINDENT
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) for an IAM role that allows Amazon GameLift to access the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+ObjectVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the file, if object versioning is turned on for the bucket. Amazon GameLift uses this information when retrieving files from an S3 bucket that you own. Use this parameter to specify a specific version of the file. If not set, the latest version of the file is retrieved.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

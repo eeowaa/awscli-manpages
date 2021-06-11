@@ -1,0 +1,565 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SAGEMAKER-CREATE-AUTO-ML-JOB" "a" "" ""
+.SH NAME
+sagemaker-create-auto-ml-job \- Creates an Autopilot job
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an Autopilot job.
+.sp
+Find the best performing model after you run an Autopilot job by calling .
+.sp
+For information about how to use Autopilot, see \fI\%Automate Model Development with Amazon SageMaker Autopilot\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-auto\-ml\-job
+\-\-auto\-ml\-job\-name <value>
+\-\-input\-data\-config <value>
+\-\-output\-data\-config <value>
+[\-\-problem\-type <value>]
+[\-\-auto\-ml\-job\-objective <value>]
+[\-\-auto\-ml\-job\-config <value>]
+\-\-role\-arn <value>
+[\-\-generate\-candidate\-definitions\-only | \-\-no\-generate\-candidate\-definitions\-only]
+[\-\-tags <value>]
+[\-\-model\-deploy\-config <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-auto\-ml\-job\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an Autopilot job. The name must be unique to your account and is case\-insensitive.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-input\-data\-config\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of channel objects that describes the input data and its location. Each channel is a named input source. Similar to \fBInputDataConfig\fP supported by . Format(s) supported: CSV. Minimum of 500 rows.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A channel is a named input source that training algorithms can consume. For more information, see .
+.sp
+DataSource \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The data source for an AutoML channel.
+.sp
+S3DataSource \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 location of the input data.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The input data must be in CSV format and contain at least 500 rows.
+.UNINDENT
+.UNINDENT
+.sp
+S3DataType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data type.
+.UNINDENT
+.UNINDENT
+.sp
+S3Uri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL to the Amazon S3 data source.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CompressionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+You can use \fBGzip\fP or \fBNone\fP . The default value is \fBNone\fP .
+.UNINDENT
+.UNINDENT
+.sp
+TargetAttributeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the target variable in supervised learning, usually represented by \(aqy\(aq.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DataSource={S3DataSource={S3DataType=string,S3Uri=string}},CompressionType=string,TargetAttributeName=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "DataSource": {
+      "S3DataSource": {
+        "S3DataType": "ManifestFile"|"S3Prefix",
+        "S3Uri": "string"
+      }
+    },
+    "CompressionType": "None"|"Gzip",
+    "TargetAttributeName": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-output\-data\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about encryption and the Amazon S3 output path needed to store artifacts from an AutoML job. Format(s) supported: CSV.
+.sp
+<para>Specifies whether to automatically deploy the best &ATP; model to an endpoint and the name of that endpoint if deployed automatically.</para>
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS KMS encryption key ID.
+.UNINDENT
+.UNINDENT
+.sp
+S3OutputPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 output path. Must be 128 characters or less.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KmsKeyId=string,S3OutputPath=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "KmsKeyId": "string",
+  "S3OutputPath": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-problem\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines the type of supervised learning available for the candidates. Options include: \fBBinaryClassification\fP , \fBMulticlassClassification\fP , and \fBRegression\fP . For more information, see \fI\%Amazon SageMaker Autopilot problem types and algorithm support\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBBinaryClassification\fP
+.IP \(bu 2
+\fBMulticlassClassification\fP
+.IP \(bu 2
+\fBRegression\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-ml\-job\-objective\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines the objective metric used to measure the predictive quality of an AutoML job. You provide an  AutoMLJobObjective$MetricName and Autopilot infers whether to minimize or maximize it.
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the objective metric used to measure the predictive quality of a machine learning system. This metric is optimized during training to provide the best estimate for model parameter values from data.
+.sp
+Here are the options:
+.INDENT 0.0
+.IP \(bu 2
+\fBMSE\fP : The mean squared error (MSE) is the average of the squared differences between the predicted and actual values. It is used for regression. MSE values are always positive: the better a model is at predicting the actual values, the smaller the MSE value. When the data contains outliers, they tend to dominate the MSE, which might cause subpar prediction performance.
+.IP \(bu 2
+\fBAccuracy\fP : The ratio of the number of correctly classified items to the total number of (correctly and incorrectly) classified items. It is used for binary and multiclass classification. It measures how close the predicted class values are to the actual values. Accuracy values vary between zero and one: one indicates perfect accuracy and zero indicates perfect inaccuracy.
+.IP \(bu 2
+\fBF1\fP : The F1 score is the harmonic mean of the precision and recall. It is used for binary classification into classes traditionally referred to as positive and negative. Predictions are said to be true when they match their actual (correct) class and false when they do not. Precision is the ratio of the true positive predictions to all positive predictions (including the false positives) in a data set and measures the quality of the prediction when it predicts the positive class. Recall (or sensitivity) is the ratio of the true positive predictions to all actual positive instances and measures how completely a model predicts the actual class members in a data set. The standard F1 score weighs precision and recall equally. But which metric is paramount typically depends on specific aspects of a problem. F1 scores vary between zero and one: one indicates the best possible performance and zero the worst.
+.IP \(bu 2
+\fBAUC\fP : The area under the curve (AUC) metric is used to compare and evaluate binary classification by algorithms such as logistic regression that return probabilities. A threshold is needed to map the probabilities into classifications. The relevant curve is the receiver operating characteristic curve that plots the true positive rate (TPR) of predictions (or recall) against the false positive rate (FPR) as a function of the threshold value, above which a prediction is considered positive. Increasing the threshold results in fewer false positives but more false negatives. AUC is the area under this receiver operating characteristic curve and so provides an aggregated measure of the model performance across all possible classification thresholds. The AUC score can also be interpreted as the probability that a randomly selected positive data point is more likely to be predicted positive than a randomly selected negative example. AUC scores vary between zero and one: a score of one indicates perfect accuracy and a score of one half indicates that the prediction is not better than a random classifier. Values under one half predict less accurately than a random predictor. But such consistently bad predictors can simply be inverted to obtain better than random predictors.
+.IP \(bu 2
+\fBF1macro\fP : The F1macro score applies F1 scoring to multiclass classification. In this context, you have multiple classes to predict. You just calculate the precision and recall for each class as you did for the positive class in binary classification. Then, use these values to calculate the F1 score for each class and average them to obtain the F1macro score. F1macro scores vary between zero and one: one indicates the best possible performance and zero the worst.
+.UNINDENT
+.sp
+If you do not specify a metric explicitly, the default behavior is to automatically use:
+.INDENT 0.0
+.IP \(bu 2
+\fBMSE\fP : for regression.
+.IP \(bu 2
+\fBF1\fP : for binary classification
+.IP \(bu 2
+\fBAccuracy\fP : for multiclass classification.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+MetricName=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "MetricName": "Accuracy"|"MSE"|"F1"|"F1macro"|"AUC"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-ml\-job\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains \fBCompletionCriteria\fP and \fBSecurityConfig\fP settings for the AutoML job.
+.sp
+CompletionCriteria \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+How long an AutoML job is allowed to run, or how many candidates a job is allowed to generate.
+.sp
+MaxCandidates \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of times a training job is allowed to run.
+.UNINDENT
+.UNINDENT
+.sp
+MaxRuntimePerTrainingJobInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum time, in seconds, a job is allowed to run.
+.UNINDENT
+.UNINDENT
+.sp
+MaxAutoMLJobRuntimeInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum time, in seconds, an AutoML job is allowed to wait for a trial to complete. It must be equal to or greater than \fBMaxRuntimePerTrainingJobInSeconds\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SecurityConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The security configuration for traffic encryption or Amazon VPC settings.
+.sp
+VolumeKmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key used to encrypt stored data.
+.UNINDENT
+.UNINDENT
+.sp
+EnableInterContainerTrafficEncryption \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to use traffic encryption between the container layers.
+.UNINDENT
+.UNINDENT
+.sp
+VpcConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The VPC configuration.
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The VPC security group IDs, in the form sg\-xxxxxxxx. Specify the security groups for the VPC that is specified in the \fBSubnets\fP field.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnets in the VPC to which you want to connect your training job or model. For information about the availability of specific instance types, see \fI\%Supported Instance Types and Availability Zones\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CompletionCriteria": {
+    "MaxCandidates": integer,
+    "MaxRuntimePerTrainingJobInSeconds": integer,
+    "MaxAutoMLJobRuntimeInSeconds": integer
+  },
+  "SecurityConfig": {
+    "VolumeKmsKeyId": "string",
+    "EnableInterContainerTrafficEncryption": true|false,
+    "VpcConfig": {
+      "SecurityGroupIds": ["string", ...],
+      "Subnets": ["string", ...]
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that is used to access the data.
+.sp
+<para>Specifies whether to automatically deploy the best &ATP; model to an endpoint and the name of that endpoint if deployed automatically.</para>
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-candidate\-definitions\-only\fP | \fB\-\-no\-generate\-candidate\-definitions\-only\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Generates possible candidates without training the models. A candidate is a combination of data preprocessors, algorithms, and algorithm parameter settings.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Each tag consists of a key and an optional value. Tag keys must be unique per resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-model\-deploy\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how to generate the endpoint name for an automatic one\-click Autopilot model deployment.
+.sp
+AutoGenerateEndpointName \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to \fBTrue\fP to automatically generate an endpoint name for a one\-click Autopilot model deployment; set to \fBFalse\fP otherwise. The default value is \fBTrue\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you set \fBAutoGenerateEndpointName\fP to \fBTrue\fP , do not specify the \fBEndpointName\fP ; otherwise a 400 error is thrown.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EndpointName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the endpoint name to use for a one\-click Autopilot model deployment if the endpoint name is not generated automatically.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Specify the \fBEndpointName\fP if and only if you set \fBAutoGenerateEndpointName\fP to \fBFalse\fP ; otherwise a 400 error is thrown.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AutoGenerateEndpointName=boolean,EndpointName=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AutoGenerateEndpointName": true|false,
+  "EndpointName": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+AutoMLJobArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ARN that is assigned to the AutoML job when it is created.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

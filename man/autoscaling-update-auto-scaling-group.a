@@ -1,0 +1,680 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-UPDATE-AUTO-SCALING-GROUP" "a" "" ""
+.SH NAME
+autoscaling-update-auto-scaling-group \- Updates the configuration for the specified Auto Scaling group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.INDENT 0.0
+.INDENT 3.5
+\fBWe strongly recommend that all Auto Scaling groups use launch templates to ensure full functionality for Amazon EC2 Auto Scaling and Amazon EC2.\fP
+.UNINDENT
+.UNINDENT
+.sp
+Updates the configuration for the specified Auto Scaling group.
+.sp
+To update an Auto Scaling group, specify the name of the group and the parameter that you want to change. Any parameters that you don\(aqt specify are not changed by this update request. The new settings take effect on any scaling activities after this call returns.
+.sp
+If you associate a new launch configuration or template with an Auto Scaling group, all new instances will get the updated configuration. Existing instances continue to run with the configuration that they were originally launched with. When you update a group to specify a mixed instances policy instead of a launch configuration or template, existing instances may be replaced to match the new purchasing options that you specified in the policy. For example, if the group currently has 100% On\-Demand capacity and the policy specifies 50% Spot capacity, this means that half of your instances will be gradually terminated and relaunched as Spot Instances. When replacing instances, Amazon EC2 Auto Scaling launches new instances before terminating the old ones, so that updating your group does not compromise the performance or availability of your application.
+.sp
+Note the following about changing \fBDesiredCapacity\fP , \fBMaxSize\fP , or \fBMinSize\fP :
+.INDENT 0.0
+.IP \(bu 2
+If a scale\-in activity occurs as a result of a new \fBDesiredCapacity\fP value that is lower than the current size of the group, the Auto Scaling group uses its termination policy to determine which instances to terminate.
+.IP \(bu 2
+If you specify a new value for \fBMinSize\fP without specifying a value for \fBDesiredCapacity\fP , and the new \fBMinSize\fP is larger than the current size of the group, this sets the group\(aqs \fBDesiredCapacity\fP to the new \fBMinSize\fP value.
+.IP \(bu 2
+If you specify a new value for \fBMaxSize\fP without specifying a value for \fBDesiredCapacity\fP , and the new \fBMaxSize\fP is smaller than the current size of the group, this sets the group\(aqs \fBDesiredCapacity\fP to the new \fBMaxSize\fP value.
+.UNINDENT
+.sp
+To see which parameters have been set, call the  DescribeAutoScalingGroups API. To view the scaling policies for an Auto Scaling group, call the  DescribePolicies API. If the group has scaling policies, you can update them by calling the  PutScalingPolicy API.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-auto\-scaling\-group
+\-\-auto\-scaling\-group\-name <value>
+[\-\-launch\-configuration\-name <value>]
+[\-\-launch\-template <value>]
+[\-\-mixed\-instances\-policy <value>]
+[\-\-min\-size <value>]
+[\-\-max\-size <value>]
+[\-\-desired\-capacity <value>]
+[\-\-default\-cooldown <value>]
+[\-\-availability\-zones <value>]
+[\-\-health\-check\-type <value>]
+[\-\-health\-check\-grace\-period <value>]
+[\-\-placement\-group <value>]
+[\-\-vpc\-zone\-identifier <value>]
+[\-\-termination\-policies <value>]
+[\-\-new\-instances\-protected\-from\-scale\-in | \-\-no\-new\-instances\-protected\-from\-scale\-in]
+[\-\-service\-linked\-role\-arn <value>]
+[\-\-max\-instance\-lifetime <value>]
+[\-\-capacity\-rebalance | \-\-no\-capacity\-rebalance]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-auto\-scaling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-launch\-configuration\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the launch configuration. If you specify \fBLaunchConfigurationName\fP in your update request, you can\(aqt specify \fBLaunchTemplate\fP or \fBMixedInstancesPolicy\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-launch\-template\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch template and version to use to specify the updates. If you specify \fBLaunchTemplate\fP in your update request, you can\(aqt specify \fBLaunchConfigurationName\fP or \fBMixedInstancesPolicy\fP .
+.sp
+LaunchTemplateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the launch template. To get the template ID, use the Amazon EC2 \fI\%DescribeLaunchTemplates\fP API operation. New launch templates can be created using the Amazon EC2 \fI\%CreateLaunchTemplate\fP API.
+.sp
+Conditional: You must specify either a \fBLaunchTemplateId\fP or a \fBLaunchTemplateName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTemplateName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the launch template. To get the template name, use the Amazon EC2 \fI\%DescribeLaunchTemplates\fP API operation. New launch templates can be created using the Amazon EC2 \fI\%CreateLaunchTemplate\fP API.
+.sp
+Conditional: You must specify either a \fBLaunchTemplateId\fP or a \fBLaunchTemplateName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version number, \fB$Latest\fP , or \fB$Default\fP . To get the version number, use the Amazon EC2 \fI\%DescribeLaunchTemplateVersions\fP API operation. New launch template versions can be created using the Amazon EC2 \fI\%CreateLaunchTemplateVersion\fP API. If the value is \fB$Latest\fP , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is \fB$Default\fP , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is \fB$Default\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LaunchTemplateId=string,LaunchTemplateName=string,Version=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "LaunchTemplateId": "string",
+  "LaunchTemplateName": "string",
+  "Version": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-mixed\-instances\-policy\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An embedded object that specifies a mixed instances policy. When you make changes to an existing policy, all optional properties are left unchanged if not specified. For more information, see \fI\%Auto Scaling groups with multiple instance types and purchase options\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+LaunchTemplate \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the launch template to use and optionally the instance types (overrides) that are used to provision EC2 instances to fulfill On\-Demand and Spot capacities. Required when creating a mixed instances policy.
+.sp
+LaunchTemplateSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch template to use.
+.sp
+LaunchTemplateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the launch template. To get the template ID, use the Amazon EC2 \fI\%DescribeLaunchTemplates\fP API operation. New launch templates can be created using the Amazon EC2 \fI\%CreateLaunchTemplate\fP API.
+.sp
+Conditional: You must specify either a \fBLaunchTemplateId\fP or a \fBLaunchTemplateName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTemplateName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the launch template. To get the template name, use the Amazon EC2 \fI\%DescribeLaunchTemplates\fP API operation. New launch templates can be created using the Amazon EC2 \fI\%CreateLaunchTemplate\fP API.
+.sp
+Conditional: You must specify either a \fBLaunchTemplateId\fP or a \fBLaunchTemplateName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version number, \fB$Latest\fP , or \fB$Default\fP . To get the version number, use the Amazon EC2 \fI\%DescribeLaunchTemplateVersions\fP API operation. New launch template versions can be created using the Amazon EC2 \fI\%CreateLaunchTemplateVersion\fP API. If the value is \fB$Latest\fP , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is \fB$Default\fP , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is \fB$Default\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Overrides \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any properties that you specify override the same properties in the launch template. If not provided, Amazon EC2 Auto Scaling uses the instance type specified in the launch template when it launches an instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an override for a launch template. The maximum number of instance types that can be associated with an Auto Scaling group is 40. The maximum number of distinct launch templates you can define for an Auto Scaling group is 20. For more information about configuring overrides, see \fI\%Configuring overrides\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type, such as \fBm3.xlarge\fP . You must use an instance type that is supported in your requested Region and Availability Zones. For more information, see \fI\%Instance types\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+WeightedCapacity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of capacity units provided by the specified instance type in terms of virtual CPUs, memory, storage, throughput, or other relative performance characteristic. When a Spot or On\-Demand Instance is provisioned, the capacity units count toward the desired capacity. Amazon EC2 Auto Scaling provisions instances until the desired capacity is totally fulfilled, even if this results in an overage. For example, if there are 2 units remaining to fulfill capacity, and Amazon EC2 Auto Scaling can only provision an instance with a \fBWeightedCapacity\fP of 5 units, the instance is provisioned, and the desired capacity is exceeded by 3 units. For more information, see \fI\%Instance weighting for Amazon EC2 Auto Scaling\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP . Value must be in the range of 1 to 999.
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTemplateSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the launch template to be used when launching the instance type. For example, some instance types might require a launch template with a different AMI. If not provided, Amazon EC2 Auto Scaling uses the launch template that\(aqs defined for your mixed instances policy. For more information, see \fI\%Specifying a different launch template for an instance type\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+LaunchTemplateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the launch template. To get the template ID, use the Amazon EC2 \fI\%DescribeLaunchTemplates\fP API operation. New launch templates can be created using the Amazon EC2 \fI\%CreateLaunchTemplate\fP API.
+.sp
+Conditional: You must specify either a \fBLaunchTemplateId\fP or a \fBLaunchTemplateName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTemplateName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the launch template. To get the template name, use the Amazon EC2 \fI\%DescribeLaunchTemplates\fP API operation. New launch templates can be created using the Amazon EC2 \fI\%CreateLaunchTemplate\fP API.
+.sp
+Conditional: You must specify either a \fBLaunchTemplateId\fP or a \fBLaunchTemplateName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version number, \fB$Latest\fP , or \fB$Default\fP . To get the version number, use the Amazon EC2 \fI\%DescribeLaunchTemplateVersions\fP API operation. New launch template versions can be created using the Amazon EC2 \fI\%CreateLaunchTemplateVersion\fP API. If the value is \fB$Latest\fP , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is \fB$Default\fP , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is \fB$Default\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstancesDistribution \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the instances distribution. If not provided, the value for each property in \fBInstancesDistribution\fP uses a default value.
+.sp
+OnDemandAllocationStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates how to allocate instance types to fulfill On\-Demand capacity. The only valid value is \fBprioritized\fP , which is also the default value. This strategy uses the order of instance types in the \fBLaunchTemplateOverrides\fP to define the launch priority of each instance type. The first instance type in the array is prioritized higher than the last. If all your On\-Demand capacity cannot be fulfilled using your highest priority instance, then the Auto Scaling groups launches the remaining capacity using the second priority instance type, and so on.
+.UNINDENT
+.UNINDENT
+.sp
+OnDemandBaseCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum amount of the Auto Scaling group\(aqs capacity that must be fulfilled by On\-Demand Instances. This base portion is provisioned first as your group scales. Defaults to 0 if not specified. If you specify weights for the instance types in the overrides, set the value of \fBOnDemandBaseCapacity\fP in terms of the number of capacity units, and not the number of instances.
+.UNINDENT
+.UNINDENT
+.sp
+OnDemandPercentageAboveBaseCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Controls the percentages of On\-Demand Instances and Spot Instances for your additional capacity beyond \fBOnDemandBaseCapacity\fP . Expressed as a number (for example, 20 specifies 20% On\-Demand Instances, 80% Spot Instances). Defaults to 100 if not specified. If set to 100, only On\-Demand Instances are provisioned.
+.UNINDENT
+.UNINDENT
+.sp
+SpotAllocationStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates how to allocate instances across Spot Instance pools.
+.sp
+If the allocation strategy is \fBlowest\-price\fP , the Auto Scaling group launches instances using the Spot pools with the lowest price, and evenly allocates your instances across the number of Spot pools that you specify. Defaults to \fBlowest\-price\fP if not specified.
+.sp
+If the allocation strategy is \fBcapacity\-optimized\fP (recommended), the Auto Scaling group launches instances using Spot pools that are optimally chosen based on the available Spot capacity. Alternatively, you can use \fBcapacity\-optimized\-prioritized\fP and set the order of instance types in the list of launch template overrides from highest to lowest priority (from first to last in the list). Amazon EC2 Auto Scaling honors the instance type priorities on a best\-effort basis but optimizes for capacity first.
+.UNINDENT
+.UNINDENT
+.sp
+SpotInstancePools \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of Spot Instance pools across which to allocate your Spot Instances. The Spot pools are determined from the different instance types in the overrides. Valid only when the Spot allocation strategy is \fBlowest\-price\fP . Value must be in the range of 1 to 20. Defaults to 2 if not specified.
+.UNINDENT
+.UNINDENT
+.sp
+SpotMaxPrice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum price per unit hour that you are willing to pay for a Spot Instance. If you leave the value at its default (empty), Amazon EC2 Auto Scaling uses the On\-Demand price as the maximum Spot price. To remove a value that you previously set, include the property but specify an empty string ("") for the value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "LaunchTemplate": {
+    "LaunchTemplateSpecification": {
+      "LaunchTemplateId": "string",
+      "LaunchTemplateName": "string",
+      "Version": "string"
+    },
+    "Overrides": [
+      {
+        "InstanceType": "string",
+        "WeightedCapacity": "string",
+        "LaunchTemplateSpecification": {
+          "LaunchTemplateId": "string",
+          "LaunchTemplateName": "string",
+          "Version": "string"
+        }
+      }
+      ...
+    ]
+  },
+  "InstancesDistribution": {
+    "OnDemandAllocationStrategy": "string",
+    "OnDemandBaseCapacity": integer,
+    "OnDemandPercentageAboveBaseCapacity": integer,
+    "SpotAllocationStrategy": "string",
+    "SpotInstancePools": integer,
+    "SpotMaxPrice": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-min\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum size of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum size of the Auto Scaling group.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+With a mixed instances policy that uses instance weighting, Amazon EC2 Auto Scaling may need to go above \fBMaxSize\fP to meet your capacity requirements. In this event, Amazon EC2 Auto Scaling will never go above \fBMaxSize\fP by more than your largest instance weight (weights that define how many units each instance contributes to the desired capacity of the group).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-desired\-capacity\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The desired capacity is the initial capacity of the Auto Scaling group after this operation completes and the capacity it attempts to maintain. This number must be greater than or equal to the minimum size of the group and less than or equal to the maximum size of the group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-cooldown\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scaling activity completes before another scaling activity can start. The default value is \fB300\fP . This setting applies when using simple scaling policies, but not when using other scaling policies or scheduled scaling. For more information, see \fI\%Scaling cooldowns for Amazon EC2 Auto Scaling\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-availability\-zones\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more Availability Zones for the group.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-health\-check\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The service to use for the health checks. The valid values are \fBEC2\fP and \fBELB\fP . If you configure an Auto Scaling group to use ELB health checks, it considers the instance unhealthy if it fails either the EC2 status checks or the load balancer health checks.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-health\-check\-grace\-period\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before checking the health status of an EC2 instance that has come into service. The default value is \fB0\fP . For more information, see \fI\%Health check grace period\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+Conditional: Required if you are adding an \fBELB\fP health check.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-placement\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an existing placement group into which to launch your instances, if any. A placement group is a logical grouping of instances within a single Availability Zone. You cannot specify multiple Availability Zones and a placement group. For more information, see \fI\%Placement Groups\fP in the \fIAmazon EC2 User Guide for Linux Instances\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-zone\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A comma\-separated list of subnet IDs for a virtual private cloud (VPC). If you specify \fBVPCZoneIdentifier\fP with \fBAvailabilityZones\fP , the subnets that you specify for this parameter must reside in those Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-termination\-policies\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A policy or a list of policies that are used to select the instances to terminate. The policies are executed in the order that you list them. For more information, see \fI\%Controlling which Auto Scaling instances terminate during scale in\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-new\-instances\-protected\-from\-scale\-in\fP | \fB\-\-no\-new\-instances\-protected\-from\-scale\-in\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether newly launched instances are protected from termination by Amazon EC2 Auto Scaling when scaling in. For more information about preventing instances from terminating on scale in, see \fI\%Instance scale\-in protection\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-linked\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the service\-linked role that the Auto Scaling group uses to call other AWS services on your behalf. For more information, see \fI\%Service\-linked roles\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-instance\-lifetime\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of time, in seconds, that an instance can be in service. The default is null. If specified, the value must be either 0 or a number equal to or greater than 86,400 seconds (1 day). To clear a previously set value, specify a new value of 0. For more information, see \fI\%Replacing Auto Scaling instances based on maximum instance lifetime\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-capacity\-rebalance\fP | \fB\-\-no\-capacity\-rebalance\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables or disables Capacity Rebalancing. For more information, see \fI\%Amazon EC2 Auto Scaling Capacity Rebalancing\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To update the size of an Auto Scaling group\fP
+.sp
+This example updates the desired capacity, maximum size, and minimum size of the specified Auto Scaling group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling update\-auto\-scaling\-group \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-desired\-capacity 6 \e
+    \-\-max\-size 10 \e
+    \-\-min\-size 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Auto Scaling groups\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 2: To add Elastic Load Balancing health checks and specify which Availability Zones and subnets to use\fP
+.sp
+This example updates the specified Auto Scaling group to add Elastic Load Balancing health checks. This command also updates the value of \fB\-\-vpc\-zone\-identifier\fP\&. This helps you change the Availability Zones where the instances are located as well as the subnets.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling update\-auto\-scaling\-group \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-health\-check\-type ELB \e
+    \-\-health\-check\-grace\-period 600 \e
+    \-\-vpc\-zone\-identifier "subnet\-5ea0c127,subnet\-6194ea3b,subnet\-c934b782"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Auto Scaling groups\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 3: To update the placement group and termination policy\fP
+.sp
+This example updates the placement group and termination policy to use.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling update\-auto\-scaling\-group \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-placement\-group my\-placement\-group \e
+    \-\-termination\-policies "OldestInstance"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Auto Scaling groups\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 4: To use the latest version of the launch template\fP
+.sp
+This example updates the specified Auto Scaling group to use the latest version of the specified launch template.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling update\-auto\-scaling\-group \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-launch\-template LaunchTemplateId=lt\-1234567890abcde12,Version=\(aq$Latest\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Auto Scaling groups\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 5: To use a specific version of the launch template\fP
+.sp
+This example updates the specified Auto Scaling group to use a specific version of the specified launch template.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling update\-auto\-scaling\-group \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-launch\-template LaunchTemplateName=my\-template\-for\-auto\-scaling,Version=\(aq2\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Auto Scaling groups\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 6: To define a mixed instances policy and enable capacity rebalancing\fP
+.sp
+This example updates the specified Auto Scaling group to use a mixed instances policy and enables capacity rebalancing. This structure lets you specify groups with Spot and On\-Demand capacities and use different launch templates for different architectures.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling update\-auto\-scaling\-group \e
+    \-\-cli\-input\-json file://~/config.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBconfig.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AutoScalingGroupName": "my\-asg",
+    "CapacityRebalance": true,
+    "MixedInstancesPolicy": {
+        "LaunchTemplate": {
+            "LaunchTemplateSpecification": {
+                "LaunchTemplateName": "my\-launch\-template\-for\-x86",
+                "Version": "$Latest"
+            },
+            "Overrides": [
+                {
+                    "InstanceType": "c6g.large",
+                    "LaunchTemplateSpecification": {
+                        "LaunchTemplateName": "my\-launch\-template\-for\-arm",
+                        "Version": "$Latest"
+                    }
+                },
+                {
+                    "InstanceType": "c5.large"
+                },
+                {
+                    "InstanceType": "c5a.large"
+                }
+            ]
+        },
+        "InstancesDistribution": {
+            "OnDemandPercentageAboveBaseCapacity": 50,
+            "SpotAllocationStrategy": "capacity\-optimized"
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Auto Scaling groups\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

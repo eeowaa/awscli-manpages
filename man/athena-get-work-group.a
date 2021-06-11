@@ -1,0 +1,245 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ATHENA-GET-WORK-GROUP" "a" "" ""
+.SH NAME
+athena-get-work-group \- Returns information about the workgroup with the specified name
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about the workgroup with the specified name.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-work\-group
+\-\-work\-group <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-work\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the workgroup.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo return  information about a workgroup\fP
+.sp
+The following \fBget\-work\-group\fP example returns information about the \fBAthenaAdmin\fP workgroup.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws athena get\-work\-group \e
+    \-\-work\-group AthenaAdmin
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WorkGroup": {
+        "Name": "AthenaAdmin",
+        "State": "ENABLED",
+        "Configuration": {
+            "ResultConfiguration": {
+                "OutputLocation": "s3://awsdoc\-example\-bucket/"
+            },
+            "EnforceWorkGroupConfiguration": false,
+            "PublishCloudWatchMetricsEnabled": true,
+            "RequesterPaysEnabled": false
+        },
+        "Description": "Workgroup for Athena administrators",
+        "CreationTime": 1573677174.105
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Managing Workgroups\fP in the \fIAmazon Athena User Guide\fP\&.
+.SH OUTPUT
+.sp
+WorkGroup \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the workgroup.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The workgroup name.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the workgroup: ENABLED or DISABLED.
+.UNINDENT
+.UNINDENT
+.sp
+Configuration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration of the workgroup, which includes the location in Amazon S3 where query results are stored, the encryption configuration, if any, used for query results; whether the Amazon CloudWatch Metrics are enabled for the workgroup; whether workgroup settings override client\-side settings; and the data usage limits for the amount of data scanned per query or per workgroup. The workgroup settings override is specified in EnforceWorkGroupConfiguration (true/false) in the WorkGroupConfiguration. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration .
+.sp
+ResultConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for the workgroup, which includes the location in Amazon S3 where query results are stored and the encryption option, if any, used for query results. To run the query, you must specify the query results location using one of the ways: either in the workgroup using this setting, or for individual queries (client\-side), using  ResultConfiguration$OutputLocation . If none of them is set, Athena issues an error that no output location is provided. For more information, see \fI\%Query Results\fP .
+.sp
+OutputLocation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in Amazon S3 where your query results are stored, such as \fBs3://path/to/query/bucket/\fP . To run the query, you must specify the query results location using one of the ways: either for individual queries using either this setting (client\-side), or in the workgroup, using  WorkGroupConfiguration . If none of them is set, Athena issues an error that no output location is provided. For more information, see \fI\%Query Results\fP . If workgroup settings override client\-side settings, then the query uses the settings specified for the workgroup. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration .
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If query results are encrypted in Amazon S3, indicates the encryption option used (for example, \fBSSE\-KMS\fP or \fBCSE\-KMS\fP ) and key information. This is a client\-side setting. If workgroup settings override client\-side settings, then the query uses the encryption configuration that is specified for the workgroup, and also uses the location for storing query results specified in the workgroup. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration and \fI\%Workgroup Settings Override Client\-Side Settings\fP .
+.sp
+EncryptionOption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether Amazon S3 server\-side encryption with Amazon S3\-managed keys (\fBSSE\-S3\fP ), server\-side encryption with KMS\-managed keys (\fBSSE\-KMS\fP ), or client\-side encryption with KMS\-managed keys (CSE\-KMS) is used.
+.sp
+If a query runs in a workgroup and the workgroup overrides client\-side settings, then the workgroup\(aqs setting for encryption is used. It specifies whether query results must be encrypted, for all queries that run in this workgroup.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBSSE\-KMS\fP and \fBCSE\-KMS\fP , this is the KMS key ARN or ID.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EnforceWorkGroupConfiguration \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If set to "true", the settings for the workgroup override client\-side settings. If set to "false", client\-side settings are used. For more information, see \fI\%Workgroup Settings Override Client\-Side Settings\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PublishCloudWatchMetricsEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates that the Amazon CloudWatch metrics are enabled for the workgroup.
+.UNINDENT
+.UNINDENT
+.sp
+BytesScannedCutoffPerQuery \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The upper data usage limit (cutoff) for the amount of bytes a single query in a workgroup is allowed to scan.
+.UNINDENT
+.UNINDENT
+.sp
+RequesterPaysEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If set to \fBtrue\fP , allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. If set to \fBfalse\fP , workgroup members cannot query data from Requester Pays buckets, and queries that retrieve data from Requester Pays buckets cause an error. The default is \fBfalse\fP . For more information about Requester Pays buckets, see \fI\%Requester Pays Buckets\fP in the \fIAmazon Simple Storage Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The engine version that all queries running on the workgroup use. Queries on the \fBAmazonAthenaPreviewFunctionality\fP workgroup run on the preview engine regardless of this setting.
+.sp
+SelectedEngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The engine version requested by the user. Possible values are determined by the output of \fBListEngineVersions\fP , including Auto. The default is Auto.
+.UNINDENT
+.UNINDENT
+.sp
+EffectiveEngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Read only. The engine version on which the query runs. If the user requests a valid engine version other than Auto, the effective engine version is the same as the engine version that the user requested. If the user requests Auto, the effective engine version is chosen by Athena. When a request to update the engine version is made by a \fBCreateWorkGroup\fP or \fBUpdateWorkGroup\fP operation, the \fBEffectiveEngineVersion\fP field is ignored.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The workgroup description.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the workgroup was created.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

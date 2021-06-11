@@ -1,0 +1,184 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KENDRA-BATCH-DELETE-DOCUMENT" "a" "" ""
+.SH NAME
+kendra-batch-delete-document \- Removes one or more documents from an index
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Removes one or more documents from an index. The documents must have been added with the \fBBatchPutDocument\fP operation.
+.sp
+The documents are deleted asynchronously. You can see the progress of the deletion by using AWS CloudWatch. Any error messages related to the processing of the batch are sent to you CloudWatch log.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  batch\-delete\-document
+\-\-index\-id <value>
+\-\-document\-id\-list <value>
+[\-\-data\-source\-sync\-job\-metric\-target <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-index\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the index that contains the documents to delete.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-document\-id\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more identifiers for documents to delete from the index.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-data\-source\-sync\-job\-metric\-target\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Maps a particular data source sync job to a particular data source.
+.sp
+DataSourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the data source that is running the sync job.
+.UNINDENT
+.UNINDENT
+.sp
+DataSourceSyncJobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the sync job that is running on the data source.
+.sp
+If the ID of a sync job is not provided and there is a sync job running, then the ID of this sync job is used and metrics are generated for this sync job.
+.sp
+If the ID of a sync job is not provided and there is no sync job running, then no metrics are generated and documents are indexed/deleted at the index level without sync job metrics included.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DataSourceId=string,DataSourceSyncJobId=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "DataSourceId": "string",
+  "DataSourceSyncJobId": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+FailedDocuments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of documents that could not be removed from the index. Each entry contains an error message that indicates why the document couldn\(aqt be removed from the index.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about documents that could not be removed from an index by the \fBBatchDeleteDocument\fP operation.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the document that couldn\(aqt be removed from the index.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code for why the document couldn\(aqt be removed from the index.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An explanation for why the document couldn\(aqt be removed from the index.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

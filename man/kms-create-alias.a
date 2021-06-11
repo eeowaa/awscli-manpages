@@ -1,0 +1,157 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-CREATE-ALIAS" "a" "" ""
+.SH NAME
+kms-create-alias \- Creates a friendly name for a customer master key (CMK)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a friendly name for a customer master key (CMK). You can use an alias to identify a CMK in the AWS KMS console, in the  DescribeKey operation and in \fI\%cryptographic operations\fP , such as  Encrypt and  GenerateDataKey .
+.sp
+You can also change the CMK that\(aqs associated with the alias ( UpdateAlias ) or delete the alias ( DeleteAlias ) at any time. These operations don\(aqt affect the underlying CMK.
+.sp
+You can associate the alias with any customer managed CMK in the same AWS Region. Each alias is associated with only on CMK at a time, but a CMK can have multiple aliases. A valid CMK is required. You can\(aqt create an alias without a CMK.
+.sp
+The alias must be unique in the account and Region, but you can have aliases with the same name in different Regions. For detailed information about aliases, see \fI\%Using aliases\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+This operation does not return a response. To get the alias that you created, use the  ListAliases operation.
+.sp
+The CMK that you use for this operation must be in a compatible key state. For details, see \fI\%How Key State Affects Use of a Customer Master Key\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : No. You cannot perform this operation on an alias in a different AWS account.
+.sp
+\fBRequired permissions\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fI\%kms:CreateAlias\fP on the alias (IAM policy).
+.IP \(bu 2
+\fI\%kms:CreateAlias\fP on the CMK (key policy).
+.UNINDENT
+.sp
+For details, see \fI\%Controlling access to aliases\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+DeleteAlias
+.IP \(bu 2
+ListAliases
+.IP \(bu 2
+UpdateAlias
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-alias
+\-\-alias\-name <value>
+\-\-target\-key\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-alias\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the alias name. This value must begin with \fBalias/\fP followed by a name, such as \fBalias/ExampleAlias\fP .
+.sp
+The \fBAliasName\fP value must be string of 1\-256 characters. It can contain only alphanumeric characters, forward slashes (/), underscores (_), and dashes (\-). The alias name cannot begin with \fBalias/aws/\fP . The \fBalias/aws/\fP prefix is reserved for \fI\%AWS managed CMKs\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Associates the alias with the specified \fI\%customer managed CMK\fP . The CMK must be in the same AWS Region.
+.sp
+A valid CMK ID is required. If you supply a null or empty string value, this operation returns an error.
+.sp
+For help finding the key ID and ARN, see \fI\%Finding the Key ID and ARN\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+Specify the key ID or the Amazon Resource Name (ARN) of the CMK.
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.UNINDENT
+.sp
+To get the key ID and key ARN for a CMK, use  ListKeys or  DescribeKey .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an alias for a CMK\fP
+.sp
+The following \fBcreate\-alias\fP command creates an alias named \fBexample\-alias\fP for the customer master key (CMK) identified by key ID \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP\&.
+.sp
+Alias names must begin with \fBalias/\fP\&. Do not use alias names that begin with \fBalias/aws\fP; these are reserved for use by AWS.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms create\-alias \e
+    \-\-alias\-name alias/example\-alias \e
+    \-\-target\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

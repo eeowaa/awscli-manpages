@@ -1,0 +1,147 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "NETWORK-FIREWALL-DESCRIBE-LOGGING-CONFIGURATION" "a" "" ""
+.SH NAME
+network-firewall-describe-logging-configuration \- Returns the logging configuration for the specified firewall
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the logging configuration for the specified firewall.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-logging\-configuration
+[\-\-firewall\-arn <value>]
+[\-\-firewall\-name <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-firewall\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the firewall.
+.sp
+You must specify the ARN or the name, and you can specify both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-firewall\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the firewall. You can\(aqt change the name of a firewall after you create it.
+.sp
+You must specify the ARN or the name, and you can specify both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+FirewallArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the firewall.
+.UNINDENT
+.UNINDENT
+.sp
+LoggingConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines how AWS Network Firewall performs logging for a  Firewall .
+.sp
+LogDestinationConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Defines the logging destinations for the logs for a firewall. Network Firewall generates logs for stateful rule groups.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines where AWS Network Firewall sends logs for the firewall for one log type. This is used in  LoggingConfiguration . You can send each type of log to an Amazon S3 bucket, a CloudWatch log group, or a Kinesis Data Firehose delivery stream.
+.sp
+Network Firewall generates logs for stateful rule groups. You can save alert and flow log types. The stateful rules engine records flow logs for all network traffic that it receives. It records alert logs for traffic that matches stateful rules that have the rule action set to \fBDROP\fP or \fBALERT\fP .
+.sp
+LogType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of log to send. Alert logs report traffic that matches a  StatefulRule with an action setting that sends an alert log message. Flow logs are standard network traffic flow logs.
+.UNINDENT
+.UNINDENT
+.sp
+LogDestinationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of storage destination to send these logs to. You can send logs to an Amazon S3 bucket, a CloudWatch log group, or a Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.sp
+LogDestination \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The named location for the logs, provided in a key:value mapping that is specific to the chosen destination type.
+.INDENT 0.0
+.IP \(bu 2
+For an Amazon S3 bucket, provide the name of the bucket, with key \fBbucketName\fP , and optionally provide a prefix, with key \fBprefix\fP . The following example specifies an Amazon S3 bucket named \fBDOC\-EXAMPLE\-BUCKET\fP and the prefix \fBalerts\fP :   \fB"LogDestination": { "bucketName": "DOC\-EXAMPLE\-BUCKET", "prefix": "alerts" }\fP
+.IP \(bu 2
+For a CloudWatch log group, provide the name of the CloudWatch log group, with key \fBlogGroup\fP . The following example specifies a log group named \fBalert\-log\-group\fP :   \fB"LogDestination": { "logGroup": "alert\-log\-group" }\fP
+.IP \(bu 2
+For a Kinesis Data Firehose delivery stream, provide the name of the delivery stream, with key \fBdeliveryStream\fP . The following example specifies a delivery stream named \fBalert\-delivery\-stream\fP :   \fB"LogDestination": { "deliveryStream": "alert\-delivery\-stream" }\fP
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,1470 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CE-GET-RESERVATION-PURCHASE-RECOMMENDATION" "a" "" ""
+.SH NAME
+ce-get-reservation-purchase-recommendation \- Gets recommendations for which reservations to purchase
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets recommendations for which reservations to purchase. These recommendations could help you reduce your costs. Reservations provide a discounted hourly rate (up to 75%) compared to On\-Demand pricing.
+.sp
+AWS generates your recommendations by identifying your On\-Demand usage during a specific time period and collecting your usage into categories that are eligible for a reservation. After AWS has these categories, it simulates every combination of reservations in each category of usage to identify the best number of each type of RI to purchase to maximize your estimated savings.
+.sp
+For example, AWS automatically aggregates your Amazon EC2 Linux, shared tenancy, and c4 family usage in the US West (Oregon) Region and recommends that you buy size\-flexible regional reservations to apply to the c4 family usage. AWS recommends the smallest size instance in an instance family. This makes it easier to purchase a size\-flexible RI. AWS also shows the equal number of normalized units so that you can purchase any instance size that you want. For this example, your RI recommendation would be for \fBc4.large\fP because that is the smallest size instance in the c4 instance family.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-reservation\-purchase\-recommendation
+[\-\-account\-id <value>]
+\-\-service <value>
+[\-\-filter <value>]
+[\-\-account\-scope <value>]
+[\-\-lookback\-period\-in\-days <value>]
+[\-\-term\-in\-years <value>]
+[\-\-payment\-option <value>]
+[\-\-service\-specification <value>]
+[\-\-page\-size <value>]
+[\-\-next\-page\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID that is associated with the recommendation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The specific service that you want recommendations for.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use \fBExpression\fP to filter by cost or by usage. There are two patterns:
+.INDENT 0.0
+.IP \(bu 2
+Simple dimension values \- You can set the dimension name and values for the filters that you plan to use. For example, you can filter for \fBREGION==us\-east\-1 OR REGION==us\-west\-1\fP . For \fBGetRightsizingRecommendation\fP , the Region is a full name (for example, \fBREGION==US East (N. Virginia)\fP . The \fBExpression\fP example looks like:  \fB{ "Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", “us\-west\-1” ] } }\fP   The list of dimension values are OR\(aqd together to retrieve cost or usage data. You can create \fBExpression\fP and \fBDimensionValues\fP objects using either \fBwith*\fP methods or \fBset*\fP methods in multiple lines.
+.IP \(bu 2
+Compound dimension values with logical operations \- You can use multiple \fBExpression\fP types and the logical operators \fBAND/OR/NOT\fP to create a list of one or more \fBExpression\fP objects. This allows you to filter on more advanced options. For example, you can filter on \fB((REGION == us\-east\-1 OR REGION == us\-west\-1) OR (TAG.Type == Type1)) AND (USAGE_TYPE != DataTransfer)\fP . The \fBExpression\fP for that looks like this:  \fB{ "And": [ {"Or": [ {"Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", "us\-west\-1" ] }}, {"Tags": { "Key": "TagName", "Values": ["Value1"] } } ]}, {"Not": {"Dimensions": { "Key": "USAGE_TYPE", "Values": ["DataTransfer"] }}} ] }\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Because each \fBExpression\fP can have only one operator, the service returns an error if more than one is specified. The following example shows an \fBExpression\fP object that creates an error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{ "And": [ ... ], "DimensionValues": { "Dimension": "USAGE_TYPE", "Values": [ "DataTransfer" ] } }\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For the \fBGetRightsizingRecommendation\fP action, a combination of OR and NOT is not supported. OR is not supported between different dimensions, or dimensions and tags. NOT operators aren\(aqt supported. Dimensions are also limited to \fBLINKED_ACCOUNT\fP , \fBREGION\fP , or \fBRIGHTSIZING_TYPE\fP .
+.sp
+For the \fBGetReservationPurchaseRecommendation\fP action, only NOT is supported. AND and OR are not supported. Dimensions are limited to \fBLINKED_ACCOUNT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Use \fBExpression\fP to filter by cost or by usage. There are two patterns:
+.INDENT 0.0
+.IP \(bu 2
+Simple dimension values \- You can set the dimension name and values for the filters that you plan to use. For example, you can filter for \fBREGION==us\-east\-1 OR REGION==us\-west\-1\fP . For \fBGetRightsizingRecommendation\fP , the Region is a full name (for example, \fBREGION==US East (N. Virginia)\fP . The \fBExpression\fP example looks like:  \fB{ "Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", “us\-west\-1” ] } }\fP   The list of dimension values are OR\(aqd together to retrieve cost or usage data. You can create \fBExpression\fP and \fBDimensionValues\fP objects using either \fBwith*\fP methods or \fBset*\fP methods in multiple lines.
+.IP \(bu 2
+Compound dimension values with logical operations \- You can use multiple \fBExpression\fP types and the logical operators \fBAND/OR/NOT\fP to create a list of one or more \fBExpression\fP objects. This allows you to filter on more advanced options. For example, you can filter on \fB((REGION == us\-east\-1 OR REGION == us\-west\-1) OR (TAG.Type == Type1)) AND (USAGE_TYPE != DataTransfer)\fP . The \fBExpression\fP for that looks like this:  \fB{ "And": [ {"Or": [ {"Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", "us\-west\-1" ] }}, {"Tags": { "Key": "TagName", "Values": ["Value1"] } } ]}, {"Not": {"Dimensions": { "Key": "USAGE_TYPE", "Values": ["DataTransfer"] }}} ] }\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Because each \fBExpression\fP can have only one operator, the service returns an error if more than one is specified. The following example shows an \fBExpression\fP object that creates an error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{ "And": [ ... ], "DimensionValues": { "Dimension": "USAGE_TYPE", "Values": [ "DataTransfer" ] } }\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For the \fBGetRightsizingRecommendation\fP action, a combination of OR and NOT is not supported. OR is not supported between different dimensions, or dimensions and tags. NOT operators aren\(aqt supported. Dimensions are also limited to \fBLINKED_ACCOUNT\fP , \fBREGION\fP , or \fBRIGHTSIZING_TYPE\fP .
+.sp
+For the \fBGetReservationPurchaseRecommendation\fP action, only NOT is supported. AND and OR are not supported. Dimensions are limited to \fBLINKED_ACCOUNT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Use \fBExpression\fP to filter by cost or by usage. There are two patterns:
+.INDENT 0.0
+.IP \(bu 2
+Simple dimension values \- You can set the dimension name and values for the filters that you plan to use. For example, you can filter for \fBREGION==us\-east\-1 OR REGION==us\-west\-1\fP . For \fBGetRightsizingRecommendation\fP , the Region is a full name (for example, \fBREGION==US East (N. Virginia)\fP . The \fBExpression\fP example looks like:  \fB{ "Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", “us\-west\-1” ] } }\fP   The list of dimension values are OR\(aqd together to retrieve cost or usage data. You can create \fBExpression\fP and \fBDimensionValues\fP objects using either \fBwith*\fP methods or \fBset*\fP methods in multiple lines.
+.IP \(bu 2
+Compound dimension values with logical operations \- You can use multiple \fBExpression\fP types and the logical operators \fBAND/OR/NOT\fP to create a list of one or more \fBExpression\fP objects. This allows you to filter on more advanced options. For example, you can filter on \fB((REGION == us\-east\-1 OR REGION == us\-west\-1) OR (TAG.Type == Type1)) AND (USAGE_TYPE != DataTransfer)\fP . The \fBExpression\fP for that looks like this:  \fB{ "And": [ {"Or": [ {"Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", "us\-west\-1" ] }}, {"Tags": { "Key": "TagName", "Values": ["Value1"] } } ]}, {"Not": {"Dimensions": { "Key": "USAGE_TYPE", "Values": ["DataTransfer"] }}} ] }\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Because each \fBExpression\fP can have only one operator, the service returns an error if more than one is specified. The following example shows an \fBExpression\fP object that creates an error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{ "And": [ ... ], "DimensionValues": { "Dimension": "USAGE_TYPE", "Values": [ "DataTransfer" ] } }\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For the \fBGetRightsizingRecommendation\fP action, a combination of OR and NOT is not supported. OR is not supported between different dimensions, or dimensions and tags. NOT operators aren\(aqt supported. Dimensions are also limited to \fBLINKED_ACCOUNT\fP , \fBREGION\fP , or \fBRIGHTSIZING_TYPE\fP .
+.sp
+For the \fBGetReservationPurchaseRecommendation\fP action, only NOT is supported. AND and OR are not supported. Dimensions are limited to \fBLINKED_ACCOUNT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Not \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Return results that don\(aqt match a \fBDimension\fP object.
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Or": [
+    {
+      "Or": [
+        { ... recursive ... }
+        ...
+      ],
+      "And": [
+        { ... recursive ... }
+        ...
+      ],
+      "Not": { ... recursive ... },
+      "Dimensions": {
+        "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "Tags": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "CostCategories": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      }
+    }
+    ...
+  ],
+  "And": [
+    {
+      "Or": [
+        { ... recursive ... }
+        ...
+      ],
+      "And": [
+        { ... recursive ... }
+        ...
+      ],
+      "Not": { ... recursive ... },
+      "Dimensions": {
+        "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "Tags": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "CostCategories": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      }
+    }
+    ...
+  ],
+  "Not": {
+    "Or": [
+      { ... recursive ... }
+      ...
+    ],
+    "And": [
+      { ... recursive ... }
+      ...
+    ],
+    "Not": { ... recursive ... },
+    "Dimensions": {
+      "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+      "Values": ["string", ...],
+      "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+    },
+    "Tags": {
+      "Key": "string",
+      "Values": ["string", ...],
+      "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+    },
+    "CostCategories": {
+      "Key": "string",
+      "Values": ["string", ...],
+      "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+    }
+  },
+  "Dimensions": {
+    "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+    "Values": ["string", ...],
+    "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+  },
+  "Tags": {
+    "Key": "string",
+    "Values": ["string", ...],
+    "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+  },
+  "CostCategories": {
+    "Key": "string",
+    "Values": ["string", ...],
+    "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-account\-scope\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account scope that you want your recommendations for. Amazon Web Services calculates recommendations including the management account and member accounts if the value is set to \fBPAYER\fP . If the value is \fBLINKED\fP , recommendations are calculated for individual member accounts only.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBPAYER\fP
+.IP \(bu 2
+\fBLINKED\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-lookback\-period\-in\-days\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of previous days that you want AWS to consider when it calculates your recommendations.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSEVEN_DAYS\fP
+.IP \(bu 2
+\fBTHIRTY_DAYS\fP
+.IP \(bu 2
+\fBSIXTY_DAYS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-term\-in\-years\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The reservation term that you want recommendations for.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBONE_YEAR\fP
+.IP \(bu 2
+\fBTHREE_YEARS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-payment\-option\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The reservation purchase option that you want recommendations for.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNO_UPFRONT\fP
+.IP \(bu 2
+\fBPARTIAL_UPFRONT\fP
+.IP \(bu 2
+\fBALL_UPFRONT\fP
+.IP \(bu 2
+\fBLIGHT_UTILIZATION\fP
+.IP \(bu 2
+\fBMEDIUM_UTILIZATION\fP
+.IP \(bu 2
+\fBHEAVY_UTILIZATION\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-specification\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The hardware specifications for the service instances that you want recommendations for, such as standard or convertible Amazon EC2 instances.
+.sp
+EC2Specification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon EC2 hardware specifications that you want AWS to provide recommendations for.
+.sp
+OfferingClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether you want a recommendation for standard or convertible reservations.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+EC2Specification={OfferingClass=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "EC2Specification": {
+    "OfferingClass": "STANDARD"|"CONVERTIBLE"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of recommendations that you want returned in a single response object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-page\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The pagination token that indicates the next set of results that you want to retrieve.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo retrieve the reservation recommendations for Partial Upfront EC2 RIs with a three year term\fP
+.sp
+The following \fBget\-reservation\-purchase\-recommendation\fP example retrieves recommendations for Partial Upfront EC2 instances with a three\-year term, based on the last 60 days of EC2 usage.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ce get\-reservation\-purchase\-recommendation \e
+    \-\-service "Amazon Redshift" \e
+    \-\-lookback\-period\-in\-days SIXTY_DAYS \e
+    \-\-term\-in\-years THREE_YEARS \e
+    \-\-payment\-option PARTIAL_UPFRONT
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Recommendations": [],
+    "Metadata": {
+        "GenerationTimestamp": "2018\-08\-08T15:20:57Z",
+        "RecommendationId": "00d59dde\-a1ad\-473f\-8ff2\-iexample3330b"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Metadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about this specific recommendation call, such as the time stamp for when Cost Explorer generated this recommendation.
+.sp
+RecommendationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for this specific recommendation.
+.UNINDENT
+.UNINDENT
+.sp
+GenerationTimestamp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp for when AWS made this recommendation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Recommendations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Recommendations for reservations to purchase.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A specific reservation that AWS recommends for purchase.
+.sp
+AccountScope \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The account scope that AWS recommends that you purchase this instance for. For example, you can purchase this reservation for an entire organization in AWS Organizations.
+.UNINDENT
+.UNINDENT
+.sp
+LookbackPeriodInDays \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How many days of previous usage that AWS considers when making this recommendation.
+.UNINDENT
+.UNINDENT
+.sp
+TermInYears \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The term of the reservation that you want recommendations for, in years.
+.UNINDENT
+.UNINDENT
+.sp
+PaymentOption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The payment option for the reservation. For example, \fBAllUpfront\fP or \fBNoUpfront\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ServiceSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Hardware specifications for the service that you want recommendations for.
+.sp
+EC2Specification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon EC2 hardware specifications that you want AWS to provide recommendations for.
+.sp
+OfferingClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether you want a recommendation for standard or convertible reservations.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RecommendationDetails \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Details about the recommended purchases.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about your recommended reservation purchase.
+.sp
+AccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The account that this RI recommendation is for.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the instances that AWS recommends that you purchase.
+.sp
+EC2InstanceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon EC2 instances that AWS recommends that you purchase.
+.sp
+Family \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance family of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of instance that AWS recommends.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+Platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform of the recommended reservation. The platform is the specific combination of operating system, license model, and software on an instance.
+.UNINDENT
+.UNINDENT
+.sp
+Tenancy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommended reservation is dedicated or shared.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentGeneration \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommendation is for a current\-generation instance.
+.UNINDENT
+.UNINDENT
+.sp
+SizeFlexEligible \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommended reservation is size flexible.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RDSInstanceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon RDS instances that AWS recommends that you purchase.
+.sp
+Family \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance family of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of instance that AWS recommends.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+DatabaseEngine \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The database engine that the recommended reservation supports.
+.UNINDENT
+.UNINDENT
+.sp
+DatabaseEdition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The database edition that the recommended reservation supports.
+.UNINDENT
+.UNINDENT
+.sp
+DeploymentOption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommendation is for a reservation in a single Availability Zone or a reservation with a backup in a second Availability Zone.
+.UNINDENT
+.UNINDENT
+.sp
+LicenseModel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The license model that the recommended reservation supports.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentGeneration \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommendation is for a current\-generation instance.
+.UNINDENT
+.UNINDENT
+.sp
+SizeFlexEligible \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommended reservation is size flexible.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RedshiftInstanceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Redshift instances that AWS recommends that you purchase.
+.sp
+Family \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance family of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+NodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of node that AWS recommends.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentGeneration \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommendation is for a current\-generation instance.
+.UNINDENT
+.UNINDENT
+.sp
+SizeFlexEligible \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommended reservation is size flexible.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ElastiCacheInstanceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The ElastiCache instances that AWS recommends that you purchase.
+.sp
+Family \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance family of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+NodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of node that AWS recommends.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+ProductDescription \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentGeneration \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommendation is for a current generation instance.
+.UNINDENT
+.UNINDENT
+.sp
+SizeFlexEligible \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommended reservation is size flexible.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ESInstanceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon ES instances that AWS recommends that you purchase.
+.sp
+InstanceClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The class of instance that AWS recommends.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceSize \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The size of instance that AWS recommends.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region of the recommended reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentGeneration \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommendation is for a current\-generation instance.
+.UNINDENT
+.UNINDENT
+.sp
+SizeFlexEligible \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether the recommended reservation is size flexible.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RecommendedNumberOfInstancesToPurchase \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances that AWS recommends that you purchase.
+.UNINDENT
+.UNINDENT
+.sp
+RecommendedNormalizedUnitsToPurchase \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of normalized units that AWS recommends that you purchase.
+.UNINDENT
+.UNINDENT
+.sp
+MinimumNumberOfInstancesUsedPerHour \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of instances that you used in an hour during the historical period. AWS uses this to calculate your recommended reservation purchases.
+.UNINDENT
+.UNINDENT
+.sp
+MinimumNormalizedUnitsUsedPerHour \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of normalized units that you used in an hour during the historical period. AWS uses this to calculate your recommended reservation purchases.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumNumberOfInstancesUsedPerHour \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of instances that you used in an hour during the historical period. AWS uses this to calculate your recommended reservation purchases.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumNormalizedUnitsUsedPerHour \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of normalized units that you used in an hour during the historical period. AWS uses this to calculate your recommended reservation purchases.
+.UNINDENT
+.UNINDENT
+.sp
+AverageNumberOfInstancesUsedPerHour \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The average number of instances that you used in an hour during the historical period. AWS uses this to calculate your recommended reservation purchases.
+.UNINDENT
+.UNINDENT
+.sp
+AverageNormalizedUnitsUsedPerHour \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The average number of normalized units that you used in an hour during the historical period. AWS uses this to calculate your recommended reservation purchases.
+.UNINDENT
+.UNINDENT
+.sp
+AverageUtilization \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The average utilization of your instances. AWS uses this to calculate your recommended reservation purchases.
+.UNINDENT
+.UNINDENT
+.sp
+EstimatedBreakEvenInMonths \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How long AWS estimates that it takes for this instance to start saving you money, in months.
+.UNINDENT
+.UNINDENT
+.sp
+CurrencyCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The currency code that AWS used to calculate the costs for this instance.
+.UNINDENT
+.UNINDENT
+.sp
+EstimatedMonthlySavingsAmount \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much AWS estimates that this specific recommendation could save you in a month.
+.UNINDENT
+.UNINDENT
+.sp
+EstimatedMonthlySavingsPercentage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much AWS estimates that this specific recommendation could save you in a month, as a percentage of your overall costs.
+.UNINDENT
+.UNINDENT
+.sp
+EstimatedMonthlyOnDemandCost \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much AWS estimates that you spend on On\-Demand Instances in a month.
+.UNINDENT
+.UNINDENT
+.sp
+EstimatedReservationCostForLookbackPeriod \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much AWS estimates that you would have spent for all usage during the specified historical period if you had a reservation.
+.UNINDENT
+.UNINDENT
+.sp
+UpfrontCost \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much purchasing this instance costs you upfront.
+.UNINDENT
+.UNINDENT
+.sp
+RecurringStandardMonthlyCost \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much purchasing this instance costs you on a monthly basis.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RecommendationSummary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A summary about the recommended purchase.
+.sp
+TotalEstimatedMonthlySavingsAmount \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The total amount that AWS estimates that this recommendation could save you in a month.
+.UNINDENT
+.UNINDENT
+.sp
+TotalEstimatedMonthlySavingsPercentage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The total amount that AWS estimates that this recommendation could save you in a month, as a percentage of your costs.
+.UNINDENT
+.UNINDENT
+.sp
+CurrencyCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The currency code used for this recommendation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextPageToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The pagination token for the next set of retrievable results.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,485 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODECOMMIT-CREATE-COMMIT" "a" "" ""
+.SH NAME
+codecommit-create-commit \- Creates a commit for a repository on the tip of a specified branch
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a commit for a repository on the tip of a specified branch.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-commit
+\-\-repository\-name <value>
+\-\-branch\-name <value>
+[\-\-parent\-commit\-id <value>]
+[\-\-author\-name <value>]
+[\-\-email <value>]
+[\-\-commit\-message <value>]
+[\-\-keep\-empty\-folders | \-\-no\-keep\-empty\-folders]
+[\-\-put\-files <value>]
+[\-\-delete\-files <value>]
+[\-\-set\-file\-modes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-repository\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the repository where you create the commit.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-branch\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the branch where you create the commit.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parent\-commit\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the commit that is the parent of the commit you create. Not required if this is an empty repository.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-author\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the author who created the commit. This information is used as both the author and committer for the commit.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-email\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address of the person who created the commit.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-commit\-message\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The commit message you want to include in the commit. Commit messages are limited to 256 KB. If no message is specified, a default message is used.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-keep\-empty\-folders\fP | \fB\-\-no\-keep\-empty\-folders\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If the commit contains deletions, whether to keep a folder or folder structure if the changes leave the folders empty. If true, a ..gitkeep file is created for empty folders. The default is false.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-put\-files\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The files to add or update in this commit.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a file added or updated as part of a commit.
+.sp
+filePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to the file in the repository, including the name of the file.
+.UNINDENT
+.UNINDENT
+.sp
+fileMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The extrapolated file mode permissions for the file. Valid values include EXECUTABLE and NORMAL.
+.UNINDENT
+.UNINDENT
+.sp
+fileContent \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The content of the file, if a source file is not specified.
+.UNINDENT
+.UNINDENT
+.sp
+sourceFile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The name and full path of the file that contains the changes you want to make as part of the commit, if you are not providing the file content directly.
+.sp
+filePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to the file, including the name of the file.
+.UNINDENT
+.UNINDENT
+.sp
+isMove \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to remove the source file from the parent commit.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+filePath=string,fileMode=string,fileContent=blob,sourceFile={filePath=string,isMove=boolean} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "filePath": "string",
+    "fileMode": "EXECUTABLE"|"NORMAL"|"SYMLINK",
+    "fileContent": blob,
+    "sourceFile": {
+      "filePath": "string",
+      "isMove": true|false
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delete\-files\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The files to delete in this commit. These files still exist in earlier commits.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A file that is deleted as part of a commit.
+.sp
+filePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path of the file to be deleted, including the name of the file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+filePath=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "filePath": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-set\-file\-modes\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The file modes to update for files in this commit.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the file mode changes.
+.sp
+filePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to the file, including the name of the file.
+.UNINDENT
+.UNINDENT
+.sp
+fileMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file mode for the file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+filePath=string,fileMode=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "filePath": "string",
+    "fileMode": "EXECUTABLE"|"NORMAL"|"SYMLINK"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a commit\fP
+.sp
+The following \fBcreate\-commit\fP example demonstrates how to create an initial commit for a repository that adds a \fBreadme.md\fP file to a repository named \fBMyDemoRepo\fP in the \fBmain\fP branch.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codecommit create\-commit \e
+    \-\-repository\-name MyDemoRepo \e
+    \-\-branch\-name main \e
+    \-\-put\-files "filePath=readme.md,fileContent=\(aqWelcome to our team repository.\(aq"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "filesAdded": [
+        {
+            "blobId": "5e1c309d\-EXAMPLE",
+            "absolutePath": "readme.md",
+            "fileMode": "NORMAL"
+        }
+    ],
+    "commitId": "4df8b524\-EXAMPLE",
+    "treeId": "55b57003\-EXAMPLE",
+    "filesDeleted": [],
+    "filesUpdated": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Create a Commit in AWS CodeCommit\fP in the \fIAWS CodeCommit User Guide\fP\&.
+.SH OUTPUT
+.sp
+commitId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full commit ID of the commit that contains your committed file changes.
+.UNINDENT
+.UNINDENT
+.sp
+treeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full SHA\-1 pointer of the tree information for the commit that contains the commited file changes.
+.UNINDENT
+.UNINDENT
+.sp
+filesAdded \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The files added as part of the committed file changes.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A file to be added, updated, or deleted as part of a commit.
+.sp
+absolutePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to the file to be added or updated, including the name of the file.
+.UNINDENT
+.UNINDENT
+.sp
+blobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The blob ID that contains the file information.
+.UNINDENT
+.UNINDENT
+.sp
+fileMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The extrapolated file mode permissions for the file. Valid values include EXECUTABLE and NORMAL.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+filesUpdated \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The files updated as part of the commited file changes.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A file to be added, updated, or deleted as part of a commit.
+.sp
+absolutePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to the file to be added or updated, including the name of the file.
+.UNINDENT
+.UNINDENT
+.sp
+blobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The blob ID that contains the file information.
+.UNINDENT
+.UNINDENT
+.sp
+fileMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The extrapolated file mode permissions for the file. Valid values include EXECUTABLE and NORMAL.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+filesDeleted \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The files deleted as part of the committed file changes.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A file to be added, updated, or deleted as part of a commit.
+.sp
+absolutePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full path to the file to be added or updated, including the name of the file.
+.UNINDENT
+.UNINDENT
+.sp
+blobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The blob ID that contains the file information.
+.UNINDENT
+.UNINDENT
+.sp
+fileMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The extrapolated file mode permissions for the file. Valid values include EXECUTABLE and NORMAL.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

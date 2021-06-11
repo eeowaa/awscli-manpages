@@ -1,0 +1,258 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-TERMINATE-INSTANCES" "a" "" ""
+.SH NAME
+ec2-terminate-instances \- Shuts down the specified instances
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Shuts down the specified instances. This operation is idempotent; if you terminate an instance more than once, each call succeeds.
+.sp
+If you specify multiple instances and the request fails (for example, because of a single incorrect instance ID), none of the instances are terminated.
+.sp
+Terminated instances remain visible after termination (for approximately one hour).
+.sp
+By default, Amazon EC2 deletes all EBS volumes that were attached when the instance launched. Volumes attached after instance launch continue running.
+.sp
+You can stop, start, and terminate EBS\-backed instances. You can only terminate instance store\-backed instances. What happens to an instance differs if you stop it or terminate it. For example, when you stop an instance, the root device and any other devices attached to the instance persist. When you terminate an instance, any attached EBS volumes with the \fBDeleteOnTermination\fP block device mapping parameter set to \fBtrue\fP are automatically deleted. For more information about the differences between stopping and terminating instances, see \fI\%Instance lifecycle\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+For more information about troubleshooting, see \fI\%Troubleshooting terminating your instance\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  terminate\-instances
+\-\-instance\-ids <value>
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-instance\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the instances.
+.sp
+Constraints: Up to 1000 instance IDs. We recommend breaking up this request into smaller batches.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo terminate an Amazon EC2 instance\fP
+.sp
+This example terminates the specified instance.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 terminate\-instances \-\-instance\-ids i\-1234567890abcdef0
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TerminatingInstances": [
+        {
+            "InstanceId": "i\-1234567890abcdef0",
+            "CurrentState": {
+                "Code": 32,
+                "Name": "shutting\-down"
+            },
+            "PreviousState": {
+                "Code": 16,
+                "Name": "running"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Using Amazon EC2 Instances\fP in the \fIAWS Command Line Interface User Guide\fP\&.
+.SH OUTPUT
+.sp
+TerminatingInstances \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the terminated instances.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an instance state change.
+.sp
+CurrentState \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.sp
+Code \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The state of the instance as a 16\-bit unsigned integer.
+.sp
+The high byte is all of the bits between 2^8 and (2^16)\-1, which equals decimal values between 256 and 65,535. These numerical values are used for internal purposes and should be ignored.
+.sp
+The low byte is all of the bits between 2^0 and (2^8)\-1, which equals decimal values between 0 and 255.
+.sp
+The valid values for instance\-state\-code will all be in the range of the low byte and they are:
+.INDENT 0.0
+.IP \(bu 2
+\fB0\fP : \fBpending\fP
+.IP \(bu 2
+\fB16\fP : \fBrunning\fP
+.IP \(bu 2
+\fB32\fP : \fBshutting\-down\fP
+.IP \(bu 2
+\fB48\fP : \fBterminated\fP
+.IP \(bu 2
+\fB64\fP : \fBstopping\fP
+.IP \(bu 2
+\fB80\fP : \fBstopped\fP
+.UNINDENT
+.sp
+You can ignore the high byte value by zeroing out all of the bits above 2^8 or 256 in decimal.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+PreviousState \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The previous state of the instance.
+.sp
+Code \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The state of the instance as a 16\-bit unsigned integer.
+.sp
+The high byte is all of the bits between 2^8 and (2^16)\-1, which equals decimal values between 256 and 65,535. These numerical values are used for internal purposes and should be ignored.
+.sp
+The low byte is all of the bits between 2^0 and (2^8)\-1, which equals decimal values between 0 and 255.
+.sp
+The valid values for instance\-state\-code will all be in the range of the low byte and they are:
+.INDENT 0.0
+.IP \(bu 2
+\fB0\fP : \fBpending\fP
+.IP \(bu 2
+\fB16\fP : \fBrunning\fP
+.IP \(bu 2
+\fB32\fP : \fBshutting\-down\fP
+.IP \(bu 2
+\fB48\fP : \fBterminated\fP
+.IP \(bu 2
+\fB64\fP : \fBstopping\fP
+.IP \(bu 2
+\fB80\fP : \fBstopped\fP
+.UNINDENT
+.sp
+You can ignore the high byte value by zeroing out all of the bits above 2^8 or 256 in decimal.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

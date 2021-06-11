@@ -1,0 +1,159 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ACM-PCA-REVOKE-CERTIFICATE" "a" "" ""
+.SH NAME
+acm-pca-revoke-certificate \- Revokes a certificate that was issued inside ACM Private CA
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Revokes a certificate that was issued inside ACM Private CA. If you enable a certificate revocation list (CRL) when you create or update your private CA, information about the revoked certificates will be included in the CRL. ACM Private CA writes the CRL to an S3 bucket that you specify. A CRL is typically updated approximately 30 minutes after a certificate is revoked. If for any reason the CRL update fails, ACM Private CA attempts makes further attempts every 15 minutes. With Amazon CloudWatch, you can create alarms for the metrics \fBCRLGenerated\fP and \fBMisconfiguredCRLBucket\fP . For more information, see \fI\%Supported CloudWatch Metrics\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Both PCA and the IAM principal must have permission to write to the S3 bucket that you specify. If the IAM principal making the call does not have permission to write to the bucket, then an exception is thrown. For more information, see \fI\%Configure Access to ACM Private CA\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ACM Private CA also writes revocation information to the audit report. For more information, see \fI\%CreateCertificateAuthorityAuditReport\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You cannot revoke a root CA self\-signed certificate.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  revoke\-certificate
+\-\-certificate\-authority\-arn <value>
+\-\-certificate\-serial <value>
+\-\-revocation\-reason <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-certificate\-authority\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon Resource Name (ARN) of the private CA that issued the certificate to be revoked. This must be of the form:
+.INDENT 0.0
+.INDENT 3.5
+
+.nf
+\(ga\(ga
+.fi
+arn:aws:acm\-pca:\fIregion\fP :\fIaccount\fP :certificate\-authority/\fI12345678\-1234\-1234\-1234\-123456789012\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 78)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-serial\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Serial number of the certificate to be revoked. This must be in hexadecimal format. You can retrieve the serial number by calling \fI\%GetCertificate\fP with the Amazon Resource Name (ARN) of the certificate you want and the ARN of your private CA. The \fBGetCertificate\fP action retrieves the certificate in the PEM format. You can use the following OpenSSL command to list the certificate in text format and copy the hexadecimal serial number.
+.INDENT 0.0
+.INDENT 3.5
+\fBopenssl x509 \-in *file_path* \-text \-noout\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can also copy the serial number from the console or use the \fI\%DescribeCertificate\fP action in the \fIAWS Certificate Manager API Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-revocation\-reason\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies why you revoked the certificate.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBUNSPECIFIED\fP
+.IP \(bu 2
+\fBKEY_COMPROMISE\fP
+.IP \(bu 2
+\fBCERTIFICATE_AUTHORITY_COMPROMISE\fP
+.IP \(bu 2
+\fBAFFILIATION_CHANGED\fP
+.IP \(bu 2
+\fBSUPERSEDED\fP
+.IP \(bu 2
+\fBCESSATION_OF_OPERATION\fP
+.IP \(bu 2
+\fBPRIVILEGE_WITHDRAWN\fP
+.IP \(bu 2
+\fBA_A_COMPROMISE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo revoke a private certificate\fP
+.sp
+The following \fBrevoke\-certificate\fP command revokes a private certificate from the CA identified by the ARN.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm\-pca revoke\-certificate \-\-certificate\-authority\-arn arn:aws:acm\-pca:us\-west\-2:1234567890:certificate\-authority/12345678\-1234\-1234\-1234\-123456789012 \-\-certificate\-serial 67:07:44:76:83:a9:b7:f4:05:56:27:ff:d5:5c:eb:cc \-\-revocation\-reason "KEY_COMPROMISE"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

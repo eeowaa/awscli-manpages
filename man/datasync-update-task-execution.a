@@ -1,0 +1,357 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DATASYNC-UPDATE-TASK-EXECUTION" "a" "" ""
+.SH NAME
+datasync-update-task-execution \- Updates execution of a task
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates execution of a task.
+.sp
+You can modify bandwidth throttling for a task execution that is running or queued. For more information, see \fI\%Adjusting Bandwidth Throttling for a Task Execution\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The only \fBOption\fP that can be modified by \fBUpdateTaskExecution\fP is \(ga\(ga \fI\%BytesPerSecond\fP \(ga\(ga .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-task\-execution
+\-\-task\-execution\-arn <value>
+\-\-options <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-task\-execution\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the specific task execution that is being updated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the options that are available to control the behavior of a \fI\%StartTaskExecution\fP operation. Behavior includes preserving metadata such as user ID (UID), group ID (GID), and file permissions, and also overwriting files in the destination, data integrity verification, and so on.
+.sp
+A task has a set of default options associated with it. If you don\(aqt specify an option in \fI\%StartTaskExecution\fP , the default value is used. You can override the defaults options on each task execution by specifying an overriding \fBOptions\fP value to \fI\%StartTaskExecution\fP .
+.sp
+VerifyMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines whether a data integrity verification should be performed at the end of a task execution after all data and metadata have been transferred. For more information, see \fI\%Configure task settings\fP .
+.sp
+Default value: POINT_IN_TIME_CONSISTENT.
+.sp
+ONLY_FILES_TRANSFERRED (recommended): Perform verification only on files that were transferred.
+.sp
+POINT_IN_TIME_CONSISTENT: Scan the entire source and entire destination at the end of the transfer to verify that source and destination are fully synchronized. This option isn\(aqt supported when transferring to S3 Glacier or S3 Glacier Deep Archive storage classes.
+.sp
+NONE: No additional verification is done at the end of the transfer, but all data transmissions are integrity\-checked with checksum verification during the transfer.
+.UNINDENT
+.UNINDENT
+.sp
+OverwriteMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines whether files at the destination should be overwritten or preserved when copying files. If set to \fBNEVER\fP a destination file will not be replaced by a source file, even if the destination file differs from the source file. If you modify files in the destination and you sync the files, you can use this value to protect against overwriting those changes.
+.sp
+Some storage classes have specific behaviors that can affect your S3 storage cost. For detailed information, see \fI\%Considerations when working with Amazon S3 storage classes in DataSync\fP in the \fIAWS DataSync User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Atime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A file metadata value that shows the last time a file was accessed (that is, when the file was read or written to). If you set \fBAtime\fP to BEST_EFFORT, DataSync attempts to preserve the original \fBAtime\fP attribute on all source files (that is, the version before the PREPARING phase). However, \fBAtime\fP \(aqs behavior is not fully standard across platforms, so AWS DataSync can only do this on a best\-effort basis.
+.sp
+Default value: BEST_EFFORT.
+.sp
+BEST_EFFORT: Attempt to preserve the per\-file \fBAtime\fP value (recommended).
+.sp
+NONE: Ignore \fBAtime\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If \fBAtime\fP is set to BEST_EFFORT, \fBMtime\fP must be set to PRESERVE.
+.sp
+If \fBAtime\fP is set to NONE, \fBMtime\fP must also be NONE.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Mtime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates the last time that a file was modified (that is, a file was written to) before the PREPARING phase. This option is required for cases when you need to run the same task more than one time.
+.sp
+Default value: PRESERVE.
+.sp
+PRESERVE: Preserve original \fBMtime\fP (recommended)
+.sp
+NONE: Ignore \fBMtime\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If \fBMtime\fP is set to PRESERVE, \fBAtime\fP must be set to BEST_EFFORT.
+.sp
+If \fBMtime\fP is set to NONE, \fBAtime\fP must also be set to NONE.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Uid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The POSIX user ID (UID) of the file\(aqs owner. This option should only be set for NFS, EFS, and S3 locations. To learn more about what metadata is copied by DataSync, see \fI\%Metadata Copied by DataSync\fP .
+.sp
+Default value: INT_VALUE. This preserves the integer value of the ID.
+.sp
+INT_VALUE: Preserve the integer value of UID and group ID (GID) (recommended).
+.sp
+NONE: Ignore UID and GID.
+.UNINDENT
+.UNINDENT
+.sp
+Gid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The POSIX group ID (GID) of the file\(aqs owners. This option should only be set for NFS, EFS, and S3 locations. For more information about what metadata is copied by DataSync, see \fI\%Metadata Copied by DataSync\fP .
+.sp
+Default value: INT_VALUE. This preserves the integer value of the ID.
+.sp
+INT_VALUE: Preserve the integer value of user ID (UID) and GID (recommended).
+.sp
+NONE: Ignore UID and GID.
+.UNINDENT
+.UNINDENT
+.sp
+PreserveDeletedFiles \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies whether files in the destination that don\(aqt exist in the source file system should be preserved. This option can affect your storage cost. If your task deletes objects, you might incur minimum storage duration charges for certain storage classes. For detailed information, see \fI\%Considerations when working with Amazon S3 storage classes in DataSync\fP in the \fIAWS DataSync User Guide\fP .
+.sp
+Default value: PRESERVE.
+.sp
+PRESERVE: Ignore such destination files (recommended).
+.sp
+REMOVE: Delete destination files that aren’t present in the source.
+.UNINDENT
+.UNINDENT
+.sp
+PreserveDevices \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines whether AWS DataSync should preserve the metadata of block and character devices in the source file system, and re\-create the files with that device name and metadata on the destination. DataSync does not copy the contents of such devices, only the name and metadata.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+AWS DataSync can\(aqt sync the actual contents of such devices, because they are nonterminal and don\(aqt return an end\-of\-file (EOF) marker.
+.UNINDENT
+.UNINDENT
+.sp
+Default value: NONE.
+.sp
+NONE: Ignore special devices (recommended).
+.sp
+PRESERVE: Preserve character and block device metadata. This option isn\(aqt currently supported for Amazon EFS.
+.UNINDENT
+.UNINDENT
+.sp
+PosixPermissions \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines which users or groups can access a file for a specific purpose such as reading, writing, or execution of the file. This option should only be set for NFS, EFS, and S3 locations. For more information about what metadata is copied by DataSync, see \fI\%Metadata Copied by DataSync\fP .
+.sp
+Default value: PRESERVE.
+.sp
+PRESERVE: Preserve POSIX\-style permissions (recommended).
+.sp
+NONE: Ignore permissions.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+AWS DataSync can preserve extant permissions of a source location.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BytesPerSecond \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A value that limits the bandwidth used by AWS DataSync. For example, if you want AWS DataSync to use a maximum of 1 MB, set this value to \fB1048576\fP (\fB=1024*1024\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+TaskQueueing \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines whether tasks should be queued before executing the tasks. If set to \fBENABLED\fP , the tasks will be queued. The default is \fBENABLED\fP .
+.sp
+If you use the same agent to run multiple tasks, you can enable the tasks to run in series. For more information, see \fI\%Queueing task executions\fP .
+.UNINDENT
+.UNINDENT
+.sp
+LogLevel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines the type of logs that DataSync publishes to a log stream in the Amazon CloudWatch log group that you provide. For more information about providing a log group for DataSync, see \fI\%CloudWatchLogGroupArn\fP . If set to \fBOFF\fP , no logs are published. \fBBASIC\fP publishes logs on errors for individual files transferred, and \fBTRANSFER\fP publishes logs for every file or object that is transferred and integrity checked.
+.UNINDENT
+.UNINDENT
+.sp
+TransferMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines whether DataSync transfers only the data and metadata that differ between the source and the destination location, or whether DataSync transfers all the content from the source, without comparing to the destination location.
+.sp
+CHANGED: DataSync copies only data or metadata that is new or different content from the source location to the destination location.
+.sp
+ALL: DataSync copies all source location content to the destination, without comparing to existing content on the destination.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityDescriptorCopyFlags \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that determines which components of the SMB security descriptor are copied from source to destination objects.
+.sp
+This value is only used for transfers between SMB and Amazon FSx for Windows File Server locations, or between two Amazon FSx for Windows File Server locations. For more information about how DataSync handles metadata, see \fI\%How DataSync Handles Metadata and Special Files\fP .
+.sp
+Default value: OWNER_DACL.
+.INDENT 0.0
+.INDENT 3.5
+\fBOWNER_DACL\fP : For each copied object, DataSync copies the following metadata:
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Object owner.
+.IP \(bu 2
+NTFS discretionary access control lists (DACLs), which determine whether to grant access to an object.
+.UNINDENT
+.sp
+When choosing this option, DataSync does NOT copy the NTFS system access control lists (SACLs), which are used by administrators to log attempts to access a secured object.
+.INDENT 0.0
+.INDENT 3.5
+\fBOWNER_DACL_SACL\fP : For each copied object, DataSync copies the following metadata:
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Object owner.
+.IP \(bu 2
+NTFS discretionary access control lists (DACLs), which determine whether to grant access to an object.
+.IP \(bu 2
+NTFS system access control lists (SACLs), which are used by administrators to log attempts to access a secured object.
+.UNINDENT
+.sp
+Copying SACLs requires granting additional permissions to the Windows user that DataSync uses to access your SMB location. For information about choosing a user that ensures sufficient permissions to files, folders, and metadata, see \fI\%user\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBNONE\fP : None of the SMB security descriptor components are copied. Destination objects are owned by the user that was provided for accessing the destination location. DACLs and SACLs are set based on the destination server’s configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+VerifyMode=string,OverwriteMode=string,Atime=string,Mtime=string,Uid=string,Gid=string,PreserveDeletedFiles=string,PreserveDevices=string,PosixPermissions=string,BytesPerSecond=long,TaskQueueing=string,LogLevel=string,TransferMode=string,SecurityDescriptorCopyFlags=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "VerifyMode": "POINT_IN_TIME_CONSISTENT"|"ONLY_FILES_TRANSFERRED"|"NONE",
+  "OverwriteMode": "ALWAYS"|"NEVER",
+  "Atime": "NONE"|"BEST_EFFORT",
+  "Mtime": "NONE"|"PRESERVE",
+  "Uid": "NONE"|"INT_VALUE"|"NAME"|"BOTH",
+  "Gid": "NONE"|"INT_VALUE"|"NAME"|"BOTH",
+  "PreserveDeletedFiles": "PRESERVE"|"REMOVE",
+  "PreserveDevices": "NONE"|"PRESERVE",
+  "PosixPermissions": "NONE"|"PRESERVE",
+  "BytesPerSecond": long,
+  "TaskQueueing": "ENABLED"|"DISABLED",
+  "LogLevel": "OFF"|"BASIC"|"TRANSFER",
+  "TransferMode": "CHANGED"|"ALL",
+  "SecurityDescriptorCopyFlags": "NONE"|"OWNER_DACL"|"OWNER_DACL_SACL"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

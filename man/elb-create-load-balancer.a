@@ -1,0 +1,470 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELB-CREATE-LOAD-BALANCER" "a" "" ""
+.SH NAME
+elb-create-load-balancer \- Creates a Classic Load Balancer
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a Classic Load Balancer.
+.sp
+You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using  CreateLoadBalancerListeners ,  ApplySecurityGroupsToLoadBalancer ,  AttachLoadBalancerToSubnets , and  AddTags .
+.sp
+To describe your current load balancers, see  DescribeLoadBalancers . When you are finished with a load balancer, you can delete it using  DeleteLoadBalancer .
+.sp
+You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see \fI\%Limits for Your Classic Load Balancer\fP in the \fIClassic Load Balancers Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-load\-balancer
+\-\-load\-balancer\-name <value>
+\-\-listeners <value>
+[\-\-availability\-zones <value>]
+[\-\-subnets <value>]
+[\-\-security\-groups <value>]
+[\-\-scheme <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-load\-balancer\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the load balancer.
+.sp
+This name must be unique within your set of load balancers for the region, must have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and cannot begin or end with a hyphen.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-listeners\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The listeners.
+.sp
+For more information, see \fI\%Listeners for Your Classic Load Balancer\fP in the \fIClassic Load Balancers Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a listener.
+.sp
+For information about the protocols and the ports supported by Elastic Load Balancing, see \fI\%Listeners for Your Classic Load Balancer\fP in the \fIClassic Load Balancers Guide\fP .
+.sp
+Protocol \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The load balancer transport protocol to use for routing: HTTP, HTTPS, TCP, or SSL.
+.UNINDENT
+.UNINDENT
+.sp
+LoadBalancerPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port on which the load balancer is listening. On EC2\-VPC, you can specify any port from the range 1\-65535. On EC2\-Classic, you can specify any port from the following list: 25, 80, 443, 465, 587, 1024\-65535.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceProtocol \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The protocol to use for routing traffic to instances: HTTP, HTTPS, TCP, or SSL.
+.sp
+If the front\-end protocol is TCP or SSL, the back\-end protocol must be TCP or SSL. If the front\-end protocol is HTTP or HTTPS, the back\-end protocol must be HTTP or HTTPS.
+.sp
+If there is another listener with the same \fBInstancePort\fP whose \fBInstanceProtocol\fP is secure, (HTTPS or SSL), the listener\(aqs \fBInstanceProtocol\fP must also be secure.
+.sp
+If there is another listener with the same \fBInstancePort\fP whose \fBInstanceProtocol\fP is HTTP or TCP, the listener\(aqs \fBInstanceProtocol\fP must be HTTP or TCP.
+.UNINDENT
+.UNINDENT
+.sp
+InstancePort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port on which the instance is listening.
+.UNINDENT
+.UNINDENT
+.sp
+SSLCertificateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the server certificate.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Protocol=string,LoadBalancerPort=integer,InstanceProtocol=string,InstancePort=integer,SSLCertificateId=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Protocol": "string",
+    "LoadBalancerPort": integer,
+    "InstanceProtocol": "string",
+    "InstancePort": integer,
+    "SSLCertificateId": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-availability\-zones\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more Availability Zones from the same region as the load balancer.
+.sp
+You must specify at least one Availability Zone.
+.sp
+You can add more Availability Zones after you create the load balancer using  EnableAvailabilityZonesForLoadBalancer .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-subnets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets in your VPC to attach to the load balancer. Specify one subnet per Availability Zone specified in \fBAvailabilityZones\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-groups\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups to assign to the load balancer.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scheme\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of a load balancer. Valid only for load balancers in a VPC.
+.sp
+By default, Elastic Load Balancing creates an Internet\-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet\-facing and Internal load balancers, see \fI\%Load Balancer Scheme\fP in the \fIElastic Load Balancing User Guide\fP .
+.sp
+Specify \fBinternal\fP to create a load balancer with a DNS name that resolves to private IP addresses.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags to assign to the load balancer.
+.sp
+For more information about tagging your load balancer, see \fI\%Tag Your Classic Load Balancer\fP in the \fIClassic Load Balancers Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an HTTP load balancer\fP
+.sp
+This example creates a load balancer with an HTTP listener in a VPC.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elb create\-load\-balancer \-\-load\-balancer\-name my\-load\-balancer \-\-listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" \-\-subnets subnet\-15aaab61 \-\-security\-groups sg\-a61988c3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DNSName": "my\-load\-balancer\-1234567890.us\-west\-2.elb.amazonaws.com"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example creates a load balancer with an HTTP listener in EC2\-Classic.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elb create\-load\-balancer \-\-load\-balancer\-name my\-load\-balancer \-\-listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" \-\-availability\-zones us\-west\-2a us\-west\-2b
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DNSName": "my\-load\-balancer\-123456789.us\-west\-2.elb.amazonaws.com"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBTo create an HTTPS load balancer\fP
+.sp
+This example creates a load balancer with an HTTPS listener in a VPC.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elb create\-load\-balancer \-\-load\-balancer\-name my\-load\-balancer \-\-listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" "Protocol=HTTPS,LoadBalancerPort=443,InstanceProtocol=HTTP,InstancePort=80,SSLCertificateId=arn:aws:iam::123456789012:server\-certificate/my\-server\-cert" \-\-subnets subnet\-15aaab61 \-\-security\-groups sg\-a61988c3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DNSName": "my\-load\-balancer\-1234567890.us\-west\-2.elb.amazonaws.com"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example creates a load balancer with an HTTPS listener in EC2\-Classic.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elb create\-load\-balancer \-\-load\-balancer\-name my\-load\-balancer \-\-listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" "Protocol=HTTPS,LoadBalancerPort=443,InstanceProtocol=HTTP,InstancePort=80,SSLCertificateId=arn:aws:iam::123456789012:server\-certificate/my\-server\-cert" \-\-availability\-zones us\-west\-2a us\-west\-2b
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DNSName": "my\-load\-balancer\-123456789.us\-west\-2.elb.amazonaws.com"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBTo create an internal load balancer\fP
+.sp
+This example creates an internal load balancer with an HTTP listener in a VPC.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elb create\-load\-balancer \-\-load\-balancer\-name my\-load\-balancer \-\-listeners "Protocol=HTTP,LoadBalancerPort=80,InstanceProtocol=HTTP,InstancePort=80" \-\-scheme internal \-\-subnets subnet\-a85db0df \-\-security\-groups sg\-a61988c3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DNSName": "internal\-my\-load\-balancer\-123456789.us\-west\-2.elb.amazonaws.com"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+DNSName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS name of the load balancer.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

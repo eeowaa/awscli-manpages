@@ -1,0 +1,298 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ATHENA-CREATE-WORK-GROUP" "a" "" ""
+.SH NAME
+athena-create-work-group \- Creates a workgroup with the specified name
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a workgroup with the specified name.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-work\-group
+\-\-name <value>
+[\-\-configuration <value>]
+[\-\-description <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The workgroup name.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for the workgroup, which includes the location in Amazon S3 where query results are stored, the encryption configuration, if any, used for encrypting query results, whether the Amazon CloudWatch Metrics are enabled for the workgroup, the limit for the amount of bytes scanned (cutoff) per query, if it is specified, and whether workgroup\(aqs settings (specified with EnforceWorkGroupConfiguration) in the WorkGroupConfiguration override client\-side settings. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration .
+.sp
+ResultConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for the workgroup, which includes the location in Amazon S3 where query results are stored and the encryption option, if any, used for query results. To run the query, you must specify the query results location using one of the ways: either in the workgroup using this setting, or for individual queries (client\-side), using  ResultConfiguration$OutputLocation . If none of them is set, Athena issues an error that no output location is provided. For more information, see \fI\%Query Results\fP .
+.sp
+OutputLocation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in Amazon S3 where your query results are stored, such as \fBs3://path/to/query/bucket/\fP . To run the query, you must specify the query results location using one of the ways: either for individual queries using either this setting (client\-side), or in the workgroup, using  WorkGroupConfiguration . If none of them is set, Athena issues an error that no output location is provided. For more information, see \fI\%Query Results\fP . If workgroup settings override client\-side settings, then the query uses the settings specified for the workgroup. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration .
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If query results are encrypted in Amazon S3, indicates the encryption option used (for example, \fBSSE\-KMS\fP or \fBCSE\-KMS\fP ) and key information. This is a client\-side setting. If workgroup settings override client\-side settings, then the query uses the encryption configuration that is specified for the workgroup, and also uses the location for storing query results specified in the workgroup. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration and \fI\%Workgroup Settings Override Client\-Side Settings\fP .
+.sp
+EncryptionOption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether Amazon S3 server\-side encryption with Amazon S3\-managed keys (\fBSSE\-S3\fP ), server\-side encryption with KMS\-managed keys (\fBSSE\-KMS\fP ), or client\-side encryption with KMS\-managed keys (CSE\-KMS) is used.
+.sp
+If a query runs in a workgroup and the workgroup overrides client\-side settings, then the workgroup\(aqs setting for encryption is used. It specifies whether query results must be encrypted, for all queries that run in this workgroup.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBSSE\-KMS\fP and \fBCSE\-KMS\fP , this is the KMS key ARN or ID.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EnforceWorkGroupConfiguration \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If set to "true", the settings for the workgroup override client\-side settings. If set to "false", client\-side settings are used. For more information, see \fI\%Workgroup Settings Override Client\-Side Settings\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PublishCloudWatchMetricsEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates that the Amazon CloudWatch metrics are enabled for the workgroup.
+.UNINDENT
+.UNINDENT
+.sp
+BytesScannedCutoffPerQuery \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The upper data usage limit (cutoff) for the amount of bytes a single query in a workgroup is allowed to scan.
+.UNINDENT
+.UNINDENT
+.sp
+RequesterPaysEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If set to \fBtrue\fP , allows members assigned to a workgroup to reference Amazon S3 Requester Pays buckets in queries. If set to \fBfalse\fP , workgroup members cannot query data from Requester Pays buckets, and queries that retrieve data from Requester Pays buckets cause an error. The default is \fBfalse\fP . For more information about Requester Pays buckets, see \fI\%Requester Pays Buckets\fP in the \fIAmazon Simple Storage Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The engine version that all queries running on the workgroup use. Queries on the \fBAmazonAthenaPreviewFunctionality\fP workgroup run on the preview engine regardless of this setting.
+.sp
+SelectedEngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The engine version requested by the user. Possible values are determined by the output of \fBListEngineVersions\fP , including Auto. The default is Auto.
+.UNINDENT
+.UNINDENT
+.sp
+EffectiveEngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Read only. The engine version on which the query runs. If the user requests a valid engine version other than Auto, the effective engine version is the same as the engine version that the user requested. If the user requests Auto, the effective engine version is chosen by Athena. When a request to update the engine version is made by a \fBCreateWorkGroup\fP or \fBUpdateWorkGroup\fP operation, the \fBEffectiveEngineVersion\fP field is ignored.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResultConfiguration={OutputLocation=string,EncryptionConfiguration={EncryptionOption=string,KmsKey=string}},EnforceWorkGroupConfiguration=boolean,PublishCloudWatchMetricsEnabled=boolean,BytesScannedCutoffPerQuery=long,RequesterPaysEnabled=boolean,EngineVersion={SelectedEngineVersion=string,EffectiveEngineVersion=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ResultConfiguration": {
+    "OutputLocation": "string",
+    "EncryptionConfiguration": {
+      "EncryptionOption": "SSE_S3"|"SSE_KMS"|"CSE_KMS",
+      "KmsKey": "string"
+    }
+  },
+  "EnforceWorkGroupConfiguration": true|false,
+  "PublishCloudWatchMetricsEnabled": true|false,
+  "BytesScannedCutoffPerQuery": long,
+  "RequesterPaysEnabled": true|false,
+  "EngineVersion": {
+    "SelectedEngineVersion": "string",
+    "EffectiveEngineVersion": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The workgroup description.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of comma separated tags to add to the workgroup that is created.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A label that you assign to a resource. In Athena, a resource can be a workgroup or data catalog. Each tag consists of a key and an optional value, both of which you define. For example, you can use tags to categorize Athena workgroups or data catalogs by purpose, owner, or environment. Use a consistent set of tag keys to make it easier to search and filter workgroups or data catalogs in your account. For best practices, see \fI\%Tagging Best Practices\fP . Tag keys can be from 1 to 128 UTF\-8 Unicode characters, and tag values can be from 0 to 256 UTF\-8 Unicode characters. Tags can use letters and numbers representable in UTF\-8, and the following characters: + \- = . _ : / @. Tag keys and values are case\-sensitive. Tag keys must be unique per resource. If you specify more than one tag, separate them by commas.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A tag key. The tag key length is from 1 to 128 Unicode characters in UTF\-8. You can use letters and numbers representable in UTF\-8, and the following characters: + \- = . _ : / @. Tag keys are case\-sensitive and must be unique per resource.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A tag value. The tag value length is from 0 to 256 Unicode characters in UTF\-8. You can use letters and numbers representable in UTF\-8, and the following characters: + \- = . _ : / @. Tag values are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a workgroup\fP
+.sp
+The following \fBcreate\-work\-group\fP example creates a workgroup called \fBData_Analyst_Group\fP that has the query results output location \fBs3://awsdoc\-example\-bucket\fP\&. The command creates a workgroup that overrides client configuration settings, which includes the query results output location. The command also  enables CloudWatch metrics and adds three key\-value tag pairs to the workgroup to distinguish it from other workgroups. Note that the \fB\-\-configuration\fP argument has no spaces before the commas that separate its options.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws athena create\-work\-group \e
+    \-\-name Data_Analyst_Group \e
+    \-\-configuration ResultConfiguration={OutputLocation="s3://awsdoc\-example\-bucket"},EnforceWorkGroupConfiguration="true",PublishCloudWatchMetricsEnabled="true" \e
+    \-\-description "Workgroup for data analysts" \e
+    \-\-tags Key=Division,Value=West Key=Location,Value=Seattle Key=Team,Value="Big Data"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output. To see the results, use \fBaws athena get\-work\-group \-\-work\-group Data_Analyst_Group\fP\&.
+.sp
+For more information, see \fI\%Managing Workgroups\fP in the \fIAmazon Athena User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

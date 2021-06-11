@@ -1,0 +1,282 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LOGS-PUT-LOG-EVENTS" "a" "" ""
+.SH NAME
+logs-put-log-events \- Uploads a batch of log events to the specified log stream
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Uploads a batch of log events to the specified log stream.
+.sp
+You must include the sequence token obtained from the response of the previous call. An upload in a newly created log stream does not require a sequence token. You can also get the sequence token in the \fBexpectedSequenceToken\fP field from \fBInvalidSequenceTokenException\fP . If you call \fBPutLogEvents\fP twice within a narrow time period using the same value for \fBsequenceToken\fP , both calls might be successful or one might be rejected.
+.sp
+The batch of events must satisfy the following constraints:
+.INDENT 0.0
+.IP \(bu 2
+The maximum batch size is 1,048,576 bytes. This size is calculated as the sum of all event messages in UTF\-8, plus 26 bytes for each log event.
+.IP \(bu 2
+None of the log events in the batch can be more than 2 hours in the future.
+.IP \(bu 2
+None of the log events in the batch can be older than 14 days or older than the retention period of the log group.
+.IP \(bu 2
+The log events in the batch must be in chronological order by their timestamp. The timestamp is the time the event occurred, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC. (In AWS Tools for PowerShell and the AWS SDK for .NET, the timestamp is specified in .NET format: yyyy\-mm\-ddThh:mm:ss. For example, 2017\-09\-15T13:45:30.)
+.IP \(bu 2
+A batch of log events in a single request cannot span more than 24 hours. Otherwise, the operation fails.
+.IP \(bu 2
+The maximum number of log events in a batch is 10,000.
+.IP \(bu 2
+There is a quota of 5 requests per second per log stream. Additional requests are throttled. This quota can\(aqt be changed.
+.UNINDENT
+.sp
+If a call to \fBPutLogEvents\fP returns "UnrecognizedClientException" the most likely cause is an invalid AWS access key ID or secret key.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-log\-events
+\-\-log\-group\-name <value>
+\-\-log\-stream\-name <value>
+\-\-log\-events <value>
+[\-\-sequence\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-log\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the log group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the log stream.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-events\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The log events.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a log event, which is a record of activity that was recorded by the application or resource being monitored.
+.sp
+timestamp \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The time the event occurred, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC.
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The raw event message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+timestamp=long,message=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "timestamp": long,
+    "message": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sequence\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The sequence token obtained from the response of the previous \fBPutLogEvents\fP call. An upload in a newly created log stream does not require a sequence token. You can also get the sequence token using \fI\%DescribeLogStreams\fP . If you call \fBPutLogEvents\fP twice within a narrow time period using the same value for \fBsequenceToken\fP , both calls might be successful or one might be rejected.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command puts log events to a log stream named \fB20150601\fP in the log group \fBmy\-logs\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws logs put\-log\-events \-\-log\-group\-name my\-logs \-\-log\-stream\-name 20150601 \-\-log\-events file://events
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "nextSequenceToken": "49542672486831074009579604567656788214806863282469607346"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The above example reads a JSON array of events from a file named \fBevents\fP in the current directory:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "timestamp": 1433190184356,
+    "message": "Example Event 1"
+  },
+  {
+    "timestamp": 1433190184358,
+    "message": "Example Event 2"
+  },
+  {
+    "timestamp": 1433190184360,
+    "message": "Example Event 3"
+  }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Each subsequent call requires the next sequence token provided by the previous call to be specified with the sequence token option:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws logs put\-log\-events \-\-log\-group\-name my\-logs \-\-log\-stream\-name 20150601 \-\-log\-events file://events2 \-\-sequence\-token "49542672486831074009579604567656788214806863282469607346"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "nextSequenceToken": "49542672486831074009579604567900991230369019956308219826"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+nextSequenceToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next sequence token.
+.UNINDENT
+.UNINDENT
+.sp
+rejectedLogEventsInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The rejected events.
+.sp
+tooNewLogEventStartIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The log events that are too new.
+.UNINDENT
+.UNINDENT
+.sp
+tooOldLogEventEndIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The log events that are too old.
+.UNINDENT
+.UNINDENT
+.sp
+expiredLogEventEndIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The expired log events.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

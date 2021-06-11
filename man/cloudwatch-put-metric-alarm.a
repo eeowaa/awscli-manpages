@@ -1,0 +1,802 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDWATCH-PUT-METRIC-ALARM" "a" "" ""
+.SH NAME
+cloudwatch-put-metric-alarm \- Creates or updates an alarm and associates it with the specified metric, metric math expression, or anomaly detection model
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates or updates an alarm and associates it with the specified metric, metric math expression, or anomaly detection model.
+.sp
+Alarms based on anomaly detection models cannot have Auto Scaling actions.
+.sp
+When this operation creates an alarm, the alarm state is immediately set to \fBINSUFFICIENT_DATA\fP . The alarm is then evaluated and its state is set appropriately. Any actions associated with the new state are then executed.
+.sp
+When you update an existing alarm, its state is left unchanged, but the update completely overwrites the previous configuration of the alarm.
+.sp
+If you are an IAM user, you must have Amazon EC2 permissions for some alarm operations:
+.INDENT 0.0
+.IP \(bu 2
+The \fBiam:CreateServiceLinkedRole\fP for all alarms with EC2 actions
+.IP \(bu 2
+The \fBiam:CreateServiceLinkedRole\fP to create an alarm with Systems Manager OpsItem actions.
+.UNINDENT
+.sp
+The first time you create an alarm in the AWS Management Console, the CLI, or by using the PutMetricAlarm API, CloudWatch creates the necessary service\-linked role for you. The service\-linked roles are called \fBAWSServiceRoleForCloudWatchEvents\fP and \fBAWSServiceRoleForCloudWatchAlarms_ActionSSM\fP . For more information, see \fI\%AWS service\-linked role\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-metric\-alarm
+\-\-alarm\-name <value>
+[\-\-alarm\-description <value>]
+[\-\-actions\-enabled | \-\-no\-actions\-enabled]
+[\-\-ok\-actions <value>]
+[\-\-alarm\-actions <value>]
+[\-\-insufficient\-data\-actions <value>]
+[\-\-metric\-name <value>]
+[\-\-namespace <value>]
+[\-\-statistic <value>]
+[\-\-extended\-statistic <value>]
+[\-\-dimensions <value>]
+[\-\-period <value>]
+[\-\-unit <value>]
+\-\-evaluation\-periods <value>
+[\-\-datapoints\-to\-alarm <value>]
+[\-\-threshold <value>]
+\-\-comparison\-operator <value>
+[\-\-treat\-missing\-data <value>]
+[\-\-evaluate\-low\-sample\-count\-percentile <value>]
+[\-\-metrics <value>]
+[\-\-tags <value>]
+[\-\-threshold\-metric\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-alarm\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the alarm. This name must be unique within the Region.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-alarm\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The description for the alarm.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-actions\-enabled\fP | \fB\-\-no\-actions\-enabled\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether actions should be executed during any changes to the alarm state. The default is \fBTRUE\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ok\-actions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The actions to execute when this alarm transitions to an \fBOK\fP state from any other state. Each action is specified as an Amazon Resource Name (ARN).
+.sp
+Valid Values: \fBarn:aws:automate:*region* :ec2:stop\fP | \fBarn:aws:automate:*region* :ec2:terminate\fP | \fBarn:aws:automate:*region* :ec2:recover\fP | \fBarn:aws:automate:*region* :ec2:reboot\fP | 
+.nf
+\(ga\(ga
+.fi
+arn:aws:sns:\fIregion\fP :\fIaccount\-id\fP :\fIsns\-topic\-name\fP \(ga\(ga | 
+.nf
+\(ga\(ga
+.fi
+arn:aws:autoscaling:\fIregion\fP :\fIaccount\-id\fP :scalingPolicy:\fIpolicy\-id\fP :autoScalingGroupName/\fIgroup\-friendly\-name\fP :policyName/\fIpolicy\-friendly\-name\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 122)"
+Inline literal start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 122)"
+Inline literal start\-string without end\-string.
+.sp
+Valid Values (for use with IAM roles): \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Stop/1.0\fP | \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Terminate/1.0\fP | \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Reboot/1.0\fP | \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Recover/1.0\fP
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-alarm\-actions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The actions to execute when this alarm transitions to the \fBALARM\fP state from any other state. Each action is specified as an Amazon Resource Name (ARN).
+.sp
+Valid Values: \fBarn:aws:automate:*region* :ec2:stop\fP | \fBarn:aws:automate:*region* :ec2:terminate\fP | \fBarn:aws:automate:*region* :ec2:recover\fP | \fBarn:aws:automate:*region* :ec2:reboot\fP | 
+.nf
+\(ga\(ga
+.fi
+arn:aws:sns:\fIregion\fP :\fIaccount\-id\fP :\fIsns\-topic\-name\fP \(ga\(ga | 
+.nf
+\(ga\(ga
+.fi
+arn:aws:autoscaling:\fIregion\fP :\fIaccount\-id\fP :scalingPolicy:\fIpolicy\-id\fP :autoScalingGroupName/\fIgroup\-friendly\-name\fP :policyName/\fIpolicy\-friendly\-name\fP \(ga\(ga | 
+.nf
+\(ga\(ga
+.fi
+arn:aws:ssm:\fIregion\fP :\fIaccount\-id\fP :opsitem:\fIseverity\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 151)"
+Inline literal start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 151)"
+Inline literal start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 151)"
+Inline literal start\-string without end\-string.
+.sp
+Valid Values (for use with IAM roles): \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Stop/1.0\fP | \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Terminate/1.0\fP | \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Reboot/1.0\fP
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-insufficient\-data\-actions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The actions to execute when this alarm transitions to the \fBINSUFFICIENT_DATA\fP state from any other state. Each action is specified as an Amazon Resource Name (ARN).
+.sp
+Valid Values: \fBarn:aws:automate:*region* :ec2:stop\fP | \fBarn:aws:automate:*region* :ec2:terminate\fP | \fBarn:aws:automate:*region* :ec2:recover\fP | \fBarn:aws:automate:*region* :ec2:reboot\fP | 
+.nf
+\(ga\(ga
+.fi
+arn:aws:sns:\fIregion\fP :\fIaccount\-id\fP :\fIsns\-topic\-name\fP \(ga\(ga | 
+.nf
+\(ga\(ga
+.fi
+arn:aws:autoscaling:\fIregion\fP :\fIaccount\-id\fP :scalingPolicy:\fIpolicy\-id\fP :autoScalingGroupName/\fIgroup\-friendly\-name\fP :policyName/\fIpolicy\-friendly\-name\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 180)"
+Inline literal start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 180)"
+Inline literal start\-string without end\-string.
+.sp
+Valid Values (for use with IAM roles): \fB>arn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Stop/1.0\fP | \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Terminate/1.0\fP | \fBarn:aws:swf:*region* :*account\-id* :action/actions/AWS_EC2.InstanceId.Reboot/1.0\fP
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metric\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the metric associated with the alarm. For each \fBPutMetricAlarm\fP operation, you must specify either \fBMetricName\fP or a \fBMetrics\fP array.
+.sp
+If you are creating an alarm based on a math expression, you cannot specify this parameter, or any of the \fBDimensions\fP , \fBPeriod\fP , \fBNamespace\fP , \fBStatistic\fP , or \fBExtendedStatistic\fP parameters. Instead, you specify all this information in the \fBMetrics\fP array.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-namespace\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace for the metric associated specified in \fBMetricName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-statistic\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic for the metric specified in \fBMetricName\fP , other than percentile. For percentile statistics, use \fBExtendedStatistic\fP . When you call \fBPutMetricAlarm\fP and specify a \fBMetricName\fP , you must specify either \fBStatistic\fP or \fBExtendedStatistic,\fP but not both.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSampleCount\fP
+.IP \(bu 2
+\fBAverage\fP
+.IP \(bu 2
+\fBSum\fP
+.IP \(bu 2
+\fBMinimum\fP
+.IP \(bu 2
+\fBMaximum\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-extended\-statistic\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The percentile statistic for the metric specified in \fBMetricName\fP . Specify a value between p0.0 and p100. When you call \fBPutMetricAlarm\fP and specify a \fBMetricName\fP , you must specify either \fBStatistic\fP or \fBExtendedStatistic,\fP but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dimensions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions for the metric specified in \fBMetricName\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A dimension is a name/value pair that is part of the identity of a metric. You can assign up to 10 dimensions to a metric. Because dimensions are part of the unique identifier for a metric, whenever you add a unique name/value pair to one of your metrics, you are creating a new variation of that metric.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension. Dimension names cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension. Dimension values cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-period\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The length, in seconds, used each time the metric specified in \fBMetricName\fP is evaluated. Valid values are 10, 30, and any multiple of 60.
+.INDENT 0.0
+.INDENT 3.5
+\fBPeriod\fP is required for alarms based on static thresholds. If you are creating an alarm based on a metric math expression, you specify the period for each metric within the objects in the \fBMetrics\fP array.
+.UNINDENT
+.UNINDENT
+.sp
+Be sure to specify 10 or 30 only for metrics that are stored by a \fBPutMetricData\fP call with a \fBStorageResolution\fP of 1. If you specify a period of 10 or 30 for a metric that does not have sub\-minute resolution, the alarm still attempts to gather data at the period rate that you specify. In this case, it does not receive data for the attempts that do not correspond to a one\-minute data resolution, and the alarm might often lapse into INSUFFICENT_DATA status. Specifying 10 or 30 also sets this alarm as a high\-resolution alarm, which has a higher charge than other alarms. For more information about pricing, see \fI\%Amazon CloudWatch Pricing\fP .
+.sp
+An alarm\(aqs total current evaluation period can be no longer than one day, so \fBPeriod\fP multiplied by \fBEvaluationPeriods\fP cannot be more than 86,400 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-unit\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of measure for the statistic. For example, the units for the Amazon EC2 NetworkIn metric are Bytes because NetworkIn tracks the number of bytes that an instance receives on all network interfaces. You can also specify a unit when you create a custom metric. Units help provide conceptual meaning to your data. Metric data points that specify a unit of measure, such as Percent, are aggregated separately.
+.sp
+If you don\(aqt specify \fBUnit\fP , CloudWatch retrieves all unit types that have been published for the metric and attempts to evaluate the alarm. Usually, metrics are published with only one unit, so the alarm works as intended.
+.sp
+However, if the metric is published with multiple types of units and you don\(aqt specify a unit, the alarm\(aqs behavior is not defined and it behaves predictably.
+.sp
+We recommend omitting \fBUnit\fP so that you don\(aqt inadvertently specify an incorrect unit that is not published for this metric. Doing so causes the alarm to be stuck in the \fBINSUFFICIENT DATA\fP state.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSeconds\fP
+.IP \(bu 2
+\fBMicroseconds\fP
+.IP \(bu 2
+\fBMilliseconds\fP
+.IP \(bu 2
+\fBBytes\fP
+.IP \(bu 2
+\fBKilobytes\fP
+.IP \(bu 2
+\fBMegabytes\fP
+.IP \(bu 2
+\fBGigabytes\fP
+.IP \(bu 2
+\fBTerabytes\fP
+.IP \(bu 2
+\fBBits\fP
+.IP \(bu 2
+\fBKilobits\fP
+.IP \(bu 2
+\fBMegabits\fP
+.IP \(bu 2
+\fBGigabits\fP
+.IP \(bu 2
+\fBTerabits\fP
+.IP \(bu 2
+\fBPercent\fP
+.IP \(bu 2
+\fBCount\fP
+.IP \(bu 2
+\fBBytes/Second\fP
+.IP \(bu 2
+\fBKilobytes/Second\fP
+.IP \(bu 2
+\fBMegabytes/Second\fP
+.IP \(bu 2
+\fBGigabytes/Second\fP
+.IP \(bu 2
+\fBTerabytes/Second\fP
+.IP \(bu 2
+\fBBits/Second\fP
+.IP \(bu 2
+\fBKilobits/Second\fP
+.IP \(bu 2
+\fBMegabits/Second\fP
+.IP \(bu 2
+\fBGigabits/Second\fP
+.IP \(bu 2
+\fBTerabits/Second\fP
+.IP \(bu 2
+\fBCount/Second\fP
+.IP \(bu 2
+\fBNone\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-evaluation\-periods\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of periods over which data is compared to the specified threshold. If you are setting an alarm that requires that a number of consecutive data points be breaching to trigger the alarm, this value specifies that number. If you are setting an "M out of N" alarm, this value is the N.
+.sp
+An alarm\(aqs total current evaluation period can be no longer than one day, so this number multiplied by \fBPeriod\fP cannot be more than 86,400 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-datapoints\-to\-alarm\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of data points that must be breaching to trigger the alarm. This is used only if you are setting an "M out of N" alarm. In that case, this value is the M. For more information, see \fI\%Evaluating an Alarm\fP in the \fIAmazon CloudWatch User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-threshold\fP (double)
+.INDENT 0.0
+.INDENT 3.5
+The value against which the specified statistic is compared.
+.sp
+This parameter is required for alarms based on static thresholds, but should not be used for alarms based on anomaly detection models.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-comparison\-operator\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The arithmetic operation to use when comparing the specified statistic and threshold. The specified statistic value is used as the first operand.
+.sp
+The values \fBLessThanLowerOrGreaterThanUpperThreshold\fP , \fBLessThanLowerThreshold\fP , and \fBGreaterThanUpperThreshold\fP are used only for alarms based on anomaly detection models.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBGreaterThanOrEqualToThreshold\fP
+.IP \(bu 2
+\fBGreaterThanThreshold\fP
+.IP \(bu 2
+\fBLessThanThreshold\fP
+.IP \(bu 2
+\fBLessThanOrEqualToThreshold\fP
+.IP \(bu 2
+\fBLessThanLowerOrGreaterThanUpperThreshold\fP
+.IP \(bu 2
+\fBLessThanLowerThreshold\fP
+.IP \(bu 2
+\fBGreaterThanUpperThreshold\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-treat\-missing\-data\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets how this alarm is to handle missing data points. If \fBTreatMissingData\fP is omitted, the default behavior of \fBmissing\fP is used. For more information, see \fI\%Configuring How CloudWatch Alarms Treats Missing Data\fP .
+.sp
+Valid Values: \fBbreaching | notBreaching | ignore | missing\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-evaluate\-low\-sample\-count\-percentile\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Used only for alarms based on percentiles. If you specify \fBignore\fP , the alarm state does not change during periods with too few data points to be statistically significant. If you specify \fBevaluate\fP or omit this parameter, the alarm is always evaluated and possibly changes state no matter how many data points are available. For more information, see \fI\%Percentile\-Based CloudWatch Alarms and Low Data Samples\fP .
+.sp
+Valid Values: \fBevaluate | ignore\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metrics\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBMetricDataQuery\fP structures that enable you to create an alarm based on the result of a metric math expression. For each \fBPutMetricAlarm\fP operation, you must specify either \fBMetricName\fP or a \fBMetrics\fP array.
+.sp
+Each item in the \fBMetrics\fP array either retrieves a metric or performs a math expression.
+.sp
+One item in the \fBMetrics\fP array is the expression that the alarm watches. You designate this expression by setting \fBReturnData\fP to true for this object in the array. For more information, see \fI\%MetricDataQuery\fP .
+.sp
+If you use the \fBMetrics\fP parameter, you cannot include the \fBMetricName\fP , \fBDimensions\fP , \fBPeriod\fP , \fBNamespace\fP , \fBStatistic\fP , or \fBExtendedStatistic\fP parameters of \fBPutMetricAlarm\fP in the same operation. Instead, you retrieve the metrics you are using in your math expression as part of the \fBMetrics\fP array.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This structure is used in both \fBGetMetricData\fP and \fBPutMetricAlarm\fP . The supported use of this structure is different for those two operations.
+.sp
+When used in \fBGetMetricData\fP , it indicates the metric data to return, and whether this call is just retrieving a batch set of data for one metric, or is performing a math expression on metric data. A single \fBGetMetricData\fP call can include up to 500 \fBMetricDataQuery\fP structures.
+.sp
+When used in \fBPutMetricAlarm\fP , it enables you to create an alarm based on a metric math expression. Each \fBMetricDataQuery\fP in the array specifies either a metric to retrieve, or a math expression to be performed on retrieved metrics. A single \fBPutMetricAlarm\fP call can include up to 20 \fBMetricDataQuery\fP structures in the array. The 20 structures can include as many as 10 structures that contain a \fBMetricStat\fP parameter to retrieve a metric, and as many as 10 structures that contain the \fBExpression\fP parameter to perform a math expression. Of those \fBExpression\fP structures, one must have \fBTrue\fP as the value for \fBReturnData\fP . The result of this expression is the value the alarm watches.
+.sp
+Any expression used in a \fBPutMetricAlarm\fP operation must return a single time series. For more information, see \fI\%Metric Math Syntax and Functions\fP in the \fIAmazon CloudWatch User Guide\fP .
+.sp
+Some of the parameters of this structure also have different uses whether you are using this structure in a \fBGetMetricData\fP operation or a \fBPutMetricAlarm\fP operation. These differences are explained in the following parameter list.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A short name used to tie this object to the results in the response. This name must be unique within a single call to \fBGetMetricData\fP . If you are performing math expressions on this set of data, this name represents that data and can serve as a variable in the mathematical expression. The valid characters are letters, numbers, and underscore. The first character must be a lowercase letter.
+.UNINDENT
+.UNINDENT
+.sp
+MetricStat \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric to be returned, along with statistics, period, and units. Use this parameter only if this object is retrieving a metric and not performing a math expression on returned data.
+.sp
+Within one MetricDataQuery object, you must specify either \fBExpression\fP or \fBMetricStat\fP but not both.
+.sp
+Metric \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric to return, including the metric name, namespace, and dimensions.
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric. This is a required field.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions for the metric.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A dimension is a name/value pair that is part of the identity of a metric. You can assign up to 10 dimensions to a metric. Because dimensions are part of the unique identifier for a metric, whenever you add a unique name/value pair to one of your metrics, you are creating a new variation of that metric.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension. Dimension names cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension. Dimension values cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The granularity, in seconds, of the returned data points. For metrics with regular resolution, a period can be as short as one minute (60 seconds) and must be a multiple of 60. For high\-resolution metrics that are collected at intervals of less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of 60. High\-resolution metrics are those metrics stored by a \fBPutMetricData\fP call that includes a \fBStorageResolution\fP of 1 second.
+.sp
+If the \fBStartTime\fP parameter specifies a time stamp that is greater than 3 hours ago, you must specify the period as follows or no data points in that time range is returned:
+.INDENT 0.0
+.IP \(bu 2
+Start time between 3 hours and 15 days ago \- Use a multiple of 60 seconds (1 minute).
+.IP \(bu 2
+Start time between 15 and 63 days ago \- Use a multiple of 300 seconds (5 minutes).
+.IP \(bu 2
+Start time greater than 63 days ago \- Use a multiple of 3600 seconds (1 hour).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Stat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic to return. It can include any CloudWatch statistic or extended statistic.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When you are using a \fBPut\fP operation, this defines what unit you want to use when storing the metric.
+.sp
+In a \fBGet\fP operation, if you omit \fBUnit\fP then all data that was collected with any unit is returned, along with the corresponding units that were specified when the data was reported to CloudWatch. If you specify a unit, the operation returns only data that was collected with that unit specified. If you specify a unit that does not match the data collected, the results of the operation are null. CloudWatch does not perform unit conversions.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The math expression to be performed on the returned data, if this object is performing a math expression. This expression can use the \fBId\fP of the other metrics to refer to those metrics, and can also use the \fBId\fP of other expressions to use the result of those expressions. For more information about metric math expressions, see \fI\%Metric Math Syntax and Functions\fP in the \fIAmazon CloudWatch User Guide\fP .
+.sp
+Within each MetricDataQuery object, you must specify either \fBExpression\fP or \fBMetricStat\fP but not both.
+.UNINDENT
+.UNINDENT
+.sp
+Label \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A human\-readable label for this metric or expression. This is especially useful if this is an expression, so that you know what the value represents. If the metric or expression is shown in a CloudWatch dashboard widget, the label is shown. If Label is omitted, CloudWatch generates a default.
+.sp
+You can put dynamic expressions into a label, so that it is more descriptive. For more information, see \fI\%Using Dynamic Labels\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ReturnData \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When used in \fBGetMetricData\fP , this option indicates whether to return the timestamps and raw data values of this metric. If you are performing this call just to do math expressions and do not also need the raw data returned, you can specify \fBFalse\fP . If you omit this, the default of \fBTrue\fP is used.
+.sp
+When used in \fBPutMetricAlarm\fP , specify \fBTrue\fP for the one expression result to use as the alarm. For all other metrics and expressions in the same \fBPutMetricAlarm\fP operation, specify \fBReturnData\fP as False.
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The granularity, in seconds, of the returned data points. For metrics with regular resolution, a period can be as short as one minute (60 seconds) and must be a multiple of 60. For high\-resolution metrics that are collected at intervals of less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of 60. High\-resolution metrics are those metrics stored by a \fBPutMetricData\fP operation that includes a \fBStorageResolution of 1 second\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "MetricStat": {
+      "Metric": {
+        "Namespace": "string",
+        "MetricName": "string",
+        "Dimensions": [
+          {
+            "Name": "string",
+            "Value": "string"
+          }
+          ...
+        ]
+      },
+      "Period": integer,
+      "Stat": "string",
+      "Unit": "Seconds"|"Microseconds"|"Milliseconds"|"Bytes"|"Kilobytes"|"Megabytes"|"Gigabytes"|"Terabytes"|"Bits"|"Kilobits"|"Megabits"|"Gigabits"|"Terabits"|"Percent"|"Count"|"Bytes/Second"|"Kilobytes/Second"|"Megabytes/Second"|"Gigabytes/Second"|"Terabytes/Second"|"Bits/Second"|"Kilobits/Second"|"Megabits/Second"|"Gigabits/Second"|"Terabits/Second"|"Count/Second"|"None"
+    },
+    "Expression": "string",
+    "Label": "string",
+    "ReturnData": true|false,
+    "Period": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of key\-value pairs to associate with the alarm. You can associate as many as 50 tags with an alarm.
+.sp
+Tags can help you organize and categorize your resources. You can also use them to scope user permissions by granting a user permission to access or change only resources with certain tag values.
+.sp
+If you are using this operation to update an existing alarm, any tags you specify in this parameter are ignored. To change the tags of an existing alarm, use \fI\%TagResource\fP or \fI\%UntagResource\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair associated with a CloudWatch resource.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that you can use to assign a value. The combination of tag keys and values can help you organize and categorize your resources.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value for the specified tag key.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-threshold\-metric\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If this is an alarm based on an anomaly detection model, make this value match the ID of the \fBANOMALY_DETECTION_BAND\fP function.
+.sp
+For an example of how to use this parameter, see the \fBAnomaly Detection Model Alarm\fP example on this page.
+.sp
+If your alarm uses this parameter, it cannot have Auto Scaling actions.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo send an Amazon Simple Notification Service email message when CPU utilization exceeds 70 percent\fP
+.sp
+The following example uses the \fBput\-metric\-alarm\fP command to send an Amazon Simple Notification Service email message when CPU utilization exceeds 70 percent:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudwatch put\-metric\-alarm \-\-alarm\-name cpu\-mon \-\-alarm\-description "Alarm when CPU exceeds 70 percent" \-\-metric\-name CPUUtilization \-\-namespace AWS/EC2 \-\-statistic Average \-\-period 300 \-\-threshold 70 \-\-comparison\-operator GreaterThanThreshold  \-\-dimensions "Name=InstanceId,Value=i\-12345678" \-\-evaluation\-periods 2 \-\-alarm\-actions arn:aws:sns:us\-east\-1:111122223333:MyTopic \-\-unit Percent
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command returns to the prompt if successful. If an alarm with the same name already exists, it will be overwritten by the new alarm.
+.sp
+\fBTo specify multiple dimensions\fP
+.sp
+The following example illustrates how to specify multiple dimensions. Each dimension is specified as a Name/Value pair, with a comma between the name and the value. Multiple dimensions are separated by a space:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudwatch put\-metric\-alarm \-\-alarm\-name "Default_Test_Alarm3" \-\-alarm\-description "The default example alarm" \-\-namespace "CW EXAMPLE METRICS" \-\-metric\-name Default_Test \-\-statistic Average \-\-period 60 \-\-evaluation\-periods 3 \-\-threshold 50 \-\-comparison\-operator GreaterThanOrEqualToThreshold \-\-dimensions Name=key1,Value=value1 Name=key2,Value=value2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

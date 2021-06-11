@@ -1,0 +1,403 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DYNAMODB-UPDATE-GLOBAL-TABLE" "a" "" ""
+.SH NAME
+dynamodb-update-global-table \- Adds or removes replicas in the specified global table
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds or removes replicas in the specified global table. The global table must already exist to be able to use this operation. Any replica to be added must be empty, have the same name as the global table, have the same key schema, have DynamoDB Streams enabled, and have the same provisioned and maximum write capacity units.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Although you can use \fBUpdateGlobalTable\fP to add replicas and remove replicas in a single request, for simplicity we recommend that you issue separate requests for adding or removing replicas.
+.UNINDENT
+.UNINDENT
+.sp
+If global secondary indexes are specified, then the following conditions must also be met:
+.INDENT 0.0
+.IP \(bu 2
+The global secondary indexes must have the same name.
+.IP \(bu 2
+The global secondary indexes must have the same hash key and sort key (if present).
+.IP \(bu 2
+The global secondary indexes must have the same provisioned and maximum write capacity units.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-global\-table
+\-\-global\-table\-name <value>
+\-\-replica\-updates <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-global\-table\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The global table name.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-replica\-updates\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of Regions that should be added or removed from the global table.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents one of the following:
+.INDENT 0.0
+.IP \(bu 2
+A new replica to be added to an existing global table.
+.IP \(bu 2
+New parameters for an existing replica.
+.IP \(bu 2
+An existing replica to be removed from an existing global table.
+.UNINDENT
+.sp
+Create \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The parameters required for creating a replica on an existing global table.
+.sp
+RegionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Region of the replica to be added.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Delete \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The name of the existing replica to be removed.
+.sp
+RegionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Region of the replica to be removed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Create={RegionName=string},Delete={RegionName=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Create": {
+      "RegionName": "string"
+    },
+    "Delete": {
+      "RegionName": "string"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update a DynamoDB global table\fP
+.sp
+The following \fBupdate\-global\-table\fP example adds a replica in the specified Region to the \fBMusicCollection\fP global table.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb update\-global\-table \e
+    \-\-global\-table\-name MusicCollection \e
+    \-\-replica\-updates Create={RegionName=eu\-west\-1}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "GlobalTableDescription": {
+        "ReplicationGroup": [
+            {
+                "RegionName": "eu\-west\-1"
+            },
+            {
+                "RegionName": "us\-east\-2"
+            },
+            {
+                "RegionName": "us\-east\-1"
+            }
+        ],
+        "GlobalTableArn": "arn:aws:dynamodb::123456789012:global\-table/MusicCollection",
+        "CreationDateTime": 1576625818.532,
+        "GlobalTableStatus": "ACTIVE",
+        "GlobalTableName": "MusicCollection"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%DynamoDB Global Tables\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+GlobalTableDescription \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the global table.
+.sp
+ReplicationGroup \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Regions where the global table has replicas.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the replica.
+.sp
+RegionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Region.
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the replica:
+.INDENT 0.0
+.IP \(bu 2
+\fBCREATING\fP \- The replica is being created.
+.IP \(bu 2
+\fBUPDATING\fP \- The replica is being updated.
+.IP \(bu 2
+\fBDELETING\fP \- The replica is being deleted.
+.IP \(bu 2
+\fBACTIVE\fP \- The replica is ready for use.
+.IP \(bu 2
+\fBREGION_DISABLED\fP \- The replica is inaccessible because the AWS Region has been disabled.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the AWS Region remains inaccessible for more than 20 hours, DynamoDB will remove this replica from the replication group. The replica will not be deleted and replication will stop from and to this region.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBINACCESSIBLE_ENCRYPTION_CREDENTIALS\fP \- The AWS KMS key used to encrypt the table is inaccessible.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the AWS KMS key remains inaccessible for more than 20 hours, DynamoDB will remove this replica from the replication group. The replica will not be deleted and replication will stop from and to this region.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaStatusDescription \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Detailed information about the replica status.
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaStatusPercentProgress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the progress of a Create, Update, or Delete action on the replica as a percentage.
+.UNINDENT
+.UNINDENT
+.sp
+KMSMasterKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS KMS customer master key (CMK) of the replica that will be used for AWS KMS encryption.
+.UNINDENT
+.UNINDENT
+.sp
+ProvisionedThroughputOverride \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Replica\-specific provisioned throughput. If not described, uses the source table\(aqs provisioned throughput settings.
+.sp
+ReadCapacityUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Replica\-specific read capacity units. If not specified, uses the source table\(aqs read capacity settings.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GlobalSecondaryIndexes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Replica\-specific global secondary index settings.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the properties of a replica global secondary index.
+.sp
+IndexName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the global secondary index.
+.UNINDENT
+.UNINDENT
+.sp
+ProvisionedThroughputOverride \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If not described, uses the source table GSI\(aqs read capacity settings.
+.sp
+ReadCapacityUnits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Replica\-specific read capacity units. If not specified, uses the source table\(aqs read capacity settings.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaInaccessibleDateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the replica was first detected as inaccessible. To determine cause of inaccessibility check the \fBReplicaStatus\fP property.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GlobalTableArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the global table.
+.UNINDENT
+.UNINDENT
+.sp
+CreationDateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The creation time of the global table.
+.UNINDENT
+.UNINDENT
+.sp
+GlobalTableStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the global table:
+.INDENT 0.0
+.IP \(bu 2
+\fBCREATING\fP \- The global table is being created.
+.IP \(bu 2
+\fBUPDATING\fP \- The global table is being updated.
+.IP \(bu 2
+\fBDELETING\fP \- The global table is being deleted.
+.IP \(bu 2
+\fBACTIVE\fP \- The global table is ready for use.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GlobalTableName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The global table name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

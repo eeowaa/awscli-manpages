@@ -1,0 +1,1647 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "FSX-DESCRIBE-BACKUPS" "a" "" ""
+.SH NAME
+fsx-describe-backups \- Returns the description of specific Amazon FSx backups, if a BackupIds value is provided for that backup
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the description of specific Amazon FSx backups, if a \fBBackupIds\fP value is provided for that backup. Otherwise, it returns all backups owned by your AWS account in the AWS Region of the endpoint that you\(aqre calling.
+.sp
+When retrieving all backups, you can optionally specify the \fBMaxResults\fP parameter to limit the number of backups in a response. If more backups remain, Amazon FSx returns a \fBNextToken\fP value in the response. In this case, send a later request with the \fBNextToken\fP request parameter set to the value of \fBNextToken\fP from the last response.
+.sp
+This action is used in an iterative process to retrieve a list of your backups. \fBDescribeBackups\fP is called first without a \fBNextToken\fP value. Then the action continues to be called with the \fBNextToken\fP parameter set to the value of the last \fBNextToken\fP value until a response has no \fBNextToken\fP .
+.sp
+When using this action, keep the following in mind:
+.INDENT 0.0
+.IP \(bu 2
+The implementation might return fewer than \fBMaxResults\fP file system descriptions while still including a \fBNextToken\fP value.
+.IP \(bu 2
+The order of backups returned in the response of one \fBDescribeBackups\fP call and the order of backups returned across the responses of a multi\-call iteration is unspecified.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBdescribe\-backups\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBBackups\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-backups
+[\-\-backup\-ids <value>]
+[\-\-filters <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-backup\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+IDs of the backups you want to retrieve (String). This overrides any filters. If any IDs are not found, BackupNotFound will be thrown.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the source backup. Specifies the backup you are copying.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Filters structure. Supported names are file\-system\-id and backup\-type.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A filter used to restrict the results of describe calls. You can use multiple filters to return results that meet all applied filter requirements.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for this filter.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The values of the filter. These are all the values for any of the applied filters.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+The value for a filter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "file\-system\-id"|"backup\-type"|"file\-system\-type",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Backups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of backups.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A backup of an Amazon FSx file system.
+.sp
+BackupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the backup.
+.UNINDENT
+.UNINDENT
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The lifecycle status of the backup.
+.INDENT 0.0
+.IP \(bu 2
+\fBAVAILABLE\fP \- The backup is fully available.
+.IP \(bu 2
+\fBPENDING\fP \- For user\-initiated backups on Lustre file systems only; Amazon FSx has not started creating the backup.
+.IP \(bu 2
+\fBCREATING\fP \- Amazon FSx is creating the backup.
+.IP \(bu 2
+\fBTRANSFERRING\fP \- For user\-initiated backups on Lustre file systems only; Amazon FSx is transferring the backup to S3.
+.IP \(bu 2
+\fBCOPYING\fP \- Amazon FSx is copying the backup.
+.IP \(bu 2
+\fBDELETED\fP \- Amazon FSx deleted the backup and it is no longer available.
+.IP \(bu 2
+\fBFAILED\fP \- Amazon FSx could not complete the backup.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details explaining any failures that occur when creating a backup.
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message describing the backup creation failure.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the file system backup.
+.UNINDENT
+.UNINDENT
+.sp
+ProgressPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The current percent of progress of an asynchronous task.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time when a particular backup was created.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS Key Management Service (AWS KMS) key used to encrypt the backup of the Amazon FSx file system\(aqs data at rest.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the backup resource.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Tags associated with a particular file system.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a key\-value pair for a resource tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagKey\fP , the name of the tag. Tag keys must be unique for the resource to which they are attached.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagValue\fP , the value assigned to the corresponding tag key. Tag values can be null and don\(aqt have to be unique in a tag set. For example, you can have a key\-value pair in a tag set of \fBfinances : April\fP and also of \fBpayroll : April\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FileSystem \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata of the file system associated with the backup. This metadata is persisted even if the file system is deleted.
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account that created the file system. If the file system was created by an AWS Identity and Access Management (IAM) user, the AWS account to which the IAM user belongs is the owner.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that the file system was created, in seconds (since 1970\-01\-01T00:00:00Z), also known as Unix time.
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated, unique 17\-digit ID of the file system.
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of Amazon FSx file system, either \fBLUSTRE\fP or \fBWINDOWS\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The lifecycle status of the file system, following are the possible values and what they mean:
+.INDENT 0.0
+.IP \(bu 2
+\fBAVAILABLE\fP \- The file system is in a healthy state, and is reachable and available for use.
+.IP \(bu 2
+\fBCREATING\fP \- Amazon FSx is creating the new file system.
+.IP \(bu 2
+\fBDELETING\fP \- Amazon FSx is deleting an existing file system.
+.IP \(bu 2
+\fBFAILED\fP \- An existing file system has experienced an unrecoverable failure. When creating a new file system, Amazon FSx was unable to create the file system.
+.IP \(bu 2
+\fBMISCONFIGURED\fP indicates that the file system is in a failed but recoverable state.
+.IP \(bu 2
+\fBUPDATING\fP indicates that the file system is undergoing a customer initiated update.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure providing details of any failures that occur when creating the file system has failed.
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message describing any failures that occurred during file system creation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StorageCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The storage capacity of the file system in gibibytes (GiB).
+.UNINDENT
+.UNINDENT
+.sp
+StorageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The storage type of the file system. Valid values are \fBSSD\fP and \fBHDD\fP . If set to \fBSSD\fP , the file system uses solid state drive storage. If set to \fBHDD\fP , the file system uses hard disk drive storage.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the primary VPC for the file system.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the IDs of the subnets that the file system is accessible from. For Windows \fBMULTI_AZ_1\fP file system deployment type, there are two subnet IDs, one for the preferred file server and one for the standby file server. The preferred file server subnet identified in the \fBPreferredSubnetID\fP property. All other file systems have only one subnet ID.
+.sp
+For Lustre file systems, and Single\-AZ Windows file systems, this is the ID of the subnet that contains the endpoint for the file system. For \fBMULTI_AZ_1\fP Windows file systems, the endpoint for the file system is available in the \fBPreferredSubnetID\fP .
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for a subnet. A \fIsubnet\fP is a range of IP addresses in your virtual private cloud (VPC). For more information, see \fI\%VPC and Subnets\fP in the \fIAmazon VPC User Guide.\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the elastic network interface from which a specific file system is accessible. The elastic network interface is automatically created in the same VPC that the Amazon FSx file system was created in. For more information, see \fI\%Elastic Network Interfaces\fP in the \fIAmazon EC2 User Guide.\fP
+.sp
+For an Amazon FSx for Windows File Server file system, you can have one network interface ID. For an Amazon FSx for Lustre file system, you can have more than one.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+An elastic network interface ID. An elastic network interface is a logical networking component in a virtual private cloud (VPC) that represents a virtual network card. For more information, see \fI\%Elastic Network Interfaces\fP in the \fIAmazon EC2 User Guide for Linux Instances\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DNSName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS name for the file system.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS Key Management Service (AWS KMS) key used to encrypt the file system\(aqs data for Amazon FSx for Windows File Server file systems and persistent Amazon FSx for Lustre file systems at rest. In either case, if not specified, the Amazon FSx managed key is used. The scratch Amazon FSx for Lustre file systems are always encrypted at rest using Amazon FSx managed keys. For more information, see \fI\%Encrypt\fP in the \fIAWS Key Management Service API Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the file system resource.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to associate with the file system. For more information, see \fI\%Tagging Your Amazon EC2 Resources\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a key\-value pair for a resource tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagKey\fP , the name of the tag. Tag keys must be unique for the resource to which they are attached.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagValue\fP , the value assigned to the corresponding tag key. Tag values can be null and don\(aqt have to be unique in a tag set. For example, you can have a key\-value pair in a tag set of \fBfinances : April\fP and also of \fBpayroll : April\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+WindowsConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for this Microsoft Windows file system.
+.sp
+ActiveDirectoryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for an existing AWS Managed Microsoft Active Directory instance that the file system is joined to.
+.UNINDENT
+.UNINDENT
+.sp
+SelfManagedActiveDirectoryConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration of the self\-managed Microsoft Active Directory (AD) directory to which the Windows File Server instance is joined.
+.sp
+DomainName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified domain name of the self\-managed AD directory.
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationalUnitDistinguishedName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified distinguished name of the organizational unit within the self\-managed AD directory to which the Windows File Server instance is joined.
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemAdministratorsGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain group whose members have administrative privileges for the FSx file system.
+.UNINDENT
+.UNINDENT
+.sp
+UserName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user name for the service account on your self\-managed AD domain that FSx uses to join to your AD domain.
+.UNINDENT
+.UNINDENT
+.sp
+DnsIps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of up to two IP addresses of DNS servers or domain controllers in the self\-managed AD directory.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DeploymentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the file system deployment type, valid values are the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBMULTI_AZ_1\fP \- Specifies a high availability file system that is configured for Multi\-AZ redundancy to tolerate temporary Availability Zone (AZ) unavailability, and supports SSD and HDD storage.
+.IP \(bu 2
+\fBSINGLE_AZ_1\fP \- (Default) Specifies a file system that is configured for single AZ redundancy, only supports SSD storage.
+.IP \(bu 2
+\fBSINGLE_AZ_2\fP \- Latest generation Single AZ file system. Specifies a file system that is configured for single AZ redundancy and supports SSD and HDD storage.
+.UNINDENT
+.sp
+For more information, see \fI\%Single\-AZ and Multi\-AZ File Systems\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RemoteAdministrationEndpoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBMULTI_AZ_1\fP deployment types, use this endpoint when performing administrative tasks on the file system using Amazon FSx Remote PowerShell.
+.sp
+For \fBSINGLE_AZ_1\fP and \fBSINGLE_AZ_2\fP deployment types, this is the DNS name of the file system.
+.sp
+This endpoint is temporarily unavailable when the file system is undergoing maintenance.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredSubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBMULTI_AZ_1\fP deployment types, it specifies the ID of the subnet where the preferred file server is located. Must be one of the two subnet IDs specified in \fBSubnetIds\fP property. Amazon FSx serves traffic from this subnet except in the event of a failover to the secondary file server.
+.sp
+For \fBSINGLE_AZ_1\fP and \fBSINGLE_AZ_2\fP deployment types, this value is the same as that for \fBSubnetIDs\fP . For more information, see \fI\%Availability and durability: Single\-AZ and Multi\-AZ file systems\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PreferredFileServerIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBMULTI_AZ_1\fP deployment types, the IP address of the primary, or preferred, file server.
+.sp
+Use this IP address when mounting the file system on Linux SMB clients or Windows SMB clients that are not joined to a Microsoft Active Directory. Applicable for all Windows file system deployment types. This IP address is temporarily unavailable when the file system is undergoing maintenance. For Linux and Windows SMB clients that are joined to an Active Directory, use the file system\(aqs DNSName instead. For more information on mapping and mounting file shares, see \fI\%Accessing File Shares\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ThroughputCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The throughput of the Amazon FSx file system, measured in megabytes per second.
+.UNINDENT
+.UNINDENT
+.sp
+MaintenanceOperationsInProgress \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of maintenance operations in progress for this file system.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+An enumeration specifying the currently ongoing maintenance operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+WeeklyMaintenanceStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred start time to perform weekly maintenance, formatted d:HH:MM in the UTC time zone. d is the weekday number, from 1 through 7, beginning with Monday and ending with Sunday.
+.UNINDENT
+.UNINDENT
+.sp
+DailyAutomaticBackupStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred time to take daily automatic backups, in the UTC time zone.
+.UNINDENT
+.UNINDENT
+.sp
+AutomaticBackupRetentionDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain automatic backups. Setting this to 0 disables automatic backups. You can retain automatic backups for a maximum of 90 days.
+.UNINDENT
+.UNINDENT
+.sp
+CopyTagsToBackups \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A boolean flag indicating whether tags on the file system should be copied to backups. This value defaults to false. If it\(aqs set to true, all tags on the file system are copied to all automatic backups and any user\-initiated backups where the user doesn\(aqt specify any tags. If this value is true, and you specify one or more tags, only the specified tags are copied to backups. If you specify one or more tags when creating a user\-initiated backup, no tags are copied from the file system, regardless of this value.
+.UNINDENT
+.UNINDENT
+.sp
+Aliases \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of one or more DNS aliases that are currently associated with the Amazon FSx file system. Aliases allow you to use existing DNS names to access the data in your Amazon FSx file system. You can associate up to 50 aliases with a file system at any time. You can associate additional DNS aliases after you create the file system using the AssociateFileSystemAliases operation. You can remove DNS aliases from the file system after it is created using the DisassociateFileSystemAliases operation. You only need to specify the alias name in the request payload. For more information, see \fI\%DNS aliases\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A DNS alias that is associated with the file system. You can use a DNS alias to access a file system using user\-defined DNS names, in addition to the default DNS name that Amazon FSx assigns to the file system. For more information, see \fI\%DNS aliases\fP in the \fIFSx for Windows File Server User Guide\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DNS alias. The alias name has to meet the following requirements:
+.INDENT 0.0
+.IP \(bu 2
+Formatted as a fully\-qualified domain name (FQDN), \fBhostname.domain\fP , for example, \fBaccounting.example.com\fP .
+.IP \(bu 2
+Can contain alphanumeric characters, the underscore (_), and the hyphen (\-).
+.IP \(bu 2
+Cannot start or end with a hyphen.
+.IP \(bu 2
+Can start with a numeric.
+.UNINDENT
+.sp
+For DNS names, Amazon FSx stores alphabetic characters as lowercase letters (a\-z), regardless of how you specify them: as uppercase letters, lowercase letters, or the corresponding letters in escape codes.
+.UNINDENT
+.UNINDENT
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the state of the DNS alias.
+.INDENT 0.0
+.IP \(bu 2
+AVAILABLE \- The DNS alias is associated with an Amazon FSx file system.
+.IP \(bu 2
+CREATING \- Amazon FSx is creating the DNS alias and associating it with the file system.
+.IP \(bu 2
+CREATE_FAILED \- Amazon FSx was unable to associate the DNS alias with the file system.
+.IP \(bu 2
+DELETING \- Amazon FSx is disassociating the DNS alias from the file system and deleting it.
+.IP \(bu 2
+DELETE_FAILED \- Amazon FSx was unable to disassocate the DNS alias from the file system.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LustreConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for the Amazon FSx for Lustre file system.
+.sp
+WeeklyMaintenanceStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred start time to perform weekly maintenance, formatted d:HH:MM in the UTC time zone. d is the weekday number, from 1 through 7, beginning with Monday and ending with Sunday.
+.UNINDENT
+.UNINDENT
+.sp
+DataRepositoryConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The data repository configuration object for Lustre file systems returned in the response of the \fBCreateFileSystem\fP operation.
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the state of the file system\(aqs S3 durable data repository, if it is configured with an S3 repository. The lifecycle can have the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCREATING\fP \- The data repository configuration between the FSx file system and the linked S3 data repository is being created. The data repository is unavailable.
+.IP \(bu 2
+\fBAVAILABLE\fP \- The data repository is available for use.
+.IP \(bu 2
+\fBMISCONFIGURED\fP \- Amazon FSx cannot automatically import updates from the S3 bucket until the data repository configuration is corrected. For more information, see \fI\%Troubleshooting a Misconfigured linked S3 bucket\fP .
+.IP \(bu 2
+\fBUPDATING\fP \- The data repository is undergoing a customer initiated update and availability may be impacted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImportPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The import path to the Amazon S3 bucket (and optional prefix) that you\(aqre using as the data repository for your FSx for Lustre file system, for example \fBs3://import\-bucket/optional\-prefix\fP . If a prefix is specified after the Amazon S3 bucket name, only object keys with that prefix are loaded into the file system.
+.UNINDENT
+.UNINDENT
+.sp
+ExportPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The export path to the Amazon S3 bucket (and prefix) that you are using to store new and changed Lustre file system files in S3.
+.UNINDENT
+.UNINDENT
+.sp
+ImportedFileChunkSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+For files imported from a data repository, this value determines the stripe count and maximum amount of data per file (in MiB) stored on a single physical disk. The maximum number of disks that a single file can be striped across is limited by the total number of disks that make up the file system.
+.sp
+The default chunk size is 1,024 MiB (1 GiB) and can go as high as 512,000 MiB (500 GiB). Amazon S3 objects have a maximum size of 5 TB.
+.UNINDENT
+.UNINDENT
+.sp
+AutoImportPolicy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the file system\(aqs linked S3 data repository\(aqs \fBAutoImportPolicy\fP . The AutoImportPolicy configures how Amazon FSx keeps your file and directory listings up to date as you add or modify objects in your linked S3 bucket. \fBAutoImportPolicy\fP can have the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP \- (Default) AutoImport is off. Amazon FSx only updates file and directory listings from the linked S3 bucket when the file system is created. FSx does not update file and directory listings for any new or changed objects after choosing this option.
+.IP \(bu 2
+\fBNEW\fP \- AutoImport is on. Amazon FSx automatically imports directory listings of any new objects added to the linked S3 bucket that do not currently exist in the FSx file system.
+.IP \(bu 2
+\fBNEW_CHANGED\fP \- AutoImport is on. Amazon FSx automatically imports file and directory listings of any new objects added to the S3 bucket and any existing objects that are changed in the S3 bucket after you choose this option.
+.UNINDENT
+.sp
+For more information, see \fI\%Automatically import updates from your S3 bucket\fP .
+.UNINDENT
+.UNINDENT
+.sp
+FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides detailed information about the data respository if its \fBLifecycle\fP is set to \fBMISCONFIGURED\fP .
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DeploymentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment type of the FSX for Lustre file system. \fIScratch deployment type\fP is designed for temporary storage and shorter\-term processing of data.
+.INDENT 0.0
+.INDENT 3.5
+\fBSCRATCH_1\fP and \fBSCRATCH_2\fP deployment types are best suited for when you need temporary storage and shorter\-term processing of data. The \fBSCRATCH_2\fP deployment type provides in\-transit encryption of data and higher burst throughput capacity than \fBSCRATCH_1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+The \fBPERSISTENT_1\fP deployment type is used for longer\-term storage and workloads and encryption of data in transit. To learn more about deployment types, see \fI\%FSx for Lustre Deployment Options\fP . (Default = \fBSCRATCH_1\fP )
+.UNINDENT
+.UNINDENT
+.sp
+PerUnitStorageThroughput \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Per unit storage throughput represents the megabytes per second of read or write throughput per 1 tebibyte of storage provisioned. File system throughput capacity is equal to Storage capacity (TiB) * PerUnitStorageThroughput (MB/s/TiB). This option is only valid for \fBPERSISTENT_1\fP deployment types.
+.sp
+Valid values for SSD storage: 50, 100, 200. Valid values for HDD storage: 12, 40.
+.UNINDENT
+.UNINDENT
+.sp
+MountName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+You use the \fBMountName\fP value when mounting the file system.
+.sp
+For the \fBSCRATCH_1\fP deployment type, this value is always "\fBfsx\fP ". For \fBSCRATCH_2\fP and \fBPERSISTENT_1\fP deployment types, this value is a string that is unique within an AWS Region.
+.UNINDENT
+.UNINDENT
+.sp
+DailyAutomaticBackupStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A recurring daily time, in the format \fBHH:MM\fP . \fBHH\fP is the zero\-padded hour of the day (0\-23), and \fBMM\fP is the zero\-padded minute of the hour. For example, \fB05:00\fP specifies 5 AM daily.
+.UNINDENT
+.UNINDENT
+.sp
+AutomaticBackupRetentionDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain automatic backups. Setting this to 0 disables automatic backups. You can retain automatic backups for a maximum of 90 days. The default is 0.
+.UNINDENT
+.UNINDENT
+.sp
+CopyTagsToBackups \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A boolean flag indicating whether tags on the file system should be copied to backups. If it\(aqs set to true, all tags on the file system are copied to all automatic backups and any user\-initiated backups where the user doesn\(aqt specify any tags. If this value is true, and you specify one or more tags, only the specified tags are copied to backups. If you specify one or more tags when creating a user\-initiated backup, no tags are copied from the file system, regardless of this value. (Default = false)
+.UNINDENT
+.UNINDENT
+.sp
+DriveCacheType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of drive cache used by PERSISTENT_1 file systems that are provisioned with HDD storage devices. This parameter is required when storage type is HDD. Set to \fBREAD\fP , improve the performance for frequently accessed files and allows 20% of the total storage capacity of the file system to be cached.
+.sp
+This parameter is required when \fBStorageType\fP is set to HDD.
+.UNINDENT
+.UNINDENT
+.sp
+DataCompressionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data compression configuration for the file system. \fBDataCompressionType\fP can have the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP \- Data compression is turned off for the file system.
+.IP \(bu 2
+\fBLZ4\fP \- Data compression is turned on with the LZ4 algorithm.
+.UNINDENT
+.sp
+For more information, see \fI\%Lustre data compression\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AdministrativeActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of administrative actions for the file system that are in process or waiting to be processed. Administrative actions describe changes to the Windows file system that you have initiated using the \fBUpdateFileSystem\fP action.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a specific Amazon FSx administrative action for the current Windows or Lustre file system.
+.sp
+AdministrativeActionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the type of administrative action, as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBFILE_SYSTEM_UPDATE\fP \- A file system update administrative action initiated by the user from the Amazon FSx console, API (UpdateFileSystem), or CLI (update\-file\-system).
+.IP \(bu 2
+\fBSTORAGE_OPTIMIZATION\fP \- Once the \fBFILE_SYSTEM_UPDATE\fP task to increase a file system\(aqs storage capacity completes successfully, a \fBSTORAGE_OPTIMIZATION\fP task starts.
+.INDENT 2.0
+.IP \(bu 2
+For Windows, storage optimization is the process of migrating the file system data to the new, larger disks.
+.IP \(bu 2
+For Lustre, storage optimization consists of rebalancing the data across the existing and newly added file servers.
+.UNINDENT
+.UNINDENT
+.sp
+You can track the storage optimization progress using the \fBProgressPercent\fP property. When \fBSTORAGE_OPTIMIZATION\fP completes successfully, the parent \fBFILE_SYSTEM_UPDATE\fP action status changes to \fBCOMPLETED\fP . For more information, see \fI\%Managing storage capacity\fP in the \fIAmazon FSx for Windows File Server User Guide\fP and \fI\%Managing storage and throughput capacity\fP in the \fIAmazon FSx for Lustre User Guide\fP .
+.INDENT 0.0
+.IP \(bu 2
+\fBFILE_SYSTEM_ALIAS_ASSOCIATION\fP \- A file system update to associate a new DNS alias with the file system. For more information, see .
+.IP \(bu 2
+\fBFILE_SYSTEM_ALIAS_DISASSOCIATION\fP \- A file system update to disassociate a DNS alias from the file system. For more information, see .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProgressPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Provides the percent complete of a \fBSTORAGE_OPTIMIZATION\fP administrative action. Does not apply to any other administrative action type.
+.UNINDENT
+.UNINDENT
+.sp
+RequestTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time that the administrative action request was received.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the status of the administrative action, as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBFAILED\fP \- Amazon FSx failed to process the administrative action successfully.
+.IP \(bu 2
+\fBIN_PROGRESS\fP \- Amazon FSx is processing the administrative action.
+.IP \(bu 2
+\fBPENDING\fP \- Amazon FSx is waiting to process the administrative action.
+.IP \(bu 2
+\fBCOMPLETED\fP \- Amazon FSx has finished processing the administrative task.
+.IP \(bu 2
+\fBUPDATED_OPTIMIZING\fP \- For a storage capacity increase update, Amazon FSx has updated the file system with the new storage capacity, and is now performing the storage optimization process. For more information, see \fI\%Managing storage capacity\fP in the \fIAmazon FSx for Windows File Server User Guide\fP and \fI\%Managing storage and throughput capacity\fP in the \fIAmazon FSx for Lustre User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TargetFileSystemValues \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the target value for the administration action, provided in the \fBUpdateFileSystem\fP operation. Returned for \fBFILE_SYSTEM_UPDATE\fP administrative actions.
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account that created the file system. If the file system was created by an AWS Identity and Access Management (IAM) user, the AWS account to which the IAM user belongs is the owner.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that the file system was created, in seconds (since 1970\-01\-01T00:00:00Z), also known as Unix time.
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated, unique 17\-digit ID of the file system.
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of Amazon FSx file system, either \fBLUSTRE\fP or \fBWINDOWS\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The lifecycle status of the file system, following are the possible values and what they mean:
+.INDENT 0.0
+.IP \(bu 2
+\fBAVAILABLE\fP \- The file system is in a healthy state, and is reachable and available for use.
+.IP \(bu 2
+\fBCREATING\fP \- Amazon FSx is creating the new file system.
+.IP \(bu 2
+\fBDELETING\fP \- Amazon FSx is deleting an existing file system.
+.IP \(bu 2
+\fBFAILED\fP \- An existing file system has experienced an unrecoverable failure. When creating a new file system, Amazon FSx was unable to create the file system.
+.IP \(bu 2
+\fBMISCONFIGURED\fP indicates that the file system is in a failed but recoverable state.
+.IP \(bu 2
+\fBUPDATING\fP indicates that the file system is undergoing a customer initiated update.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure providing details of any failures that occur when creating the file system has failed.
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message describing any failures that occurred during file system creation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StorageCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The storage capacity of the file system in gibibytes (GiB).
+.UNINDENT
+.UNINDENT
+.sp
+StorageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The storage type of the file system. Valid values are \fBSSD\fP and \fBHDD\fP . If set to \fBSSD\fP , the file system uses solid state drive storage. If set to \fBHDD\fP , the file system uses hard disk drive storage.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the primary VPC for the file system.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the IDs of the subnets that the file system is accessible from. For Windows \fBMULTI_AZ_1\fP file system deployment type, there are two subnet IDs, one for the preferred file server and one for the standby file server. The preferred file server subnet identified in the \fBPreferredSubnetID\fP property. All other file systems have only one subnet ID.
+.sp
+For Lustre file systems, and Single\-AZ Windows file systems, this is the ID of the subnet that contains the endpoint for the file system. For \fBMULTI_AZ_1\fP Windows file systems, the endpoint for the file system is available in the \fBPreferredSubnetID\fP .
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for a subnet. A \fIsubnet\fP is a range of IP addresses in your virtual private cloud (VPC). For more information, see \fI\%VPC and Subnets\fP in the \fIAmazon VPC User Guide.\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the elastic network interface from which a specific file system is accessible. The elastic network interface is automatically created in the same VPC that the Amazon FSx file system was created in. For more information, see \fI\%Elastic Network Interfaces\fP in the \fIAmazon EC2 User Guide.\fP
+.sp
+For an Amazon FSx for Windows File Server file system, you can have one network interface ID. For an Amazon FSx for Lustre file system, you can have more than one.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+An elastic network interface ID. An elastic network interface is a logical networking component in a virtual private cloud (VPC) that represents a virtual network card. For more information, see \fI\%Elastic Network Interfaces\fP in the \fIAmazon EC2 User Guide for Linux Instances\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DNSName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS name for the file system.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS Key Management Service (AWS KMS) key used to encrypt the file system\(aqs data for Amazon FSx for Windows File Server file systems and persistent Amazon FSx for Lustre file systems at rest. In either case, if not specified, the Amazon FSx managed key is used. The scratch Amazon FSx for Lustre file systems are always encrypted at rest using Amazon FSx managed keys. For more information, see \fI\%Encrypt\fP in the \fIAWS Key Management Service API Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the file system resource.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to associate with the file system. For more information, see \fI\%Tagging Your Amazon EC2 Resources\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a key\-value pair for a resource tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagKey\fP , the name of the tag. Tag keys must be unique for the resource to which they are attached.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the \fBTagValue\fP , the value assigned to the corresponding tag key. Tag values can be null and don\(aqt have to be unique in a tag set. For example, you can have a key\-value pair in a tag set of \fBfinances : April\fP and also of \fBpayroll : April\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+WindowsConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for this Microsoft Windows file system.
+.sp
+ActiveDirectoryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for an existing AWS Managed Microsoft Active Directory instance that the file system is joined to.
+.UNINDENT
+.UNINDENT
+.sp
+SelfManagedActiveDirectoryConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration of the self\-managed Microsoft Active Directory (AD) directory to which the Windows File Server instance is joined.
+.sp
+DomainName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified domain name of the self\-managed AD directory.
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationalUnitDistinguishedName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified distinguished name of the organizational unit within the self\-managed AD directory to which the Windows File Server instance is joined.
+.UNINDENT
+.UNINDENT
+.sp
+FileSystemAdministratorsGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain group whose members have administrative privileges for the FSx file system.
+.UNINDENT
+.UNINDENT
+.sp
+UserName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user name for the service account on your self\-managed AD domain that FSx uses to join to your AD domain.
+.UNINDENT
+.UNINDENT
+.sp
+DnsIps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of up to two IP addresses of DNS servers or domain controllers in the self\-managed AD directory.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DeploymentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the file system deployment type, valid values are the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBMULTI_AZ_1\fP \- Specifies a high availability file system that is configured for Multi\-AZ redundancy to tolerate temporary Availability Zone (AZ) unavailability, and supports SSD and HDD storage.
+.IP \(bu 2
+\fBSINGLE_AZ_1\fP \- (Default) Specifies a file system that is configured for single AZ redundancy, only supports SSD storage.
+.IP \(bu 2
+\fBSINGLE_AZ_2\fP \- Latest generation Single AZ file system. Specifies a file system that is configured for single AZ redundancy and supports SSD and HDD storage.
+.UNINDENT
+.sp
+For more information, see \fI\%Single\-AZ and Multi\-AZ File Systems\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RemoteAdministrationEndpoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBMULTI_AZ_1\fP deployment types, use this endpoint when performing administrative tasks on the file system using Amazon FSx Remote PowerShell.
+.sp
+For \fBSINGLE_AZ_1\fP and \fBSINGLE_AZ_2\fP deployment types, this is the DNS name of the file system.
+.sp
+This endpoint is temporarily unavailable when the file system is undergoing maintenance.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredSubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBMULTI_AZ_1\fP deployment types, it specifies the ID of the subnet where the preferred file server is located. Must be one of the two subnet IDs specified in \fBSubnetIds\fP property. Amazon FSx serves traffic from this subnet except in the event of a failover to the secondary file server.
+.sp
+For \fBSINGLE_AZ_1\fP and \fBSINGLE_AZ_2\fP deployment types, this value is the same as that for \fBSubnetIDs\fP . For more information, see \fI\%Availability and durability: Single\-AZ and Multi\-AZ file systems\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PreferredFileServerIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBMULTI_AZ_1\fP deployment types, the IP address of the primary, or preferred, file server.
+.sp
+Use this IP address when mounting the file system on Linux SMB clients or Windows SMB clients that are not joined to a Microsoft Active Directory. Applicable for all Windows file system deployment types. This IP address is temporarily unavailable when the file system is undergoing maintenance. For Linux and Windows SMB clients that are joined to an Active Directory, use the file system\(aqs DNSName instead. For more information on mapping and mounting file shares, see \fI\%Accessing File Shares\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ThroughputCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The throughput of the Amazon FSx file system, measured in megabytes per second.
+.UNINDENT
+.UNINDENT
+.sp
+MaintenanceOperationsInProgress \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of maintenance operations in progress for this file system.
+.sp
+(string)
+.INDENT 0.0
+.INDENT 3.5
+An enumeration specifying the currently ongoing maintenance operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+WeeklyMaintenanceStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred start time to perform weekly maintenance, formatted d:HH:MM in the UTC time zone. d is the weekday number, from 1 through 7, beginning with Monday and ending with Sunday.
+.UNINDENT
+.UNINDENT
+.sp
+DailyAutomaticBackupStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred time to take daily automatic backups, in the UTC time zone.
+.UNINDENT
+.UNINDENT
+.sp
+AutomaticBackupRetentionDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain automatic backups. Setting this to 0 disables automatic backups. You can retain automatic backups for a maximum of 90 days.
+.UNINDENT
+.UNINDENT
+.sp
+CopyTagsToBackups \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A boolean flag indicating whether tags on the file system should be copied to backups. This value defaults to false. If it\(aqs set to true, all tags on the file system are copied to all automatic backups and any user\-initiated backups where the user doesn\(aqt specify any tags. If this value is true, and you specify one or more tags, only the specified tags are copied to backups. If you specify one or more tags when creating a user\-initiated backup, no tags are copied from the file system, regardless of this value.
+.UNINDENT
+.UNINDENT
+.sp
+Aliases \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of one or more DNS aliases that are currently associated with the Amazon FSx file system. Aliases allow you to use existing DNS names to access the data in your Amazon FSx file system. You can associate up to 50 aliases with a file system at any time. You can associate additional DNS aliases after you create the file system using the AssociateFileSystemAliases operation. You can remove DNS aliases from the file system after it is created using the DisassociateFileSystemAliases operation. You only need to specify the alias name in the request payload. For more information, see \fI\%DNS aliases\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A DNS alias that is associated with the file system. You can use a DNS alias to access a file system using user\-defined DNS names, in addition to the default DNS name that Amazon FSx assigns to the file system. For more information, see \fI\%DNS aliases\fP in the \fIFSx for Windows File Server User Guide\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DNS alias. The alias name has to meet the following requirements:
+.INDENT 0.0
+.IP \(bu 2
+Formatted as a fully\-qualified domain name (FQDN), \fBhostname.domain\fP , for example, \fBaccounting.example.com\fP .
+.IP \(bu 2
+Can contain alphanumeric characters, the underscore (_), and the hyphen (\-).
+.IP \(bu 2
+Cannot start or end with a hyphen.
+.IP \(bu 2
+Can start with a numeric.
+.UNINDENT
+.sp
+For DNS names, Amazon FSx stores alphabetic characters as lowercase letters (a\-z), regardless of how you specify them: as uppercase letters, lowercase letters, or the corresponding letters in escape codes.
+.UNINDENT
+.UNINDENT
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the state of the DNS alias.
+.INDENT 0.0
+.IP \(bu 2
+AVAILABLE \- The DNS alias is associated with an Amazon FSx file system.
+.IP \(bu 2
+CREATING \- Amazon FSx is creating the DNS alias and associating it with the file system.
+.IP \(bu 2
+CREATE_FAILED \- Amazon FSx was unable to associate the DNS alias with the file system.
+.IP \(bu 2
+DELETING \- Amazon FSx is disassociating the DNS alias from the file system and deleting it.
+.IP \(bu 2
+DELETE_FAILED \- Amazon FSx was unable to disassocate the DNS alias from the file system.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LustreConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration for the Amazon FSx for Lustre file system.
+.sp
+WeeklyMaintenanceStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred start time to perform weekly maintenance, formatted d:HH:MM in the UTC time zone. d is the weekday number, from 1 through 7, beginning with Monday and ending with Sunday.
+.UNINDENT
+.UNINDENT
+.sp
+DataRepositoryConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The data repository configuration object for Lustre file systems returned in the response of the \fBCreateFileSystem\fP operation.
+.sp
+Lifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the state of the file system\(aqs S3 durable data repository, if it is configured with an S3 repository. The lifecycle can have the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCREATING\fP \- The data repository configuration between the FSx file system and the linked S3 data repository is being created. The data repository is unavailable.
+.IP \(bu 2
+\fBAVAILABLE\fP \- The data repository is available for use.
+.IP \(bu 2
+\fBMISCONFIGURED\fP \- Amazon FSx cannot automatically import updates from the S3 bucket until the data repository configuration is corrected. For more information, see \fI\%Troubleshooting a Misconfigured linked S3 bucket\fP .
+.IP \(bu 2
+\fBUPDATING\fP \- The data repository is undergoing a customer initiated update and availability may be impacted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImportPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The import path to the Amazon S3 bucket (and optional prefix) that you\(aqre using as the data repository for your FSx for Lustre file system, for example \fBs3://import\-bucket/optional\-prefix\fP . If a prefix is specified after the Amazon S3 bucket name, only object keys with that prefix are loaded into the file system.
+.UNINDENT
+.UNINDENT
+.sp
+ExportPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The export path to the Amazon S3 bucket (and prefix) that you are using to store new and changed Lustre file system files in S3.
+.UNINDENT
+.UNINDENT
+.sp
+ImportedFileChunkSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+For files imported from a data repository, this value determines the stripe count and maximum amount of data per file (in MiB) stored on a single physical disk. The maximum number of disks that a single file can be striped across is limited by the total number of disks that make up the file system.
+.sp
+The default chunk size is 1,024 MiB (1 GiB) and can go as high as 512,000 MiB (500 GiB). Amazon S3 objects have a maximum size of 5 TB.
+.UNINDENT
+.UNINDENT
+.sp
+AutoImportPolicy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the file system\(aqs linked S3 data repository\(aqs \fBAutoImportPolicy\fP . The AutoImportPolicy configures how Amazon FSx keeps your file and directory listings up to date as you add or modify objects in your linked S3 bucket. \fBAutoImportPolicy\fP can have the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP \- (Default) AutoImport is off. Amazon FSx only updates file and directory listings from the linked S3 bucket when the file system is created. FSx does not update file and directory listings for any new or changed objects after choosing this option.
+.IP \(bu 2
+\fBNEW\fP \- AutoImport is on. Amazon FSx automatically imports directory listings of any new objects added to the linked S3 bucket that do not currently exist in the FSx file system.
+.IP \(bu 2
+\fBNEW_CHANGED\fP \- AutoImport is on. Amazon FSx automatically imports file and directory listings of any new objects added to the S3 bucket and any existing objects that are changed in the S3 bucket after you choose this option.
+.UNINDENT
+.sp
+For more information, see \fI\%Automatically import updates from your S3 bucket\fP .
+.UNINDENT
+.UNINDENT
+.sp
+FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides detailed information about the data respository if its \fBLifecycle\fP is set to \fBMISCONFIGURED\fP .
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DeploymentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment type of the FSX for Lustre file system. \fIScratch deployment type\fP is designed for temporary storage and shorter\-term processing of data.
+.INDENT 0.0
+.INDENT 3.5
+\fBSCRATCH_1\fP and \fBSCRATCH_2\fP deployment types are best suited for when you need temporary storage and shorter\-term processing of data. The \fBSCRATCH_2\fP deployment type provides in\-transit encryption of data and higher burst throughput capacity than \fBSCRATCH_1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+The \fBPERSISTENT_1\fP deployment type is used for longer\-term storage and workloads and encryption of data in transit. To learn more about deployment types, see \fI\%FSx for Lustre Deployment Options\fP . (Default = \fBSCRATCH_1\fP )
+.UNINDENT
+.UNINDENT
+.sp
+PerUnitStorageThroughput \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Per unit storage throughput represents the megabytes per second of read or write throughput per 1 tebibyte of storage provisioned. File system throughput capacity is equal to Storage capacity (TiB) * PerUnitStorageThroughput (MB/s/TiB). This option is only valid for \fBPERSISTENT_1\fP deployment types.
+.sp
+Valid values for SSD storage: 50, 100, 200. Valid values for HDD storage: 12, 40.
+.UNINDENT
+.UNINDENT
+.sp
+MountName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+You use the \fBMountName\fP value when mounting the file system.
+.sp
+For the \fBSCRATCH_1\fP deployment type, this value is always "\fBfsx\fP ". For \fBSCRATCH_2\fP and \fBPERSISTENT_1\fP deployment types, this value is a string that is unique within an AWS Region.
+.UNINDENT
+.UNINDENT
+.sp
+DailyAutomaticBackupStartTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A recurring daily time, in the format \fBHH:MM\fP . \fBHH\fP is the zero\-padded hour of the day (0\-23), and \fBMM\fP is the zero\-padded minute of the hour. For example, \fB05:00\fP specifies 5 AM daily.
+.UNINDENT
+.UNINDENT
+.sp
+AutomaticBackupRetentionDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain automatic backups. Setting this to 0 disables automatic backups. You can retain automatic backups for a maximum of 90 days. The default is 0.
+.UNINDENT
+.UNINDENT
+.sp
+CopyTagsToBackups \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A boolean flag indicating whether tags on the file system should be copied to backups. If it\(aqs set to true, all tags on the file system are copied to all automatic backups and any user\-initiated backups where the user doesn\(aqt specify any tags. If this value is true, and you specify one or more tags, only the specified tags are copied to backups. If you specify one or more tags when creating a user\-initiated backup, no tags are copied from the file system, regardless of this value. (Default = false)
+.UNINDENT
+.UNINDENT
+.sp
+DriveCacheType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of drive cache used by PERSISTENT_1 file systems that are provisioned with HDD storage devices. This parameter is required when storage type is HDD. Set to \fBREAD\fP , improve the performance for frequently accessed files and allows 20% of the total storage capacity of the file system to be cached.
+.sp
+This parameter is required when \fBStorageType\fP is set to HDD.
+.UNINDENT
+.UNINDENT
+.sp
+DataCompressionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data compression configuration for the file system. \fBDataCompressionType\fP can have the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNONE\fP \- Data compression is turned off for the file system.
+.IP \(bu 2
+\fBLZ4\fP \- Data compression is turned on with the LZ4 algorithm.
+.UNINDENT
+.sp
+For more information, see \fI\%Lustre data compression\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AdministrativeActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of administrative actions for the file system that are in process or waiting to be processed. Administrative actions describe changes to the Windows file system that you have initiated using the \fBUpdateFileSystem\fP action.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a specific Amazon FSx administrative action for the current Windows or Lustre file system.
+.sp
+AdministrativeActionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the type of administrative action, as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBFILE_SYSTEM_UPDATE\fP \- A file system update administrative action initiated by the user from the Amazon FSx console, API (UpdateFileSystem), or CLI (update\-file\-system).
+.IP \(bu 2
+\fBSTORAGE_OPTIMIZATION\fP \- Once the \fBFILE_SYSTEM_UPDATE\fP task to increase a file system\(aqs storage capacity completes successfully, a \fBSTORAGE_OPTIMIZATION\fP task starts.
+.INDENT 2.0
+.IP \(bu 2
+For Windows, storage optimization is the process of migrating the file system data to the new, larger disks.
+.IP \(bu 2
+For Lustre, storage optimization consists of rebalancing the data across the existing and newly added file servers.
+.UNINDENT
+.UNINDENT
+.sp
+You can track the storage optimization progress using the \fBProgressPercent\fP property. When \fBSTORAGE_OPTIMIZATION\fP completes successfully, the parent \fBFILE_SYSTEM_UPDATE\fP action status changes to \fBCOMPLETED\fP . For more information, see \fI\%Managing storage capacity\fP in the \fIAmazon FSx for Windows File Server User Guide\fP and \fI\%Managing storage and throughput capacity\fP in the \fIAmazon FSx for Lustre User Guide\fP .
+.INDENT 0.0
+.IP \(bu 2
+\fBFILE_SYSTEM_ALIAS_ASSOCIATION\fP \- A file system update to associate a new DNS alias with the file system. For more information, see .
+.IP \(bu 2
+\fBFILE_SYSTEM_ALIAS_DISASSOCIATION\fP \- A file system update to disassociate a DNS alias from the file system. For more information, see .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProgressPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Provides the percent complete of a \fBSTORAGE_OPTIMIZATION\fP administrative action. Does not apply to any other administrative action type.
+.UNINDENT
+.UNINDENT
+.sp
+RequestTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time that the administrative action request was received.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the status of the administrative action, as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBFAILED\fP \- Amazon FSx failed to process the administrative action successfully.
+.IP \(bu 2
+\fBIN_PROGRESS\fP \- Amazon FSx is processing the administrative action.
+.IP \(bu 2
+\fBPENDING\fP \- Amazon FSx is waiting to process the administrative action.
+.IP \(bu 2
+\fBCOMPLETED\fP \- Amazon FSx has finished processing the administrative task.
+.IP \(bu 2
+\fBUPDATED_OPTIMIZING\fP \- For a storage capacity increase update, Amazon FSx has updated the file system with the new storage capacity, and is now performing the storage optimization process. For more information, see \fI\%Managing storage capacity\fP in the \fIAmazon FSx for Windows File Server User Guide\fP and \fI\%Managing storage and throughput capacity\fP in the \fIAmazon FSx for Lustre User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about a failed administrative action.
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Error message providing details about the failed administrative action.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FailureDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about a failed administrative action.
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Error message providing details about the failed administrative action.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DirectoryInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration of the self\-managed Microsoft Active Directory (AD) to which the Windows File Server instance is joined.
+.sp
+DomainName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified domain name of the self\-managed AD directory.
+.UNINDENT
+.UNINDENT
+.sp
+ActiveDirectoryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS Managed Microsoft Active Directory instance to which the file system is joined.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for a given resource. ARNs uniquely identify AWS resources. We require an ARN when you need to specify a resource unambiguously across all of AWS. For more information, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An AWS account ID. This ID is a 12\-digit number that you use to construct Amazon Resource Names (ARNs) for resources.
+.UNINDENT
+.UNINDENT
+.sp
+SourceBackupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the source backup. Specifies the backup you are copying.
+.UNINDENT
+.UNINDENT
+.sp
+SourceBackupRegion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source Region of the backup. Specifies the Region from where this backup is copied.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This is present if there are more backups than returned in the response (String). You can use the \fBNextToken\fP value in the later request to fetch the backups.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

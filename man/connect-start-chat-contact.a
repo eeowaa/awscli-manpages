@@ -1,0 +1,252 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONNECT-START-CHAT-CONTACT" "a" "" ""
+.SH NAME
+connect-start-chat-contact \- Initiates a contact flow to start a new chat for the customer
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Initiates a contact flow to start a new chat for the customer. Response of this API provides a token required to obtain credentials from the \fI\%CreateParticipantConnection\fP API in the Amazon Connect Participant Service.
+.sp
+When a new chat contact is successfully created, clients must subscribe to the participant’s connection for the created chat within 5 minutes. This is achieved by invoking \fI\%CreateParticipantConnection\fP with WEBSOCKET and CONNECTION_CREDENTIALS.
+.sp
+A 429 error occurs in two situations:
+.INDENT 0.0
+.IP \(bu 2
+API rate limit is exceeded. API TPS throttling returns a \fBTooManyRequests\fP exception.
+.IP \(bu 2
+The \fI\%quota for concurrent active chats\fP is exceeded. Active chat throttling returns a \fBLimitExceededException\fP .
+.UNINDENT
+.sp
+For more information about chat, see \fI\%Chat\fP in the \fIAmazon Connect Administrator Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-chat\-contact
+\-\-instance\-id <value>
+\-\-contact\-flow\-id <value>
+[\-\-attributes <value>]
+\-\-participant\-details <value>
+[\-\-initial\-message <value>]
+[\-\-client\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the Amazon Connect instance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-contact\-flow\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the contact flow for initiating the chat. To see the ContactFlowId in the Amazon Connect console user interface, on the navigation menu go to \fBRouting\fP , \fBContact Flows\fP . Choose the contact flow. On the contact flow page, under the name of the contact flow, choose \fBShow additional flow information\fP . The ContactFlowId is the last part of the ARN, shown here in bold:
+.sp
+arn:aws:connect:us\-west\-2:xxxxxxxxxxxx:instance/xxxxxxxx\-xxxx\-xxxx\-xxxx\-xxxxxxxxxxxx/contact\-flow/\fB846ec553\-a005\-41c0\-8341\-xxxxxxxxxxxx\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A custom key\-value pair using an attribute map. The attributes are standard Amazon Connect attributes. They can be accessed in contact flows just like any other contact attributes.
+.sp
+There can be up to 32,768 UTF\-8 bytes across all key\-value pairs per contact. Attribute keys can include only alphanumeric, dash, and underscore characters.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-participant\-details\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information identifying the participant.
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Display name of the participant.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DisplayName=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "DisplayName": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-initial\-message\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The initial message to be sent to the newly created chat.
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the content. Supported types are text and plain.
+.UNINDENT
+.UNINDENT
+.sp
+Content \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content of the chat message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ContentType=string,Content=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ContentType": "string",
+  "Content": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique, case\-sensitive identifier that you provide to ensure the idempotency of the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ContactId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of this contact within the Amazon Connect instance.
+.UNINDENT
+.UNINDENT
+.sp
+ParticipantId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for a chat participant. The participantId for a chat participant is the same throughout the chat lifecycle.
+.UNINDENT
+.UNINDENT
+.sp
+ParticipantToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token used by the chat participant to call \fI\%CreateParticipantConnection\fP . The participant token is valid for the lifetime of a chat participant.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

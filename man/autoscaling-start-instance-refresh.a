@@ -1,0 +1,254 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-START-INSTANCE-REFRESH" "a" "" ""
+.SH NAME
+autoscaling-start-instance-refresh \- Starts a new instance refresh operation, which triggers a rolling replacement of previously launched instances in the Auto Scaling group with a new group of instances
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Starts a new instance refresh operation, which triggers a rolling replacement of previously launched instances in the Auto Scaling group with a new group of instances.
+.sp
+If successful, this call creates a new instance refresh request with a unique ID that you can use to track its progress. To query its status, call the  DescribeInstanceRefreshes API. To describe the instance refreshes that have already run, call the  DescribeInstanceRefreshes API. To cancel an instance refresh operation in progress, use the  CancelInstanceRefresh API.
+.sp
+For more information, see \fI\%Replacing Auto Scaling instances based on an instance refresh\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-instance\-refresh
+\-\-auto\-scaling\-group\-name <value>
+[\-\-strategy <value>]
+[\-\-preferences <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-auto\-scaling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-strategy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The strategy to use for the instance refresh. The only valid value is \fBRolling\fP .
+.sp
+A rolling update is an update that is applied to all instances in an Auto Scaling group until all instances have been updated. A rolling update can fail due to failed health checks or if instances are on standby or are protected from scale in. If the rolling update process fails, any instances that were already replaced are not rolled back to their previous configuration.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRolling\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-preferences\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Set of preferences associated with the instance refresh request.
+.sp
+If not provided, the default values are used. For \fBMinHealthyPercentage\fP , the default value is \fB90\fP . For \fBInstanceWarmup\fP , the default is to use the value specified for the health check grace period for the Auto Scaling group.
+.sp
+For more information, see \fI\%RefreshPreferences\fP in the \fIAmazon EC2 Auto Scaling API Reference\fP .
+.sp
+MinHealthyPercentage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of capacity in the Auto Scaling group that must remain healthy during an instance refresh to allow the operation to continue, as a percentage of the desired capacity of the Auto Scaling group (rounded up to the nearest integer). The default is \fB90\fP .
+.UNINDENT
+.UNINDENT
+.sp
+InstanceWarmup \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of seconds until a newly launched instance is configured and ready to use. During this time, Amazon EC2 Auto Scaling does not immediately move on to the next replacement. The default is to use the value for the health check grace period defined for the group.
+.UNINDENT
+.UNINDENT
+.sp
+CheckpointPercentages \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Threshold values for each checkpoint in ascending order. Each number must be unique. To replace all instances in the Auto Scaling group, the last number in the array must be \fB100\fP .
+.sp
+For usage examples, see \fI\%Adding checkpoints to an instance refresh\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+(integer)
+.UNINDENT
+.UNINDENT
+.sp
+CheckpointDelay \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, to wait after a checkpoint before continuing. This property is optional, but if you specify a value for it, you must also specify a value for \fBCheckpointPercentages\fP . If you specify a value for \fBCheckpointPercentages\fP and not for \fBCheckpointDelay\fP , the \fBCheckpointDelay\fP defaults to \fB3600\fP (1 hour).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+MinHealthyPercentage=integer,InstanceWarmup=integer,CheckpointPercentages=integer,integer,CheckpointDelay=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "MinHealthyPercentage": integer,
+  "InstanceWarmup": integer,
+  "CheckpointPercentages": [integer, ...],
+  "CheckpointDelay": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To start an instance refresh with command line parameters\fP
+.sp
+The following \fBstart\-instance\-refresh\fP example starts an instance refresh using command line arguments. The optional \fBpreferences\fP parameter specifies an \fBInstanceWarmup\fP of \fB400\fP seconds and a \fBMinHealthyPercentage\fP of \fB50\fP percent.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling start\-instance\-refresh \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-preferences \(aq{"InstanceWarmup": 400, "MinHealthyPercentage": 50}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "InstanceRefreshId": "08b91cf7\-8fa6\-48af\-b6a6\-d227f40f1b9b"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Replacing Auto Scaling instances based on an instance refresh\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 2: To start an instance refresh using a JSON file\fP
+.sp
+The following \fBstart\-instance\-refresh\fP example starts an instance refresh using a JSON file. You can specify the Auto Scaling group and define your preferences in a JSON file, as shown in the following example.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling start\-instance\-refresh \e
+    \-\-cli\-input\-json file://config.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBconfig.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AutoScalingGroupName": "my\-asg",
+    "Preferences": {
+        "InstanceWarmup": 400,
+        "MinHealthyPercentage": 50
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "InstanceRefreshId": "08b91cf7\-8fa6\-48af\-b6a6\-d227f40f1b9b"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Replacing Auto Scaling instances based on an instance refresh\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.SH OUTPUT
+.sp
+InstanceRefreshId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique ID for tracking the progress of the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

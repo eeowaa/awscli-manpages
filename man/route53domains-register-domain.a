@@ -1,0 +1,1888 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ROUTE53DOMAINS-REGISTER-DOMAIN" "a" "" ""
+.SH NAME
+route53domains-register-domain \- This operation registers a domain
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This operation registers a domain. Domains are registered either by Amazon Registrar (for .com, .net, and .org domains) or by our registrar associate, Gandi (for all other domains). For some top\-level domains (TLDs), this operation requires extra parameters.
+.sp
+When you register a domain, Amazon Route 53 does the following:
+.INDENT 0.0
+.IP \(bu 2
+Creates a Route 53 hosted zone that has the same name as the domain. Route 53 assigns four name servers to your hosted zone and automatically updates your domain registration with the names of these name servers.
+.IP \(bu 2
+Enables autorenew, so your domain registration will renew automatically each year. We\(aqll notify you in advance of the renewal date so you can choose whether to renew the registration.
+.IP \(bu 2
+Optionally enables privacy protection, so WHOIS queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you don\(aqt enable privacy protection, WHOIS queries return the information that you entered for the registrant, admin, and tech contacts.
+.IP \(bu 2
+If registration is successful, returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant is notified by email.
+.IP \(bu 2
+Charges your AWS account an amount based on the top\-level domain. For more information, see \fI\%Amazon Route 53 Pricing\fP .
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-domain
+\-\-domain\-name <value>
+[\-\-idn\-lang\-code <value>]
+\-\-duration\-in\-years <value>
+[\-\-auto\-renew | \-\-no\-auto\-renew]
+\-\-admin\-contact <value>
+\-\-registrant\-contact <value>
+\-\-tech\-contact <value>
+[\-\-privacy\-protect\-admin\-contact | \-\-no\-privacy\-protect\-admin\-contact]
+[\-\-privacy\-protect\-registrant\-contact | \-\-no\-privacy\-protect\-registrant\-contact]
+[\-\-privacy\-protect\-tech\-contact | \-\-no\-privacy\-protect\-tech\-contact]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The domain name that you want to register. The top\-level domain (TLD), such as .com, must be a TLD that Route 53 supports. For a list of supported TLDs, see \fI\%Domains that You Can Register with Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP .
+.sp
+The domain name can contain only the following characters:
+.INDENT 0.0
+.IP \(bu 2
+Letters a through z. Domain names are not case sensitive.
+.IP \(bu 2
+Numbers 0 through 9.
+.IP \(bu 2
+Hyphen (\-). You can\(aqt specify a hyphen at the beginning or end of a label.
+.IP \(bu 2
+Period (.) to separate the labels in the name, such as the \fB\&.\fP in \fBexample.com\fP .
+.UNINDENT
+.sp
+Internationalized domain names are not supported for some top\-level domains. To determine whether the TLD that you want to use supports internationalized domain names, see \fI\%Domains that You Can Register with Amazon Route 53\fP . For more information, see \fI\%Formatting Internationalized Domain Names\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-idn\-lang\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Reserved for future use.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-duration\-in\-years\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of years that you want to register the domain for. Domains are registered for a minimum of one year. The maximum period depends on the top\-level domain. For the range of valid values for your domain, see \fI\%Domains that You Can Register with Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP .
+.sp
+Default: 1
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-renew\fP | \fB\-\-no\-auto\-renew\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the domain will be automatically renewed (\fBtrue\fP ) or not (\fBfalse\fP ). Autorenewal only takes effect after the account is charged.
+.sp
+Default: \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-admin\-contact\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides detailed contact information. For information about the values that you specify for each element, see \fI\%ContactDetail\fP .
+.sp
+FirstName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First name of contact.
+.UNINDENT
+.UNINDENT
+.sp
+LastName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Last name of contact.
+.UNINDENT
+.UNINDENT
+.sp
+ContactType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the contact is a person, company, association, or public organization. Note the following:
+.INDENT 0.0
+.IP \(bu 2
+If you specify a value other than \fBPERSON\fP , you must also specify a value for \fBOrganizationName\fP .
+.IP \(bu 2
+For some TLDs, the privacy protection available depends on the value that you specify for \fBContact Type\fP . For the privacy protection settings for your TLD, see \fI\%Domains that You Can Register with Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP
+.IP \(bu 2
+For .es domains, if you specify \fBPERSON\fP , you must specify \fBINDIVIDUAL\fP for the value of \fBES_LEGAL_FORM\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the organization for contact types other than \fBPERSON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AddressLine1 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First line of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+AddressLine2 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Second line of contact\(aqs address, if any.
+.UNINDENT
+.UNINDENT
+.sp
+City \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The city of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state or province of the contact\(aqs city.
+.UNINDENT
+.UNINDENT
+.sp
+CountryCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Code for the country of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+ZipCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The zip or postal code of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+PhoneNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The phone number of the contact.
+.sp
+Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code>]". For example, a US phone number might appear as \fB"+1.1234567890"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Email \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Email address of the contact.
+.UNINDENT
+.UNINDENT
+.sp
+Fax \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Fax number of the contact.
+.sp
+Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code]". For example, a US phone number might appear as \fB"+1.1234567890"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ExtraParams \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of name\-value pairs for parameters required by certain top\-level domains.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+ExtraParam includes the following elements.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an additional parameter that is required by a top\-level domain. Here are the top\-level domains that require additional parameters and the names of the parameters that they require:
+.INDENT 0.0
+.INDENT 3.5
+\&.com.au and .net.au
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBAU_ID_NUMBER\fP
+.IP \(bu 2
+\fBAU_ID_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBABN\fP (Australian business number)
+.IP \(bu 2
+\fBACN\fP (Australian company number)
+.IP \(bu 2
+\fBTM\fP (Trademark number)
+.UNINDENT
+.sp
+\&.ca
+.IP \(bu 2
+\fBBRAND_NUMBER\fP
+.IP \(bu 2
+\fBCA_BUSINESS_ENTITY_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBBANK\fP (Bank)
+.IP \(bu 2
+\fBCOMMERCIAL_COMPANY\fP (Commercial company)
+.IP \(bu 2
+\fBCOMPANY\fP (Company)
+.IP \(bu 2
+\fBCOOPERATION\fP (Cooperation)
+.IP \(bu 2
+\fBCOOPERATIVE\fP (Cooperative)
+.IP \(bu 2
+\fBCOOPRIX\fP (Cooprix)
+.IP \(bu 2
+\fBCORP\fP (Corporation)
+.IP \(bu 2
+\fBCREDIT_UNION\fP (Credit union)
+.IP \(bu 2
+\fBFOMIA\fP (Federation of mutual insurance associations)
+.IP \(bu 2
+\fBINC\fP (Incorporated)
+.IP \(bu 2
+\fBLTD\fP (Limited)
+.IP \(bu 2
+\fBLTEE\fP (Limitée)
+.IP \(bu 2
+\fBLLC\fP (Limited liability corporation)
+.IP \(bu 2
+\fBLLP\fP (Limited liability partnership)
+.IP \(bu 2
+\fBLTE\fP (Lte.)
+.IP \(bu 2
+\fBMBA\fP (Mutual benefit association)
+.IP \(bu 2
+\fBMIC\fP (Mutual insurance company)
+.IP \(bu 2
+\fBNFP\fP (Not\-for\-profit corporation)
+.IP \(bu 2
+\fBSA\fP (S.A.)
+.IP \(bu 2
+\fBSAVINGS_COMPANY\fP (Savings company)
+.IP \(bu 2
+\fBSAVINGS_UNION\fP (Savings union)
+.IP \(bu 2
+\fBSARL\fP (Société à responsabilité limitée)
+.IP \(bu 2
+\fBTRUST\fP (Trust)
+.IP \(bu 2
+\fBULC\fP (Unlimited liability corporation)
+.UNINDENT
+.IP \(bu 2
+\fBCA_LEGAL_TYPE\fP   When \fBContactType\fP is \fBPERSON\fP , valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBABO\fP (Aboriginal Peoples indigenous to Canada)
+.IP \(bu 2
+\fBCCT\fP (Canadian citizen)
+.IP \(bu 2
+\fBLGR\fP (Legal Representative of a Canadian Citizen or Permanent Resident)
+.IP \(bu 2
+\fBRES\fP (Permanent resident of Canada)
+.UNINDENT
+.UNINDENT
+.sp
+When \fBContactType\fP is a value other than \fBPERSON\fP , valid values include the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBASS\fP (Canadian unincorporated association)
+.IP \(bu 2
+\fBCCO\fP (Canadian corporation)
+.IP \(bu 2
+\fBEDU\fP (Canadian educational institution)
+.IP \(bu 2
+\fBGOV\fP (Government or government entity in Canada)
+.IP \(bu 2
+\fBHOP\fP (Canadian Hospital)
+.IP \(bu 2
+\fBINB\fP (Indian Band recognized by the Indian Act of Canada)
+.IP \(bu 2
+\fBLAM\fP (Canadian Library, Archive, or Museum)
+.IP \(bu 2
+\fBMAJ\fP (Her/His Majesty the Queen/King)
+.IP \(bu 2
+\fBOMK\fP (Official mark registered in Canada)
+.IP \(bu 2
+\fBPLT\fP (Canadian Political Party)
+.IP \(bu 2
+\fBPRT\fP (Partnership Registered in Canada)
+.IP \(bu 2
+\fBTDM\fP (Trademark registered in Canada)
+.IP \(bu 2
+\fBTRD\fP (Canadian Trade Union)
+.IP \(bu 2
+\fBTRS\fP (Trust established in Canada)
+.UNINDENT
+.sp
+\&.es
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBES_IDENTIFICATION\fP   Specify the applicable value:
+.INDENT 2.0
+.IP \(bu 2
+\fBFor contacts inside Spain:\fP Enter your passport ID.
+.IP \(bu 2
+\fBFor contacts outside of Spain:\fP Enter the VAT identification number for the company.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+For .es domains, the value of \fBContactType\fP must be \fBPERSON\fP .
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+\fBES_IDENTIFICATION_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBDNI_AND_NIF\fP (For Spanish contacts)
+.IP \(bu 2
+\fBNIE\fP (For foreigners with legal residence)
+.IP \(bu 2
+\fBOTHER\fP (For contacts outside of Spain)
+.UNINDENT
+.IP \(bu 2
+\fBES_LEGAL_FORM\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBASSOCIATION\fP
+.IP \(bu 2
+\fBCENTRAL_GOVERNMENT_BODY\fP
+.IP \(bu 2
+\fBCIVIL_SOCIETY\fP
+.IP \(bu 2
+\fBCOMMUNITY_OF_OWNERS\fP
+.IP \(bu 2
+\fBCOMMUNITY_PROPERTY\fP
+.IP \(bu 2
+\fBCONSULATE\fP
+.IP \(bu 2
+\fBCOOPERATIVE\fP
+.IP \(bu 2
+\fBDESIGNATION_OF_ORIGIN_SUPERVISORY_COUNCIL\fP
+.IP \(bu 2
+\fBECONOMIC_INTEREST_GROUP\fP
+.IP \(bu 2
+\fBEMBASSY\fP
+.IP \(bu 2
+\fBENTITY_MANAGING_NATURAL_AREAS\fP
+.IP \(bu 2
+\fBFARM_PARTNERSHIP\fP
+.IP \(bu 2
+\fBFOUNDATION\fP
+.IP \(bu 2
+\fBGENERAL_AND_LIMITED_PARTNERSHIP\fP
+.IP \(bu 2
+\fBGENERAL_PARTNERSHIP\fP
+.IP \(bu 2
+\fBINDIVIDUAL\fP
+.IP \(bu 2
+\fBLIMITED_COMPANY\fP
+.IP \(bu 2
+\fBLOCAL_AUTHORITY\fP
+.IP \(bu 2
+\fBLOCAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBMUTUAL_INSURANCE_COMPANY\fP
+.IP \(bu 2
+\fBNATIONAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBORDER_OR_RELIGIOUS_INSTITUTION\fP
+.IP \(bu 2
+\fBOTHERS (Only for contacts outside of Spain)\fP
+.IP \(bu 2
+\fBPOLITICAL_PARTY\fP
+.IP \(bu 2
+\fBPROFESSIONAL_ASSOCIATION\fP
+.IP \(bu 2
+\fBPUBLIC_LAW_ASSOCIATION\fP
+.IP \(bu 2
+\fBPUBLIC_LIMITED_COMPANY\fP
+.IP \(bu 2
+\fBREGIONAL_GOVERNMENT_BODY\fP
+.IP \(bu 2
+\fBREGIONAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBSAVINGS_BANK\fP
+.IP \(bu 2
+\fBSPANISH_OFFICE\fP
+.IP \(bu 2
+\fBSPORTS_ASSOCIATION\fP
+.IP \(bu 2
+\fBSPORTS_FEDERATION\fP
+.IP \(bu 2
+\fBSPORTS_LIMITED_COMPANY\fP
+.IP \(bu 2
+\fBTEMPORARY_ALLIANCE_OF_ENTERPRISES\fP
+.IP \(bu 2
+\fBTRADE_UNION\fP
+.IP \(bu 2
+\fBWORKER_OWNED_COMPANY\fP
+.IP \(bu 2
+\fBWORKER_OWNED_LIMITED_COMPANY\fP
+.UNINDENT
+.sp
+\&.fi
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBFI_BUSINESS_NUMBER\fP
+.IP \(bu 2
+\fBFI_ID_NUMBER\fP
+.IP \(bu 2
+\fBFI_NATIONALITY\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBFINNISH\fP
+.IP \(bu 2
+\fBNOT_FINNISH\fP
+.UNINDENT
+.IP \(bu 2
+\fBFI_ORGANIZATION_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBCOMPANY\fP
+.IP \(bu 2
+\fBCORPORATION\fP
+.IP \(bu 2
+\fBGOVERNMENT\fP
+.IP \(bu 2
+\fBINSTITUTION\fP
+.IP \(bu 2
+\fBPOLITICAL_PARTY\fP
+.IP \(bu 2
+\fBPUBLIC_COMMUNITY\fP
+.IP \(bu 2
+\fBTOWNSHIP\fP
+.UNINDENT
+.sp
+\&.fr
+.IP \(bu 2
+\fBBIRTH_CITY\fP
+.IP \(bu 2
+\fBBIRTH_COUNTRY\fP
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBBIRTH_DEPARTMENT\fP : Specify the INSEE code that corresponds with the department where the contact was born. If the contact was born somewhere other than France or its overseas departments, specify \fB99\fP . For more information, including a list of departments and the corresponding INSEE numbers, see the Wikipedia entry \fI\%Departments of France\fP .
+.IP \(bu 2
+\fBBRAND_NUMBER\fP
+.sp
+\&.it
+.IP \(bu 2
+\fBIT_NATIONALITY\fP
+.IP \(bu 2
+\fBIT_PIN\fP
+.IP \(bu 2
+\fBIT_REGISTRANT_ENTITY_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBFOREIGNERS\fP
+.IP \(bu 2
+\fBFREELANCE_WORKERS\fP (Freelance workers and professionals)
+.IP \(bu 2
+\fBITALIAN_COMPANIES\fP (Italian companies and one\-person companies)
+.IP \(bu 2
+\fBNON_PROFIT_ORGANIZATIONS\fP
+.IP \(bu 2
+\fBOTHER_SUBJECTS\fP
+.IP \(bu 2
+\fBPUBLIC_ORGANIZATIONS\fP
+.UNINDENT
+.sp
+\&.ru
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBRU_PASSPORT_DATA\fP
+.sp
+\&.se
+.IP \(bu 2
+\fBBIRTH_COUNTRY\fP
+.IP \(bu 2
+\fBSE_ID_NUMBER\fP
+.sp
+\&.sg
+.IP \(bu 2
+\fBSG_ID_NUMBER\fP
+.sp
+\&.co.uk, .me.uk, and .org.uk
+.IP \(bu 2
+\fBUK_CONTACT_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBCRC\fP (UK Corporation by Royal Charter)
+.IP \(bu 2
+\fBFCORP\fP (Non\-UK Corporation)
+.IP \(bu 2
+\fBFIND\fP (Non\-UK Individual, representing self)
+.IP \(bu 2
+\fBFOTHER\fP (Non\-UK Entity that does not fit into any other category)
+.IP \(bu 2
+\fBGOV\fP (UK Government Body)
+.IP \(bu 2
+\fBIND\fP (UK Individual (representing self))
+.IP \(bu 2
+\fBIP\fP (UK Industrial/Provident Registered Company)
+.IP \(bu 2
+\fBLLP\fP (UK Limited Liability Partnership)
+.IP \(bu 2
+\fBLTD\fP (UK Limited Company)
+.IP \(bu 2
+\fBOTHER\fP (UK Entity that does not fit into any other category)
+.IP \(bu 2
+\fBPLC\fP (UK Public Limited Company)
+.IP \(bu 2
+\fBPTNR\fP (UK Partnership)
+.IP \(bu 2
+\fBRCHAR\fP (UK Registered Charity)
+.IP \(bu 2
+\fBSCH\fP (UK School)
+.IP \(bu 2
+\fBSTAT\fP (UK Statutory Body)
+.IP \(bu 2
+\fBSTRA\fP (UK Sole Trader)
+.UNINDENT
+.IP \(bu 2
+\fBUK_COMPANY_NUMBER\fP
+.UNINDENT
+.sp
+In addition, many TLDs require a \fBVAT_NUMBER\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that corresponds with the name of an extra parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FirstName=string,LastName=string,ContactType=string,OrganizationName=string,AddressLine1=string,AddressLine2=string,City=string,State=string,CountryCode=string,ZipCode=string,PhoneNumber=string,Email=string,Fax=string,ExtraParams=[{Name=string,Value=string},{Name=string,Value=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "FirstName": "string",
+  "LastName": "string",
+  "ContactType": "PERSON"|"COMPANY"|"ASSOCIATION"|"PUBLIC_BODY"|"RESELLER",
+  "OrganizationName": "string",
+  "AddressLine1": "string",
+  "AddressLine2": "string",
+  "City": "string",
+  "State": "string",
+  "CountryCode": "AD"|"AE"|"AF"|"AG"|"AI"|"AL"|"AM"|"AN"|"AO"|"AQ"|"AR"|"AS"|"AT"|"AU"|"AW"|"AZ"|"BA"|"BB"|"BD"|"BE"|"BF"|"BG"|"BH"|"BI"|"BJ"|"BL"|"BM"|"BN"|"BO"|"BR"|"BS"|"BT"|"BW"|"BY"|"BZ"|"CA"|"CC"|"CD"|"CF"|"CG"|"CH"|"CI"|"CK"|"CL"|"CM"|"CN"|"CO"|"CR"|"CU"|"CV"|"CX"|"CY"|"CZ"|"DE"|"DJ"|"DK"|"DM"|"DO"|"DZ"|"EC"|"EE"|"EG"|"ER"|"ES"|"ET"|"FI"|"FJ"|"FK"|"FM"|"FO"|"FR"|"GA"|"GB"|"GD"|"GE"|"GH"|"GI"|"GL"|"GM"|"GN"|"GQ"|"GR"|"GT"|"GU"|"GW"|"GY"|"HK"|"HN"|"HR"|"HT"|"HU"|"ID"|"IE"|"IL"|"IM"|"IN"|"IQ"|"IR"|"IS"|"IT"|"JM"|"JO"|"JP"|"KE"|"KG"|"KH"|"KI"|"KM"|"KN"|"KP"|"KR"|"KW"|"KY"|"KZ"|"LA"|"LB"|"LC"|"LI"|"LK"|"LR"|"LS"|"LT"|"LU"|"LV"|"LY"|"MA"|"MC"|"MD"|"ME"|"MF"|"MG"|"MH"|"MK"|"ML"|"MM"|"MN"|"MO"|"MP"|"MR"|"MS"|"MT"|"MU"|"MV"|"MW"|"MX"|"MY"|"MZ"|"NA"|"NC"|"NE"|"NG"|"NI"|"NL"|"NO"|"NP"|"NR"|"NU"|"NZ"|"OM"|"PA"|"PE"|"PF"|"PG"|"PH"|"PK"|"PL"|"PM"|"PN"|"PR"|"PT"|"PW"|"PY"|"QA"|"RO"|"RS"|"RU"|"RW"|"SA"|"SB"|"SC"|"SD"|"SE"|"SG"|"SH"|"SI"|"SK"|"SL"|"SM"|"SN"|"SO"|"SR"|"ST"|"SV"|"SY"|"SZ"|"TC"|"TD"|"TG"|"TH"|"TJ"|"TK"|"TL"|"TM"|"TN"|"TO"|"TR"|"TT"|"TV"|"TW"|"TZ"|"UA"|"UG"|"US"|"UY"|"UZ"|"VA"|"VC"|"VE"|"VG"|"VI"|"VN"|"VU"|"WF"|"WS"|"YE"|"YT"|"ZA"|"ZM"|"ZW",
+  "ZipCode": "string",
+  "PhoneNumber": "string",
+  "Email": "string",
+  "Fax": "string",
+  "ExtraParams": [
+    {
+      "Name": "DUNS_NUMBER"|"BRAND_NUMBER"|"BIRTH_DEPARTMENT"|"BIRTH_DATE_IN_YYYY_MM_DD"|"BIRTH_COUNTRY"|"BIRTH_CITY"|"DOCUMENT_NUMBER"|"AU_ID_NUMBER"|"AU_ID_TYPE"|"CA_LEGAL_TYPE"|"CA_BUSINESS_ENTITY_TYPE"|"CA_LEGAL_REPRESENTATIVE"|"CA_LEGAL_REPRESENTATIVE_CAPACITY"|"ES_IDENTIFICATION"|"ES_IDENTIFICATION_TYPE"|"ES_LEGAL_FORM"|"FI_BUSINESS_NUMBER"|"FI_ID_NUMBER"|"FI_NATIONALITY"|"FI_ORGANIZATION_TYPE"|"IT_NATIONALITY"|"IT_PIN"|"IT_REGISTRANT_ENTITY_TYPE"|"RU_PASSPORT_DATA"|"SE_ID_NUMBER"|"SG_ID_NUMBER"|"VAT_NUMBER"|"UK_CONTACT_TYPE"|"UK_COMPANY_NUMBER",
+      "Value": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-registrant\-contact\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides detailed contact information. For information about the values that you specify for each element, see \fI\%ContactDetail\fP .
+.sp
+FirstName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First name of contact.
+.UNINDENT
+.UNINDENT
+.sp
+LastName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Last name of contact.
+.UNINDENT
+.UNINDENT
+.sp
+ContactType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the contact is a person, company, association, or public organization. Note the following:
+.INDENT 0.0
+.IP \(bu 2
+If you specify a value other than \fBPERSON\fP , you must also specify a value for \fBOrganizationName\fP .
+.IP \(bu 2
+For some TLDs, the privacy protection available depends on the value that you specify for \fBContact Type\fP . For the privacy protection settings for your TLD, see \fI\%Domains that You Can Register with Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP
+.IP \(bu 2
+For .es domains, if you specify \fBPERSON\fP , you must specify \fBINDIVIDUAL\fP for the value of \fBES_LEGAL_FORM\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the organization for contact types other than \fBPERSON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AddressLine1 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First line of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+AddressLine2 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Second line of contact\(aqs address, if any.
+.UNINDENT
+.UNINDENT
+.sp
+City \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The city of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state or province of the contact\(aqs city.
+.UNINDENT
+.UNINDENT
+.sp
+CountryCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Code for the country of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+ZipCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The zip or postal code of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+PhoneNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The phone number of the contact.
+.sp
+Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code>]". For example, a US phone number might appear as \fB"+1.1234567890"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Email \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Email address of the contact.
+.UNINDENT
+.UNINDENT
+.sp
+Fax \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Fax number of the contact.
+.sp
+Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code]". For example, a US phone number might appear as \fB"+1.1234567890"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ExtraParams \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of name\-value pairs for parameters required by certain top\-level domains.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+ExtraParam includes the following elements.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an additional parameter that is required by a top\-level domain. Here are the top\-level domains that require additional parameters and the names of the parameters that they require:
+.INDENT 0.0
+.INDENT 3.5
+\&.com.au and .net.au
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBAU_ID_NUMBER\fP
+.IP \(bu 2
+\fBAU_ID_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBABN\fP (Australian business number)
+.IP \(bu 2
+\fBACN\fP (Australian company number)
+.IP \(bu 2
+\fBTM\fP (Trademark number)
+.UNINDENT
+.sp
+\&.ca
+.IP \(bu 2
+\fBBRAND_NUMBER\fP
+.IP \(bu 2
+\fBCA_BUSINESS_ENTITY_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBBANK\fP (Bank)
+.IP \(bu 2
+\fBCOMMERCIAL_COMPANY\fP (Commercial company)
+.IP \(bu 2
+\fBCOMPANY\fP (Company)
+.IP \(bu 2
+\fBCOOPERATION\fP (Cooperation)
+.IP \(bu 2
+\fBCOOPERATIVE\fP (Cooperative)
+.IP \(bu 2
+\fBCOOPRIX\fP (Cooprix)
+.IP \(bu 2
+\fBCORP\fP (Corporation)
+.IP \(bu 2
+\fBCREDIT_UNION\fP (Credit union)
+.IP \(bu 2
+\fBFOMIA\fP (Federation of mutual insurance associations)
+.IP \(bu 2
+\fBINC\fP (Incorporated)
+.IP \(bu 2
+\fBLTD\fP (Limited)
+.IP \(bu 2
+\fBLTEE\fP (Limitée)
+.IP \(bu 2
+\fBLLC\fP (Limited liability corporation)
+.IP \(bu 2
+\fBLLP\fP (Limited liability partnership)
+.IP \(bu 2
+\fBLTE\fP (Lte.)
+.IP \(bu 2
+\fBMBA\fP (Mutual benefit association)
+.IP \(bu 2
+\fBMIC\fP (Mutual insurance company)
+.IP \(bu 2
+\fBNFP\fP (Not\-for\-profit corporation)
+.IP \(bu 2
+\fBSA\fP (S.A.)
+.IP \(bu 2
+\fBSAVINGS_COMPANY\fP (Savings company)
+.IP \(bu 2
+\fBSAVINGS_UNION\fP (Savings union)
+.IP \(bu 2
+\fBSARL\fP (Société à responsabilité limitée)
+.IP \(bu 2
+\fBTRUST\fP (Trust)
+.IP \(bu 2
+\fBULC\fP (Unlimited liability corporation)
+.UNINDENT
+.IP \(bu 2
+\fBCA_LEGAL_TYPE\fP   When \fBContactType\fP is \fBPERSON\fP , valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBABO\fP (Aboriginal Peoples indigenous to Canada)
+.IP \(bu 2
+\fBCCT\fP (Canadian citizen)
+.IP \(bu 2
+\fBLGR\fP (Legal Representative of a Canadian Citizen or Permanent Resident)
+.IP \(bu 2
+\fBRES\fP (Permanent resident of Canada)
+.UNINDENT
+.UNINDENT
+.sp
+When \fBContactType\fP is a value other than \fBPERSON\fP , valid values include the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBASS\fP (Canadian unincorporated association)
+.IP \(bu 2
+\fBCCO\fP (Canadian corporation)
+.IP \(bu 2
+\fBEDU\fP (Canadian educational institution)
+.IP \(bu 2
+\fBGOV\fP (Government or government entity in Canada)
+.IP \(bu 2
+\fBHOP\fP (Canadian Hospital)
+.IP \(bu 2
+\fBINB\fP (Indian Band recognized by the Indian Act of Canada)
+.IP \(bu 2
+\fBLAM\fP (Canadian Library, Archive, or Museum)
+.IP \(bu 2
+\fBMAJ\fP (Her/His Majesty the Queen/King)
+.IP \(bu 2
+\fBOMK\fP (Official mark registered in Canada)
+.IP \(bu 2
+\fBPLT\fP (Canadian Political Party)
+.IP \(bu 2
+\fBPRT\fP (Partnership Registered in Canada)
+.IP \(bu 2
+\fBTDM\fP (Trademark registered in Canada)
+.IP \(bu 2
+\fBTRD\fP (Canadian Trade Union)
+.IP \(bu 2
+\fBTRS\fP (Trust established in Canada)
+.UNINDENT
+.sp
+\&.es
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBES_IDENTIFICATION\fP   Specify the applicable value:
+.INDENT 2.0
+.IP \(bu 2
+\fBFor contacts inside Spain:\fP Enter your passport ID.
+.IP \(bu 2
+\fBFor contacts outside of Spain:\fP Enter the VAT identification number for the company.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+For .es domains, the value of \fBContactType\fP must be \fBPERSON\fP .
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+\fBES_IDENTIFICATION_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBDNI_AND_NIF\fP (For Spanish contacts)
+.IP \(bu 2
+\fBNIE\fP (For foreigners with legal residence)
+.IP \(bu 2
+\fBOTHER\fP (For contacts outside of Spain)
+.UNINDENT
+.IP \(bu 2
+\fBES_LEGAL_FORM\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBASSOCIATION\fP
+.IP \(bu 2
+\fBCENTRAL_GOVERNMENT_BODY\fP
+.IP \(bu 2
+\fBCIVIL_SOCIETY\fP
+.IP \(bu 2
+\fBCOMMUNITY_OF_OWNERS\fP
+.IP \(bu 2
+\fBCOMMUNITY_PROPERTY\fP
+.IP \(bu 2
+\fBCONSULATE\fP
+.IP \(bu 2
+\fBCOOPERATIVE\fP
+.IP \(bu 2
+\fBDESIGNATION_OF_ORIGIN_SUPERVISORY_COUNCIL\fP
+.IP \(bu 2
+\fBECONOMIC_INTEREST_GROUP\fP
+.IP \(bu 2
+\fBEMBASSY\fP
+.IP \(bu 2
+\fBENTITY_MANAGING_NATURAL_AREAS\fP
+.IP \(bu 2
+\fBFARM_PARTNERSHIP\fP
+.IP \(bu 2
+\fBFOUNDATION\fP
+.IP \(bu 2
+\fBGENERAL_AND_LIMITED_PARTNERSHIP\fP
+.IP \(bu 2
+\fBGENERAL_PARTNERSHIP\fP
+.IP \(bu 2
+\fBINDIVIDUAL\fP
+.IP \(bu 2
+\fBLIMITED_COMPANY\fP
+.IP \(bu 2
+\fBLOCAL_AUTHORITY\fP
+.IP \(bu 2
+\fBLOCAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBMUTUAL_INSURANCE_COMPANY\fP
+.IP \(bu 2
+\fBNATIONAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBORDER_OR_RELIGIOUS_INSTITUTION\fP
+.IP \(bu 2
+\fBOTHERS (Only for contacts outside of Spain)\fP
+.IP \(bu 2
+\fBPOLITICAL_PARTY\fP
+.IP \(bu 2
+\fBPROFESSIONAL_ASSOCIATION\fP
+.IP \(bu 2
+\fBPUBLIC_LAW_ASSOCIATION\fP
+.IP \(bu 2
+\fBPUBLIC_LIMITED_COMPANY\fP
+.IP \(bu 2
+\fBREGIONAL_GOVERNMENT_BODY\fP
+.IP \(bu 2
+\fBREGIONAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBSAVINGS_BANK\fP
+.IP \(bu 2
+\fBSPANISH_OFFICE\fP
+.IP \(bu 2
+\fBSPORTS_ASSOCIATION\fP
+.IP \(bu 2
+\fBSPORTS_FEDERATION\fP
+.IP \(bu 2
+\fBSPORTS_LIMITED_COMPANY\fP
+.IP \(bu 2
+\fBTEMPORARY_ALLIANCE_OF_ENTERPRISES\fP
+.IP \(bu 2
+\fBTRADE_UNION\fP
+.IP \(bu 2
+\fBWORKER_OWNED_COMPANY\fP
+.IP \(bu 2
+\fBWORKER_OWNED_LIMITED_COMPANY\fP
+.UNINDENT
+.sp
+\&.fi
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBFI_BUSINESS_NUMBER\fP
+.IP \(bu 2
+\fBFI_ID_NUMBER\fP
+.IP \(bu 2
+\fBFI_NATIONALITY\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBFINNISH\fP
+.IP \(bu 2
+\fBNOT_FINNISH\fP
+.UNINDENT
+.IP \(bu 2
+\fBFI_ORGANIZATION_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBCOMPANY\fP
+.IP \(bu 2
+\fBCORPORATION\fP
+.IP \(bu 2
+\fBGOVERNMENT\fP
+.IP \(bu 2
+\fBINSTITUTION\fP
+.IP \(bu 2
+\fBPOLITICAL_PARTY\fP
+.IP \(bu 2
+\fBPUBLIC_COMMUNITY\fP
+.IP \(bu 2
+\fBTOWNSHIP\fP
+.UNINDENT
+.sp
+\&.fr
+.IP \(bu 2
+\fBBIRTH_CITY\fP
+.IP \(bu 2
+\fBBIRTH_COUNTRY\fP
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBBIRTH_DEPARTMENT\fP : Specify the INSEE code that corresponds with the department where the contact was born. If the contact was born somewhere other than France or its overseas departments, specify \fB99\fP . For more information, including a list of departments and the corresponding INSEE numbers, see the Wikipedia entry \fI\%Departments of France\fP .
+.IP \(bu 2
+\fBBRAND_NUMBER\fP
+.sp
+\&.it
+.IP \(bu 2
+\fBIT_NATIONALITY\fP
+.IP \(bu 2
+\fBIT_PIN\fP
+.IP \(bu 2
+\fBIT_REGISTRANT_ENTITY_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBFOREIGNERS\fP
+.IP \(bu 2
+\fBFREELANCE_WORKERS\fP (Freelance workers and professionals)
+.IP \(bu 2
+\fBITALIAN_COMPANIES\fP (Italian companies and one\-person companies)
+.IP \(bu 2
+\fBNON_PROFIT_ORGANIZATIONS\fP
+.IP \(bu 2
+\fBOTHER_SUBJECTS\fP
+.IP \(bu 2
+\fBPUBLIC_ORGANIZATIONS\fP
+.UNINDENT
+.sp
+\&.ru
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBRU_PASSPORT_DATA\fP
+.sp
+\&.se
+.IP \(bu 2
+\fBBIRTH_COUNTRY\fP
+.IP \(bu 2
+\fBSE_ID_NUMBER\fP
+.sp
+\&.sg
+.IP \(bu 2
+\fBSG_ID_NUMBER\fP
+.sp
+\&.co.uk, .me.uk, and .org.uk
+.IP \(bu 2
+\fBUK_CONTACT_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBCRC\fP (UK Corporation by Royal Charter)
+.IP \(bu 2
+\fBFCORP\fP (Non\-UK Corporation)
+.IP \(bu 2
+\fBFIND\fP (Non\-UK Individual, representing self)
+.IP \(bu 2
+\fBFOTHER\fP (Non\-UK Entity that does not fit into any other category)
+.IP \(bu 2
+\fBGOV\fP (UK Government Body)
+.IP \(bu 2
+\fBIND\fP (UK Individual (representing self))
+.IP \(bu 2
+\fBIP\fP (UK Industrial/Provident Registered Company)
+.IP \(bu 2
+\fBLLP\fP (UK Limited Liability Partnership)
+.IP \(bu 2
+\fBLTD\fP (UK Limited Company)
+.IP \(bu 2
+\fBOTHER\fP (UK Entity that does not fit into any other category)
+.IP \(bu 2
+\fBPLC\fP (UK Public Limited Company)
+.IP \(bu 2
+\fBPTNR\fP (UK Partnership)
+.IP \(bu 2
+\fBRCHAR\fP (UK Registered Charity)
+.IP \(bu 2
+\fBSCH\fP (UK School)
+.IP \(bu 2
+\fBSTAT\fP (UK Statutory Body)
+.IP \(bu 2
+\fBSTRA\fP (UK Sole Trader)
+.UNINDENT
+.IP \(bu 2
+\fBUK_COMPANY_NUMBER\fP
+.UNINDENT
+.sp
+In addition, many TLDs require a \fBVAT_NUMBER\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that corresponds with the name of an extra parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FirstName=string,LastName=string,ContactType=string,OrganizationName=string,AddressLine1=string,AddressLine2=string,City=string,State=string,CountryCode=string,ZipCode=string,PhoneNumber=string,Email=string,Fax=string,ExtraParams=[{Name=string,Value=string},{Name=string,Value=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "FirstName": "string",
+  "LastName": "string",
+  "ContactType": "PERSON"|"COMPANY"|"ASSOCIATION"|"PUBLIC_BODY"|"RESELLER",
+  "OrganizationName": "string",
+  "AddressLine1": "string",
+  "AddressLine2": "string",
+  "City": "string",
+  "State": "string",
+  "CountryCode": "AD"|"AE"|"AF"|"AG"|"AI"|"AL"|"AM"|"AN"|"AO"|"AQ"|"AR"|"AS"|"AT"|"AU"|"AW"|"AZ"|"BA"|"BB"|"BD"|"BE"|"BF"|"BG"|"BH"|"BI"|"BJ"|"BL"|"BM"|"BN"|"BO"|"BR"|"BS"|"BT"|"BW"|"BY"|"BZ"|"CA"|"CC"|"CD"|"CF"|"CG"|"CH"|"CI"|"CK"|"CL"|"CM"|"CN"|"CO"|"CR"|"CU"|"CV"|"CX"|"CY"|"CZ"|"DE"|"DJ"|"DK"|"DM"|"DO"|"DZ"|"EC"|"EE"|"EG"|"ER"|"ES"|"ET"|"FI"|"FJ"|"FK"|"FM"|"FO"|"FR"|"GA"|"GB"|"GD"|"GE"|"GH"|"GI"|"GL"|"GM"|"GN"|"GQ"|"GR"|"GT"|"GU"|"GW"|"GY"|"HK"|"HN"|"HR"|"HT"|"HU"|"ID"|"IE"|"IL"|"IM"|"IN"|"IQ"|"IR"|"IS"|"IT"|"JM"|"JO"|"JP"|"KE"|"KG"|"KH"|"KI"|"KM"|"KN"|"KP"|"KR"|"KW"|"KY"|"KZ"|"LA"|"LB"|"LC"|"LI"|"LK"|"LR"|"LS"|"LT"|"LU"|"LV"|"LY"|"MA"|"MC"|"MD"|"ME"|"MF"|"MG"|"MH"|"MK"|"ML"|"MM"|"MN"|"MO"|"MP"|"MR"|"MS"|"MT"|"MU"|"MV"|"MW"|"MX"|"MY"|"MZ"|"NA"|"NC"|"NE"|"NG"|"NI"|"NL"|"NO"|"NP"|"NR"|"NU"|"NZ"|"OM"|"PA"|"PE"|"PF"|"PG"|"PH"|"PK"|"PL"|"PM"|"PN"|"PR"|"PT"|"PW"|"PY"|"QA"|"RO"|"RS"|"RU"|"RW"|"SA"|"SB"|"SC"|"SD"|"SE"|"SG"|"SH"|"SI"|"SK"|"SL"|"SM"|"SN"|"SO"|"SR"|"ST"|"SV"|"SY"|"SZ"|"TC"|"TD"|"TG"|"TH"|"TJ"|"TK"|"TL"|"TM"|"TN"|"TO"|"TR"|"TT"|"TV"|"TW"|"TZ"|"UA"|"UG"|"US"|"UY"|"UZ"|"VA"|"VC"|"VE"|"VG"|"VI"|"VN"|"VU"|"WF"|"WS"|"YE"|"YT"|"ZA"|"ZM"|"ZW",
+  "ZipCode": "string",
+  "PhoneNumber": "string",
+  "Email": "string",
+  "Fax": "string",
+  "ExtraParams": [
+    {
+      "Name": "DUNS_NUMBER"|"BRAND_NUMBER"|"BIRTH_DEPARTMENT"|"BIRTH_DATE_IN_YYYY_MM_DD"|"BIRTH_COUNTRY"|"BIRTH_CITY"|"DOCUMENT_NUMBER"|"AU_ID_NUMBER"|"AU_ID_TYPE"|"CA_LEGAL_TYPE"|"CA_BUSINESS_ENTITY_TYPE"|"CA_LEGAL_REPRESENTATIVE"|"CA_LEGAL_REPRESENTATIVE_CAPACITY"|"ES_IDENTIFICATION"|"ES_IDENTIFICATION_TYPE"|"ES_LEGAL_FORM"|"FI_BUSINESS_NUMBER"|"FI_ID_NUMBER"|"FI_NATIONALITY"|"FI_ORGANIZATION_TYPE"|"IT_NATIONALITY"|"IT_PIN"|"IT_REGISTRANT_ENTITY_TYPE"|"RU_PASSPORT_DATA"|"SE_ID_NUMBER"|"SG_ID_NUMBER"|"VAT_NUMBER"|"UK_CONTACT_TYPE"|"UK_COMPANY_NUMBER",
+      "Value": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tech\-contact\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides detailed contact information. For information about the values that you specify for each element, see \fI\%ContactDetail\fP .
+.sp
+FirstName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First name of contact.
+.UNINDENT
+.UNINDENT
+.sp
+LastName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Last name of contact.
+.UNINDENT
+.UNINDENT
+.sp
+ContactType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the contact is a person, company, association, or public organization. Note the following:
+.INDENT 0.0
+.IP \(bu 2
+If you specify a value other than \fBPERSON\fP , you must also specify a value for \fBOrganizationName\fP .
+.IP \(bu 2
+For some TLDs, the privacy protection available depends on the value that you specify for \fBContact Type\fP . For the privacy protection settings for your TLD, see \fI\%Domains that You Can Register with Amazon Route 53\fP in the \fIAmazon Route 53 Developer Guide\fP
+.IP \(bu 2
+For .es domains, if you specify \fBPERSON\fP , you must specify \fBINDIVIDUAL\fP for the value of \fBES_LEGAL_FORM\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the organization for contact types other than \fBPERSON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AddressLine1 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First line of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+AddressLine2 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Second line of contact\(aqs address, if any.
+.UNINDENT
+.UNINDENT
+.sp
+City \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The city of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state or province of the contact\(aqs city.
+.UNINDENT
+.UNINDENT
+.sp
+CountryCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Code for the country of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+ZipCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The zip or postal code of the contact\(aqs address.
+.UNINDENT
+.UNINDENT
+.sp
+PhoneNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The phone number of the contact.
+.sp
+Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code>]". For example, a US phone number might appear as \fB"+1.1234567890"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Email \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Email address of the contact.
+.UNINDENT
+.UNINDENT
+.sp
+Fax \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Fax number of the contact.
+.sp
+Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code]". For example, a US phone number might appear as \fB"+1.1234567890"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ExtraParams \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of name\-value pairs for parameters required by certain top\-level domains.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+ExtraParam includes the following elements.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an additional parameter that is required by a top\-level domain. Here are the top\-level domains that require additional parameters and the names of the parameters that they require:
+.INDENT 0.0
+.INDENT 3.5
+\&.com.au and .net.au
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBAU_ID_NUMBER\fP
+.IP \(bu 2
+\fBAU_ID_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBABN\fP (Australian business number)
+.IP \(bu 2
+\fBACN\fP (Australian company number)
+.IP \(bu 2
+\fBTM\fP (Trademark number)
+.UNINDENT
+.sp
+\&.ca
+.IP \(bu 2
+\fBBRAND_NUMBER\fP
+.IP \(bu 2
+\fBCA_BUSINESS_ENTITY_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBBANK\fP (Bank)
+.IP \(bu 2
+\fBCOMMERCIAL_COMPANY\fP (Commercial company)
+.IP \(bu 2
+\fBCOMPANY\fP (Company)
+.IP \(bu 2
+\fBCOOPERATION\fP (Cooperation)
+.IP \(bu 2
+\fBCOOPERATIVE\fP (Cooperative)
+.IP \(bu 2
+\fBCOOPRIX\fP (Cooprix)
+.IP \(bu 2
+\fBCORP\fP (Corporation)
+.IP \(bu 2
+\fBCREDIT_UNION\fP (Credit union)
+.IP \(bu 2
+\fBFOMIA\fP (Federation of mutual insurance associations)
+.IP \(bu 2
+\fBINC\fP (Incorporated)
+.IP \(bu 2
+\fBLTD\fP (Limited)
+.IP \(bu 2
+\fBLTEE\fP (Limitée)
+.IP \(bu 2
+\fBLLC\fP (Limited liability corporation)
+.IP \(bu 2
+\fBLLP\fP (Limited liability partnership)
+.IP \(bu 2
+\fBLTE\fP (Lte.)
+.IP \(bu 2
+\fBMBA\fP (Mutual benefit association)
+.IP \(bu 2
+\fBMIC\fP (Mutual insurance company)
+.IP \(bu 2
+\fBNFP\fP (Not\-for\-profit corporation)
+.IP \(bu 2
+\fBSA\fP (S.A.)
+.IP \(bu 2
+\fBSAVINGS_COMPANY\fP (Savings company)
+.IP \(bu 2
+\fBSAVINGS_UNION\fP (Savings union)
+.IP \(bu 2
+\fBSARL\fP (Société à responsabilité limitée)
+.IP \(bu 2
+\fBTRUST\fP (Trust)
+.IP \(bu 2
+\fBULC\fP (Unlimited liability corporation)
+.UNINDENT
+.IP \(bu 2
+\fBCA_LEGAL_TYPE\fP   When \fBContactType\fP is \fBPERSON\fP , valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBABO\fP (Aboriginal Peoples indigenous to Canada)
+.IP \(bu 2
+\fBCCT\fP (Canadian citizen)
+.IP \(bu 2
+\fBLGR\fP (Legal Representative of a Canadian Citizen or Permanent Resident)
+.IP \(bu 2
+\fBRES\fP (Permanent resident of Canada)
+.UNINDENT
+.UNINDENT
+.sp
+When \fBContactType\fP is a value other than \fBPERSON\fP , valid values include the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBASS\fP (Canadian unincorporated association)
+.IP \(bu 2
+\fBCCO\fP (Canadian corporation)
+.IP \(bu 2
+\fBEDU\fP (Canadian educational institution)
+.IP \(bu 2
+\fBGOV\fP (Government or government entity in Canada)
+.IP \(bu 2
+\fBHOP\fP (Canadian Hospital)
+.IP \(bu 2
+\fBINB\fP (Indian Band recognized by the Indian Act of Canada)
+.IP \(bu 2
+\fBLAM\fP (Canadian Library, Archive, or Museum)
+.IP \(bu 2
+\fBMAJ\fP (Her/His Majesty the Queen/King)
+.IP \(bu 2
+\fBOMK\fP (Official mark registered in Canada)
+.IP \(bu 2
+\fBPLT\fP (Canadian Political Party)
+.IP \(bu 2
+\fBPRT\fP (Partnership Registered in Canada)
+.IP \(bu 2
+\fBTDM\fP (Trademark registered in Canada)
+.IP \(bu 2
+\fBTRD\fP (Canadian Trade Union)
+.IP \(bu 2
+\fBTRS\fP (Trust established in Canada)
+.UNINDENT
+.sp
+\&.es
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBES_IDENTIFICATION\fP   Specify the applicable value:
+.INDENT 2.0
+.IP \(bu 2
+\fBFor contacts inside Spain:\fP Enter your passport ID.
+.IP \(bu 2
+\fBFor contacts outside of Spain:\fP Enter the VAT identification number for the company.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 2.0
+.INDENT 3.5
+For .es domains, the value of \fBContactType\fP must be \fBPERSON\fP .
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+\fBES_IDENTIFICATION_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBDNI_AND_NIF\fP (For Spanish contacts)
+.IP \(bu 2
+\fBNIE\fP (For foreigners with legal residence)
+.IP \(bu 2
+\fBOTHER\fP (For contacts outside of Spain)
+.UNINDENT
+.IP \(bu 2
+\fBES_LEGAL_FORM\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBASSOCIATION\fP
+.IP \(bu 2
+\fBCENTRAL_GOVERNMENT_BODY\fP
+.IP \(bu 2
+\fBCIVIL_SOCIETY\fP
+.IP \(bu 2
+\fBCOMMUNITY_OF_OWNERS\fP
+.IP \(bu 2
+\fBCOMMUNITY_PROPERTY\fP
+.IP \(bu 2
+\fBCONSULATE\fP
+.IP \(bu 2
+\fBCOOPERATIVE\fP
+.IP \(bu 2
+\fBDESIGNATION_OF_ORIGIN_SUPERVISORY_COUNCIL\fP
+.IP \(bu 2
+\fBECONOMIC_INTEREST_GROUP\fP
+.IP \(bu 2
+\fBEMBASSY\fP
+.IP \(bu 2
+\fBENTITY_MANAGING_NATURAL_AREAS\fP
+.IP \(bu 2
+\fBFARM_PARTNERSHIP\fP
+.IP \(bu 2
+\fBFOUNDATION\fP
+.IP \(bu 2
+\fBGENERAL_AND_LIMITED_PARTNERSHIP\fP
+.IP \(bu 2
+\fBGENERAL_PARTNERSHIP\fP
+.IP \(bu 2
+\fBINDIVIDUAL\fP
+.IP \(bu 2
+\fBLIMITED_COMPANY\fP
+.IP \(bu 2
+\fBLOCAL_AUTHORITY\fP
+.IP \(bu 2
+\fBLOCAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBMUTUAL_INSURANCE_COMPANY\fP
+.IP \(bu 2
+\fBNATIONAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBORDER_OR_RELIGIOUS_INSTITUTION\fP
+.IP \(bu 2
+\fBOTHERS (Only for contacts outside of Spain)\fP
+.IP \(bu 2
+\fBPOLITICAL_PARTY\fP
+.IP \(bu 2
+\fBPROFESSIONAL_ASSOCIATION\fP
+.IP \(bu 2
+\fBPUBLIC_LAW_ASSOCIATION\fP
+.IP \(bu 2
+\fBPUBLIC_LIMITED_COMPANY\fP
+.IP \(bu 2
+\fBREGIONAL_GOVERNMENT_BODY\fP
+.IP \(bu 2
+\fBREGIONAL_PUBLIC_ENTITY\fP
+.IP \(bu 2
+\fBSAVINGS_BANK\fP
+.IP \(bu 2
+\fBSPANISH_OFFICE\fP
+.IP \(bu 2
+\fBSPORTS_ASSOCIATION\fP
+.IP \(bu 2
+\fBSPORTS_FEDERATION\fP
+.IP \(bu 2
+\fBSPORTS_LIMITED_COMPANY\fP
+.IP \(bu 2
+\fBTEMPORARY_ALLIANCE_OF_ENTERPRISES\fP
+.IP \(bu 2
+\fBTRADE_UNION\fP
+.IP \(bu 2
+\fBWORKER_OWNED_COMPANY\fP
+.IP \(bu 2
+\fBWORKER_OWNED_LIMITED_COMPANY\fP
+.UNINDENT
+.sp
+\&.fi
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBFI_BUSINESS_NUMBER\fP
+.IP \(bu 2
+\fBFI_ID_NUMBER\fP
+.IP \(bu 2
+\fBFI_NATIONALITY\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBFINNISH\fP
+.IP \(bu 2
+\fBNOT_FINNISH\fP
+.UNINDENT
+.IP \(bu 2
+\fBFI_ORGANIZATION_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBCOMPANY\fP
+.IP \(bu 2
+\fBCORPORATION\fP
+.IP \(bu 2
+\fBGOVERNMENT\fP
+.IP \(bu 2
+\fBINSTITUTION\fP
+.IP \(bu 2
+\fBPOLITICAL_PARTY\fP
+.IP \(bu 2
+\fBPUBLIC_COMMUNITY\fP
+.IP \(bu 2
+\fBTOWNSHIP\fP
+.UNINDENT
+.sp
+\&.fr
+.IP \(bu 2
+\fBBIRTH_CITY\fP
+.IP \(bu 2
+\fBBIRTH_COUNTRY\fP
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBBIRTH_DEPARTMENT\fP : Specify the INSEE code that corresponds with the department where the contact was born. If the contact was born somewhere other than France or its overseas departments, specify \fB99\fP . For more information, including a list of departments and the corresponding INSEE numbers, see the Wikipedia entry \fI\%Departments of France\fP .
+.IP \(bu 2
+\fBBRAND_NUMBER\fP
+.sp
+\&.it
+.IP \(bu 2
+\fBIT_NATIONALITY\fP
+.IP \(bu 2
+\fBIT_PIN\fP
+.IP \(bu 2
+\fBIT_REGISTRANT_ENTITY_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBFOREIGNERS\fP
+.IP \(bu 2
+\fBFREELANCE_WORKERS\fP (Freelance workers and professionals)
+.IP \(bu 2
+\fBITALIAN_COMPANIES\fP (Italian companies and one\-person companies)
+.IP \(bu 2
+\fBNON_PROFIT_ORGANIZATIONS\fP
+.IP \(bu 2
+\fBOTHER_SUBJECTS\fP
+.IP \(bu 2
+\fBPUBLIC_ORGANIZATIONS\fP
+.UNINDENT
+.sp
+\&.ru
+.IP \(bu 2
+\fBBIRTH_DATE_IN_YYYY_MM_DD\fP
+.IP \(bu 2
+\fBRU_PASSPORT_DATA\fP
+.sp
+\&.se
+.IP \(bu 2
+\fBBIRTH_COUNTRY\fP
+.IP \(bu 2
+\fBSE_ID_NUMBER\fP
+.sp
+\&.sg
+.IP \(bu 2
+\fBSG_ID_NUMBER\fP
+.sp
+\&.co.uk, .me.uk, and .org.uk
+.IP \(bu 2
+\fBUK_CONTACT_TYPE\fP   Valid values include the following:
+.INDENT 2.0
+.IP \(bu 2
+\fBCRC\fP (UK Corporation by Royal Charter)
+.IP \(bu 2
+\fBFCORP\fP (Non\-UK Corporation)
+.IP \(bu 2
+\fBFIND\fP (Non\-UK Individual, representing self)
+.IP \(bu 2
+\fBFOTHER\fP (Non\-UK Entity that does not fit into any other category)
+.IP \(bu 2
+\fBGOV\fP (UK Government Body)
+.IP \(bu 2
+\fBIND\fP (UK Individual (representing self))
+.IP \(bu 2
+\fBIP\fP (UK Industrial/Provident Registered Company)
+.IP \(bu 2
+\fBLLP\fP (UK Limited Liability Partnership)
+.IP \(bu 2
+\fBLTD\fP (UK Limited Company)
+.IP \(bu 2
+\fBOTHER\fP (UK Entity that does not fit into any other category)
+.IP \(bu 2
+\fBPLC\fP (UK Public Limited Company)
+.IP \(bu 2
+\fBPTNR\fP (UK Partnership)
+.IP \(bu 2
+\fBRCHAR\fP (UK Registered Charity)
+.IP \(bu 2
+\fBSCH\fP (UK School)
+.IP \(bu 2
+\fBSTAT\fP (UK Statutory Body)
+.IP \(bu 2
+\fBSTRA\fP (UK Sole Trader)
+.UNINDENT
+.IP \(bu 2
+\fBUK_COMPANY_NUMBER\fP
+.UNINDENT
+.sp
+In addition, many TLDs require a \fBVAT_NUMBER\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that corresponds with the name of an extra parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FirstName=string,LastName=string,ContactType=string,OrganizationName=string,AddressLine1=string,AddressLine2=string,City=string,State=string,CountryCode=string,ZipCode=string,PhoneNumber=string,Email=string,Fax=string,ExtraParams=[{Name=string,Value=string},{Name=string,Value=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "FirstName": "string",
+  "LastName": "string",
+  "ContactType": "PERSON"|"COMPANY"|"ASSOCIATION"|"PUBLIC_BODY"|"RESELLER",
+  "OrganizationName": "string",
+  "AddressLine1": "string",
+  "AddressLine2": "string",
+  "City": "string",
+  "State": "string",
+  "CountryCode": "AD"|"AE"|"AF"|"AG"|"AI"|"AL"|"AM"|"AN"|"AO"|"AQ"|"AR"|"AS"|"AT"|"AU"|"AW"|"AZ"|"BA"|"BB"|"BD"|"BE"|"BF"|"BG"|"BH"|"BI"|"BJ"|"BL"|"BM"|"BN"|"BO"|"BR"|"BS"|"BT"|"BW"|"BY"|"BZ"|"CA"|"CC"|"CD"|"CF"|"CG"|"CH"|"CI"|"CK"|"CL"|"CM"|"CN"|"CO"|"CR"|"CU"|"CV"|"CX"|"CY"|"CZ"|"DE"|"DJ"|"DK"|"DM"|"DO"|"DZ"|"EC"|"EE"|"EG"|"ER"|"ES"|"ET"|"FI"|"FJ"|"FK"|"FM"|"FO"|"FR"|"GA"|"GB"|"GD"|"GE"|"GH"|"GI"|"GL"|"GM"|"GN"|"GQ"|"GR"|"GT"|"GU"|"GW"|"GY"|"HK"|"HN"|"HR"|"HT"|"HU"|"ID"|"IE"|"IL"|"IM"|"IN"|"IQ"|"IR"|"IS"|"IT"|"JM"|"JO"|"JP"|"KE"|"KG"|"KH"|"KI"|"KM"|"KN"|"KP"|"KR"|"KW"|"KY"|"KZ"|"LA"|"LB"|"LC"|"LI"|"LK"|"LR"|"LS"|"LT"|"LU"|"LV"|"LY"|"MA"|"MC"|"MD"|"ME"|"MF"|"MG"|"MH"|"MK"|"ML"|"MM"|"MN"|"MO"|"MP"|"MR"|"MS"|"MT"|"MU"|"MV"|"MW"|"MX"|"MY"|"MZ"|"NA"|"NC"|"NE"|"NG"|"NI"|"NL"|"NO"|"NP"|"NR"|"NU"|"NZ"|"OM"|"PA"|"PE"|"PF"|"PG"|"PH"|"PK"|"PL"|"PM"|"PN"|"PR"|"PT"|"PW"|"PY"|"QA"|"RO"|"RS"|"RU"|"RW"|"SA"|"SB"|"SC"|"SD"|"SE"|"SG"|"SH"|"SI"|"SK"|"SL"|"SM"|"SN"|"SO"|"SR"|"ST"|"SV"|"SY"|"SZ"|"TC"|"TD"|"TG"|"TH"|"TJ"|"TK"|"TL"|"TM"|"TN"|"TO"|"TR"|"TT"|"TV"|"TW"|"TZ"|"UA"|"UG"|"US"|"UY"|"UZ"|"VA"|"VC"|"VE"|"VG"|"VI"|"VN"|"VU"|"WF"|"WS"|"YE"|"YT"|"ZA"|"ZM"|"ZW",
+  "ZipCode": "string",
+  "PhoneNumber": "string",
+  "Email": "string",
+  "Fax": "string",
+  "ExtraParams": [
+    {
+      "Name": "DUNS_NUMBER"|"BRAND_NUMBER"|"BIRTH_DEPARTMENT"|"BIRTH_DATE_IN_YYYY_MM_DD"|"BIRTH_COUNTRY"|"BIRTH_CITY"|"DOCUMENT_NUMBER"|"AU_ID_NUMBER"|"AU_ID_TYPE"|"CA_LEGAL_TYPE"|"CA_BUSINESS_ENTITY_TYPE"|"CA_LEGAL_REPRESENTATIVE"|"CA_LEGAL_REPRESENTATIVE_CAPACITY"|"ES_IDENTIFICATION"|"ES_IDENTIFICATION_TYPE"|"ES_LEGAL_FORM"|"FI_BUSINESS_NUMBER"|"FI_ID_NUMBER"|"FI_NATIONALITY"|"FI_ORGANIZATION_TYPE"|"IT_NATIONALITY"|"IT_PIN"|"IT_REGISTRANT_ENTITY_TYPE"|"RU_PASSPORT_DATA"|"SE_ID_NUMBER"|"SG_ID_NUMBER"|"VAT_NUMBER"|"UK_CONTACT_TYPE"|"UK_COMPANY_NUMBER",
+      "Value": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-privacy\-protect\-admin\-contact\fP | \fB\-\-no\-privacy\-protect\-admin\-contact\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether you want to conceal contact information from WHOIS queries. If you specify \fBtrue\fP , WHOIS ("who is") queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify \fBfalse\fP , WHOIS queries return the information that you entered for the admin contact.
+.sp
+Default: \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-privacy\-protect\-registrant\-contact\fP | \fB\-\-no\-privacy\-protect\-registrant\-contact\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether you want to conceal contact information from WHOIS queries. If you specify \fBtrue\fP , WHOIS ("who is") queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify \fBfalse\fP , WHOIS queries return the information that you entered for the registrant contact (the domain owner).
+.sp
+Default: \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-privacy\-protect\-tech\-contact\fP | \fB\-\-no\-privacy\-protect\-tech\-contact\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether you want to conceal contact information from WHOIS queries. If you specify \fBtrue\fP , WHOIS ("who is") queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify \fBfalse\fP , WHOIS queries return the information that you entered for the technical contact.
+.sp
+Default: \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo register a domain\fP
+.sp
+The following \fBregister\-domain\fP command registers a domain, retrieving all parameter values from a JSON\-formatted file.
+.sp
+This command runs only in the \fBus\-east\-1\fP Region. If your default region is set to \fBus\-east\-1\fP, you can omit the \fBregion\fP parameter.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws route53domains register\-domain \e
+    \-\-region us\-east\-1 \e
+    \-\-cli\-input\-json file://register\-domain.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBregister\-domain.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DomainName": "example.com",
+    "DurationInYears": 1,
+    "AutoRenew": true,
+    "AdminContact": {
+        "FirstName": "Martha",
+        "LastName": "Rivera",
+        "ContactType": "PERSON",
+        "OrganizationName": "Example",
+        "AddressLine1": "1 Main Street",
+        "City": "Anytown",
+        "State": "WA",
+        "CountryCode": "US",
+        "ZipCode": "98101",
+        "PhoneNumber": "+1.8005551212",
+        "Email": "mrivera@example.com"
+    },
+    "RegistrantContact": {
+        "FirstName": "Li",
+        "LastName": "Juan",
+        "ContactType": "PERSON",
+        "OrganizationName": "Example",
+        "AddressLine1": "1 Main Street",
+        "City": "Anytown",
+        "State": "WA",
+        "CountryCode": "US",
+        "ZipCode": "98101",
+        "PhoneNumber": "+1.8005551212",
+        "Email": "ljuan@example.com"
+    },
+    "TechContact": {
+        "FirstName": "Mateo",
+        "LastName": "Jackson",
+        "ContactType": "PERSON",
+        "OrganizationName": "Example",
+        "AddressLine1": "1 Main Street",
+        "City": "Anytown",
+        "State": "WA",
+        "CountryCode": "US",
+        "ZipCode": "98101",
+        "PhoneNumber": "+1.8005551212",
+        "Email": "mjackson@example.com"
+    },
+    "PrivacyProtectAdminContact": true,
+    "PrivacyProtectRegistrantContact": true,
+    "PrivacyProtectTechContact": true
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "OperationId": "b114c44a\-9330\-47d1\-a6e8\-a0b11example"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+To confirm that the operation succeeded, you can run \fBget\-operation\-detail\fP\&. For more information, see \fI\%get\-operation\-detail\fP .
+.sp
+For more information, see \fI\%Registering a New Domain\fP in the \fIAmazon Route 53 Developer Guide\fP\&.
+.sp
+For information about which top\-level domains (TLDs) require values for \fBExtraParams\fP and what the valid values are, see \fI\%ExtraParam\fP in the \fIAmazon Route 53 API Reference\fP\&.
+.SH OUTPUT
+.sp
+OperationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifier for tracking the progress of the request. To query the operation status, use \fI\%GetOperationDetail\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

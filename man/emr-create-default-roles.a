@@ -1,0 +1,224 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EMR-CREATE-DEFAULT-ROLES" "a" "" ""
+.SH NAME
+emr-create-default-roles \- Creates the default IAM role EMR_EC2_DefaultRole and EMR_DefaultRole which can be used when creating the cluster using the create-cluster command
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates the default IAM role EMR_EC2_DefaultRole and EMR_DefaultRole which can be used when creating the cluster using the create\-cluster command. The default roles for EMR use managed policies, which are updated automatically to support future EMR functionality.
+.sp
+If you do not have a Service Role and Instance Profile variable set for your create\-cluster command in the AWS CLI config file, create\-default\-roles will automatically set the values for these variables with these default roles. If you have already set a value for Service Role or Instance Profile, create\-default\-roles will not automatically set the defaults for these variables in the AWS CLI config file. You can view settings for variables in the config file using the "aws configure get" command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-default\-roles
+[\-\-iam\-endpoint <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-iam\-endpoint\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The IAM endpoint to call for creating the roles. This is optional and should only be specified when a custom endpoint should be called for IAM operations.
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fB1. To create the default IAM role for EC2\fP
+.INDENT 0.0
+.IP \(bu 2
+Command:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-default\-roles
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+Output:
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+If the role already exists then the command returns nothing.
+
+If the role does not exist then the output will be:
+
+[
+    {
+        "RolePolicy": {
+            "Version": "2012\-10\-17",
+            "Statement": [
+                {
+                    "Action": [
+                        "cloudwatch:*",
+                        "dynamodb:*",
+                        "ec2:Describe*",
+                        "elasticmapreduce:Describe*",
+                        "elasticmapreduce:ListBootstrapActions",
+                        "elasticmapreduce:ListClusters",
+                        "elasticmapreduce:ListInstanceGroups",
+                        "elasticmapreduce:ListInstances",
+                        "elasticmapreduce:ListSteps",
+                        "kinesis:CreateStream",
+                        "kinesis:DeleteStream",
+                        "kinesis:DescribeStream",
+                        "kinesis:GetRecords",
+                        "kinesis:GetShardIterator",
+                        "kinesis:MergeShards",
+                        "kinesis:PutRecord",
+                        "kinesis:SplitShard",
+                        "rds:Describe*",
+                        "s3:*",
+                        "sdb:*",
+                        "sns:*",
+                        "sqs:*"
+                    ],
+                    "Resource": "*",
+                    "Effect": "Allow"
+                }
+            ]
+        },
+        "Role": {
+            "AssumeRolePolicyDocument": {
+                "Version": "2008\-10\-17",
+                "Statement": [
+                    {
+                        "Action": "sts:AssumeRole",
+                        "Sid": "",
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "ec2.amazonaws.com"
+                        }
+                    }
+                ]
+            },
+            "RoleId": "AROAIQ5SIQUGL5KMYBJX6",
+            "CreateDate": "2015\-06\-09T17:09:04.602Z",
+            "RoleName": "EMR_EC2_DefaultRole",
+            "Path": "/",
+            "Arn": "arn:aws:iam::176430881729:role/EMR_EC2_DefaultRole"
+        }
+    },
+    {
+        "RolePolicy": {
+            "Version": "2012\-10\-17",
+            "Statement": [
+                {
+                    "Action": [
+                        "ec2:AuthorizeSecurityGroupIngress",
+                        "ec2:CancelSpotInstanceRequests",
+                        "ec2:CreateSecurityGroup",
+                        "ec2:CreateTags",
+                        "ec2:DeleteTags",
+                        "ec2:DescribeAvailabilityZones",
+                        "ec2:DescribeAccountAttributes",
+                        "ec2:DescribeInstances",
+                        "ec2:DescribeInstanceStatus",
+                        "ec2:DescribeKeyPairs",
+                        "ec2:DescribePrefixLists",
+                        "ec2:DescribeRouteTables",
+                        "ec2:DescribeSecurityGroups",
+                        "ec2:DescribeSpotInstanceRequests",
+                        "ec2:DescribeSpotPriceHistory",
+                        "ec2:DescribeSubnets",
+                        "ec2:DescribeVpcAttribute",
+                        "ec2:DescribeVpcEndpoints",
+                        "ec2:DescribeVpcEndpointServices",
+                        "ec2:DescribeVpcs",
+                        "ec2:ModifyImageAttribute",
+                        "ec2:ModifyInstanceAttribute",
+                        "ec2:RequestSpotInstances",
+                        "ec2:RunInstances",
+                        "ec2:TerminateInstances",
+                        "iam:GetRole",
+                        "iam:GetRolePolicy",
+                        "iam:ListInstanceProfiles",
+                        "iam:ListRolePolicies",
+                        "iam:PassRole",
+                        "s3:CreateBucket",
+                        "s3:Get*",
+                        "s3:List*",
+                        "sdb:BatchPutAttributes",
+                        "sdb:Select",
+                        "sqs:CreateQueue",
+                        "sqs:Delete*",
+                        "sqs:GetQueue*",
+                        "sqs:ReceiveMessage"
+                    ],
+                    "Resource": "*",
+                    "Effect": "Allow"
+                }
+            ]
+        },
+        "Role": {
+            "AssumeRolePolicyDocument": {
+                "Version": "2008\-10\-17",
+                "Statement": [
+                    {
+                        "Action": "sts:AssumeRole",
+                        "Sid": "",
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "elasticmapreduce.amazonaws.com"
+                        }
+                    }
+                ]
+            },
+            "RoleId": "AROAI3SRVPPVSRDLARBPY",
+            "CreateDate": "2015\-06\-09T17:09:10.401Z",
+            "RoleName": "EMR_DefaultRole",
+            "Path": "/",
+            "Arn": "arn:aws:iam::176430881729:role/EMR_DefaultRole"
+        }
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

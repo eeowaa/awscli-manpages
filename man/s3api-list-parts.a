@@ -1,0 +1,383 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-LIST-PARTS" "a" "" ""
+.SH NAME
+s3api-list-parts \- Lists the parts that have been uploaded for a specific multipart upload
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Lists the parts that have been uploaded for a specific multipart upload. This operation must include the upload ID, which you obtain by sending the initiate multipart upload request (see \fI\%CreateMultipartUpload\fP ). This request returns a maximum of 1,000 uploaded parts. The default number of parts returned is 1,000 parts. You can restrict the number of parts returned by specifying the \fBmax\-parts\fP request parameter. If your multipart upload consists of more than 1,000 parts, the response returns an \fBIsTruncated\fP field with the value of true, and a \fBNextPartNumberMarker\fP element. In subsequent \fBListParts\fP requests you can include the part\-number\-marker query string parameter and set its value to the \fBNextPartNumberMarker\fP field value from the previous response.
+.sp
+For more information on multipart uploads, see \fI\%Uploading Objects Using Multipart Upload\fP .
+.sp
+For information on permissions required to use the multipart upload API, see \fI\%Multipart Upload and Permissions\fP .
+.sp
+The following operations are related to \fBListParts\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%CreateMultipartUpload\fP
+.IP \(bu 2
+\fI\%UploadPart\fP
+.IP \(bu 2
+\fI\%CompleteMultipartUpload\fP
+.IP \(bu 2
+\fI\%AbortMultipartUpload\fP
+.IP \(bu 2
+\fI\%ListMultipartUploads\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-parts\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBParts\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-parts
+\-\-bucket <value>
+\-\-key <value>
+\-\-upload\-id <value>
+[\-\-request\-payer <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket to which the parts are being uploaded.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key for which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-upload\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Upload ID identifying the multipart upload whose parts are being listed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command lists all of the parts that have been uploaded for a multipart upload with key \fBmultipart/01\fP in the bucket \fBmy\-bucket\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api list\-parts \-\-bucket my\-bucket \-\-key \(aqmultipart/01\(aq \-\-upload\-id dfRtDYU0WWCCcH43C3WFbkRONycyCpTJJvxu2i5GYkZljF.Yxwh6XG7WfS2vC4to6HiV6Yjlx.cph0gtNBtJ8P3URCSbB7rjxI5iEwVDmgaXZOGgkk5nVTW16HOQ5l0R
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Owner": {
+        "DisplayName": "aws\-account\-name",
+        "ID": "100719349fc3b6dcd7c820a124bf7aecd408092c3d7b51b38494939801fc248b"
+    },
+    "Initiator": {
+        "DisplayName": "username",
+        "ID": "arn:aws:iam::0123456789012:user/username"
+    },
+    "Parts": [
+        {
+            "LastModified": "2015\-06\-02T18:07:35.000Z",
+            "PartNumber": 1,
+            "ETag": "\e"e868e0f4719e394144ef36531ee6824c\e"",
+            "Size": 5242880
+        },
+        {
+            "LastModified": "2015\-06\-02T18:07:42.000Z",
+            "PartNumber": 2,
+            "ETag": "\e"6bb2b12753d66fe86da4998aa33fffb0\e"",
+            "Size": 5242880
+        },
+        {
+            "LastModified": "2015\-06\-02T18:07:47.000Z",
+            "PartNumber": 3,
+            "ETag": "\e"d0a0112e841abec9c9ec83406f0159c8\e"",
+            "Size": 5242880
+        }
+    ],
+    "StorageClass": "STANDARD"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+AbortDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket has a lifecycle rule configured with an action to abort incomplete multipart uploads and the prefix in the lifecycle rule matches the object name in the request, then the response includes this header indicating when the initiated multipart upload will become eligible for abort operation. For more information, see \fI\%Aborting Incomplete Multipart Uploads Using a Bucket Lifecycle Policy\fP .
+.sp
+The response will also include the \fBx\-amz\-abort\-rule\-id\fP header that will provide the ID of the lifecycle configuration rule that defines this action.
+.UNINDENT
+.UNINDENT
+.sp
+AbortRuleId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This header is returned along with the \fBx\-amz\-abort\-date\fP header. It identifies applicable lifecycle configuration rule that defines the action to abort incomplete multipart uploads.
+.UNINDENT
+.UNINDENT
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket to which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key for which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+UploadId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Upload ID identifying the multipart upload whose parts are being listed.
+.UNINDENT
+.UNINDENT
+.sp
+PartNumberMarker \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+When a list is truncated, this element specifies the last part in the list, as well as the value to use for the part\-number\-marker request parameter in a subsequent request.
+.UNINDENT
+.UNINDENT
+.sp
+NextPartNumberMarker \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+When a list is truncated, this element specifies the last part in the list, as well as the value to use for the part\-number\-marker request parameter in a subsequent request.
+.UNINDENT
+.UNINDENT
+.sp
+MaxParts \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Maximum number of parts that were allowed in the response.
+.UNINDENT
+.UNINDENT
+.sp
+IsTruncated \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the returned list of parts is truncated. A true value indicates that the list was truncated. A list can be truncated if the number of parts exceeds the limit returned in the MaxParts element.
+.UNINDENT
+.UNINDENT
+.sp
+Parts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Container for elements related to a particular part. A response can contain zero or more \fBPart\fP elements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for elements related to a part.
+.sp
+PartNumber \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Part number identifying the part. This is a positive integer between 1 and 10,000.
+.UNINDENT
+.UNINDENT
+.sp
+LastModified \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Date and time at which the part was uploaded.
+.UNINDENT
+.UNINDENT
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Entity tag returned when the part was uploaded.
+.UNINDENT
+.UNINDENT
+.sp
+Size \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Size in bytes of the uploaded part data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Initiator \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container element that identifies who initiated the multipart upload. If the initiator is an AWS account, this element provides the same information as the \fBOwner\fP element. If the initiator is an IAM User, this element provides the user ARN and display name.
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the principal is an AWS account, it provides the Canonical User ID. If the principal is an IAM User, it provides a user ARN value.
+.UNINDENT
+.UNINDENT
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Principal.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Owner \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container element that identifies the object owner, after the object is created. If multipart upload is initiated by an IAM user, this element provides the parent account ID and display name.
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Container for the display name of the owner.
+.UNINDENT
+.UNINDENT
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Container for the ID of the owner.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Class of storage (STANDARD or REDUCED_REDUNDANCY) used to store the uploaded object.
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,702 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-CREATE-VPC-ENDPOINT" "a" "" ""
+.SH NAME
+ec2-create-vpc-endpoint \- Creates a VPC endpoint for a specified service
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a VPC endpoint for a specified service. An endpoint enables you to create a private connection between your VPC and the service. The service may be provided by AWS, an AWS Marketplace Partner, or another AWS account. For more information, see \fI\%VPC Endpoints\fP in the \fIAmazon Virtual Private Cloud User Guide\fP .
+.sp
+A \fBgateway\fP endpoint serves as a target for a route in your route table for traffic destined for the AWS service. You can specify an endpoint policy to attach to the endpoint, which will control access to the service from your VPC. You can also specify the VPC route tables that use the endpoint.
+.sp
+An \fBinterface\fP endpoint is a network interface in your subnet that serves as an endpoint for communicating with the specified service. You can specify the subnets in which to create an endpoint, and the security groups to associate with the endpoint network interface.
+.sp
+A \fBGatewayLoadBalancer\fP endpoint is a network interface in your subnet that serves an endpoint for communicating with a Gateway Load Balancer that you\(aqve configured as a VPC endpoint service.
+.sp
+Use  DescribeVpcEndpointServices to get a list of supported services.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-vpc\-endpoint
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-vpc\-endpoint\-type <value>]
+\-\-vpc\-id <value>
+\-\-service\-name <value>
+[\-\-policy\-document <value>]
+[\-\-route\-table\-ids <value>]
+[\-\-subnet\-ids <value>]
+[\-\-security\-group\-ids <value>]
+[\-\-client\-token <value>]
+[\-\-private\-dns\-enabled | \-\-no\-private\-dns\-enabled]
+[\-\-tag\-specifications <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-endpoint\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of endpoint.
+.sp
+Default: Gateway
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBInterface\fP
+.IP \(bu 2
+\fBGateway\fP
+.IP \(bu 2
+\fBGatewayLoadBalancer\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC in which the endpoint will be used.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The service name. To get a list of available services, use the  DescribeVpcEndpointServices request, or get the name from the service provider.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-document\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+(Interface and gateway endpoints) A policy to attach to the endpoint that controls access to the service. The policy must be in valid JSON format. If this parameter is not specified, we attach a default policy that allows full access to the service.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-route\-table\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+(Gateway endpoint) One or more route table IDs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-subnet\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+(Interface and Gateway Load Balancer endpoints) The ID of one or more subnets in which to create an endpoint network interface. For a Gateway Load Balancer endpoint, you can specify one subnet only.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-group\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+(Interface endpoint) The ID of one or more security groups to associate with the endpoint network interface.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, case\-sensitive identifier that you provide to ensure the idempotency of the request. For more information, see \fI\%How to Ensure Idempotency\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-private\-dns\-enabled\fP | \fB\-\-no\-private\-dns\-enabled\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+(Interface endpoint) Indicates whether to associate a private hosted zone with the specified VPC. The private hosted zone contains a record set for the default public DNS name for the service for the Region (for example, \fBkinesis.us\-east\-1.amazonaws.com\fP ), which resolves to the private IP addresses of the endpoint network interfaces in the VPC. This enables you to make requests to the default public DNS name for the service instead of the public DNS names that are automatically generated by the VPC endpoint service.
+.sp
+To use a private hosted zone, you must set the following VPC attributes to \fBtrue\fP : \fBenableDnsHostnames\fP and \fBenableDnsSupport\fP . Use  ModifyVpcAttribute to set the VPC attributes.
+.sp
+Default: \fBtrue\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to associate with the endpoint.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to a resource when the resource is being created.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to tag. Currently, the resource types that support tagging on creation are: \fBcapacity\-reservation\fP | \fBcarrier\-gateway\fP | \fBclient\-vpn\-endpoint\fP | \fBcustomer\-gateway\fP | \fBdedicated\-host\fP | \fBdhcp\-options\fP | \fBegress\-only\-internet\-gateway\fP | \fBelastic\-ip\fP | \fBelastic\-gpu\fP | \fBexport\-image\-task\fP | \fBexport\-instance\-task\fP | \fBfleet\fP | \fBfpga\-image\fP | \fBhost\-reservation\fP | \fBimage\fP | \fBimport\-image\-task\fP | \fBimport\-snapshot\-task\fP | \fBinstance\fP | \fBinternet\-gateway\fP | \fBipv4pool\-ec2\fP | \fBipv6pool\-ec2\fP | \fBkey\-pair\fP | \fBlaunch\-template\fP | \fBlocal\-gateway\-route\-table\-vpc\-association\fP | \fBplacement\-group\fP | \fBprefix\-list\fP | \fBnatgateway\fP | \fBnetwork\-acl\fP | \fBnetwork\-interface\fP | \fBreserved\-instances\fP 
+.nf
+|
+.fi
+\fBroute\-table\fP | \fBsecurity\-group\fP | \fBsnapshot\fP | \fBspot\-fleet\-request\fP | \fBspot\-instances\-request\fP | \fBsnapshot\fP | \fBsubnet\fP | \fBtraffic\-mirror\-filter\fP | \fBtraffic\-mirror\-session\fP | \fBtraffic\-mirror\-target\fP | \fBtransit\-gateway\fP | \fBtransit\-gateway\-attachment\fP | \fBtransit\-gateway\-multicast\-domain\fP | \fBtransit\-gateway\-route\-table\fP | \fBvolume\fP 
+.nf
+|
+.fi
+\fBvpc\fP | \fBvpc\-peering\-connection\fP | \fBvpc\-endpoint\fP (for interface and gateway endpoints) | \fBvpc\-endpoint\-service\fP (for AWS PrivateLink) | \fBvpc\-flow\-log\fP | \fBvpn\-connection\fP | \fBvpn\-gateway\fP .
+.IP "System Message: WARNING/2 (<string>:, line 227)"
+Inline substitution_reference start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 227)"
+Inline substitution_reference start\-string without end\-string.
+.sp
+To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResourceType=string,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ResourceType": "client\-vpn\-endpoint"|"customer\-gateway"|"dedicated\-host"|"dhcp\-options"|"egress\-only\-internet\-gateway"|"elastic\-ip"|"elastic\-gpu"|"export\-image\-task"|"export\-instance\-task"|"fleet"|"fpga\-image"|"host\-reservation"|"image"|"import\-image\-task"|"import\-snapshot\-task"|"instance"|"internet\-gateway"|"key\-pair"|"launch\-template"|"local\-gateway\-route\-table\-vpc\-association"|"natgateway"|"network\-acl"|"network\-interface"|"network\-insights\-analysis"|"network\-insights\-path"|"placement\-group"|"reserved\-instances"|"route\-table"|"security\-group"|"snapshot"|"spot\-fleet\-request"|"spot\-instances\-request"|"subnet"|"traffic\-mirror\-filter"|"traffic\-mirror\-session"|"traffic\-mirror\-target"|"transit\-gateway"|"transit\-gateway\-attachment"|"transit\-gateway\-connect\-peer"|"transit\-gateway\-multicast\-domain"|"transit\-gateway\-route\-table"|"volume"|"vpc"|"vpc\-peering\-connection"|"vpn\-connection"|"vpn\-gateway"|"vpc\-flow\-log",
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a gateway endpoint\fP
+.sp
+The following \fBcreate\-vpc\-endpoint\fP example creates a gateway VPC endpoint between VPC \fBvpc\-1a2b3c4d\fP and Amazon S3 in the \fBus\-east\-1\fP region, and associates route table \fBrtb\-11aa22bb\fP with the endpoint.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-vpc\-endpoint \e
+    \-\-vpc\-id vpc\-1a2b3c4d \e
+    \-\-service\-name com.amazonaws.us\-east\-1.s3 \e
+    \-\-route\-table\-ids rtb\-11aa22bb
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "VpcEndpoint": {
+        "PolicyDocument": "{\e"Version\e":\e"2008\-10\-17\e",\e"Statement\e":[{\e"Sid\e":\e"\e",\e"Effect\e":\e"Allow\e",\e"Principal\e":\e"\e*\e",\e"Action\e":\e"\e*\e",\e"Resource\e":\e"\e*\e"}]}",
+        "VpcId": "vpc\-1a2b3c4d",
+        "State": "available",
+        "ServiceName": "com.amazonaws.us\-east\-1.s3",
+        "RouteTableIds": [
+            "rtb\-11aa22bb"
+        ],
+        "VpcEndpointId": "vpc\-1a2b3c4d",
+        "CreationTimestamp": "2015\-05\-15T09:40:50Z"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating a gateway endpoint\fP in the \fIAWSPrivateLink Guide\fP\&.
+.sp
+\fBExample 2: To create an interface endpoint\fP
+.sp
+The following \fBcreate\-vpc\-endpoint\fP example creates an interface VPC endpoint between VPC \fBvpc\-1a2b3c4d\fP and Amazon S3 in the \fBus\-east\-1\fP region. The command creates the endpoint in subnet \fBsubnet\-1a2b3c4d\fP, associates it with security group \fBsg\-1a2b3c4d\fP, and adds a tag with a key of "Service" and a Value of "S3".
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-vpc\-endpoint \e
+    \-\-vpc\-id vpc\-1a2b3c4d \e
+    \-\-vpc\-endpoint\-type Interface \e
+    \-\-service\-name com.amazonaws.us\-east\-1.s3 \e
+    \-\-subnet\-id subnet\-7b16de0c \e
+    \-\-security\-group\-id sg\-1a2b3c4d \e
+    \-\-tag\-specifications ResourceType=vpc\-endpoint,Tags=[{Key=service,Value=S3}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "VpcEndpoint": {
+        "VpcEndpointId": "vpce\-1a2b3c4d5e6f1a2b3",
+        "VpcEndpointType": "Interface",
+        "VpcId": "vpc\-1a2b3c4d",
+        "ServiceName": "com.amazonaws.us\-east\-1.s3",
+        "State": "pending",
+        "RouteTableIds": [],
+        "SubnetIds": [
+            "subnet\-1a2b3c4d"
+        ],
+        "Groups": [
+            {
+                "GroupId": "sg\-1a2b3c4d",
+                "GroupName": "default"
+            }
+        ],
+        "PrivateDnsEnabled": false,
+        "RequesterManaged": false,
+        "NetworkInterfaceIds": [
+            "eni\-0b16f0581c8ac6877"
+        ],
+        "DnsEntries": [
+            {
+                "DnsName": "*.vpce\-1a2b3c4d5e6f1a2b3\-9hnenorg.s3.us\-east\-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z7HUB22UULQXV"
+            },
+            {
+                "DnsName": "*.vpce\-1a2b3c4d5e6f1a2b3\-9hnenorg\-us\-east\-1c.s3.us\-east\-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z7HUB22UULQXV"
+            }
+        ],
+        "CreationTimestamp": "2021\-03\-05T14:46:16.030000+00:00",
+        "Tags": [
+            {
+                "Key": "service",
+                "Value": "S3"
+            }
+        ],
+        "OwnerId": "123456789012"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating an interface endpoint\fP in the \fIUser Guide for AWSPrivateLink\fP\&.
+.sp
+\fBExample 3: To create a Gateway Load Balancer endpoint\fP
+.sp
+The following \fBcreate\-vpc\-endpoint\fP example creates a Gateway Load Balancer endpoint between VPC \fBvpc\-111122223333aabbc\fP and and a service that is configured using a Gateway Load Balancer.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-vpc\-endpoint \e
+    \-\-service\-name com.amazonaws.vpce.us\-east\-1.vpce\-svc\-123123a1c43abc123 \e
+    \-\-vpc\-endpoint\-type GatewayLoadBalancer \e
+    \-\-vpc\-id vpc\-111122223333aabbc \e
+    \-\-subnet\-id subnet\-0011aabbcc2233445
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "VpcEndpoint": {
+        "VpcEndpointId": "vpce\-aabbaabbaabbaabba",
+        "VpcEndpointType": "GatewayLoadBalancer",
+        "VpcId": "vpc\-111122223333aabbc",
+        "ServiceName": "com.amazonaws.vpce.us\-east\-1.vpce\-svc\-123123a1c43abc123",
+        "State": "pending",
+        "SubnetIds": [
+            "subnet\-0011aabbcc2233445"
+        ],
+        "RequesterManaged": false,
+        "NetworkInterfaceIds": [
+            "eni\-01010120203030405"
+        ],
+        "CreationTimestamp": "2020\-11\-11T08:06:03.522Z",
+        "OwnerId": "123456789012"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Gateway Load Balancer endpoints\fP in the \fIUser Guide for AWSPrivateLink\fP\&.
+.SH OUTPUT
+.sp
+VpcEndpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the endpoint.
+.sp
+VpcEndpointId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+VpcEndpointType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC to which the endpoint is associated.
+.UNINDENT
+.UNINDENT
+.sp
+ServiceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the service to which the endpoint is associated.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the VPC endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+PolicyDocument \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy document associated with the endpoint, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+RouteTableIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(Gateway endpoint) One or more route tables associated with the endpoint.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(Interface endpoint) One or more subnets in which the endpoint is located.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(Interface endpoint) Information about the security groups that are associated with the network interface.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group.
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+(Interface endpoint) Indicates whether the VPC is associated with a private hosted zone.
+.UNINDENT
+.UNINDENT
+.sp
+RequesterManaged \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the VPC endpoint is being managed by its service.
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(Interface endpoint) One or more network interfaces for the endpoint.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+DnsEntries \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(Interface endpoint) The DNS entries for the endpoint.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a DNS entry.
+.sp
+DnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+HostedZoneId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the private hosted zone.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CreationTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the VPC endpoint was created.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the VPC endpoint.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account that owns the VPC endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+LastError \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The last error that occurred for VPC endpoint.
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message for the VPC endpoint error.
+.UNINDENT
+.UNINDENT
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code for the VPC endpoint error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ClientToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, case\-sensitive identifier that you provide to ensure the idempotency of the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

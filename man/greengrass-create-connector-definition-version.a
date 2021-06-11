@@ -1,0 +1,200 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GREENGRASS-CREATE-CONNECTOR-DEFINITION-VERSION" "a" "" ""
+.SH NAME
+greengrass-create-connector-definition-version \- Creates a version of a connector definition which has already been defined
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a version of a connector definition which has already been defined.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-connector\-definition\-version
+[\-\-amzn\-client\-token <value>]
+\-\-connector\-definition\-id <value>
+[\-\-connectors <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-amzn\-client\-token\fP (string)
+A client token used to correlate requests and responses.
+.sp
+\fB\-\-connector\-definition\-id\fP (string)
+The ID of the connector definition.
+.sp
+\fB\-\-connectors\fP (list)
+A list of references to connectors in this version, with their corresponding configuration settings.(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a connector. Connectors run on the Greengrass core and contain built\-in integration with local infrastructure, device protocols, AWS, and other cloud services.
+.sp
+ConnectorArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the connector.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive or arbitrary ID for the connector. This value must be unique within the connector definition version. Max length is 128 characters with pattern [a\-zA\-Z0\-9:_\-]+.
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The parameters or configuration that the connector uses.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ConnectorArn=string,Id=string,Parameters={KeyName1=string,KeyName2=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ConnectorArn": "string",
+    "Id": "string",
+    "Parameters": {"string": "string"
+      ...}
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a connector definition version\fP
+.sp
+The following \fBcreate\-connector\-definition\-version\fP example creates a connector definition version and associates it with the specified connector definition. All connectors in a version define values for their parameters.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws greengrass create\-connector\-definition\-version \e
+    \-\-connector\-definition\-id "55d0052b\-0d7d\-44d6\-b56f\-21867215e118" \e
+    \-\-connectors "[{\e"Id\e": \e"MyTwilioNotificationsConnector\e", \e"ConnectorArn\e": \e"arn:aws:greengrass:us\-west\-2::/connectors/TwilioNotifications/versions/2\e", \e"Parameters\e": {\e"TWILIO_ACCOUNT_SID\e": \e"AC1a8d4204890840d7fc482aab38090d57\e", \e"TwilioAuthTokenSecretArn\e": \e"arn:aws:secretsmanager:us\-west\-2:123456789012:secret:greengrass\-TwilioAuthToken\-ntSlp6\e", \e"TwilioAuthTokenSecretArn\-ResourceId\e": \e"TwilioAuthToken\e", \e"DefaultFromPhoneNumber\e": \e"4254492999\e"}}]"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Arn": "arn:aws:greengrass:us\-west\-2:123456789012:/greengrass/definition/connectors/55d0052b\-0d7d\-44d6\-b56f\-21867215e118/versions/33f709a0\-c825\-49cb\-9eea\-dc8964fbd635",
+    "CreationTimestamp": "2019\-06\-24T20:46:30.134Z",
+    "Id": "55d0052b\-0d7d\-44d6\-b56f\-21867215e118",
+    "Version": "33f709a0\-c825\-49cb\-9eea\-dc8964fbd635"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the version.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTimestamp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time, in milliseconds since the epoch, when the version was created.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the parent definition that the version is associated with.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the version.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

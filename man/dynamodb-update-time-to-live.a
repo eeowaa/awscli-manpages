@@ -1,0 +1,200 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DYNAMODB-UPDATE-TIME-TO-LIVE" "a" "" ""
+.SH NAME
+dynamodb-update-time-to-live \- The UpdateTimeToLive method enables or disables Time to Live (TTL) for the specified table
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+The \fBUpdateTimeToLive\fP method enables or disables Time to Live (TTL) for the specified table. A successful \fBUpdateTimeToLive\fP call returns the current \fBTimeToLiveSpecification\fP . It can take up to one hour for the change to fully process. Any additional \fBUpdateTimeToLive\fP calls for the same table during this one hour duration result in a \fBValidationException\fP .
+.sp
+TTL compares the current time in epoch time format to the time stored in the TTL attribute of an item. If the epoch time value stored in the attribute is less than the current time, the item is marked as expired and subsequently deleted.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The epoch time format is the number of seconds elapsed since 12:00:00 AM January 1, 1970 UTC.
+.UNINDENT
+.UNINDENT
+.sp
+DynamoDB deletes expired items on a best\-effort basis to ensure availability of throughput for other data operations.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+DynamoDB typically deletes expired items within two days of expiration. The exact duration within which an item gets deleted after expiration is specific to the nature of the workload. Items that have expired and not been deleted will still show up in reads, queries, and scans.
+.UNINDENT
+.UNINDENT
+.sp
+As items are deleted, they are removed from any local secondary index and global secondary index immediately in the same eventually consistent way as a standard delete operation.
+.sp
+For more information, see \fI\%Time To Live\fP in the Amazon DynamoDB Developer Guide.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-time\-to\-live
+\-\-table\-name <value>
+\-\-time\-to\-live\-specification <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-table\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the table to be configured.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-time\-to\-live\-specification\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the settings used to enable or disable Time to Live for the specified table.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether TTL is to be enabled (true) or disabled (false) on the table.
+.UNINDENT
+.UNINDENT
+.sp
+AttributeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the TTL attribute used to store the expiration time for items in the table.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Enabled=boolean,AttributeName=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Enabled": true|false,
+  "AttributeName": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update Time to Live settings on a table\fP
+.sp
+The following \fBupdate\-time\-to\-live\fP example enables Time to Live on the specified table.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb update\-time\-to\-live \e
+    \-\-table\-name MusicCollection \e
+    \-\-time\-to\-live\-specification Enabled=true,AttributeName=ttl
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TimeToLiveSpecification": {
+        "Enabled": true,
+        "AttributeName": "ttl"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Time to Live\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+TimeToLiveSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the output of an \fBUpdateTimeToLive\fP operation.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether TTL is to be enabled (true) or disabled (false) on the table.
+.UNINDENT
+.UNINDENT
+.sp
+AttributeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the TTL attribute used to store the expiration time for items in the table.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

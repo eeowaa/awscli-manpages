@@ -1,0 +1,491 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "PERSONALIZE-CREATE-SOLUTION" "a" "" ""
+.SH NAME
+personalize-create-solution \- Creates the configuration for training a model
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates the configuration for training a model. A trained model is known as a solution. After the configuration is created, you train the model (create a solution) by calling the  CreateSolutionVersion operation. Every time you call \fBCreateSolutionVersion\fP , a new version of the solution is created.
+.sp
+After creating a solution version, you check its accuracy by calling  GetSolutionMetrics . When you are satisfied with the version, you deploy it using  CreateCampaign . The campaign provides recommendations to a client through the \fI\%GetRecommendations\fP API.
+.sp
+To train a model, Amazon Personalize requires training data and a recipe. The training data comes from the dataset group that you provide in the request. A recipe specifies the training algorithm and a feature transformation. You can specify one of the predefined recipes provided by Amazon Personalize. Alternatively, you can specify \fBperformAutoML\fP and Amazon Personalize will analyze your data and select the optimum USER_PERSONALIZATION recipe for you.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Amazon Personalize doesn\(aqt support configuring the \fBhpoObjective\fP for solution hyperparameter optimization at this time.
+.UNINDENT
+.UNINDENT
+.sp
+\fBStatus\fP
+.UNINDENT
+.UNINDENT
+.sp
+A solution can be in one of the following states:
+.INDENT 0.0
+.IP \(bu 2
+CREATE PENDING > CREATE IN_PROGRESS > ACTIVE \-or\- CREATE FAILED
+.IP \(bu 2
+DELETE PENDING > DELETE IN_PROGRESS
+.UNINDENT
+.sp
+To get the status of the solution, call  DescribeSolution . Wait until the status shows as ACTIVE before calling \fBCreateSolutionVersion\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated APIs\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+ListSolutions
+.IP \(bu 2
+CreateSolutionVersion
+.IP \(bu 2
+DescribeSolution
+.IP \(bu 2
+DeleteSolution
+.IP \(bu 2
+ListSolutionVersions
+.IP \(bu 2
+DescribeSolutionVersion
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-solution
+\-\-name <value>
+[\-\-perform\-hpo | \-\-no\-perform\-hpo]
+[\-\-perform\-auto\-ml | \-\-no\-perform\-auto\-ml]
+[\-\-recipe\-arn <value>]
+\-\-dataset\-group\-arn <value>
+[\-\-event\-type <value>]
+[\-\-solution\-config <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the solution.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-perform\-hpo\fP | \fB\-\-no\-perform\-hpo\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to perform hyperparameter optimization (HPO) on the specified or selected recipe. The default is \fBfalse\fP .
+.sp
+When performing AutoML, this parameter is always \fBtrue\fP and you should not set it to \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-perform\-auto\-ml\fP | \fB\-\-no\-perform\-auto\-ml\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to perform automated machine learning (AutoML). The default is \fBfalse\fP . For this case, you must specify \fBrecipeArn\fP .
+.sp
+When set to \fBtrue\fP , Amazon Personalize analyzes your training data and selects the optimal USER_PERSONALIZATION recipe and hyperparameters. In this case, you must omit \fBrecipeArn\fP . Amazon Personalize determines the optimal recipe by running tests with different values for the hyperparameters. AutoML lengthens the training process as compared to selecting a specific recipe.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-recipe\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the recipe to use for model training. Only specified when \fBperformAutoML\fP is false.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dataset\-group\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the dataset group that provides the training data.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-event\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+When your have multiple event types (using an \fBEVENT_TYPE\fP schema field), this parameter specifies which event type (for example, \(aqclick\(aq or \(aqlike\(aq) is used for training the model.
+.sp
+If you do not provide an \fBeventType\fP , Amazon Personalize will use all interactions for training with equal weight regardless of type.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-solution\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration to use with the solution. When \fBperformAutoML\fP is set to true, Amazon Personalize only evaluates the \fBautoMLConfig\fP section of the solution configuration.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon Personalize doesn\(aqt support configuring the \fBhpoObjective\fP at this time.
+.UNINDENT
+.UNINDENT
+.sp
+eventValueThreshold \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Only events with a value greater than or equal to this threshold are used for training a model.
+.UNINDENT
+.UNINDENT
+.sp
+hpoConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the properties for hyperparameter optimization (HPO).
+.sp
+hpoObjective \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric to optimize during HPO.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon Personalize doesn\(aqt support configuring the \fBhpoObjective\fP at this time.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the metric. Valid values are \fBMaximize\fP and \fBMinimize\fP .
+.UNINDENT
+.UNINDENT
+.sp
+metricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+metricRegex \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A regular expression for finding the metric in the training job logs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+hpoResourceConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the resource configuration for HPO.
+.sp
+maxNumberOfTrainingJobs \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of training jobs when you create a solution version. The maximum value for \fBmaxNumberOfTrainingJobs\fP is \fB40\fP .
+.UNINDENT
+.UNINDENT
+.sp
+maxParallelTrainingJobs \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of parallel training jobs when you create a solution version. The maximum value for \fBmaxParallelTrainingJobs\fP is \fB10\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+algorithmHyperParameterRanges \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The hyperparameters and their allowable ranges.
+.sp
+integerHyperParameterRanges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The integer\-valued hyperparameters and their ranges.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the name and range of an integer\-valued hyperparameter.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+minValue \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum allowable value for the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+maxValue \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum allowable value for the hyperparameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+continuousHyperParameterRanges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The continuous hyperparameters and their ranges.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the name and range of a continuous hyperparameter.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+minValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The minimum allowable value for the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+maxValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The maximum allowable value for the hyperparameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+categoricalHyperParameterRanges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The categorical hyperparameters and their ranges.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the name and range of a categorical hyperparameter.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the categories for the hyperparameter.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+algorithmHyperParameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Lists the hyperparameter names and ranges.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+featureTransformationParameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Lists the feature transformation parameters.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+autoMLConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The  AutoMLConfig object containing a list of recipes to search when AutoML is performed.
+.sp
+metricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric to optimize.
+.UNINDENT
+.UNINDENT
+.sp
+recipeList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of candidate recipes.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+optimizationObjective \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the additional objective for the solution, such as maximizing streaming minutes or increasing revenue. For more information see \fI\%Optimizing a solution\fP .
+.sp
+itemAttribute \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The numerical metadata column in an Items dataset related to the optimization objective. For example, VIDEO_LENGTH (to maximize streaming minutes), or PRICE (to maximize revenue).
+.UNINDENT
+.UNINDENT
+.sp
+objectiveSensitivity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how Amazon Personalize balances the importance of your optimization objective versus relevance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "eventValueThreshold": "string",
+  "hpoConfig": {
+    "hpoObjective": {
+      "type": "string",
+      "metricName": "string",
+      "metricRegex": "string"
+    },
+    "hpoResourceConfig": {
+      "maxNumberOfTrainingJobs": "string",
+      "maxParallelTrainingJobs": "string"
+    },
+    "algorithmHyperParameterRanges": {
+      "integerHyperParameterRanges": [
+        {
+          "name": "string",
+          "minValue": integer,
+          "maxValue": integer
+        }
+        ...
+      ],
+      "continuousHyperParameterRanges": [
+        {
+          "name": "string",
+          "minValue": double,
+          "maxValue": double
+        }
+        ...
+      ],
+      "categoricalHyperParameterRanges": [
+        {
+          "name": "string",
+          "values": ["string", ...]
+        }
+        ...
+      ]
+    }
+  },
+  "algorithmHyperParameters": {"string": "string"
+    ...},
+  "featureTransformationParameters": {"string": "string"
+    ...},
+  "autoMLConfig": {
+    "metricName": "string",
+    "recipeList": ["string", ...]
+  },
+  "optimizationObjective": {
+    "itemAttribute": "string",
+    "objectiveSensitivity": "LOW"|"MEDIUM"|"HIGH"|"OFF"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+solutionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the solution.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

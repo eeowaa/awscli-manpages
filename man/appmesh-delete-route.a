@@ -1,0 +1,1145 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "APPMESH-DELETE-ROUTE" "a" "" ""
+.SH NAME
+appmesh-delete-route \- Deletes an existing route
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Deletes an existing route.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  delete\-route
+\-\-mesh\-name <value>
+[\-\-mesh\-owner <value>]
+\-\-route\-name <value>
+\-\-virtual\-router\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-mesh\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the service mesh to delete the route in.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-mesh\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS IAM account ID of the service mesh owner. If the account ID is not your own, then it\(aqs the ID of the account that shared the mesh with your account. For more information about mesh sharing, see \fI\%Working with shared meshes\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-route\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the route to delete.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-virtual\-router\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the virtual router to delete the route in.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo delete a route\fP
+.sp
+The following \fBdelete\-route\fP example deletes the specified route.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws appmesh delete\-route \e
+    \-\-mesh\-name app1 \e
+    \-\-virtual\-router\-name vrServiceB \e
+    \-\-route\-name toVnServiceB\-weighted
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "route": {
+        "meshName": "app1",
+        "metadata": {
+            "arn": "arn:aws:appmesh:us\-east\-1:123456789012:mesh/app1/virtualRouter/vrServiceB/route/toVnServiceB\-weighted",
+            "createdAt": 1563811384.015,
+            "lastUpdatedAt": 1563823915.936,
+            "uid": "a1b2c3d4\-5678\-90ab\-cdef\-11111EXAMPLE",
+            "version": 3
+        },
+        "routeName": "toVnServiceB\-weighted",
+        "spec": {
+            "httpRoute": {
+                "action": {
+                    "weightedTargets": [
+                        {
+                            "virtualNode": "vnServiceBv1",
+                            "weight": 80
+                        },
+                        {
+                            "virtualNode": "vnServiceBv2",
+                            "weight": 20
+                        }
+                    ]
+                },
+                "match": {
+                    "prefix": "/"
+                }
+            }
+        },
+        "status": {
+            "status": "DELETED"
+        },
+        "virtualRouterName": "vrServiceB"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Routes\fP in the \fIAWS App Mesh User Guide\fP\&.
+.SH OUTPUT
+.sp
+route \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The route that was deleted.
+.sp
+meshName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the service mesh that the route resides in.
+.UNINDENT
+.UNINDENT
+.sp
+metadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The associated metadata for the route.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full Amazon Resource Name (ARN) for the resource.
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix epoch timestamp in seconds for when the resource was created.
+.UNINDENT
+.UNINDENT
+.sp
+lastUpdatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix epoch timestamp in seconds for when the resource was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+meshOwner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS IAM account ID of the service mesh owner. If the account ID is not your own, then it\(aqs the ID of the account that shared the mesh with your account. For more information about mesh sharing, see \fI\%Working with shared meshes\fP .
+.UNINDENT
+.UNINDENT
+.sp
+resourceOwner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS IAM account ID of the resource owner. If the account ID is not your own, then it\(aqs the ID of the mesh owner or of another account that the mesh is shared with. For more information about mesh sharing, see \fI\%Working with shared meshes\fP .
+.UNINDENT
+.UNINDENT
+.sp
+uid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the resource.
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The version of the resource. Resources are created at version 1, and this version is incremented each time that they\(aqre updated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+routeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the route.
+.UNINDENT
+.UNINDENT
+.sp
+spec \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specifications of the route.
+.sp
+grpcRoute \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the specification of a gRPC route.
+.sp
+action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the action to take if a match is determined.
+.sp
+weightedTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the targets that traffic is routed to when a request matches the route.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a target and its relative weight. Traffic is distributed across targets according to their relative weight. For example, a weighted target with a relative weight of 50 receives five times as much traffic as one with a relative weight of 10. The total weight for all targets combined must be less than or equal to 100.
+.sp
+virtualNode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual node to associate with the weighted target.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The relative weight of the weighted target.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+match \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the criteria for determining a request match.
+.sp
+metadata \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the data to match from the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the match metadata for the route.
+.sp
+invert \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specify \fBTrue\fP to match anything except the match criteria. The default value is \fBFalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+match \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the data to match from the request.
+.sp
+exact \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must match the specified value exactly.
+.UNINDENT
+.UNINDENT
+.sp
+prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must begin with the specified characters.
+.UNINDENT
+.UNINDENT
+.sp
+range \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the range of values to match on.
+.sp
+end \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The end of the range.
+.UNINDENT
+.UNINDENT
+.sp
+start \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The start of the range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+regex \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must include the specified characters.
+.UNINDENT
+.UNINDENT
+.sp
+suffix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must end with the specified characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the route.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+methodName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The method name to match from the request. If you specify a name, you must also specify a \fBserviceName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+serviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified domain name for the service to match from the request.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+retryPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a retry policy.
+.sp
+grpcRetryEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify at least one of the valid values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+httpRetryEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify at least one of the following values.
+.INDENT 0.0
+.IP \(bu 2
+\fBserver\-error\fP – HTTP status codes 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, and 511
+.IP \(bu 2
+\fBgateway\-error\fP – HTTP status codes 502, 503, and 504
+.IP \(bu 2
+\fBclient\-error\fP – HTTP status code 409
+.IP \(bu 2
+\fBstream\-error\fP – Retry on refused stream
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+maxRetries \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of retry attempts.
+.UNINDENT
+.UNINDENT
+.sp
+perRetryTimeout \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The timeout for each retry attempt.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+tcpRetryEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify a valid value. The event occurs before any processing of a request has started and is encountered when the upstream is temporarily or permanently unavailable.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeout \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents types of timeouts.
+.sp
+idle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents an idle timeout. An idle timeout bounds the amount of time that a connection may be idle. The default value is none.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+perRequest \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a per request timeout. The default value is 15 seconds. If you set a higher timeout, then make sure that the higher value is set for each App Mesh resource in a conversation. For example, if a virtual node backend uses a virtual router provider to route to another virtual node, then the timeout should be greater than 15 seconds for the source and destination virtual node and the route.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+http2Route \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the specification of an HTTP/2 route.
+.sp
+action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the action to take if a match is determined.
+.sp
+weightedTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the targets that traffic is routed to when a request matches the route.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a target and its relative weight. Traffic is distributed across targets according to their relative weight. For example, a weighted target with a relative weight of 50 receives five times as much traffic as one with a relative weight of 10. The total weight for all targets combined must be less than or equal to 100.
+.sp
+virtualNode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual node to associate with the weighted target.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The relative weight of the weighted target.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+match \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the criteria for determining a request match.
+.sp
+headers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the client request headers to match on.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the HTTP header in the request.
+.sp
+invert \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specify \fBTrue\fP to match anything except the match criteria. The default value is \fBFalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+match \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBHeaderMatchMethod\fP object.
+.sp
+exact \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must match the specified value exactly.
+.UNINDENT
+.UNINDENT
+.sp
+prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must begin with the specified characters.
+.UNINDENT
+.UNINDENT
+.sp
+range \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the range of values to match on.
+.sp
+end \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The end of the range.
+.UNINDENT
+.UNINDENT
+.sp
+start \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The start of the range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+regex \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must include the specified characters.
+.UNINDENT
+.UNINDENT
+.sp
+suffix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must end with the specified characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A name for the HTTP header in the client request that will be matched on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+method \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The client request method to match on. Specify only one.
+.UNINDENT
+.UNINDENT
+.sp
+prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the path to match requests with. This parameter must always start with \fB/\fP , which by itself matches all requests to the virtual service name. You can also match for path\-based routing of requests. For example, if your virtual service name is \fBmy\-service.local\fP and you want the route to match requests to \fBmy\-service.local/metrics\fP , your prefix should be \fB/metrics\fP .
+.UNINDENT
+.UNINDENT
+.sp
+scheme \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The client request scheme to match on. Specify only one.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+retryPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a retry policy.
+.sp
+httpRetryEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify at least one of the following values.
+.INDENT 0.0
+.IP \(bu 2
+\fBserver\-error\fP – HTTP status codes 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, and 511
+.IP \(bu 2
+\fBgateway\-error\fP – HTTP status codes 502, 503, and 504
+.IP \(bu 2
+\fBclient\-error\fP – HTTP status code 409
+.IP \(bu 2
+\fBstream\-error\fP – Retry on refused stream
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+maxRetries \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of retry attempts.
+.UNINDENT
+.UNINDENT
+.sp
+perRetryTimeout \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The timeout for each retry attempt.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+tcpRetryEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify a valid value. The event occurs before any processing of a request has started and is encountered when the upstream is temporarily or permanently unavailable.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeout \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents types of timeouts.
+.sp
+idle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents an idle timeout. An idle timeout bounds the amount of time that a connection may be idle. The default value is none.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+perRequest \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a per request timeout. The default value is 15 seconds. If you set a higher timeout, then make sure that the higher value is set for each App Mesh resource in a conversation. For example, if a virtual node backend uses a virtual router provider to route to another virtual node, then the timeout should be greater than 15 seconds for the source and destination virtual node and the route.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+httpRoute \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the specification of an HTTP route.
+.sp
+action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the action to take if a match is determined.
+.sp
+weightedTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the targets that traffic is routed to when a request matches the route.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a target and its relative weight. Traffic is distributed across targets according to their relative weight. For example, a weighted target with a relative weight of 50 receives five times as much traffic as one with a relative weight of 10. The total weight for all targets combined must be less than or equal to 100.
+.sp
+virtualNode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual node to associate with the weighted target.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The relative weight of the weighted target.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+match \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the criteria for determining a request match.
+.sp
+headers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the client request headers to match on.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the HTTP header in the request.
+.sp
+invert \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specify \fBTrue\fP to match anything except the match criteria. The default value is \fBFalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+match \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBHeaderMatchMethod\fP object.
+.sp
+exact \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must match the specified value exactly.
+.UNINDENT
+.UNINDENT
+.sp
+prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must begin with the specified characters.
+.UNINDENT
+.UNINDENT
+.sp
+range \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the range of values to match on.
+.sp
+end \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The end of the range.
+.UNINDENT
+.UNINDENT
+.sp
+start \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The start of the range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+regex \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must include the specified characters.
+.UNINDENT
+.UNINDENT
+.sp
+suffix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value sent by the client must end with the specified characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A name for the HTTP header in the client request that will be matched on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+method \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The client request method to match on. Specify only one.
+.UNINDENT
+.UNINDENT
+.sp
+prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the path to match requests with. This parameter must always start with \fB/\fP , which by itself matches all requests to the virtual service name. You can also match for path\-based routing of requests. For example, if your virtual service name is \fBmy\-service.local\fP and you want the route to match requests to \fBmy\-service.local/metrics\fP , your prefix should be \fB/metrics\fP .
+.UNINDENT
+.UNINDENT
+.sp
+scheme \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The client request scheme to match on. Specify only one.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+retryPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a retry policy.
+.sp
+httpRetryEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify at least one of the following values.
+.INDENT 0.0
+.IP \(bu 2
+\fBserver\-error\fP – HTTP status codes 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, and 511
+.IP \(bu 2
+\fBgateway\-error\fP – HTTP status codes 502, 503, and 504
+.IP \(bu 2
+\fBclient\-error\fP – HTTP status code 409
+.IP \(bu 2
+\fBstream\-error\fP – Retry on refused stream
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+maxRetries \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of retry attempts.
+.UNINDENT
+.UNINDENT
+.sp
+perRetryTimeout \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The timeout for each retry attempt.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+tcpRetryEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify a valid value. The event occurs before any processing of a request has started and is encountered when the upstream is temporarily or permanently unavailable.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeout \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents types of timeouts.
+.sp
+idle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents an idle timeout. An idle timeout bounds the amount of time that a connection may be idle. The default value is none.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+perRequest \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a per request timeout. The default value is 15 seconds. If you set a higher timeout, then make sure that the higher value is set for each App Mesh resource in a conversation. For example, if a virtual node backend uses a virtual router provider to route to another virtual node, then the timeout should be greater than 15 seconds for the source and destination virtual node and the route.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+priority \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The priority for the route. Routes are matched based on the specified value, where 0 is the highest priority.
+.UNINDENT
+.UNINDENT
+.sp
+tcpRoute \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the specification of a TCP route.
+.sp
+action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The action to take if a match is determined.
+.sp
+weightedTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents the targets that traffic is routed to when a request matches the route.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents a target and its relative weight. Traffic is distributed across targets according to their relative weight. For example, a weighted target with a relative weight of 50 receives five times as much traffic as one with a relative weight of 10. The total weight for all targets combined must be less than or equal to 100.
+.sp
+virtualNode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual node to associate with the weighted target.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The relative weight of the weighted target.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeout \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents types of timeouts.
+.sp
+idle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that represents an idle timeout. An idle timeout bounds the amount of time that a connection may be idle. The default value is none.
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unit of time.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A number of time units.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The status of the route.
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status for the route.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+virtualRouterName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual router that the route is associated with.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

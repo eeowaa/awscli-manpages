@@ -1,0 +1,246 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SNS-SUBSCRIBE" "a" "" ""
+.SH NAME
+sns-subscribe \- Subscribes an endpoint to an Amazon SNS topic
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Subscribes an endpoint to an Amazon SNS topic. If the endpoint type is HTTP/S or email, or if the endpoint and the topic are not in the same AWS account, the endpoint owner must run the \fBConfirmSubscription\fP action to confirm the subscription.
+.sp
+You call the \fBConfirmSubscription\fP action with the token from the subscription response. Confirmation tokens are valid for three days.
+.sp
+This action is throttled at 100 transactions per second (TPS).
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  subscribe
+\-\-topic\-arn <value>
+\-\-protocol <value>
+[\-\-attributes <value>]
+[\-\-return\-subscription\-arn | \-\-no\-return\-subscription\-arn]
+[\-\-notification\-endpoint <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-topic\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the topic you want to subscribe to.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-protocol\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The protocol that you want to use. Supported protocols include:
+.INDENT 0.0
+.IP \(bu 2
+\fBhttp\fP – delivery of JSON\-encoded message via HTTP POST
+.IP \(bu 2
+\fBhttps\fP – delivery of JSON\-encoded message via HTTPS POST
+.IP \(bu 2
+\fBemail\fP – delivery of message via SMTP
+.IP \(bu 2
+\fBemail\-json\fP – delivery of JSON\-encoded message via SMTP
+.IP \(bu 2
+\fBsms\fP – delivery of message via SMS
+.IP \(bu 2
+\fBsqs\fP – delivery of JSON\-encoded message to an Amazon SQS queue
+.IP \(bu 2
+\fBapplication\fP – delivery of JSON\-encoded message to an EndpointArn for a mobile app and device
+.IP \(bu 2
+\fBlambda\fP – delivery of JSON\-encoded message to an AWS Lambda function
+.IP \(bu 2
+\fBfirehose\fP – delivery of JSON\-encoded message to an Amazon Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of attributes with their corresponding values.
+.sp
+The following lists the names, descriptions, and values of the special request parameters that the \fBSetTopicAttributes\fP action uses:
+.INDENT 0.0
+.IP \(bu 2
+\fBDeliveryPolicy\fP – The policy that defines how Amazon SNS retries failed deliveries to HTTP/S endpoints.
+.IP \(bu 2
+\fBFilterPolicy\fP – The simple JSON object that lets your subscriber receive only a subset of messages, rather than receiving every message published to the topic.
+.IP \(bu 2
+\fBRawMessageDelivery\fP – When set to \fBtrue\fP , enables raw message delivery to Amazon SQS or HTTP/S endpoints. This eliminates the need for the endpoints to process JSON formatting, which is otherwise created for Amazon SNS metadata.
+.IP \(bu 2
+\fBRedrivePolicy\fP – When specified, sends undeliverable messages to the specified Amazon SQS dead\-letter queue. Messages that can\(aqt be delivered due to client errors (for example, when the subscribed endpoint is unreachable) or server errors (for example, when the service that powers the subscribed endpoint becomes unavailable) are held in the dead\-letter queue for further analysis or reprocessing.
+.UNINDENT
+.sp
+The following attribute applies only to Amazon Kinesis Data Firehose delivery stream subscriptions:
+.INDENT 0.0
+.IP \(bu 2
+\fBSubscriptionRoleArn\fP – The ARN of the IAM role that has the following:
+.INDENT 2.0
+.IP \(bu 2
+Permission to write to the Kinesis Data Firehose delivery stream
+.IP \(bu 2
+Amazon SNS listed as a trusted entity
+.UNINDENT
+.UNINDENT
+.sp
+Specifying a valid ARN for this attribute is required for Kinesis Data Firehose delivery stream subscriptions. For more information, see \fI\%Fanout to Kinesis Data Firehose delivery streams\fP in the \fIAmazon SNS Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-return\-subscription\-arn\fP | \fB\-\-no\-return\-subscription\-arn\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Sets whether the response from the \fBSubscribe\fP request includes the subscription ARN, even if the subscription is not yet confirmed.
+.sp
+If you set this parameter to \fBtrue\fP , the response includes the ARN in all cases, even if the subscription is not yet confirmed. In addition to the ARN for confirmed subscriptions, the response also includes the \fBpending subscription\fP ARN value for subscriptions that aren\(aqt yet confirmed. A subscription becomes confirmed when the subscriber calls the \fBConfirmSubscription\fP action with a confirmation token.
+.sp
+The default value is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-endpoint\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The endpoint that you want to receive notifications. Endpoints vary by protocol:
+.INDENT 0.0
+.IP \(bu 2
+For the \fBhttp\fP protocol, the (public) endpoint is a URL beginning with \fBhttp://\fP .
+.IP \(bu 2
+For the \fBhttps\fP protocol, the (public) endpoint is a URL beginning with \fBhttps://\fP .
+.IP \(bu 2
+For the \fBemail\fP protocol, the endpoint is an email address.
+.IP \(bu 2
+For the \fBemail\-json\fP protocol, the endpoint is an email address.
+.IP \(bu 2
+For the \fBsms\fP protocol, the endpoint is a phone number of an SMS\-enabled device.
+.IP \(bu 2
+For the \fBsqs\fP protocol, the endpoint is the ARN of an Amazon SQS queue.
+.IP \(bu 2
+For the \fBapplication\fP protocol, the endpoint is the EndpointArn of a mobile app and device.
+.IP \(bu 2
+For the \fBlambda\fP protocol, the endpoint is the ARN of an AWS Lambda function.
+.IP \(bu 2
+For the \fBfirehose\fP protocol, the endpoint is the ARN of an Amazon Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo subscribe to a topic\fP
+.sp
+The following \fBsubscribe\fP command subscribes an email address to the specified topic.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sns subscribe \e
+    \-\-topic\-arn arn:aws:sns:us\-west\-2:123456789012:my\-topic \e
+    \-\-protocol email \e
+    \-\-notification\-endpoint my\-email@example.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "SubscriptionArn": "pending confirmation"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+SubscriptionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the subscription if it is confirmed, or the string "pending confirmation" if the subscription requires confirmation. However, if the API request parameter \fBReturnSubscriptionArn\fP is true, then the value is always the subscription ARN, even if the subscription requires confirmation.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

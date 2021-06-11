@@ -1,0 +1,215 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-MODIFY-CURRENT-DB-CLUSTER-CAPACITY" "a" "" ""
+.SH NAME
+rds-modify-current-db-cluster-capacity \- Set the capacity of an Aurora Serverless DB cluster to a specific value
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Set the capacity of an Aurora Serverless DB cluster to a specific value.
+.sp
+Aurora Serverless scales seamlessly based on the workload on the DB cluster. In some cases, the capacity might not scale fast enough to meet a sudden change in workload, such as a large number of new transactions. Call \fBModifyCurrentDBClusterCapacity\fP to set the capacity explicitly.
+.sp
+After this call sets the DB cluster capacity, Aurora Serverless can automatically scale the DB cluster based on the cooldown period for scaling up and the cooldown period for scaling down.
+.sp
+For more information about Aurora Serverless, see \fI\%Using Amazon Aurora Serverless\fP in the \fIAmazon Aurora User Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you call \fBModifyCurrentDBClusterCapacity\fP with the default \fBTimeoutAction\fP , connections that prevent Aurora Serverless from finding a scaling point might be dropped. For more information about scaling points, see \fI\%Autoscaling for Aurora Serverless\fP in the \fIAmazon Aurora User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This action only applies to Aurora DB clusters.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  modify\-current\-db\-cluster\-capacity
+\-\-db\-cluster\-identifier <value>
+[\-\-capacity <value>]
+[\-\-seconds\-before\-timeout <value>]
+[\-\-timeout\-action <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-db\-cluster\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The DB cluster identifier for the cluster being modified. This parameter isn\(aqt case\-sensitive.
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+Must match the identifier of an existing DB cluster.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-capacity\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The DB cluster capacity.
+.sp
+When you change the capacity of a paused Aurora Serverless DB cluster, it automatically resumes.
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+For Aurora MySQL, valid capacity values are \fB1\fP , \fB2\fP , \fB4\fP , \fB8\fP , \fB16\fP , \fB32\fP , \fB64\fP , \fB128\fP , and \fB256\fP .
+.IP \(bu 2
+For Aurora PostgreSQL, valid capacity values are \fB2\fP , \fB4\fP , \fB8\fP , \fB16\fP , \fB32\fP , \fB64\fP , \fB192\fP , and \fB384\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-seconds\-before\-timeout\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, that Aurora Serverless tries to find a scaling point to perform seamless scaling before enforcing the timeout action. The default is 300.
+.INDENT 0.0
+.IP \(bu 2
+Value must be from 10 through 600.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-timeout\-action\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The action to take when the timeout is reached, either \fBForceApplyCapacityChange\fP or \fBRollbackCapacityChange\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBForceApplyCapacityChange\fP , the default, sets the capacity to the specified value as soon as possible.
+.sp
+\fBRollbackCapacityChange\fP ignores the capacity change if a scaling point isn\(aqt found in the timeout period.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo scale the capacity of an Aurora Serverless DB cluster\fP
+.sp
+The following \fBmodify\-current\-db\-cluster\-capacity\fP example scales the capacity of an Aurora Serverless DB cluster to 8.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds modify\-current\-db\-cluster\-capacity \e
+    \-\-db\-cluster\-identifier mydbcluster \e
+    \-\-capacity 8
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DBClusterIdentifier": "mydbcluster",
+    "PendingCapacity": 8,
+    "CurrentCapacity": 1,
+    "SecondsBeforeTimeout": 300,
+    "TimeoutAction": "ForceApplyCapacityChange"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Scaling Aurora Serverless v1 DB cluster capacity manually\fP in the \fIAmazon Aurora User Guide\fP\&.
+.SH OUTPUT
+.sp
+DBClusterIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-supplied DB cluster identifier. This identifier is the unique key that identifies a DB cluster.
+.UNINDENT
+.UNINDENT
+.sp
+PendingCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the capacity that the DB cluster scales to next.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The current capacity of the DB cluster.
+.UNINDENT
+.UNINDENT
+.sp
+SecondsBeforeTimeout \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of seconds before a call to \fBModifyCurrentDBClusterCapacity\fP times out.
+.UNINDENT
+.UNINDENT
+.sp
+TimeoutAction \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The timeout action of a call to \fBModifyCurrentDBClusterCapacity\fP , either \fBForceApplyCapacityChange\fP or \fBRollbackCapacityChange\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

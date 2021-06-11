@@ -1,0 +1,219 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "MEDIASTORE-DATA-GET-OBJECT" "a" "" ""
+.SH NAME
+mediastore-data-get-object \- Downloads the object at the specified path
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Downloads the object at the specified path. If the object’s upload availability is set to \fBstreaming\fP , AWS Elemental MediaStore downloads the object even if it’s still uploading the object.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-object
+\-\-path <value>
+[\-\-range <value>]
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-path\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The path (including the file name) where the object is stored in the container. Format: <folder name>/<folder name>/<file name>
+.sp
+For example, to upload the file \fBmlaw.avi\fP to the folder path \fBpremium\ecanada\fP in the container \fBmovies\fP , enter the path \fBpremium/canada/mlaw.avi\fP .
+.sp
+Do not include the container name in this path.
+.sp
+If the path includes any folders that don\(aqt exist yet, the service creates them. For example, suppose you have an existing \fBpremium/usa\fP subfolder. If you specify \fBpremium/canada\fP , the service creates a \fBcanada\fP subfolder in the \fBpremium\fP folder. You then have two subfolders, \fBusa\fP and \fBcanada\fP , in the \fBpremium\fP folder.
+.sp
+There is no correlation between the path to the source and the path (folders) in the container in AWS Elemental MediaStore.
+.sp
+For more information about folders and how they exist in a container, see the \fI\%AWS Elemental MediaStore User Guide\fP .
+.sp
+The file name is the name that is assigned to the file that you upload. The file can have the same name inside and outside of AWS Elemental MediaStore, or it can have the same name. The file name can include or omit an extension.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-range\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The range bytes of an object to retrieve. For more information about the \fBRange\fP header, see \fI\%http://www.w3.org/Protocols/rfc2616/rfc2616\-sec14.html#sec14.35\fP . AWS Elemental MediaStore ignores this header for partially uploaded objects that have streaming upload availability.
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To download an entire object\fP
+.sp
+The following \fBget\-object\fP example downloads the specified object.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws mediastore\-data get\-object \e
+    \-\-endpoint https://aaabbbcccdddee.data.mediastore.us\-west\-2.amazonaws.com \e
+    \-\-path events/baseball/setup.jpg setup.jpg
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ContentType": "image/jpeg",
+    "StatusCode": 200,
+    "ETag": "2aa333bbcc8d8d22d777e999c88d4aa9eeeeee4dd89ff7f555555555555da6d3",
+    "ContentLength": "3860266",
+    "LastModified": "Fri, 19 Jul 2019 21:50:31 GMT"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To download part of an object\fP
+.sp
+The following \fBget\-object\fP example downloads the specified part of an object.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws mediastore\-data get\-object \e
+    \-\-endpoint https://aaabbbcccdddee.data.mediastore.us\-west\-2.amazonaws.com \e
+    \-\-path events/baseball/setup.jpg setup.jpg \e
+    \-\-range "bytes=0\-100"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StatusCode": 206,
+    "LastModified": "Fri, 19 Jul 2019 21:50:31 GMT",
+    "ContentType": "image/jpeg",
+    "ContentRange": "bytes 0\-100/3860266",
+    "ETag": "2aa333bbcc8d8d22d777e999c88d4aa9eeeeee4dd89ff7f555555555555da6d3",
+    "ContentLength": "101"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Downloading an Object\fP in the \fIAWS Elemental MediaStore User Guide\fP\&.
+.SH OUTPUT
+.sp
+Body \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The bytes of the object.
+.UNINDENT
+.UNINDENT
+.sp
+CacheControl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional \fBCacheControl\fP header that allows the caller to control the object\(aqs cache behavior. Headers can be passed in as specified in the HTTP spec at \fI\%https://www.w3.org/Protocols/rfc2616/rfc2616\-sec14.html#sec14.9\fP .
+.sp
+Headers with a custom user\-defined value are also accepted.
+.UNINDENT
+.UNINDENT
+.sp
+ContentRange \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The range of bytes to retrieve.
+.UNINDENT
+.UNINDENT
+.sp
+ContentLength \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The length of the object in bytes.
+.UNINDENT
+.UNINDENT
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content type of the object.
+.UNINDENT
+.UNINDENT
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ETag that represents a unique instance of the object.
+.UNINDENT
+.UNINDENT
+.sp
+LastModified \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the object was last modified.
+.UNINDENT
+.UNINDENT
+.sp
+StatusCode \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The HTML status code of the request. Status codes ranging from 200 to 299 indicate success. All other status codes indicate the type of error that occurred.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

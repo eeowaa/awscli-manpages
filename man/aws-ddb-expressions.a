@@ -1,0 +1,168 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AWS-DDB-EXPRESSIONS" "a" "" ""
+.SH NAME
+aws-ddb-expressions \- Details on the expression syntax for the ddb commands
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.sp
+The \fBddb\fP commands provide a simplified expression\-writing experince by
+adding some additional syntax which allows for specifying attribute names and
+attribute values without having to define placeholders.
+.sp
+For example, one might write the following command using the base \fBdynamodb\fP
+commands:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb scan \e
+    \-\-table\-name ProductCatalog \e
+    \-\-condition\-expression "Price between :lo and :hi" \e
+    \-\-expression\-attribute\-values file://values.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+With the contents of \fBvalues.json\fP being:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    ":lo": {"N": "500"},
+    ":hi": {"N": "600"}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+With \fBddb select\fP you would write:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ddb select ProductCatalog \-\-condition \(aqPrice between 500 and 600\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Then the CLI would handle extracting the the numbers to make the final request.
+The CLI can handle extracting any values in this way.
+.SH ATTRIBUTE NAME SYNTAX
+.sp
+Attribute names may be specified as unquoted strings, or as strings quoted
+using single quotes. Using single quotes will be necessary if an attribute name
+starts with a digit or contains any characters outsize of ascii letters and
+digits. For example, the following would be valid attribute names: \fBfoo\fP,
+\fB\(aqfoo bar\(aq\fP, \fB\(aqfoo.bar\(aq\fP etc.
+.SS Attribute Paths
+.sp
+When specifying an attribute path, each attribute name in the path may be
+individually quoted. For example: \fBfoo.\(aqbar baz\(aq[0]\fP\&.
+.SS Reserved Words
+.sp
+The following words are reserved in the CLI, and so they MUST be quoted if you
+intend to use them as an attribute name. Each word is case\-insensitive.
+.INDENT 0.0
+.IP \(bu 2
+\fBAND\fP
+.IP \(bu 2
+\fBBETWEEN\fP
+.IP \(bu 2
+\fBIN\fP
+.IP \(bu 2
+\fBOR\fP
+.IP \(bu 2
+\fBNOT\fP
+.IP \(bu 2
+\fBSET\fP
+.IP \(bu 2
+\fBREMOVE\fP
+.IP \(bu 2
+\fBADD\fP
+.IP \(bu 2
+\fBDELETE\fP
+.IP \(bu 2
+\fBTRUE\fP
+.IP \(bu 2
+\fBFALSE\fP
+.IP \(bu 2
+\fBNULL\fP
+.UNINDENT
+.SH ATTRIBUTE VALUE SYNTAX
+.SS Numbers
+.sp
+Numbers may be specified as you would specify them in JSON. For example, each
+of the following would be valid numbers: \fB1\fP, \fB1.1\fP, \fB1.1e3\fP,
+\fB\-1.1e\-3\fP, etc.
+.SS Strings
+.sp
+Strings may be specified as you would specify them in JSON. This means that
+they must be enclosed by double quotes, and any internal double quote
+characters must be escaped with a backslash. For example, each of the following
+would be a valid string: \fB"foo"\fP, \fB"\e"hello\e" world"\fP, etc. Note that you
+may need to escape the backslash itself depending on your shell.
+.SS Bytes
+.sp
+Binary values are base64\-encoded values prefixed by \fBb"\fP and suffixed by
+\fB"\fP\&. For example, the follwoing would be a valid binary value: \fBb"4pyT"\fP\&.
+.SS Booleans
+.sp
+Boolean values may be specified as \fBtrue\fP or \fBfalse\fP\&.
+.SS Null
+.sp
+Null values are specified simply as \fBnull\fP
+.SS Lists
+.sp
+Lists may be specified as you would specify them in JSON, with the exception
+that binary values and set values are valid elements. This means that the list
+must start with \fB[\fP and end with \fB]\fP\&. Each element in the list must be
+separated by a comma. For example: \fB["foo", b"4pyT", 8]\fP\&.
+.SS Sets
+.sp
+Sets must begin with \fB{\fP and end with \fB}\fP\&. Each item in the set must be
+separated by a comma. Sets may only contain numbers, strings, and bytes. All
+values in the set must be of the same type. Sets must contain at least one
+value. For example, each of the following is a valid set: \fB{1, 2, 3}\fP,
+\fB{"foo", "bar"}\fP, \fB{b"4pyT"}\fP\&.
+.SS Maps
+.sp
+Maps may be specified as you would specify them in JSON, with the exception
+that bytes and sets are valid values. This means that the map must start with
+\fB{\fP and end with \fB}\fP\&. It may contain any number of key\-value pairs where
+the key and value are separated by a colon (\fB:\fP). Keys must be strings, but
+values may be any type. For example: \fB{"foo": {"bar": {b"4pyT"}}}\fP\&.
+.\" Generated by docutils manpage writer.
+.

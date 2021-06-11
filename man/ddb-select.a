@@ -1,0 +1,274 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DDB-SELECT" "a" "" ""
+.SH NAME
+ddb-select \- Under the hood, this operation will use query if --key-condition is specified, or scan otherwise
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+\fBselect\fP searches a table or index.
+.sp
+Under the hood, this operation will use \fBquery\fP if \fB\-\-key\-condition\fP is specified, or \fBscan\fP otherwise.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  select
+<table\-name>
+[\-\-index\-name <value>]
+[\-\-projection <value> [<value>...]]
+[\-\-filter <value> [<value>...]]
+[\-\-key\-condition <value> [<value>...]]
+[\-\-attributes <value>]
+[\-\-consistent\-read | \-\-no\-consistent\-read]
+[\-\-return\-consumed\-capacity | \-\-no\-return\-consumed\-capacity]
+[\-\-starting\-token <value>]
+[\-\-max\-items <value>]
+[\-\-page\-size <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fBtable_name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of your DynamoDB table.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-index\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of a secondary index to scan. This index can be any local secondary index or global secondary index.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-projection\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that identifies one or more attributes to retrieve from the specified table or index. These attributes can include scalars, sets, or elements of a JSON document. The attributes in the expression must be separated by commas. If any of the requested attributes are not found, they will not appear in the result.
+.sp
+For more information, see \fI\%Accessing Item Attributes\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+For CLI specific syntax see \fI\%aws help ddb\-expressions\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that contains conditions that DynamoDB applies after the operation, but before the data is returned to you. Items that do not satisfy the \fB\-\-filter\fP criteria are not returned.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A \fB\-\-filter\fP is applied after the items have already been read; the process of filtering does not consume any additional read capacity units.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Filter Expressions\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+For CLI specific syntax see \fI\%aws help ddb\-expressions\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-condition\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The condition that specifies the key value(s) for items to be retrieved. Must perform an equality test on a single partition key value.
+.sp
+The condition can optionally perform one of several comparison tests on a single sort key value. This allows \fBselect\fP to retrieve one item with a given partition key value and sort key value, or several items that have the same partition key value but different sort key values.
+.sp
+The partition key equality test must be specified in the following format:
+.sp
+\fBpartitionKeyName = :partitionkeyval\fP
+.sp
+If you also want to provide a condition for the sort key, it must be combined using \fBAND\fP with the condition for the sort key.
+.sp
+Valid comparisons for the sort key condition are as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBsortKeyName = :sortkeyval\fP \- true if the sort key value is equal to \fB:sortkeyval\fP .
+.IP \(bu 2
+\fBsortKeyName < :sortkeyval\fP \- true if the sort key value is less than \fB:sortkeyval\fP .
+.IP \(bu 2
+\fBsortKeyName <= :sortkeyval\fP \- true if the sort key value is less than or equal to \fB:sortkeyval\fP .
+.IP \(bu 2
+\fBsortKeyName > :sortkeyval\fP \- true if the sort key value is greater than \fB:sortkeyval\fP .
+.IP \(bu 2
+\fBsortKeyName >= :sortkeyval\fP \- true if the sort key value is greater than or equal to \fB:sortkeyval\fP .
+.IP \(bu 2
+\fBsortKeyName BETWEEN :sortkeyval1 AND :sortkeyval2\fP \- true if the sort key value is greater than or equal to \fB:sortkeyval1\fP , and less than or equal to \fB:sortkeyval2\fP .
+.IP \(bu 2
+\fBbegins_with(sortKeyName, :sortkeyval)\fP \- true if the sort key value begins with a particular operand. (You cannot use this function with a sort key that is of type Number.) Note that the function name \fBbegins_with\fP is case\-sensitive.
+.UNINDENT
+.sp
+For CLI specific syntax see \fI\%aws help ddb\-expressions\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attributes\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The attributes to be returned in the result. You can retrieve all item attributes, specific item attributes, the count of matching items, or in the case of an index, some or all of the attributes projected into the index.
+.INDENT 0.0
+.IP \(bu 2
+\fBALL\fP \- Returns all of the item attributes from the specified table or index. If you query a local secondary index, then for each matching item in the index DynamoDB will fetch the entire item from the parent table. If the index is configured to project all item attributes, then all of the data can be obtained from the local secondary index, and no fetching is required.
+.IP \(bu 2
+\fBALL_PROJECTED\fP \- Allowed only when querying an index. Retrieves all attributes that have been projected into the index. If the index is configured to project all attributes, this return value is equivalent to specifying \fBALL\fP\&.
+.IP \(bu 2
+\fBCOUNT\fP \- Returns the number of matching items, rather than the matching items themselves.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-consistent\-read\fP | \fB\-\-no\-consistent\-read\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Determines the read consistency model: If set to \fB\-\-consistent\-read\fP , then the operation uses strongly consistent reads; otherwise, the operation uses eventually consistent reads. Strongly consistent reads are not supported on global secondary indexes. If you query a global secondary index with \fB\-\-consistent\-read\fP , you will receive a \fBValidationException\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-return\-consumed\-capacity\fP | \fB\-\-no\-return\-consumed\-capacity\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Will include the aggregate \fBConsumedCapacity\fP for the operation. If \fB\-\-index\-name\fP is also specified, then the \fBConsumedCapacity\fP for each table and secondary index that was accessed will be returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo scan an entire table\fP
+.sp
+This example scans the entire \fIMusicCollection\fP table, and then narrows the
+results to songs by the artist "No One You Know". For each item, only the album
+title and song title are returned.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ddb select MusicCollection \-\-projection \(aqSongTitle, AlbumTitle\(aq \e
+    \-\-filter \(aqArtist = "No One You Know"\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Count: 2
+Items:
+\- SongTitle: "Call Me Today"
+  AlbumTitle: "Somewhat Famous"
+\- SongTitle: "Scared of My Shadow"
+  AlbumTitle: "Blue Sky Blues"
+ScannedCount: 3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBTo query for specific primary keys\fP
+.sp
+This example queries items in the \fIMusicCollection\fP table. The table has a
+hash\-and\-range primary key (\fIArtist\fP and \fISongTitle\fP), but this query only
+specifies the hash key value. It returns song titles by the artist named "No
+One You Know".
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ddb select MusicCollection \-\-projection SongTitle \e
+    \-\-key\-condition\-expression \(aqArtist = "No One You Know"\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Count: 2
+Items:
+\- SongTitle: "Call Me Today"
+\- SongTitle: "Scared of My Shadow"
+ScannedCount: 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

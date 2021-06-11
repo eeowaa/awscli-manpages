@@ -1,0 +1,611 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-COPY-DB-SNAPSHOT" "a" "" ""
+.SH NAME
+rds-copy-db-snapshot \- Copies the specified DB snapshot
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Copies the specified DB snapshot. The source DB snapshot must be in the \fBavailable\fP state.
+.sp
+You can copy a snapshot from one AWS Region to another. In that case, the AWS Region where you call the \fBCopyDBSnapshot\fP action is the destination AWS Region for the DB snapshot copy.
+.sp
+For more information about copying snapshots, see \fI\%Copying a DB Snapshot\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  copy\-db\-snapshot
+\-\-source\-db\-snapshot\-identifier <value>
+\-\-target\-db\-snapshot\-identifier <value>
+[\-\-kms\-key\-id <value>]
+[\-\-tags <value>]
+[\-\-copy\-tags | \-\-no\-copy\-tags]
+[\-\-pre\-signed\-url <value>]
+[\-\-option\-group\-name <value>]
+[\-\-target\-custom\-availability\-zone <value>]
+[\-\-source\-region <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-source\-db\-snapshot\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the source DB snapshot.
+.sp
+If the source snapshot is in the same AWS Region as the copy, specify a valid DB snapshot identifier. For example, you might specify \fBrds:mysql\-instance1\-snapshot\-20130805\fP .
+.sp
+If the source snapshot is in a different AWS Region than the copy, specify a valid DB snapshot ARN. For example, you might specify \fBarn:aws:rds:us\-west\-2:123456789012:snapshot:mysql\-instance1\-snapshot\-20130805\fP .
+.sp
+If you are copying from a shared manual DB snapshot, this parameter must be the Amazon Resource Name (ARN) of the shared DB snapshot.
+.sp
+If you are copying an encrypted snapshot this parameter must be in the ARN format for the source AWS Region, and must match the \fBSourceDBSnapshotIdentifier\fP in the \fBPreSignedUrl\fP parameter.
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+Must specify a valid system snapshot in the "available" state.
+.UNINDENT
+.sp
+Example: \fBrds:mydb\-2012\-04\-02\-00\-01\fP
+.sp
+Example: \fBarn:aws:rds:us\-west\-2:123456789012:snapshot:mysql\-instance1\-snapshot\-20130805\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-db\-snapshot\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the copy of the snapshot.
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+Can\(aqt be null, empty, or blank
+.IP \(bu 2
+Must contain from 1 to 255 letters, numbers, or hyphens
+.IP \(bu 2
+First character must be a letter
+.IP \(bu 2
+Can\(aqt end with a hyphen or contain two consecutive hyphens
+.UNINDENT
+.sp
+Example: \fBmy\-db\-snapshot\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS KMS key identifier for an encrypted DB snapshot. The AWS KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the AWS KMS customer master key (CMK).
+.sp
+If you copy an encrypted DB snapshot from your AWS account, you can specify a value for this parameter to encrypt the copy with a new AWS KMS CMK. If you don\(aqt specify a value for this parameter, then the copy of the DB snapshot is encrypted with the same AWS KMS key as the source DB snapshot.
+.sp
+If you copy an encrypted DB snapshot that is shared from another AWS account, then you must specify a value for this parameter.
+.sp
+If you specify this parameter when you copy an unencrypted snapshot, the copy is encrypted.
+.sp
+If you copy an encrypted snapshot to a different AWS Region, then you must specify a AWS KMS key identifier for the destination AWS Region. AWS KMS CMKs are specific to the AWS Region that they are created in, and you can\(aqt use CMKs from one AWS Region in another AWS Region.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags. For more information, see \fI\%Tagging Amazon RDS Resources\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata assigned to an Amazon RDS resource consisting of a key\-value pair.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A key is the required name of the tag. The string value can be from 1 to 128 Unicode characters in length and can\(aqt be prefixed with "aws:" or "rds:". The string can only contain only the set of Unicode letters, digits, white\-space, \(aq_\(aq, \(aq.\(aq, \(aq:\(aq, \(aq/\(aq, \(aq=\(aq, \(aq+\(aq, \(aq\-\(aq, \(aq@\(aq (Java regex: "^([\ep{L}\ep{Z}\ep{N}_.:/=+\e\-@]*)$").
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value is the optional value of the tag. The string value can be from 1 to 256 Unicode characters in length and can\(aqt be prefixed with "aws:" or "rds:". The string can only contain only the set of Unicode letters, digits, white\-space, \(aq_\(aq, \(aq.\(aq, \(aq:\(aq, \(aq/\(aq, \(aq=\(aq, \(aq+\(aq, \(aq\-\(aq, \(aq@\(aq (Java regex: "^([\ep{L}\ep{Z}\ep{N}_.:/=+\e\-@]*)$").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-copy\-tags\fP | \fB\-\-no\-copy\-tags\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether to copy all tags from the source DB snapshot to the target DB snapshot. By default, tags are not copied.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-pre\-signed\-url\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL that contains a Signature Version 4 signed request for the \fBCopyDBSnapshot\fP API action in the source AWS Region that contains the source DB snapshot to copy.
+.sp
+You must specify this parameter when you copy an encrypted DB snapshot from another AWS Region by using the Amazon RDS API. Don\(aqt specify \fBPreSignedUrl\fP when you are copying an encrypted DB snapshot in the same AWS Region.
+.sp
+The presigned URL must be a valid request for the \fBCopyDBSnapshot\fP API action that can be executed in the source AWS Region that contains the encrypted DB snapshot to be copied. The presigned URL request must contain the following parameter values:
+.INDENT 0.0
+.IP \(bu 2
+\fBDestinationRegion\fP \- The AWS Region that the encrypted DB snapshot is copied to. This AWS Region is the same one where the \fBCopyDBSnapshot\fP action is called that contains this presigned URL.  For example, if you copy an encrypted DB snapshot from the us\-west\-2 AWS Region to the us\-east\-1 AWS Region, then you call the \fBCopyDBSnapshot\fP action in the us\-east\-1 AWS Region and provide a presigned URL that contains a call to the \fBCopyDBSnapshot\fP action in the us\-west\-2 AWS Region. For this example, the \fBDestinationRegion\fP in the presigned URL must be set to the us\-east\-1 AWS Region.
+.IP \(bu 2
+\fBKmsKeyId\fP \- The AWS KMS key identifier for the customer master key (CMK) to use to encrypt the copy of the DB snapshot in the destination AWS Region. This is the same identifier for both the \fBCopyDBSnapshot\fP action that is called in the destination AWS Region, and the action contained in the presigned URL.
+.IP \(bu 2
+\fBSourceDBSnapshotIdentifier\fP \- The DB snapshot identifier for the encrypted snapshot to be copied. This identifier must be in the Amazon Resource Name (ARN) format for the source AWS Region. For example, if you are copying an encrypted DB snapshot from the us\-west\-2 AWS Region, then your \fBSourceDBSnapshotIdentifier\fP looks like the following example: \fBarn:aws:rds:us\-west\-2:123456789012:snapshot:mysql\-instance1\-snapshot\-20161115\fP .
+.UNINDENT
+.sp
+To learn how to generate a Signature Version 4 signed request, see \fI\%Authenticating Requests: Using Query Parameters (AWS Signature Version 4)\fP and \fI\%Signature Version 4 Signing Process\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you are using an AWS SDK tool or the AWS CLI, you can specify \fBSourceRegion\fP (or \fB\-\-source\-region\fP for the AWS CLI) instead of specifying \fBPreSignedUrl\fP manually. Specifying \fBSourceRegion\fP autogenerates a pre\-signed URL that is a valid request for the operation that can be executed in the source AWS Region.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-option\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of an option group to associate with the copy of the snapshot.
+.sp
+Specify this option if you are copying a snapshot from one AWS Region to another, and your DB instance uses a nondefault option group. If your source DB instance uses Transparent Data Encryption for Oracle or Microsoft SQL Server, you must specify this option when copying across AWS Regions. For more information, see \fI\%Option group considerations\fP in the \fIAmazon RDS User Guide.\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-custom\-availability\-zone\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The external custom Availability Zone (CAZ) identifier for the target CAZ.
+.sp
+Example: \fBrds\-caz\-aiqhTgQv\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-region\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the region that contains the snapshot to be copied.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo copy a DB snapshot\fP
+.sp
+The following \fBcopy\-db\-snapshot\fP example creates a copy of a DB snapshot.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds copy\-db\-snapshot \e
+    \-\-source\-db\-snapshot\-identifier rds:database\-mysql\-2019\-06\-06\-08\-38
+    \-\-target\-db\-snapshot\-identifier mydbsnapshotcopy
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DBSnapshot": {
+        "VpcId": "vpc\-6594f31c",
+        "Status": "creating",
+        "Encrypted": true,
+        "SourceDBSnapshotIdentifier": "arn:aws:rds:us\-east\-1:123456789012:snapshot:rds:database\-mysql\-2019\-06\-06\-08\-38",
+        "MasterUsername": "admin",
+        "Iops": 1000,
+        "Port": 3306,
+        "LicenseModel": "general\-public\-license",
+        "DBSnapshotArn": "arn:aws:rds:us\-east\-1:123456789012:snapshot:mydbsnapshotcopy",
+        "EngineVersion": "5.6.40",
+        "OptionGroupName": "default:mysql\-5\-6",
+        "ProcessorFeatures": [],
+        "Engine": "mysql",
+        "StorageType": "io1",
+        "DbiResourceId": "db\-ZI7UJ5BLKMBYFGX7FDENCKADC4",
+        "KmsKeyId": "arn:aws:kms:us\-east\-1:123456789012:key/AKIAIOSFODNN7EXAMPLE",
+        "SnapshotType": "manual",
+        "IAMDatabaseAuthenticationEnabled": false,
+        "SourceRegion": "us\-east\-1",
+        "DBInstanceIdentifier": "database\-mysql",
+        "InstanceCreateTime": "2019\-04\-30T15:45:53.663Z",
+        "AvailabilityZone": "us\-east\-1f",
+        "PercentProgress": 0,
+        "AllocatedStorage": 100,
+        "DBSnapshotIdentifier": "mydbsnapshotcopy"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Copying a Snapshot\fP in the \fIAmazon RDS User Guide\fP\&.
+.SH OUTPUT
+.sp
+DBSnapshot \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of an Amazon RDS DB snapshot.
+.sp
+This data type is used as a response element in the \fBDescribeDBSnapshots\fP action.
+.sp
+DBSnapshotIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the identifier for the DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+DBInstanceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the DB instance identifier of the DB instance this DB snapshot was created from.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotCreateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies when the snapshot was taken in Coordinated Universal Time (UTC).
+.UNINDENT
+.UNINDENT
+.sp
+Engine \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the database engine.
+.UNINDENT
+.UNINDENT
+.sp
+AllocatedStorage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the allocated storage size in gibibytes (GiB).
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the status of this DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the port that the database engine was listening on at the time of the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the Availability Zone the DB instance was located in at the time of the DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the VPC ID associated with the DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceCreateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the time in Coordinated Universal Time (UTC) when the DB instance, from which the snapshot was taken, was created.
+.UNINDENT
+.UNINDENT
+.sp
+MasterUsername \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the master username for the DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the version of the database engine.
+.UNINDENT
+.UNINDENT
+.sp
+LicenseModel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+License model information for the restored DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the type of the DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Provisioned IOPS (I/O operations per second) value of the DB instance at the time of the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+OptionGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the option group name for the DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+PercentProgress \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of the estimated data that has been transferred.
+.UNINDENT
+.UNINDENT
+.sp
+SourceRegion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region that the DB snapshot was created in or copied from.
+.UNINDENT
+.UNINDENT
+.sp
+SourceDBSnapshotIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DB snapshot Amazon Resource Name (ARN) that the DB snapshot was copied from. It only has value in case of cross\-customer or cross\-region copy.
+.UNINDENT
+.UNINDENT
+.sp
+StorageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the storage type associated with DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+TdeCredentialArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN from the key store with which to associate the instance for TDE encryption.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the DB snapshot is encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If \fBEncrypted\fP is true, the AWS KMS key identifier for the encrypted DB snapshot.
+.sp
+The AWS KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the AWS KMS customer master key (CMK).
+.UNINDENT
+.UNINDENT
+.sp
+DBSnapshotArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the DB snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+Timezone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time zone of the DB snapshot. In most cases, the \fBTimezone\fP element is empty. \fBTimezone\fP content appears only for snapshots taken from Microsoft SQL Server DB instances that were created with a time zone specified.
+.UNINDENT
+.UNINDENT
+.sp
+IAMDatabaseAuthenticationEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if mapping of AWS Identity and Access Management (IAM) accounts to database accounts is enabled, and otherwise false.
+.UNINDENT
+.UNINDENT
+.sp
+ProcessorFeatures \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU cores and the number of threads per core for the DB instance class of the DB instance when the DB snapshot was created.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the processor features of a DB instance class.
+.sp
+To specify the number of CPU cores, use the \fBcoreCount\fP feature name for the \fBName\fP parameter. To specify the number of threads per core, use the \fBthreadsPerCore\fP feature name for the \fBName\fP parameter.
+.sp
+You can set the processor features of the DB instance class for a DB instance when you call one of the following actions:
+.INDENT 0.0
+.IP \(bu 2
+\fBCreateDBInstance\fP
+.IP \(bu 2
+\fBModifyDBInstance\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromDBSnapshot\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromS3\fP
+.IP \(bu 2
+\fBRestoreDBInstanceToPointInTime\fP
+.UNINDENT
+.sp
+You can view the valid processor values for a particular instance class by calling the \fBDescribeOrderableDBInstanceOptions\fP action and specifying the instance class for the \fBDBInstanceClass\fP parameter.
+.sp
+In addition, you can use the following actions for DB instance class processor information:
+.INDENT 0.0
+.IP \(bu 2
+\fBDescribeDBInstances\fP
+.IP \(bu 2
+\fBDescribeDBSnapshots\fP
+.IP \(bu 2
+\fBDescribeValidDBInstanceModifications\fP
+.UNINDENT
+.sp
+If you call \fBDescribeDBInstances\fP , \fBProcessorFeature\fP returns non\-null values only if the following conditions are met:
+.INDENT 0.0
+.IP \(bu 2
+You are accessing an Oracle DB instance.
+.IP \(bu 2
+Your Oracle DB instance class supports configuring the number of CPU cores and threads per core.
+.IP \(bu 2
+The current number CPU cores and threads is set to a non\-default value.
+.UNINDENT
+.sp
+For more information, see \fI\%Configuring the Processor of the DB Instance Class\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the processor feature. Valid names are \fBcoreCount\fP and \fBthreadsPerCore\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of a processor feature name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DbiResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the source DB instance, which can\(aqt be changed and which is unique to an AWS Region.
+.UNINDENT
+.UNINDENT
+.sp
+TagList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags. For more information, see \fI\%Tagging Amazon RDS Resources\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata assigned to an Amazon RDS resource consisting of a key\-value pair.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A key is the required name of the tag. The string value can be from 1 to 128 Unicode characters in length and can\(aqt be prefixed with "aws:" or "rds:". The string can only contain only the set of Unicode letters, digits, white\-space, \(aq_\(aq, \(aq.\(aq, \(aq:\(aq, \(aq/\(aq, \(aq=\(aq, \(aq+\(aq, \(aq\-\(aq, \(aq@\(aq (Java regex: "^([\ep{L}\ep{Z}\ep{N}_.:/=+\e\-@]*)$").
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value is the optional value of the tag. The string value can be from 1 to 256 Unicode characters in length and can\(aqt be prefixed with "aws:" or "rds:". The string can only contain only the set of Unicode letters, digits, white\-space, \(aq_\(aq, \(aq.\(aq, \(aq:\(aq, \(aq/\(aq, \(aq=\(aq, \(aq+\(aq, \(aq\-\(aq, \(aq@\(aq (Java regex: "^([\ep{L}\ep{Z}\ep{N}_.:/=+\e\-@]*)$").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

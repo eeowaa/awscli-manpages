@@ -1,0 +1,151 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEGURUPROFILER-GET-PROFILE" "a" "" ""
+.SH NAME
+codeguruprofiler-get-profile \- Gets the aggregated profile of a profiling group for a specified time range
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets the aggregated profile of a profiling group for a specified time range. Amazon CodeGuru Profiler collects posted agent profiles for a profiling group into aggregated profiles.
+.INDENT 0.0
+.INDENT 3.5
+\fB<note> <p> Because aggregated profiles expire over time <code>GetProfile</code> is not idempotent. </p> </note> <p> Specify the time range for the requested aggregated profile using 1 or 2 of the following parameters: <code>startTime</code>, <code>endTime</code>, <code>period</code>. The maximum time range allowed is 7 days. If you specify all 3 parameters, an exception is thrown. If you specify only <code>period</code>, the latest aggregated profile is returned. </p> <p> Aggregated profiles are available with aggregation periods of 5 minutes, 1 hour, and 1 day, aligned to UTC. The aggregation period of an aggregated profile determines how long it is retained. For more information, see <a href="https://docs.aws.amazon.com/codeguru/latest/profiler\-api/API_AggregatedProfileTime.html"> <code>AggregatedProfileTime</code> </a>. The aggregated profile\(aqs aggregation period determines how long it is retained by CodeGuru Profiler. </p> <ul> <li> <p> If the aggregation period is 5 minutes, the aggregated profile is retained for 15 days. </p> </li> <li> <p> If the aggregation period is 1 hour, the aggregated profile is retained for 60 days. </p> </li> <li> <p> If the aggregation period is 1 day, the aggregated profile is retained for 3 years. </p> </li> </ul> <p>There are two use cases for calling <code>GetProfile</code>.</p> <ol> <li> <p> If you want to return an aggregated profile that already exists, use <a href="https://docs.aws.amazon.com/codeguru/latest/profiler\-api/API_ListProfileTimes.html"> <code>ListProfileTimes</code> </a> to view the time ranges of existing aggregated profiles. Use them in a <code>GetProfile</code> request to return a specific, existing aggregated profile. </p> </li> <li> <p> If you want to return an aggregated profile for a time range that doesn\(aqt align with an existing aggregated profile, then CodeGuru Profiler makes a best effort to combine existing aggregated profiles from the requested time range and return them as one aggregated profile. </p> <p> If aggregated profiles do not exist for the full time range requested, then aggregated profiles for a smaller time range are returned. For example, if the requested time range is from 00:00 to 00:20, and the existing aggregated profiles are from 00:15 and 00:25, then the aggregated profiles from 00:15 to 00:20 are returned. </p> </li> </ol>\fP
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-profile
+[\-\-accept <value>]
+[\-\-end\-time <value>]
+[\-\-max\-depth <value>]
+[\-\-period <value>]
+\-\-profiling\-group\-name <value>
+[\-\-start\-time <value>]
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-accept\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the returned profiling data. The format maps to the \fBAccept\fP and \fBContent\-Type\fP headers of the HTTP request. You can specify one of the following: or the default .
+.INDENT 0.0
+.INDENT 3.5
+\fB<ul> <li> <p> <code>application/json</code> — standard JSON format </p> </li> <li> <p> <code>application/x\-amzn\-ion</code> — the Amazon Ion data format. For more information, see <a href="http://amzn.github.io/ion\-docs/">Amazon Ion</a>. </p> </li> </ul>\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The end time of the requested profile. Specify using the ISO 8601 format. For example, 2020\-06\-01T13:15:02.001Z represents 1 millisecond past June 1, 2020 1:15:02 PM UTC.
+.sp
+If you specify \fBendTime\fP , then you must also specify \fBperiod\fP or \fBstartTime\fP , but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-depth\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum depth of the stacks in the code that is represented in the aggregated profile. For example, if CodeGuru Profiler finds a method \fBA\fP , which calls method \fBB\fP , which calls method \fBC\fP , which calls method \fBD\fP , then the depth is 4. If the \fBmaxDepth\fP is set to 2, then the aggregated profile contains representations of methods \fBA\fP and \fBB\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-period\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Used with \fBstartTime\fP or \fBendTime\fP to specify the time range for the returned aggregated profile. Specify using the ISO 8601 format. For example, \fBP1DT1H1M1S\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fB<p> To get the latest aggregated profile, specify only <code>period</code>. </p>\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-profiling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the profiling group to get.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The start time of the profile to get. Specify using the ISO 8601 format. For example, 2020\-06\-01T13:15:02.001Z represents 1 millisecond past June 1, 2020 1:15:02 PM UTC.
+.INDENT 0.0
+.INDENT 3.5
+\fB<p> If you specify <code>startTime</code>, then you must also specify <code>period</code> or <code>endTime</code>, but not both. </p>\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+contentEncoding \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content encoding of the profile.
+.UNINDENT
+.UNINDENT
+.sp
+contentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content type of the profile in the payload. It is either \fBapplication/json\fP or the default \fBapplication/x\-amzn\-ion\fP .
+.UNINDENT
+.UNINDENT
+.sp
+profile \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Information about the profile.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,327 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IVS" "a" "" ""
+.SH NAME
+ivs \- The Amazon Interactive Video Service (IVS) API is REST compatible, using a standard HTTP API and an AWS EventBridge event stream for responses
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.INDENT 0.0
+.INDENT 3.5
+\fBIntroduction\fP
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Interactive Video Service (IVS) API is REST compatible, using a standard HTTP API and an AWS EventBridge event stream for responses. JSON is used for both requests and responses, including errors.
+.sp
+The API is an AWS regional service, currently in these regions: us\-west\-2, us\-east\-1, and eu\-west\-1.
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBAll API request parameters and URLs are case sensitive.\fP *
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+For a summary of notable documentation changes in each release, see \fI\%Document History\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBService Endpoints\fP
+.UNINDENT
+.UNINDENT
+.sp
+The following are the Amazon IVS service endpoints (all HTTPS):
+.sp
+Region name: US West (Oregon)
+.INDENT 0.0
+.IP \(bu 2
+Region: \fBus\-west\-2\fP
+.IP \(bu 2
+Endpoint: \fBivs.us\-west\-2.amazonaws.com\fP
+.UNINDENT
+.sp
+Region name: US East (Virginia)
+.INDENT 0.0
+.IP \(bu 2
+Region: \fBus\-east\-1\fP
+.IP \(bu 2
+Endpoint: \fBivs.us\-east\-1.amazonaws.com\fP
+.UNINDENT
+.sp
+Region name: EU West (Dublin)
+.INDENT 0.0
+.IP \(bu 2
+Region: \fBeu\-west\-1\fP
+.IP \(bu 2
+Endpoint: \fBivs.eu\-west\-1.amazonaws.com\fP
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAllowed Header Values\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+\fBAccept:\fP \(ga\(ga application/json
+.IP "System Message: WARNING/2 (<string>:, line 87)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+\fBAccept\-Encoding:\fP \(ga\(ga gzip, deflate
+.IP "System Message: WARNING/2 (<string>:, line 89)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+\fBContent\-Type:\fP \(ga\(ga application/json
+.IP "System Message: WARNING/2 (<string>:, line 91)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBResources\fP
+.UNINDENT
+.UNINDENT
+.sp
+The following resources contain information about your IVS live stream (see \fI\%Getting Started with Amazon IVS\fP ):
+.INDENT 0.0
+.IP \(bu 2
+Channel — Stores configuration data related to your live stream. You first create a channel and then use the channel’s stream key to start your live stream. See the Channel endpoints for more information.
+.IP \(bu 2
+Stream key — An identifier assigned by Amazon IVS when you create a channel, which is then used to authorize streaming. See the StreamKey endpoints for more information. * \fBTreat the stream key like a secret, since it allows anyone to stream to the channel.\fP *
+.IP \(bu 2
+Playback key pair — Video playback may be restricted using playback\-authorization tokens, which use public\-key encryption. A playback key pair is the public\-private pair of keys used to sign and validate the playback\-authorization token. See the PlaybackKeyPair endpoints for more information.
+.IP \(bu 2
+Recording configuration — Stores configuration related to recording a live stream and where to store the recorded content. Multiple channels can reference the same recording configuration. See the Recording Configuration endpoints for more information.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBTagging\fP
+.UNINDENT
+.UNINDENT
+.sp
+A \fItag\fP is a metadata label that you assign to an AWS resource. A tag comprises a \fIkey\fP and a \fIvalue\fP , both set by you. For example, you might set a tag as \fBtopic:nature\fP to label a particular video category. See \fI\%Tagging AWS Resources\fP for more information, including restrictions that apply to tags.
+.sp
+Tags can help you identify and organize your AWS resources. For example, you can use the same tag for different resources to indicate that they are related. You can also use tags to manage access (see \fI\%Access Tags\fP ).
+.sp
+The Amazon IVS API has these tag\-related endpoints:  TagResource ,  UntagResource , and  ListTagsForResource . The following resources support tagging: Channels, Stream Keys, Playback Key Pairs, and Recording Configurations.
+.INDENT 0.0
+.INDENT 3.5
+\fBAuthentication versus Authorization\fP
+.UNINDENT
+.UNINDENT
+.sp
+Note the differences between these concepts:
+.INDENT 0.0
+.IP \(bu 2
+\fIAuthentication\fP is about verifying identity. You need to be authenticated to sign Amazon IVS API requests.
+.IP \(bu 2
+\fIAuthorization\fP is about granting permissions. You need to be authorized to view \fI\%Amazon IVS private channels\fP . (Private channels are channels that are enabled for "playback authorization.")
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAuthentication\fP
+.UNINDENT
+.UNINDENT
+.sp
+All Amazon IVS API requests must be authenticated with a signature. The AWS Command\-Line Interface (CLI) and Amazon IVS Player SDKs take care of signing the underlying API calls for you. However, if your application calls the Amazon IVS API directly, it’s your responsibility to sign the requests.
+.sp
+You generate a signature using valid AWS credentials that have permission to perform the requested action. For example, you must sign PutMetadata requests with a signature generated from an IAM user account that has the \fBivs:PutMetadata\fP permission.
+.sp
+For more information:
+.INDENT 0.0
+.IP \(bu 2
+Authentication and generating signatures — See \fI\%Authenticating Requests (AWS Signature Version 4)\fP in the \fIAWS General Reference\fP .
+.IP \(bu 2
+Managing Amazon IVS permissions — See \fI\%Identity and Access Management\fP on the Security page of the \fIAmazon IVS User Guide\fP .
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBChannel Endpoints\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+CreateChannel — Creates a new channel and an associated stream key to start streaming.
+.IP \(bu 2
+GetChannel — Gets the channel configuration for the specified channel ARN (Amazon Resource Name).
+.IP \(bu 2
+BatchGetChannel — Performs  GetChannel on multiple ARNs simultaneously.
+.IP \(bu 2
+ListChannels — Gets summary information about all channels in your account, in the AWS region where the API request is processed. This list can be filtered to match a specified name or recording\-configuration ARN. Filters are mutually exclusive and cannot be used together. If you try to use both filters, you will get an error (409 Conflict Exception).
+.IP \(bu 2
+UpdateChannel — Updates a channel\(aqs configuration. This does not affect an ongoing stream of this channel. You must stop and restart the stream for the changes to take effect.
+.IP \(bu 2
+DeleteChannel — Deletes the specified channel.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBStreamKey Endpoints\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+CreateStreamKey — Creates a stream key, used to initiate a stream, for the specified channel ARN.
+.IP \(bu 2
+GetStreamKey — Gets stream key information for the specified ARN.
+.IP \(bu 2
+BatchGetStreamKey — Performs  GetStreamKey on multiple ARNs simultaneously.
+.IP \(bu 2
+ListStreamKeys — Gets summary information about stream keys for the specified channel.
+.IP \(bu 2
+DeleteStreamKey — Deletes the stream key for the specified ARN, so it can no longer be used to stream.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBStream Endpoints\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+GetStream — Gets information about the active (live) stream on a specified channel.
+.IP \(bu 2
+ListStreams — Gets summary information about live streams in your account, in the AWS region where the API request is processed.
+.IP \(bu 2
+StopStream — Disconnects the incoming RTMPS stream for the specified channel. Can be used in conjunction with  DeleteStreamKey to prevent further streaming to a channel.
+.IP \(bu 2
+PutMetadata — Inserts metadata into the active stream of the specified channel. A maximum of 5 requests per second per channel is allowed, each with a maximum 1 KB payload. (If 5 TPS is not sufficient for your needs, we recommend batching your data into a single PutMetadata call.)
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBPlaybackKeyPair Endpoints\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Setting Up Private Channels\fP in the \fIAmazon IVS User Guide\fP .
+.INDENT 0.0
+.IP \(bu 2
+ImportPlaybackKeyPair — Imports the public portion of a new key pair and returns its \fBarn\fP and \fBfingerprint\fP . The \fBprivateKey\fP can then be used to generate viewer authorization tokens, to grant viewers access to private channels (channels enabled for playback authorization).
+.IP \(bu 2
+GetPlaybackKeyPair — Gets a specified playback authorization key pair and returns the \fBarn\fP and \fBfingerprint\fP . The \fBprivateKey\fP held by the caller can be used to generate viewer authorization tokens, to grant viewers access to private channels.
+.IP \(bu 2
+ListPlaybackKeyPairs — Gets summary information about playback key pairs.
+.IP \(bu 2
+DeletePlaybackKeyPair — Deletes a specified authorization key pair. This invalidates future viewer tokens generated using the key pair’s \fBprivateKey\fP .
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBRecordingConfiguration Endpoints\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+CreateRecordingConfiguration — Creates a new recording configuration, used to enable recording to Amazon S3.
+.IP \(bu 2
+GetRecordingConfiguration — Gets the recording\-configuration metadata for the specified ARN.
+.IP \(bu 2
+ListRecordingConfigurations — Gets summary information about all recording configurations in your account, in the AWS region where the API request is processed.
+.IP \(bu 2
+DeleteRecordingConfiguration — Deletes the recording configuration for the specified ARN.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAWS Tags Endpoints\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+TagResource — Adds or updates tags for the AWS resource with the specified ARN.
+.IP \(bu 2
+UntagResource — Removes tags from the resource with the specified ARN.
+.IP \(bu 2
+ListTagsForResource — Gets information about AWS tags for the specified ARN.
+.UNINDENT
+.SH AVAILABLE COMMANDS
+.INDENT 0.0
+.IP \(bu 2
+batch\-get\-channel
+.IP \(bu 2
+batch\-get\-stream\-key
+.IP \(bu 2
+create\-channel
+.IP \(bu 2
+create\-recording\-configuration
+.IP \(bu 2
+create\-stream\-key
+.IP \(bu 2
+delete\-channel
+.IP \(bu 2
+delete\-playback\-key\-pair
+.IP \(bu 2
+delete\-recording\-configuration
+.IP \(bu 2
+delete\-stream\-key
+.IP \(bu 2
+get\-channel
+.IP \(bu 2
+get\-playback\-key\-pair
+.IP \(bu 2
+get\-recording\-configuration
+.IP \(bu 2
+get\-stream
+.IP \(bu 2
+get\-stream\-key
+.IP \(bu 2
+help
+.IP \(bu 2
+import\-playback\-key\-pair
+.IP \(bu 2
+list\-channels
+.IP \(bu 2
+list\-playback\-key\-pairs
+.IP \(bu 2
+list\-recording\-configurations
+.IP \(bu 2
+list\-stream\-keys
+.IP \(bu 2
+list\-streams
+.IP \(bu 2
+list\-tags\-for\-resource
+.IP \(bu 2
+put\-metadata
+.IP \(bu 2
+stop\-stream
+.IP \(bu 2
+tag\-resource
+.IP \(bu 2
+untag\-resource
+.IP \(bu 2
+update\-channel
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

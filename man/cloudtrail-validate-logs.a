@@ -1,0 +1,168 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDTRAIL-VALIDATE-LOGS" "a" "" ""
+.SH NAME
+cloudtrail-validate-logs \- Validates CloudTrail logs for a given period of time
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.INDENT 0.0
+.INDENT 3.5
+Validates CloudTrail logs for a given period of time.
+.sp
+This command uses the digest files delivered to your S3 bucket to perform
+the validation.
+.sp
+The AWS CLI allows you to detect the following types of changes:
+.INDENT 0.0
+.IP \(bu 2
+Modification or deletion of CloudTrail log files.
+.IP \(bu 2
+Modification or deletion of CloudTrail digest files.
+.UNINDENT
+.sp
+To validate log files with the AWS CLI, the following preconditions must
+be met:
+.INDENT 0.0
+.IP \(bu 2
+You must have online connectivity to AWS.
+.IP \(bu 2
+You must have read access to the S3 bucket that contains the digest and
+log files.
+.IP \(bu 2
+The digest and log files must not have been moved from the original S3
+location where CloudTrail delivered them.
+.IP \(bu 2
+For organization trails you must have access to describe\-organization to
+validate digest files
+.UNINDENT
+.sp
+When you disable Log File Validation, the chain of digest files is broken
+after one hour. CloudTrail will not digest log files that were delivered
+during a period in which the Log File Validation feature was disabled.
+For example, if you enable Log File Validation on January 1, disable it
+on January 2, and re\-enable it on January 10, digest files will not be
+created for the log files delivered from January 3 to January 9. The same
+applies whenever you stop CloudTrail logging or delete a trail.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Log files that have been downloaded to local disk cannot be validated
+with the AWS CLI. The CLI will download all log files each time this
+command is executed.
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This command requires that the role executing the command has
+permission to call ListObjects, GetObject, and GetBucketLocation for
+each bucket referenced by the trail.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  validate\-logs
+\-\-trail\-arn <value>
+\-\-start\-time <value>
+[\-\-end\-time <value>]
+[\-\-s3\-bucket <value>]
+[\-\-s3\-prefix <value>]
+[\-\-account\-id <value>]
+[\-\-verbose]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-trail\-arn\fP (string)
+Specifies the ARN of the trail to be validated
+.sp
+\fB\-\-start\-time\fP (string)
+Specifies that log files delivered on or after the specified UTC timestamp value will be validated. Example: "2015\-01\-08T05:21:42Z".
+.sp
+\fB\-\-end\-time\fP (string)
+Optionally specifies that log files delivered on or before the specified UTC timestamp value will be validated. The default value is the current time. Example: "2015\-01\-08T12:31:41Z".
+.sp
+\fB\-\-s3\-bucket\fP (string)
+Optionally specifies the S3 bucket where the digest files are stored. If a bucket name is not specified, the CLI will retrieve it by calling describe_trails
+.sp
+\fB\-\-s3\-prefix\fP (string)
+Optionally specifies the optional S3 prefix where the digest files are stored. If not specified, the CLI will determine the prefix automatically by calling describe_trails.
+.sp
+\fB\-\-account\-id\fP (string)
+Optionally specifies the account for validating logs. This parameter is needed for organization trails for validating logs for specific account inside an organization
+.sp
+\fB\-\-verbose\fP (boolean)
+Display verbose log validation information
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo validate a log file\fP
+.sp
+The following \fBvalidate\-logs\fP command validates the logs for \fBTrail1\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudtrail validate\-logs \-\-trail\-arn arn:aws:cloudtrail:us\-east\-1:123456789012:trail/Trail1 \-\-start\-time 20160129T19:00:00Z
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Validating log files for trail arn:aws:cloudtrail:us\-east\-1:123456789012:trail/Trail1 between 2016\-01\-29T19:00:00Z and 2016\-01\-29T22:15:43Z
+Results requested for 2016\-01\-29T19:00:00Z to 2016\-01\-29T22:15:43Z
+Results found for 2016\-01\-29T19:24:57Z to 2016\-01\-29T21:24:57Z:
+3/3 digest files valid
+15/15 log files valid
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

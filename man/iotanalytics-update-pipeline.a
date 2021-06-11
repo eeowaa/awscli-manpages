@@ -1,0 +1,569 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOTANALYTICS-UPDATE-PIPELINE" "a" "" ""
+.SH NAME
+iotanalytics-update-pipeline \- Updates the settings of a pipeline
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the settings of a pipeline. You must specify both a \fBchannel\fP and a \fBdatastore\fP activity and, optionally, as many as 23 additional activities in the \fBpipelineActivities\fP array.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-pipeline
+\-\-pipeline\-name <value>
+\-\-pipeline\-activities <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-pipeline\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the pipeline to update.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-pipeline\-activities\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBPipelineActivity\fP objects. Activities perform transformations on your messages, such as removing, renaming or adding message attributes; filtering messages based on attribute values; invoking your Lambda functions on messages for advanced processing; or performing mathematical transformations to normalize device data.
+.sp
+The list can be 2\-25 \fBPipelineActivity\fP objects and must contain both a \fBchannel\fP and a \fBdatastore\fP activity. Each entry in the list must contain only one activity. For example:
+.INDENT 0.0
+.INDENT 3.5
+\fBpipelineActivities = [ { "channel": { ... } }, { "lambda": { ... } }, ... ]\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An activity that performs a transformation on a message.
+.sp
+channel \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Determines the source of the messages to be processed.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the channel activity.
+.UNINDENT
+.UNINDENT
+.sp
+channelName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the channel from which the messages are processed.
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+lambda \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Runs a Lambda function to modify the message.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the lambda activity.
+.UNINDENT
+.UNINDENT
+.sp
+lambdaName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Lambda function that is run on the message.
+.UNINDENT
+.UNINDENT
+.sp
+batchSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of messages passed to the Lambda function for processing.
+.sp
+The Lambda function must be able to process all of these messages within five minutes, which is the maximum timeout duration for Lambda functions.
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+datastore \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies where to store the processed message data.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the datastore activity.
+.UNINDENT
+.UNINDENT
+.sp
+datastoreName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the data store where processed messages are stored.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+addAttributes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Adds other attributes based on existing attributes in the message.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the addAttributes activity.
+.UNINDENT
+.UNINDENT
+.sp
+attributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of 1\-50 \fBAttributeNameMapping\fP objects that map an existing attribute to a new attribute.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The existing attributes remain in the message, so if you want to remove the originals, use \fBRemoveAttributeActivity\fP .
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+removeAttributes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Removes attributes from a message.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBremoveAttributes\fP activity.
+.UNINDENT
+.UNINDENT
+.sp
+attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of 1\-50 attributes to remove from the message.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+selectAttributes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Creates a new message using only the specified attributes from the original message.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBselectAttributes\fP activity.
+.UNINDENT
+.UNINDENT
+.sp
+attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the attributes to select from the message.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+filter \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Filters a message based on its attributes.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter activity.
+.UNINDENT
+.UNINDENT
+.sp
+filter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An expression that looks like a SQL WHERE clause that must return a Boolean value. Messages that satisfy the condition are passed to the next activity.
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+math \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Computes an arithmetic expression using the message\(aqs attributes and adds it to the message.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the math activity.
+.UNINDENT
+.UNINDENT
+.sp
+attribute \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attribute that contains the result of the math operation.
+.UNINDENT
+.UNINDENT
+.sp
+math \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An expression that uses one or more existing attributes and must return an integer value.
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deviceRegistryEnrich \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Adds data from the AWS IoT device registry to your message.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBdeviceRegistryEnrich\fP activity.
+.UNINDENT
+.UNINDENT
+.sp
+attribute \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attribute that is added to the message.
+.UNINDENT
+.UNINDENT
+.sp
+thingName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the IoT device whose registry information is added to the message.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that allows access to the device\(aqs registry information.
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deviceShadowEnrich \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Adds information from the AWS IoT Device Shadow service to a message.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBdeviceShadowEnrich\fP activity.
+.UNINDENT
+.UNINDENT
+.sp
+attribute \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attribute that is added to the message.
+.UNINDENT
+.UNINDENT
+.sp
+thingName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the IoT device whose shadow information is added to the message.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that allows access to the device\(aqs shadow.
+.UNINDENT
+.UNINDENT
+.sp
+next \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next activity in the pipeline.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+channel={name=string,channelName=string,next=string},lambda={name=string,lambdaName=string,batchSize=integer,next=string},datastore={name=string,datastoreName=string},addAttributes={name=string,attributes={KeyName1=string,KeyName2=string},next=string},removeAttributes={name=string,attributes=[string,string],next=string},selectAttributes={name=string,attributes=[string,string],next=string},filter={name=string,filter=string,next=string},math={name=string,attribute=string,math=string,next=string},deviceRegistryEnrich={name=string,attribute=string,thingName=string,roleArn=string,next=string},deviceShadowEnrich={name=string,attribute=string,thingName=string,roleArn=string,next=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "channel": {
+      "name": "string",
+      "channelName": "string",
+      "next": "string"
+    },
+    "lambda": {
+      "name": "string",
+      "lambdaName": "string",
+      "batchSize": integer,
+      "next": "string"
+    },
+    "datastore": {
+      "name": "string",
+      "datastoreName": "string"
+    },
+    "addAttributes": {
+      "name": "string",
+      "attributes": {"string": "string"
+        ...},
+      "next": "string"
+    },
+    "removeAttributes": {
+      "name": "string",
+      "attributes": ["string", ...],
+      "next": "string"
+    },
+    "selectAttributes": {
+      "name": "string",
+      "attributes": ["string", ...],
+      "next": "string"
+    },
+    "filter": {
+      "name": "string",
+      "filter": "string",
+      "next": "string"
+    },
+    "math": {
+      "name": "string",
+      "attribute": "string",
+      "math": "string",
+      "next": "string"
+    },
+    "deviceRegistryEnrich": {
+      "name": "string",
+      "attribute": "string",
+      "thingName": "string",
+      "roleArn": "string",
+      "next": "string"
+    },
+    "deviceShadowEnrich": {
+      "name": "string",
+      "attribute": "string",
+      "thingName": "string",
+      "roleArn": "string",
+      "next": "string"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update a pipeline\fP
+.sp
+The following \fBupdate\-pipeline\fP example modifies the settings of the specified pipeline. You must specify both a channel and a data store activity and, optionally, as many as 23 additional activities, in the \fBpipelineActivities\fP array.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iotanalytics update\-pipeline \e
+    \-\-cli\-input\-json file://update\-pipeline.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of update\-pipeline.json:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "pipelineName": "mypipeline",
+    "pipelineActivities": [
+        {
+            "channel": {
+                "name": "myChannelActivity",
+                "channelName": "mychannel",
+                "next": "myMathActivity"
+            }
+        },
+        {
+            "datastore": {
+                "name": "myDatastoreActivity",
+                "datastoreName": "mydatastore"
+            }
+        },
+        {
+            "math": {
+                "name": "myMathActivity",
+                "math": "(((temp \- 32) * 5.0) / 9.0) + 273.15",
+                "attribute": "tempK",
+                "next": "myDatastoreActivity"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%UpdatePipeline\fP in the \fIAWS IoT Analytics API Reference\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,162 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-UPDATE-CUSTOM-KEY-STORE" "a" "" ""
+.SH NAME
+kms-update-custom-key-store \- Changes the properties of a custom key store
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Changes the properties of a custom key store. Use the \fBCustomKeyStoreId\fP parameter to identify the custom key store you want to edit. Use the remaining parameters to change the properties of the custom key store.
+.sp
+You can only update a custom key store that is disconnected. To disconnect the custom key store, use  DisconnectCustomKeyStore . To reconnect the custom key store after the update completes, use  ConnectCustomKeyStore . To find the connection state of a custom key store, use the  DescribeCustomKeyStores operation.
+.sp
+Use the parameters of \fBUpdateCustomKeyStore\fP to edit your keystore settings.
+.INDENT 0.0
+.IP \(bu 2
+Use the \fBNewCustomKeyStoreName\fP parameter to change the friendly name of the custom key store to the value that you specify.
+.IP \(bu 2
+Use the \fBKeyStorePassword\fP parameter tell AWS KMS the current password of the \(ga \fBkmsuser\fP crypto user (CU) <\fI\%https://docs.aws.amazon.com/kms/latest/developerguide/key\-store\-concepts.html#concept\-kmsuser\fP>\(ga__ in the associated AWS CloudHSM cluster. You can use this parameter to \fI\%fix connection failures\fP that occur when AWS KMS cannot log into the associated cluster because the \fBkmsuser\fP password has changed. This value does not change the password in the AWS CloudHSM cluster.
+.IP \(bu 2
+Use the \fBCloudHsmClusterId\fP parameter to associate the custom key store with a different, but related, AWS CloudHSM cluster. You can use this parameter to repair a custom key store if its AWS CloudHSM cluster becomes corrupted or is deleted, or when you need to create or restore a cluster from a backup.
+.UNINDENT
+.sp
+If the operation succeeds, it returns a JSON object with no properties.
+.sp
+This operation is part of the \fI\%Custom Key Store feature\fP feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single\-tenant key store.
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : No. You cannot perform this operation on a custom key store in a different AWS account.
+.sp
+\fBRequired permissions\fP : \fI\%kms:UpdateCustomKeyStore\fP (IAM policy)
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+ConnectCustomKeyStore
+.IP \(bu 2
+CreateCustomKeyStore
+.IP \(bu 2
+DeleteCustomKeyStore
+.IP \(bu 2
+DescribeCustomKeyStores
+.IP \(bu 2
+DisconnectCustomKeyStore
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-custom\-key\-store
+\-\-custom\-key\-store\-id <value>
+[\-\-new\-custom\-key\-store\-name <value>]
+[\-\-key\-store\-password <value>]
+[\-\-cloud\-hsm\-cluster\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-custom\-key\-store\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the custom key store that you want to update. Enter the ID of the custom key store. To find the ID of a custom key store, use the  DescribeCustomKeyStores operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-new\-custom\-key\-store\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Changes the friendly name of the custom key store to the value that you specify. The custom key store name must be unique in the AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-store\-password\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Enter the current password of the \fBkmsuser\fP crypto user (CU) in the AWS CloudHSM cluster that is associated with the custom key store.
+.sp
+This parameter tells AWS KMS the current password of the \fBkmsuser\fP crypto user (CU). It does not set or change the password of any users in the AWS CloudHSM cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cloud\-hsm\-cluster\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Associates the custom key store with a related AWS CloudHSM cluster.
+.sp
+Enter the cluster ID of the cluster that you used to create the custom key store or a cluster that shares a backup history and has the same cluster certificate as the original cluster. You cannot use this parameter to associate a custom key store with an unrelated cluster. In addition, the replacement cluster must \fI\%fulfill the requirements\fP for a cluster associated with a custom key store. To view the cluster certificate of a cluster, use the \fI\%DescribeClusters\fP operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo edit custom key store settings\fP
+.sp
+The following \fBupdate\-custom\-key\-store\fP example provides the current password for the \fBkmsuser\fP in the CloudHSM cluster that is associated with the specified key store. This command doesn\(aqt change the \fBkmsuser\fP password. It just tells AWS KMS the current password. If KMS doesn\(aqt have the current \fBkmsuser\fP password, it cannot connect to the custom key store.
+.sp
+\fBNOTE:\fP Before updating the custom key store, you must disconnect it. Use the \fBdisconnect\-custom\-key\-store\fP command. After the command completes, you can reconnect the custom key store. Use the \fBconnect\-custom\-key\-store\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms update\-custom\-key\-store \e
+    \-\-custom\-key\-store\-id cks\-1234567890abcdef0 \e
+    \-\-key\-store\-password ExamplePassword
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command does not return any output. To verify that the password change was effective, connect the custom key store.
+.sp
+For more information, see \fI\%Editing Custom Key Store Settings\fP in the \fIAWS Key Management Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

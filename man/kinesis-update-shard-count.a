@@ -1,0 +1,185 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESIS-UPDATE-SHARD-COUNT" "a" "" ""
+.SH NAME
+kinesis-update-shard-count \- Updates the shard count of the specified stream to the specified number of shards
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the shard count of the specified stream to the specified number of shards.
+.sp
+Updating the shard count is an asynchronous operation. Upon receiving the request, Kinesis Data Streams returns immediately and sets the status of the stream to \fBUPDATING\fP . After the update is complete, Kinesis Data Streams sets the status of the stream back to \fBACTIVE\fP . Depending on the size of the stream, the scaling action could take a few minutes to complete. You can continue to read and write data to your stream while its status is \fBUPDATING\fP .
+.sp
+To update the shard count, Kinesis Data Streams performs splits or merges on individual shards. This can cause short\-lived shards to be created, in addition to the final shards. These short\-lived shards count towards your total shard limit for your account in the Region.
+.sp
+When using this operation, we recommend that you specify a target shard count that is a multiple of 25% (25%, 50%, 75%, 100%). You can specify any target value within your shard limit. However, if you specify a target that isn\(aqt a multiple of 25%, the scaling action might take longer to complete.
+.sp
+This operation has the following default limits. By default, you cannot do the following:
+.INDENT 0.0
+.IP \(bu 2
+Scale more than ten times per rolling 24\-hour period per stream
+.IP \(bu 2
+Scale up to more than double your current shard count for a stream
+.IP \(bu 2
+Scale down below half your current shard count for a stream
+.IP \(bu 2
+Scale up to more than 500 shards in a stream
+.IP \(bu 2
+Scale a stream with more than 500 shards down unless the result is less than 500 shards
+.IP \(bu 2
+Scale up to more than the shard limit for your account
+.UNINDENT
+.sp
+For the default limits for an AWS account, see \fI\%Streams Limits\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP . To request an increase in the call rate limit, the shard limit for this API, or your overall shard limit, use the \fI\%limits form\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-shard\-count
+\-\-stream\-name <value>
+\-\-target\-shard\-count <value>
+\-\-scaling\-type <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stream.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-shard\-count\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The new number of shards. This value has the following default limits. By default, you cannot do the following:
+.INDENT 0.0
+.IP \(bu 2
+Set this value to more than double your current shard count for a stream.
+.IP \(bu 2
+Set this value below half your current shard count for a stream.
+.IP \(bu 2
+Set this value to more than 500 shards in a stream (the default limit for shard count per stream is 500 per account per region), unless you request a limit increase.
+.IP \(bu 2
+Scale a stream with more than 500 shards down unless you set this value to less than 500 shards.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scaling\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The scaling type. Uniform scaling creates shards of equal size.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBUNIFORM_SCALING\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update the shard count in a data stream\fP
+.sp
+The following \fBupdate\-shard\-count\fP example updates the shard count of the specified data stream to 6. This example uses uniform scaling, which creates shards of equal size.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kinesis update\-shard\-count \e
+    \-\-stream\-name samplestream \e
+    \-\-scaling\-type UNIFORM_SCALING \e
+    \-\-target\-shard\-count 6
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StreamName": "samplestream",
+    "CurrentShardCount": 3,
+    "TargetShardCount": 6
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Resharding a Stream\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+StreamName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stream.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentShardCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The current number of shards.
+.UNINDENT
+.UNINDENT
+.sp
+TargetShardCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The updated number of shards.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

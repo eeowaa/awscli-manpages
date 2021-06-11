@@ -1,0 +1,1075 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ECS-STOP-TASK" "a" "" ""
+.SH NAME
+ecs-stop-task \- Stops a running task
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Stops a running task. Any tags associated with the task will be deleted.
+.sp
+When  StopTask is called on a task, the equivalent of \fBdocker stop\fP is issued to the containers running in the task. This results in a \fBSIGTERM\fP value and a default 30\-second timeout, after which the \fBSIGKILL\fP value is sent and the containers are forcibly stopped. If the container handles the \fBSIGTERM\fP value gracefully and exits within 30 seconds from receiving it, no \fBSIGKILL\fP value is sent.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The default 30\-second timeout can be configured on the Amazon ECS container agent with the \fBECS_CONTAINER_STOP_TIMEOUT\fP variable. For more information, see \fI\%Amazon ECS Container Agent Configuration\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  stop\-task
+[\-\-cluster <value>]
+\-\-task <value>
+[\-\-reason <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name or full Amazon Resource Name (ARN) of the cluster that hosts the task to stop. If you do not specify a cluster, the default cluster is assumed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The task ID or full Amazon Resource Name (ARN) of the task to stop.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-reason\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional message specified when a task is stopped. For example, if you are using a custom scheduler, you can use this parameter to specify the reason for stopping the task here, and the message appears in subsequent  DescribeTasks API operations on this task. Up to 255 characters are allowed in this message.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo stop a task\fP
+.sp
+The following \fBstop\-task\fP stops the specified task from running in the default cluster.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ecs stop\-task \e
+    \-\-task 666fdccc2e2d4b6894dd422f4eeee8f8
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "task": {
+        "taskArn": "arn:aws:ecs:us\-west\-2:130757420319:task/default/666fdccc2e2d4b6894dd422f4eeee8f8",
+        "clusterArn": "arn:aws:ecs:us\-west\-2:130757420319:cluster/default",
+        "taskDefinitionArn": "arn:aws:ecs:us\-west\-2:130757420319:task\-definition/sleep360:3",
+        "containerInstanceArn": "arn:aws:ecs:us\-west\-2:130757420319:container\-instance/default/765936fadbdd46b5991a4bd70c2a43d4",
+        "overrides": {
+            "containerOverrides": []
+        },
+        "lastStatus": "STOPPED",
+        "desiredStatus": "STOPPED",
+        "cpu": "128",
+        "memory": "128",
+        "containers": [],
+        "version": 2,
+        "stoppedReason": "Taskfailedtostart",
+        "stopCode": "TaskFailedToStart",
+        "connectivity": "CONNECTED",
+        "connectivityAt": 1563421494.186,
+        "pullStartedAt": 1563421494.252,
+        "pullStoppedAt": 1563421496.252,
+        "executionStoppedAt": 1563421497,
+        "createdAt": 1563421494.186,
+        "stoppingAt": 1563421497.252,
+        "stoppedAt": 1563421497.252,
+        "group": "family:sleep360",
+        "launchType": "EC2",
+        "attachments": [],
+        "tags": []
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+task \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The task that was stopped.
+.sp
+attachments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic Network Adapter associated with the task if the task uses the \fBawsvpc\fP network mode.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object representing a container instance or task attachment.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the attachment.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the attachment, such as \fBElasticNetworkInterface\fP .
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the attachment. Valid values are \fBPRECREATED\fP , \fBCREATED\fP , \fBATTACHING\fP , \fBATTACHED\fP , \fBDETACHING\fP , \fBDETACHED\fP , and \fBDELETED\fP .
+.UNINDENT
+.UNINDENT
+.sp
+details \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Details of the attachment. For elastic network interfaces, this includes the network interface ID, the MAC address, the subnet ID, and the private IPv4 address.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair object.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key\-value pair. For environment variables, this is the name of the environment variable.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the key\-value pair. For environment variables, this is the value of the environment variable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The attributes of the task
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An attribute is a name\-value pair associated with an Amazon ECS object. Attributes enable you to extend the Amazon ECS data model by adding custom metadata to your resources. For more information, see \fI\%Attributes\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attribute. The \fBname\fP must contain between 1 and 128 characters and name may contain letters (uppercase and lowercase), numbers, hyphens, underscores, forward slashes, back slashes, or periods.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the attribute. The \fBvalue\fP must contain between 1 and 128 characters and may contain letters (uppercase and lowercase), numbers, hyphens, underscores, periods, at signs (@), forward slashes, back slashes, colons, or spaces. The value cannot contain any leading or trailing whitespace.
+.UNINDENT
+.UNINDENT
+.sp
+targetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the target with which to attach the attribute. This parameter is required if you use the short form ID for a resource instead of the full ARN.
+.UNINDENT
+.UNINDENT
+.sp
+targetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the target. You can specify the short form ID for a resource or the full Amazon Resource Name (ARN).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+availabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The availability zone of the task.
+.UNINDENT
+.UNINDENT
+.sp
+capacityProviderName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The capacity provider associated with the task.
+.UNINDENT
+.UNINDENT
+.sp
+clusterArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the cluster that hosts the task.
+.UNINDENT
+.UNINDENT
+.sp
+connectivity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The connectivity status of a task.
+.UNINDENT
+.UNINDENT
+.sp
+connectivityAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task last went into \fBCONNECTED\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+containerInstanceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the container instances that host the task.
+.UNINDENT
+.UNINDENT
+.sp
+containers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The containers associated with the task.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A Docker container that is part of a task.
+.sp
+containerArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the container.
+.UNINDENT
+.UNINDENT
+.sp
+taskArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the task.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the container.
+.UNINDENT
+.UNINDENT
+.sp
+image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The image used for the container.
+.UNINDENT
+.UNINDENT
+.sp
+imageDigest \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The container image manifest digest.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBimageDigest\fP is only returned if the container is using an image hosted in Amazon ECR, otherwise it is omitted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+runtimeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Docker container.
+.UNINDENT
+.UNINDENT
+.sp
+lastStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The last known status of the container.
+.UNINDENT
+.UNINDENT
+.sp
+exitCode \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The exit code returned from the container.
+.UNINDENT
+.UNINDENT
+.sp
+reason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A short (255 max characters) human\-readable string to provide additional details about a running or stopped container.
+.UNINDENT
+.UNINDENT
+.sp
+networkBindings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The network bindings associated with the container.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details on the network bindings between a container and its host container instance. After a task reaches the \fBRUNNING\fP status, manual and automatic host and container port assignments are visible in the \fBnetworkBindings\fP section of  DescribeTasks API responses.
+.sp
+bindIP \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP address that the container is bound to on the container instance.
+.UNINDENT
+.UNINDENT
+.sp
+containerPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number on the container that is used with the network binding.
+.UNINDENT
+.UNINDENT
+.sp
+hostPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number on the host that is used with the network binding.
+.UNINDENT
+.UNINDENT
+.sp
+protocol \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The protocol used for the network binding.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+networkInterfaces \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The network interfaces associated with the container.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object representing the elastic network interface for tasks that use the \fBawsvpc\fP network mode.
+.sp
+attachmentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The attachment ID for the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+privateIpv4Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 address for the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+ipv6Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv6 address for the network interface.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+healthStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The health status of the container. If health checks are not configured for this container in its task definition, then it reports the health status as \fBUNKNOWN\fP .
+.UNINDENT
+.UNINDENT
+.sp
+managedAgents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The details of any Amazon ECS managed agents associated with the container.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details about the managed agent status for the container.
+.sp
+lastStartedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the managed agent was last started.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the managed agent. When the execute command feature is enabled, the managed agent name is \fBExecuteCommandAgent\fP .
+.UNINDENT
+.UNINDENT
+.sp
+reason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for why the managed agent is in the state it is in.
+.UNINDENT
+.UNINDENT
+.sp
+lastStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The last known status of the managed agent.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+cpu \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU units set for the container. The value will be \fB0\fP if no value was specified in the container definition when the task definition was registered.
+.UNINDENT
+.UNINDENT
+.sp
+memory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The hard limit (in MiB) of memory set for the container.
+.UNINDENT
+.UNINDENT
+.sp
+memoryReservation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The soft limit (in MiB) of memory set for the container.
+.UNINDENT
+.UNINDENT
+.sp
+gpuIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of each GPU assigned to the container.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+cpu \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU units used by the task as expressed in a task definition. It can be expressed as an integer using CPU units, for example \fB1024\fP . It can also be expressed as a string using vCPUs, for example \fB1 vCPU\fP or \fB1 vcpu\fP . String values are converted to an integer indicating the CPU units when the task definition is registered.
+.sp
+If you are using the EC2 launch type, this field is optional. Supported values are between \fB128\fP CPU units (\fB0.125\fP vCPUs) and \fB10240\fP CPU units (\fB10\fP vCPUs).
+.sp
+If you are using the Fargate launch type, this field is required and you must use one of the following values, which determines your range of supported values for the \fBmemory\fP parameter:
+.INDENT 0.0
+.IP \(bu 2
+256 (.25 vCPU) \- Available \fBmemory\fP values: 512 (0.5 GB), 1024 (1 GB), 2048 (2 GB)
+.IP \(bu 2
+512 (.5 vCPU) \- Available \fBmemory\fP values: 1024 (1 GB), 2048 (2 GB), 3072 (3 GB), 4096 (4 GB)
+.IP \(bu 2
+1024 (1 vCPU) \- Available \fBmemory\fP values: 2048 (2 GB), 3072 (3 GB), 4096 (4 GB), 5120 (5 GB), 6144 (6 GB), 7168 (7 GB), 8192 (8 GB)
+.IP \(bu 2
+2048 (2 vCPU) \- Available \fBmemory\fP values: Between 4096 (4 GB) and 16384 (16 GB) in increments of 1024 (1 GB)
+.IP \(bu 2
+4096 (4 vCPU) \- Available \fBmemory\fP values: Between 8192 (8 GB) and 30720 (30 GB) in increments of 1024 (1 GB)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task was created (the task entered the \fBPENDING\fP state).
+.UNINDENT
+.UNINDENT
+.sp
+desiredStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The desired status of the task. For more information, see \fI\%Task Lifecycle\fP .
+.UNINDENT
+.UNINDENT
+.sp
+enableExecuteCommand \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not execute command functionality is enabled for this task. If \fBtrue\fP , this enables execute command functionality on all containers in the task.
+.UNINDENT
+.UNINDENT
+.sp
+executionStoppedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task execution stopped.
+.UNINDENT
+.UNINDENT
+.sp
+group \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the task group associated with the task.
+.UNINDENT
+.UNINDENT
+.sp
+healthStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The health status for the task, which is determined by the health of the essential containers in the task. If all essential containers in the task are reporting as \fBHEALTHY\fP , then the task status also reports as \fBHEALTHY\fP . If any essential containers in the task are reporting as \fBUNHEALTHY\fP or \fBUNKNOWN\fP , then the task status also reports as \fBUNHEALTHY\fP or \fBUNKNOWN\fP , accordingly.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The Amazon ECS container agent does not monitor or report on Docker health checks that are embedded in a container image (such as those specified in a parent image or from the image\(aqs Dockerfile) and not specified in the container definition. Health check parameters that are specified in a container definition override any Docker health checks that exist in the container image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+inferenceAccelerators \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic Inference accelerator associated with the task.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details on a Elastic Inference accelerator. For more information, see \fI\%Working with Amazon Elastic Inference on Amazon ECS\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+deviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic Inference accelerator device name. The \fBdeviceName\fP must also be referenced in a container definition as a  ResourceRequirement .
+.UNINDENT
+.UNINDENT
+.sp
+deviceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic Inference accelerator type to use.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+lastStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The last known status of the task. For more information, see \fI\%Task Lifecycle\fP .
+.UNINDENT
+.UNINDENT
+.sp
+launchType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The infrastructure on which your task is running. For more information, see \fI\%Amazon ECS launch types\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+memory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amount of memory (in MiB) used by the task as expressed in a task definition. It can be expressed as an integer using MiB, for example \fB1024\fP . It can also be expressed as a string using GB, for example \fB1GB\fP or \fB1 GB\fP . String values are converted to an integer indicating the MiB when the task definition is registered.
+.sp
+If you are using the EC2 launch type, this field is optional.
+.sp
+If you are using the Fargate launch type, this field is required and you must use one of the following values, which determines your range of supported values for the \fBcpu\fP parameter:
+.INDENT 0.0
+.IP \(bu 2
+512 (0.5 GB), 1024 (1 GB), 2048 (2 GB) \- Available \fBcpu\fP values: 256 (.25 vCPU)
+.IP \(bu 2
+1024 (1 GB), 2048 (2 GB), 3072 (3 GB), 4096 (4 GB) \- Available \fBcpu\fP values: 512 (.5 vCPU)
+.IP \(bu 2
+2048 (2 GB), 3072 (3 GB), 4096 (4 GB), 5120 (5 GB), 6144 (6 GB), 7168 (7 GB), 8192 (8 GB) \- Available \fBcpu\fP values: 1024 (1 vCPU)
+.IP \(bu 2
+Between 4096 (4 GB) and 16384 (16 GB) in increments of 1024 (1 GB) \- Available \fBcpu\fP values: 2048 (2 vCPU)
+.IP \(bu 2
+Between 8192 (8 GB) and 30720 (30 GB) in increments of 1024 (1 GB) \- Available \fBcpu\fP values: 4096 (4 vCPU)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+overrides \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+One or more container overrides.
+.sp
+containerOverrides \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more container overrides sent to a task.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The overrides that should be sent to a container. An empty container override can be passed in. An example of an empty container override would be \fB{"containerOverrides": [ ] }\fP . If a non\-empty container override is specified, the \fBname\fP parameter must be included.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the container that receives the override. This parameter is required if any override is specified.
+.UNINDENT
+.UNINDENT
+.sp
+command \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The command to send to the container that overrides the default command from the Docker image or the task definition. You must also specify a container name.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+environment \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The environment variables to send to the container. You can add new environment variables, which are added to the container at launch, or you can override the existing environment variables from the Docker image or the task definition. You must also specify a container name.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair object.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key\-value pair. For environment variables, this is the name of the environment variable.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the key\-value pair. For environment variables, this is the value of the environment variable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+environmentFiles \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of files containing the environment variables to pass to a container, instead of the value from the container definition.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of files containing the environment variables to pass to a container. You can specify up to ten environment files. The file must have a \fB\&.env\fP file extension. Each line in an environment file should contain an environment variable in \fBVARIABLE=VALUE\fP format. Lines beginning with \fB#\fP are treated as comments and are ignored. For more information on the environment variable file syntax, see \fI\%Declare default environment variables in file\fP .
+.sp
+If there are environment variables specified using the \fBenvironment\fP parameter in a container definition, they take precedence over the variables contained within an environment file. If multiple environment files are specified that contain the same variable, they are processed from the top down. It is recommended to use unique variable names. For more information, see \fI\%Specifying environment variables\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+This field is only valid for containers in Fargate tasks that use platform version \fB1.4.0\fP or later.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Amazon S3 object containing the environment variable file.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file type to use. The only supported value is \fBs3\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+cpu \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of \fBcpu\fP units reserved for the container, instead of the default value from the task definition. You must also specify a container name.
+.UNINDENT
+.UNINDENT
+.sp
+memory \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The hard limit (in MiB) of memory to present to the container, instead of the default value from the task definition. If your container attempts to exceed the memory specified here, the container is killed. You must also specify a container name.
+.UNINDENT
+.UNINDENT
+.sp
+memoryReservation \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The soft limit (in MiB) of memory to reserve for the container, instead of the default value from the task definition. You must also specify a container name.
+.UNINDENT
+.UNINDENT
+.sp
+resourceRequirements \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The type and amount of a resource to assign to a container, instead of the default value from the task definition. The only supported resource is a GPU.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The type and amount of a resource to assign to a container. The supported resource types are GPUs and Elastic Inference accelerators. For more information, see \fI\%Working with GPUs on Amazon ECS\fP or \fI\%Working with Amazon Elastic Inference on Amazon ECS\fP in the \fIAmazon Elastic Container Service Developer Guide\fP
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value for the specified resource type.
+.sp
+If the \fBGPU\fP type is used, the value is the number of physical \fBGPUs\fP the Amazon ECS container agent will reserve for the container. The number of GPUs reserved for all containers in a task should not exceed the number of available GPUs on the container instance the task is launched on.
+.sp
+If the \fBInferenceAccelerator\fP type is used, the \fBvalue\fP should match the \fBdeviceName\fP for an  InferenceAccelerator specified in a task definition.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to assign to a container. The supported values are \fBGPU\fP or \fBInferenceAccelerator\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+cpu \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cpu override for the task.
+.UNINDENT
+.UNINDENT
+.sp
+inferenceAcceleratorOverrides \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic Inference accelerator override for the task.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details on an Elastic Inference accelerator task override. This parameter is used to override the Elastic Inference accelerator specified in the task definition. For more information, see \fI\%Working with Amazon Elastic Inference on Amazon ECS\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+deviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic Inference accelerator device name to override for the task. This parameter must match a \fBdeviceName\fP specified in the task definition.
+.UNINDENT
+.UNINDENT
+.sp
+deviceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic Inference accelerator type to use.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+executionRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the task execution IAM role override for the task.
+.UNINDENT
+.UNINDENT
+.sp
+memory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The memory override for the task.
+.UNINDENT
+.UNINDENT
+.sp
+taskRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM role that containers in this task can assume. All containers in this task are granted the permissions that are specified in this role.
+.UNINDENT
+.UNINDENT
+.sp
+ephemeralStorage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The ephemeral storage setting override for the task.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter is only supported for tasks hosted on AWS Fargate using platform version \fB1.4.0\fP or later.
+.UNINDENT
+.UNINDENT
+.sp
+sizeInGiB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total amount, in GiB, of ephemeral storage to set for the task. The minimum supported value is \fB21\fP GiB and the maximum supported value is \fB200\fP GiB.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+platformVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform version on which your task is running. A platform version is only specified for tasks using the Fargate launch type. If one is not specified, the \fBLATEST\fP platform version is used by default. For more information, see \fI\%AWS Fargate Platform Versions\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+pullStartedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the container image pull began.
+.UNINDENT
+.UNINDENT
+.sp
+pullStoppedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the container image pull completed.
+.UNINDENT
+.UNINDENT
+.sp
+startedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task started (the task transitioned from the \fBPENDING\fP state to the \fBRUNNING\fP state).
+.UNINDENT
+.UNINDENT
+.sp
+startedBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag specified when a task is started. If the task is started by an Amazon ECS service, then the \fBstartedBy\fP parameter contains the deployment ID of the service that starts it.
+.UNINDENT
+.UNINDENT
+.sp
+stopCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The stop code indicating why a task was stopped. The \fBstoppedReason\fP may contain additional details.
+.UNINDENT
+.UNINDENT
+.sp
+stoppedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task was stopped (the task transitioned from the \fBRUNNING\fP state to the \fBSTOPPED\fP state).
+.UNINDENT
+.UNINDENT
+.sp
+stoppedReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason that the task was stopped.
+.UNINDENT
+.UNINDENT
+.sp
+stoppingAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task stops (transitions from the \fBRUNNING\fP state to \fBSTOPPED\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to the task to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A \fBkey\fP is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that make up a tag. A \fBvalue\fP acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+taskArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the task.
+.UNINDENT
+.UNINDENT
+.sp
+taskDefinitionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the task definition that creates the task.
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The version counter for the task. Every time a task experiences a change that triggers a CloudWatch event, the version counter is incremented. If you are replicating your Amazon ECS task state with CloudWatch Events, you can compare the version of a task reported by the Amazon ECS API actions with the version reported in CloudWatch Events for the task (inside the \fBdetail\fP object) to verify that the version in your event stream is current.
+.UNINDENT
+.UNINDENT
+.sp
+ephemeralStorage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The ephemeral storage settings for the task.
+.sp
+sizeInGiB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total amount, in GiB, of ephemeral storage to set for the task. The minimum supported value is \fB21\fP GiB and the maximum supported value is \fB200\fP GiB.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

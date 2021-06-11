@@ -1,0 +1,374 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SWF-COUNT-OPEN-WORKFLOW-EXECUTIONS" "a" "" ""
+.SH NAME
+swf-count-open-workflow-executions \- Returns the number of open workflow executions within the given domain that meet the specified filtering criteria
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the number of open workflow executions within the given domain that meet the specified filtering criteria.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.
+.UNINDENT
+.UNINDENT
+.sp
+\fBAccess Control\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can use IAM policies to control this action\(aqs access to Amazon SWF resources as follows:
+.INDENT 0.0
+.IP \(bu 2
+Use a \fBResource\fP element with the domain name to limit the action to only specified domains.
+.IP \(bu 2
+Use an \fBAction\fP element to allow or deny permission to call this action.
+.IP \(bu 2
+Constrain the following parameters by using a \fBCondition\fP element with the appropriate keys.
+.INDENT 2.0
+.IP \(bu 2
+\fBtagFilter.tag\fP : String constraint. The key is \fBswf:tagFilter.tag\fP .
+.IP \(bu 2
+\fBtypeFilter.name\fP : String constraint. The key is \fBswf:typeFilter.name\fP .
+.IP \(bu 2
+\fBtypeFilter.version\fP : String constraint. The key is \fBswf:typeFilter.version\fP .
+.UNINDENT
+.UNINDENT
+.sp
+If the caller doesn\(aqt have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute\(aqs \fBcause\fP parameter is set to \fBOPERATION_NOT_PERMITTED\fP . For details and example IAM policies, see \fI\%Using IAM to Manage Access to Amazon SWF Workflows\fP in the \fIAmazon SWF Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  count\-open\-workflow\-executions
+\-\-domain <value>
+\-\-start\-time\-filter <value>
+[\-\-type\-filter <value>]
+[\-\-tag\-filter <value>]
+[\-\-execution\-filter <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain containing the workflow executions to count.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\-filter\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the start time criteria that workflow executions must meet in order to be counted.
+.sp
+oldestDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the oldest start or close date and time to return.
+.UNINDENT
+.UNINDENT
+.sp
+latestDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the latest start or close date and time to return.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+oldestDate=timestamp,latestDate=timestamp
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "oldestDate": timestamp,
+  "latestDate": timestamp
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-type\-filter\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of the workflow executions to be counted.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBexecutionFilter\fP , \fBtypeFilter\fP and \fBtagFilter\fP are mutually exclusive. You can specify at most one of these in a request.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the workflow type.
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Version of the workflow type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string,version=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "name": "string",
+  "version": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-filter\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+If specified, only executions that have a tag that matches the filter are counted.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBexecutionFilter\fP , \fBtypeFilter\fP and \fBtagFilter\fP are mutually exclusive. You can specify at most one of these in a request.
+.UNINDENT
+.UNINDENT
+.sp
+tag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the tag that must be associated with the execution for it to meet the filter criteria.
+.sp
+Tags may only contain unicode letters, digits, whitespace, or these symbols: \fB_ . : / = + \- @\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+tag=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "tag": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-execution\-filter\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+If specified, only workflow executions matching the \fBWorkflowId\fP in the filter are counted.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBexecutionFilter\fP , \fBtypeFilter\fP and \fBtagFilter\fP are mutually exclusive. You can specify at most one of these in a request.
+.UNINDENT
+.UNINDENT
+.sp
+workflowId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The workflowId to pass of match the criteria of this filter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+workflowId=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "workflowId": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBCounting Open Workflow Executions\fP
+.sp
+You can use \fBswf count\-open\-workflow\-executions\fP to retrieve the number of open workflow executions for a given
+domain. You can specify filters to count specific classes of executions.
+.sp
+The \fB\-\-domain\fP and \fB\-\-start\-time\-filter\fP arguments are required. All other arguments are optional.
+.sp
+Here is a basic example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws swf count\-open\-workflow\-executions \-\-domain DataFrobtzz \-\-start\-time\-filter "{ \e"latestDate\e" : 1377129600, \e"oldestDate\e" : 1370044800 }"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Result:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "count": 4,
+  "truncated": false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If "truncated" is \fBtrue\fP, then "count" represents the maximum number that can be returned by Amazon SWF. Any further
+results are truncated.
+.sp
+To reduce the number of results returned, you can:
+.INDENT 0.0
+.IP \(bu 2
+modify the \fB\-\-start\-time\-filter\fP values to narrow the time range that is searched.
+.IP \(bu 2
+.INDENT 2.0
+.TP
+.B use the \fB\-\-close\-status\-filter\fP, \fB\-\-execution\-filter\fP, \fB\-\-tag\-filter\fP or \fB\-\-type\-filter\fP arguments to further
+filter the results. Each of these is mutually exclusive: You can specify \fIonly one of these\fP in a request.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%CountOpenWorkflowExecutions\fP in the \fIAmazon Simple Workflow Service API Reference\fP
+.SH OUTPUT
+.sp
+count \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of workflow executions.
+.UNINDENT
+.UNINDENT
+.sp
+truncated \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If set to true, indicates that the actual count was more than the maximum supported by this API and the count returned is the truncated value.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

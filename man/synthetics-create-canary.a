@@ -1,0 +1,675 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SYNTHETICS-CREATE-CANARY" "a" "" ""
+.SH NAME
+synthetics-create-canary \- Creates a canary
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a canary. Canaries are scripts that monitor your endpoints and APIs from the outside\-in. Canaries help you check the availability and latency of your web services and troubleshoot anomalies by investigating load time data, screenshots of the UI, logs, and metrics. You can set up a canary to run continuously or just once.
+.sp
+Do not use \fBCreateCanary\fP to modify an existing canary. Use \fI\%UpdateCanary\fP instead.
+.sp
+To create canaries, you must have the \fBCloudWatchSyntheticsFullAccess\fP policy. If you are creating a new IAM role for the canary, you also need the the \fBiam:CreateRole\fP , \fBiam:CreatePolicy\fP and \fBiam:AttachRolePolicy\fP permissions. For more information, see \fI\%Necessary Roles and Permissions\fP .
+.sp
+Do not include secrets or proprietary information in your canary names. The canary name makes up part of the Amazon Resource Name (ARN) for the canary, and the ARN is included in outbound calls over the internet. For more information, see \fI\%Security Considerations for Synthetics Canaries\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-canary
+\-\-name <value>
+\-\-code <value>
+\-\-artifact\-s3\-location <value>
+\-\-execution\-role\-arn <value>
+\-\-schedule <value>
+[\-\-run\-config <value>]
+[\-\-success\-retention\-period\-in\-days <value>]
+[\-\-failure\-retention\-period\-in\-days <value>]
+\-\-runtime\-version <value>
+[\-\-vpc\-config <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for this canary. Be sure to give it a descriptive name that distinguishes it from other canaries in your account.
+.sp
+Do not include secrets or proprietary information in your canary names. The canary name makes up part of the canary ARN, and the ARN is included in outbound calls over the internet. For more information, see \fI\%Security Considerations for Synthetics Canaries\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-code\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that includes the entry point from which the canary should start running your script. If the script is stored in an S3 bucket, the bucket name, key, and version are also included.
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If your canary script is located in S3, specify the full bucket name here. The bucket must already exist. Specify the full bucket name, including \fBs3://\fP as the start of the bucket name.
+.UNINDENT
+.UNINDENT
+.sp
+S3Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 key of your script. For more information, see \fI\%Working with Amazon S3 Objects\fP .
+.UNINDENT
+.UNINDENT
+.sp
+S3Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 version ID of your script.
+.UNINDENT
+.UNINDENT
+.sp
+ZipFile \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+If you input your canary script directly into the canary instead of referring to an S3 location, the value of this parameter is the .zip file that contains the script. It can be up to 5 MB.
+.UNINDENT
+.UNINDENT
+.sp
+Handler \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The entry point to use for the source code when running the canary. This value must end with the string \fB\&.handler\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Bucket=string,S3Key=string,S3Version=string,ZipFile=blob,Handler=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Bucket": "string",
+  "S3Key": "string",
+  "S3Version": "string",
+  "ZipFile": blob,
+  "Handler": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-artifact\-s3\-location\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in Amazon S3 where Synthetics stores artifacts from the test runs of this canary. Artifacts include the log file, screenshots, and HAR files.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-execution\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role to be used to run the canary. This role must already exist, and must include \fBlambda.amazonaws.com\fP as a principal in the trust policy. The role must also have the following permissions:
+.INDENT 0.0
+.IP \(bu 2
+\fBs3:PutObject\fP
+.IP \(bu 2
+\fBs3:GetBucketLocation\fP
+.IP \(bu 2
+\fBs3:ListAllMyBuckets\fP
+.IP \(bu 2
+\fBcloudwatch:PutMetricData\fP
+.IP \(bu 2
+\fBlogs:CreateLogGroup\fP
+.IP \(bu 2
+\fBlogs:CreateLogStream\fP
+.IP \(bu 2
+\fBlogs:PutLogEvents\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schedule\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains information about how often the canary is to run and when these test runs are to stop.
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A rate expression that defines how often the canary is to run. The syntax is \fBrate(*number unit* )\fP . \fIunit\fP can be \fBminute\fP , \fBminutes\fP , or \fBhour\fP .
+.sp
+For example, \fBrate(1 minute)\fP runs the canary once a minute, \fBrate(10 minutes)\fP runs it once every 10 minutes, and \fBrate(1 hour)\fP runs it once every hour. You can specify a frequency between \fBrate(1 minute)\fP and \fBrate(1 hour)\fP .
+.sp
+Specifying \fBrate(0 minute)\fP or \fBrate(0 hour)\fP is a special value that causes the canary to run only once when it is started.
+.UNINDENT
+.UNINDENT
+.sp
+DurationInSeconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+How long, in seconds, for the canary to continue making regular runs according to the schedule in the \fBExpression\fP value. If you specify 0, the canary continues making runs until you stop it. If you omit this field, the default of 0 is used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Expression=string,DurationInSeconds=long
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Expression": "string",
+  "DurationInSeconds": long
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-run\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains the configuration for individual canary runs, such as timeout value.
+.sp
+TimeoutInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+How long the canary is allowed to run before it must stop. You can\(aqt set this time to be longer than the frequency of the runs of this canary.
+.sp
+If you omit this field, the frequency of the canary is used as this value, up to a maximum of 14 minutes.
+.UNINDENT
+.UNINDENT
+.sp
+MemoryInMB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of memory available to the canary while it is running, in MB. This value must be a multiple of 64.
+.UNINDENT
+.UNINDENT
+.sp
+ActiveTracing \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether this canary is to use active AWS X\-Ray tracing when it runs. Active tracing enables this canary run to be displayed in the ServiceLens and X\-Ray service maps even if the canary does not hit an endpoint that has X\-ray tracing enabled. Using X\-Ray tracing incurs charges. For more information, see \fI\%Canaries and X\-Ray tracing\fP .
+.sp
+You can enable active tracing only for canaries that use version \fBsyn\-nodejs\-2.0\fP or later for their canary runtime.
+.UNINDENT
+.UNINDENT
+.sp
+EnvironmentVariables \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the keys and values to use for any environment variables used in the canary script. Use the following format:
+.sp
+{ "key1" : "value1", "key2" : "value2", ...}
+.sp
+Keys must start with a letter and be at least two characters. The total size of your environment variables cannot exceed 4 KB. You can\(aqt specify any Lambda reserved environment variables as the keys for your environment variables. For more information about reserved keys, see \fI\%Runtime environment variables\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TimeoutInSeconds=integer,MemoryInMB=integer,ActiveTracing=boolean,EnvironmentVariables={KeyName1=string,KeyName2=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TimeoutInSeconds": integer,
+  "MemoryInMB": integer,
+  "ActiveTracing": true|false,
+  "EnvironmentVariables": {"string": "string"
+    ...}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-success\-retention\-period\-in\-days\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain data about successful runs of this canary. If you omit this field, the default of 31 days is used. The valid range is 1 to 455 days.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-failure\-retention\-period\-in\-days\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain data about failed runs of this canary. If you omit this field, the default of 31 days is used. The valid range is 1 to 455 days.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-runtime\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the runtime version to use for the canary. For a list of valid runtime versions and more information about runtime versions, see \fI\%Canary Runtime Versions\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+If this canary is to test an endpoint in a VPC, this structure contains information about the subnet and security groups of the VPC endpoint. For more information, see \fI\%Running a Canary in a VPC\fP .
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets where this canary is to run.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups for this canary.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SubnetIds=string,string,SecurityGroupIds=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SubnetIds": ["string", ...],
+  "SecurityGroupIds": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of key\-value pairs to associate with the canary. You can associate as many as 50 tags with a canary.
+.sp
+Tags can help you organize and categorize your resources. You can also use them to scope user permissions, by granting a user permission to access or change only the resources that have certain tag values.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Canary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The full details about the canary you have created.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID of this canary.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the canary.
+.UNINDENT
+.UNINDENT
+.sp
+Code \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+This structure contains information about the canary\(aqs Lambda handler and where its code is stored by CloudWatch Synthetics.
+.sp
+SourceLocationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Lambda layer where Synthetics stores the canary script code.
+.UNINDENT
+.UNINDENT
+.sp
+Handler \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The entry point to use for the source code when running the canary.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ExecutionRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role used to run the canary. This role must include \fBlambda.amazonaws.com\fP as a principal in the trust policy.
+.UNINDENT
+.UNINDENT
+.sp
+Schedule \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains information about how often the canary is to run, and when these runs are to stop.
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A rate expression that defines how often the canary is to run. The syntax is \fBrate(*number unit* )\fP . \fIunit\fP can be \fBminute\fP , \fBminutes\fP , or \fBhour\fP .
+.sp
+For example, \fBrate(1 minute)\fP runs the canary once a minute, \fBrate(10 minutes)\fP runs it once every 10 minutes, and \fBrate(1 hour)\fP runs it once every hour.
+.sp
+Specifying \fBrate(0 minute)\fP or \fBrate(0 hour)\fP is a special value that causes the canary to run only once when it is started.
+.UNINDENT
+.UNINDENT
+.sp
+DurationInSeconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+How long, in seconds, for the canary to continue making regular runs after it was created. The runs are performed according to the schedule in the \fBExpression\fP value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RunConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains information about a canary run.
+.sp
+TimeoutInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+How long the canary is allowed to run before it must stop.
+.UNINDENT
+.UNINDENT
+.sp
+MemoryInMB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of memory available to the canary while it is running, in MB. This value must be a multiple of 64.
+.UNINDENT
+.UNINDENT
+.sp
+ActiveTracing \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Displays whether this canary run used active AWS X\-Ray tracing.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SuccessRetentionPeriodInDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain data about successful runs of this canary.
+.UNINDENT
+.UNINDENT
+.sp
+FailureRetentionPeriodInDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to retain data about failed runs of this canary.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains information about the canary\(aqs status.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the canary.
+.UNINDENT
+.UNINDENT
+.sp
+StateReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the canary has insufficient permissions to run, this field provides more details.
+.UNINDENT
+.UNINDENT
+.sp
+StateReasonCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the canary cannot run or has failed, this field displays the reason.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Timeline \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains information about when the canary was created, modified, and most recently run.
+.sp
+Created \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the canary was created.
+.UNINDENT
+.UNINDENT
+.sp
+LastModified \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the canary was most recently modified.
+.UNINDENT
+.UNINDENT
+.sp
+LastStarted \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the canary\(aqs most recent run started.
+.UNINDENT
+.UNINDENT
+.sp
+LastStopped \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the canary\(aqs most recent run ended.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ArtifactS3Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in Amazon S3 where Synthetics stores artifacts from the runs of this canary. Artifacts include the log file, screenshots, and HAR files.
+.UNINDENT
+.UNINDENT
+.sp
+EngineArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Lambda function that is used as your canary\(aqs engine. For more information about Lambda ARN format, see \fI\%Resources and Conditions for Lambda Actions\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RuntimeVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the runtime version to use for the canary. For more information about runtime versions, see \fI\%Canary Runtime Versions\fP .
+.UNINDENT
+.UNINDENT
+.sp
+VpcConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If this canary is to test an endpoint in a VPC, this structure contains information about the subnets and security groups of the VPC endpoint. For more information, see \fI\%Running a Canary in a VPC\fP .
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the VPC where this canary is to run.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets where this canary is to run.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups for this canary.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The list of key\-value pairs that are associated with the canary.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

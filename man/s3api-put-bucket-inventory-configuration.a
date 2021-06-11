@@ -1,0 +1,368 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-PUT-BUCKET-INVENTORY-CONFIGURATION" "a" "" ""
+.SH NAME
+s3api-put-bucket-inventory-configuration \- This implementation of the PUT action adds an inventory configuration (identified by the inventory ID) to the bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This implementation of the \fBPUT\fP action adds an inventory configuration (identified by the inventory ID) to the bucket. You can have up to 1,000 inventory configurations per bucket.
+.sp
+Amazon S3 inventory generates inventories of the objects in the bucket on a daily or weekly basis, and the results are published to a flat file. The bucket that is inventoried is called the \fIsource\fP bucket, and the bucket where the inventory flat file is stored is called the \fIdestination\fP bucket. The \fIdestination\fP bucket must be in the same AWS Region as the \fIsource\fP bucket.
+.sp
+When you configure an inventory for a \fIsource\fP bucket, you specify the \fIdestination\fP bucket where you want the inventory to be stored, and whether to generate the inventory daily or weekly. You can also configure what object metadata to include and whether to inventory all object versions or only current versions. For more information, see \fI\%Amazon S3 Inventory\fP in the Amazon S3 User Guide.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must create a bucket policy on the \fIdestination\fP bucket to grant permissions to Amazon S3 to write objects to the bucket in the defined location. For an example policy, see \fI\%Granting Permissions for Amazon S3 Inventory and Storage Class Analysis\fP .
+.UNINDENT
+.UNINDENT
+.sp
+To use this operation, you must have permissions to perform the \fBs3:PutInventoryConfiguration\fP action. The bucket owner has this permission by default and can grant this permission to others. For more information about permissions, see \fI\%Permissions Related to Bucket Subresource Operations\fP and \fI\%Managing Access Permissions to Your Amazon S3 Resources\fP in the Amazon S3 User Guide.
+.INDENT 0.0
+.INDENT 3.5
+\fBSpecial Errors\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBHTTP 400 Bad Request Error\fP
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidArgument
+.IP \(bu 2
+\fICause:\fP Invalid Argument
+.UNINDENT
+.IP \(bu 2
+\fBHTTP 400 Bad Request Error\fP
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP TooManyConfigurations
+.IP \(bu 2
+\fICause:\fP You are attempting to create a new configuration but have already reached the 1,000\-configuration limit.
+.UNINDENT
+.IP \(bu 2
+\fBHTTP 403 Forbidden Error\fP
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP AccessDenied
+.IP \(bu 2
+\fICause:\fP You are not the owner of the specified bucket, or you do not have the \fBs3:PutInventoryConfiguration\fP bucket permission to set the configuration on the bucket.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated Resources\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fI\%GetBucketInventoryConfiguration\fP
+.IP \(bu 2
+\fI\%DeleteBucketInventoryConfiguration\fP
+.IP \(bu 2
+\fI\%ListBucketInventoryConfigurations\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-bucket\-inventory\-configuration
+\-\-bucket <value>
+\-\-id <value>
+\-\-inventory\-configuration <value>
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket where the inventory configuration will be stored.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID used to identify the inventory configuration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-inventory\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the inventory configuration.
+.sp
+Destination \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about where to publish the inventory results.
+.sp
+S3BucketDestination \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the bucket name, file format, bucket owner (optional), and prefix (optional) where inventory results are published.
+.sp
+AccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID that owns the destination S3 bucket. If no account ID is provided, the owner is not validated before exporting data.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Although this value is optional, we strongly recommend that you set it to help prevent problems if the destination bucket ownership changes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the bucket where inventory results will be published.
+.UNINDENT
+.UNINDENT
+.sp
+Format \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the output format of the inventory results.
+.UNINDENT
+.UNINDENT
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The prefix that is prepended to all inventory results.
+.UNINDENT
+.UNINDENT
+.sp
+Encryption \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the type of server\-side encryption used to encrypt the inventory results.
+.sp
+SSES3 \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the use of SSE\-S3 to encrypt delivered inventory reports.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMS \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the use of SSE\-KMS to encrypt delivered inventory reports.
+.sp
+KeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID of the AWS Key Management Service (AWS KMS) symmetric customer managed customer master key (CMK) to use for encrypting inventory reports.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IsEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the inventory is enabled or disabled. If set to \fBTrue\fP , an inventory list is generated. If set to \fBFalse\fP , no inventory list is generated.
+.UNINDENT
+.UNINDENT
+.sp
+Filter \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an inventory filter. The inventory only includes objects that meet the filter\(aqs criteria.
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The prefix that an object must have to be included in the inventory results.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID used to identify the inventory configuration.
+.UNINDENT
+.UNINDENT
+.sp
+IncludedObjectVersions \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Object versions to include in the inventory list. If set to \fBAll\fP , the list includes all the object versions, which adds the version\-related fields \fBVersionId\fP , \fBIsLatest\fP , and \fBDeleteMarker\fP to the list. If set to \fBCurrent\fP , the list does not contain these version\-related fields.
+.UNINDENT
+.UNINDENT
+.sp
+OptionalFields \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains the optional fields that are included in the inventory results.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Schedule \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the schedule for generating inventory results.
+.sp
+Frequency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how frequently inventory results are produced.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Destination": {
+    "S3BucketDestination": {
+      "AccountId": "string",
+      "Bucket": "string",
+      "Format": "CSV"|"ORC"|"Parquet",
+      "Prefix": "string",
+      "Encryption": {
+        "SSES3": {
+
+        },
+        "SSEKMS": {
+          "KeyId": "string"
+        }
+      }
+    }
+  },
+  "IsEnabled": true|false,
+  "Filter": {
+    "Prefix": "string"
+  },
+  "Id": "string",
+  "IncludedObjectVersions": "All"|"Current",
+  "OptionalFields": ["Size"|"LastModifiedDate"|"StorageClass"|"ETag"|"IsMultipartUploaded"|"ReplicationStatus"|"EncryptionStatus"|"ObjectLockRetainUntilDate"|"ObjectLockMode"|"ObjectLockLegalHoldStatus"|"IntelligentTieringAccessTier", ...],
+  "Schedule": {
+    "Frequency": "Daily"|"Weekly"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To set an inventory configuration for a bucket\fP
+.sp
+The following \fBput\-bucket\-inventory\-configuration\fP example sets a weekly ORC\-formatted inventory report for the bucket \fBmy\-bucket\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-bucket\-inventory\-configuration \e
+    \-\-bucket my\-bucket \e
+    \-\-id 1 \e
+    \-\-inventory\-configuration \(aq{"Destination": { "S3BucketDestination": { "AccountId": "123456789012", "Bucket": "arn:aws:s3:::my\-bucket", "Format": "ORC" }}, "IsEnabled": true, "Id": "1", "IncludedObjectVersions": "Current", "Schedule": { "Frequency": "Weekly" }}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fBExample 1: To set an inventory configuration for a bucket\fP
+.sp
+The following \fBput\-bucket\-inventory\-configuration\fP example sets a daily CSV\-formatted inventory report for the bucket \fBmy\-bucket\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-bucket\-inventory\-configuration \e
+    \-\-bucket my\-bucket \e
+    \-\-id 2 \e
+    \-\-inventory\-configuration \(aq{"Destination": { "S3BucketDestination": { "AccountId": "123456789012", "Bucket": "arn:aws:s3:::my\-bucket", "Format": "CSV" }}, "IsEnabled": true, "Id": "2", "IncludedObjectVersions": "Current", "Schedule": { "Frequency": "Daily" }}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

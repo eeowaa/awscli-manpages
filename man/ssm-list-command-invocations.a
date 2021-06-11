@@ -1,0 +1,652 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-LIST-COMMAND-INVOCATIONS" "a" "" ""
+.SH NAME
+ssm-list-command-invocations \- An invocation is copy of a command sent to a specific instance
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+An invocation is copy of a command sent to a specific instance. A command can apply to one or more instances. A command invocation applies to one instance. For example, if a user runs SendCommand against three instances, then a command invocation is created for each requested instance ID. ListCommandInvocations provide status about command execution.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-command\-invocations\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBCommandInvocations\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-command\-invocations
+[\-\-command\-id <value>]
+[\-\-instance\-id <value>]
+[\-\-filters <value>]
+[\-\-details | \-\-no\-details]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-command\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) The invocations for a specific command ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) The command execution details for a specific instance ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) One or more filters. Use a filter to return a more specific list of results.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a command filter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An instance ID can\(aqt be specified when a command status is \fBPending\fP because the command hasn\(aqt run on the instance yet.
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The filter value. Valid values for each filter key are as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBInvokedAfter\fP : Specify a timestamp to limit your results. For example, specify \fB2018\-07\-07T00:00:00Z\fP to see a list of command executions occurring July 7, 2018, and later.
+.IP \(bu 2
+\fBInvokedBefore\fP : Specify a timestamp to limit your results. For example, specify \fB2018\-07\-07T00:00:00Z\fP to see a list of command executions from before July 7, 2018.
+.IP \(bu 2
+\fBStatus\fP : Specify a valid command status to see a list of all command executions with that status. Status values you can specify include:
+.INDENT 2.0
+.IP \(bu 2
+\fBPending\fP
+.IP \(bu 2
+\fBInProgress\fP
+.IP \(bu 2
+\fBSuccess\fP
+.IP \(bu 2
+\fBCancelled\fP
+.IP \(bu 2
+\fBFailed\fP
+.IP \(bu 2
+\fBTimedOut\fP
+.IP \(bu 2
+\fBCancelling\fP
+.UNINDENT
+.IP \(bu 2
+\fBDocumentName\fP : Specify name of the SSM document for which you want to see command execution results. For example, specify \fBAWS\-RunPatchBaseline\fP to see command executions that used this SSM document to perform security patching operations on instances.
+.IP \(bu 2
+\fBExecutionStage\fP : Specify one of the following values:
+.INDENT 2.0
+.IP \(bu 2
+\fBExecuting\fP : Returns a list of command executions that are currently still running.
+.IP \(bu 2
+\fBComplete\fP : Returns a list of command executions that have already completed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+key=string,value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "key": "InvokedAfter"|"InvokedBefore"|"Status"|"ExecutionStage"|"DocumentName",
+    "value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-details\fP | \fB\-\-no\-details\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) If set this returns the response of the command executions and any command output. The default value is \(aqfalse\(aq.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo list the invocations of a specific command\fP
+.sp
+The following \fBlist\-command\-invocations\fP example lists all the invocations of a command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm list\-command\-invocations \e
+    \-\-command\-id "ef7fdfd8\-9b57\-4151\-a15c\-db9a12345678" \e
+    \-\-details
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "CommandInvocations": [
+        {
+            "CommandId": "ef7fdfd8\-9b57\-4151\-a15c\-db9a12345678",
+            "InstanceId": "i\-02573cafcfEXAMPLE",
+            "InstanceName": "",
+            "Comment": "b48291dd\-ba76\-43e0\-b9df\-13e11ddaac26:6960febb\-2907\-4b59\-8e1a\-d6ce8EXAMPLE",
+            "DocumentName": "AWS\-UpdateSSMAgent",
+            "DocumentVersion": "",
+            "RequestedDateTime": 1582136283.089,
+            "Status": "Success",
+            "StatusDetails": "Success",
+            "StandardOutputUrl": "",
+            "StandardErrorUrl": "",
+            "CommandPlugins": [
+                {
+                    "Name": "aws:updateSsmAgent",
+                    "Status": "Success",
+                    "StatusDetails": "Success",
+                    "ResponseCode": 0,
+                    "ResponseStartDateTime": 1582136283.419,
+                    "ResponseFinishDateTime": 1582136283.51,
+                    "Output": "Updating amazon\-ssm\-agent from 2.3.842.0 to latest\enSuccessfully downloaded https://s3.us\-east\-2.amazonaws.com/amazon\-ssm\-us\-east\-2/ssm\-agent\-manifest.json\enamazon\-ssm\-agent 2.3.842.0 has already been installed, update skipped\en",
+                    "StandardOutputUrl": "",
+                    "StandardErrorUrl": "",
+                    "OutputS3Region": "us\-east\-2",
+                    "OutputS3BucketName": "",
+                    "OutputS3KeyPrefix": ""
+                }
+            ],
+            "ServiceRole": "",
+            "NotificationConfig": {
+                "NotificationArn": "",
+                "NotificationEvents": [],
+                "NotificationType": ""
+            },
+            "CloudWatchOutputConfig": {
+                "CloudWatchLogGroupName": "",
+                "CloudWatchOutputEnabled": false
+            }
+        },
+        {
+            "CommandId": "ef7fdfd8\-9b57\-4151\-a15c\-db9a12345678",
+            "InstanceId": "i\-0471e04240EXAMPLE",
+            "InstanceName": "",
+            "Comment": "b48291dd\-ba76\-43e0\-b9df\-13e11ddaac26:6960febb\-2907\-4b59\-8e1a\-d6ce8EXAMPLE",
+            "DocumentName": "AWS\-UpdateSSMAgent",
+            "DocumentVersion": "",
+            "RequestedDateTime": 1582136283.02,
+            "Status": "Success",
+            "StatusDetails": "Success",
+            "StandardOutputUrl": "",
+            "StandardErrorUrl": "",
+            "CommandPlugins": [
+                {
+                    "Name": "aws:updateSsmAgent",
+                    "Status": "Success",
+                    "StatusDetails": "Success",
+                    "ResponseCode": 0,
+                    "ResponseStartDateTime": 1582136283.812,
+                    "ResponseFinishDateTime": 1582136295.031,
+                    "Output": "Updating amazon\-ssm\-agent from 2.3.672.0 to latest\enSuccessfully downloaded https://s3.us\-east\-2.amazonaws.com/amazon\-ssm\-us\-east\-2/ssm\-agent\-manifest.json\enSuccessfully downloaded https://s3.us\-east\-2.amazonaws.com/amazon\-ssm\-us\-east\-2/amazon\-ssm\-agent\-updater/2.3.842.0/amazon\-ssm\-agent\-updater\-snap\-amd64.tar.gz\enSuccessfully downloaded https://s3.us\-east\-2.amazonaws.com/amazon\-ssm\-us\-east\-2/amazon\-ssm\-agent/2.3.672.0/amazon\-ssm\-agent\-snap\-amd64.tar.gz\enSuccessfully downloaded https://s3.us\-east\-2.amazonaws.com/amazon\-ssm\-us\-east\-2/amazon\-ssm\-agent/2.3.842.0/amazon\-ssm\-agent\-snap\-amd64.tar.gz\enInitiating amazon\-ssm\-agent update to 2.3.842.0\enamazon\-ssm\-agent updated successfully to 2.3.842.0",
+                    "StandardOutputUrl": "",
+                    "StandardErrorUrl": "",
+                    "OutputS3Region": "us\-east\-2",
+                    "OutputS3BucketName": "",
+                    "OutputS3KeyPrefix": "8bee3135\-398c\-4d31\-99b6\-e42d2EXAMPLE/i\-0471e04240EXAMPLE/awsupdateSsmAgent"
+                }
+            ],
+            "ServiceRole": "",
+            "NotificationConfig": {
+                "NotificationArn": "",
+                "NotificationEvents": [],
+                "NotificationType": ""
+            },
+            "CloudWatchOutputConfig": {
+                "CloudWatchLogGroupName": "",
+                "CloudWatchOutputEnabled": false
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Understanding Command Statuses\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+CommandInvocations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) A list of all invocations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An invocation is copy of a command sent to a specific instance. A command can apply to one or more instances. A command invocation applies to one instance. For example, if a user runs SendCommand against three instances, then a command invocation is created for each requested instance ID. A command invocation returns status and detail information about a command you ran.
+.sp
+CommandId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The command against which this invocation was requested.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance ID in which this invocation was requested.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the invocation target. For EC2 instances this is the value for the aws:Name tag. For on\-premises instances, this is the name of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+User\-specified information about the command, such as a brief description of what the command should do.
+.UNINDENT
+.UNINDENT
+.sp
+DocumentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document name that was requested for execution.
+.UNINDENT
+.UNINDENT
+.sp
+DocumentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSM document version.
+.UNINDENT
+.UNINDENT
+.sp
+RequestedDateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time and date the request was sent to this instance.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not the invocation succeeded, failed, or is pending.
+.UNINDENT
+.UNINDENT
+.sp
+StatusDetails \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed status of the command execution for each invocation (each instance targeted by the command). StatusDetails includes more information than Status because it includes states resulting from error and concurrency control parameters. StatusDetails can show different results than Status. For more information about these statuses, see \fI\%Understanding command statuses\fP in the \fIAWS Systems Manager User Guide\fP . StatusDetails can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+Pending: The command has not been sent to the instance.
+.IP \(bu 2
+In Progress: The command has been sent to the instance but has not reached a terminal state.
+.IP \(bu 2
+Success: The execution of the command or plugin was successfully completed. This is a terminal state.
+.IP \(bu 2
+Delivery Timed Out: The command was not delivered to the instance before the delivery timeout expired. Delivery timeouts do not count against the parent command\(aqs MaxErrors limit, but they do contribute to whether the parent command status is Success or Incomplete. This is a terminal state.
+.IP \(bu 2
+Execution Timed Out: Command execution started on the instance, but the execution was not complete before the execution timeout expired. Execution timeouts count against the MaxErrors limit of the parent command. This is a terminal state.
+.IP \(bu 2
+Failed: The command was not successful on the instance. For a plugin, this indicates that the result code was not zero. For a command invocation, this indicates that the result code for one or more plugins was not zero. Invocation failures count against the MaxErrors limit of the parent command. This is a terminal state.
+.IP \(bu 2
+Canceled: The command was terminated before it was completed. This is a terminal state.
+.IP \(bu 2
+Undeliverable: The command can\(aqt be delivered to the instance. The instance might not exist or might not be responding. Undeliverable invocations don\(aqt count against the parent command\(aqs MaxErrors limit and don\(aqt contribute to whether the parent command status is Success or Incomplete. This is a terminal state.
+.IP \(bu 2
+Terminated: The parent command exceeded its MaxErrors limit and subsequent command invocations were canceled by the system. This is a terminal state.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TraceOutput \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Gets the trace output sent by the agent.
+.UNINDENT
+.UNINDENT
+.sp
+StandardOutputUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL to the plugin\(aqs StdOut file in Amazon S3, if the S3 bucket was defined for the parent command. For an invocation, StandardOutputUrl is populated if there is just one plugin defined for the command, and the S3 bucket was defined for the command.
+.UNINDENT
+.UNINDENT
+.sp
+StandardErrorUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL to the plugin\(aqs StdErr file in Amazon S3, if the S3 bucket was defined for the parent command. For an invocation, StandardErrorUrl is populated if there is just one plugin defined for the command, and the S3 bucket was defined for the command.
+.UNINDENT
+.UNINDENT
+.sp
+CommandPlugins \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes plugin details.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the plugin. Must be one of the following: aws:updateAgent, aws:domainjoin, aws:applications, aws:runPowerShellScript, aws:psmodule, aws:cloudWatch, aws:runShellScript, or aws:updateSSMAgent.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of this plugin. You can run a document with multiple plugins.
+.UNINDENT
+.UNINDENT
+.sp
+StatusDetails \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed status of the plugin execution. StatusDetails includes more information than Status because it includes states resulting from error and concurrency control parameters. StatusDetails can show different results than Status. For more information about these statuses, see \fI\%Understanding command statuses\fP in the \fIAWS Systems Manager User Guide\fP . StatusDetails can be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+Pending: The command has not been sent to the instance.
+.IP \(bu 2
+In Progress: The command has been sent to the instance but has not reached a terminal state.
+.IP \(bu 2
+Success: The execution of the command or plugin was successfully completed. This is a terminal state.
+.IP \(bu 2
+Delivery Timed Out: The command was not delivered to the instance before the delivery timeout expired. Delivery timeouts do not count against the parent command\(aqs MaxErrors limit, but they do contribute to whether the parent command status is Success or Incomplete. This is a terminal state.
+.IP \(bu 2
+Execution Timed Out: Command execution started on the instance, but the execution was not complete before the execution timeout expired. Execution timeouts count against the MaxErrors limit of the parent command. This is a terminal state.
+.IP \(bu 2
+Failed: The command was not successful on the instance. For a plugin, this indicates that the result code was not zero. For a command invocation, this indicates that the result code for one or more plugins was not zero. Invocation failures count against the MaxErrors limit of the parent command. This is a terminal state.
+.IP \(bu 2
+Canceled: The command was terminated before it was completed. This is a terminal state.
+.IP \(bu 2
+Undeliverable: The command can\(aqt be delivered to the instance. The instance might not exist, or it might not be responding. Undeliverable invocations don\(aqt count against the parent command\(aqs MaxErrors limit, and they don\(aqt contribute to whether the parent command status is Success or Incomplete. This is a terminal state.
+.IP \(bu 2
+Terminated: The parent command exceeded its MaxErrors limit and subsequent command invocations were canceled by the system. This is a terminal state.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResponseCode \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A numeric response code generated after running the plugin.
+.UNINDENT
+.UNINDENT
+.sp
+ResponseStartDateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the plugin started running.
+.UNINDENT
+.UNINDENT
+.sp
+ResponseFinishDateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the plugin stopped running. Could stop prematurely if, for example, a cancel command was sent.
+.UNINDENT
+.UNINDENT
+.sp
+Output \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Output of the plugin execution.
+.UNINDENT
+.UNINDENT
+.sp
+StandardOutputUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL for the complete text written by the plugin to stdout in Amazon S3. If the S3 bucket for the command was not specified, then this string is empty.
+.UNINDENT
+.UNINDENT
+.sp
+StandardErrorUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL for the complete text written by the plugin to stderr. If execution is not yet complete, then this string is empty.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Deprecated) You can no longer specify this parameter. The system ignores it. Instead, Systems Manager automatically determines the S3 bucket region.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket where the responses to the command executions should be stored. This was requested when issuing the command. For example, in the following response:
+.sp
+doc\-example\-bucket/ab19cb99\-a030\-46dd\-9dfc\-8eSAMPLEPre\-Fix/i\-02573cafcfEXAMPLE/awsrunShellScript
+.sp
+doc\-example\-bucket is the name of the S3 bucket;
+.sp
+ab19cb99\-a030\-46dd\-9dfc\-8eSAMPLEPre\-Fix is the name of the S3 prefix;
+.sp
+i\-02573cafcfEXAMPLE is the instance ID;
+.sp
+awsrunShellScript is the name of the plugin.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 directory path inside the bucket where the responses to the command executions should be stored. This was requested when issuing the command. For example, in the following response:
+.sp
+doc\-example\-bucket/ab19cb99\-a030\-46dd\-9dfc\-8eSAMPLEPre\-Fix/i\-02573cafcfEXAMPLE/awsrunShellScript
+.sp
+doc\-example\-bucket is the name of the S3 bucket;
+.sp
+ab19cb99\-a030\-46dd\-9dfc\-8eSAMPLEPre\-Fix is the name of the S3 prefix;
+.sp
+i\-02573cafcfEXAMPLE is the instance ID;
+.sp
+awsrunShellScript is the name of the plugin.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ServiceRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IAM service role that Run Command uses to act on your behalf when sending notifications about command status changes on a per instance basis.
+.UNINDENT
+.UNINDENT
+.sp
+NotificationConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configurations for sending notifications about command status changes on a per instance basis.
+.sp
+NotificationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Resource Name (ARN) for an Amazon Simple Notification Service (Amazon SNS) topic. Run Command pushes notifications about command status changes to this topic.
+.UNINDENT
+.UNINDENT
+.sp
+NotificationEvents \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The different events for which you can receive notifications. These events include the following: All (events), InProgress, Success, TimedOut, Cancelled, Failed. To learn more about these events, see \fI\%Monitoring Systems Manager status changes using Amazon SNS notifications\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NotificationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Command: Receive notification when the status of a command changes. Invocation: For commands sent to multiple instances, receive notification on a per\-instance basis when the status of a command changes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CloudWatchOutputConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+CloudWatch Logs information where you want Systems Manager to send the command output.
+.sp
+CloudWatchLogGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch log group where you want to send command output. If you don\(aqt specify a group name, Systems Manager automatically creates a log group for you. The log group uses the following naming format: aws/ssm/\fISystemsManagerDocumentName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CloudWatchOutputEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables Systems Manager to send command output to CloudWatch Logs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Optional) The token for the next set of items to return. (You received this token from a previous call.)
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,585 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFORMATION-CREATE-STACK" "a" "" ""
+.SH NAME
+cloudformation-create-stack \- Creates a stack as specified in the template
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a stack as specified in the template. After the call completes successfully, the stack creation starts. You can check the status of the stack via the  DescribeStacks API.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-stack
+\-\-stack\-name <value>
+[\-\-template\-body <value>]
+[\-\-template\-url <value>]
+[\-\-parameters <value>]
+[\-\-disable\-rollback | \-\-no\-disable\-rollback]
+[\-\-rollback\-configuration <value>]
+[\-\-timeout\-in\-minutes <value>]
+[\-\-notification\-arns <value>]
+[\-\-capabilities <value>]
+[\-\-resource\-types <value>]
+[\-\-role\-arn <value>]
+[\-\-on\-failure <value>]
+[\-\-stack\-policy\-body <value>]
+[\-\-stack\-policy\-url <value>]
+[\-\-tags <value>]
+[\-\-client\-request\-token <value>]
+[\-\-enable\-termination\-protection | \-\-no\-enable\-termination\-protection]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stack\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name that is associated with the stack. The name must be unique in the Region in which you are creating the stack.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+A stack name can contain only alphanumeric characters (case sensitive) and hyphens. It must start with an alphabetic character and cannot be longer than 128 characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-template\-body\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Structure containing the template body with a minimum length of 1 byte and a maximum length of 51,200 bytes. For more information, go to \fI\%Template Anatomy\fP in the AWS CloudFormation User Guide.
+.sp
+Conditional: You must specify either the \fBTemplateBody\fP or the \fBTemplateURL\fP parameter, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-template\-url\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Location of file containing the template body. The URL must point to a template (max size: 460,800 bytes) that is located in an Amazon S3 bucket or a Systems Manager document. For more information, go to the \fI\%Template Anatomy\fP in the AWS CloudFormation User Guide.
+.sp
+Conditional: You must specify either the \fBTemplateBody\fP or the \fBTemplateURL\fP parameter, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parameters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBParameter\fP structures that specify input parameters for the stack. For more information, see the \fI\%Parameter\fP data type.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The Parameter data type.
+.sp
+ParameterKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key associated with the parameter. If you don\(aqt specify a key and value for a particular parameter, AWS CloudFormation uses the default value that is specified in your template.
+.UNINDENT
+.UNINDENT
+.sp
+ParameterValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The input value associated with the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+UsePreviousValue \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+During a stack update, use the existing parameter value that the stack is using for a given parameter key. If you specify \fBtrue\fP , do not specify a parameter value.
+.UNINDENT
+.UNINDENT
+.sp
+ResolvedValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Read\-only. The value that corresponds to a Systems Manager parameter key. This field is returned only for \(ga \fBSSM\fP parameter types <\fI\%https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters\-section\-structure.html#aws\-ssm\-parameter\-types\fP>\(ga__ in the template.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ParameterKey=string,ParameterValue=string,UsePreviousValue=boolean,ResolvedValue=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ParameterKey": "string",
+    "ParameterValue": "string",
+    "UsePreviousValue": true|false,
+    "ResolvedValue": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-disable\-rollback\fP | \fB\-\-no\-disable\-rollback\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to \fBtrue\fP to disable rollback of the stack if stack creation failed. You can specify either \fBDisableRollback\fP or \fBOnFailure\fP , but not both.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-rollback\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The rollback triggers for AWS CloudFormation to monitor during stack creation and updating operations, and for the specified monitoring period afterwards.
+.sp
+RollbackTriggers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The triggers to monitor during stack creation or update actions.
+.sp
+By default, AWS CloudFormation saves the rollback triggers specified for a stack and applies them to any subsequent update operations for the stack, unless you specify otherwise. If you do specify rollback triggers for this parameter, those triggers replace any list of triggers previously specified for the stack. This means:
+.INDENT 0.0
+.IP \(bu 2
+To use the rollback triggers previously specified for this stack, if any, don\(aqt specify this parameter.
+.IP \(bu 2
+To specify new or updated rollback triggers, you must specify \fIall\fP the triggers that you want used for this stack, even triggers you\(aqve specifed before (for example, when creating the stack or during a previous stack update). Any triggers that you don\(aqt include in the updated list of triggers are no longer applied to the stack.
+.IP \(bu 2
+To remove all currently specified triggers, specify an empty list for this parameter.
+.UNINDENT
+.sp
+If a specified trigger is missing, the entire stack operation fails and is rolled back.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A rollback trigger AWS CloudFormation monitors during creation and updating of stacks. If any of the alarms you specify goes to ALARM state during the stack operation or within the specified monitoring period afterwards, CloudFormation rolls back the entire stack operation.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the rollback trigger.
+.sp
+If a specified trigger is missing, the entire stack operation fails and is rolled back.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type of the rollback trigger. Currently, \fI\%AWS::CloudWatch::Alarm\fP is the only supported resource type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MonitoringTimeInMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in minutes, during which CloudFormation should monitor all the rollback triggers after the stack creation or update operation deploys all necessary resources.
+.sp
+The default is 0 minutes.
+.sp
+If you specify a monitoring period but do not specify any rollback triggers, CloudFormation still waits the specified period of time before cleaning up old resources after update operations. You can use this monitoring period to perform any manual stack validation desired, and manually cancel the stack creation or update (using \fI\%CancelUpdateStack\fP , for example) as necessary.
+.sp
+If you specify 0 for this parameter, CloudFormation still monitors the specified rollback triggers during stack creation and update operations. Then, for update operations, it begins disposing of old resources immediately once the operation completes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+RollbackTriggers=[{Arn=string,Type=string},{Arn=string,Type=string}],MonitoringTimeInMinutes=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RollbackTriggers": [
+    {
+      "Arn": "string",
+      "Type": "string"
+    }
+    ...
+  ],
+  "MonitoringTimeInMinutes": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-timeout\-in\-minutes\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that can pass before the stack status becomes CREATE_FAILED; if \fBDisableRollback\fP is not set or is set to \fBfalse\fP , the stack will be rolled back.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-arns\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The Simple Notification Service (SNS) topic ARNs to publish stack related events. You can find your SNS topic ARNs using the SNS console or your Command Line Interface (CLI).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-capabilities\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+In some cases, you must explicitly acknowledge that your stack template contains certain capabilities in order for AWS CloudFormation to create the stack.
+.INDENT 0.0
+.IP \(bu 2
+\fBCAPABILITY_IAM\fP and \fBCAPABILITY_NAMED_IAM\fP   Some stack templates might include resources that can affect permissions in your AWS account; for example, by creating new AWS Identity and Access Management (IAM) users. For those stacks, you must explicitly acknowledge this by specifying one of these capabilities. The following IAM resources require you to specify either the \fBCAPABILITY_IAM\fP or \fBCAPABILITY_NAMED_IAM\fP capability.
+.INDENT 2.0
+.IP \(bu 2
+If you have IAM resources, you can specify either capability.
+.IP \(bu 2
+If you have IAM resources with custom names, you \fImust\fP specify \fBCAPABILITY_NAMED_IAM\fP .
+.IP \(bu 2
+If you don\(aqt specify either of these capabilities, AWS CloudFormation returns an \fBInsufficientCapabilities\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+If your stack template contains these resources, we recommend that you review all permissions associated with them and edit their permissions if necessary.
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fI\%AWS::IAM::AccessKey\fP
+.IP \(bu 2
+\fI\%AWS::IAM::Group\fP
+.IP \(bu 2
+\fI\%AWS::IAM::InstanceProfile\fP
+.IP \(bu 2
+\fI\%AWS::IAM::Policy\fP
+.IP \(bu 2
+\fI\%AWS::IAM::Role\fP
+.IP \(bu 2
+\fI\%AWS::IAM::User\fP
+.IP \(bu 2
+\fI\%AWS::IAM::UserToGroupAddition\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Acknowledging IAM Resources in AWS CloudFormation Templates\fP .
+.INDENT 0.0
+.IP \(bu 2
+\fBCAPABILITY_AUTO_EXPAND\fP   Some template contain macros. Macros perform custom processing on templates; this can include simple actions like find\-and\-replace operations, all the way to extensive transformations of entire templates. Because of this, users typically create a change set from the processed template, so that they can review the changes resulting from the macros before actually creating the stack. If your stack template contains one or more macros, and you choose to create a stack directly from the processed template, without first reviewing the resulting changes in a change set, you must acknowledge this capability. This includes the \fI\%AWS::Include\fP and \fI\%AWS::Serverless\fP transforms, which are macros hosted by AWS CloudFormation. If you want to create a stack from a stack template that contains macros \fIand\fP nested stacks, you must create the stack directly from the template using this capability.
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+You should only create stacks directly from a stack template that contains macros if you know what processing the macro performs. Each macro relies on an underlying Lambda service function for processing stack templates. Be aware that the Lambda function owner can update the function operation without AWS CloudFormation being notified.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Using AWS CloudFormation Macros to Perform Custom Processing on Templates\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  CAPABILITY_IAM
+  CAPABILITY_NAMED_IAM
+  CAPABILITY_AUTO_EXPAND
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-types\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The template resource types that you have permissions to work with for this create stack action, such as \fBAWS::EC2::Instance\fP , \fBAWS::EC2::*\fP , or \fBCustom::MyCustomInstance\fP . Use the following syntax to describe template resource types: \fBAWS::*\fP (for all AWS resource), \fBCustom::*\fP (for all custom resources), \fBCustom::*logical_ID* \(ga\(ga (for a specific custom resource), \(ga\(gaAWS::*service_name* ::*\fP (for all resources of a particular AWS service), and 
+.nf
+\(ga\(ga
+.fi
+AWS::\fIservice_name\fP ::\fIresource_logical_ID\fP \(ga\(ga (for a specific AWS resource).
+.IP "System Message: WARNING/2 (<string>:, line 415)"
+Inline literal start\-string without end\-string.
+.sp
+If the list of resource types doesn\(aqt include a resource that you\(aqre creating, the stack creation fails. By default, AWS CloudFormation grants permissions to all resource types. AWS Identity and Access Management (IAM) uses this parameter for AWS CloudFormation\-specific condition keys in IAM policies. For more information, see \fI\%Controlling Access with AWS Identity and Access Management\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an AWS Identity and Access Management (IAM) role that AWS CloudFormation assumes to create the stack. AWS CloudFormation uses the role\(aqs credentials to make calls on your behalf. AWS CloudFormation always uses this role for all future operations on the stack. As long as users have permission to operate on the stack, AWS CloudFormation uses this role even if the users don\(aqt have permission to pass it. Ensure that the role grants least privilege.
+.sp
+If you don\(aqt specify a value, AWS CloudFormation uses the role that was previously associated with the stack. If no role is available, AWS CloudFormation uses a temporary session that is generated from your user credentials.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-on\-failure\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines what action will be taken if stack creation fails. This must be one of: DO_NOTHING, ROLLBACK, or DELETE. You can specify either \fBOnFailure\fP or \fBDisableRollback\fP , but not both.
+.sp
+Default: \fBROLLBACK\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBDO_NOTHING\fP
+.IP \(bu 2
+\fBROLLBACK\fP
+.IP \(bu 2
+\fBDELETE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stack\-policy\-body\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Structure containing the stack policy body. For more information, go to \fI\%Prevent Updates to Stack Resources\fP in the \fIAWS CloudFormation User Guide\fP . You can specify either the \fBStackPolicyBody\fP or the \fBStackPolicyURL\fP parameter, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stack\-policy\-url\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Location of a file containing the stack policy. The URL must point to a policy (maximum size: 16 KB) located in an S3 bucket in the same Region as the stack. You can specify either the \fBStackPolicyBody\fP or the \fBStackPolicyURL\fP parameter, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Key\-value pairs to associate with this stack. AWS CloudFormation also propagates these tags to the resources created in the stack. A maximum number of 50 tags can be specified.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The Tag type enables you to specify a key\-value pair that can be used to store information about an AWS CloudFormation stack.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+\fIRequired\fP . A string used to identify this tag. You can specify a maximum of 128 characters for a tag key. Tags owned by Amazon Web Services (AWS) have the reserved prefix: \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+\fIRequired\fP . A string containing the value for this tag. You can specify a maximum of 256 characters for a tag value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for this \fBCreateStack\fP request. Specify this token if you plan to retry requests so that AWS CloudFormation knows that you\(aqre not attempting to create a stack with the same name. You might retry \fBCreateStack\fP requests to ensure that AWS CloudFormation successfully received them.
+.sp
+All events triggered by a given stack operation are assigned the same client request token, which you can use to track operations. For example, if you execute a \fBCreateStack\fP operation with the token \fBtoken1\fP , then all the \fBStackEvents\fP generated by that operation will have \fBClientRequestToken\fP set as \fBtoken1\fP .
+.sp
+In the console, stack operations display the client request token on the Events tab. Stack operations that are initiated from the console use the token format \fIConsole\-StackOperation\-ID\fP , which helps you easily identify the stack operation . For example, if you create a stack using the console, each stack event would be assigned the same token in the following format: \fBConsole\-CreateStack\-7f59c3cf\-00d2\-40c7\-b2ff\-e75db0987002\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enable\-termination\-protection\fP | \fB\-\-no\-enable\-termination\-protection\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to enable termination protection on the specified stack. If a user attempts to delete a stack with termination protection enabled, the operation fails and the stack remains unchanged. For more information, see \fI\%Protecting a Stack From Being Deleted\fP in the \fIAWS CloudFormation User Guide\fP . Termination protection is disabled on stacks by default.
+.sp
+For \fI\%nested stacks\fP , termination protection is set on the root stack and cannot be changed directly on the nested stack.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an AWS CloudFormation stack\fP
+.sp
+The following \fBcreate\-stacks\fP command creates a stack with the name \fBmyteststack\fP using the \fBsampletemplate.json\fP template:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation create\-stack \-\-stack\-name myteststack \-\-template\-body file://sampletemplate.json \-\-parameters ParameterKey=KeyPairName,ParameterValue=TestKey ParameterKey=SubnetIDs,ParameterValue=SubnetID1\e\e,SubnetID2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StackId": "arn:aws:cloudformation:us\-east\-1:123456789012:stack/myteststack/466df9e0\-0dff\-08e3\-8e2f\-5088487c4896"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Stacks\fP in the \fIAWS CloudFormation User Guide\fP\&.
+.SH OUTPUT
+.sp
+StackId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier of the stack.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

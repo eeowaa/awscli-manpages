@@ -1,0 +1,801 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-PUT-SCALING-POLICY" "a" "" ""
+.SH NAME
+autoscaling-put-scaling-policy \- Creates or updates a scaling policy for an Auto Scaling group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates or updates a scaling policy for an Auto Scaling group. Scaling policies are used to scale an Auto Scaling group based on configurable metrics. If no policies are defined, the dynamic scaling and predictive scaling features are not used.
+.sp
+For more information about using dynamic scaling, see \fI\%Target tracking scaling policies\fP and \fI\%Step and simple scaling policies\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+For more information about using predictive scaling, see \fI\%Predictive scaling for Amazon EC2 Auto Scaling\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+You can view the scaling policies for an Auto Scaling group using the  DescribePolicies API call. If you are no longer using a scaling policy, you can delete it by calling the  DeletePolicy API.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-scaling\-policy
+\-\-auto\-scaling\-group\-name <value>
+\-\-policy\-name <value>
+[\-\-policy\-type <value>]
+[\-\-adjustment\-type <value>]
+[\-\-min\-adjustment\-step <value>]
+[\-\-min\-adjustment\-magnitude <value>]
+[\-\-scaling\-adjustment <value>]
+[\-\-cooldown <value>]
+[\-\-metric\-aggregation\-type <value>]
+[\-\-step\-adjustments <value>]
+[\-\-estimated\-instance\-warmup <value>]
+[\-\-target\-tracking\-configuration <value>]
+[\-\-enabled | \-\-no\-enabled]
+[\-\-predictive\-scaling\-configuration <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-auto\-scaling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the policy.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+One of the following policy types:
+.INDENT 0.0
+.IP \(bu 2
+\fBTargetTrackingScaling\fP
+.IP \(bu 2
+\fBStepScaling\fP
+.IP \(bu 2
+\fBSimpleScaling\fP (default)
+.IP \(bu 2
+\fBPredictiveScaling\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-adjustment\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how the scaling adjustment is interpreted (for example, an absolute number or a percentage). The valid values are \fBChangeInCapacity\fP , \fBExactCapacity\fP , and \fBPercentChangeInCapacity\fP .
+.sp
+Required if the policy type is \fBStepScaling\fP or \fBSimpleScaling\fP . For more information, see \fI\%Scaling adjustment types\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-min\-adjustment\-step\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Available for backward compatibility. Use \fBMinAdjustmentMagnitude\fP instead.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-min\-adjustment\-magnitude\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum value to scale by when the adjustment type is \fBPercentChangeInCapacity\fP . For example, suppose that you create a step scaling policy to scale out an Auto Scaling group by 25 percent and you specify a \fBMinAdjustmentMagnitude\fP of 2. If the group has 4 instances and the scaling policy is performed, 25 percent of 4 is 1. However, because you specified a \fBMinAdjustmentMagnitude\fP of 2, Amazon EC2 Auto Scaling scales out the group by 2 instances.
+.sp
+Valid only if the policy type is \fBStepScaling\fP or \fBSimpleScaling\fP . For more information, see \fI\%Scaling adjustment types\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Some Auto Scaling groups use instance weights. In this case, set the \fBMinAdjustmentMagnitude\fP to a value that is at least as large as your largest instance weight.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scaling\-adjustment\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount by which to scale, based on the specified adjustment type. A positive value adds to the current capacity while a negative number removes from the current capacity. For exact capacity, you must specify a positive value.
+.sp
+Required if the policy type is \fBSimpleScaling\fP . (Not used with any other policy type.)
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cooldown\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The duration of the policy\(aqs cooldown period, in seconds. When a cooldown period is specified here, it overrides the default cooldown period defined for the Auto Scaling group.
+.sp
+Valid only if the policy type is \fBSimpleScaling\fP . For more information, see \fI\%Scaling cooldowns for Amazon EC2 Auto Scaling\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metric\-aggregation\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The aggregation type for the CloudWatch metrics. The valid values are \fBMinimum\fP , \fBMaximum\fP , and \fBAverage\fP . If the aggregation type is null, the value is treated as \fBAverage\fP .
+.sp
+Valid only if the policy type is \fBStepScaling\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-step\-adjustments\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of adjustments that enable you to scale based on the size of the alarm breach.
+.sp
+Required if the policy type is \fBStepScaling\fP . (Not used with any other policy type.)
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes information used to create a step adjustment for a step scaling policy.
+.sp
+For the following examples, suppose that you have an alarm with a breach threshold of 50:
+.INDENT 0.0
+.IP \(bu 2
+To trigger the adjustment when the metric is greater than or equal to 50 and less than 60, specify a lower bound of 0 and an upper bound of 10.
+.IP \(bu 2
+To trigger the adjustment when the metric is greater than 40 and less than or equal to 50, specify a lower bound of \-10 and an upper bound of 0.
+.UNINDENT
+.sp
+There are a few rules for the step adjustments for your step policy:
+.INDENT 0.0
+.IP \(bu 2
+The ranges of your step adjustments can\(aqt overlap or have a gap.
+.IP \(bu 2
+At most, one step adjustment can have a null lower bound. If one step adjustment has a negative lower bound, then there must be a step adjustment with a null lower bound.
+.IP \(bu 2
+At most, one step adjustment can have a null upper bound. If one step adjustment has a positive upper bound, then there must be a step adjustment with a null upper bound.
+.IP \(bu 2
+The upper and lower bound can\(aqt be null in the same step adjustment.
+.UNINDENT
+.sp
+For more information, see \fI\%Step adjustments\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+MetricIntervalLowerBound \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The lower bound for the difference between the alarm threshold and the CloudWatch metric. If the metric value is above the breach threshold, the lower bound is inclusive (the metric must be greater than or equal to the threshold plus the lower bound). Otherwise, it is exclusive (the metric must be greater than the threshold plus the lower bound). A null value indicates negative infinity.
+.UNINDENT
+.UNINDENT
+.sp
+MetricIntervalUpperBound \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The upper bound for the difference between the alarm threshold and the CloudWatch metric. If the metric value is above the breach threshold, the upper bound is exclusive (the metric must be less than the threshold plus the upper bound). Otherwise, it is inclusive (the metric must be less than or equal to the threshold plus the upper bound). A null value indicates positive infinity.
+.sp
+The upper bound must be greater than the lower bound.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingAdjustment \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount by which to scale, based on the specified adjustment type. A positive value adds to the current capacity while a negative number removes from the current capacity.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+MetricIntervalLowerBound=double,MetricIntervalUpperBound=double,ScalingAdjustment=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "MetricIntervalLowerBound": double,
+    "MetricIntervalUpperBound": double,
+    "ScalingAdjustment": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-estimated\-instance\-warmup\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The estimated time, in seconds, until a newly launched instance can contribute to the CloudWatch metrics. If not provided, the default is to use the value from the default cooldown period for the Auto Scaling group.
+.sp
+Valid only if the policy type is \fBTargetTrackingScaling\fP or \fBStepScaling\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-tracking\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A target tracking scaling policy. Provides support for predefined or customized metrics.
+.sp
+The following predefined metrics are available:
+.INDENT 0.0
+.IP \(bu 2
+\fBASGAverageCPUUtilization\fP
+.IP \(bu 2
+\fBASGAverageNetworkIn\fP
+.IP \(bu 2
+\fBASGAverageNetworkOut\fP
+.IP \(bu 2
+\fBALBRequestCountPerTarget\fP
+.UNINDENT
+.sp
+If you specify \fBALBRequestCountPerTarget\fP for the metric, you must specify the \fBResourceLabel\fP parameter with the \fBPredefinedMetricSpecification\fP .
+.sp
+For more information, see \fI\%TargetTrackingConfiguration\fP in the \fIAmazon EC2 Auto Scaling API Reference\fP .
+.sp
+Required if the policy type is \fBTargetTrackingScaling\fP .
+.sp
+PredefinedMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A predefined metric. You must specify either a predefined metric or a customized metric.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric type. The following predefined metrics are available:
+.INDENT 0.0
+.IP \(bu 2
+\fBASGAverageCPUUtilization\fP \- Average CPU utilization of the Auto Scaling group.
+.IP \(bu 2
+\fBASGAverageNetworkIn\fP \- Average number of bytes received on all network interfaces by the Auto Scaling group.
+.IP \(bu 2
+\fBASGAverageNetworkOut\fP \- Average number of bytes sent out on all network interfaces by the Auto Scaling group.
+.IP \(bu 2
+\fBALBRequestCountPerTarget\fP \- Number of requests completed per target in an Application Load Balancer target group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the resource associated with the metric type. You can\(aqt specify a resource label unless the metric type is \fBALBRequestCountPerTarget\fP and there is a target group attached to the Auto Scaling group.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format is app/<load\-balancer\-name>/<load\-balancer\-id>/targetgroup/<target\-group\-name>/<target\-group\-id>, where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+This is an example: app/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d.
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CustomizedMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A customized metric. You must specify either a predefined metric or a customized metric.
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions of the metric.
+.sp
+Conditional: If you published your metric with dimensions, you must specify the same dimensions in your scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the dimension of a metric.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of the metric.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The target value for the metric.
+.UNINDENT
+.UNINDENT
+.sp
+DisableScaleIn \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether scaling in by the target tracking scaling policy is disabled. If scaling in is disabled, the target tracking scaling policy doesn\(aqt remove instances from the Auto Scaling group. Otherwise, the target tracking scaling policy can remove instances from the Auto Scaling group. The default is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "PredefinedMetricSpecification": {
+    "PredefinedMetricType": "ASGAverageCPUUtilization"|"ASGAverageNetworkIn"|"ASGAverageNetworkOut"|"ALBRequestCountPerTarget",
+    "ResourceLabel": "string"
+  },
+  "CustomizedMetricSpecification": {
+    "MetricName": "string",
+    "Namespace": "string",
+    "Dimensions": [
+      {
+        "Name": "string",
+        "Value": "string"
+      }
+      ...
+    ],
+    "Statistic": "Average"|"Minimum"|"Maximum"|"SampleCount"|"Sum",
+    "Unit": "string"
+  },
+  "TargetValue": double,
+  "DisableScaleIn": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enabled\fP | \fB\-\-no\-enabled\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the scaling policy is enabled or disabled. The default is enabled. For more information, see \fI\%Disabling a scaling policy for an Auto Scaling group\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-predictive\-scaling\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A predictive scaling policy. Provides support for only predefined metrics.
+.sp
+Predictive scaling works with CPU utilization, network in/out, and the Application Load Balancer request count.
+.sp
+For more information, see \fI\%PredictiveScalingConfiguration\fP in the \fIAmazon EC2 Auto Scaling API Reference\fP .
+.sp
+Required if the policy type is \fBPredictiveScaling\fP .
+.sp
+MetricSpecifications \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+This structure includes the metrics and target utilization to use for predictive scaling.
+.sp
+This is an array, but we currently only support a single metric specification. That is, you can specify a target value and a single metric pair, or a target value and one scaling metric and one load metric.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This structure specifies the metrics and target utilization settings for a predictive scaling policy.
+.sp
+You must specify either a metric pair, or a load metric and a scaling metric individually. Specifying a metric pair instead of individual metrics provides a simpler way to configure metrics for a scaling policy. You choose the metric pair, and the policy automatically knows the correct sum and average statistics to use for the load metric and the scaling metric.
+.sp
+Example
+.INDENT 0.0
+.IP \(bu 2
+You create a predictive scaling policy and specify \fBALBRequestCount\fP as the value for the metric pair and \fB1000.0\fP as the target value. For this type of metric, you must provide the metric dimension for the corresponding target group, so you also provide a resource label for the Application Load Balancer target group that is attached to your Auto Scaling group.
+.IP \(bu 2
+The number of requests the target group receives per minute provides the load metric, and the request count averaged between the members of the target group provides the scaling metric. In CloudWatch, this refers to the \fBRequestCount\fP and \fBRequestCountPerTarget\fP metrics, respectively.
+.IP \(bu 2
+For optimal use of predictive scaling, you adhere to the best practice of using a dynamic scaling policy to automatically scale between the minimum capacity and maximum capacity in response to real\-time changes in resource utilization.
+.IP \(bu 2
+Amazon EC2 Auto Scaling consumes data points for the load metric over the last 14 days and creates an hourly load forecast for predictive scaling. (A minimum of 24 hours of data is required.)
+.IP \(bu 2
+After creating the load forecast, Amazon EC2 Auto Scaling determines when to reduce or increase the capacity of your Auto Scaling group in each hour of the forecast period so that the average number of requests received by each instance is as close to 1000 requests per minute as possible at all times.
+.UNINDENT
+.sp
+TargetValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the target utilization.
+.UNINDENT
+.UNINDENT
+.sp
+PredefinedMetricPairSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric pair specification from which Amazon EC2 Auto Scaling determines the appropriate scaling metric and load metric to use.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates which metrics to use. There are two different types of metrics for each metric type: one is a load metric and one is a scaling metric. For example, if the metric type is \fBASGCPUUtilization\fP , the Auto Scaling group\(aqs total CPU metric is used as the load metric, and the average CPU metric is used for the scaling metric.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A label that uniquely identifies a specific Application Load Balancer target group from which to determine the request count served by your Auto Scaling group. You can\(aqt specify a resource label unless the target group is attached to the Auto Scaling group.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format of the resource label is:
+.INDENT 0.0
+.INDENT 3.5
+\fBapp/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PredefinedScalingMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The scaling metric specification.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric type.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A label that uniquely identifies a specific Application Load Balancer target group from which to determine the request count served by your Auto Scaling group. You can\(aqt specify a resource label unless the target group is attached to the Auto Scaling group.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format of the resource label is:
+.INDENT 0.0
+.INDENT 3.5
+\fBapp/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PredefinedLoadMetricSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The load metric specification.
+.sp
+PredefinedMetricType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric type.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceLabel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A label that uniquely identifies a specific Application Load Balancer target group from which to determine the request count served by your Auto Scaling group. You can\(aqt specify a resource label unless the target group is attached to the Auto Scaling group.
+.sp
+You create the resource label by appending the final portion of the load balancer ARN and the final portion of the target group ARN into a single value, separated by a forward slash (/). The format of the resource label is:
+.INDENT 0.0
+.INDENT 3.5
+\fBapp/EC2Co\-EcsEl\-1TKLTMITMM0EO/f37c06a68c1748aa/targetgroup/EC2Co\-Defau\-LDNM7Q3ZH1ZN/6d4ea56ca2d6a18d\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Where:
+.INDENT 0.0
+.IP \(bu 2
+app/<load\-balancer\-name>/<load\-balancer\-id> is the final portion of the load balancer ARN
+.IP \(bu 2
+targetgroup/<target\-group\-name>/<target\-group\-id> is the final portion of the target group ARN.
+.UNINDENT
+.sp
+To find the ARN for an Application Load Balancer, use the \fI\%DescribeLoadBalancers\fP API operation. To find the ARN for the target group, use the \fI\%DescribeTargetGroups\fP API operation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Mode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The predictive scaling mode. Defaults to \fBForecastOnly\fP if not specified.
+.UNINDENT
+.UNINDENT
+.sp
+SchedulingBufferTime \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, by which the instance launch time can be advanced. For example, the forecast says to add capacity at 10:00 AM, and you choose to pre\-launch instances by 5 minutes. In that case, the instances will be launched at 9:55 AM. The intention is to give resources time to be provisioned. It can take a few minutes to launch an EC2 instance. The actual amount of time required depends on several factors, such as the size of the instance and whether there are startup scripts to complete.
+.sp
+The value must be less than the forecast interval duration of 3600 seconds (60 minutes). Defaults to 300 seconds if not specified.
+.UNINDENT
+.UNINDENT
+.sp
+MaxCapacityBreachBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines the behavior that should be applied if the forecast capacity approaches or exceeds the maximum capacity of the Auto Scaling group. Defaults to \fBHonorMaxCapacity\fP if not specified.
+.sp
+The following are possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBHonorMaxCapacity\fP \- Amazon EC2 Auto Scaling cannot scale out capacity higher than the maximum capacity. The maximum capacity is enforced as a hard limit.
+.IP \(bu 2
+\fBIncreaseMaxCapacity\fP \- Amazon EC2 Auto Scaling can scale out capacity higher than the maximum capacity when the forecast capacity is close to or exceeds the maximum capacity. The upper limit is determined by the forecasted capacity and the value for \fBMaxCapacityBuffer\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MaxCapacityBuffer \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the capacity buffer to use when the forecast capacity is close to or exceeds the maximum capacity. The value is specified as a percentage relative to the forecast capacity. For example, if the buffer is 10, this means a 10 percent buffer, such that if the forecast capacity is 50, and the maximum capacity is 40, then the effective maximum capacity is 55.
+.sp
+If set to 0, Amazon EC2 Auto Scaling may scale capacity higher than the maximum capacity to equal but not exceed forecast capacity.
+.sp
+Required if the \fBMaxCapacityBreachBehavior\fP property is set to \fBIncreaseMaxCapacity\fP , and cannot be used otherwise.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "MetricSpecifications": [
+    {
+      "TargetValue": double,
+      "PredefinedMetricPairSpecification": {
+        "PredefinedMetricType": "ASGCPUUtilization"|"ASGNetworkIn"|"ASGNetworkOut"|"ALBRequestCount",
+        "ResourceLabel": "string"
+      },
+      "PredefinedScalingMetricSpecification": {
+        "PredefinedMetricType": "ASGAverageCPUUtilization"|"ASGAverageNetworkIn"|"ASGAverageNetworkOut"|"ALBRequestCountPerTarget",
+        "ResourceLabel": "string"
+      },
+      "PredefinedLoadMetricSpecification": {
+        "PredefinedMetricType": "ASGTotalCPUUtilization"|"ASGTotalNetworkIn"|"ASGTotalNetworkOut"|"ALBTargetGroupRequestCount",
+        "ResourceLabel": "string"
+      }
+    }
+    ...
+  ],
+  "Mode": "ForecastAndScale"|"ForecastOnly",
+  "SchedulingBufferTime": integer,
+  "MaxCapacityBreachBehavior": "HonorMaxCapacity"|"IncreaseMaxCapacity",
+  "MaxCapacityBuffer": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo add a target tracking scaling policy to an Auto Scaling group\fP
+.sp
+The following \fBput\-scaling\-policy\fP example applies a target tracking scaling policy to the specified Auto Scaling group. The output contains the ARNs and names of the two CloudWatch alarms created on your behalf. If a scaling policy with the same name already exists, it will be overwritten by the new scaling policy.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling put\-scaling\-policy \-\-auto\-scaling\-group\-name my\-asg \e
+  \-\-policy\-name alb1000\-target\-tracking\-scaling\-policy \e
+  \-\-policy\-type TargetTrackingScaling \e
+  \-\-target\-tracking\-configuration file://config.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBconfig.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+     "TargetValue": 1000.0,
+     "PredefinedMetricSpecification": {
+          "PredefinedMetricType": "ALBRequestCountPerTarget",
+          "ResourceLabel": "app/my\-alb/778d41231b141a0f/targetgroup/my\-alb\-target\-group/943f017f100becff"
+     }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+     "PolicyARN": "arn:aws:autoscaling:region:account\-id:scalingPolicy:228f02c2\-c665\-4bfd\-aaac\-8b04080bea3c:autoScalingGroupName/my\-asg:policyName/alb1000\-target\-tracking\-scaling\-policy",
+     "Alarms": [
+         {
+             "AlarmARN": "arn:aws:cloudwatch:region:account\-id:alarm:TargetTracking\-my\-asg\-AlarmHigh\-fc0e4183\-23ac\-497e\-9992\-691c9980c38e",
+             "AlarmName": "TargetTracking\-my\-asg\-AlarmHigh\-fc0e4183\-23ac\-497e\-9992\-691c9980c38e"
+         },
+         {
+             "AlarmARN": "arn:aws:cloudwatch:region:account\-id:alarm:TargetTracking\-my\-asg\-AlarmLow\-61a39305\-ed0c\-47af\-bd9e\-471a352ee1a2",
+             "AlarmName": "TargetTracking\-my\-asg\-AlarmLow\-61a39305\-ed0c\-47af\-bd9e\-471a352ee1a2"
+         }
+     ]
+ }
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more examples, see \fI\%Example scaling policies for the AWS Command Line Interface (AWS CLI)\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.SH OUTPUT
+.sp
+PolicyARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the policy.
+.UNINDENT
+.UNINDENT
+.sp
+Alarms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The CloudWatch alarms created for the target tracking scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an alarm.
+.sp
+AlarmName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the alarm.
+.UNINDENT
+.UNINDENT
+.sp
+AlarmARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the alarm.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

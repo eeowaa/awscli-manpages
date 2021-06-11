@@ -1,0 +1,189 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "XRAY-PUT-TRACE-SEGMENTS" "a" "" ""
+.SH NAME
+xray-put-trace-segments \- Uploads segment documents to AWS X-Ray
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Uploads segment documents to AWS X\-Ray. The \fI\%X\-Ray SDK\fP generates segment documents and sends them to the X\-Ray daemon, which uploads them in batches. A segment document can be a completed segment, an in\-progress segment, or an array of subsegments.
+.sp
+Segments must include the following fields. For the full segment document schema, see \fI\%AWS X\-Ray Segment Documents\fP in the \fIAWS X\-Ray Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBRequired segment document fields\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBname\fP \- The name of the service that handled the request.
+.IP \(bu 2
+\fBid\fP \- A 64\-bit identifier for the segment, unique among segments in the same trace, in 16 hexadecimal digits.
+.IP \(bu 2
+\fBtrace_id\fP \- A unique identifier that connects all segments and subsegments originating from a single client request.
+.IP \(bu 2
+\fBstart_time\fP \- Time the segment or subsegment was created, in floating point seconds in epoch time, accurate to milliseconds. For example, \fB1480615200.010\fP or \fB1.480615200010E9\fP .
+.IP \(bu 2
+\fBend_time\fP \- Time the segment or subsegment was closed. For example, \fB1480615200.090\fP or \fB1.480615200090E9\fP . Specify either an \fBend_time\fP or \fBin_progress\fP .
+.IP \(bu 2
+\fBin_progress\fP \- Set to \fBtrue\fP instead of specifying an \fBend_time\fP to record that a segment has been started, but is not complete. Send an in\-progress segment when your application receives a request that will take a long time to serve, to trace that the request was received. When the response is sent, send the complete segment to overwrite the in\-progress segment.
+.UNINDENT
+.sp
+A \fBtrace_id\fP consists of three numbers separated by hyphens. For example, 1\-58406520\-a006649127e371903a2de979. This includes:
+.INDENT 0.0
+.INDENT 3.5
+\fBTrace ID Format\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+The version number, for instance, \fB1\fP .
+.IP \(bu 2
+The time of the original request, in Unix epoch time, in 8 hexadecimal digits. For example, 10:00AM December 2nd, 2016 PST in epoch time is \fB1480615200\fP seconds, or \fB58406520\fP in hexadecimal.
+.IP \(bu 2
+A 96\-bit identifier for the trace, globally unique, in 24 hexadecimal digits.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-trace\-segments
+\-\-trace\-segment\-documents <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-trace\-segment\-documents\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A string containing a JSON document defining one or more segments or subsegments.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo upload a segment\fP
+.sp
+The following \fBput\-trace\-segments\fP example uploads segment documents to AWS X\-Ray. The segment document is consumed as a list of JSON segment documents.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws xray put\-trace\-segments \e
+    \-\-trace\-segment\-documents "{\e"id\e":\e"20312a0e2b8809f4\e",\e"name\e":\e"DynamoDB\e",\e"trace_id\e":\e"1\-5832862d\-a43aafded3334a971fe312db\e",\e"start_time\e":1.479706157195E9,\e"end_time\e":1.479706157202E9,\e"parent_id\e":\e"79736b962fe3239e\e",\e"http\e":{\e"response\e":{\e"content_length\e":60,\e"status\e":200}},\e"inferred\e":true,\e"aws\e":{\e"consistent_read\e":false,\e"table_name\e":\e"scorekeep\-session\-xray\e",\e"operation\e":\e"GetItem\e",\e"request_id\e":\e"SCAU23OM6M8FO38UASGC7785ARVV4KQNSO5AEMVJF66Q9ASUAAJG\e",\e"resource_names\e":[\e"scorekeep\-session\-xray\e"]},\e"origin\e":\e"AWS::DynamoDB::Table\e"}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "UnprocessedTraceSegments": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Sending Trace Data to AWS X\-Ray\fP in the \fIAWS X\-Ray Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+UnprocessedTraceSegments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Segments that failed processing.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a segment that failed processing.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The segment\(aqs ID.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error that caused processing to fail.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

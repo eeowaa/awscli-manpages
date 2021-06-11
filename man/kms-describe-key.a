@@ -1,0 +1,350 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-DESCRIBE-KEY" "a" "" ""
+.SH NAME
+kms-describe-key \- Provides detailed information about a customer master key (CMK)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Provides detailed information about a customer master key (CMK). You can run \fBDescribeKey\fP on a \fI\%customer managed CMK\fP or an \fI\%AWS managed CMK\fP .
+.sp
+This detailed information includes the key ARN, creation date (and deletion date, if applicable), the key state, and the origin and expiration date (if any) of the key material. For CMKs in custom key stores, it includes information about the custom key store, such as the key store ID and the AWS CloudHSM cluster ID. It includes fields, like \fBKeySpec\fP , that help you distinguish symmetric from asymmetric CMKs. It also provides information that is particularly important to asymmetric CMKs, such as the key usage (encryption or signing) and the encryption algorithms or signing algorithms that the CMK supports.
+.INDENT 0.0
+.INDENT 3.5
+\fBDescribeKey\fP does not return the following information:
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Aliases associated with the CMK. To get this information, use  ListAliases .
+.IP \(bu 2
+Whether automatic key rotation is enabled on the CMK. To get this information, use  GetKeyRotationStatus . Also, some key states prevent a CMK from being automatically rotated. For details, see \fI\%How Automatic Key Rotation Works\fP in \fIAWS Key Management Service Developer Guide\fP .
+.IP \(bu 2
+Tags on the CMK. To get this information, use  ListResourceTags .
+.IP \(bu 2
+Key policies and grants on the CMK. To get this information, use  GetKeyPolicy and  ListGrants .
+.UNINDENT
+.sp
+If you call the \fBDescribeKey\fP operation on a \fIpredefined AWS alias\fP , that is, an AWS alias with no key ID, AWS KMS creates an \fI\%AWS managed CMK\fP . Then, it associates the alias with the new CMK, and returns the \fBKeyId\fP and \fBArn\fP of the new CMK in the response.
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : Yes. To perform this operation with a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the \fBKeyId\fP parameter.
+.sp
+\fBRequired permissions\fP : \fI\%kms:DescribeKey\fP (key policy)
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+GetKeyPolicy
+.IP \(bu 2
+GetKeyRotationStatus
+.IP \(bu 2
+ListAliases
+.IP \(bu 2
+ListGrants
+.IP \(bu 2
+ListKeys
+.IP \(bu 2
+ListResourceTags
+.IP \(bu 2
+ListRetirableGrants
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-key
+\-\-key\-id <value>
+[\-\-grant\-tokens <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the specified customer master key (CMK).
+.sp
+If you specify a predefined AWS alias (an AWS alias with no key ID), KMS associates the alias with an \fI\%AWS managed CMK\fP and returns its \fBKeyId\fP and \fBArn\fP in the response.
+.sp
+To specify a CMK, use its key ID, Amazon Resource Name (ARN), alias name, or alias ARN. When using an alias name, prefix it with \fB"alias/"\fP . To specify a CMK in a different AWS account, you must use the key ARN or alias ARN.
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Alias name: \fBalias/ExampleAlias\fP
+.IP \(bu 2
+Alias ARN: \fBarn:aws:kms:us\-east\-2:111122223333:alias/ExampleAlias\fP
+.UNINDENT
+.sp
+To get the key ID and key ARN for a CMK, use  ListKeys or  DescribeKey . To get the alias name and alias ARN, use  ListAliases .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-tokens\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of grant tokens.
+.sp
+For more information, see \fI\%Grant Tokens\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo find detailed information about a customer master key (CMK)\fP
+.sp
+The following \fBdescribe\-key\fP example gets detailed information about the AWS managed CMK for Amazon S3 in the example account and Region. You can use this command to find details about AWS managed CMKs and customer managed CMKs.
+.sp
+To specify the CMK, use the \fBkey\-id\fP parameter. This example uses an alias name value, but you can use a key ID, key ARN, alias name, or alias ARN in this command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms describe\-key \e
+    \-\-key\-id alias/aws/s3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "KeyMetadata": {
+        "AWSAccountId": "846764612917",
+        "KeyId": "b8a9477d\-836c\-491f\-857e\-07937918959b",
+        "Arn": "arn:aws:kms:us\-west\-2:846764612917:key/b8a9477d\-836c\-491f\-857e\-07937918959b",
+        "CreationDate": 1566518783.394,
+        "Enabled": true,
+        "Description": "Default master key that protects my S3 objects when no other key is defined",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "KeyState": "Enabled",
+        "Origin": "AWS_KMS",
+        "KeyManager": "AWS",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "EncryptionAlgorithms": [
+            "SYMMETRIC_DEFAULT"
+        ]
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Viewing Keys\fP in the \fIAWS Key Management Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+KeyMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata associated with the key.
+.sp
+AWSAccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The twelve\-digit account ID of the AWS account that owns the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+KeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The globally unique identifier for the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the CMK. For examples, see \fI\%AWS Key Management Service (AWS KMS)\fP in the Example ARNs section of the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CreationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time when the CMK was created.
+.UNINDENT
+.UNINDENT
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the CMK is enabled. When \fBKeyState\fP is \fBEnabled\fP this value is true, otherwise it is false.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+KeyUsage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%cryptographic operations\fP for which you can use the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+KeyState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the CMK.
+.sp
+For more information about how key state affects the use of a CMK, see \fI\%Key state: Effect on your CMK\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DeletionDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time after which AWS KMS deletes the CMK. This value is present only when \fBKeyState\fP is \fBPendingDeletion\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ValidTo \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the imported key material expires. When the key material expires, AWS KMS deletes the key material and the CMK becomes unusable. This value is present only for CMKs whose \fBOrigin\fP is \fBEXTERNAL\fP and whose \fBExpirationModel\fP is \fBKEY_MATERIAL_EXPIRES\fP , otherwise this value is omitted.
+.UNINDENT
+.UNINDENT
+.sp
+Origin \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the CMK\(aqs key material. When this value is \fBAWS_KMS\fP , AWS KMS created the key material. When this value is \fBEXTERNAL\fP , the key material was imported from your existing key management infrastructure or the CMK lacks key material. When this value is \fBAWS_CLOUDHSM\fP , the key material was created in the AWS CloudHSM cluster associated with a custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+CustomKeyStoreId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the \fI\%custom key store\fP that contains the CMK. This value is present only when the CMK is created in a custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+CloudHsmClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cluster ID of the AWS CloudHSM cluster that contains the key material for the CMK. When you create a CMK in a \fI\%custom key store\fP , AWS KMS creates the key material for the CMK in the associated AWS CloudHSM cluster. This value is present only when the CMK is created in a custom key store.
+.UNINDENT
+.UNINDENT
+.sp
+ExpirationModel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the CMK\(aqs key material expires. This value is present only when \fBOrigin\fP is \fBEXTERNAL\fP , otherwise this value is omitted.
+.UNINDENT
+.UNINDENT
+.sp
+KeyManager \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The manager of the CMK. CMKs in your AWS account are either customer managed or AWS managed. For more information about the difference, see \fI\%Customer Master Keys\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CustomerMasterKeySpec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the type of key material in the CMK.
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionAlgorithms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The encryption algorithms that the CMK supports. You cannot use the CMK with other encryption algorithms within AWS KMS.
+.sp
+This field appears only when the \fBKeyUsage\fP of the CMK is \fBENCRYPT_DECRYPT\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SigningAlgorithms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The signing algorithms that the CMK supports. You cannot use the CMK with other signing algorithms within AWS KMS.
+.sp
+This field appears only when the \fBKeyUsage\fP of the CMK is \fBSIGN_VERIFY\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,198 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "MARKETPLACE-CATALOG-START-CHANGE-SET" "a" "" ""
+.SH NAME
+marketplace-catalog-start-change-set \- This operation allows you to request changes for your entities
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This operation allows you to request changes for your entities. Within a single ChangeSet, you cannot start the same change type against the same entity multiple times. Additionally, when a ChangeSet is running, all the entities targeted by the different changes are locked until the ChangeSet has completed (either succeeded, cancelled, or failed). If you try to start a ChangeSet containing a change against an entity that is already locked, you will receive a \fBResourceInUseException\fP .
+.sp
+For example, you cannot start the ChangeSet described in the \fI\%example\fP later in this topic, because it contains two changes to execute the same change type (\fBAddRevisions\fP ) against the same entity (\fBentity\-id@1)\fP .
+.sp
+For more information about working with change sets, see \fI\%Working with change sets\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-change\-set
+\-\-catalog <value>
+\-\-change\-set <value>
+[\-\-change\-set\-name <value>]
+[\-\-client\-request\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-catalog\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The catalog related to the request. Fixed value: \fBAWSMarketplace\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-change\-set\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Array of \fBchange\fP object.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that contains the \fBChangeType\fP , \fBDetails\fP , and \fBEntity\fP .
+.sp
+ChangeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Change types are single string values that describe your intention for the change. Each change type is unique for each \fBEntityType\fP provided in the change\(aqs scope.
+.UNINDENT
+.UNINDENT
+.sp
+Entity \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The entity to be changed.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of entity.
+.UNINDENT
+.UNINDENT
+.sp
+Identifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the entity.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Details \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This object contains details specific to the change type of the requested change.
+.UNINDENT
+.UNINDENT
+.sp
+ChangeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Optional name for the change.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ChangeType=string,Entity={Type=string,Identifier=string},Details=string,ChangeName=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ChangeType": "string",
+    "Entity": {
+      "Type": "string",
+      "Identifier": "string"
+    },
+    "Details": "string",
+    "ChangeName": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-change\-set\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Optional case sensitive string of up to 100 ASCII characters. The change set name can be used to filter the list of change sets.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique token to identify the request to ensure idempotency.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ChangeSetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier generated for the request.
+.UNINDENT
+.UNINDENT
+.sp
+ChangeSetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN associated to the unique identifier generated for the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

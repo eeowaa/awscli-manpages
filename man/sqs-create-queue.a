@@ -1,0 +1,397 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SQS-CREATE-QUEUE" "a" "" ""
+.SH NAME
+sqs-create-queue \- Creates a new standard or FIFO queue
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new standard or FIFO queue. You can pass one or more attributes in the request. Keep the following in mind:
+.INDENT 0.0
+.IP \(bu 2
+If you don\(aqt specify the \fBFifoQueue\fP attribute, Amazon SQS creates a standard queue.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can\(aqt change the queue type after you create it and you can\(aqt convert an existing standard queue into a FIFO queue. You must either create a new FIFO queue for your application or delete your existing standard queue and recreate it as a FIFO queue. For more information, see \fI\%Moving From a Standard Queue to a FIFO Queue\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+If you don\(aqt provide a value for an attribute, the queue is created with the default value for the attribute.
+.IP \(bu 2
+If you delete a queue, you must wait at least 60 seconds before creating a queue with the same name.
+.UNINDENT
+.sp
+To successfully create a new queue, you must provide a queue name that adheres to the \fI\%limits related to queues\fP and is unique within the scope of your queues.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+After you create a queue, you must wait at least one second after the queue is created to be able to use the queue.
+.UNINDENT
+.UNINDENT
+.sp
+To get the queue URL, use the \(ga\(ga  GetQueueUrl \(ga\(ga action. \(ga\(ga  GetQueueUrl \(ga\(ga requires only the \fBQueueName\fP parameter. be aware of existing queue names:
+.INDENT 0.0
+.IP \(bu 2
+If you provide the name of an existing queue along with the exact names and values of all the queue\(aqs attributes, \fBCreateQueue\fP returns the queue URL for the existing queue.
+.IP \(bu 2
+If the queue name, attribute names, or attribute values don\(aqt match an existing queue, \fBCreateQueue\fP returns an error.
+.UNINDENT
+.sp
+Some actions take lists of parameters. These lists are specified using the \fBparam.n\fP notation. Values of \fBn\fP are integers starting from 1. For example, a parameter list with two elements looks like this:
+.INDENT 0.0
+.INDENT 3.5
+\fB&AttributeName.1=first\fP
+.sp
+\fB&AttributeName.2=second\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Cross\-account permissions don\(aqt apply to this action. For more information, see \fI\%Grant cross\-account permissions to a role and a user name\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-queue
+\-\-queue\-name <value>
+[\-\-attributes <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-queue\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the new queue. The following limits apply to this name:
+.INDENT 0.0
+.IP \(bu 2
+A queue name can have up to 80 characters.
+.IP \(bu 2
+Valid values: alphanumeric characters, hyphens (\fB\-\fP ), and underscores (\fB_\fP ).
+.IP \(bu 2
+A FIFO queue name must end with the \fB\&.fifo\fP suffix.
+.UNINDENT
+.sp
+Queue URLs and names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of attributes with their corresponding values.
+.sp
+The following lists the names, descriptions, and values of the special request parameters that the \fBCreateQueue\fP action uses:
+.INDENT 0.0
+.IP \(bu 2
+\fBDelaySeconds\fP – The length of time, in seconds, for which the delivery of all messages in the queue is delayed. Valid values: An integer from 0 to 900 seconds (15 minutes). Default: 0.
+.IP \(bu 2
+\fBMaximumMessageSize\fP – The limit of how many bytes a message can contain before Amazon SQS rejects it. Valid values: An integer from 1,024 bytes (1 KiB) to 262,144 bytes (256 KiB). Default: 262,144 (256 KiB).
+.IP \(bu 2
+\fBMessageRetentionPeriod\fP – The length of time, in seconds, for which Amazon SQS retains a message. Valid values: An integer from 60 seconds (1 minute) to 1,209,600 seconds (14 days). Default: 345,600 (4 days).
+.IP \(bu 2
+\fBPolicy\fP – The queue\(aqs policy. A valid AWS policy. For more information about policy structure, see \fI\%Overview of AWS IAM Policies\fP in the \fIAmazon IAM User Guide\fP .
+.IP \(bu 2
+\fBReceiveMessageWaitTimeSeconds\fP – The length of time, in seconds, for which a \(ga\(ga  ReceiveMessage \(ga\(ga action waits for a message to arrive. Valid values: An integer from 0 to 20 (seconds). Default: 0.
+.IP \(bu 2
+\fBRedrivePolicy\fP – The string that includes the parameters for the dead\-letter queue functionality of the source queue as a JSON object. For more information about the redrive policy and dead\-letter queues, see \fI\%Using Amazon SQS Dead\-Letter Queues\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.INDENT 2.0
+.IP \(bu 2
+\fBdeadLetterTargetArn\fP – The Amazon Resource Name (ARN) of the dead\-letter queue to which Amazon SQS moves messages after the value of \fBmaxReceiveCount\fP is exceeded.
+.IP \(bu 2
+\fBmaxReceiveCount\fP – The number of times a message is delivered to the source queue before being moved to the dead\-letter queue. When the \fBReceiveCount\fP for a message exceeds the \fBmaxReceiveCount\fP for a queue, Amazon SQS moves the message to the dead\-letter\-queue.
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The dead\-letter queue of a FIFO queue must also be a FIFO queue. Similarly, the dead\-letter queue of a standard queue must also be a standard queue.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBVisibilityTimeout\fP – The visibility timeout for the queue, in seconds. Valid values: An integer from 0 to 43,200 (12 hours). Default: 30. For more information about the visibility timeout, see \fI\%Visibility Timeout\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.sp
+The following attributes apply only to \fI\%server\-side\-encryption\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fBKmsMasterKeyId\fP – The ID of an AWS\-managed customer master key (CMK) for Amazon SQS or a custom CMK. For more information, see \fI\%Key Terms\fP . While the alias of the AWS\-managed CMK for Amazon SQS is always \fBalias/aws/sqs\fP , the alias of a custom CMK can, for example, be 
+.nf
+\(ga\(ga
+.fi
+alias/\fIMyAlias\fP \(ga\(ga . For more examples, see \fI\%KeyId\fP in the \fIAWS Key Management Service API Reference\fP .
+.IP "System Message: WARNING/2 (<string>:, line 184)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBKmsDataKeyReusePeriodSeconds\fP – The length of time, in seconds, for which Amazon SQS can reuse a \fI\%data key\fP to encrypt or decrypt messages before calling AWS KMS again. An integer representing seconds, between 60 seconds (1 minute) and 86,400 seconds (24 hours). Default: 300 (5 minutes). A shorter time period provides better security but results in more calls to KMS which might incur charges after Free Tier. For more information, see \fI\%How Does the Data Key Reuse Period Work?\fP .
+.UNINDENT
+.sp
+The following attributes apply only to \fI\%FIFO (first\-in\-first\-out) queues\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fBFifoQueue\fP – Designates a queue as FIFO. Valid values are \fBtrue\fP and \fBfalse\fP . If you don\(aqt specify the \fBFifoQueue\fP attribute, Amazon SQS creates a standard queue. You can provide this attribute only during queue creation. You can\(aqt change it for an existing queue. When you set this attribute, you must also provide the \fBMessageGroupId\fP for your messages explicitly. For more information, see \fI\%FIFO queue logic\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.IP \(bu 2
+\fBContentBasedDeduplication\fP – Enables content\-based deduplication. Valid values are \fBtrue\fP and \fBfalse\fP . For more information, see \fI\%Exactly\-once processing\fP in the \fIAmazon Simple Queue Service Developer Guide\fP . Note the following:
+.INDENT 2.0
+.IP \(bu 2
+Every message must have a unique \fBMessageDeduplicationId\fP .
+.INDENT 2.0
+.IP \(bu 2
+You may provide a \fBMessageDeduplicationId\fP explicitly.
+.IP \(bu 2
+If you aren\(aqt able to provide a \fBMessageDeduplicationId\fP and you enable \fBContentBasedDeduplication\fP for your queue, Amazon SQS uses a SHA\-256 hash to generate the \fBMessageDeduplicationId\fP using the body of the message (but not the attributes of the message).
+.IP \(bu 2
+If you don\(aqt provide a \fBMessageDeduplicationId\fP and the queue doesn\(aqt have \fBContentBasedDeduplication\fP set, the action fails with an error.
+.IP \(bu 2
+If the queue has \fBContentBasedDeduplication\fP set, your \fBMessageDeduplicationId\fP overrides the generated one.
+.UNINDENT
+.IP \(bu 2
+When \fBContentBasedDeduplication\fP is in effect, messages with identical content sent within the deduplication interval are treated as duplicates and only one copy of the message is delivered.
+.IP \(bu 2
+If you send one message with \fBContentBasedDeduplication\fP enabled and then another message with a \fBMessageDeduplicationId\fP that is the same as the one generated for the first \fBMessageDeduplicationId\fP , the two messages are treated as duplicates and only one copy of the message is delivered.
+.UNINDENT
+.UNINDENT
+.sp
+The following attributes apply only to \fI\%high throughput for FIFO queues\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fBDeduplicationScope\fP – Specifies whether message deduplication occurs at the message group or queue level. Valid values are \fBmessageGroup\fP and \fBqueue\fP .
+.IP \(bu 2
+\fBFifoThroughputLimit\fP – Specifies whether the FIFO queue throughput quota applies to the entire queue or per message group. Valid values are \fBperQueue\fP and \fBperMessageGroupId\fP . The \fBperMessageGroupId\fP value is allowed only when the value for \fBDeduplicationScope\fP is \fBmessageGroup\fP .
+.UNINDENT
+.sp
+To enable high throughput for FIFO queues, do the following:
+.INDENT 0.0
+.IP \(bu 2
+Set \fBDeduplicationScope\fP to \fBmessageGroup\fP .
+.IP \(bu 2
+Set \fBFifoThroughputLimit\fP to \fBperMessageGroupId\fP .
+.UNINDENT
+.sp
+If you set these attributes to anything other than the values shown for enabling high throughput, normal throughput is in effect and deduplication occurs as specified.
+.sp
+For information on throughput quotas, see \fI\%Quotas related to messages\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.sp
+Name \-> (string)
+.sp
+Value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  KeyName1=string,KeyName2=string
+
+Where valid key names are:
+  All
+  Policy
+  VisibilityTimeout
+  MaximumMessageSize
+  MessageRetentionPeriod
+  ApproximateNumberOfMessages
+  ApproximateNumberOfMessagesNotVisible
+  CreatedTimestamp
+  LastModifiedTimestamp
+  QueueArn
+  ApproximateNumberOfMessagesDelayed
+  DelaySeconds
+  ReceiveMessageWaitTimeSeconds
+  RedrivePolicy
+  FifoQueue
+  ContentBasedDeduplication
+  KmsMasterKeyId
+  KmsDataKeyReusePeriodSeconds
+  DeduplicationScope
+  FifoThroughputLimit
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"All"|"Policy"|"VisibilityTimeout"|"MaximumMessageSize"|"MessageRetentionPeriod"|"ApproximateNumberOfMessages"|"ApproximateNumberOfMessagesNotVisible"|"CreatedTimestamp"|"LastModifiedTimestamp"|"QueueArn"|"ApproximateNumberOfMessagesDelayed"|"DelaySeconds"|"ReceiveMessageWaitTimeSeconds"|"RedrivePolicy"|"FifoQueue"|"ContentBasedDeduplication"|"KmsMasterKeyId"|"KmsDataKeyReusePeriodSeconds"|"DeduplicationScope"|"FifoThroughputLimit": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Add cost allocation tags to the specified Amazon SQS queue. For an overview, see \fI\%Tagging Your Amazon SQS Queues\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.sp
+When you use queue tags, keep the following guidelines in mind:
+.INDENT 0.0
+.IP \(bu 2
+Adding more than 50 tags to a queue isn\(aqt recommended.
+.IP \(bu 2
+Tags don\(aqt have any semantic meaning. Amazon SQS interprets tags as character strings.
+.IP \(bu 2
+Tags are case\-sensitive.
+.IP \(bu 2
+A new tag with a key identical to that of an existing tag overwrites the existing tag.
+.UNINDENT
+.sp
+For a full list of tag restrictions, see \fI\%Limits Related to Queues\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To be able to tag a queue on creation, you must have the \fBsqs:CreateQueue\fP and \fBsqs:TagQueue\fP permissions.
+.sp
+Cross\-account permissions don\(aqt apply to this action. For more information, see \fI\%Grant cross\-account permissions to a role and a user name\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.sp
+Value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a queue\fP
+.sp
+This example creates a queue with the specified name, sets the message retention period to 3 days (3 days * 24 hours * 60 minutes * 60 seconds), and sets the queue\(aqs dead letter queue to the specified queue with a maximum receive count of 1,000 messages.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sqs create\-queue \-\-queue\-name MyQueue \-\-attributes file://create\-queue.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Input file (create\-queue.json):
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RedrivePolicy": "{\e"deadLetterTargetArn\e":\e"arn:aws:sqs:us\-east\-1:80398EXAMPLE:MyDeadLetterQueue\e",\e"maxReceiveCount\e":\e"1000\e"}",
+  "MessageRetentionPeriod": "259200"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "QueueUrl": "https://queue.amazonaws.com/80398EXAMPLE/MyQueue"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+QueueUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of the created Amazon SQS queue.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

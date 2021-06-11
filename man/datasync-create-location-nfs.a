@@ -1,0 +1,277 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DATASYNC-CREATE-LOCATION-NFS" "a" "" ""
+.SH NAME
+datasync-create-location-nfs \- Defines a file system on a Network File System (NFS) server that can be read from or written to
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Defines a file system on a Network File System (NFS) server that can be read from or written to.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-location\-nfs
+\-\-subdirectory <value>
+\-\-server\-hostname <value>
+\-\-on\-prem\-config <value>
+[\-\-mount\-options <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-subdirectory\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The subdirectory in the NFS file system that is used to read data from the NFS source location or write data to the NFS destination. The NFS path should be a path that\(aqs exported by the NFS server, or a subdirectory of that path. The path should be such that it can be mounted by other NFS clients in your network.
+.sp
+To see all the paths exported by your NFS server, run "\fBshowmount \-e nfs\-server\-name\fP " from an NFS client that has access to your server. You can specify any directory that appears in the results, and any subdirectory of that directory. Ensure that the NFS export is accessible without Kerberos authentication.
+.sp
+To transfer all the data in the folder you specified, DataSync needs to have permissions to read all the data. To ensure this, either configure the NFS export with \fBno_root_squash,\fP or ensure that the permissions for all of the files that you want DataSync allow read access for all users. Doing either enables the agent to read the files. For the agent to access directories, you must additionally enable all execute access.
+.sp
+If you are copying data to or from your AWS Snowcone device, see \fI\%NFS Server on AWS Snowcone\fP for more information.
+.sp
+For information about NFS export configuration, see 18.7. The /etc/exports Configuration File in the Red Hat Enterprise Linux documentation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-server\-hostname\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the NFS server. This value is the IP address or Domain Name Service (DNS) name of the NFS server. An agent that is installed on\-premises uses this host name to mount the NFS server in a network.
+.sp
+If you are copying data to or from your AWS Snowcone device, see \fI\%NFS Server on AWS Snowcone\fP for more information.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This name must either be DNS\-compliant or must be an IP version 4 (IPv4) address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-on\-prem\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains a list of Amazon Resource Names (ARNs) of agents that are used to connect to an NFS server.
+.sp
+If you are copying data to or from your AWS Snowcone device, see \fI\%NFS Server on AWS Snowcone\fP for more information.
+.sp
+AgentArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+ARNs of the agents to use for an NFS location.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AgentArns=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AgentArns": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-mount\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The NFS mount options that DataSync can use to mount your NFS share.
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The specific NFS version that you want DataSync to use to mount your NFS share. If the server refuses to use the version specified, the sync will fail. If you don\(aqt specify a version, DataSync defaults to \fBAUTOMATIC\fP . That is, DataSync automatically selects a version based on negotiation with the NFS server.
+.sp
+You can specify the following NFS versions:
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fI\%NFSv3\fP ** \- stateless protocol version that allows for asynchronous writes on the server.
+.IP "System Message: WARNING/2 (<string>:, line 155)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fI\%NFSv4.0\fP ** \- stateful, firewall\-friendly protocol version that supports delegations and pseudo filesystems.
+.IP "System Message: WARNING/2 (<string>:, line 157)"
+Inline strong start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+**
+.fi
+\fI\%NFSv4.1\fP ** \- stateful protocol version that supports sessions, directory delegations, and parallel data processing. Version 4.1 also includes all features available in version 4.0.
+.IP "System Message: WARNING/2 (<string>:, line 159)"
+Inline strong start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Version=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Version": "AUTOMATIC"|"NFS3"|"NFS4_0"|"NFS4_1"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The key\-value pair that represents the tag that you want to add to the location. The value can be an empty string. We recommend using tags to name your resources.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a single entry in a list of AWS resource tags. \fBTagListEntry\fP returns an array that contains a list of tasks when the \fI\%ListTagsForResource\fP operation is called.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for an AWS resource tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value for an AWS resource tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+LocationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the source NFS file system location that is created.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

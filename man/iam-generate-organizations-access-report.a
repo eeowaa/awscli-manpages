@@ -1,0 +1,229 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IAM-GENERATE-ORGANIZATIONS-ACCESS-REPORT" "a" "" ""
+.SH NAME
+iam-generate-organizations-access-report \- Generates a report for service last accessed data for AWS Organizations
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Generates a report for service last accessed data for AWS Organizations. You can generate a report for any entities (organization root, organizational unit, or account) or policies in your organization.
+.sp
+To call this operation, you must be signed in using your AWS Organizations management account credentials. You can use your long\-term IAM user or root user credentials, or temporary credentials from assuming an IAM role. SCPs must be enabled for your organization root. You must have the required IAM and AWS Organizations permissions. For more information, see \fI\%Refining permissions using service last accessed data\fP in the \fIIAM User Guide\fP .
+.sp
+You can generate a service last accessed data report for entities by specifying only the entity\(aqs path. This data includes a list of services that are allowed by any service control policies (SCPs) that apply to the entity.
+.sp
+You can generate a service last accessed data report for a policy by specifying an entity\(aqs path and an optional AWS Organizations policy ID. This data includes a list of services that are allowed by the specified SCP.
+.sp
+For each service in both report types, the data includes the most recent account activity that the policy allows to account principals in the entity or the entity\(aqs children. For important information about the data, reporting period, permissions required, troubleshooting, and supported Regions see \fI\%Reducing permissions using service last accessed data\fP in the \fIIAM User Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+The data includes all attempts to access AWS, not just the successful ones. This includes all attempts that were made using the AWS Management Console, the AWS API through any of the SDKs, or any of the command line tools. An unexpected entry in the service last accessed data does not mean that an account has been compromised, because the request might have been denied. Refer to your CloudTrail logs as the authoritative source for information about all API calls and whether they were successful or denied access. For more information, see \fI\%Logging IAM events with CloudTrail\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+This operation returns a \fBJobId\fP . Use this parameter in the \(ga\(ga  GetOrganizationsAccessReport \(ga\(ga operation to check the status of the report generation. To check the status of this request, use the \fBJobId\fP parameter in the \(ga\(ga  GetOrganizationsAccessReport \(ga\(ga operation and test the \fBJobStatus\fP response parameter. When the job is complete, you can retrieve the report.
+.sp
+To generate a service last accessed data report for entities, specify an entity path without specifying the optional AWS Organizations policy ID. The type of entity that you specify determines the data returned in the report.
+.INDENT 0.0
+.IP \(bu 2
+\fBRoot\fP – When you specify the organizations root as the entity, the resulting report lists all of the services allowed by SCPs that are attached to your root. For each service, the report includes data for all accounts in your organization except the management account, because the management account is not limited by SCPs.
+.IP \(bu 2
+\fBOU\fP – When you specify an organizational unit (OU) as the entity, the resulting report lists all of the services allowed by SCPs that are attached to the OU and its parents. For each service, the report includes data for all accounts in the OU or its children. This data excludes the management account, because the management account is not limited by SCPs.
+.IP \(bu 2
+\fBmanagement account\fP – When you specify the management account, the resulting report lists all AWS services, because the management account is not limited by SCPs. For each service, the report includes data for only the management account.
+.IP \(bu 2
+\fBAccount\fP – When you specify another account as the entity, the resulting report lists all of the services allowed by SCPs that are attached to the account and its parents. For each service, the report includes data for only the specified account.
+.UNINDENT
+.sp
+To generate a service last accessed data report for policies, specify an entity path and the optional AWS Organizations policy ID. The type of entity that you specify determines the data returned for each service.
+.INDENT 0.0
+.IP \(bu 2
+\fBRoot\fP – When you specify the root entity and a policy ID, the resulting report lists all of the services that are allowed by the specified SCP. For each service, the report includes data for all accounts in your organization to which the SCP applies. This data excludes the management account, because the management account is not limited by SCPs. If the SCP is not attached to any entities in the organization, then the report will return a list of services with no data.
+.IP \(bu 2
+\fBOU\fP – When you specify an OU entity and a policy ID, the resulting report lists all of the services that are allowed by the specified SCP. For each service, the report includes data for all accounts in the OU or its children to which the SCP applies. This means that other accounts outside the OU that are affected by the SCP might not be included in the data. This data excludes the management account, because the management account is not limited by SCPs. If the SCP is not attached to the OU or one of its children, the report will return a list of services with no data.
+.IP \(bu 2
+\fBmanagement account\fP – When you specify the management account, the resulting report lists all AWS services, because the management account is not limited by SCPs. If you specify a policy ID in the CLI or API, the policy is ignored. For each service, the report includes data for only the management account.
+.IP \(bu 2
+\fBAccount\fP – When you specify another account entity and a policy ID, the resulting report lists all of the services that are allowed by the specified SCP. For each service, the report includes data for only the specified account. This means that other accounts in the organization that are affected by the SCP might not be included in the data. If the SCP is not attached to the account, the report will return a list of services with no data.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Service last accessed data does not use other policy types when determining whether a principal could access a service. These other policy types include identity\-based policies, resource\-based policies, access control lists, IAM permissions boundaries, and STS assume role policies. It only applies SCP logic. For more about the evaluation of policy types, see \fI\%Evaluating policies\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+For more information about service last accessed data, see \fI\%Reducing policy scope by viewing user activity\fP in the \fIIAM User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  generate\-organizations\-access\-report
+\-\-entity\-path <value>
+[\-\-organizations\-policy\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-entity\-path\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The path of the AWS Organizations entity (root, OU, or account). You can build an entity path using the known structure of your organization. For example, assume that your account ID is \fB123456789012\fP and its parent OU ID is \fBou\-rge0\-awsabcde\fP . The organization root ID is \fBr\-f6g7h8i9j0example\fP and your organization ID is \fBo\-a1b2c3d4e5\fP . Your entity path is \fBo\-a1b2c3d4e5/r\-f6g7h8i9j0example/ou\-rge0\-awsabcde/123456789012\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-organizations\-policy\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the AWS Organizations service control policy (SCP). This parameter is optional.
+.sp
+This ID is used to generate information about when an account principal that is limited by the SCP attempted to access an AWS service.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To generate an access report for a root in an organization\fP
+.sp
+The following \fBgenerate\-organizations\-access\-report\fP example starts a background job to create an access report for the specified root in an organization. You can display the report after it\(aqs created by running the \fBget\-organizations\-access\-report\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam generate\-organizations\-access\-report \e
+    \-\-entity\-path o\-4fxmplt198/r\-c3xb
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "JobId": "a8b6c06f\-aaa4\-8xmp\-28bc\-81da71836359"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To generate an access report for an account in an organization\fP
+.sp
+The following \fBgenerate\-organizations\-access\-report\fP example starts a background job to create an access report for account ID \fB123456789012\fP in the organization \fBo\-4fxmplt198\fP\&. You can display the report after it\(aqs created by running the \fBget\-organizations\-access\-report\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam generate\-organizations\-access\-report \e
+    \-\-entity\-path o\-4fxmplt198/r\-c3xb/123456789012
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "JobId": "14b6c071\-75f6\-2xmp\-fb77\-faf6fb4201d2"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To generate an access report for an account in an organizational unit in an organization\fP
+.sp
+The following \fBgenerate\-organizations\-access\-report\fP example starts a background job to create an access report for account ID \fB234567890123\fP in organizational unit \fBou\-c3xb\-lmu7j2yg\fP in the organization \fBo\-4fxmplt198\fP\&. You can display the report after it\(aqs created by running the \fBget\-organizations\-access\-report\fP command.:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam generate\-organizations\-access\-report \e
+    \-\-entity\-path o\-4fxmplt198/r\-c3xb/ou\-c3xb\-lmu7j2yg/234567890123
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "JobId": "2eb6c2e6\-0xmp\-ec04\-1425\-c937916a64af"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+To get details about roots and organizational units in your organization, use the \fBorganizations list\-roots\fP and \fBorganizations list\-organizational\-units\-for\-parent\fP commands.
+.SH OUTPUT
+.sp
+JobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The job identifier that you can use in the  GetOrganizationsAccessReport operation.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,382 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IAM-LIST-POLICIES" "a" "" ""
+.SH NAME
+iam-list-policies \- Lists all the managed policies that are available in your AWS account, including your own customer-defined managed policies and all AWS managed policies
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Lists all the managed policies that are available in your AWS account, including your own customer\-defined managed policies and all AWS managed policies.
+.sp
+You can filter the list of policies that is returned using the optional \fBOnlyAttached\fP , \fBScope\fP , and \fBPathPrefix\fP parameters. For example, to list only the customer managed policies in your AWS account, set \fBScope\fP to \fBLocal\fP . To list only AWS managed policies, set \fBScope\fP to \fBAWS\fP .
+.sp
+You can paginate the results using the \fBMaxItems\fP and \fBMarker\fP parameters.
+.sp
+For more information about managed policies, see \fI\%Managed policies and inline policies\fP in the \fIIAM User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+IAM resource\-listing operations return a subset of the available attributes for the resource. For example, this operation does not return tags, even though they are an attribute of the returned object. To view all of the information for a customer manged policy, see  GetPolicy .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-policies\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBPolicies\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-policies
+[\-\-scope <value>]
+[\-\-only\-attached | \-\-no\-only\-attached]
+[\-\-path\-prefix <value>]
+[\-\-policy\-usage\-filter <value>]
+[\-\-max\-items <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-scope\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The scope to use for filtering the results.
+.sp
+To list only AWS managed policies, set \fBScope\fP to \fBAWS\fP . To list only the customer managed policies in your AWS account, set \fBScope\fP to \fBLocal\fP .
+.sp
+This parameter is optional. If it is not included, or if it is set to \fBAll\fP , all policies are returned.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAll\fP
+.IP \(bu 2
+\fBAWS\fP
+.IP \(bu 2
+\fBLocal\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-only\-attached\fP | \fB\-\-no\-only\-attached\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag to filter the results to only the attached policies.
+.sp
+When \fBOnlyAttached\fP is \fBtrue\fP , the returned list contains only the policies that are attached to an IAM user, group, or role. When \fBOnlyAttached\fP is \fBfalse\fP , or when the parameter is not included, all policies are returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-path\-prefix\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The path prefix for filtering the results. This parameter is optional. If it is not included, it defaults to a slash (/), listing all policies. This parameter allows (through its \fI\%regex pattern\fP ) a string of characters consisting of either a forward slash (/) by itself or a string that must begin and end with forward slashes. In addition, it can contain any ASCII character from the ! (\fB\eu0021\fP ) through the DEL character (\fB\eu007F\fP ), including most punctuation characters, digits, and upper and lowercased letters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-usage\-filter\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy usage method to use for filtering the results.
+.sp
+To list only permissions policies, set \fBPolicyUsageFilter\fP to \fBPermissionsPolicy\fP . To list only the policies used to set permissions boundaries, set the value to \fBPermissionsBoundary\fP .
+.sp
+This parameter is optional. If it is not included, all policies are returned.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBPermissionsPolicy\fP
+.IP \(bu 2
+\fBPermissionsBoundary\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo list managed policies that are available to your AWS account\fP
+.sp
+This example returns a collection of the first two managed policies available in the current AWS account:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam list\-policies \-\-max\-items 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Marker": "AAIWFnoA2MQ9zN9nnTorukxr1uesDIDa4u+q1mEfaurCDZ1AuCYagYfayKYGvu75BEGk8PooPsw5uvumkuizFACZ8f4rKtN1RuBWiVDBWet2OA==",
+        "IsTruncated": true,
+        "Policies": [
+        {
+                "PolicyName": "AdministratorAccess",
+                "CreateDate": "2015\-02\-06T18:39:46Z",
+                "AttachmentCount": 5,
+                "IsAttachable": true,
+                "PolicyId": "ANPAIWMBCKSKIEE64ZLYK",
+                "DefaultVersionId": "v1",
+                "Path": "/",
+                "Arn": "arn:aws:iam::aws:policy/AdministratorAccess",
+                "UpdateDate": "2015\-02\-06T18:39:46Z"
+              },
+              {
+                "PolicyName": "ASamplePolicy",
+                "CreateDate": "2015\-06\-17T19:23;32Z",
+                "AttachmentCount": "0",
+                "IsAttachable": "true",
+                "PolicyId": "Z27SI6FQMGNQ2EXAMPLE1",
+                "DefaultVersionId": "v1",
+                "Path": "/",
+                "Arn": "arn:aws:iam::123456789012:policy/ASamplePolicy",
+                "UpdateDate": "2015\-06\-17T19:23:32Z"
+              }
+        ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Overview of IAM Policies\fP in the \fIUsing IAM\fP guide.
+.SH OUTPUT
+.sp
+Policies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of policies.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a managed policy.
+.sp
+This data type is used as a response element in the  CreatePolicy ,  GetPolicy , and  ListPolicies operations.
+.sp
+For more information about managed policies, refer to \fI\%Managed policies and inline policies\fP in the \fIIAM User Guide\fP .
+.sp
+PolicyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The friendly name (not ARN) identifying the policy.
+.UNINDENT
+.UNINDENT
+.sp
+PolicyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The stable and unique string identifying the policy.
+.sp
+For more information about IDs, see \fI\%IAM identifiers\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN). ARNs are unique identifiers for AWS resources.
+.sp
+For more information about ARNs, go to \fI\%Amazon Resource Names (ARNs)\fP in the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path to the policy.
+.sp
+For more information about paths, see \fI\%IAM identifiers\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DefaultVersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the version of the policy that is set as the default version.
+.UNINDENT
+.UNINDENT
+.sp
+AttachmentCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of entities (users, groups, and roles) that the policy is attached to.
+.UNINDENT
+.UNINDENT
+.sp
+PermissionsBoundaryUsageCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of entities (users and roles) for which the policy is used to set the permissions boundary.
+.sp
+For more information about permissions boundaries, see \fI\%Permissions boundaries for IAM identities\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+IsAttachable \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the policy can be attached to an IAM user, group, or role.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A friendly description of the policy.
+.sp
+This element is included in the response to the  GetPolicy operation. It is not included in the response to the  ListPolicies operation.
+.UNINDENT
+.UNINDENT
+.sp
+CreateDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time, in \fI\%ISO 8601 date\-time format\fP , when the policy was created.
+.UNINDENT
+.UNINDENT
+.sp
+UpdateDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time, in \fI\%ISO 8601 date\-time format\fP , when the policy was last updated.
+.sp
+When a policy has only one version, this field contains the date and time when the policy was created. When a policy has more than one version, this field contains the date and time when the most recent policy version was created.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags that are attached to the instance profile. For more information about tagging, see \fI\%Tagging IAM resources\fP in the \fIIAM User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that represents user\-provided metadata that can be associated with an IAM resource. For more information about tagging, see \fI\%Tagging IAM resources\fP in the \fIIAM User Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key name that can be used to look up or retrieve the associated value. For example, \fBDepartment\fP or \fBCost Center\fP are common choices.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value associated with this tag. For example, tags with a key name of \fBDepartment\fP could have values such as \fBHuman Resources\fP , \fBAccounting\fP , and \fBSupport\fP . Tags with a key name of \fBCost Center\fP might have values that consist of the number associated with the different cost centers in your company. Typically, many resources have tags with the same key name but with different values.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+AWS always interprets the tag \fBValue\fP as a single string. If you need to store an array, you can store comma\-separated values in the string. However, you must interpret the value in your code.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IsTruncated \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that indicates whether there are more items to return. If your results were truncated, you can make a subsequent pagination request using the \fBMarker\fP request parameter to retrieve more items. Note that IAM might return fewer than the \fBMaxItems\fP number of results even when there are more results available. We recommend that you check \fBIsTruncated\fP after every call to ensure that you receive all your results.
+.UNINDENT
+.UNINDENT
+.sp
+Marker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When \fBIsTruncated\fP is \fBtrue\fP , this element is present and contains the value to use for the \fBMarker\fP parameter in a subsequent pagination request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

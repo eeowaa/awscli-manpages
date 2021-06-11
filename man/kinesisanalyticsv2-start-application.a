@@ -1,0 +1,196 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESISANALYTICSV2-START-APPLICATION" "a" "" ""
+.SH NAME
+kinesisanalyticsv2-start-application \- Starts the specified Kinesis Data Analytics application
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Starts the specified Kinesis Data Analytics application. After creating an application, you must exclusively call this operation to start your application.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-application
+\-\-application\-name <value>
+[\-\-run\-configuration <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-application\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the application.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-run\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the run configuration (start parameters) of a Kinesis Data Analytics application.
+.sp
+FlinkRunConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the starting parameters for a Flink\-based Kinesis Data Analytics application.
+.sp
+AllowNonRestoredState \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When restoring from a snapshot, specifies whether the runtime is allowed to skip a state that cannot be mapped to the new program. This will happen if the program is updated between snapshots to remove stateful parameters, and state data in the snapshot no longer corresponds to valid application data. For more information, see \fI\%Allowing Non\-Restored State\fP in the \fI\%Apache Flink documentation\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This value defaults to \fBfalse\fP . If you update your application without specifying this parameter, \fBAllowNonRestoredState\fP will be set to \fBfalse\fP , even if it was previously set to \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SqlRunConfigurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Describes the starting parameters for a SQL\-based Kinesis Data Analytics application application.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the starting parameters for a SQL\-based Kinesis Data Analytics application.
+.sp
+InputId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The input source ID. You can get this ID by calling the  DescribeApplication operation.
+.UNINDENT
+.UNINDENT
+.sp
+InputStartingPositionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The point at which you want the application to start processing records from the streaming source.
+.sp
+InputStartingPosition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The starting position on the stream.
+.INDENT 0.0
+.IP \(bu 2
+\fBNOW\fP \- Start reading just after the most recent record in the stream, and start at the request timestamp that the customer issued.
+.IP \(bu 2
+\fBTRIM_HORIZON\fP \- Start reading at the last untrimmed record in the stream, which is the oldest record available in the stream. This option is not available for an Amazon Kinesis Data Firehose delivery stream.
+.IP \(bu 2
+\fBLAST_STOPPED_POINT\fP \- Resume reading from where the application last stopped reading.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ApplicationRestoreConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the restore behavior of a restarting application.
+.sp
+ApplicationRestoreType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how the application should be restored.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of an existing snapshot of application state to use to restart an application. The application uses this value if \fBRESTORE_FROM_CUSTOM_SNAPSHOT\fP is specified for the \fBApplicationRestoreType\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "FlinkRunConfiguration": {
+    "AllowNonRestoredState": true|false
+  },
+  "SqlRunConfigurations": [
+    {
+      "InputId": "string",
+      "InputStartingPositionConfiguration": {
+        "InputStartingPosition": "NOW"|"TRIM_HORIZON"|"LAST_STOPPED_POINT"
+      }
+    }
+    ...
+  ],
+  "ApplicationRestoreConfiguration": {
+    "ApplicationRestoreType": "SKIP_RESTORE_FROM_SNAPSHOT"|"RESTORE_FROM_LATEST_SNAPSHOT"|"RESTORE_FROM_CUSTOM_SNAPSHOT",
+    "SnapshotName": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,686 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLACIER-LIST-JOBS" "a" "" ""
+.SH NAME
+glacier-list-jobs \- This operation lists jobs for a vault, including jobs that are in-progress and jobs that have recently finished
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This operation lists jobs for a vault, including jobs that are in\-progress and jobs that have recently finished. The List Job operation returns a list of these jobs sorted by job initiation time.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon Glacier retains recently completed jobs for a period before deleting them; however, it eventually removes completed jobs. The output of completed jobs can be retrieved. Retaining completed jobs for a period of time after they have completed enables you to get a job output in the event you miss the job completion notification or your first attempt to download it fails. For example, suppose you start an archive retrieval job to download an archive. After the job completes, you start to download the archive but encounter a network error. In this scenario, you can retry and download the archive while the job exists.
+.UNINDENT
+.UNINDENT
+.sp
+The List Jobs operation supports pagination. You should always check the response \fBMarker\fP field. If there are no more jobs to list, the \fBMarker\fP field is set to \fBnull\fP . If there are more jobs to list, the \fBMarker\fP field is set to a non\-null value, which you can use to continue the pagination of the list. To return a list of jobs that begins at a specific job, set the marker request parameter to the \fBMarker\fP value for that job that you obtained from a previous List Jobs request.
+.sp
+You can set a maximum limit for the number of jobs returned in the response by specifying the \fBlimit\fP parameter in the request. The default limit is 50. The number of jobs returned might be fewer than the limit, but the number of returned jobs never exceeds the limit.
+.sp
+Additionally, you can filter the jobs list returned by specifying the optional \fBstatuscode\fP parameter or \fBcompleted\fP parameter, or both. Using the \fBstatuscode\fP parameter, you can specify to return only jobs that match either the \fBInProgress\fP , \fBSucceeded\fP , or \fBFailed\fP status. Using the \fBcompleted\fP parameter, you can specify to return only jobs that were completed (\fBtrue\fP ) or jobs that were not completed (\fBfalse\fP ).
+.sp
+For more information about using this operation, see the documentation for the underlying REST API \fI\%List Jobs\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-jobs\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBJobList\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-jobs
+\-\-account\-id <value>
+\-\-vault\-name <value>
+[\-\-statuscode <value>]
+[\-\-completed <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBAccountId\fP value is the AWS account ID of the account that owns the vault. You can either specify an AWS account ID or optionally a single \(aq\fB\-\fP \(aq (hyphen), in which case Amazon S3 Glacier uses the AWS account ID associated with the credentials used to sign the request. If you use an account ID, do not include any hyphens (\(aq\-\(aq) in the ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vault\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the vault.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-statuscode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of job status to return. You can specify the following values: \fBInProgress\fP , \fBSucceeded\fP , or \fBFailed\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-completed\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the jobs to return. You can specify \fBtrue\fP or \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command lists in\-progress and recently completed jobs for a vault named \fBmy\-vault\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws glacier list\-jobs \-\-account\-id \- \-\-vault\-name my\-vault
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "JobList": [
+        {
+            "VaultARN": "arn:aws:glacier:us\-west\-2:0123456789012:vaults/my\-vault",
+            "RetrievalByteRange": "0\-3145727",
+            "SNSTopic": "arn:aws:sns:us\-west\-2:0123456789012:my\-vault",
+            "Completed": false,
+            "SHA256TreeHash": "9628195fcdbcbbe76cdde932d4646fa7de5f219fb39823836d81f0cc0e18aa67",
+            "JobId": "l7IL5\-EkXyEY9Ws95fClzIbk2O5uLYaFdAYOi\-azsX_Z8V6NH4yERHzars8wTKYQMX6nBDI9cMNHzyZJO59\-8N9aHWav",
+            "ArchiveId": "kKB7ymWJVpPSwhGP6ycSOAekp9ZYe_\-\-zM_mw6k76ZFGEIWQX\-ybtRDvc2VkPSDtfKmQrj0IRQLSGsNuDp\-AJVlu2ccmDSyDUmZwKbwbpAdGATGDiB3hHO0bjbGehXTcApVud_wyDw",
+            "JobDescription": "Retrieve archive on 2015\-07\-17",
+            "ArchiveSizeInBytes": 3145728,
+            "Action": "ArchiveRetrieval",
+            "ArchiveSHA256TreeHash": "9628195fcdbcbbe76cdde932d4646fa7de5f219fb39823836d81f0cc0e18aa67",
+            "CreationDate": "2015\-07\-17T21:16:13.840Z",
+            "StatusCode": "InProgress"
+        },
+        {
+            "InventoryRetrievalParameters": {
+                "Format": "JSON"
+            },
+            "VaultARN": "arn:aws:glacier:us\-west\-2:0123456789012:vaults/my\-vault",
+            "Completed": false,
+            "JobId": "zbxcm3Z_3z5UkoroF7SuZKrxgGoDc3RloGduS7Eg\-RO47Yc6FxsdGBgf_Q2DK5Ejh18CnTS5XW4_XqlNHS61dsO4CnMW",
+            "Action": "InventoryRetrieval",
+            "CreationDate": "2015\-07\-17T20:23:41.616Z",
+            "StatusCode": ""InProgress""
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Amazon Glacier requires an account ID argument when performing operations, but you can use a hyphen to specify the in\-use account.
+.SH OUTPUT
+.sp
+JobList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of job objects. Each job object contains metadata describing the job.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the description of an Amazon S3 Glacier job.
+.sp
+JobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An opaque string that identifies an Amazon S3 Glacier job.
+.UNINDENT
+.UNINDENT
+.sp
+JobDescription \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The job description provided when initiating the job.
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The job type. This value is either \fBArchiveRetrieval\fP , \fBInventoryRetrieval\fP , or \fBSelect\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ArchiveId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The archive ID requested for a select job or archive retrieval. Otherwise, this field is null.
+.UNINDENT
+.UNINDENT
+.sp
+VaultARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the vault from which an archive retrieval was requested.
+.UNINDENT
+.UNINDENT
+.sp
+CreationDate \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The UTC date when the job was created. This value is a string representation of ISO 8601 date format, for example \fB"2012\-03\-20T17:03:43.221Z"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Completed \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+The job status. When a job is completed, you get the job\(aqs output using Get Job Output (GET output).
+.UNINDENT
+.UNINDENT
+.sp
+StatusCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status code can be \fBInProgress\fP , \fBSucceeded\fP , or \fBFailed\fP , and indicates the status of the job.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A friendly message that describes the job status.
+.UNINDENT
+.UNINDENT
+.sp
+ArchiveSizeInBytes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+For an archive retrieval job, this value is the size in bytes of the archive being requested for download. For an inventory retrieval or select job, this value is null.
+.UNINDENT
+.UNINDENT
+.sp
+InventorySizeInBytes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+For an inventory retrieval job, this value is the size in bytes of the inventory requested for download. For an archive retrieval or select job, this value is null.
+.UNINDENT
+.UNINDENT
+.sp
+SNSTopic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon SNS topic that receives notification.
+.UNINDENT
+.UNINDENT
+.sp
+CompletionDate \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The UTC time that the job request completed. While the job is in progress, the value is null.
+.UNINDENT
+.UNINDENT
+.sp
+SHA256TreeHash \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For an archive retrieval job, this value is the checksum of the archive. Otherwise, this value is null.
+.sp
+The SHA256 tree hash value for the requested range of an archive. If the \fBInitiateJob\fP request for an archive specified a tree\-hash aligned range, then this field returns a value.
+.sp
+If the whole archive is retrieved, this value is the same as the ArchiveSHA256TreeHash value.
+.sp
+This field is null for the following:
+.INDENT 0.0
+.IP \(bu 2
+Archive retrieval jobs that specify a range that is not tree\-hash aligned
+.IP \(bu 2
+Archival jobs that specify a range that is equal to the whole archive, when the job status is \fBInProgress\fP
+.IP \(bu 2
+Inventory jobs
+.IP \(bu 2
+Select jobs
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ArchiveSHA256TreeHash \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 tree hash of the entire archive for an archive retrieval. For inventory retrieval or select jobs, this field is null.
+.UNINDENT
+.UNINDENT
+.sp
+RetrievalByteRange \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The retrieved byte range for archive retrieval jobs in the form \fIStartByteValue\fP \-\fIEndByteValue\fP . If no range was specified in the archive retrieval, then the whole archive is retrieved. In this case, \fIStartByteValue\fP equals 0 and \fIEndByteValue\fP equals the size of the archive minus 1. For inventory retrieval or select jobs, this field is null.
+.UNINDENT
+.UNINDENT
+.sp
+Tier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tier to use for a select or an archive retrieval. Valid values are \fBExpedited\fP , \fBStandard\fP , or \fBBulk\fP . \fBStandard\fP is the default.
+.UNINDENT
+.UNINDENT
+.sp
+InventoryRetrievalParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters used for range inventory retrieval.
+.sp
+Format \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The output format for the vault inventory list, which is set by the \fBInitiateJob\fP request when initiating a job to retrieve a vault inventory. Valid values are \fBCSV\fP and \fBJSON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+StartDate \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The start of the date range in Universal Coordinated Time (UTC) for vault inventory retrieval that includes archives created on or after this date. This value should be a string in the ISO 8601 date format, for example \fB2013\-03\-20T17:03:43Z\fP .
+.UNINDENT
+.UNINDENT
+.sp
+EndDate \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The end of the date range in UTC for vault inventory retrieval that includes archives created before this date. This value should be a string in the ISO 8601 date format, for example \fB2013\-03\-20T17:03:43Z\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Limit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of inventory items returned per vault inventory retrieval request. This limit is set when initiating the job with the a \fBInitiateJob\fP request.
+.UNINDENT
+.UNINDENT
+.sp
+Marker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An opaque string that represents where to continue pagination of the vault inventory retrieval results. You use the marker in a new \fBInitiateJob\fP request to obtain additional inventory items. If there are no more inventory items, this value is \fBnull\fP . For more information, see \fI\%Range Inventory Retrieval\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JobOutputPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the job output location.
+.UNINDENT
+.UNINDENT
+.sp
+SelectParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the parameters used for a select.
+.sp
+InputSerialization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the serialization format of the object.
+.sp
+csv \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the serialization of a CSV\-encoded object.
+.sp
+FileHeaderInfo \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the first line of input. Valid values are \fBNone\fP , \fBIgnore\fP , and \fBUse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Comments \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used to indicate that a row should be ignored when the character is present at the start of that row.
+.UNINDENT
+.UNINDENT
+.sp
+QuoteEscapeCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used for escaping the quotation\-mark character inside an already escaped value.
+.UNINDENT
+.UNINDENT
+.sp
+RecordDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value used to separate individual records from each other.
+.UNINDENT
+.UNINDENT
+.sp
+FieldDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value used to separate individual fields from each other within a record.
+.UNINDENT
+.UNINDENT
+.sp
+QuoteCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value used as an escape character where the field delimiter is part of the value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ExpressionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the provided expression, for example \fBSQL\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The expression that is used to select the object.
+.UNINDENT
+.UNINDENT
+.sp
+OutputSerialization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes how the results of the select job are serialized.
+.sp
+csv \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the serialization of CSV\-encoded query results.
+.sp
+QuoteFields \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether all output fields should be contained within quotation marks.
+.UNINDENT
+.UNINDENT
+.sp
+QuoteEscapeCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A single character used for escaping the quotation\-mark character inside an already escaped value.
+.UNINDENT
+.UNINDENT
+.sp
+RecordDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value used to separate individual records from each other.
+.UNINDENT
+.UNINDENT
+.sp
+FieldDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value used to separate individual fields from each other within a record.
+.UNINDENT
+.UNINDENT
+.sp
+QuoteCharacter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value used as an escape character where the field delimiter is part of the value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OutputLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the location where the data from the select job is stored.
+.sp
+S3 \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an S3 location that will receive the results of the job request.
+.sp
+BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket where the job results are stored.
+.UNINDENT
+.UNINDENT
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The prefix that is prepended to the results for this request.
+.UNINDENT
+.UNINDENT
+.sp
+Encryption \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the encryption used to store the job results in Amazon S3.
+.sp
+EncryptionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing job results in Amazon S3, for example \fBAES256\fP or \fBaws:kms\fP .
+.UNINDENT
+.UNINDENT
+.sp
+KMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS KMS key ID to use for object encryption. All GET and PUT requests for an object protected by AWS KMS fail if not made by using Secure Sockets Layer (SSL) or Signature Version 4.
+.UNINDENT
+.UNINDENT
+.sp
+KMSContext \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Optional. If the encryption type is \fBaws:kms\fP , you can use this value to specify the encryption context for the job results.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CannedACL \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The canned access control list (ACL) to apply to the job results.
+.UNINDENT
+.UNINDENT
+.sp
+AccessControlList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of grants that control access to the staged results.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a grant.
+.sp
+Grantee \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The grantee.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of grantee
+.UNINDENT
+.UNINDENT
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Screen name of the grantee.
+.UNINDENT
+.UNINDENT
+.sp
+URI \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+URI of the grantee group.
+.UNINDENT
+.UNINDENT
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The canonical user ID of the grantee.
+.UNINDENT
+.UNINDENT
+.sp
+EmailAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Email address of the grantee.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Permission \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the permission given to the grantee.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tagging \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tag\-set that is applied to the job results.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+UserMetadata \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of metadata to store with the job results in Amazon S3.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The storage class used to store the job results.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Marker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An opaque string used for pagination that specifies the job at which the listing of jobs should begin. You get the \fBmarker\fP value from a previous List Jobs response. You only need to include the marker if you are continuing the pagination of the results started in a previous List Jobs request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

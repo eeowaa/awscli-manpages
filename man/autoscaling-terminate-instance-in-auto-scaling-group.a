@@ -1,0 +1,219 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-TERMINATE-INSTANCE-IN-AUTO-SCALING-GROUP" "a" "" ""
+.SH NAME
+autoscaling-terminate-instance-in-auto-scaling-group \- Terminates the specified instance and optionally adjusts the desired group size
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Terminates the specified instance and optionally adjusts the desired group size. This operation cannot be called on instances in a warm pool.
+.sp
+This call simply makes a termination request. The instance is not terminated immediately. When an instance is terminated, the instance status changes to \fBterminated\fP . You can\(aqt connect to or start an instance after you\(aqve terminated it.
+.sp
+If you do not specify the option to decrement the desired capacity, Amazon EC2 Auto Scaling launches instances to replace the ones that are terminated.
+.sp
+By default, Amazon EC2 Auto Scaling balances instances across all Availability Zones. If you decrement the desired capacity, your Auto Scaling group can become unbalanced between Availability Zones. Amazon EC2 Auto Scaling tries to rebalance the group, and rebalancing might terminate instances in other zones. For more information, see \fI\%Rebalancing activities\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  terminate\-instance\-in\-auto\-scaling\-group
+\-\-instance\-id <value>
+\-\-should\-decrement\-desired\-capacity | \-\-no\-should\-decrement\-desired\-capacity
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-should\-decrement\-desired\-capacity\fP | \fB\-\-no\-should\-decrement\-desired\-capacity\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether terminating the instance also decrements the size of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo terminate an instance in an Auto Scaling group\fP
+.sp
+This example terminates the specified instance from the specified Auto Scaling group without updating the size of the group. Amazon EC2 Auto Scaling launches a replacement instance after the specified instance terminates.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling terminate\-instance\-in\-auto\-scaling\-group \e
+    \-\-instance\-id i\-061c63c5eb45f0416 \e
+    \-\-no\-should\-decrement\-desired\-capacity
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Activities": [
+        {
+            "ActivityId": "8c35d601\-793c\-400c\-fcd0\-f64a27530df7",
+            "AutoScalingGroupName": "my\-asg",
+            "Description": "Terminating EC2 instance: i\-061c63c5eb45f0416",
+            "Cause": "",
+            "StartTime": "2020\-10\-31T20:34:25.680Z",
+            "StatusCode": "InProgress",
+            "Progress": 0,
+            "Details": "{\e"Subnet ID\e":\e"subnet\-6194ea3b\e",\e"Availability Zone\e":\e"us\-west\-2c\e"}"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Activity \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A scaling activity.
+.sp
+ActivityId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the activity.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A friendly, more verbose description of the activity.
+.UNINDENT
+.UNINDENT
+.sp
+Cause \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason the activity began.
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The start time of the activity.
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The end time of the activity.
+.UNINDENT
+.UNINDENT
+.sp
+StatusCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the activity.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A friendly, more verbose description of the activity status.
+.UNINDENT
+.UNINDENT
+.sp
+Progress \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A value between 0 and 100 that indicates the progress of the activity.
+.UNINDENT
+.UNINDENT
+.sp
+Details \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The details about the activity.
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingGroupState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the Auto Scaling group, which is either \fBInService\fP or \fBDeleted\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingGroupARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

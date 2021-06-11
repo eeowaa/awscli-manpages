@@ -1,0 +1,207 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "FMS-GET-COMPLIANCE-DETAIL" "a" "" ""
+.SH NAME
+fms-get-compliance-detail \- Returns detailed compliance information about the specified member account
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns detailed compliance information about the specified member account. Details include resources that are in and out of compliance with the specified policy. Resources are considered noncompliant for AWS WAF and Shield Advanced policies if the specified policy has not been applied to them. Resources are considered noncompliant for security group policies if they are in scope of the policy, they violate one or more of the policy rules, and remediation is disabled or not possible. Resources are considered noncompliant for Network Firewall policies if a firewall is missing in the VPC, if the firewall endpoint isn\(aqt set up in an expected Availability Zone and subnet, if a subnet created by the Firewall Manager doesn\(aqt have the expected route table, and for modifications to a firewall policy that violate the Firewall Manager policy\(aqs rules.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-compliance\-detail
+\-\-policy\-id <value>
+\-\-member\-account <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-policy\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the policy that you want to get the details for. \fBPolicyId\fP is returned by \fBPutPolicy\fP and by \fBListPolicies\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-member\-account\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account that owns the resources that you want to get the details for.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo retrieve the compliance information for an account\fP
+.sp
+The following \fBget\-compliance\-detail\fP example retrieves compliance information for the specified policy and member account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws fms get\-compliance\-detail \e
+    \-\-policy\-id a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111 \e
+    \-\-member\-account 123456789012
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "PolicyComplianceDetail": {
+    "EvaluationLimitExceeded": false,
+    "IssueInfoMap": {},
+    "MemberAccount": "123456789012",
+    "PolicyId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+    "PolicyOwner": "123456789012",
+    "Violators": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Viewing Resource Compliance with a Policy\fP in the \fIAWS WAF, AWS Firewall Manager, and AWS Shield Advanced Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+PolicyComplianceDetail \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the resources and the policy that you specified in the \fBGetComplianceDetail\fP request.
+.sp
+PolicyOwner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account that created the AWS Firewall Manager policy.
+.UNINDENT
+.UNINDENT
+.sp
+PolicyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS Firewall Manager policy.
+.UNINDENT
+.UNINDENT
+.sp
+MemberAccount \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID.
+.UNINDENT
+.UNINDENT
+.sp
+Violators \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of resources that aren\(aqt protected by the AWS WAF or Shield Advanced policy or that aren\(aqt in compliance with the security group policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details of the resource that is not protected by the policy.
+.sp
+ResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource ID.
+.UNINDENT
+.UNINDENT
+.sp
+ViolationReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason that the resource is not protected by the policy.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type. This is in the format shown in the \fI\%AWS Resource Types Reference\fP . For example: \fBAWS::ElasticLoadBalancingV2::LoadBalancer\fP , \fBAWS::CloudFront::Distribution\fP , or \fBAWS::NetworkFirewall::FirewallPolicy\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EvaluationLimitExceeded \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if over 100 resources are noncompliant with the AWS Firewall Manager policy.
+.UNINDENT
+.UNINDENT
+.sp
+ExpiredAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp that indicates when the returned information should be considered out of date.
+.UNINDENT
+.UNINDENT
+.sp
+IssueInfoMap \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Details about problems with dependent services, such as AWS WAF or AWS Config, that are causing a resource to be noncompliant. The details include the name of the dependent service and the error message received that indicates the problem with the service.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

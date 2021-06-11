@@ -1,0 +1,242 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "REDSHIFT-DESCRIBE-RESIZE" "a" "" ""
+.SH NAME
+redshift-describe-resize \- Returns information about the last resize operation for the specified cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about the last resize operation for the specified cluster. If no resize operation has ever been initiated for the specified cluster, a \fBHTTP 404\fP error is returned. If a resize operation was initiated and completed, the status of the resize remains as \fBSUCCEEDED\fP until the next resize.
+.sp
+A resize operation can be requested using  ModifyCluster and specifying a different number or type of nodes for the cluster.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-resize
+\-\-cluster\-identifier <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of a cluster whose resize progress you are requesting. This parameter is case\-sensitive.
+.sp
+By default, resize operations for all clusters defined for an AWS account are returned.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.SS Describe Resize
+.sp
+This example describes the latest resize of a cluster. The request was for 3 nodes of type \fBdw.hs1.8xlarge\fP\&.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws redshift describe\-resize \-\-cluster\-identifier mycluster
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Result:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+   "Status": "NONE",
+   "TargetClusterType": "multi\-node",
+   "TargetNodeType": "dw.hs1.8xlarge",
+   "ResponseMetadata": {
+      "RequestId": "9f52b0b4\-7733\-11e2\-aa9b\-318b2909bd27"
+   },
+   "TargetNumberOfNodes": "3"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+TargetNodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The node type that the cluster will have after the resize operation is complete.
+.UNINDENT
+.UNINDENT
+.sp
+TargetNumberOfNodes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of nodes that the cluster will have after the resize operation is complete.
+.UNINDENT
+.UNINDENT
+.sp
+TargetClusterType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cluster type after the resize operation is complete.
+.sp
+Valid Values: \fBmulti\-node\fP | \fBsingle\-node\fP
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the resize operation.
+.sp
+Valid Values: \fBNONE\fP | \fBIN_PROGRESS\fP | \fBFAILED\fP | \fBSUCCEEDED\fP | \fBCANCELLING\fP
+.UNINDENT
+.UNINDENT
+.sp
+ImportTablesCompleted \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The names of tables that have been completely imported .
+.sp
+Valid Values: List of table names.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ImportTablesInProgress \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The names of tables that are being currently imported.
+.sp
+Valid Values: List of table names.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ImportTablesNotStarted \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The names of tables that have not been yet imported.
+.sp
+Valid Values: List of table names
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AvgResizeRateInMegaBytesPerSecond \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average rate of the resize operation over the last few minutes, measured in megabytes per second. After the resize operation completes, this value shows the average rate of the entire resize operation.
+.UNINDENT
+.UNINDENT
+.sp
+TotalResizeDataInMegaBytes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The estimated total amount of data, in megabytes, on the cluster before the resize operation began.
+.UNINDENT
+.UNINDENT
+.sp
+ProgressInMegaBytes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+While the resize operation is in progress, this value shows the current amount of data, in megabytes, that has been processed so far. When the resize operation is complete, this value shows the total amount of data, in megabytes, on the cluster, which may be more or less than TotalResizeDataInMegaBytes (the estimated total amount of data before resize).
+.UNINDENT
+.UNINDENT
+.sp
+ElapsedTimeInSeconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of seconds that have elapsed since the resize operation began. After the resize operation completes, this value shows the total actual time, in seconds, for the resize operation.
+.UNINDENT
+.UNINDENT
+.sp
+EstimatedTimeToCompletionInSeconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The estimated time remaining, in seconds, until the resize operation is complete. This value is calculated based on the average resize rate and the estimated amount of data remaining to be processed. Once the resize operation is complete, this value will be 0.
+.UNINDENT
+.UNINDENT
+.sp
+ResizeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An enum with possible values of \fBClassicResize\fP and \fBElasticResize\fP . These values describe the type of resize operation being performed.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional string to provide additional details about the resize action.
+.UNINDENT
+.UNINDENT
+.sp
+TargetEncryptionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of encryption for the cluster after the resize is complete.
+.sp
+Possible values are \fBKMS\fP and \fBNone\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DataTransferProgressPercent \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The percent of data transferred from source cluster to target cluster.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

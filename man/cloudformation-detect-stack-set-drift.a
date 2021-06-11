@@ -1,0 +1,267 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFORMATION-DETECT-STACK-SET-DRIFT" "a" "" ""
+.SH NAME
+cloudformation-detect-stack-set-drift \- Detect drift on a stack set
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Detect drift on a stack set. When CloudFormation performs drift detection on a stack set, it performs drift detection on the stack associated with each stack instance in the stack set. For more information, see \fI\%How CloudFormation Performs Drift Detection on a Stack Set\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBDetectStackSetDrift\fP returns the \fBOperationId\fP of the stack set drift detection operation. Use this operation id with \(ga\(ga  DescribeStackSetOperation \(ga\(ga to monitor the progress of the drift detection operation. The drift detection operation may take some time, depending on the number of stack instances included in the stack set, as well as the number of resources included in each stack.
+.UNINDENT
+.UNINDENT
+.sp
+Once the operation has completed, use the following actions to return drift information:
+.INDENT 0.0
+.IP \(bu 2
+Use \(ga\(ga  DescribeStackSet \(ga\(ga to return detailed information about the stack set, including detailed information about the last \fIcompleted\fP drift operation performed on the stack set. (Information about drift operations that are in progress is not included.)
+.IP \(bu 2
+Use \(ga\(ga  ListStackInstances \(ga\(ga to return a list of stack instances belonging to the stack set, including the drift status and last drift time checked of each instance.
+.IP \(bu 2
+Use \(ga\(ga  DescribeStackInstance \(ga\(ga to return detailed information about a specific stack instance, including its drift status and last drift time checked.
+.UNINDENT
+.sp
+For more information on performing a drift detection operation on a stack set, see \fI\%Detecting Unmanaged Changes in Stack Sets\fP .
+.sp
+You can only run a single drift detection operation on a given stack set at one time.
+.sp
+To stop a drift detection stack set operation, use \(ga\(ga  StopStackSetOperation \(ga\(ga .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  detect\-stack\-set\-drift
+\-\-stack\-set\-name <value>
+[\-\-operation\-preferences <value>]
+[\-\-operation\-id <value>]
+[\-\-call\-as <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stack\-set\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stack set on which to perform the drift detection operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-operation\-preferences\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The user\-specified preferences for how AWS CloudFormation performs a stack set operation.
+.sp
+For more information on maximum concurrent accounts and failure tolerance, see \fI\%Stack set operation options\fP .
+.sp
+RegionConcurrencyType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The concurrency type of deploying StackSets operations in regions, could be in parallel or one region at a time.
+.UNINDENT
+.UNINDENT
+.sp
+RegionOrder \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The order of the Regions in where you want to perform the stack operation.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+FailureToleranceCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of accounts, per Region, for which this operation can fail before AWS CloudFormation stops the operation in that Region. If the operation is stopped in a Region, AWS CloudFormation doesn\(aqt attempt the operation in any subsequent Regions.
+.sp
+Conditional: You must specify either \fBFailureToleranceCount\fP or \fBFailureTolerancePercentage\fP (but not both).
+.UNINDENT
+.UNINDENT
+.sp
+FailureTolerancePercentage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of accounts, per Region, for which this stack operation can fail before AWS CloudFormation stops the operation in that Region. If the operation is stopped in a Region, AWS CloudFormation doesn\(aqt attempt the operation in any subsequent Regions.
+.sp
+When calculating the number of accounts based on the specified percentage, AWS CloudFormation rounds \fIdown\fP to the next whole number.
+.sp
+Conditional: You must specify either \fBFailureToleranceCount\fP or \fBFailureTolerancePercentage\fP , but not both.
+.UNINDENT
+.UNINDENT
+.sp
+MaxConcurrentCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of accounts in which to perform this operation at one time. This is dependent on the value of \fBFailureToleranceCount\fP . \fBMaxConcurrentCount\fP is at most one more than the \fBFailureToleranceCount\fP .
+.sp
+Note that this setting lets you specify the \fImaximum\fP for operations. For large deployments, under certain circumstances the actual number of accounts acted upon concurrently may be lower due to service throttling.
+.sp
+Conditional: You must specify either \fBMaxConcurrentCount\fP or \fBMaxConcurrentPercentage\fP , but not both.
+.UNINDENT
+.UNINDENT
+.sp
+MaxConcurrentPercentage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum percentage of accounts in which to perform this operation at one time.
+.sp
+When calculating the number of accounts based on the specified percentage, AWS CloudFormation rounds down to the next whole number. This is true except in cases where rounding down would result is zero. In this case, CloudFormation sets the number as one instead.
+.sp
+Note that this setting lets you specify the \fImaximum\fP for operations. For large deployments, under certain circumstances the actual number of accounts acted upon concurrently may be lower due to service throttling.
+.sp
+Conditional: You must specify either \fBMaxConcurrentCount\fP or \fBMaxConcurrentPercentage\fP , but not both.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+RegionConcurrencyType=string,RegionOrder=string,string,FailureToleranceCount=integer,FailureTolerancePercentage=integer,MaxConcurrentCount=integer,MaxConcurrentPercentage=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RegionConcurrencyType": "SEQUENTIAL"|"PARALLEL",
+  "RegionOrder": ["string", ...],
+  "FailureToleranceCount": integer,
+  "FailureTolerancePercentage": integer,
+  "MaxConcurrentCount": integer,
+  "MaxConcurrentPercentage": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-operation\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+\fIThe ID of the stack set operation.\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-call\-as\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+[Service\-managed permissions] Specifies whether you are acting as an account administrator in the organization\(aqs management account or as a delegated administrator in a member account.
+.sp
+By default, \fBSELF\fP is specified. Use \fBSELF\fP for stack sets with self\-managed permissions.
+.INDENT 0.0
+.IP \(bu 2
+If you are signed in to the management account, specify \fBSELF\fP .
+.IP \(bu 2
+If you are signed in to a delegated administrator account, specify \fBDELEGATED_ADMIN\fP . Your AWS account must be registered as a delegated administrator in the management account. For more information, see \fI\%Register a delegated administrator\fP in the \fIAWS CloudFormation User Guide\fP .
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSELF\fP
+.IP \(bu 2
+\fBDELEGATED_ADMIN\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo detect drift on a stack set and all associated stack instances\fP
+.sp
+The following \fBdetect\-stack\-set\-drift\fP example initiates drift detection operations on the specified stack set, including all the stack instances associated with that stack set, and returns an operation ID that can be used to track the status of the drift operation.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation detect\-stack\-set\-drift \e
+    \-\-stack\-set\-name stack\-set\-drift\-example
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "OperationId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Detecting Unmanaged Configuration Changes in Stack Sets\fP in the \fIAWS CloudFormation Users Guide\fP\&.
+.SH OUTPUT
+.sp
+OperationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the drift detection stack set operation.
+.sp
+you can use this operation id with \(ga\(ga  DescribeStackSetOperation \(ga\(ga to monitor the progress of the drift detection operation.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

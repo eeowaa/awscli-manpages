@@ -1,0 +1,238 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFORMATION-DEPLOY" "a" "" ""
+.SH NAME
+cloudformation-deploy \- Deploys the specified AWS CloudFormation template by creating and then executing
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Deploys the specified AWS CloudFormation template by creating and then executing
+a change set. The command terminates after AWS CloudFormation executes the
+change set. If you want to view the change set before AWS CloudFormation
+executes it, use the \fB\-\-no\-execute\-changeset\fP flag.
+.sp
+To update a stack, specify the name of an existing stack. To create a new stack,
+specify a new stack name.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  deploy
+\-\-template\-file <value>
+\-\-stack\-name <value>
+[\-\-s3\-bucket <value>]
+[\-\-force\-upload]
+[\-\-s3\-prefix <value>]
+[\-\-kms\-key\-id <value>]
+[\-\-parameter\-overrides <value> [<value>...]]
+[\-\-capabilities <value> [<value>...]]
+[\-\-no\-execute\-changeset]
+[\-\-role\-arn <value>]
+[\-\-notification\-arns <value> [<value>...]]
+[\-\-fail\-on\-empty\-changeset | \-\-no\-fail\-on\-empty\-changeset]
+[\-\-tags <value> [<value>...]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-template\-file\fP (string)
+The path where your AWS CloudFormation template is located.
+.sp
+\fB\-\-stack\-name\fP (string)
+The name of the AWS CloudFormation stack you\(aqre deploying to. If you specify an existing stack, the command updates the stack. If you specify a new stack, the command creates it.
+.sp
+\fB\-\-s3\-bucket\fP (string)
+The name of the S3 bucket where this command uploads your CloudFormation template. This is required the deployments of templates sized greater than 51,200 bytes
+.sp
+\fB\-\-force\-upload\fP (boolean)
+Indicates whether to override existing files in the S3 bucket. Specify this flag to upload artifacts even if they match existing artifacts in the S3 bucket.
+.sp
+\fB\-\-s3\-prefix\fP (string)
+A prefix name that the command adds to the artifacts\(aq name when it uploads them to the S3 bucket. The prefix name is a path name (folder name) for the S3 bucket.
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+The ID of an AWS KMS key that the command uses to encrypt artifacts that are at rest in the S3 bucket.
+.sp
+\fB\-\-parameter\-overrides\fP (string)
+A list of parameter structures that specify input parameters for your stack template. If you\(aqre updating a stack and you don\(aqt specify a parameter, the command uses the stack\(aqs existing value. For new stacks, you must specify parameters that don\(aqt have a default value. Syntax: ParameterKey1=ParameterValue1 ParameterKey2=ParameterValue2 ... or JSON file (see Examples)
+.sp
+\fB\-\-capabilities\fP (list)
+A list of capabilities that you must specify before AWS Cloudformation can create certain stacks. Some stack templates might include resources that can affect permissions in your AWS account, for example, by creating new AWS Identity and Access Management (IAM) users. For those stacks, you must explicitly acknowledge their capabilities by specifying this parameter. The only valid values are CAPABILITY_IAM and CAPABILITY_NAMED_IAM. If you have IAM resources, you can specify either capability. If you have IAM resources with custom names, you must specify CAPABILITY_NAMED_IAM. If you don\(aqt specify this parameter, this action returns an InsufficientCapabilities error.(string)
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  CAPABILITY_IAM
+  CAPABILITY_NAMED_IAM
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-no\-execute\-changeset\fP (boolean)
+Indicates whether to execute the change set. Specify this flag if you want to view your stack changes before executing the change set. The command creates an AWS CloudFormation change set and then exits without executing the change set. After you view the change set, execute it to implement your changes.
+.sp
+\fB\-\-role\-arn\fP (string)
+The Amazon Resource Name (ARN) of an AWS Identity and Access Management (IAM) role that AWS CloudFormation assumes when executing the change set.
+.sp
+\fB\-\-notification\-arns\fP (list)
+Amazon Simple Notification Service topic Amazon Resource Names (ARNs) that AWS CloudFormation associates with the stack.(string)
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-fail\-on\-empty\-changeset\fP | \fB\-\-no\-fail\-on\-empty\-changeset\fP (boolean)
+Specify if the CLI should return a non\-zero exit code if there are no changes to be made to the stack. The default behavior is to return a zero exit code.
+.sp
+\fB\-\-tags\fP (list)
+A list of tags to associate with the stack that is created or updated. AWS CloudFormation also propagates these tags to resources in the stack if the resource supports it. Syntax: TagKey1=TagValue1 TagKey2=TagValue2 ...(string)
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+Following command deploys template named \fBtemplate.json\fP to a stack named
+\fBmy\-new\-stack\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation deploy \-\-template\-file /path_to_template/template.json \-\-stack\-name my\-new\-stack \-\-parameter\-overrides Key1=Value1 Key2=Value2 \-\-tags Key1=Value1 Key2=Value2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+or the same command using parameters from JSON file \fBparameters.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation deploy \-\-template\-file /path_to_template/template.json \-\-stack\-name my\-new\-stack \-\-parameter\-overrides file://path_to_parameters/parameters.json \-\-tags Key1=Value1 Key2=Value2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Supported JSON syntax
+.sp
+Original format:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    "Key1=Value1",
+    "Key2=Value2"
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+CloudFormation like format:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+   {
+        "ParameterKey": "Key1",
+        "ParameterValue": "Value1"
+    },
+    {
+        "ParameterKey": "Key2",
+        "ParameterValue": "Value2"
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Only ParameterKey and ParameterValue are expected keys, command will throw an exception if receives unexpected keys (e.g. UsePreviousValue or ResolvedValue).
+.UNINDENT
+.UNINDENT
+.sp
+CodePipeline like format:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    "Parameters": {
+        "Key1": "Value1",
+        "Key2": "Value2"
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

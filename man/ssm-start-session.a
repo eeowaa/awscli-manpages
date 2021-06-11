@@ -1,0 +1,189 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-START-SESSION" "a" "" ""
+.SH NAME
+ssm-start-session \- Initiates a connection to a target (for example, an instance) for a Session Manager session
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Initiates a connection to a target (for example, an instance) for a Session Manager session. Returns a URL and token that can be used to open a WebSocket connection for sending input and receiving outputs.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+AWS CLI usage: \fBstart\-session\fP is an interactive command that requires the Session Manager plugin to be installed on the client machine making the call. For information, see \fI\%Install the Session Manager plugin for the AWS CLI\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+AWS Tools for PowerShell usage: Start\-SSMSession is not currently supported by AWS Tools for PowerShell on Windows local machines.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-session
+\-\-target <value>
+[\-\-document\-name <value>]
+[\-\-parameters <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-target\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance to connect to for the session.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-document\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the SSM document to define the parameters and plugin settings for the session. For example, \fBSSM\-SessionManagerRunShell\fP . You can call the  GetDocument API to verify the document exists before attempting to start a session. If no document name is provided, a shell to the instance is launched by default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parameters\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Reserved for future use.
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,string,KeyName2=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": ["string", ...]
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To start a Session Manager session\fP
+.sp
+This \fBstart\-session\fP example establishes a connection with an instance for a Session Manager session. Note that this interactive command requires the Session Manager plugin to be installed on the client machine making the call.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm start\-session \e
+    \-\-target "i\-1234567890abcdef0"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Starting session with SessionId: Jane\-Roe\-07a16060613c408b5
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To start a Session Manager session using SSH\fP
+.sp
+This \fBstart\-session\fP example establishes a connection with an instance for a Session Manager session using SSH. Note that this interactive command requires the Session Manager plugin to be installed on the client machine making the call, and that the command uses the default user on the instance, such as \fBec2\-user\fP for EC2 instances for Linux.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ssh \-i /path/my\-key\-pair.pem ec2\-user@i\-02573cafcfEXAMPLE
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Starting session with SessionId: ec2\-user\-07a16060613c408b5
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Start a Session\fP and \fI\%Install the Session Manager Plugin for the AWS CLI\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

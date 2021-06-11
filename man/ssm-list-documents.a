@@ -1,0 +1,561 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-LIST-DOCUMENTS" "a" "" ""
+.SH NAME
+ssm-list-documents \- Returns all Systems Manager (SSM) documents in the current AWS account and Region
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns all Systems Manager (SSM) documents in the current AWS account and Region. You can limit the results of this request by using a filter.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-documents\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBDocumentIdentifiers\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-documents
+[\-\-document\-filter\-list <value>]
+[\-\-filters <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-document\-filter\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+This data type is deprecated. Instead, use \fBFilters\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This data type is deprecated. Instead, use  DocumentKeyValuesFilter .
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the filter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+key=string,value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "key": "Name"|"Owner"|"PlatformTypes"|"DocumentType",
+    "value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more \fBDocumentKeyValuesFilter\fP objects. Use a filter to return a more specific list of results. For keys, you can specify one or more key\-value pair tags that have been applied to a document. Other valid keys include \fBOwner\fP , \fBName\fP , \fBPlatformTypes\fP , \fBDocumentType\fP , and \fBTargetType\fP . For example, to return documents you own use \fBKey=Owner,Values=Self\fP . To specify a custom key\-value pair, use the format \fBKey=tag:tagName,Values=valueName\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This API action only supports filtering documents by using a single tag key and one or more tag values. For example: \fBKey=tag:tagName,Values=valueName1,valueName2\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+One or more filters. Use a filter to return a more specific list of documents.
+.sp
+For keys, you can specify one or more tags that have been applied to a document.
+.sp
+You can also use AWS\-provided keys, some of which have specific allowed values. These keys and their associated values are as follows:
+.INDENT 0.0
+.INDENT 3.5
+DocumentType
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+ApplicationConfiguration
+.IP \(bu 2
+ApplicationConfigurationSchema
+.IP \(bu 2
+Automation
+.IP \(bu 2
+ChangeCalendar
+.IP \(bu 2
+Command
+.IP \(bu 2
+DeploymentStrategy
+.IP \(bu 2
+Package
+.IP \(bu 2
+Policy
+.IP \(bu 2
+Session
+.sp
+Owner
+.UNINDENT
+.sp
+Note that only one \fBOwner\fP can be specified in a request. For example: \fBKey=Owner,Values=Self\fP .
+.INDENT 0.0
+.IP \(bu 2
+Amazon
+.IP \(bu 2
+Private
+.IP \(bu 2
+Public
+.IP \(bu 2
+Self
+.IP \(bu 2
+ThirdParty
+.sp
+PlatformTypes
+.IP \(bu 2
+Linux
+.IP \(bu 2
+Windows
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBName\fP is another AWS\-provided key. If you use \fBName\fP as a key, you can use a name prefix to return a list of documents. For example, in the AWS CLI, to return a list of all documents that begin with \fBTe\fP , run the following command:
+.sp
+\fBaws ssm list\-documents \-\-filters Key=Name,Values=Te\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can also use the \fBTargetType\fP AWS\-provided key. For a list of valid resource type values that can be used with this key, see \fI\%AWS resource and property types reference\fP in the \fIAWS CloudFormation User Guide\fP .
+.sp
+If you specify more than two keys, only documents that are identified by all the tags are returned in the results. If you specify more than two values for a key, documents that are identified by any of the values are returned in the results.
+.sp
+To specify a custom key and value pair, use the format \fBKey=tag:tagName,Values=valueName\fP .
+.sp
+For example, if you created a key called region and are using the AWS CLI to call the \fBlist\-documents\fP command:
+.INDENT 0.0
+.INDENT 3.5
+\fBaws ssm list\-documents \-\-filters Key=tag:region,Values=east,west Key=Owner,Values=Self\fP
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter key.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value for the filter key.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To list documents\fP
+.sp
+The following \fBlist\-documents\fP example lists documents owned by the requesting account tagged with the custom tag.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm list\-documents \e
+    \-\-filters Key=Owner,Values=Self Key=tag:DocUse,Values=Testing
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DocumentIdentifiers": [
+        {
+            "Name": "Example",
+            "Owner": "29884EXAMPLE",
+            "PlatformTypes": [
+                "Windows",
+                "Linux"
+            ],
+            "DocumentVersion": "1",
+            "DocumentType": "Automation",
+            "SchemaVersion": "0.3",
+            "DocumentFormat": "YAML",
+            "Tags": [
+                {
+                    "Key": "DocUse",
+                    "Value": "Testing"
+                }
+            ]
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%AWS Systems Manager Documents\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.sp
+\fBExample 2: To list shared documents\fP
+.sp
+The following \fBlist\-documents\fP example lists shared documents, including private shared documents not owned by AWS.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm list\-documents \e
+    \-\-filters Key=Name,Values=sharedDocNamePrefix  Key=Owner,Values=Private
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DocumentIdentifiers": [
+        {
+            "Name": "Example",
+            "Owner": "12345EXAMPLE",
+            "PlatformTypes": [
+                "Windows",
+                "Linux"
+            ],
+            "DocumentVersion": "1",
+            "DocumentType": "Command",
+            "SchemaVersion": "0.3",
+            "DocumentFormat": "YAML",
+            "Tags": []
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%AWS Systems Manager Documents\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+DocumentIdentifiers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The names of the Systems Manager documents.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the name of a Systems Manager document.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Systems Manager document.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date the Systems Manager document was created.
+.UNINDENT
+.UNINDENT
+.sp
+DisplayName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional field where you can specify a friendly name for the Systems Manager document. This value can differ for each version of the document. If you want to update this value, see  UpdateDocument .
+.UNINDENT
+.UNINDENT
+.sp
+Owner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS user account that created the document.
+.UNINDENT
+.UNINDENT
+.sp
+VersionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional field specifying the version of the artifact associated with the document. For example, "Release 12, Update 6". This value is unique across all versions of a document, and cannot be changed.
+.UNINDENT
+.UNINDENT
+.sp
+PlatformTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The operating system platform.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+DocumentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document version.
+.UNINDENT
+.UNINDENT
+.sp
+DocumentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document type.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The schema version.
+.UNINDENT
+.UNINDENT
+.sp
+DocumentFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document format, either JSON or YAML.
+.UNINDENT
+.UNINDENT
+.sp
+TargetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The target type which defines the kinds of resources the document can run on. For example, /AWS::EC2::Instance. For a list of valid resource types, see \fI\%AWS resource and property types reference\fP in the \fIAWS CloudFormation User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags, or metadata, that have been applied to the document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata that you assign to your AWS resources. Tags enable you to categorize your resources in different ways, for example, by purpose, owner, or environment. In Systems Manager, you can apply tags to documents, managed instances, maintenance windows, Parameter Store parameters, and patch baselines.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Requires \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of SSM documents required by a document. For example, an \fBApplicationConfiguration\fP document requires an \fBApplicationConfigurationSchema\fP document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An SSM document required by the current document.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the required SSM document. The name can be an Amazon Resource Name (ARN).
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document version required by the current document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReviewStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of a document review.
+.UNINDENT
+.UNINDENT
+.sp
+Author \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user in your organization who created the document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to use when requesting the next set of items. If there are no additional items to return, the string is empty.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

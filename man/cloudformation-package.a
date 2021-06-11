@@ -1,0 +1,192 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFORMATION-PACKAGE" "a" "" ""
+.SH NAME
+cloudformation-package \- Packages the local artifacts (local paths) that your AWS CloudFormation template
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Packages the local artifacts (local paths) that your AWS CloudFormation template
+references. The command uploads local artifacts, such as source code for an AWS
+Lambda function or a Swagger file for an AWS API Gateway REST API, to an S3
+bucket. The command returns a copy of your template, replacing references to
+local artifacts with the S3 location where the command uploaded the artifacts.
+.sp
+Use this command to quickly upload local artifacts that might be required by
+your template. After you package your template\(aqs artifacts, run the deploy
+command to \fBdeploy\fP the returned template.
+.sp
+This command can upload local artifacts referenced in the following places:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBBodyS3Location\fP property for the \fBAWS::ApiGateway::RestApi\fP resource
+.IP \(bu 2
+\fBCode\fP property for the \fBAWS::Lambda::Function\fP resource
+.IP \(bu 2
+\fBCodeUri\fP property for the \fBAWS::Serverless::Function\fP resource
+.IP \(bu 2
+\fBDefinitionS3Location\fP property for the \fBAWS::AppSync::GraphQLSchema\fP resource
+.IP \(bu 2
+\fBRequestMappingTemplateS3Location\fP property for the \fBAWS::AppSync::Resolver\fP resource
+.IP \(bu 2
+\fBResponseMappingTemplateS3Location\fP property for the \fBAWS::AppSync::Resolver\fP resource
+.IP \(bu 2
+\fBDefinitionUri\fP property for the \fBAWS::Serverless::Api\fP resource
+.IP \(bu 2
+\fBLocation\fP parameter for the \fBAWS::Include\fP transform
+.IP \(bu 2
+\fBSourceBundle\fP property for the \fBAWS::ElasticBeanstalk::ApplicationVersion\fP resource
+.IP \(bu 2
+\fBTemplateURL\fP property for the \fBAWS::CloudFormation::Stack\fP resource
+.IP \(bu 2
+\fBCommand.ScriptLocation\fP property for the \fBAWS::Glue::Job\fP resource
+.IP \(bu 2
+\fBDefinitionS3Location\fP property for the \fBAWS::StepFunctions::StateMachine\fP resource
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+To specify a local artifact in your template, specify a path to a local file or folder,
+as either an absolute or relative path. The relative path is a location
+that is relative to your template\(aqs location.
+.sp
+For example, if your AWS Lambda function source code is in the
+\fB/home/user/code/lambdafunction/\fP folder, specify
+\fBCodeUri: /home/user/code/lambdafunction\fP for the
+\fBAWS::Serverless::Function\fP resource. The command returns a template and replaces
+the local path with the S3 location: \fBCodeUri: s3://mybucket/lambdafunction.zip\fP\&.
+.sp
+If you specify a file, the command directly uploads it to the S3 bucket. If you
+specify a folder, the command zips the folder and then uploads the .zip file.
+For most resources, if you don\(aqt specify a path, the command zips and uploads the
+current working directory. The exception is \fBAWS::ApiGateway::RestApi\fP;
+if you don\(aqt specify a \fBBodyS3Location\fP, this command will not upload an artifact to S3.
+.sp
+Before the command uploads artifacts, it checks if the artifacts are already
+present in the S3 bucket to prevent unnecessary uploads. The command uses MD5
+checksums to compare files. If the values match, the command doesn\(aqt upload the
+artifacts. Use the \fB\-\-force\-upload flag\fP to skip this check and always upload the
+artifacts.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  package
+\-\-template\-file <value>
+\-\-s3\-bucket <value>
+[\-\-s3\-prefix <value>]
+[\-\-kms\-key\-id <value>]
+[\-\-output\-template\-file <value>]
+[\-\-use\-json]
+[\-\-force\-upload]
+[\-\-metadata <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-template\-file\fP (string)
+The path where your AWS CloudFormation template is located.
+.sp
+\fB\-\-s3\-bucket\fP (string)
+The name of the S3 bucket where this command uploads the artifacts that are referenced in your template.
+.sp
+\fB\-\-s3\-prefix\fP (string)
+A prefix name that the command adds to the artifacts\(aq name when it uploads them to the S3 bucket. The prefix name is a path name (folder name) for the S3 bucket.
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+The ID of an AWS KMS key that the command uses to encrypt artifacts that are at rest in the S3 bucket.
+.sp
+\fB\-\-output\-template\-file\fP (string)
+The path to the file where the command writes the output AWS CloudFormation template. If you don\(aqt specify a path, the command writes the template to the standard output.
+.sp
+\fB\-\-use\-json\fP (boolean)
+Indicates whether to use JSON as the format for the output AWS CloudFormation template. YAML is used by default.
+.sp
+\fB\-\-force\-upload\fP (boolean)
+Indicates whether to override existing files in the S3 bucket. Specify this flag to upload artifacts even if they match existing artifacts in the S3 bucket.
+.sp
+\fB\-\-metadata\fP (map)
+A map of metadata to attach to \fIALL\fP the artifacts that are referenced in your template.key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+Following command exports a template named \fBtemplate.json\fP by uploading local
+artifacts to S3 bucket \fBbucket\-name\fP and writes the exported template to
+\fBpackaged\-template.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation package \-\-template\-file /path_to_template/template.json \-\-s3\-bucket bucket\-name \-\-output\-template\-file packaged\-template.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

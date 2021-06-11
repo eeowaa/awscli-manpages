@@ -1,0 +1,462 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-CREATE-FLOW-LOGS" "a" "" ""
+.SH NAME
+ec2-create-flow-logs \- Creates one or more flow logs to capture information about IP traffic for a specific network interface, subnet, or VPC
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates one or more flow logs to capture information about IP traffic for a specific network interface, subnet, or VPC.
+.sp
+Flow log data for a monitored network interface is recorded as flow log records, which are log events consisting of fields that describe the traffic flow. For more information, see \fI\%Flow Log Records\fP in the \fIAmazon Virtual Private Cloud User Guide\fP .
+.sp
+When publishing to CloudWatch Logs, flow log records are published to a log group, and each network interface has a unique log stream in the log group. When publishing to Amazon S3, flow log records for all of the monitored network interfaces are published to a single log file object that is stored in the specified bucket.
+.sp
+For more information, see \fI\%VPC Flow Logs\fP in the \fIAmazon Virtual Private Cloud User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-flow\-logs
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-client\-token <value>]
+[\-\-deliver\-logs\-permission\-arn <value>]
+[\-\-log\-group\-name <value>]
+\-\-resource\-ids <value>
+\-\-resource\-type <value>
+\-\-traffic\-type <value>
+[\-\-log\-destination\-type <value>]
+[\-\-log\-destination <value>]
+[\-\-log\-format <value>]
+[\-\-tag\-specifications <value>]
+[\-\-max\-aggregation\-interval <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, case\-sensitive identifier that you provide to ensure the idempotency of the request. For more information, see \fI\%How to Ensure Idempotency\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-deliver\-logs\-permission\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN for the IAM role that permits Amazon EC2 to publish flow logs to a CloudWatch Logs log group in your account.
+.sp
+If you specify \fBLogDestinationType\fP as \fBs3\fP , do not specify \fBDeliverLogsPermissionArn\fP or \fBLogGroupName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of a new or existing CloudWatch Logs log group where Amazon EC2 publishes your flow logs.
+.sp
+If you specify \fBLogDestinationType\fP as \fBs3\fP , do not specify \fBDeliverLogsPermissionArn\fP or \fBLogGroupName\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnet, network interface, or VPC for which you want to create a flow log.
+.sp
+Constraints: Maximum of 1000 resources
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource for which to create the flow log. For example, if you specified a VPC ID for the \fBResourceId\fP property, specify \fBVPC\fP for this property.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBVPC\fP
+.IP \(bu 2
+\fBSubnet\fP
+.IP \(bu 2
+\fBNetworkInterface\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-traffic\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of traffic to log. You can log traffic that the resource accepts or rejects, or all traffic.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBACCEPT\fP
+.IP \(bu 2
+\fBREJECT\fP
+.IP \(bu 2
+\fBALL\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-destination\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of destination to which the flow log data is to be published. Flow log data can be published to CloudWatch Logs or Amazon S3. To publish flow log data to CloudWatch Logs, specify \fBcloud\-watch\-logs\fP . To publish flow log data to Amazon S3, specify \fBs3\fP .
+.sp
+If you specify \fBLogDestinationType\fP as \fBs3\fP , do not specify \fBDeliverLogsPermissionArn\fP or \fBLogGroupName\fP .
+.sp
+Default: \fBcloud\-watch\-logs\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBcloud\-watch\-logs\fP
+.IP \(bu 2
+\fBs3\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-destination\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the destination to which the flow log data is to be published. Flow log data can be published to a CloudWatch Logs log group or an Amazon S3 bucket. The value specified for this parameter depends on the value specified for \fBLogDestinationType\fP .
+.sp
+If \fBLogDestinationType\fP is not specified or \fBcloud\-watch\-logs\fP , specify the Amazon Resource Name (ARN) of the CloudWatch Logs log group. For example, to publish to a log group called \fBmy\-logs\fP , specify \fBarn:aws:logs:us\-east\-1:123456789012:log\-group:my\-logs\fP . Alternatively, use \fBLogGroupName\fP instead.
+.sp
+If LogDestinationType is \fBs3\fP , specify the ARN of the Amazon S3 bucket. You can also specify a subfolder in the bucket. To specify a subfolder in the bucket, use the following ARN format: \fBbucket_ARN/subfolder_name/\fP . For example, to specify a subfolder named \fBmy\-logs\fP in a bucket named \fBmy\-bucket\fP , use the following ARN: \fBarn:aws:s3:::my\-bucket/my\-logs/\fP . You cannot use \fBAWSLogs\fP as a subfolder name. This is a reserved term.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The fields to include in the flow log record, in the order in which they should appear. For a list of available fields, see \fI\%Flow Log Records\fP . If you omit this parameter, the flow log is created using the default format. If you specify this parameter, you must specify at least one field.
+.sp
+Specify the fields using the \fB${field\-id}\fP format, separated by spaces. For the AWS CLI, use single quotation marks (\(aq \(aq) to surround the parameter value.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the flow logs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to a resource when the resource is being created.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to tag. Currently, the resource types that support tagging on creation are: \fBcapacity\-reservation\fP | \fBcarrier\-gateway\fP | \fBclient\-vpn\-endpoint\fP | \fBcustomer\-gateway\fP | \fBdedicated\-host\fP | \fBdhcp\-options\fP | \fBegress\-only\-internet\-gateway\fP | \fBelastic\-ip\fP | \fBelastic\-gpu\fP | \fBexport\-image\-task\fP | \fBexport\-instance\-task\fP | \fBfleet\fP | \fBfpga\-image\fP | \fBhost\-reservation\fP | \fBimage\fP | \fBimport\-image\-task\fP | \fBimport\-snapshot\-task\fP | \fBinstance\fP | \fBinternet\-gateway\fP | \fBipv4pool\-ec2\fP | \fBipv6pool\-ec2\fP | \fBkey\-pair\fP | \fBlaunch\-template\fP | \fBlocal\-gateway\-route\-table\-vpc\-association\fP | \fBplacement\-group\fP | \fBprefix\-list\fP | \fBnatgateway\fP | \fBnetwork\-acl\fP | \fBnetwork\-interface\fP | \fBreserved\-instances\fP 
+.nf
+|
+.fi
+\fBroute\-table\fP | \fBsecurity\-group\fP | \fBsnapshot\fP | \fBspot\-fleet\-request\fP | \fBspot\-instances\-request\fP | \fBsnapshot\fP | \fBsubnet\fP | \fBtraffic\-mirror\-filter\fP | \fBtraffic\-mirror\-session\fP | \fBtraffic\-mirror\-target\fP | \fBtransit\-gateway\fP | \fBtransit\-gateway\-attachment\fP | \fBtransit\-gateway\-multicast\-domain\fP | \fBtransit\-gateway\-route\-table\fP | \fBvolume\fP 
+.nf
+|
+.fi
+\fBvpc\fP | \fBvpc\-peering\-connection\fP | \fBvpc\-endpoint\fP (for interface and gateway endpoints) | \fBvpc\-endpoint\-service\fP (for AWS PrivateLink) | \fBvpc\-flow\-log\fP | \fBvpn\-connection\fP | \fBvpn\-gateway\fP .
+.IP "System Message: WARNING/2 (<string>:, line 243)"
+Inline substitution_reference start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 243)"
+Inline substitution_reference start\-string without end\-string.
+.sp
+To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResourceType=string,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ResourceType": "client\-vpn\-endpoint"|"customer\-gateway"|"dedicated\-host"|"dhcp\-options"|"egress\-only\-internet\-gateway"|"elastic\-ip"|"elastic\-gpu"|"export\-image\-task"|"export\-instance\-task"|"fleet"|"fpga\-image"|"host\-reservation"|"image"|"import\-image\-task"|"import\-snapshot\-task"|"instance"|"internet\-gateway"|"key\-pair"|"launch\-template"|"local\-gateway\-route\-table\-vpc\-association"|"natgateway"|"network\-acl"|"network\-interface"|"network\-insights\-analysis"|"network\-insights\-path"|"placement\-group"|"reserved\-instances"|"route\-table"|"security\-group"|"snapshot"|"spot\-fleet\-request"|"spot\-instances\-request"|"subnet"|"traffic\-mirror\-filter"|"traffic\-mirror\-session"|"traffic\-mirror\-target"|"transit\-gateway"|"transit\-gateway\-attachment"|"transit\-gateway\-connect\-peer"|"transit\-gateway\-multicast\-domain"|"transit\-gateway\-route\-table"|"volume"|"vpc"|"vpc\-peering\-connection"|"vpn\-connection"|"vpn\-gateway"|"vpc\-flow\-log",
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-aggregation\-interval\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum interval of time during which a flow of packets is captured and aggregated into a flow log record. You can specify 60 seconds (1 minute) or 600 seconds (10 minutes).
+.sp
+When a network interface is attached to a \fI\%Nitro\-based instance\fP , the aggregation interval is always 60 seconds or less, regardless of the value that you specify.
+.sp
+Default: 600
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a flow log\fP
+.sp
+The following \fBcreate\-flow\-logs\fP example creates a flow log that captures all rejected traffic for the specified network interface. The flow logs are delivered to a log group in CloudWatch Logs using the permissions in the specified IAM role.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-flow\-logs \e
+    \-\-resource\-type NetworkInterface \e
+    \-\-resource\-ids eni\-11223344556677889 \e
+    \-\-traffic\-type REJECT \e
+    \-\-log\-group\-name my\-flow\-logs \e
+    \-\-deliver\-logs\-permission\-arn arn:aws:iam::123456789101:role/publishFlowLogs
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ClientToken": "so0eNA2uSHUNlHI0S2cJ305GuIX1CezaRdGtexample",
+    "FlowLogIds": [
+        "fl\-12345678901234567"
+    ],
+    "Unsuccessful": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To create a flow log with a custom format\fP
+.sp
+The following \fBcreate\-flow\-logs\fP example creates a flow log that captures all traffic for the specified VPC and delivers the flow logs to an Amazon S3 bucket. The \fB\-\-log\-format\fP parameter specifies a custom format for the flow log records.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-flow\-logs \e
+    \-\-resource\-type VPC \e
+    \-\-resource\-ids vpc\-00112233344556677 \e
+    \-\-traffic\-type ALL \e
+    \-\-log\-destination\-type s3 \e
+    \-\-log\-destination arn:aws:s3:::flow\-log\-bucket/my\-custom\-flow\-logs/ \e
+    \-\-log\-format \(aq${version} ${vpc\-id} ${subnet\-id} ${instance\-id} ${srcaddr} ${dstaddr} ${srcport} ${dstport} ${protocol} ${tcp\-flags} ${type} ${pkt\-srcaddr} ${pkt\-dstaddr}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To create a flow log with a one\-minute maximum aggregation interval\fP
+.sp
+The following \fBcreate\-flow\-logs\fP example creates a flow log that captures all traffic for the specified VPC and delivers the flow logs to an Amazon S3 bucket. The \fB\-\-max\-aggregation\-interval\fP parameter specifies a maximum aggregation interval of 60 seconds (1 minute).
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 create\-flow\-logs \e
+    \-\-resource\-type VPC \e
+    \-\-resource\-ids vpc\-00112233344556677 \e
+    \-\-traffic\-type ALL \e
+    \-\-log\-destination\-type s3 \e
+    \-\-log\-destination arn:aws:s3:::flow\-log\-bucket/my\-custom\-flow\-logs/ \e
+    \-\-max\-aggregation\-interval 60
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%VPC Flow Logs\fP in the \fIAmazon VPC User Guide\fP\&.
+.SH OUTPUT
+.sp
+ClientToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, case\-sensitive identifier that you provide to ensure the idempotency of the request.
+.UNINDENT
+.UNINDENT
+.sp
+FlowLogIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the flow logs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Unsuccessful \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the flow logs that could not be created successfully.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about items that were not successfully processed in a batch call.
+.sp
+Error \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the error.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message accompanying the error code.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

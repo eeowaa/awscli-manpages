@@ -1,0 +1,2361 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LEXV2-MODELS-CREATE-INTENT" "a" "" ""
+.SH NAME
+lexv2-models-create-intent \- Creates an intent
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an intent.
+.sp
+To define the interaction between the user and your bot, you define one or more intents. For example, for a pizza ordering bot you would create an \fBOrderPizza\fP intent.
+.sp
+When you create an intent, you must provide a name. You can optionally provide the following:
+.INDENT 0.0
+.IP \(bu 2
+Sample utterances. For example, "I want to order a pizza" and "Can I order a pizza." You can\(aqt provide utterances for built\-in intents.
+.IP \(bu 2
+Information to be gathered. You specify slots for the information that you bot requests from the user. You can specify standard slot types, such as date and time, or custom slot types for your application.
+.IP \(bu 2
+How the intent is fulfilled. You can provide a Lambda function or configure the intent to return the intent information to your client application. If you use a Lambda function, Amazon Lex invokes the function when all of the intent information is available.
+.IP \(bu 2
+A confirmation prompt to send to the user to confirm an intent. For example, "Shall I order your pizza?"
+.IP \(bu 2
+A conclusion statement to send to the user after the intent is fulfilled. For example, "I ordered your pizza."
+.IP \(bu 2
+A follow\-up prompt that asks the user for additional activity. For example, "Do you want a drink with your pizza?"
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-intent
+\-\-intent\-name <value>
+[\-\-description <value>]
+[\-\-parent\-intent\-signature <value>]
+[\-\-sample\-utterances <value>]
+[\-\-dialog\-code\-hook <value>]
+[\-\-fulfillment\-code\-hook <value>]
+[\-\-intent\-confirmation\-setting <value>]
+[\-\-intent\-closing\-setting <value>]
+[\-\-input\-contexts <value>]
+[\-\-output\-contexts <value>]
+[\-\-kendra\-configuration <value>]
+\-\-bot\-id <value>
+\-\-bot\-version <value>
+\-\-locale\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-intent\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the intent. Intent names must be unique in the locale that contains the intent and cannot match the name of any built\-in intent.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the intent. Use the description to help identify the intent in lists.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parent\-intent\-signature\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the built\-in intent to base this intent on.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sample\-utterances\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings that a user might say to signal the intent. For example, "I want a pizza", or "I want a {PizzaSize} pizza".
+.sp
+In an utterance, slot names are enclosed in curly braces ("{", "}") to indicate where they should be displayed in the utterance shown to the user..
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A sample utterance that invokes an intent or respond to a slot elicitation prompt.
+.sp
+utterance \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The sample utterance that Amazon Lex uses to build its machine\-learning model to recognize intents.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+utterance=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "utterance": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dialog\-code\-hook\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies that Amazon Lex invokes the alias Lambda function for each user input. You can invoke this Lambda function to personalize user interaction.
+.sp
+For example, suppose that your bot determines that the user\(aqs name is John. You Lambda function might retrieve John\(aqs information from a backend database and prepopulate some of the values. For example, if you find that John is gluten intolerant, you might set the corresponding intent slot, \fBglutenIntolerant\fP to \fBtrue\fP . You might find John\(aqs phone number and set the corresponding session attribute.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables the dialog code hook so that it processes user requests.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+enabled=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "enabled": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-fulfillment\-code\-hook\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies that Amazon Lex invokes the alias Lambda function when the intent is ready for fulfillment. You can invoke this function to complete the bot\(aqs transaction with the user.
+.sp
+For example, in a pizza ordering bot, the Lambda function can look up the closest pizza restaurant to the customer\(aqs location and then place an order on the customer\(aqs behalf.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a Lambda function should be invoked to fulfill a specific intent.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+enabled=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "enabled": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-intent\-confirmation\-setting\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides prompts that Amazon Lex sends to the user to confirm the completion of an intent. If the user answers "no," the settings contain a statement that is sent to the user to end the intent.
+.sp
+promptSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Prompts the user to confirm the intent. This question should have a yes or no answer.
+.sp
+Amazon Lex uses this prompt to ensure that the user acknowledges that the intent is ready for fulfillment. For example, with the \fBOrderPizza\fP intent, you might want to confirm that the order is correct before placing it. For other intents, such as intents that simply respond to user questions, you might not need to ask the user for confirmation before providing the information.
+.sp
+messageGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of messages that Amazon Lex can send to the user. Amazon Lex chooses the actual message to send at runtime.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides one or more messages that Amazon Lex should send to the user.
+.sp
+message \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The primary message that Amazon Lex should send to the user.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+variations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Message variations to send to the user. When variations are defined, Amazon Lex chooses the primary message or one of the variations to send to the user.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The object that provides message text and it\(aqs type.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maxRetries \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of times the bot tries to elicit a resonse from the user using this prompt.
+.UNINDENT
+.UNINDENT
+.sp
+allowInterrupt \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the user can interrupt a speech prompt from the bot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+declinationResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+When the user answers "no" to the question defined in \fBpromptSpecification\fP , Amazon Lex responds with this response to acknowledge that the intent was canceled.
+.sp
+messageGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of responses that Amazon Lex can send to the user. Amazon Lex chooses the actual response to send at runtime.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides one or more messages that Amazon Lex should send to the user.
+.sp
+message \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The primary message that Amazon Lex should send to the user.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+variations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Message variations to send to the user. When variations are defined, Amazon Lex chooses the primary message or one of the variations to send to the user.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The object that provides message text and it\(aqs type.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+allowInterrupt \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the user can interrupt a speech response from Amazon Lex.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "promptSpecification": {
+    "messageGroups": [
+      {
+        "message": {
+          "plainTextMessage": {
+            "value": "string"
+          },
+          "customPayload": {
+            "value": "string"
+          },
+          "ssmlMessage": {
+            "value": "string"
+          },
+          "imageResponseCard": {
+            "title": "string",
+            "subtitle": "string",
+            "imageUrl": "string",
+            "buttons": [
+              {
+                "text": "string",
+                "value": "string"
+              }
+              ...
+            ]
+          }
+        },
+        "variations": [
+          {
+            "plainTextMessage": {
+              "value": "string"
+            },
+            "customPayload": {
+              "value": "string"
+            },
+            "ssmlMessage": {
+              "value": "string"
+            },
+            "imageResponseCard": {
+              "title": "string",
+              "subtitle": "string",
+              "imageUrl": "string",
+              "buttons": [
+                {
+                  "text": "string",
+                  "value": "string"
+                }
+                ...
+              ]
+            }
+          }
+          ...
+        ]
+      }
+      ...
+    ],
+    "maxRetries": integer,
+    "allowInterrupt": true|false
+  },
+  "declinationResponse": {
+    "messageGroups": [
+      {
+        "message": {
+          "plainTextMessage": {
+            "value": "string"
+          },
+          "customPayload": {
+            "value": "string"
+          },
+          "ssmlMessage": {
+            "value": "string"
+          },
+          "imageResponseCard": {
+            "title": "string",
+            "subtitle": "string",
+            "imageUrl": "string",
+            "buttons": [
+              {
+                "text": "string",
+                "value": "string"
+              }
+              ...
+            ]
+          }
+        },
+        "variations": [
+          {
+            "plainTextMessage": {
+              "value": "string"
+            },
+            "customPayload": {
+              "value": "string"
+            },
+            "ssmlMessage": {
+              "value": "string"
+            },
+            "imageResponseCard": {
+              "title": "string",
+              "subtitle": "string",
+              "imageUrl": "string",
+              "buttons": [
+                {
+                  "text": "string",
+                  "value": "string"
+                }
+                ...
+              ]
+            }
+          }
+          ...
+        ]
+      }
+      ...
+    ],
+    "allowInterrupt": true|false
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-intent\-closing\-setting\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Sets the response that Amazon Lex sends to the user when the intent is closed.
+.sp
+closingResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The response that Amazon Lex sends to the user when the intent is complete.
+.sp
+messageGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of responses that Amazon Lex can send to the user. Amazon Lex chooses the actual response to send at runtime.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides one or more messages that Amazon Lex should send to the user.
+.sp
+message \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The primary message that Amazon Lex should send to the user.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+variations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Message variations to send to the user. When variations are defined, Amazon Lex chooses the primary message or one of the variations to send to the user.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The object that provides message text and it\(aqs type.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+allowInterrupt \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the user can interrupt a speech response from Amazon Lex.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "closingResponse": {
+    "messageGroups": [
+      {
+        "message": {
+          "plainTextMessage": {
+            "value": "string"
+          },
+          "customPayload": {
+            "value": "string"
+          },
+          "ssmlMessage": {
+            "value": "string"
+          },
+          "imageResponseCard": {
+            "title": "string",
+            "subtitle": "string",
+            "imageUrl": "string",
+            "buttons": [
+              {
+                "text": "string",
+                "value": "string"
+              }
+              ...
+            ]
+          }
+        },
+        "variations": [
+          {
+            "plainTextMessage": {
+              "value": "string"
+            },
+            "customPayload": {
+              "value": "string"
+            },
+            "ssmlMessage": {
+              "value": "string"
+            },
+            "imageResponseCard": {
+              "title": "string",
+              "subtitle": "string",
+              "imageUrl": "string",
+              "buttons": [
+                {
+                  "text": "string",
+                  "value": "string"
+                }
+                ...
+              ]
+            }
+          }
+          ...
+        ]
+      }
+      ...
+    ],
+    "allowInterrupt": true|false
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-input\-contexts\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of contexts that must be active for this intent to be considered by Amazon Lex.
+.sp
+When an intent has an input context list, Amazon Lex only considers using the intent in an interaction with the user when the specified contexts are included in the active context list for the session. If the contexts are not active, then Amazon Lex will not use the intent.
+.sp
+A context can be automatically activated using the \fBoutputContexts\fP property or it can be set at runtime.
+.sp
+For example, if there are two intents with different input contexts that respond to the same utterances, only the intent with the active context will respond.
+.sp
+An intent may have up to 5 input contexts. If an intent has multiple input contexts, all of the contexts must be active to consider the intent.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The name of a context that must be active for an intent to be selected by Amazon Lex.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the context.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "name": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-output\-contexts\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A lists of contexts that the intent activates when it is fulfilled.
+.sp
+You can use an output context to indicate the intents that Amazon Lex should consider for the next turn of the conversation with a customer.
+.sp
+When you use the \fBoutputContextsList\fP property, all of the contexts specified in the list are activated when the intent is fulfilled. You can set up to 10 output contexts. You can also set the number of conversation turns that the context should be active, or the length of time that the context should be active.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a session context that is activated when an intent is fulfilled.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the output context.
+.UNINDENT
+.UNINDENT
+.sp
+timeToLiveInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, that the output context should remain active. The time is figured from the first time the context is sent to the user.
+.UNINDENT
+.UNINDENT
+.sp
+turnsToLive \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of conversation turns that the output context should remain active. The number of turns is counted from the first time that the context is sent to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string,timeToLiveInSeconds=integer,turnsToLive=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "name": "string",
+    "timeToLiveInSeconds": integer,
+    "turnsToLive": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kendra\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration information required to use the \fBAMAZON.KendraSearchIntent\fP intent to connect to an Amazon Kendra index. The \fBAMAZON.KendraSearchIntent\fP intent is called when Amazon Lex can\(aqt determine another intent to invoke.
+.sp
+kendraIndex \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Amazon Kendra index that you want the AMAZON.KendraSearchIntent intent to search. The index must be in the same account and Region as the Amazon Lex bot.
+.UNINDENT
+.UNINDENT
+.sp
+queryFilterStringEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Determines whether the AMAZON.KendraSearchIntent intent uses a custom query string to query the Amazon Kendra index.
+.UNINDENT
+.UNINDENT
+.sp
+queryFilterString \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A query filter that Amazon Lex sends to Amazon Kendra to filter the response from a query. The filter is in the format defined by Amazon Kendra. For more information, see \fI\%Filtering queries\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+kendraIndex=string,queryFilterStringEnabled=boolean,queryFilterString=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "kendraIndex": "string",
+  "queryFilterStringEnabled": true|false,
+  "queryFilterString": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bot\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the bot associated with this intent.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bot\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the version of the bot associated with this intent.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-locale\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the language and locale where this intent is used. All of the bots, slot types, and slots used by the intent must have the same locale. For more information, see \fI\%Supported languages\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+intentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+intentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name specified for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description specified for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+parentIntentSignature \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The signature of the parent intent specified for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+sampleUtterances \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The sample utterances specified for the intent.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A sample utterance that invokes an intent or respond to a slot elicitation prompt.
+.sp
+utterance \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The sample utterance that Amazon Lex uses to build its machine\-learning model to recognize intents.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+dialogCodeHook \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dialog Lambda function specified for the intent.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables the dialog code hook so that it processes user requests.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+fulfillmentCodeHook \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The fulfillment Lambda function specified for the intent.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a Lambda function should be invoked to fulfill a specific intent.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+intentConfirmationSetting \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The confirmation setting specified for the intent.
+.sp
+promptSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Prompts the user to confirm the intent. This question should have a yes or no answer.
+.sp
+Amazon Lex uses this prompt to ensure that the user acknowledges that the intent is ready for fulfillment. For example, with the \fBOrderPizza\fP intent, you might want to confirm that the order is correct before placing it. For other intents, such as intents that simply respond to user questions, you might not need to ask the user for confirmation before providing the information.
+.sp
+messageGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of messages that Amazon Lex can send to the user. Amazon Lex chooses the actual message to send at runtime.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides one or more messages that Amazon Lex should send to the user.
+.sp
+message \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The primary message that Amazon Lex should send to the user.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+variations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Message variations to send to the user. When variations are defined, Amazon Lex chooses the primary message or one of the variations to send to the user.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The object that provides message text and it\(aqs type.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maxRetries \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of times the bot tries to elicit a resonse from the user using this prompt.
+.UNINDENT
+.UNINDENT
+.sp
+allowInterrupt \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the user can interrupt a speech prompt from the bot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+declinationResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+When the user answers "no" to the question defined in \fBpromptSpecification\fP , Amazon Lex responds with this response to acknowledge that the intent was canceled.
+.sp
+messageGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of responses that Amazon Lex can send to the user. Amazon Lex chooses the actual response to send at runtime.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides one or more messages that Amazon Lex should send to the user.
+.sp
+message \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The primary message that Amazon Lex should send to the user.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+variations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Message variations to send to the user. When variations are defined, Amazon Lex chooses the primary message or one of the variations to send to the user.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The object that provides message text and it\(aqs type.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+allowInterrupt \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the user can interrupt a speech response from Amazon Lex.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+intentClosingSetting \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The closing setting specified for the intent.
+.sp
+closingResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The response that Amazon Lex sends to the user when the intent is complete.
+.sp
+messageGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of responses that Amazon Lex can send to the user. Amazon Lex chooses the actual response to send at runtime.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides one or more messages that Amazon Lex should send to the user.
+.sp
+message \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The primary message that Amazon Lex should send to the user.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+variations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Message variations to send to the user. When variations are defined, Amazon Lex chooses the primary message or one of the variations to send to the user.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The object that provides message text and it\(aqs type.
+.sp
+plainTextMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in plain text format.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message to send to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customPayload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in a custom format defined by the client application.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that is sent to your application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ssmlMessage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message in Speech Synthesis Markup Language (SSML).
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SSML text that defines the prompt.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A message that defines a response card that the client application can show to the user.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a button to use on a response card used to gather slot values from a user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that appears on the button. Use this to tell the user what value is returned when they choose this button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when the user chooses this button. This must be one of the slot values configured for the slot.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+allowInterrupt \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the user can interrupt a speech response from Amazon Lex.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+inputContexts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of input contexts specified for the intent.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The name of a context that must be active for an intent to be selected by Amazon Lex.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the context.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+outputContexts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of output contexts specified for the intent.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a session context that is activated when an intent is fulfilled.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the output context.
+.UNINDENT
+.UNINDENT
+.sp
+timeToLiveInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, that the output context should remain active. The time is figured from the first time the context is sent to the user.
+.UNINDENT
+.UNINDENT
+.sp
+turnsToLive \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of conversation turns that the output context should remain active. The number of turns is counted from the first time that the context is sent to the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+kendraConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration for searching a Amazon Kendra index specified for the intent.
+.sp
+kendraIndex \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Amazon Kendra index that you want the AMAZON.KendraSearchIntent intent to search. The index must be in the same account and Region as the Amazon Lex bot.
+.UNINDENT
+.UNINDENT
+.sp
+queryFilterStringEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Determines whether the AMAZON.KendraSearchIntent intent uses a custom query string to query the Amazon Kendra index.
+.UNINDENT
+.UNINDENT
+.sp
+queryFilterString \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A query filter that Amazon Lex sends to Amazon Kendra to filter the response from a query. The filter is in the format defined by Amazon Kendra. For more information, see \fI\%Filtering queries\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+botId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the bot associated with the intent.
+.UNINDENT
+.UNINDENT
+.sp
+botVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the version of the bot associated with the intent.
+.UNINDENT
+.UNINDENT
+.sp
+localeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The locale that the intent is specified to use.
+.UNINDENT
+.UNINDENT
+.sp
+creationDateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp of the date and time that the intent was created.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

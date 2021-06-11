@@ -1,0 +1,203 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DATAPIPELINE-PUT-PIPELINE-DEFINITION" "a" "" ""
+.SH NAME
+datapipeline-put-pipeline-definition \- Adds tasks, schedules, and preconditions to the specified pipeline
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds tasks, schedules, and preconditions to the specified pipeline. You can use \fBPutPipelineDefinition\fP to populate a new pipeline.
+.INDENT 0.0
+.INDENT 3.5
+\fBPutPipelineDefinition\fP also validates the configuration as it adds it to the pipeline. Changes to the pipeline are saved unless one of the following three validation errors exists in the pipeline.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+An object is missing a name or identifier field.
+.IP \(bu 2
+A string or reference field is empty.
+.IP \(bu 2
+The number of objects in the pipeline exceeds the maximum allowed objects.
+.IP \(bu 2
+The pipeline is in a FINISHED state.
+.UNINDENT
+.sp
+Pipeline object definitions are passed to the \fBPutPipelineDefinition\fP action and returned by the  GetPipelineDefinition action.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-pipeline\-definition
+\-\-pipeline\-id <value>
+[\-\-parameter\-objects <value>]
+[\-\-parameter\-values <value>]
+\-\-pipeline\-definition <value>
+[\-\-parameter\-values\-uri <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-pipeline\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the pipeline.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parameter\-objects\fP (string)
+The JSON parameter objects. If the parameter objects are in a file you can use the \fI\%file://syntax\fP to specify a filename. You can optionally provide these in pipeline definition as well. Parameter objects provided on command line would replace the one in definition.
+.sp
+\fB\-\-parameter\-values\fP (string)
+The JSON parameter values. You can specify these as key\-value pairs in the key=value format. Multiple parameters are separated by a space. For list type parameter values you can use the same key name and specify each value as a key value pair. e.g. arrayValue=value1 arrayValue=value2
+.sp
+\fB\-\-pipeline\-definition\fP (string)
+The JSON pipeline definition. If the pipeline definition is in a file you can use the \fI\%file://syntax\fP to specify a filename.
+.sp
+\fB\-\-parameter\-values\-uri\fP (string)
+The JSON parameter values. If the parameter values are in a file you can use the \fI\%file://syntax\fP to specify a filename. You can optionally provide these in pipeline definition as well. Parameter values provided on command line would replace the one in definition.
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo upload a pipeline definition\fP
+.sp
+This example uploads the specified pipeline definition to the specified pipeline:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws datapipeline put\-pipeline\-definition \-\-pipeline\-id df\-00627471SOVYZEXAMPLE \-\-pipeline\-definition file://my\-pipeline\-definition.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following is example output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "validationErrors": [],
+  "errored": false,
+  "validationWarnings": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+validationErrors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The validation errors that are associated with the objects defined in \fBpipelineObjects\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines a validation error. Validation errors prevent pipeline activation. The set of validation errors that can be returned are defined by AWS Data Pipeline.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the object that contains the validation error.
+.UNINDENT
+.UNINDENT
+.sp
+errors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A description of the validation error.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+validationWarnings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The validation warnings that are associated with the objects defined in \fBpipelineObjects\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines a validation warning. Validation warnings do not prevent pipeline activation. The set of validation warnings that can be returned are defined by AWS Data Pipeline.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the object that contains the validation warning.
+.UNINDENT
+.UNINDENT
+.sp
+warnings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A description of the validation warning.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+errored \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether there were validation errors, and the pipeline definition is stored but cannot be activated until you correct the pipeline and call \fBPutPipelineDefinition\fP to commit the corrected pipeline.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

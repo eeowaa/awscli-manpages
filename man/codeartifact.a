@@ -1,0 +1,217 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEARTIFACT" "a" "" ""
+.SH NAME
+codeartifact \- AWS CodeArtifact is a fully managed artifact repository compatible with language-native package managers and build tools such as npm, Apache Maven, and pip
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+AWS CodeArtifact is a fully managed artifact repository compatible with language\-native package managers and build tools such as npm, Apache Maven, and pip. You can use CodeArtifact to share packages with development teams and pull packages. Packages can be pulled from both public and CodeArtifact repositories. You can also create an upstream relationship between a CodeArtifact repository and another repository, which effectively merges their contents from the point of view of a package manager client.
+.INDENT 0.0
+.INDENT 3.5
+\fBAWS CodeArtifact Components\fP
+.UNINDENT
+.UNINDENT
+.sp
+Use the information in this guide to help you work with the following CodeArtifact components:
+.INDENT 0.0
+.IP \(bu 2
+\fBRepository\fP : A CodeArtifact repository contains a set of \fI\%package versions\fP , each of which maps to a set of assets, or files. Repositories are polyglot, so a single repository can contain packages of any supported type. Each repository exposes endpoints for fetching and publishing packages using tools like the ** \fBnpm\fP ** CLI, the Maven CLI (** \fBmvn\fP ** ), and ** \fBpip\fP ** .
+.IP \(bu 2
+\fBDomain\fP : Repositories are aggregated into a higher\-level entity known as a \fIdomain\fP . All package assets and metadata are stored in the domain, but are consumed through repositories. A given package asset, such as a Maven JAR file, is stored once per domain, no matter how many repositories it\(aqs present in. All of the assets and metadata in a domain are encrypted with the same customer master key (CMK) stored in AWS Key Management Service (AWS KMS). Each repository is a member of a single domain and can\(aqt be moved to a different domain. The domain allows organizational policy to be applied across multiple repositories, such as which accounts can access repositories in the domain, and which public repositories can be used as sources of packages. Although an organization can have multiple domains, we recommend a single production domain that contains all published artifacts so that teams can find and share packages across their organization.
+.IP \(bu 2
+\fBPackage\fP : A \fIpackage\fP is a bundle of software and the metadata required to resolve dependencies and install the software. CodeArtifact supports \fI\%npm\fP , \fI\%PyPI\fP , and \fI\%Maven\fP package formats. In CodeArtifact, a package consists of:
+.INDENT 2.0
+.IP \(bu 2
+A \fIname\fP (for example, \fBwebpack\fP is the name of a popular npm package)
+.IP \(bu 2
+An optional namespace (for example, \fB@types\fP in \fB@types/node\fP )
+.IP \(bu 2
+A set of versions (for example, \fB1.0.0\fP , \fB1.0.1\fP , \fB1.0.2\fP , etc.)
+.IP \(bu 2
+Package\-level metadata (for example, npm tags)
+.UNINDENT
+.IP \(bu 2
+\fBPackage version\fP : A version of a package, such as \fB@types/node 12.6.9\fP . The version number format and semantics vary for different package formats. For example, npm package versions must conform to the \fI\%Semantic Versioning specification\fP . In CodeArtifact, a package version consists of the version identifier, metadata at the package version level, and a set of assets.
+.IP \(bu 2
+\fBUpstream repository\fP : One repository is \fIupstream\fP of another when the package versions in it can be accessed from the repository endpoint of the downstream repository, effectively merging the contents of the two repositories from the point of view of a client. CodeArtifact allows creating an upstream relationship between two repositories.
+.IP \(bu 2
+\fBAsset\fP : An individual file stored in CodeArtifact associated with a package version, such as an npm \fB\&.tgz\fP file or Maven POM and JAR files.
+.UNINDENT
+.sp
+CodeArtifact supports these operations:
+.INDENT 0.0
+.IP \(bu 2
+\fBAssociateExternalConnection\fP : Adds an existing external connection to a repository.
+.IP \(bu 2
+\fBCopyPackageVersions\fP : Copies package versions from one repository to another repository in the same domain.
+.IP \(bu 2
+\fBCreateDomain\fP : Creates a domain
+.IP \(bu 2
+\fBCreateRepository\fP : Creates a CodeArtifact repository in a domain.
+.IP \(bu 2
+\fBDeleteDomain\fP : Deletes a domain. You cannot delete a domain that contains repositories.
+.IP \(bu 2
+\fBDeleteDomainPermissionsPolicy\fP : Deletes the resource policy that is set on a domain.
+.IP \(bu 2
+\fBDeletePackageVersions\fP : Deletes versions of a package. After a package has been deleted, it can be republished, but its assets and metadata cannot be restored because they have been permanently removed from storage.
+.IP \(bu 2
+\fBDeleteRepository\fP : Deletes a repository.
+.IP \(bu 2
+\fBDeleteRepositoryPermissionsPolicy\fP : Deletes the resource policy that is set on a repository.
+.IP \(bu 2
+\fBDescribeDomain\fP : Returns a \fBDomainDescription\fP object that contains information about the requested domain.
+.IP \(bu 2
+\fBDescribePackageVersion\fP : Returns a \fI\%PackageVersionDescription\fP object that contains details about a package version.
+.IP \(bu 2
+\fBDescribeRepository\fP : Returns a \fBRepositoryDescription\fP object that contains detailed information about the requested repository.
+.IP \(bu 2
+\fBDisposePackageVersions\fP : Disposes versions of a package. A package version with the status \fBDisposed\fP cannot be restored because they have been permanently removed from storage.
+.IP \(bu 2
+\fBDisassociateExternalConnection\fP : Removes an existing external connection from a repository.
+.IP \(bu 2
+\fBGetAuthorizationToken\fP : Generates a temporary authorization token for accessing repositories in the domain. The token expires the authorization period has passed. The default authorization period is 12 hours and can be customized to any length with a maximum of 12 hours.
+.IP \(bu 2
+\fBGetDomainPermissionsPolicy\fP : Returns the policy of a resource that is attached to the specified domain.
+.IP \(bu 2
+\fBGetPackageVersionAsset\fP : Returns the contents of an asset that is in a package version.
+.IP \(bu 2
+\fBGetPackageVersionReadme\fP : Gets the readme file or descriptive text for a package version.
+.IP \(bu 2
+\fBGetRepositoryEndpoint\fP : Returns the endpoint of a repository for a specific package format. A repository has one endpoint for each package format:
+.INDENT 2.0
+.IP \(bu 2
+\fBnpm\fP
+.IP \(bu 2
+\fBpypi\fP
+.IP \(bu 2
+\fBmaven\fP
+.UNINDENT
+.IP \(bu 2
+\fBGetRepositoryPermissionsPolicy\fP : Returns the resource policy that is set on a repository.
+.IP \(bu 2
+\fBListDomains\fP : Returns a list of \fBDomainSummary\fP objects. Each returned \fBDomainSummary\fP object contains information about a domain.
+.IP \(bu 2
+\fBListPackages\fP : Lists the packages in a repository.
+.IP \(bu 2
+\fBListPackageVersionAssets\fP : Lists the assets for a given package version.
+.IP \(bu 2
+\fBListPackageVersionDependencies\fP : Returns a list of the direct dependencies for a package version.
+.IP \(bu 2
+\fBListPackageVersions\fP : Returns a list of package versions for a specified package in a repository.
+.IP \(bu 2
+\fBListRepositories\fP : Returns a list of repositories owned by the AWS account that called this method.
+.IP \(bu 2
+\fBListRepositoriesInDomain\fP : Returns a list of the repositories in a domain.
+.IP \(bu 2
+\fBPutDomainPermissionsPolicy\fP : Attaches a resource policy to a domain.
+.IP \(bu 2
+\fBPutRepositoryPermissionsPolicy\fP : Sets the resource policy on a repository that specifies permissions to access it.
+.IP \(bu 2
+\fBUpdatePackageVersionsStatus\fP : Updates the status of one or more versions of a package.
+.IP \(bu 2
+\fBUpdateRepository\fP : Updates the properties of a repository.
+.UNINDENT
+.SH AVAILABLE COMMANDS
+.INDENT 0.0
+.IP \(bu 2
+associate\-external\-connection
+.IP \(bu 2
+copy\-package\-versions
+.IP \(bu 2
+create\-domain
+.IP \(bu 2
+create\-repository
+.IP \(bu 2
+delete\-domain
+.IP \(bu 2
+delete\-domain\-permissions\-policy
+.IP \(bu 2
+delete\-package\-versions
+.IP \(bu 2
+delete\-repository
+.IP \(bu 2
+delete\-repository\-permissions\-policy
+.IP \(bu 2
+describe\-domain
+.IP \(bu 2
+describe\-package\-version
+.IP \(bu 2
+describe\-repository
+.IP \(bu 2
+disassociate\-external\-connection
+.IP \(bu 2
+dispose\-package\-versions
+.IP \(bu 2
+get\-authorization\-token
+.IP \(bu 2
+get\-domain\-permissions\-policy
+.IP \(bu 2
+get\-package\-version\-asset
+.IP \(bu 2
+get\-package\-version\-readme
+.IP \(bu 2
+get\-repository\-endpoint
+.IP \(bu 2
+get\-repository\-permissions\-policy
+.IP \(bu 2
+help
+.IP \(bu 2
+list\-domains
+.IP \(bu 2
+list\-package\-version\-assets
+.IP \(bu 2
+list\-package\-version\-dependencies
+.IP \(bu 2
+list\-package\-versions
+.IP \(bu 2
+list\-packages
+.IP \(bu 2
+list\-repositories
+.IP \(bu 2
+list\-repositories\-in\-domain
+.IP \(bu 2
+list\-tags\-for\-resource
+.IP \(bu 2
+login
+.IP \(bu 2
+put\-domain\-permissions\-policy
+.IP \(bu 2
+put\-repository\-permissions\-policy
+.IP \(bu 2
+tag\-resource
+.IP \(bu 2
+untag\-resource
+.IP \(bu 2
+update\-package\-versions\-status
+.IP \(bu 2
+update\-repository
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,344 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "TIMESTREAM-WRITE-WRITE-RECORDS" "a" "" ""
+.SH NAME
+timestream-write-write-records \- The WriteRecords operation enables you to write your time series data into Timestream
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+The WriteRecords operation enables you to write your time series data into Timestream. You can specify a single data point or a batch of data points to be inserted into the system. Timestream offers you with a flexible schema that auto detects the column names and data types for your Timestream tables based on the dimension names and data types of the data points you specify when invoking writes into the database. Timestream support eventual consistency read semantics. This means that when you query data immediately after writing a batch of data into Timestream, the query results might not reflect the results of a recently completed write operation. The results may also include some stale data. If you repeat the query request after a short time, the results should return the latest data. Service quotas apply. For more information, see \fI\%Access Management\fP in the Timestream Developer Guide.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  write\-records
+\-\-database\-name <value>
+\-\-table\-name <value>
+[\-\-common\-attributes <value>]
+\-\-records <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-database\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Timestream database.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-table\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Timesream table.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-common\-attributes\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A record containing the common measure and dimension attributes shared across all the records in the request. The measure and dimension attributes specified in here will be merged with the measure and dimension attributes in the records object when the data is written into Timestream.
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains the list of dimensions for time series data points.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Dimension represents the meta data attributes of the time series. For example, the name and availability zone of an EC2 instance or the name of the manufacturer of a wind turbine are dimensions.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Dimension represents the meta data attributes of the time series. For example, the name and availability zone of an EC2 instance or the name of the manufacturer of a wind turbine are dimensions.
+.sp
+For constraints on Dimension names, see \fI\%Naming Constraints\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+DimensionValueType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data type of the dimension for the time series data point.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MeasureName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Measure represents the data attribute of the time series. For example, the CPU utilization of an EC2 instance or the RPM of a wind turbine are measures.
+.UNINDENT
+.UNINDENT
+.sp
+MeasureValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the measure value for the time series data point.
+.UNINDENT
+.UNINDENT
+.sp
+MeasureValueType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the data type of the measure value for the time series data point.
+.UNINDENT
+.UNINDENT
+.sp
+Time \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the time at which the measure value for the data point was collected. The time value plus the unit provides the time elapsed since the epoch. For example, if the time value is \fB12345\fP and the unit is \fBms\fP , then \fB12345 ms\fP have elapsed since the epoch.
+.UNINDENT
+.UNINDENT
+.sp
+TimeUnit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The granularity of the timestamp unit. It indicates if the time value is in seconds, milliseconds, nanoseconds or other supported values.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+64\-bit attribute used for record updates. Write requests for duplicate data with a higher version number will update the existing measure value and version. In cases where the measure value is the same, \fBVersion\fP will still be updated . Default value is to 1.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Dimensions=[{Name=string,Value=string,DimensionValueType=string},{Name=string,Value=string,DimensionValueType=string}],MeasureName=string,MeasureValue=string,MeasureValueType=string,Time=string,TimeUnit=string,Version=long
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Dimensions": [
+    {
+      "Name": "string",
+      "Value": "string",
+      "DimensionValueType": "VARCHAR"
+    }
+    ...
+  ],
+  "MeasureName": "string",
+  "MeasureValue": "string",
+  "MeasureValueType": "DOUBLE"|"BIGINT"|"VARCHAR"|"BOOLEAN",
+  "Time": "string",
+  "TimeUnit": "MILLISECONDS"|"SECONDS"|"MICROSECONDS"|"NANOSECONDS",
+  "Version": long
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-records\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of records containing the unique dimension and measure attributes for each time series data point.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Record represents a time series data point being written into Timestream. Each record contains an array of dimensions. Dimensions represent the meta data attributes of a time series data point such as the instance name or availability zone of an EC2 instance. A record also contains the measure name which is the name of the measure being collected for example the CPU utilization of an EC2 instance. A record also contains the measure value and the value type which is the data type of the measure value. In addition, the record contains the timestamp when the measure was collected that the timestamp unit which represents the granularity of the timestamp.
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains the list of dimensions for time series data points.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Dimension represents the meta data attributes of the time series. For example, the name and availability zone of an EC2 instance or the name of the manufacturer of a wind turbine are dimensions.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Dimension represents the meta data attributes of the time series. For example, the name and availability zone of an EC2 instance or the name of the manufacturer of a wind turbine are dimensions.
+.sp
+For constraints on Dimension names, see \fI\%Naming Constraints\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+DimensionValueType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data type of the dimension for the time series data point.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MeasureName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Measure represents the data attribute of the time series. For example, the CPU utilization of an EC2 instance or the RPM of a wind turbine are measures.
+.UNINDENT
+.UNINDENT
+.sp
+MeasureValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the measure value for the time series data point.
+.UNINDENT
+.UNINDENT
+.sp
+MeasureValueType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the data type of the measure value for the time series data point.
+.UNINDENT
+.UNINDENT
+.sp
+Time \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the time at which the measure value for the data point was collected. The time value plus the unit provides the time elapsed since the epoch. For example, if the time value is \fB12345\fP and the unit is \fBms\fP , then \fB12345 ms\fP have elapsed since the epoch.
+.UNINDENT
+.UNINDENT
+.sp
+TimeUnit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The granularity of the timestamp unit. It indicates if the time value is in seconds, milliseconds, nanoseconds or other supported values.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+64\-bit attribute used for record updates. Write requests for duplicate data with a higher version number will update the existing measure value and version. In cases where the measure value is the same, \fBVersion\fP will still be updated . Default value is to 1.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Dimensions=[{Name=string,Value=string,DimensionValueType=string},{Name=string,Value=string,DimensionValueType=string}],MeasureName=string,MeasureValue=string,MeasureValueType=string,Time=string,TimeUnit=string,Version=long ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Dimensions": [
+      {
+        "Name": "string",
+        "Value": "string",
+        "DimensionValueType": "VARCHAR"
+      }
+      ...
+    ],
+    "MeasureName": "string",
+    "MeasureValue": "string",
+    "MeasureValueType": "DOUBLE"|"BIGINT"|"VARCHAR"|"BOOLEAN",
+    "Time": "string",
+    "TimeUnit": "MILLISECONDS"|"SECONDS"|"MICROSECONDS"|"NANOSECONDS",
+    "Version": long
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

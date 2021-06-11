@@ -1,0 +1,2648 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEBUILD-UPDATE-PROJECT" "a" "" ""
+.SH NAME
+codebuild-update-project \- Changes the settings of a build project
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Changes the settings of a build project.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-project
+\-\-name <value>
+[\-\-description <value>]
+[\-\-source <value>]
+[\-\-secondary\-sources <value>]
+[\-\-source\-version <value>]
+[\-\-secondary\-source\-versions <value>]
+[\-\-artifacts <value>]
+[\-\-secondary\-artifacts <value>]
+[\-\-cache <value>]
+[\-\-environment <value>]
+[\-\-service\-role <value>]
+[\-\-timeout\-in\-minutes <value>]
+[\-\-queued\-timeout\-in\-minutes <value>]
+[\-\-encryption\-key <value>]
+[\-\-tags <value>]
+[\-\-vpc\-config <value>]
+[\-\-badge\-enabled | \-\-no\-badge\-enabled]
+[\-\-logs\-config <value>]
+[\-\-file\-system\-locations <value>]
+[\-\-build\-batch\-config <value>]
+[\-\-concurrent\-build\-limit <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the build project.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You cannot change a build project\(aqs name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A new or replacement description of the build project.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information to be changed about the build input source code for the build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of repository that contains the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBBITBUCKET\fP : The source code is in a Bitbucket repository.
+.IP \(bu 2
+\fBCODECOMMIT\fP : The source code is in an AWS CodeCommit repository.
+.IP \(bu 2
+\fBCODEPIPELINE\fP : The source code settings are specified in the source action of a pipeline in AWS CodePipeline.
+.IP \(bu 2
+\fBGITHUB\fP : The source code is in a GitHub or GitHub Enterprise Cloud repository.
+.IP \(bu 2
+\fBGITHUB_ENTERPRISE\fP : The source code is in a GitHub Enterprise Server repository.
+.IP \(bu 2
+\fBNO_SOURCE\fP : The project does not have input source code.
+.IP \(bu 2
+\fBS3\fP : The source code is in an Amazon S3 bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+For source code settings that are specified in the source action of a pipeline in AWS CodePipeline, \fBlocation\fP should not be specified. If it is specified, AWS CodePipeline ignores it. This is because AWS CodePipeline uses the settings in a pipeline\(aqs source action instead of this value.
+.IP \(bu 2
+For source code in an AWS CodeCommit repository, the HTTPS clone URL to the repository that contains the source code and the buildspec file (for example, \fBhttps://git\-codecommit.<region\-ID>.amazonaws.com/v1/repos/<repo\-name>\fP ).
+.IP \(bu 2
+For source code in an Amazon S3 input bucket, one of the following.
+.INDENT 2.0
+.IP \(bu 2
+The path to the ZIP file that contains the source code (for example, \fB<bucket\-name>/<path>/<object\-name>.zip\fP ).
+.IP \(bu 2
+The path to the folder that contains the source code (for example, \fB<bucket\-name>/<path\-to\-source\-code>/<folder>/\fP ).
+.UNINDENT
+.IP \(bu 2
+For source code in a GitHub repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your GitHub account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with GitHub, on the GitHub \fBAuthorize application\fP page, for \fBOrganization access\fP , choose \fBRequest access\fP next to each repository you want to allow AWS CodeBuild to have access to, and then choose \fBAuthorize application\fP . (After you have connected to your GitHub account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.IP \(bu 2
+For source code in a Bitbucket repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your Bitbucket account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with Bitbucket, on the Bitbucket \fBConfirm access to your account\fP page, choose \fBGrant access\fP . (After you have connected to your Bitbucket account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+gitCloneDepth \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git clone depth for the build project.
+.UNINDENT
+.UNINDENT
+.sp
+gitSubmodulesConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git submodules configuration for the build project.
+.sp
+fetchSubmodules \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to fetch Git submodules for your AWS CodeBuild build project.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildspec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The buildspec file declaration to use for the builds in this build project.
+.sp
+If this value is set, it can be either an inline buildspec definition, the path to an alternate buildspec file relative to the value of the built\-in \fBCODEBUILD_SRC_DIR\fP environment variable, or the path to an S3 bucket. The bucket must be in the same AWS Region as the build project. Specify the buildspec file using its ARN (for example, \fBarn:aws:s3:::my\-codebuild\-sample2/buildspec.yml\fP ). If this value is not provided or is set to an empty string, the source code must contain a buildspec file in its root directory. For more information, see \fI\%Buildspec File Name and Storage Location\fP .
+.UNINDENT
+.UNINDENT
+.sp
+auth \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the authorization settings for AWS CodeBuild to access the source code to be built.
+.sp
+This information is for the AWS CodeBuild console\(aqs use only. Your code should not get or set this information directly.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This data type is deprecated and is no longer accurate or used.
+.UNINDENT
+.UNINDENT
+.sp
+The authorization type to use. The only valid value is \fBOAUTH\fP , which represents the OAuth authorization type.
+.UNINDENT
+.UNINDENT
+.sp
+resource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource value that applies to the specified authorization type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+reportBuildStatus \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to report the status of a build\(aqs start and finish to your source provider. This option is valid only when your source provider is GitHub, GitHub Enterprise, or Bitbucket. If this is set and you use a different source provider, an \fBinvalidInputException\fP is thrown.
+.sp
+To be able to report the build status to the source provider, the user associated with the source provider must have write access to the repo. If the user does not have write access, the build status cannot be updated. For more information, see \fI\%Source provider access\fP in the \fIAWS CodeBuild User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The status of a build triggered by a webhook is always reported to your source provider.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildStatusConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information that defines how the build project reports the build status to the source provider. This option is only used when the source provider is \fBGITHUB\fP , \fBGITHUB_ENTERPRISE\fP , or \fBBITBUCKET\fP .
+.sp
+context \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the context of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBname\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBcontext\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.sp
+targetUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the target url of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBurl\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBtarget_url\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+insecureSsl \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enable this flag to ignore SSL warnings while connecting to the project source code.
+.UNINDENT
+.UNINDENT
+.sp
+sourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this project source. The identifier can only contain alphanumeric characters and underscores, and must be less than 128 characters in length.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,location=string,gitCloneDepth=integer,gitSubmodulesConfig={fetchSubmodules=boolean},buildspec=string,auth={type=string,resource=string},reportBuildStatus=boolean,buildStatusConfig={context=string,targetUrl=string},insecureSsl=boolean,sourceIdentifier=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "type": "CODECOMMIT"|"CODEPIPELINE"|"GITHUB"|"S3"|"BITBUCKET"|"GITHUB_ENTERPRISE"|"NO_SOURCE",
+  "location": "string",
+  "gitCloneDepth": integer,
+  "gitSubmodulesConfig": {
+    "fetchSubmodules": true|false
+  },
+  "buildspec": "string",
+  "auth": {
+    "type": "OAUTH",
+    "resource": "string"
+  },
+  "reportBuildStatus": true|false,
+  "buildStatusConfig": {
+    "context": "string",
+    "targetUrl": "string"
+  },
+  "insecureSsl": true|false,
+  "sourceIdentifier": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-secondary\-sources\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBProjectSource\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build input source code for the build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of repository that contains the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBBITBUCKET\fP : The source code is in a Bitbucket repository.
+.IP \(bu 2
+\fBCODECOMMIT\fP : The source code is in an AWS CodeCommit repository.
+.IP \(bu 2
+\fBCODEPIPELINE\fP : The source code settings are specified in the source action of a pipeline in AWS CodePipeline.
+.IP \(bu 2
+\fBGITHUB\fP : The source code is in a GitHub or GitHub Enterprise Cloud repository.
+.IP \(bu 2
+\fBGITHUB_ENTERPRISE\fP : The source code is in a GitHub Enterprise Server repository.
+.IP \(bu 2
+\fBNO_SOURCE\fP : The project does not have input source code.
+.IP \(bu 2
+\fBS3\fP : The source code is in an Amazon S3 bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+For source code settings that are specified in the source action of a pipeline in AWS CodePipeline, \fBlocation\fP should not be specified. If it is specified, AWS CodePipeline ignores it. This is because AWS CodePipeline uses the settings in a pipeline\(aqs source action instead of this value.
+.IP \(bu 2
+For source code in an AWS CodeCommit repository, the HTTPS clone URL to the repository that contains the source code and the buildspec file (for example, \fBhttps://git\-codecommit.<region\-ID>.amazonaws.com/v1/repos/<repo\-name>\fP ).
+.IP \(bu 2
+For source code in an Amazon S3 input bucket, one of the following.
+.INDENT 2.0
+.IP \(bu 2
+The path to the ZIP file that contains the source code (for example, \fB<bucket\-name>/<path>/<object\-name>.zip\fP ).
+.IP \(bu 2
+The path to the folder that contains the source code (for example, \fB<bucket\-name>/<path\-to\-source\-code>/<folder>/\fP ).
+.UNINDENT
+.IP \(bu 2
+For source code in a GitHub repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your GitHub account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with GitHub, on the GitHub \fBAuthorize application\fP page, for \fBOrganization access\fP , choose \fBRequest access\fP next to each repository you want to allow AWS CodeBuild to have access to, and then choose \fBAuthorize application\fP . (After you have connected to your GitHub account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.IP \(bu 2
+For source code in a Bitbucket repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your Bitbucket account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with Bitbucket, on the Bitbucket \fBConfirm access to your account\fP page, choose \fBGrant access\fP . (After you have connected to your Bitbucket account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+gitCloneDepth \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git clone depth for the build project.
+.UNINDENT
+.UNINDENT
+.sp
+gitSubmodulesConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git submodules configuration for the build project.
+.sp
+fetchSubmodules \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to fetch Git submodules for your AWS CodeBuild build project.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildspec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The buildspec file declaration to use for the builds in this build project.
+.sp
+If this value is set, it can be either an inline buildspec definition, the path to an alternate buildspec file relative to the value of the built\-in \fBCODEBUILD_SRC_DIR\fP environment variable, or the path to an S3 bucket. The bucket must be in the same AWS Region as the build project. Specify the buildspec file using its ARN (for example, \fBarn:aws:s3:::my\-codebuild\-sample2/buildspec.yml\fP ). If this value is not provided or is set to an empty string, the source code must contain a buildspec file in its root directory. For more information, see \fI\%Buildspec File Name and Storage Location\fP .
+.UNINDENT
+.UNINDENT
+.sp
+auth \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the authorization settings for AWS CodeBuild to access the source code to be built.
+.sp
+This information is for the AWS CodeBuild console\(aqs use only. Your code should not get or set this information directly.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This data type is deprecated and is no longer accurate or used.
+.UNINDENT
+.UNINDENT
+.sp
+The authorization type to use. The only valid value is \fBOAUTH\fP , which represents the OAuth authorization type.
+.UNINDENT
+.UNINDENT
+.sp
+resource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource value that applies to the specified authorization type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+reportBuildStatus \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to report the status of a build\(aqs start and finish to your source provider. This option is valid only when your source provider is GitHub, GitHub Enterprise, or Bitbucket. If this is set and you use a different source provider, an \fBinvalidInputException\fP is thrown.
+.sp
+To be able to report the build status to the source provider, the user associated with the source provider must have write access to the repo. If the user does not have write access, the build status cannot be updated. For more information, see \fI\%Source provider access\fP in the \fIAWS CodeBuild User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The status of a build triggered by a webhook is always reported to your source provider.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildStatusConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information that defines how the build project reports the build status to the source provider. This option is only used when the source provider is \fBGITHUB\fP , \fBGITHUB_ENTERPRISE\fP , or \fBBITBUCKET\fP .
+.sp
+context \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the context of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBname\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBcontext\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.sp
+targetUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the target url of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBurl\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBtarget_url\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+insecureSsl \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enable this flag to ignore SSL warnings while connecting to the project source code.
+.UNINDENT
+.UNINDENT
+.sp
+sourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this project source. The identifier can only contain alphanumeric characters and underscores, and must be less than 128 characters in length.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,location=string,gitCloneDepth=integer,gitSubmodulesConfig={fetchSubmodules=boolean},buildspec=string,auth={type=string,resource=string},reportBuildStatus=boolean,buildStatusConfig={context=string,targetUrl=string},insecureSsl=boolean,sourceIdentifier=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "type": "CODECOMMIT"|"CODEPIPELINE"|"GITHUB"|"S3"|"BITBUCKET"|"GITHUB_ENTERPRISE"|"NO_SOURCE",
+    "location": "string",
+    "gitCloneDepth": integer,
+    "gitSubmodulesConfig": {
+      "fetchSubmodules": true|false
+    },
+    "buildspec": "string",
+    "auth": {
+      "type": "OAUTH",
+      "resource": "string"
+    },
+    "reportBuildStatus": true|false,
+    "buildStatusConfig": {
+      "context": "string",
+      "targetUrl": "string"
+    },
+    "insecureSsl": true|false,
+    "sourceIdentifier": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:
+.INDENT 0.0
+.IP \(bu 2
+For AWS CodeCommit: the commit ID, branch, or Git tag to use.
+.IP \(bu 2
+For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format \fBpr/pull\-request\-ID\fP (for example \fBpr/25\fP ). If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Amazon S3: the version ID of the object that represents the build input ZIP file to use.
+.UNINDENT
+.sp
+If \fBsourceVersion\fP is specified at the build level, then that version takes precedence over this \fBsourceVersion\fP (at the project level).
+.sp
+For more information, see \fI\%Source Version Sample with CodeBuild\fP in the \fIAWS CodeBuild User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-secondary\-source\-versions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBProjectSourceVersion\fP objects. If \fBsecondarySourceVersions\fP is specified at the build level, then they take over these \fBsecondarySourceVersions\fP (at the project level).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A source identifier and its corresponding version.
+.sp
+sourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for a source in the build project. The identifier can only contain alphanumeric characters and underscores, and must be less than 128 characters in length.
+.UNINDENT
+.UNINDENT
+.sp
+sourceVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source version for the corresponding source identifier. If specified, must be one of:
+.INDENT 0.0
+.IP \(bu 2
+For AWS CodeCommit: the commit ID, branch, or Git tag to use.
+.IP \(bu 2
+For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format \fBpr/pull\-request\-ID\fP (for example, \fBpr/25\fP ). If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Amazon S3: the version ID of the object that represents the build input ZIP file to use.
+.UNINDENT
+.sp
+For more information, see \fI\%Source Version Sample with CodeBuild\fP in the \fIAWS CodeBuild User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+sourceIdentifier=string,sourceVersion=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "sourceIdentifier": "string",
+    "sourceVersion": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-artifacts\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information to be changed about the build output artifacts for the build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of build output artifact. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBCODEPIPELINE\fP : The build project has build output generated through AWS CodePipeline.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBCODEPIPELINE\fP type is not supported for \fBsecondaryArtifacts\fP .
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBNO_ARTIFACTS\fP : The build project does not produce any build output.
+.IP \(bu 2
+\fBS3\fP : The build project stores build output in Amazon S3.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build output artifact location:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output locations instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the name of the output bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBnamespaceType\fP and \fBname\fP , the pattern that AWS CodeBuild uses to name and store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the path to the output artifact. If \fBpath\fP is not specified, \fBpath\fP is not used.
+.UNINDENT
+.sp
+For example, if \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBNONE\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , the output artifact is stored in the output bucket at \fBMyArtifacts/MyArtifact.zip\fP .
+.UNINDENT
+.UNINDENT
+.sp
+namespaceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBpath\fP and \fBname\fP , the pattern that AWS CodeBuild uses to determine the name and location to store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , valid values include:
+.INDENT 2.0
+.IP \(bu 2
+\fBBUILD_ID\fP : Include the build ID in the location of the build output artifact.
+.IP \(bu 2
+\fBNONE\fP : Do not include the build ID. This is the default if \fBnamespaceType\fP is not specified.
+.UNINDENT
+.UNINDENT
+.sp
+For example, if \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , the output artifact is stored in \fBMyArtifacts/<build\-ID>/MyArtifact.zip\fP .
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBpath\fP and \fBnamespaceType\fP , the pattern that AWS CodeBuild uses to name and store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the name of the output artifact object. If you set the name to be a forward slash ("/"), the artifact is stored in the root of the output bucket.
+.UNINDENT
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+If \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , then the output artifact is stored in \fBMyArtifacts/<build\-ID>/MyArtifact.zip\fP .
+.IP \(bu 2
+If \fBpath\fP is empty, \fBnamespaceType\fP is set to \fBNONE\fP , and \fBname\fP is set to "\fB/\fP ", the output artifact is stored in the root of the output bucket.
+.IP \(bu 2
+If \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to "\fB/\fP ", the output artifact is stored in \fBMyArtifacts/<build\-ID>\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+packaging \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of build output artifact to create:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output artifacts instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , valid values include:
+.INDENT 2.0
+.IP \(bu 2
+\fBNONE\fP : AWS CodeBuild creates in the output bucket a folder that contains the build output. This is the default if \fBpackaging\fP is not specified.
+.IP \(bu 2
+\fBZIP\fP : AWS CodeBuild creates in the output bucket a ZIP file that contains the build output.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+overrideArtifactName \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If this flag is set, a name specified in the buildspec file overrides the artifact name. The name specified in a buildspec file is calculated at build time and uses the Shell Command Language. For example, you can append a date and time to your artifact name so that it is always unique.
+.UNINDENT
+.UNINDENT
+.sp
+encryptionDisabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true if you do not want your output artifacts encrypted. This option is valid only if your artifacts type is Amazon S3. If this is set with another artifacts type, an invalidInputException is thrown.
+.UNINDENT
+.UNINDENT
+.sp
+artifactIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this artifact definition.
+.UNINDENT
+.UNINDENT
+.sp
+bucketOwnerAccess \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the access for objects that are uploaded to an Amazon S3 bucket that is owned by another account.
+.sp
+By default, only the account that uploads the objects to the bucket has access to these objects. This property allows you to give the bucket owner access to these objects.
+.INDENT 0.0
+.INDENT 3.5
+NONE
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner does not have access to the objects. This is the default.
+.INDENT 0.0
+.INDENT 3.5
+READ_ONLY
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner has read only access to the objects. The uploading account retains ownership of the objects.
+.INDENT 0.0
+.INDENT 3.5
+FULL
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner has full access to the objects. Object ownership is determined by the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+If the bucket is configured with the \fBBucket owner preferred\fP setting, the bucket owner owns the objects. The uploading account will have object access as specified by the bucket\(aqs policy.
+.IP \(bu 2
+Otherwise, the uploading account retains ownership of the objects.
+.UNINDENT
+.sp
+For more information about Amazon S3 object ownership, see \fI\%Controlling ownership of uploaded objects using S3 Object Ownership\fP in the \fIAmazon Simple Storage Service User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,location=string,path=string,namespaceType=string,name=string,packaging=string,overrideArtifactName=boolean,encryptionDisabled=boolean,artifactIdentifier=string,bucketOwnerAccess=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "type": "CODEPIPELINE"|"S3"|"NO_ARTIFACTS",
+  "location": "string",
+  "path": "string",
+  "namespaceType": "NONE"|"BUILD_ID",
+  "name": "string",
+  "packaging": "NONE"|"ZIP",
+  "overrideArtifactName": true|false,
+  "encryptionDisabled": true|false,
+  "artifactIdentifier": "string",
+  "bucketOwnerAccess": "NONE"|"READ_ONLY"|"FULL"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-secondary\-artifacts\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBProjectSource\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build output artifacts for the build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of build output artifact. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBCODEPIPELINE\fP : The build project has build output generated through AWS CodePipeline.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBCODEPIPELINE\fP type is not supported for \fBsecondaryArtifacts\fP .
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBNO_ARTIFACTS\fP : The build project does not produce any build output.
+.IP \(bu 2
+\fBS3\fP : The build project stores build output in Amazon S3.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build output artifact location:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output locations instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the name of the output bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBnamespaceType\fP and \fBname\fP , the pattern that AWS CodeBuild uses to name and store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the path to the output artifact. If \fBpath\fP is not specified, \fBpath\fP is not used.
+.UNINDENT
+.sp
+For example, if \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBNONE\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , the output artifact is stored in the output bucket at \fBMyArtifacts/MyArtifact.zip\fP .
+.UNINDENT
+.UNINDENT
+.sp
+namespaceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBpath\fP and \fBname\fP , the pattern that AWS CodeBuild uses to determine the name and location to store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , valid values include:
+.INDENT 2.0
+.IP \(bu 2
+\fBBUILD_ID\fP : Include the build ID in the location of the build output artifact.
+.IP \(bu 2
+\fBNONE\fP : Do not include the build ID. This is the default if \fBnamespaceType\fP is not specified.
+.UNINDENT
+.UNINDENT
+.sp
+For example, if \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , the output artifact is stored in \fBMyArtifacts/<build\-ID>/MyArtifact.zip\fP .
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBpath\fP and \fBnamespaceType\fP , the pattern that AWS CodeBuild uses to name and store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the name of the output artifact object. If you set the name to be a forward slash ("/"), the artifact is stored in the root of the output bucket.
+.UNINDENT
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+If \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , then the output artifact is stored in \fBMyArtifacts/<build\-ID>/MyArtifact.zip\fP .
+.IP \(bu 2
+If \fBpath\fP is empty, \fBnamespaceType\fP is set to \fBNONE\fP , and \fBname\fP is set to "\fB/\fP ", the output artifact is stored in the root of the output bucket.
+.IP \(bu 2
+If \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to "\fB/\fP ", the output artifact is stored in \fBMyArtifacts/<build\-ID>\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+packaging \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of build output artifact to create:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output artifacts instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , valid values include:
+.INDENT 2.0
+.IP \(bu 2
+\fBNONE\fP : AWS CodeBuild creates in the output bucket a folder that contains the build output. This is the default if \fBpackaging\fP is not specified.
+.IP \(bu 2
+\fBZIP\fP : AWS CodeBuild creates in the output bucket a ZIP file that contains the build output.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+overrideArtifactName \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If this flag is set, a name specified in the buildspec file overrides the artifact name. The name specified in a buildspec file is calculated at build time and uses the Shell Command Language. For example, you can append a date and time to your artifact name so that it is always unique.
+.UNINDENT
+.UNINDENT
+.sp
+encryptionDisabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true if you do not want your output artifacts encrypted. This option is valid only if your artifacts type is Amazon S3. If this is set with another artifacts type, an invalidInputException is thrown.
+.UNINDENT
+.UNINDENT
+.sp
+artifactIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this artifact definition.
+.UNINDENT
+.UNINDENT
+.sp
+bucketOwnerAccess \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the access for objects that are uploaded to an Amazon S3 bucket that is owned by another account.
+.sp
+By default, only the account that uploads the objects to the bucket has access to these objects. This property allows you to give the bucket owner access to these objects.
+.INDENT 0.0
+.INDENT 3.5
+NONE
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner does not have access to the objects. This is the default.
+.INDENT 0.0
+.INDENT 3.5
+READ_ONLY
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner has read only access to the objects. The uploading account retains ownership of the objects.
+.INDENT 0.0
+.INDENT 3.5
+FULL
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner has full access to the objects. Object ownership is determined by the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+If the bucket is configured with the \fBBucket owner preferred\fP setting, the bucket owner owns the objects. The uploading account will have object access as specified by the bucket\(aqs policy.
+.IP \(bu 2
+Otherwise, the uploading account retains ownership of the objects.
+.UNINDENT
+.sp
+For more information about Amazon S3 object ownership, see \fI\%Controlling ownership of uploaded objects using S3 Object Ownership\fP in the \fIAmazon Simple Storage Service User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,location=string,path=string,namespaceType=string,name=string,packaging=string,overrideArtifactName=boolean,encryptionDisabled=boolean,artifactIdentifier=string,bucketOwnerAccess=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "type": "CODEPIPELINE"|"S3"|"NO_ARTIFACTS",
+    "location": "string",
+    "path": "string",
+    "namespaceType": "NONE"|"BUILD_ID",
+    "name": "string",
+    "packaging": "NONE"|"ZIP",
+    "overrideArtifactName": true|false,
+    "encryptionDisabled": true|false,
+    "artifactIdentifier": "string",
+    "bucketOwnerAccess": "NONE"|"READ_ONLY"|"FULL"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Stores recently used information so that it can be quickly accessed at a later time.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of cache used by the build project. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBNO_CACHE\fP : The build project does not use any cache.
+.IP \(bu 2
+\fBS3\fP : The build project reads and writes from and to S3.
+.IP \(bu 2
+\fBLOCAL\fP : The build project stores a cache locally on a build host that is only available to that build host.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the cache location:
+.INDENT 0.0
+.IP \(bu 2
+\fBNO_CACHE\fP or \fBLOCAL\fP : This value is ignored.
+.IP \(bu 2
+\fBS3\fP : This is the S3 bucket name/prefix.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+modes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings that specify the local cache modes. You can use one or more local cache modes at the same time. This is only used for \fBLOCAL\fP cache types.
+.sp
+Possible values are:
+.INDENT 0.0
+.INDENT 3.5
+LOCAL_SOURCE_CACHE
+.UNINDENT
+.UNINDENT
+.sp
+Caches Git metadata for primary and secondary sources. After the cache is created, subsequent builds pull only the change between commits. This mode is a good choice for projects with a clean working directory and a source that is a large Git repository. If you choose this option and your project does not use a Git repository (GitHub, GitHub Enterprise, or Bitbucket), the option is ignored.
+.INDENT 0.0
+.INDENT 3.5
+LOCAL_DOCKER_LAYER_CACHE
+.UNINDENT
+.UNINDENT
+.sp
+Caches existing Docker layers. This mode is a good choice for projects that build or pull large Docker images. It can prevent the performance issues caused by pulling large Docker images down from the network.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+You can use a Docker layer cache in the Linux environment only.
+.IP \(bu 2
+The \fBprivileged\fP flag must be set so that your project has the required Docker permissions.
+.IP \(bu 2
+You should consider the security implications before you use a Docker layer cache.
+.UNINDENT
+.sp
+LOCAL_CUSTOM_CACHE
+.UNINDENT
+.UNINDENT
+.sp
+Caches directories you specify in the buildspec file. This mode is a good choice if your build scenario is not suited to one of the other three local cache modes. If you use a custom cache:
+.INDENT 0.0
+.IP \(bu 2
+Only directories can be specified for caching. You cannot specify individual files.
+.IP \(bu 2
+Symlinks are used to reference cached directories.
+.IP \(bu 2
+Cached directories are linked to your build before it downloads its project sources. Cached items are overridden if a source item has the same name. Directories are specified using cache paths in the buildspec file.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,location=string,modes=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "type": "NO_CACHE"|"S3"|"LOCAL",
+  "location": "string",
+  "modes": ["LOCAL_DOCKER_LAYER_CACHE"|"LOCAL_SOURCE_CACHE"|"LOCAL_CUSTOM_CACHE", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-environment\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information to be changed about the build environment for the build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of build environment to use for related builds.
+.INDENT 0.0
+.IP \(bu 2
+The environment type \fBARM_CONTAINER\fP is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Sydney), and EU (Frankfurt).
+.IP \(bu 2
+The environment type \fBLINUX_CONTAINER\fP with compute type \fBbuild.general1.2xlarge\fP is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Canada (Central), EU (Ireland), EU (London), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), China (Beijing), and China (Ningxia).
+.IP \(bu 2
+The environment type \fBLINUX_GPU_CONTAINER\fP is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Canada (Central), EU (Ireland), EU (London), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney) , China (Beijing), and China (Ningxia).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The image tag or image digest that identifies the Docker image to use for this build project. Use the following formats:
+.INDENT 0.0
+.IP \(bu 2
+For an image tag: \fB<registry>/<repository>:<tag>\fP . For example, in the Docker repository that CodeBuild uses to manage its Docker images, this would be \fBaws/codebuild/standard:4.0\fP .
+.IP \(bu 2
+For an image digest: \fB<registry>/<repository>@<digest>\fP . For example, to specify an image with the digest "sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0382cfbdbf," use \fB<registry>/<repository>@sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0382cfbdbf\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+computeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the compute resources the build project uses. Available values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBBUILD_GENERAL1_SMALL\fP : Use up to 3 GB memory and 2 vCPUs for builds.
+.IP \(bu 2
+\fBBUILD_GENERAL1_MEDIUM\fP : Use up to 7 GB memory and 4 vCPUs for builds.
+.IP \(bu 2
+\fBBUILD_GENERAL1_LARGE\fP : Use up to 16 GB memory and 8 vCPUs for builds, depending on your environment type.
+.IP \(bu 2
+\fBBUILD_GENERAL1_2XLARGE\fP : Use up to 145 GB memory, 72 vCPUs, and 824 GB of SSD storage for builds. This compute type supports Docker images up to 100 GB uncompressed.
+.UNINDENT
+.sp
+If you use \fBBUILD_GENERAL1_LARGE\fP :
+.INDENT 0.0
+.IP \(bu 2
+For environment type \fBLINUX_CONTAINER\fP , you can use up to 15 GB memory and 8 vCPUs for builds.
+.IP \(bu 2
+For environment type \fBLINUX_GPU_CONTAINER\fP , you can use up to 255 GB memory, 32 vCPUs, and 4 NVIDIA Tesla V100 GPUs for builds.
+.IP \(bu 2
+For environment type \fBARM_CONTAINER\fP , you can use up to 16 GB memory and 8 vCPUs on ARM\-based processors for builds.
+.UNINDENT
+.sp
+For more information, see \fI\%Build Environment Compute Types\fP in the \fIAWS CodeBuild User Guide.\fP
+.UNINDENT
+.UNINDENT
+.sp
+environmentVariables \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of environment variables to make available to builds for this build project.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about an environment variable for a build project or a build.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or key of the environment variable.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the environment variable.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+We strongly discourage the use of \fBPLAINTEXT\fP environment variables to store sensitive values, especially AWS secret key IDs and secret access keys. \fBPLAINTEXT\fP environment variables can be displayed in plain text using the AWS CodeBuild console and the AWS Command Line Interface (AWS CLI). For sensitive values, we recommend you use an environment variable of type \fBPARAMETER_STORE\fP or \fBSECRETS_MANAGER\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of environment variable. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBPARAMETER_STORE\fP : An environment variable stored in Amazon EC2 Systems Manager Parameter Store. To learn how to specify a parameter store environment variable, see \fI\%env/parameter\-store\fP in the \fIAWS CodeBuild User Guide\fP .
+.IP \(bu 2
+\fBPLAINTEXT\fP : An environment variable in plain text format. This is the default value.
+.IP \(bu 2
+\fBSECRETS_MANAGER\fP : An environment variable stored in AWS Secrets Manager. To learn how to specify a secrets manager environment variable, see \fI\%env/secrets\-manager\fP in the \fIAWS CodeBuild User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+privilegedMode \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables running the Docker daemon inside a Docker container. Set to true only if the build project is used to build Docker images. Otherwise, a build that attempts to interact with the Docker daemon fails. The default setting is \fBfalse\fP .
+.sp
+You can initialize the Docker daemon during the install phase of your build by adding one of the following sets of commands to the install phase of your buildspec file:
+.sp
+If the operating system\(aqs base image is Ubuntu Linux:
+.INDENT 0.0
+.INDENT 3.5
+\fB\- nohup /usr/local/bin/dockerd \-\-host=unix:///var/run/docker.sock \-\-host=tcp://0.0.0.0:2375 \-\-storage\-driver=overlay&\fP
+.sp
+\fB\- timeout 15 sh \-c "until docker info; do echo .; sleep 1; done"\fP
+.UNINDENT
+.UNINDENT
+.sp
+If the operating system\(aqs base image is Alpine Linux and the previous command does not work, add the \fB\-t\fP argument to \fBtimeout\fP :
+.INDENT 0.0
+.INDENT 3.5
+\fB\- nohup /usr/local/bin/dockerd \-\-host=unix:///var/run/docker.sock \-\-host=tcp://0.0.0.0:2375 \-\-storage\-driver=overlay&\fP
+.sp
+\fB\- timeout \-t 15 sh \-c "until docker info; do echo .; sleep 1; done"\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+certificate \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Amazon S3 bucket, path prefix, and object key that contains the PEM\-encoded certificate for the build project. For more information, see \fI\%certificate\fP in the \fIAWS CodeBuild User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+registryCredential \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The credentials for access to a private registry.
+.sp
+credential \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) or name of credentials created using AWS Secrets Manager.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBcredential\fP can use the name of the credentials only if they exist in your current AWS Region.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+credentialProvider \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The service that created the credentials to access a private Docker registry. The valid value, SECRETS_MANAGER, is for AWS Secrets Manager.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imagePullCredentialsType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of credentials AWS CodeBuild uses to pull images in your build. There are two valid values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCODEBUILD\fP specifies that AWS CodeBuild uses its own credentials. This requires that you modify your ECR repository policy to trust AWS CodeBuild\(aqs service principal.
+.IP \(bu 2
+\fBSERVICE_ROLE\fP specifies that AWS CodeBuild uses your build project\(aqs service role.
+.UNINDENT
+.sp
+When you use a cross\-account or private registry image, you must use SERVICE_ROLE credentials. When you use an AWS CodeBuild curated image, you must use CODEBUILD credentials.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,image=string,computeType=string,environmentVariables=[{name=string,value=string,type=string},{name=string,value=string,type=string}],privilegedMode=boolean,certificate=string,registryCredential={credential=string,credentialProvider=string},imagePullCredentialsType=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "type": "WINDOWS_CONTAINER"|"LINUX_CONTAINER"|"LINUX_GPU_CONTAINER"|"ARM_CONTAINER"|"WINDOWS_SERVER_2019_CONTAINER",
+  "image": "string",
+  "computeType": "BUILD_GENERAL1_SMALL"|"BUILD_GENERAL1_MEDIUM"|"BUILD_GENERAL1_LARGE"|"BUILD_GENERAL1_2XLARGE",
+  "environmentVariables": [
+    {
+      "name": "string",
+      "value": "string",
+      "type": "PLAINTEXT"|"PARAMETER_STORE"|"SECRETS_MANAGER"
+    }
+    ...
+  ],
+  "privilegedMode": true|false,
+  "certificate": "string",
+  "registryCredential": {
+    "credential": "string",
+    "credentialProvider": "SECRETS_MANAGER"
+  },
+  "imagePullCredentialsType": "CODEBUILD"|"SERVICE_ROLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The replacement ARN of the AWS Identity and Access Management (IAM) role that enables AWS CodeBuild to interact with dependent AWS services on behalf of the AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-timeout\-in\-minutes\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The replacement value in minutes, from 5 to 480 (8 hours), for AWS CodeBuild to wait before timing out any related build that did not get marked as completed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-queued\-timeout\-in\-minutes\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of minutes a build is allowed to be queued before it times out.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encryption\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Key Management Service (AWS KMS) customer master key (CMK) to be used for encrypting the build output artifacts.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can use a cross\-account KMS key to encrypt the build output artifacts if your service role has permission to that key.
+.UNINDENT
+.UNINDENT
+.sp
+You can specify either the Amazon Resource Name (ARN) of the CMK or, if available, the CMK\(aqs alias (using the format \fBalias/<alias\-name>\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An updated list of tag key and value pairs associated with this build project.
+.sp
+These tags are available for use by AWS services that support AWS CodeBuild build project tags.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A tag, consisting of a key and a value.
+.sp
+This tag is available for use by AWS services that support tags in AWS CodeBuild.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag\(aqs key.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag\(aqs value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+key=string,value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "key": "string",
+    "value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+VpcConfig enables AWS CodeBuild to access resources in an Amazon VPC.
+.sp
+vpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Amazon VPC.
+.UNINDENT
+.UNINDENT
+.sp
+subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of one or more subnet IDs in your Amazon VPC.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+securityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of one or more security groups IDs in your Amazon VPC.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+vpcId=string,subnets=string,string,securityGroupIds=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "vpcId": "string",
+  "subnets": ["string", ...],
+  "securityGroupIds": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-badge\-enabled\fP | \fB\-\-no\-badge\-enabled\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set this to true to generate a publicly accessible URL for your project\(aqs build badge.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-logs\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about logs for the build project. A project can create logs in Amazon CloudWatch Logs, logs in an S3 bucket, or both.
+.sp
+cloudWatchLogs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about Amazon CloudWatch Logs for a build project. Amazon CloudWatch Logs are enabled by default.
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the logs in Amazon CloudWatch Logs for a build project. Valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBENABLED\fP : Amazon CloudWatch Logs are enabled for this build project.
+.IP \(bu 2
+\fBDISABLED\fP : Amazon CloudWatch Logs are not enabled for this build project.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+groupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The group name of the logs in Amazon CloudWatch Logs. For more information, see \fI\%Working with Log Groups and Log Streams\fP .
+.UNINDENT
+.UNINDENT
+.sp
+streamName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The prefix of the stream name of the Amazon CloudWatch Logs. For more information, see \fI\%Working with Log Groups and Log Streams\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+s3Logs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about logs built to an S3 bucket for a build project. S3 logs are not enabled by default.
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the S3 build logs. Valid values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBENABLED\fP : S3 build logs are enabled for this build project.
+.IP \(bu 2
+\fBDISABLED\fP : S3 build logs are not enabled for this build project.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of an S3 bucket and the path prefix for S3 logs. If your Amazon S3 bucket name is \fBmy\-bucket\fP , and your path prefix is \fBbuild\-log\fP , then acceptable formats are \fBmy\-bucket/build\-log\fP or \fBarn:aws:s3:::my\-bucket/build\-log\fP .
+.UNINDENT
+.UNINDENT
+.sp
+encryptionDisabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true if you do not want your S3 build log output encrypted. By default S3 build logs are encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+bucketOwnerAccess \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the access for objects that are uploaded to an Amazon S3 bucket that is owned by another account.
+.sp
+By default, only the account that uploads the objects to the bucket has access to these objects. This property allows you to give the bucket owner access to these objects.
+.INDENT 0.0
+.INDENT 3.5
+NONE
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner does not have access to the objects. This is the default.
+.INDENT 0.0
+.INDENT 3.5
+READ_ONLY
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner has read only access to the objects. The uploading account retains ownership of the objects.
+.INDENT 0.0
+.INDENT 3.5
+FULL
+.UNINDENT
+.UNINDENT
+.sp
+The bucket owner has full access to the objects. Object ownership is determined by the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+If the bucket is configured with the \fBBucket owner preferred\fP setting, the bucket owner owns the objects. The uploading account will have object access as specified by the bucket\(aqs policy.
+.IP \(bu 2
+Otherwise, the uploading account retains ownership of the objects.
+.UNINDENT
+.sp
+For more information about Amazon S3 object ownership, see \fI\%Controlling ownership of uploaded objects using S3 Object Ownership\fP in the \fIAmazon Simple Storage Service User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+cloudWatchLogs={status=string,groupName=string,streamName=string},s3Logs={status=string,location=string,encryptionDisabled=boolean,bucketOwnerAccess=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "cloudWatchLogs": {
+    "status": "ENABLED"|"DISABLED",
+    "groupName": "string",
+    "streamName": "string"
+  },
+  "s3Logs": {
+    "status": "ENABLED"|"DISABLED",
+    "location": "string",
+    "encryptionDisabled": true|false,
+    "bucketOwnerAccess": "NONE"|"READ_ONLY"|"FULL"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-file\-system\-locations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBProjectFileSystemLocation\fP objects for a CodeBuild build project. A \fBProjectFileSystemLocation\fP object specifies the \fBidentifier\fP , \fBlocation\fP , \fBmountOptions\fP , \fBmountPoint\fP , and \fBtype\fP of a file system created using Amazon Elastic File System.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a file system created by Amazon Elastic File System (EFS). For more information, see \fI\%What Is Amazon Elastic File System?\fP
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the file system. The one supported type is \fBEFS\fP .
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that specifies the location of the file system created by Amazon EFS. Its format is \fBefs\-dns\-name:/directory\-path\fP . You can find the DNS name of file system when you view it in the AWS EFS console. The directory path is a path to a directory in the file system that CodeBuild mounts. For example, if the DNS name of a file system is \fBfs\-abcd1234.efs.us\-west\-2.amazonaws.com\fP , and its mount directory is \fBmy\-efs\-mount\-directory\fP , then the \fBlocation\fP is \fBfs\-abcd1234.efs.us\-west\-2.amazonaws.com:/my\-efs\-mount\-directory\fP .
+.sp
+The directory path in the format \fBefs\-dns\-name:/directory\-path\fP is optional. If you do not specify a directory path, the location is only the DNS name and CodeBuild mounts the entire file system.
+.UNINDENT
+.UNINDENT
+.sp
+mountPoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in the container where you mount the file system.
+.UNINDENT
+.UNINDENT
+.sp
+identifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name used to access a file system created by Amazon EFS. CodeBuild creates an environment variable by appending the \fBidentifier\fP in all capital letters to \fBCODEBUILD_\fP . For example, if you specify \fBmy_efs\fP for \fBidentifier\fP , a new environment variable is create named \fBCODEBUILD_MY_EFS\fP .
+.sp
+The \fBidentifier\fP is used to mount your file system.
+.UNINDENT
+.UNINDENT
+.sp
+mountOptions \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The mount options for a file system created by AWS EFS. The default mount options used by CodeBuild are \fBnfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2\fP . For more information, see \fI\%Recommended NFS Mount Options\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,location=string,mountPoint=string,identifier=string,mountOptions=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "type": "EFS",
+    "location": "string",
+    "mountPoint": "string",
+    "identifier": "string",
+    "mountOptions": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-build\-batch\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains configuration information about a batch build project.
+.sp
+serviceRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the service role ARN for the batch build project.
+.UNINDENT
+.UNINDENT
+.sp
+combineArtifacts \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies if the build artifacts for the batch build should be combined into a single artifact location.
+.UNINDENT
+.UNINDENT
+.sp
+restrictions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBBatchRestrictions\fP object that specifies the restrictions for the batch build.
+.sp
+maximumBuildsAllowed \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the maximum number of builds allowed.
+.UNINDENT
+.UNINDENT
+.sp
+computeTypesAllowed \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings that specify the compute types that are allowed for the batch build. See \fI\%Build environment compute types\fP in the \fIAWS CodeBuild User Guide\fP for these values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeoutInMins \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the maximum amount of time, in minutes, that the batch build must be completed in.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+serviceRole=string,combineArtifacts=boolean,restrictions={maximumBuildsAllowed=integer,computeTypesAllowed=[string,string]},timeoutInMins=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "serviceRole": "string",
+  "combineArtifacts": true|false,
+  "restrictions": {
+    "maximumBuildsAllowed": integer,
+    "computeTypesAllowed": ["string", ...]
+  },
+  "timeoutInMins": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-concurrent\-build\-limit\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of concurrent builds that are allowed for this project.
+.sp
+New builds are only started if the current number of builds is less than or equal to this limit. If the current build count meets this limit, new builds are throttled and are not run.
+.sp
+To remove this limit, set this value to \-1.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo change an AWS CodeBuild build project\(aqs settings.\fP
+.sp
+The following \fBupdate\-project\fP example changes the settings of the specified CodeBuild build project named my\-demo\-project.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codebuild update\-project \-\-name "my\-demo\-project" \e
+    \-\-description "This project is updated" \e
+    \-\-source "{\e"type\e": \e"S3\e",\e"location\e": \e"codebuild\-us\-west\-2\-123456789012\-input\-bucket/my\-source\-2.zip\e"}" \e
+    \-\-artifacts {"\e"type\e": \e"S3\e",\e"location\e": \e"codebuild\-us\-west\-2\-123456789012\-output\-bucket\-2\e""} \e
+    \-\-environment "{\e"type\e": \e"LINUX_CONTAINER\e",\e"image\e": \e"aws/codebuild/standard:1.0\e",\e"computeType\e": \e"BUILD_GENERAL1_MEDIUM\e"}" \e
+    \-\-service\-role "arn:aws:iam::123456789012:role/service\-role/my\-codebuild\-service\-role"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output displays the updated settings.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "project": {
+        "arn": "arn:aws:codebuild:us\-west\-2:123456789012:project/my\-demo\-project",
+        "environment": {
+            "privilegedMode": false,
+            "environmentVariables": [],
+            "type": "LINUX_CONTAINER",
+            "image": "aws/codebuild/standard:1.0",
+            "computeType": "BUILD_GENERAL1_MEDIUM",
+            "imagePullCredentialsType": "CODEBUILD"
+        },
+        "queuedTimeoutInMinutes": 480,
+        "description": "This project is updated",
+        "artifacts": {
+            "packaging": "NONE",
+            "name": "my\-demo\-project",
+            "type": "S3",
+            "namespaceType": "NONE",
+            "encryptionDisabled": false,
+            "location": "codebuild\-us\-west\-2\-123456789012\-output\-bucket\-2"
+        },
+        "encryptionKey": "arn:aws:kms:us\-west\-2:123456789012:alias/aws/s3",
+        "badge": {
+            "badgeEnabled": false
+        },
+        "serviceRole": "arn:aws:iam::123456789012:role/service\-role/my\-codebuild\-service\-role",
+        "lastModified": 1556840545.967,
+        "tags": [],
+        "timeoutInMinutes": 60,
+        "created": 1556839783.274,
+        "name": "my\-demo\-project",
+        "cache": {
+            "type": "NO_CACHE"
+        },
+        "source": {
+            "type": "S3",
+            "insecureSsl": false,
+            "location": "codebuild\-us\-west\-2\-123456789012\-input\-bucket/my\-source\-2.zip"
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Change a Build Project\(aqs Settings (AWS CLI)\fP in the \fIAWS CodeBuild User Guide\fP
+.SH OUTPUT
+.sp
+project \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build project that was changed.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the build project.
+.UNINDENT
+.UNINDENT
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the build project.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description that makes the build project easy to identify.
+.UNINDENT
+.UNINDENT
+.sp
+source \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build input source code for this build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of repository that contains the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBBITBUCKET\fP : The source code is in a Bitbucket repository.
+.IP \(bu 2
+\fBCODECOMMIT\fP : The source code is in an AWS CodeCommit repository.
+.IP \(bu 2
+\fBCODEPIPELINE\fP : The source code settings are specified in the source action of a pipeline in AWS CodePipeline.
+.IP \(bu 2
+\fBGITHUB\fP : The source code is in a GitHub or GitHub Enterprise Cloud repository.
+.IP \(bu 2
+\fBGITHUB_ENTERPRISE\fP : The source code is in a GitHub Enterprise Server repository.
+.IP \(bu 2
+\fBNO_SOURCE\fP : The project does not have input source code.
+.IP \(bu 2
+\fBS3\fP : The source code is in an Amazon S3 bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+For source code settings that are specified in the source action of a pipeline in AWS CodePipeline, \fBlocation\fP should not be specified. If it is specified, AWS CodePipeline ignores it. This is because AWS CodePipeline uses the settings in a pipeline\(aqs source action instead of this value.
+.IP \(bu 2
+For source code in an AWS CodeCommit repository, the HTTPS clone URL to the repository that contains the source code and the buildspec file (for example, \fBhttps://git\-codecommit.<region\-ID>.amazonaws.com/v1/repos/<repo\-name>\fP ).
+.IP \(bu 2
+For source code in an Amazon S3 input bucket, one of the following.
+.INDENT 2.0
+.IP \(bu 2
+The path to the ZIP file that contains the source code (for example, \fB<bucket\-name>/<path>/<object\-name>.zip\fP ).
+.IP \(bu 2
+The path to the folder that contains the source code (for example, \fB<bucket\-name>/<path\-to\-source\-code>/<folder>/\fP ).
+.UNINDENT
+.IP \(bu 2
+For source code in a GitHub repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your GitHub account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with GitHub, on the GitHub \fBAuthorize application\fP page, for \fBOrganization access\fP , choose \fBRequest access\fP next to each repository you want to allow AWS CodeBuild to have access to, and then choose \fBAuthorize application\fP . (After you have connected to your GitHub account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.IP \(bu 2
+For source code in a Bitbucket repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your Bitbucket account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with Bitbucket, on the Bitbucket \fBConfirm access to your account\fP page, choose \fBGrant access\fP . (After you have connected to your Bitbucket account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+gitCloneDepth \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git clone depth for the build project.
+.UNINDENT
+.UNINDENT
+.sp
+gitSubmodulesConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git submodules configuration for the build project.
+.sp
+fetchSubmodules \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to fetch Git submodules for your AWS CodeBuild build project.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildspec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The buildspec file declaration to use for the builds in this build project.
+.sp
+If this value is set, it can be either an inline buildspec definition, the path to an alternate buildspec file relative to the value of the built\-in \fBCODEBUILD_SRC_DIR\fP environment variable, or the path to an S3 bucket. The bucket must be in the same AWS Region as the build project. Specify the buildspec file using its ARN (for example, \fBarn:aws:s3:::my\-codebuild\-sample2/buildspec.yml\fP ). If this value is not provided or is set to an empty string, the source code must contain a buildspec file in its root directory. For more information, see \fI\%Buildspec File Name and Storage Location\fP .
+.UNINDENT
+.UNINDENT
+.sp
+auth \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the authorization settings for AWS CodeBuild to access the source code to be built.
+.sp
+This information is for the AWS CodeBuild console\(aqs use only. Your code should not get or set this information directly.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This data type is deprecated and is no longer accurate or used.
+.UNINDENT
+.UNINDENT
+.sp
+The authorization type to use. The only valid value is \fBOAUTH\fP , which represents the OAuth authorization type.
+.UNINDENT
+.UNINDENT
+.sp
+resource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource value that applies to the specified authorization type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+reportBuildStatus \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to report the status of a build\(aqs start and finish to your source provider. This option is valid only when your source provider is GitHub, GitHub Enterprise, or Bitbucket. If this is set and you use a different source provider, an \fBinvalidInputException\fP is thrown.
+.sp
+To be able to report the build status to the source provider, the user associated with the source provider must have write access to the repo. If the user does not have write access, the build status cannot be updated. For more information, see \fI\%Source provider access\fP in the \fIAWS CodeBuild User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The status of a build triggered by a webhook is always reported to your source provider.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildStatusConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information that defines how the build project reports the build status to the source provider. This option is only used when the source provider is \fBGITHUB\fP , \fBGITHUB_ENTERPRISE\fP , or \fBBITBUCKET\fP .
+.sp
+context \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the context of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBname\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBcontext\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.sp
+targetUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the target url of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBurl\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBtarget_url\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+insecureSsl \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enable this flag to ignore SSL warnings while connecting to the project source code.
+.UNINDENT
+.UNINDENT
+.sp
+sourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this project source. The identifier can only contain alphanumeric characters and underscores, and must be less than 128 characters in length.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+secondarySources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBProjectSource\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build input source code for the build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of repository that contains the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBBITBUCKET\fP : The source code is in a Bitbucket repository.
+.IP \(bu 2
+\fBCODECOMMIT\fP : The source code is in an AWS CodeCommit repository.
+.IP \(bu 2
+\fBCODEPIPELINE\fP : The source code settings are specified in the source action of a pipeline in AWS CodePipeline.
+.IP \(bu 2
+\fBGITHUB\fP : The source code is in a GitHub or GitHub Enterprise Cloud repository.
+.IP \(bu 2
+\fBGITHUB_ENTERPRISE\fP : The source code is in a GitHub Enterprise Server repository.
+.IP \(bu 2
+\fBNO_SOURCE\fP : The project does not have input source code.
+.IP \(bu 2
+\fBS3\fP : The source code is in an Amazon S3 bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of the source code to be built. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+For source code settings that are specified in the source action of a pipeline in AWS CodePipeline, \fBlocation\fP should not be specified. If it is specified, AWS CodePipeline ignores it. This is because AWS CodePipeline uses the settings in a pipeline\(aqs source action instead of this value.
+.IP \(bu 2
+For source code in an AWS CodeCommit repository, the HTTPS clone URL to the repository that contains the source code and the buildspec file (for example, \fBhttps://git\-codecommit.<region\-ID>.amazonaws.com/v1/repos/<repo\-name>\fP ).
+.IP \(bu 2
+For source code in an Amazon S3 input bucket, one of the following.
+.INDENT 2.0
+.IP \(bu 2
+The path to the ZIP file that contains the source code (for example, \fB<bucket\-name>/<path>/<object\-name>.zip\fP ).
+.IP \(bu 2
+The path to the folder that contains the source code (for example, \fB<bucket\-name>/<path\-to\-source\-code>/<folder>/\fP ).
+.UNINDENT
+.IP \(bu 2
+For source code in a GitHub repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your GitHub account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with GitHub, on the GitHub \fBAuthorize application\fP page, for \fBOrganization access\fP , choose \fBRequest access\fP next to each repository you want to allow AWS CodeBuild to have access to, and then choose \fBAuthorize application\fP . (After you have connected to your GitHub account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.IP \(bu 2
+For source code in a Bitbucket repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your AWS account to your Bitbucket account. Use the AWS CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with Bitbucket, on the Bitbucket \fBConfirm access to your account\fP page, choose \fBGrant access\fP . (After you have connected to your Bitbucket account, you do not need to finish creating the build project. You can leave the AWS CodeBuild console.) To instruct AWS CodeBuild to use this connection, in the \fBsource\fP object, set the \fBauth\fP object\(aqs \fBtype\fP value to \fBOAUTH\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+gitCloneDepth \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git clone depth for the build project.
+.UNINDENT
+.UNINDENT
+.sp
+gitSubmodulesConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Git submodules configuration for the build project.
+.sp
+fetchSubmodules \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to fetch Git submodules for your AWS CodeBuild build project.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildspec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The buildspec file declaration to use for the builds in this build project.
+.sp
+If this value is set, it can be either an inline buildspec definition, the path to an alternate buildspec file relative to the value of the built\-in \fBCODEBUILD_SRC_DIR\fP environment variable, or the path to an S3 bucket. The bucket must be in the same AWS Region as the build project. Specify the buildspec file using its ARN (for example, \fBarn:aws:s3:::my\-codebuild\-sample2/buildspec.yml\fP ). If this value is not provided or is set to an empty string, the source code must contain a buildspec file in its root directory. For more information, see \fI\%Buildspec File Name and Storage Location\fP .
+.UNINDENT
+.UNINDENT
+.sp
+auth \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the authorization settings for AWS CodeBuild to access the source code to be built.
+.sp
+This information is for the AWS CodeBuild console\(aqs use only. Your code should not get or set this information directly.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This data type is deprecated and is no longer accurate or used.
+.UNINDENT
+.UNINDENT
+.sp
+The authorization type to use. The only valid value is \fBOAUTH\fP , which represents the OAuth authorization type.
+.UNINDENT
+.UNINDENT
+.sp
+resource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource value that applies to the specified authorization type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+reportBuildStatus \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to report the status of a build\(aqs start and finish to your source provider. This option is valid only when your source provider is GitHub, GitHub Enterprise, or Bitbucket. If this is set and you use a different source provider, an \fBinvalidInputException\fP is thrown.
+.sp
+To be able to report the build status to the source provider, the user associated with the source provider must have write access to the repo. If the user does not have write access, the build status cannot be updated. For more information, see \fI\%Source provider access\fP in the \fIAWS CodeBuild User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The status of a build triggered by a webhook is always reported to your source provider.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+buildStatusConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information that defines how the build project reports the build status to the source provider. This option is only used when the source provider is \fBGITHUB\fP , \fBGITHUB_ENTERPRISE\fP , or \fBBITBUCKET\fP .
+.sp
+context \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the context of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBname\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBcontext\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.sp
+targetUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the target url of the build status CodeBuild sends to the source provider. The usage of this parameter depends on the source provider.
+.INDENT 0.0
+.INDENT 3.5
+Bitbucket
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBurl\fP parameter in the Bitbucket commit status. For more information, see \fI\%build\fP in the Bitbucket API documentation.
+.INDENT 0.0
+.INDENT 3.5
+GitHub/GitHub Enterprise Server
+.UNINDENT
+.UNINDENT
+.sp
+This parameter is used for the \fBtarget_url\fP parameter in the GitHub commit status. For more information, see \fI\%Create a commit status\fP in the GitHub developer guide.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+insecureSsl \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enable this flag to ignore SSL warnings while connecting to the project source code.
+.UNINDENT
+.UNINDENT
+.sp
+sourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for this project source. The identifier can only contain alphanumeric characters and underscores, and must be less than 128 characters in length.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+sourceVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:
+.INDENT 0.0
+.IP \(bu 2
+For AWS CodeCommit: the commit ID, branch, or Git tag to use.
+.IP \(bu 2
+For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format \fBpr/pull\-request\-ID\fP (for example \fBpr/25\fP ). If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Amazon S3: the version ID of the object that represents the build input ZIP file to use.
+.UNINDENT
+.sp
+If \fBsourceVersion\fP is specified at the build level, then that version takes precedence over this \fBsourceVersion\fP (at the project level).
+.sp
+For more information, see \fI\%Source Version Sample with CodeBuild\fP in the \fIAWS CodeBuild User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+secondarySourceVersions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBProjectSourceVersion\fP objects. If \fBsecondarySourceVersions\fP is specified at the build level, then they take over these \fBsecondarySourceVersions\fP (at the project level).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A source identifier and its corresponding version.
+.sp
+sourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for a source in the build project. The identifier can only contain alphanumeric characters and underscores, and must be less than 128 characters in length.
+.UNINDENT
+.UNINDENT
+.sp
+sourceVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source version for the corresponding source identifier. If specified, must be one of:
+.INDENT 0.0
+.IP \(bu 2
+For AWS CodeCommit: the commit ID, branch, or Git tag to use.
+.IP \(bu 2
+For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format \fBpr/pull\-request\-ID\fP (for example, \fBpr/25\fP ). If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch\(aqs HEAD commit ID is used. If not specified, the default branch\(aqs HEAD commit ID is used.
+.IP \(bu 2
+For Amazon S3: the version ID of the object that represents the build input ZIP file to use.
+.UNINDENT
+.sp
+For more information, see \fI\%Source Version Sample with CodeBuild\fP in the \fIAWS CodeBuild User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+artifacts \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build output artifacts for the build project.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of build output artifact. Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBCODEPIPELINE\fP : The build project has build output generated through AWS CodePipeline.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBCODEPIPELINE\fP type is not supported for \fBsecondaryArtifacts\fP .
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBNO_ARTIFACTS\fP : The build project does not produce any build output.
+.IP \(bu 2
+\fBS3\fP : The build project stores build output in Amazon S3.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the build output artifact location:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output locations instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the name of the output bucket.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBnamespaceType\fP and \fBname\fP , the pattern that AWS CodeBuild uses to name and store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the path to the output artifact. If \fBpath\fP is not specified, \fBpath\fP is not used.
+.UNINDENT
+.sp
+For example, if \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBNONE\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , the output artifact is stored in the output bucket at \fBMyArtifacts/MyArtifact.zip\fP .
+.UNINDENT
+.UNINDENT
+.sp
+namespaceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBpath\fP and \fBname\fP , the pattern that AWS CodeBuild uses to determine the name and location to store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , valid values include:
+.INDENT 2.0
+.IP \(bu 2
+\fBBUILD_ID\fP : Include the build ID in the location of the build output artifact.
+.IP \(bu 2
+\fBNONE\fP : Do not include the build ID. This is the default if \fBnamespaceType\fP is not specified.
+.UNINDENT
+.UNINDENT
+.sp
+For example, if \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , the output artifact is stored in \fBMyArtifacts/<build\-ID>/MyArtifact.zip\fP .
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Along with \fBpath\fP and \fBnamespaceType\fP , the pattern that AWS CodeBuild uses to name and store the output artifact:
+.INDENT 0.0
+.IP \(bu 2
+If \fBtype\fP is set to \fBCODEPIPELINE\fP , AWS CodePipeline ignores this value if specified. This is because AWS CodePipeline manages its build output names instead of AWS CodeBuild.
+.IP \(bu 2
+If \fBtype\fP is set to \fBNO_ARTIFACTS\fP , this value is ignored if specified, because no build output is produced.
+.IP \(bu 2
+If \fBtype\fP is set to \fBS3\fP , this is the name of the output artifact object. If you set the name to be a forward slash ("/"), the artifact is stored in the root of the output bucket.
+.UNINDENT
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+If \fBpath\fP is set to \fBMyArtifacts\fP , \fBnamespaceType\fP is set to \fBBUILD_ID\fP , and \fBname\fP is set to \fBMyArtifact.zip\fP , then the output artifact is stored in \fBMyArtifacts/<build\-ID>/MyArtifact.zip\fP .
+.IP \(bu 2
+If \fBpath\fP is empty, \fBnamespaceType\f

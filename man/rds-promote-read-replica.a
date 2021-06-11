@@ -1,0 +1,1340 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-PROMOTE-READ-REPLICA" "a" "" ""
+.SH NAME
+rds-promote-read-replica \- Promotes a read replica DB instance to a standalone DB instance
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Promotes a read replica DB instance to a standalone DB instance.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+Backup duration is a function of the amount of changes to the database since the previous backup. If you plan to promote a read replica to a standalone instance, we recommend that you enable backups and complete at least one backup prior to promotion. In addition, a read replica cannot be promoted to a standalone instance when it is in the \fBbacking\-up\fP status. If you have enabled backups on your read replica, configure the automated backup window so that daily backups do not interfere with read replica promotion.
+.IP \(bu 2
+This command doesn\(aqt apply to Aurora MySQL and Aurora PostgreSQL.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  promote\-read\-replica
+\-\-db\-instance\-identifier <value>
+[\-\-backup\-retention\-period <value>]
+[\-\-preferred\-backup\-window <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-db\-instance\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The DB instance identifier. This value is stored as a lowercase string.
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+Must match the identifier of an existing read replica DB instance.
+.UNINDENT
+.sp
+Example: \fBmydbinstance\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-backup\-retention\-period\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days for which automated backups are retained. Setting this parameter to a positive number enables backups. Setting this parameter to 0 disables automated backups.
+.sp
+Default: 1
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+Must be a value from 0 to 35.
+.IP \(bu 2
+Can\(aqt be set to 0 if the DB instance is a source to read replicas.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-preferred\-backup\-window\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The daily time range during which automated backups are created if automated backups are enabled, using the \fBBackupRetentionPeriod\fP parameter.
+.sp
+The default is a 30\-minute window selected at random from an 8\-hour block of time for each AWS Region. To see the time blocks available, see \fI\%Adjusting the Preferred Maintenance Window\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+Must be in the format \fBhh24:mi\-hh24:mi\fP .
+.IP \(bu 2
+Must be in Universal Coordinated Time (UTC).
+.IP \(bu 2
+Must not conflict with the preferred maintenance window.
+.IP \(bu 2
+Must be at least 30 minutes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo promote a read replica\fP
+.sp
+The following \fBpromote\-read\-replica\fP example promotes the specified read replica to become a standalone DB instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds promote\-read\-replica \e
+    \-\-db\-instance\-identifier test\-instance\-repl
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DBInstance": {
+        "DBInstanceArn": "arn:aws:rds:us\-east\-1:123456789012:db:test\-instance\-repl",
+        "StorageType": "standard",
+        "ReadReplicaSourceDBInstanceIdentifier": "test\-instance",
+        "DBInstanceStatus": "modifying",
+        ...some output truncated...
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+DBInstance \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of an Amazon RDS DB instance.
+.sp
+This data type is used as a response element in the \fBDescribeDBInstances\fP action.
+.sp
+DBInstanceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains a user\-supplied database identifier. This identifier is the unique key that identifies a DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+DBInstanceClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the name of the compute and memory capacity class of the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+Engine \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database engine to be used for this DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+DBInstanceStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the current state of this database.
+.sp
+For information about DB instance statuses, see \fI\%DB Instance Status\fP in the \fIAmazon RDS User Guide.\fP
+.UNINDENT
+.UNINDENT
+.sp
+MasterUsername \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the master username for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+DBName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The meaning of this parameter differs according to the database engine you use.
+.INDENT 0.0
+.INDENT 3.5
+\fBMySQL, MariaDB, SQL Server, PostgreSQL\fP
+.UNINDENT
+.UNINDENT
+.sp
+Contains the name of the initial database of this instance that was provided at create time, if one was specified when the DB instance was created. This same name is returned for the life of the DB instance.
+.sp
+Type: String
+.INDENT 0.0
+.INDENT 3.5
+\fBOracle\fP
+.UNINDENT
+.UNINDENT
+.sp
+Contains the Oracle System ID (SID) of the created DB instance. Not shown when the returned parameters do not apply to an Oracle DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+Endpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the connection endpoint.
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the DNS address of the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the port that the database engine is listening on.
+.UNINDENT
+.UNINDENT
+.sp
+HostedZoneId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID that Amazon Route 53 assigns when you create a hosted zone.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AllocatedStorage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the allocated storage size specified in gibibytes.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceCreateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Provides the date and time the DB instance was created.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredBackupWindow \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the daily time range during which automated backups are created if automated backups are enabled, as determined by the \fBBackupRetentionPeriod\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BackupRetentionPeriod \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days for which automatic DB snapshots are retained.
+.UNINDENT
+.UNINDENT
+.sp
+DBSecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of DB security group elements containing \fBDBSecurityGroup.Name\fP and \fBDBSecurityGroup.Status\fP subelements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This data type is used as a response element in the following actions:
+.INDENT 0.0
+.IP \(bu 2
+\fBModifyDBInstance\fP
+.IP \(bu 2
+\fBRebootDBInstance\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromDBSnapshot\fP
+.IP \(bu 2
+\fBRestoreDBInstanceToPointInTime\fP
+.UNINDENT
+.sp
+DBSecurityGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DB security group.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the DB security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VpcSecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Provides a list of VPC security group elements that the DB instance belongs to.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This data type is used as a response element for queries on VPC security group membership.
+.sp
+VpcSecurityGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the VPC security group.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the VPC security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DBParameterGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Provides the list of DB parameter groups applied to this DB instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The status of the DB parameter group.
+.sp
+This data type is used as a response element in the following actions:
+.INDENT 0.0
+.IP \(bu 2
+\fBCreateDBInstance\fP
+.IP \(bu 2
+\fBCreateDBInstanceReadReplica\fP
+.IP \(bu 2
+\fBDeleteDBInstance\fP
+.IP \(bu 2
+\fBModifyDBInstance\fP
+.IP \(bu 2
+\fBRebootDBInstance\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromDBSnapshot\fP
+.UNINDENT
+.sp
+DBParameterGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DB parameter group.
+.UNINDENT
+.UNINDENT
+.sp
+ParameterApplyStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of parameter updates.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the Availability Zone the DB instance is located in.
+.UNINDENT
+.UNINDENT
+.sp
+DBSubnetGroup \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies information on the subnet group associated with the DB instance, including the name, description, and subnets in the subnet group.
+.sp
+DBSubnetGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DB subnet group.
+.UNINDENT
+.UNINDENT
+.sp
+DBSubnetGroupDescription \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the description of the DB subnet group.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the VpcId of the DB subnet group.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetGroupStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides the status of the DB subnet group.
+.UNINDENT
+.UNINDENT
+.sp
+Subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains a list of \fBSubnet\fP elements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This data type is used as a response element for the \fBDescribeDBSubnetGroups\fP operation.
+.sp
+SubnetIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the subnet.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetAvailabilityZone \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains Availability Zone information.
+.sp
+This data type is used as an element in the \fBOrderableDBInstanceOption\fP data type.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Availability Zone.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SubnetOutpost \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If the subnet is associated with an Outpost, this value specifies the Outpost.
+.sp
+For more information about RDS on Outposts, see \fI\%Amazon RDS on AWS Outposts\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Outpost.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SubnetStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the subnet.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DBSubnetGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the DB subnet group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PreferredMaintenanceWindow \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the weekly time range during which system maintenance can occur, in Universal Coordinated Time (UTC).
+.UNINDENT
+.UNINDENT
+.sp
+PendingModifiedValues \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies that changes to the DB instance are pending. This element is only included when changes are pending. Specific changes are identified by subelements.
+.sp
+DBInstanceClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the compute and memory capacity class for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+AllocatedStorage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The allocated storage size for the DB instance specified in gibibytes .
+.UNINDENT
+.UNINDENT
+.sp
+MasterUserPassword \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The master credentials for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+BackupRetentionPeriod \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days for which automated backups are retained.
+.UNINDENT
+.UNINDENT
+.sp
+MultiAZ \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates that the Single\-AZ DB instance will change to a Multi\-AZ deployment.
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The database engine version.
+.UNINDENT
+.UNINDENT
+.sp
+LicenseModel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The license model for the DB instance.
+.sp
+Valid values: \fBlicense\-included\fP | \fBbring\-your\-own\-license\fP | \fBgeneral\-public\-license\fP
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The Provisioned IOPS value for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+DBInstanceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The database identifier for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+StorageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The storage type of the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+CACertificateIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the CA certificate for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+DBSubnetGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DB subnet group for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+PendingCloudwatchLogsExports \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of the log types whose configuration is still pending. In other words, these log types are in the process of being activated or deactivated.
+.sp
+LogTypesToEnable \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Log types that are in the process of being deactivated. After they are deactivated, these log types aren\(aqt exported to CloudWatch Logs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+LogTypesToDisable \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Log types that are in the process of being enabled. After they are enabled, these log types are exported to CloudWatch Logs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ProcessorFeatures \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU cores and the number of threads per core for the DB instance class of the DB instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the processor features of a DB instance class.
+.sp
+To specify the number of CPU cores, use the \fBcoreCount\fP feature name for the \fBName\fP parameter. To specify the number of threads per core, use the \fBthreadsPerCore\fP feature name for the \fBName\fP parameter.
+.sp
+You can set the processor features of the DB instance class for a DB instance when you call one of the following actions:
+.INDENT 0.0
+.IP \(bu 2
+\fBCreateDBInstance\fP
+.IP \(bu 2
+\fBModifyDBInstance\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromDBSnapshot\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromS3\fP
+.IP \(bu 2
+\fBRestoreDBInstanceToPointInTime\fP
+.UNINDENT
+.sp
+You can view the valid processor values for a particular instance class by calling the \fBDescribeOrderableDBInstanceOptions\fP action and specifying the instance class for the \fBDBInstanceClass\fP parameter.
+.sp
+In addition, you can use the following actions for DB instance class processor information:
+.INDENT 0.0
+.IP \(bu 2
+\fBDescribeDBInstances\fP
+.IP \(bu 2
+\fBDescribeDBSnapshots\fP
+.IP \(bu 2
+\fBDescribeValidDBInstanceModifications\fP
+.UNINDENT
+.sp
+If you call \fBDescribeDBInstances\fP , \fBProcessorFeature\fP returns non\-null values only if the following conditions are met:
+.INDENT 0.0
+.IP \(bu 2
+You are accessing an Oracle DB instance.
+.IP \(bu 2
+Your Oracle DB instance class supports configuring the number of CPU cores and threads per core.
+.IP \(bu 2
+The current number CPU cores and threads is set to a non\-default value.
+.UNINDENT
+.sp
+For more information, see \fI\%Configuring the Processor of the DB Instance Class\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the processor feature. Valid names are \fBcoreCount\fP and \fBthreadsPerCore\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of a processor feature name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IAMDatabaseAuthenticationEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether mapping of AWS Identity and Access Management (IAM) accounts to database accounts is enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LatestRestorableTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the latest time to which a database can be restored with point\-in\-time restore.
+.UNINDENT
+.UNINDENT
+.sp
+MultiAZ \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies if the DB instance is a Multi\-AZ deployment.
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the database engine version.
+.UNINDENT
+.UNINDENT
+.sp
+AutoMinorVersionUpgrade \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates that minor version patches are applied automatically.
+.UNINDENT
+.UNINDENT
+.sp
+ReadReplicaSourceDBInstanceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains the identifier of the source DB instance if this DB instance is a read replica.
+.UNINDENT
+.UNINDENT
+.sp
+ReadReplicaDBInstanceIdentifiers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains one or more identifiers of the read replicas associated with this DB instance.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ReadReplicaDBClusterIdentifiers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains one or more identifiers of Aurora DB clusters to which the RDS DB instance is replicated as a read replica. For example, when you create an Aurora read replica of an RDS MySQL DB instance, the Aurora MySQL DB cluster for the Aurora read replica is shown. This output does not contain information about cross region Aurora read replicas.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Currently, each RDS DB instance can have only one Aurora read replica.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ReplicaMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The open mode of an Oracle read replica. The default is \fBopen\-read\-only\fP . For more information, see \fI\%Working with Oracle Read Replicas for Amazon RDS\fP in the \fIAmazon RDS User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This attribute is only supported in RDS for Oracle.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LicenseModel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+License model information for this DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Provisioned IOPS (I/O operations per second) value.
+.UNINDENT
+.UNINDENT
+.sp
+OptionGroupMemberships \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Provides the list of option group memberships for this DB instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information on the option groups the DB instance is a member of.
+.sp
+OptionGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the option group that the instance belongs to.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the DB instance\(aqs option group membership. Valid values are: \fBin\-sync\fP , \fBpending\-apply\fP , \fBpending\-removal\fP , \fBpending\-maintenance\-apply\fP , \fBpending\-maintenance\-removal\fP , \fBapplying\fP , \fBremoving\fP , and \fBfailed\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CharacterSetName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the name of the character set that this instance is associated with.
+.UNINDENT
+.UNINDENT
+.sp
+NcharCharacterSetName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the NCHAR character set for the Oracle DB instance. This character set specifies the Unicode encoding for data stored in table columns of type NCHAR, NCLOB, or NVARCHAR2.
+.UNINDENT
+.UNINDENT
+.sp
+SecondaryAvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the name of the secondary Availability Zone for a DB instance with multi\-AZ support.
+.UNINDENT
+.UNINDENT
+.sp
+PubliclyAccessible \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the accessibility options for the DB instance.
+.sp
+When the DB instance is publicly accessible, its DNS endpoint resolves to the private IP address from within the DB instance\(aqs VPC, and to the public IP address from outside of the DB instance\(aqs VPC. Access to the DB instance is ultimately controlled by the security group it uses, and that public access is not permitted if the security group assigned to the DB instance doesn\(aqt permit it.
+.sp
+When the DB instance isn\(aqt publicly accessible, it is an internal DB instance with a DNS name that resolves to a private IP address.
+.sp
+For more information, see  CreateDBInstance .
+.UNINDENT
+.UNINDENT
+.sp
+StatusInfos \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The status of a read replica. If the instance isn\(aqt a read replica, this is blank.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides a list of status information for a DB instance.
+.sp
+StatusType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This value is currently "read replication."
+.UNINDENT
+.UNINDENT
+.sp
+Normal \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that is true if the instance is operating normally, or false if the instance is in an error state.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Status of the DB instance. For a StatusType of read replica, the values can be replicating, replication stop point set, replication stop point reached, error, stopped, or terminated.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Details of the error if there is an error for the instance. If the instance isn\(aqt in an error state, this value is blank.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StorageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the storage type associated with DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+TdeCredentialArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN from the key store with which the instance is associated for TDE encryption.
+.UNINDENT
+.UNINDENT
+.sp
+DbInstancePort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the port that the DB instance listens on. If the DB instance is part of a DB cluster, this can be a different port than the DB cluster port.
+.UNINDENT
+.UNINDENT
+.sp
+DBClusterIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the DB instance is a member of a DB cluster, contains the name of the DB cluster that the DB instance is a member of.
+.UNINDENT
+.UNINDENT
+.sp
+StorageEncrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the DB instance is encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If \fBStorageEncrypted\fP is true, the AWS KMS key identifier for the encrypted DB instance.
+.sp
+The AWS KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the AWS KMS customer master key (CMK).
+.UNINDENT
+.UNINDENT
+.sp
+DbiResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region\-unique, immutable identifier for the DB instance. This identifier is found in AWS CloudTrail log entries whenever the AWS KMS customer master key (CMK) for the DB instance is accessed.
+.UNINDENT
+.UNINDENT
+.sp
+CACertificateIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the CA certificate for this DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+DomainMemberships \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Active Directory Domain membership records associated with the DB instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An Active Directory Domain membership record associated with the DB instance or cluster.
+.sp
+Domain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the Active Directory Domain.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the Active Directory Domain membership for the DB instance or cluster. Values include joined, pending\-join, failed, and so on.
+.UNINDENT
+.UNINDENT
+.sp
+FQDN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully qualified domain name of the Active Directory Domain.
+.UNINDENT
+.UNINDENT
+.sp
+IAMRoleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the IAM role to be used when making API calls to the Directory Service.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CopyTagsToSnapshot \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether tags are copied from the DB instance to snapshots of the DB instance.
+.INDENT 0.0
+.INDENT 3.5
+\fBAmazon Aurora\fP
+.UNINDENT
+.UNINDENT
+.sp
+Not applicable. Copying tags to snapshots is managed by the DB cluster. Setting this value for an Aurora DB instance has no effect on the DB cluster setting. For more information, see \fBDBCluster\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MonitoringInterval \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+EnhancedMonitoringResourceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Amazon CloudWatch Logs log stream that receives the Enhanced Monitoring metrics data for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+MonitoringRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN for the IAM role that permits RDS to send Enhanced Monitoring metrics to Amazon CloudWatch Logs.
+.UNINDENT
+.UNINDENT
+.sp
+PromotionTier \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A value that specifies the order in which an Aurora Replica is promoted to the primary instance after a failure of the existing primary instance. For more information, see \fI\%Fault Tolerance for an Aurora DB Cluster\fP in the \fIAmazon Aurora User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DBInstanceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+Timezone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time zone of the DB instance. In most cases, the \fBTimezone\fP element is empty. \fBTimezone\fP content appears only for Microsoft SQL Server DB instances that were created with a time zone specified.
+.UNINDENT
+.UNINDENT
+.sp
+IAMDatabaseAuthenticationEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if mapping of AWS Identity and Access Management (IAM) accounts to database accounts is enabled, and otherwise false.
+.sp
+IAM database authentication can be enabled for the following database engines
+.INDENT 0.0
+.IP \(bu 2
+For MySQL 5.6, minor version 5.6.34 or higher
+.IP \(bu 2
+For MySQL 5.7, minor version 5.7.16 or higher
+.IP \(bu 2
+Aurora 5.6 or higher. To enable IAM database authentication for Aurora, see DBCluster Type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PerformanceInsightsEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if Performance Insights is enabled for the DB instance, and otherwise false.
+.UNINDENT
+.UNINDENT
+.sp
+PerformanceInsightsKMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS KMS key identifier for encryption of Performance Insights data.
+.sp
+The AWS KMS key identifier is the key ARN, key ID, alias ARN, or alias name for the AWS KMS customer master key (CMK).
+.UNINDENT
+.UNINDENT
+.sp
+PerformanceInsightsRetentionPeriod \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in days, to retain Performance Insights data. Valid values are 7 or 731 (2 years).
+.UNINDENT
+.UNINDENT
+.sp
+EnabledCloudwatchLogsExports \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of log types that this DB instance is configured to export to CloudWatch Logs.
+.sp
+Log types vary by DB engine. For information about the log types for each DB engine, see \fI\%Amazon RDS Database Log Files\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ProcessorFeatures \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU cores and the number of threads per core for the DB instance class of the DB instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the processor features of a DB instance class.
+.sp
+To specify the number of CPU cores, use the \fBcoreCount\fP feature name for the \fBName\fP parameter. To specify the number of threads per core, use the \fBthreadsPerCore\fP feature name for the \fBName\fP parameter.
+.sp
+You can set the processor features of the DB instance class for a DB instance when you call one of the following actions:
+.INDENT 0.0
+.IP \(bu 2
+\fBCreateDBInstance\fP
+.IP \(bu 2
+\fBModifyDBInstance\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromDBSnapshot\fP
+.IP \(bu 2
+\fBRestoreDBInstanceFromS3\fP
+.IP \(bu 2
+\fBRestoreDBInstanceToPointInTime\fP
+.UNINDENT
+.sp
+You can view the valid processor values for a particular instance class by calling the \fBDescribeOrderableDBInstanceOptions\fP action and specifying the instance class for the \fBDBInstanceClass\fP parameter.
+.sp
+In addition, you can use the following actions for DB instance class processor information:
+.INDENT 0.0
+.IP \(bu 2
+\fBDescribeDBInstances\fP
+.IP \(bu 2
+\fBDescribeDBSnapshots\fP
+.IP \(bu 2
+\fBDescribeValidDBInstanceModifications\fP
+.UNINDENT
+.sp
+If you call \fBDescribeDBInstances\fP , \fBProcessorFeature\fP returns non\-null values only if the following conditions are met:
+.INDENT 0.0
+.IP \(bu 2
+You are accessing an Oracle DB instance.
+.IP \(bu 2
+Your Oracle DB instance class supports configuring the number of CPU cores and threads per core.
+.IP \(bu 2
+The current number CPU cores and threads is set to a non\-default value.
+.UNINDENT
+.sp
+For more information, see \fI\%Configuring the Processor of the DB Instance Class\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the processor feature. Valid names are \fBcoreCount\fP and \fBthreadsPerCore\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of a processor feature name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DeletionProtection \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if the DB instance has deletion protection enabled. The database can\(aqt be deleted when deletion protection is enabled. For more information, see \fI\%Deleting a DB Instance\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AssociatedRoles \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Identity and Access Management (IAM) roles associated with the DB instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an AWS Identity and Access Management (IAM) role that is associated with a DB instance.
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM role that is associated with the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+FeatureName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the feature associated with the AWS Identity and Access Management (IAM) role. For the list of supported feature names, see \fBDBEngineVersion\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the state of association between the IAM role and the DB instance. The Status property returns one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+\fBACTIVE\fP \- the IAM role ARN is associated with the DB instance and can be used to access other AWS services on your behalf.
+.IP \(bu 2
+\fBPENDING\fP \- the IAM role ARN is being associated with the DB instance.
+.IP \(bu 2
+\fBINVALID\fP \- the IAM role ARN is associated with the DB instance, but the DB instance is unable to assume the IAM role in order to access other AWS services on your behalf.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ListenerEndpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the listener connection endpoint for SQL Server Always On.
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the DNS address of the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the port that the database engine is listening on.
+.UNINDENT
+.UNINDENT
+.sp
+HostedZoneId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID that Amazon Route 53 assigns when you create a hosted zone.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MaxAllocatedStorage \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper limit to which Amazon RDS can automatically scale the storage of the DB instance.
+.UNINDENT
+.UNINDENT
+.sp
+TagList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags. For more information, see \fI\%Tagging Amazon RDS Resources\fP in the \fIAmazon RDS User Guide.\fP
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata assigned to an Amazon RDS resource consisting of a key\-value pair.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A key is the required name of the tag. The string value can be from 1 to 128 Unicode characters in length and can\(aqt be prefixed with "aws:" or "rds:". The string can only contain only the set of Unicode letters, digits, white\-space, \(aq_\(aq, \(aq.\(aq, \(aq:\(aq, \(aq/\(aq, \(aq=\(aq, \(aq+\(aq, \(aq\-\(aq, \(aq@\(aq (Java regex: "^([\ep{L}\ep{Z}\ep{N}_.:/=+\e\-@]*)$").
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A value is the optional value of the tag. The string value can be from 1 to 256 Unicode characters in length and can\(aqt be prefixed with "aws:" or "rds:". The string can only contain only the set of Unicode letters, digits, white\-space, \(aq_\(aq, \(aq.\(aq, \(aq:\(aq, \(aq/\(aq, \(aq=\(aq, \(aq+\(aq, \(aq\-\(aq, \(aq@\(aq (Java regex: "^([\ep{L}\ep{Z}\ep{N}_.:/=+\e\-@]*)$").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DBInstanceAutomatedBackupsReplications \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of replicated automated backups associated with the DB instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Automated backups of a DB instance replicated to another AWS Region. They consist of system backups, transaction logs, and database instance properties.
+.sp
+DBInstanceAutomatedBackupsArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the replicated automated backups.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CustomerOwnedIpEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether a customer\-owned IP address (CoIP) is enabled for an RDS on Outposts DB instance.
+.sp
+A \fICoIP\fP provides local or external connectivity to resources in your Outpost subnets through your on\-premises network. For some use cases, a CoIP can provide lower latency for connections to the DB instance from outside of its virtual private cloud (VPC) on your local network.
+.sp
+For more information about RDS on Outposts, see \fI\%Working with Amazon RDS on AWS Outposts\fP in the \fIAmazon RDS User Guide\fP .
+.sp
+For more information about CoIPs, see \fI\%Customer\-owned IP addresses\fP in the \fIAWS Outposts User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AwsBackupRecoveryPointArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the recovery point in AWS Backup.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

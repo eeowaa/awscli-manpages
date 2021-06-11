@@ -1,0 +1,168 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-CREATE-CERTIFICATE-FROM-CSR" "a" "" ""
+.SH NAME
+iot-create-certificate-from-csr \- Creates an X.509 certificate using the specified certificate signing request
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an X.509 certificate using the specified certificate signing request.
+.INDENT 0.0
+.INDENT 3.5
+\fBNote:\fP The CSR must include a public key that is either an RSA key with a length of at least 2048 bits or an ECC key from NIST P\-256 or NIST P\-384 curves.
+.sp
+\fBNote:\fP Reusing the same certificate signing request (CSR) results in a distinct certificate.
+.UNINDENT
+.UNINDENT
+.sp
+You can create multiple certificates in a batch by creating a directory, copying multiple .csr files into that directory, and then specifying that directory on the command line. The following commands show how to create a batch of certificates given a batch of CSRs.
+.sp
+Assuming a set of CSRs are located inside of the directory my\-csr\-directory:
+.sp
+On Linux and OS X, the command is:
+.sp
+$ ls my\-csr\-directory/ | xargs \-I {} aws iot create\-certificate\-from\-csr \-\-certificate\-signing\-request \fI\%file://my\-csr\-directory\fP/{}
+.sp
+This command lists all of the CSRs in my\-csr\-directory and pipes each CSR file name to the aws iot create\-certificate\-from\-csr AWS CLI command to create a certificate for the corresponding CSR.
+.sp
+The aws iot create\-certificate\-from\-csr part of the command can also be run in parallel to speed up the certificate creation process:
+.sp
+$ ls my\-csr\-directory/ | xargs \-P 10 \-I {} aws iot create\-certificate\-from\-csr \-\-certificate\-signing\-request \fI\%file://my\-csr\-directory\fP/{}
+.sp
+On Windows PowerShell, the command to create certificates for all CSRs in my\-csr\-directory is:
+.sp
+> ls \-Name my\-csr\-directory | %{aws iot create\-certificate\-from\-csr \-\-certificate\-signing\-request \fI\%file://my\-csr\-directory/$_\fP}
+.sp
+On a Windows command prompt, the command to create certificates for all CSRs in my\-csr\-directory is:
+.sp
+> forfiles /p my\-csr\-directory /c "cmd /c aws iot create\-certificate\-from\-csr \-\-certificate\-signing\-request \fI\%file://@path\fP"
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-certificate\-from\-csr
+\-\-certificate\-signing\-request <value>
+[\-\-set\-as\-active | \-\-no\-set\-as\-active]
+[\-\-certificate\-pem\-outfile <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-certificate\-signing\-request\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The certificate signing request (CSR).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-set\-as\-active\fP | \fB\-\-no\-set\-as\-active\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the certificate is active.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-pem\-outfile\fP (string)
+Saves the command output contents of certificatePem to the given filename
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a device certificate from a certificate signing request (CSR)\fP
+.sp
+The following \fBcreate\-certificate\-from\-csr\fP example creates a device certificate from a CSR. You can use the \fBopenssl\fP command to create a CSR.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot create\-certificate\-from\-csr \e
+    \-\-certificate\-signing\-request=file://certificate.csr
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "certificateArn": "arn:aws:iot:us\-west\-2:123456789012:cert/c0c57bbc8baaf4631a9a0345c957657f5e710473e3ddbee1428d216d54d53ac9",
+        "certificateId": "c0c57bbc8baaf4631a9a0345c957657f5e710473e3ddbee1428d216d54d53ac9",
+        "certificatePem": "<certificate\-text>"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%CreateCertificateFromCSR\fP in the \fIAWS IoT API Reference\fP\&.
+.SH OUTPUT
+.sp
+certificateArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the certificate. You can use the ARN as a principal for policy operations.
+.UNINDENT
+.UNINDENT
+.sp
+certificateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the certificate. Certificate management operations only take a certificateId.
+.UNINDENT
+.UNINDENT
+.sp
+certificatePem \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The certificate data, in PEM format.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

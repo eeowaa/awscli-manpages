@@ -1,0 +1,1252 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IMAGEBUILDER-GET-IMAGE" "a" "" ""
+.SH NAME
+imagebuilder-get-image \- Gets an image
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets an image.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-image
+\-\-image\-build\-version\-arn <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-image\-build\-version\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the image that you want to retrieve.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get image details\fP
+.sp
+The following \fBget\-image\fP example lists the details of an image by specifying its ARN.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws imagebuilder get\-image \e
+    \-\-image\-build\-version\-arn arn:aws:imagebuilder:us\-west\-2:123456789012:image/mybasicrecipe/2019.12.03/1
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "requestId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111",
+    "image": {
+        "arn": "arn:aws:imagebuilder:us\-west\-2:123456789012:image/mybasicrecipe/2019.12.03/1",
+        "name": "MyBasicRecipe",
+        "version": "2019.12.03/1",
+        "platform": "Windows",
+        "state": {
+            "status": "BUILDING"
+        },
+        "imageRecipe": {
+            "arn": "arn:aws:imagebuilder:us\-west\-2:123456789012:image\-recipe/mybasicrecipe/2019.12.03",
+            "name": "MyBasicRecipe",
+            "description": "This example image recipe creates a Windows 2016 image.",
+            "platform": "Windows",
+            "version": "2019.12.03",
+            "components": [
+                {
+                    "componentArn": "arn:aws:imagebuilder:us\-west\-2:123456789012:component/myexamplecomponent/2019.12.02/1"
+                },
+                {
+                    "componentArn": "arn:aws:imagebuilder:us\-west\-2:123456789012:component/myimportedcomponent/1.0.0/1"
+                }
+            ],
+            "parentImage": "arn:aws:imagebuilder:us\-west\-2:aws:image/windows\-server\-2016\-english\-full\-base\-x86/2019.12.17/1",
+            "dateCreated": "2020\-02\-14T19:46:16.904Z",
+            "tags": {}
+        },
+        "infrastructureConfiguration": {
+            "arn": "arn:aws:imagebuilder:us\-west\-2:123456789012:infrastructure\-configuration/myexampleinfrastructure",
+            "name": "MyExampleInfrastructure",
+            "description": "An example that will retain instances of failed builds",
+            "instanceTypes": [
+                "m5.large",
+                "m5.xlarge"
+            ],
+            "instanceProfileName": "EC2InstanceProfileForImageFactory",
+            "securityGroupIds": [
+                "sg\-a1b2c3d4"
+            ],
+            "subnetId": "subnet\-a1b2c3d4",
+            "logging": {
+                "s3Logs": {
+                    "s3BucketName": "bucket\-name",
+                    "s3KeyPrefix": "bucket\-path"
+                }
+            },
+            "keyPair": "Sam",
+            "terminateInstanceOnFailure": false,
+            "snsTopicArn": "arn:aws:sns:us\-west\-2:123456789012:sns\-name",
+            "dateCreated": "2020\-02\-14T21:21:05.098Z",
+            "tags": {}
+        },
+        "imageTestsConfiguration": {
+            "imageTestsEnabled": true,
+            "timeoutMinutes": 720
+        },
+        "dateCreated": "2020\-02\-14T23:14:13.597Z",
+        "outputResources": {
+            "amis": []
+        },
+        "tags": {}
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Setting Up and Managing an EC2 Image Builder Image Pipeline Using the AWS CLI\fP in the \fIEC2 Image Builder Users Guide\fP\&.
+.SH OUTPUT
+.sp
+requestId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The request ID that uniquely identifies this request.
+.UNINDENT
+.UNINDENT
+.sp
+image \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The image object.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the image.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether this is an AMI or container image.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the image.
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The semantic version of the image.
+.UNINDENT
+.UNINDENT
+.sp
+platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform of the image.
+.UNINDENT
+.UNINDENT
+.sp
+enhancedImageMetadataEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Collects additional information about the image being created, including the operating system (OS) version and package list. This information is used to enhance the overall experience of using EC2 Image Builder. Enabled by default.
+.UNINDENT
+.UNINDENT
+.sp
+osVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The operating system version of the instance. For example, Amazon Linux 2, Ubuntu 18, or Microsoft Windows Server 2019.
+.UNINDENT
+.UNINDENT
+.sp
+state \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The state of the image.
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the image.
+.UNINDENT
+.UNINDENT
+.sp
+reason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the image\(aqs status.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageRecipe \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The image recipe used when creating the image.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies which type of image is created by the recipe \- an AMI or a container image.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform of the image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+owner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The owner of the image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+components \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The components of the image recipe.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration details of the component.
+.sp
+componentArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the component.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+parentImage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The parent image of the image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+blockDeviceMappings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The block device mappings to apply when creating images from this recipe.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines block device mappings for the instance used to configure your image.
+.sp
+deviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device to which these mappings apply.
+.UNINDENT
+.UNINDENT
+.sp
+ebs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use to manage Amazon EBS\-specific configuration for this mapping.
+.sp
+encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure device encryption.
+.UNINDENT
+.UNINDENT
+.sp
+deleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure delete on termination of the associated device.
+.UNINDENT
+.UNINDENT
+.sp
+iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure device IOPS.
+.UNINDENT
+.UNINDENT
+.sp
+kmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure the KMS key to use when encrypting the device.
+.UNINDENT
+.UNINDENT
+.sp
+snapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The snapshot that defines the device contents.
+.UNINDENT
+.UNINDENT
+.sp
+volumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Use to override the device\(aqs volume size.
+.UNINDENT
+.UNINDENT
+.sp
+volumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to override the device\(aqs volume type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+virtualName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to manage instance ephemeral devices.
+.UNINDENT
+.UNINDENT
+.sp
+noDevice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to remove a mapping from the parent image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+dateCreated \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date on which this image recipe was created.
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tags of the image recipe.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+workingDirectory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The working directory to be used during build and test workflows.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+containerRecipe \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The container recipe used to create the container image type.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the container recipe.
+.UNINDENT
+.UNINDENT
+.sp
+containerType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type of container, such as Docker.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the container recipe.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the container recipe.
+.UNINDENT
+.UNINDENT
+.sp
+platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system platform for the container, such as Windows or Linux.
+.UNINDENT
+.UNINDENT
+.sp
+owner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The owner of the container recipe.
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The semantic version of the container recipe (<major>.<minor>.<patch>).
+.UNINDENT
+.UNINDENT
+.sp
+components \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Components for build and test that are included in the container recipe.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration details of the component.
+.sp
+componentArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the component.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+instanceConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A group of options that can be used to configure an instance for building and testing container images.
+.sp
+image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AMI ID to use as the base image for a container build and test instance. If not specified, Image Builder will use the appropriate ECS\-optimized AMI as a base image.
+.UNINDENT
+.UNINDENT
+.sp
+blockDeviceMappings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Defines the block devices to attach for building an instance from this Image Builder AMI.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines block device mappings for the instance used to configure your image.
+.sp
+deviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device to which these mappings apply.
+.UNINDENT
+.UNINDENT
+.sp
+ebs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use to manage Amazon EBS\-specific configuration for this mapping.
+.sp
+encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure device encryption.
+.UNINDENT
+.UNINDENT
+.sp
+deleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure delete on termination of the associated device.
+.UNINDENT
+.UNINDENT
+.sp
+iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure device IOPS.
+.UNINDENT
+.UNINDENT
+.sp
+kmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to configure the KMS key to use when encrypting the device.
+.UNINDENT
+.UNINDENT
+.sp
+snapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The snapshot that defines the device contents.
+.UNINDENT
+.UNINDENT
+.sp
+volumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Use to override the device\(aqs volume size.
+.UNINDENT
+.UNINDENT
+.sp
+volumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to override the device\(aqs volume type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+virtualName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to manage instance ephemeral devices.
+.UNINDENT
+.UNINDENT
+.sp
+noDevice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Use to remove a mapping from the parent image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+dockerfileTemplateData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Dockerfiles are text documents that are used to build Docker containers, and ensure that they contain all of the elements required by the application running inside. The template data consists of contextual variables where Image Builder places build information or scripts, based on your container image recipe.
+.UNINDENT
+.UNINDENT
+.sp
+kmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies which KMS key is used to encrypt the container image for distribution to the target Region.
+.UNINDENT
+.UNINDENT
+.sp
+encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that indicates if the target container is encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+parentImage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source image for the container recipe.
+.UNINDENT
+.UNINDENT
+.sp
+dateCreated \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date when this container recipe was created.
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Tags that are attached to the container recipe.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+workingDirectory \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The working directory for use during build and test workflows.
+.UNINDENT
+.UNINDENT
+.sp
+targetRepository \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The destination repository for the container image.
+.sp
+service \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the service in which this image was registered.
+.UNINDENT
+.UNINDENT
+.sp
+repositoryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the container repository where the output container image is stored. This name is prefixed by the repository location.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+sourcePipelineName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the image pipeline that created this image.
+.UNINDENT
+.UNINDENT
+.sp
+sourcePipelineArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the image pipeline that created this image.
+.UNINDENT
+.UNINDENT
+.sp
+infrastructureConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The infrastructure used when creating this image.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+instanceTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The instance types of the infrastructure configuration.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+instanceProfileName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance profile of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+securityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The security group IDs of the infrastructure configuration.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+subnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subnet ID of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+logging \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The logging configuration of the infrastructure configuration.
+.sp
+s3Logs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 logging configuration.
+.sp
+s3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket in which to store the logs.
+.UNINDENT
+.UNINDENT
+.sp
+s3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 path in which to store the logs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+keyPair \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 key pair of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+terminateInstanceOnFailure \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+The terminate instance on failure configuration of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+snsTopicArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SNS topic Amazon Resource Name (ARN) of the infrastructure configuration.
+.UNINDENT
+.UNINDENT
+.sp
+dateCreated \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date on which the infrastructure configuration was created.
+.UNINDENT
+.UNINDENT
+.sp
+dateUpdated \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date on which the infrastructure configuration was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+resourceTags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tags attached to the resource created by Image Builder.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tags of the infrastructure configuration.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+distributionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The distribution configuration used when creating this image.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the distribution configuration.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the distribution configuration.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the distribution configuration.
+.UNINDENT
+.UNINDENT
+.sp
+distributions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The distribution objects that apply Region\-specific settings for the deployment of the image to targeted Regions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines the settings for a specific Region.
+.sp
+region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The target Region.
+.UNINDENT
+.UNINDENT
+.sp
+amiDistributionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific AMI settings; for example, launch permissions or AMI tags.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the distribution configuration.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the distribution configuration. Minimum and maximum length are in characters.
+.UNINDENT
+.UNINDENT
+.sp
+targetAccountIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The ID of an account to which you want to distribute an image.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+amiTags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to AMIs distributed to this Region.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+kmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The KMS key identifier used to encrypt the distributed image.
+.UNINDENT
+.UNINDENT
+.sp
+launchPermission \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Launch permissions can be used to configure which AWS accounts can use the AMI to launch instances.
+.sp
+userIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+userGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The name of the group.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+containerDistributionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container distribution settings for encryption, licensing, and sharing in a specific Region.
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the container distribution configuration.
+.UNINDENT
+.UNINDENT
+.sp
+containerTags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Tags that are attached to the container distribution configuration.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+targetRepository \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The destination repository for the container distribution configuration.
+.sp
+service \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the service in which this image was registered.
+.UNINDENT
+.UNINDENT
+.sp
+repositoryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the container repository where the output container image is stored. This name is prefixed by the repository location.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+licenseConfigurationArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The License Manager Configuration to associate with the AMI in the specified Region.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+launchTemplateConfigurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A group of launchTemplateConfiguration settings that apply to image distribution for specified accounts.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an EC2 launch template to use for a specific account.
+.sp
+launchTemplateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the EC2 launch template to use.
+.UNINDENT
+.UNINDENT
+.sp
+accountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID that this configuration applies to.
+.UNINDENT
+.UNINDENT
+.sp
+setDefaultVersion \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set the specified EC2 launch template as the default launch template for the specified account.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timeoutMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum duration in minutes for this distribution configuration.
+.UNINDENT
+.UNINDENT
+.sp
+dateCreated \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date on which this distribution configuration was created.
+.UNINDENT
+.UNINDENT
+.sp
+dateUpdated \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date on which this distribution configuration was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tags of the distribution configuration.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+imageTestsConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The image tests configuration used when creating this image.
+.sp
+imageTestsEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Defines if tests should be executed when building this image.
+.UNINDENT
+.UNINDENT
+.sp
+timeoutMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum time in minutes that tests are permitted to run.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+dateCreated \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The date on which this image was created.
+.UNINDENT
+.UNINDENT
+.sp
+outputResources \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The output resources produced when creating this image.
+.sp
+amis \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 AMIs created by this image.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details of an EC2 AMI.
+.sp
+region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Region of the EC2 AMI.
+.UNINDENT
+.UNINDENT
+.sp
+image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AMI ID of the EC2 AMI.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the EC2 AMI.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the EC2 AMI. Minimum and maximum length are in characters.
+.UNINDENT
+.UNINDENT
+.sp
+state \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Image state shows the image status and the reason for that status.
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the image.
+.UNINDENT
+.UNINDENT
+.sp
+reason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the image\(aqs status.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+accountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the owner of the AMI.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+containers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Container images that the pipeline has generated and stored in the output repository.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A container encapsulates the runtime environment for an application.
+.sp
+region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Containers and container images are Region\-specific. This is the Region context for the container.
+.UNINDENT
+.UNINDENT
+.sp
+imageUris \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of URIs for containers created in the context Region.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The tags of the image.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

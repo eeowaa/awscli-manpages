@@ -1,0 +1,401 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-INCIDENTS-CREATE-RESPONSE-PLAN" "a" "" ""
+.SH NAME
+ssm-incidents-create-response-plan \- Creates a response plan that automates the initial response to incidents
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a response plan that automates the initial response to incidents. A response plan engages contacts, starts chat channel collaboration, and initiates runbooks at the beginning of an incident.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-response\-plan
+[\-\-actions <value>]
+[\-\-chat\-channel <value>]
+[\-\-client\-token <value>]
+[\-\-display\-name <value>]
+[\-\-engagements <value>]
+\-\-incident\-template <value>
+\-\-name <value>
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-actions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The actions that the response plan starts at the beginning of an incident.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The action that starts at the beginning of an incident. The response plan defines the action.
+.sp
+ssmAutomation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Systems Manager automation document to start as the runbook at the beginning of the incident.
+.sp
+documentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The automation document\(aqs name.
+.UNINDENT
+.UNINDENT
+.sp
+documentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The automation document\(aqs version to use when running.
+.UNINDENT
+.UNINDENT
+.sp
+parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The key\-value pair parameters to use when running the automation document.
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the role that the automation document will assume when running commands.
+.UNINDENT
+.UNINDENT
+.sp
+targetAccount \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The account that the automation document will be run in. This can be in either the management account or an application account.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ssmAutomation={documentName=string,documentVersion=string,parameters={KeyName1=[string,string],KeyName2=[string,string]},roleArn=string,targetAccount=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ssmAutomation": {
+      "documentName": "string",
+      "documentVersion": "string",
+      "parameters": {"string": ["string", ...]
+        ...},
+      "roleArn": "string",
+      "targetAccount": "RESPONSE_PLAN_OWNER_ACCOUNT"|"IMPACTED_ACCOUNT"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-chat\-channel\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Chatbot chat channel used for collaboration during an incident.
+.sp
+chatbotSns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The SNS targets that AWS Chatbot uses to notify the chat channel of updates to an incident. You can also make updates to the incident through the chat channel by using the SNS topics.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+empty \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Used to remove the chat channel from an incident record or response plan.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+chatbotSns=string,string,empty={}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "chatbotSns": ["string", ...],
+  "empty": {
+
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token ensuring that the action is called only once with the specified details.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-display\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The long format of the response plan name. This field can contain spaces.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-engagements\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The contacts and escalation plans that the response plan engages during an incident.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-incident\-template\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details used to create an incident when using this response plan.
+.sp
+dedupeString \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Used to stop Incident Manager from creating multiple incident records for the same incident.
+.UNINDENT
+.UNINDENT
+.sp
+impact \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The impact of the incident on your customers and applications.
+.UNINDENT
+.UNINDENT
+.sp
+notificationTargets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The SNS targets that AWS Chatbot uses to notify the chat channel of updates to an incident. You can also make updates to the incident through the chat channel using the SNS topics.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The SNS topic that\(aqs used by AWS Chatbot to notify the incidents chat channel.
+.sp
+snsTopicArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the SNS topic.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+summary \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The summary of the incident. The summary is a brief synopsis of what occurred, what\(aqs currently happening, and context.
+.UNINDENT
+.UNINDENT
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title of the incident.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+dedupeString=string,impact=integer,notificationTargets=[{snsTopicArn=string},{snsTopicArn=string}],summary=string,title=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "dedupeString": "string",
+  "impact": integer,
+  "notificationTargets": [
+    {
+      "snsTopicArn": "string"
+    }
+    ...
+  ],
+  "summary": "string",
+  "title": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The short format name of the response plan. Can\(aqt include spaces.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags that you are adding to the response plan.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the response plan.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

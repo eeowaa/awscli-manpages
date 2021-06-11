@@ -1,0 +1,410 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RESOURCEGROUPSTAGGINGAPI-GET-RESOURCES" "a" "" ""
+.SH NAME
+resourcegroupstaggingapi-get-resources \- Returns all the tagged or previously tagged resources that are located in the specified Region for the AWS account
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns all the tagged or previously tagged resources that are located in the specified Region for the AWS account.
+.sp
+Depending on what information you want returned, you can also specify the following:
+.INDENT 0.0
+.IP \(bu 2
+\fIFilters\fP that specify what tags and resource types you want returned. The response includes all tags that are associated with the requested resources.
+.IP \(bu 2
+Information about compliance with the account\(aqs effective tag policy. For more information on tag policies, see \fI\%Tag Policies\fP in the \fIAWS Organizations User Guide.\fP
+.UNINDENT
+.sp
+This operation supports pagination, where the response can be sent in multiple pages. You should check the \fBPaginationToken\fP response parameter to determine if there are additional results available to return. Repeat the query, passing the \fBPaginationToken\fP response parameter value as an input to the next request until you recieve a \fBnull\fP value. A null value for \fBPaginationToken\fP indicates that there are no more results waiting to be returned.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBget\-resources\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBResourceTagMappingList\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-resources
+[\-\-tag\-filters <value>]
+[\-\-tags\-per\-page <value>]
+[\-\-resource\-type\-filters <value>]
+[\-\-include\-compliance\-details | \-\-no\-include\-compliance\-details]
+[\-\-exclude\-compliant\-resources | \-\-no\-exclude\-compliant\-resources]
+[\-\-resource\-arn\-list <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-tag\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a list of TagFilters (keys and values) to restrict the output to only those resources that have the specified tag and, if included, the specified value. Each \fBTagFilter\fP must contain a key with values optional. A request can include up to 50 keys, and each key can include up to 20 values.
+.sp
+Note the following when deciding how to use TagFilters:
+.INDENT 0.0
+.IP \(bu 2
+If you \fIdon\(aqt\fP specify a \fBTagFilter\fP , the response includes all resources that are currently tagged or ever had a tag. Resources that currently don\(aqt have tags are shown with an empty tag set, like this: \fB"Tags": []\fP .
+.IP \(bu 2
+If you specify more than one filter in a single request, the response returns only those resources that satisfy all filters.
+.IP \(bu 2
+If you specify a filter that contains more than one value for a key, the response returns resources that match any of the specified values for that key.
+.IP \(bu 2
+If you don\(aqt specify any values for a key, the response returns resources that are tagged with that key and any or no value. For example, for the following filters: \fBfilter1= {keyA,{value1}}\fP , \fBfilter2={keyB,{value2,value3,value4}}\fP , \fBfilter3= {keyC}\fP :
+.INDENT 2.0
+.IP \(bu 2
+\fBGetResources({filter1})\fP returns resources tagged with \fBkey1=value1\fP
+.IP \(bu 2
+\fBGetResources({filter2})\fP returns resources tagged with \fBkey2=value2\fP or \fBkey2=value3\fP or \fBkey2=value4\fP
+.IP \(bu 2
+\fBGetResources({filter3})\fP returns resources tagged with any tag with the key \fBkey3\fP , and with any or no value
+.IP \(bu 2
+\fBGetResources({filter1,filter2,filter3})\fP returns resources tagged with \fB(key1=value1) and (key2=value2 or key2=value3 or key2=value4) and (key3, any or no value)\fP
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags (keys and values) that are used to specify the associated resources.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that makes up a tag. A key is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A value acts as a descriptor within a tag category (key). The value can be empty or null.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\-per\-page\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+AWS recommends using \fBResourcesPerPage\fP instead of this parameter.
+.sp
+A limit that restricts the number of tags (key and value pairs) returned by \fBGetResources\fP in paginated output. A resource with no tags is counted as having one tag (one key and value pair).
+.INDENT 0.0
+.INDENT 3.5
+\fBGetResources\fP does not split a resource and its associated tags across pages. If the specified \fBTagsPerPage\fP would cause such a break, a \fBPaginationToken\fP is returned in place of the affected resource and its tags. Use that token in another request to get the remaining data. For example, if you specify a \fBTagsPerPage\fP of \fB100\fP and the account has 22 resources with 10 tags each (meaning that each resource has 10 key and value pairs), the output will consist of three pages. The first page displays the first 10 resources, each with its 10 tags. The second page displays the next 10 resources, each with its 10 tags. The third page displays the remaining 2 resources, each with its 10 tags.
+.UNINDENT
+.UNINDENT
+.sp
+You can set \fBTagsPerPage\fP to a minimum of 100 items up to a maximum of 500 items.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-type\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the resource types that you want included in the response. The format of each resource type is \fBservice[:resourceType]\fP . For example, specifying a resource type of \fBec2\fP returns all Amazon EC2 resources (which includes EC2 instances). Specifying a resource type of \fBec2:instance\fP returns only EC2 instances.
+.sp
+The string for each service name and resource type is the same as that embedded in a resource\(aqs Amazon Resource Name (ARN). Consult the \fIAWS General Reference\fP for the following:
+.sp
+For more information about ARNs, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP .
+.sp
+You can specify multiple resource types by using an array. The array can include up to 100 items. Note that the length constraint requirement applies to each resource type filter.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-include\-compliance\-details\fP | \fB\-\-no\-include\-compliance\-details\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether to include details regarding the compliance with the effective tag policy. Set this to \fBtrue\fP to determine whether resources are compliant with the tag policy and to get details.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-exclude\-compliant\-resources\fP | \fB\-\-no\-exclude\-compliant\-resources\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether to exclude resources that are compliant with the tag policy. Set this to \fBtrue\fP if you are interested in retrieving information on noncompliant resources only.
+.sp
+You can use this parameter only if the \fBIncludeComplianceDetails\fP parameter is also set to \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-arn\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a list of ARNs of resources for which you want to retrieve tag data. You can\(aqt specify both this parameter and any of the pagination parameters (\fBResourcesPerPage\fP , \fBTagsPerPage\fP , \fBPaginationToken\fP ) in the same request. If you specify both, you get an \fBInvalid Parameter\fP exception.
+.sp
+If a resource specified by this parameter doesn\(aqt exist, it doesn\(aqt generate an error; it simply isn\(aqt included in the response.
+.sp
+An ARN (Amazon Resource Name) uniquely identifies a resource. For more information, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the \fIAWS General Reference\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get a list of tagged resources\fP
+.sp
+The following \fBget\-resources\fP example displays a list of resources in the account that are tagged with the specified key name and value.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws resourcegroupstaggingapi get\-resources \e
+    \-\-tag\-filters Key=Environment,Values=Production \e
+    \-\-tags\-per\-page 100
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ResourceTagMappingList": [
+        {
+            "ResourceARN": " arn:aws:inspector:us\-west\-2:123456789012:target/0\-nvgVhaxX/template/0\-7sbz2Kz0",
+            "Tags": [
+                {
+                    "Key": "Environment",
+                    "Value": "Production"
+                }
+            ]
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%GetResources\fP in the \fIResource Groups Tagging API Reference\fP\&.
+.SH OUTPUT
+.sp
+PaginationToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that indicates that there is more data available than this response contains. To receive the next part of the response, specify this response value as the \fBPaginationToken\fP value in the request for the next page.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceTagMappingList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of resource ARNs and the tags (keys and values) associated with those ARNs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of resource ARNs and the tags (keys and values) that are associated with each.
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the resource.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags that have been applied to one or more AWS resources.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to AWS resources to help you categorize and organize them. Each tag consists of a key and a value, both of which you define. For more information, see \fI\%Tagging AWS Resources\fP in the \fIAWS General Reference\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that makes up a tag. A key is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A value acts as a descriptor within a tag category (key). The value can be empty or null.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information that shows whether a resource is compliant with the effective tag policy, including details on any noncompliant tag keys.
+.sp
+NoncompliantKeys \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+These tag keys on the resource are noncompliant with the effective tag policy.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+KeysWithNoncompliantValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+These are keys defined in the effective policy that are on the resource with either incorrect case treatment or noncompliant values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceStatus \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether a resource is compliant with the effective tag policy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

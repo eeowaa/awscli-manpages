@@ -1,0 +1,518 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDWATCH-GET-METRIC-DATA" "a" "" ""
+.SH NAME
+cloudwatch-get-metric-data \- You can use the GetMetricData API to retrieve as many as 500 different metrics in a single request, with a total of as many as 100,800 data points
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+You can use the \fBGetMetricData\fP API to retrieve as many as 500 different metrics in a single request, with a total of as many as 100,800 data points. You can also optionally perform math expressions on the values of the returned statistics, to create new time series that represent new insights into your data. For example, using Lambda metrics, you could divide the Errors metric by the Invocations metric to get an error rate time series. For more information about metric math expressions, see \fI\%Metric Math Syntax and Functions\fP in the \fIAmazon CloudWatch User Guide\fP .
+.sp
+Calls to the \fBGetMetricData\fP API have a different pricing structure than calls to \fBGetMetricStatistics\fP . For more information about pricing, see \fI\%Amazon CloudWatch Pricing\fP .
+.sp
+Amazon CloudWatch retains metric data as follows:
+.INDENT 0.0
+.IP \(bu 2
+Data points with a period of less than 60 seconds are available for 3 hours. These data points are high\-resolution metrics and are available only for custom metrics that have been defined with a \fBStorageResolution\fP of 1.
+.IP \(bu 2
+Data points with a period of 60 seconds (1\-minute) are available for 15 days.
+.IP \(bu 2
+Data points with a period of 300 seconds (5\-minute) are available for 63 days.
+.IP \(bu 2
+Data points with a period of 3600 seconds (1 hour) are available for 455 days (15 months).
+.UNINDENT
+.sp
+Data points that are initially published with a shorter period are aggregated together for long\-term storage. For example, if you collect data using a period of 1 minute, the data remains available for 15 days with 1\-minute resolution. After 15 days, this data is still available, but is aggregated and retrievable only with a resolution of 5 minutes. After 63 days, the data is further aggregated and is available with a resolution of 1 hour.
+.sp
+If you omit \fBUnit\fP in your request, all data that was collected with any unit is returned, along with the corresponding units that were specified when the data was reported to CloudWatch. If you specify a unit, the operation returns only data that was collected with that unit specified. If you specify a unit that does not match the data collected, the results of the operation are null. CloudWatch does not perform unit conversions.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBget\-metric\-data\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBMetricDataResults\fP, \fBMessages\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-metric\-data
+\-\-metric\-data\-queries <value>
+\-\-start\-time <value>
+\-\-end\-time <value>
+[\-\-scan\-by <value>]
+[\-\-label\-options <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-metric\-data\-queries\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The metric queries to be returned. A single \fBGetMetricData\fP call can include as many as 500 \fBMetricDataQuery\fP structures. Each of these structures can specify either a metric to retrieve, or a math expression to perform on retrieved data.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This structure is used in both \fBGetMetricData\fP and \fBPutMetricAlarm\fP . The supported use of this structure is different for those two operations.
+.sp
+When used in \fBGetMetricData\fP , it indicates the metric data to return, and whether this call is just retrieving a batch set of data for one metric, or is performing a math expression on metric data. A single \fBGetMetricData\fP call can include up to 500 \fBMetricDataQuery\fP structures.
+.sp
+When used in \fBPutMetricAlarm\fP , it enables you to create an alarm based on a metric math expression. Each \fBMetricDataQuery\fP in the array specifies either a metric to retrieve, or a math expression to be performed on retrieved metrics. A single \fBPutMetricAlarm\fP call can include up to 20 \fBMetricDataQuery\fP structures in the array. The 20 structures can include as many as 10 structures that contain a \fBMetricStat\fP parameter to retrieve a metric, and as many as 10 structures that contain the \fBExpression\fP parameter to perform a math expression. Of those \fBExpression\fP structures, one must have \fBTrue\fP as the value for \fBReturnData\fP . The result of this expression is the value the alarm watches.
+.sp
+Any expression used in a \fBPutMetricAlarm\fP operation must return a single time series. For more information, see \fI\%Metric Math Syntax and Functions\fP in the \fIAmazon CloudWatch User Guide\fP .
+.sp
+Some of the parameters of this structure also have different uses whether you are using this structure in a \fBGetMetricData\fP operation or a \fBPutMetricAlarm\fP operation. These differences are explained in the following parameter list.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A short name used to tie this object to the results in the response. This name must be unique within a single call to \fBGetMetricData\fP . If you are performing math expressions on this set of data, this name represents that data and can serve as a variable in the mathematical expression. The valid characters are letters, numbers, and underscore. The first character must be a lowercase letter.
+.UNINDENT
+.UNINDENT
+.sp
+MetricStat \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric to be returned, along with statistics, period, and units. Use this parameter only if this object is retrieving a metric and not performing a math expression on returned data.
+.sp
+Within one MetricDataQuery object, you must specify either \fBExpression\fP or \fBMetricStat\fP but not both.
+.sp
+Metric \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric to return, including the metric name, namespace, and dimensions.
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the metric.
+.UNINDENT
+.UNINDENT
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the metric. This is a required field.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions for the metric.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A dimension is a name/value pair that is part of the identity of a metric. You can assign up to 10 dimensions to a metric. Because dimensions are part of the unique identifier for a metric, whenever you add a unique name/value pair to one of your metrics, you are creating a new variation of that metric.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dimension. Dimension names cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the dimension. Dimension values cannot contain blank spaces or non\-ASCII characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The granularity, in seconds, of the returned data points. For metrics with regular resolution, a period can be as short as one minute (60 seconds) and must be a multiple of 60. For high\-resolution metrics that are collected at intervals of less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of 60. High\-resolution metrics are those metrics stored by a \fBPutMetricData\fP call that includes a \fBStorageResolution\fP of 1 second.
+.sp
+If the \fBStartTime\fP parameter specifies a time stamp that is greater than 3 hours ago, you must specify the period as follows or no data points in that time range is returned:
+.INDENT 0.0
+.IP \(bu 2
+Start time between 3 hours and 15 days ago \- Use a multiple of 60 seconds (1 minute).
+.IP \(bu 2
+Start time between 15 and 63 days ago \- Use a multiple of 300 seconds (5 minutes).
+.IP \(bu 2
+Start time greater than 63 days ago \- Use a multiple of 3600 seconds (1 hour).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Stat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic to return. It can include any CloudWatch statistic or extended statistic.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When you are using a \fBPut\fP operation, this defines what unit you want to use when storing the metric.
+.sp
+In a \fBGet\fP operation, if you omit \fBUnit\fP then all data that was collected with any unit is returned, along with the corresponding units that were specified when the data was reported to CloudWatch. If you specify a unit, the operation returns only data that was collected with that unit specified. If you specify a unit that does not match the data collected, the results of the operation are null. CloudWatch does not perform unit conversions.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The math expression to be performed on the returned data, if this object is performing a math expression. This expression can use the \fBId\fP of the other metrics to refer to those metrics, and can also use the \fBId\fP of other expressions to use the result of those expressions. For more information about metric math expressions, see \fI\%Metric Math Syntax and Functions\fP in the \fIAmazon CloudWatch User Guide\fP .
+.sp
+Within each MetricDataQuery object, you must specify either \fBExpression\fP or \fBMetricStat\fP but not both.
+.UNINDENT
+.UNINDENT
+.sp
+Label \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A human\-readable label for this metric or expression. This is especially useful if this is an expression, so that you know what the value represents. If the metric or expression is shown in a CloudWatch dashboard widget, the label is shown. If Label is omitted, CloudWatch generates a default.
+.sp
+You can put dynamic expressions into a label, so that it is more descriptive. For more information, see \fI\%Using Dynamic Labels\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ReturnData \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When used in \fBGetMetricData\fP , this option indicates whether to return the timestamps and raw data values of this metric. If you are performing this call just to do math expressions and do not also need the raw data returned, you can specify \fBFalse\fP . If you omit this, the default of \fBTrue\fP is used.
+.sp
+When used in \fBPutMetricAlarm\fP , specify \fBTrue\fP for the one expression result to use as the alarm. For all other metrics and expressions in the same \fBPutMetricAlarm\fP operation, specify \fBReturnData\fP as False.
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The granularity, in seconds, of the returned data points. For metrics with regular resolution, a period can be as short as one minute (60 seconds) and must be a multiple of 60. For high\-resolution metrics that are collected at intervals of less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of 60. High\-resolution metrics are those metrics stored by a \fBPutMetricData\fP operation that includes a \fBStorageResolution of 1 second\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Id": "string",
+    "MetricStat": {
+      "Metric": {
+        "Namespace": "string",
+        "MetricName": "string",
+        "Dimensions": [
+          {
+            "Name": "string",
+            "Value": "string"
+          }
+          ...
+        ]
+      },
+      "Period": integer,
+      "Stat": "string",
+      "Unit": "Seconds"|"Microseconds"|"Milliseconds"|"Bytes"|"Kilobytes"|"Megabytes"|"Gigabytes"|"Terabytes"|"Bits"|"Kilobits"|"Megabits"|"Gigabits"|"Terabits"|"Percent"|"Count"|"Bytes/Second"|"Kilobytes/Second"|"Megabytes/Second"|"Gigabytes/Second"|"Terabytes/Second"|"Bits/Second"|"Kilobits/Second"|"Megabits/Second"|"Gigabits/Second"|"Terabits/Second"|"Count/Second"|"None"
+    },
+    "Expression": "string",
+    "Label": "string",
+    "ReturnData": true|false,
+    "Period": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp indicating the earliest data to be returned.
+.sp
+The value specified is inclusive; results include data points with the specified time stamp.
+.sp
+CloudWatch rounds the specified time stamp as follows:
+.INDENT 0.0
+.IP \(bu 2
+Start time less than 15 days ago \- Round down to the nearest whole minute. For example, 12:32:34 is rounded down to 12:32:00.
+.IP \(bu 2
+Start time between 15 and 63 days ago \- Round down to the nearest 5\-minute clock interval. For example, 12:32:34 is rounded down to 12:30:00.
+.IP \(bu 2
+Start time greater than 63 days ago \- Round down to the nearest 1\-hour clock interval. For example, 12:32:34 is rounded down to 12:00:00.
+.UNINDENT
+.sp
+If you set \fBPeriod\fP to 5, 10, or 30, the start time of your request is rounded down to the nearest time that corresponds to even 5\-, 10\-, or 30\-second divisions of a minute. For example, if you make a query at (HH:mm:ss) 01:05:23 for the previous 10\-second period, the start time of your request is rounded down and you receive data from 01:05:10 to 01:05:20. If you make a query at 15:07:17 for the previous 5 minutes of data, using a period of 5 seconds, you receive data timestamped between 15:02:15 and 15:07:15.
+.sp
+For better performance, specify \fBStartTime\fP and \fBEndTime\fP values that align with the value of the metric\(aqs \fBPeriod\fP and sync up with the beginning and end of an hour. For example, if the \fBPeriod\fP of a metric is 5 minutes, specifying 12:05 or 12:30 as \fBStartTime\fP can get a faster response from CloudWatch than setting 12:07 or 12:29 as the \fBStartTime\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-time\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp indicating the latest data to be returned.
+.sp
+The value specified is exclusive; results include data points up to the specified time stamp.
+.sp
+For better performance, specify \fBStartTime\fP and \fBEndTime\fP values that align with the value of the metric\(aqs \fBPeriod\fP and sync up with the beginning and end of an hour. For example, if the \fBPeriod\fP of a metric is 5 minutes, specifying 12:05 or 12:30 as \fBEndTime\fP can get a faster response from CloudWatch than setting 12:07 or 12:29 as the \fBEndTime\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scan\-by\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The order in which data points should be returned. \fBTimestampDescending\fP returns the newest data first and paginates when the \fBMaxDatapoints\fP limit is reached. \fBTimestampAscending\fP returns the oldest data first and paginates when the \fBMaxDatapoints\fP limit is reached.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTimestampDescending\fP
+.IP \(bu 2
+\fBTimestampAscending\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-label\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+This structure includes the \fBTimezone\fP parameter, which you can use to specify your time zone so that the labels of returned data display the correct time for your time zone.
+.sp
+Timezone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time zone to use for metric data return in this operation. The format is \fB+\fP or \fB\-\fP followed by four digits. The first two digits indicate the number of hours ahead or behind of UTC, and the final two digits are the number of minutes. For example, +0130 indicates a time zone that is 1 hour and 30 minutes ahead of UTC. The default is +0000.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Timezone=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Timezone": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+MetricDataResults \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metrics that are returned, including the metric name, namespace, and dimensions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBGetMetricData\fP call returns an array of \fBMetricDataResult\fP structures. Each of these structures includes the data points for that metric, along with the timestamps of those data points and other identifying information.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name you specified to represent this metric.
+.UNINDENT
+.UNINDENT
+.sp
+Label \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The human\-readable label associated with the data.
+.UNINDENT
+.UNINDENT
+.sp
+Timestamps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The timestamps for the data points, formatted in Unix timestamp format. The number of timestamps always matches the number of values and the value for Timestamps[x] is Values[x].
+.sp
+(timestamp)
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The data points for the metric corresponding to \fBTimestamps\fP . The number of values always matches the number of timestamps and the timestamp for Values[x] is Timestamps[x].
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+StatusCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the returned data. \fBComplete\fP indicates that all data points in the requested time range were returned. \fBPartialData\fP means that an incomplete set of data points were returned. You can use the \fBNextToken\fP value that was returned and repeat your request to get more data points. \fBNextToken\fP is not returned if you are performing a math expression. \fBInternalError\fP indicates that an error occurred. Retry your request using \fBNextToken\fP , if present.
+.UNINDENT
+.UNINDENT
+.sp
+Messages \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of messages with additional information about the data returned.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A message returned by the \fBGetMetricData\fP API, including a code and a description.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code or status code associated with the message.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message text.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A token that marks the next batch of returned results.
+.UNINDENT
+.UNINDENT
+.sp
+Messages \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains a message about this \fBGetMetricData\fP operation, if the operation results in such a message. An example of a message that might be returned is \fBMaximum number of allowed metrics exceeded\fP . If there is a message, as much of the operation as possible is still executed.
+.sp
+A message appears here only if it is related to the global \fBGetMetricData\fP operation. Any message about a specific metric returned by the operation appears in the \fBMetricDataResult\fP object returned for that metric.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A message returned by the \fBGetMetricData\fP API, including a code and a description.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code or status code associated with the message.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message text.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

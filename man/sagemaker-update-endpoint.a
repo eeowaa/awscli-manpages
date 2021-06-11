@@ -1,0 +1,259 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SAGEMAKER-UPDATE-ENDPOINT" "a" "" ""
+.SH NAME
+sagemaker-update-endpoint \- Deploys the new EndpointConfig specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous EndpointConfig (there is no availability loss)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Deploys the new \fBEndpointConfig\fP specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous \fBEndpointConfig\fP (there is no availability loss).
+.sp
+When Amazon SageMaker receives the request, it sets the endpoint status to \fBUpdating\fP . After updating the endpoint, it sets the status to \fBInService\fP . To check the status of an endpoint, use the  DescribeEndpoint API.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must not delete an \fBEndpointConfig\fP in use by an endpoint that is live or while the \fBUpdateEndpoint\fP or \fBCreateEndpoint\fP operations are being performed on the endpoint. To update an endpoint, you must create a new \fBEndpointConfig\fP .
+.sp
+If you delete the \fBEndpointConfig\fP of an endpoint that is active or being created or updated you may lose visibility into the instance type the endpoint is using. The endpoint must be deleted in order to stop incurring charges.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-endpoint
+\-\-endpoint\-name <value>
+\-\-endpoint\-config\-name <value>
+[\-\-retain\-all\-variant\-properties | \-\-no\-retain\-all\-variant\-properties]
+[\-\-exclude\-retained\-variant\-properties <value>]
+[\-\-deployment\-config <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-endpoint\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the endpoint whose configuration you want to update.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-endpoint\-config\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the new endpoint configuration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-retain\-all\-variant\-properties\fP | \fB\-\-no\-retain\-all\-variant\-properties\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When updating endpoint resources, enables or disables the retention of \fI\%variant properties\fP , such as the instance count or the variant weight. To retain the variant properties of an endpoint when updating it, set \fBRetainAllVariantProperties\fP to \fBtrue\fP . To use the variant properties specified in a new \fBEndpointConfig\fP call when updating an endpoint, set \fBRetainAllVariantProperties\fP to \fBfalse\fP . The default is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-exclude\-retained\-variant\-properties\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+When you are updating endpoint resources with  UpdateEndpointInput$RetainAllVariantProperties , whose value is set to \fBtrue\fP , \fBExcludeRetainedVariantProperties\fP specifies the list of type  VariantProperty to override with the values provided by \fBEndpointConfig\fP . If you don\(aqt specify a value for \fBExcludeAllVariantProperties\fP , no variant properties are overridden.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a production variant property type for an Endpoint.
+.sp
+If you are updating an endpoint with the  UpdateEndpointInput$RetainAllVariantProperties option set to \fBtrue\fP , the \fBVariantProperty\fP objects listed in  UpdateEndpointInput$ExcludeRetainedVariantProperties override the existing variant properties of the endpoint.
+.sp
+VariantPropertyType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of variant property. The supported values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBDesiredInstanceCount\fP : Overrides the existing variant instance counts using the  ProductionVariant$InitialInstanceCount values in the  CreateEndpointConfigInput$ProductionVariants .
+.IP \(bu 2
+\fBDesiredWeight\fP : Overrides the existing variant weights using the  ProductionVariant$InitialVariantWeight values in the  CreateEndpointConfigInput$ProductionVariants .
+.IP \(bu 2
+\fBDataCaptureConfig\fP : (Not currently supported.)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+VariantPropertyType=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "VariantPropertyType": "DesiredInstanceCount"|"DesiredWeight"|"DataCaptureConfig"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-deployment\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The deployment configuration for the endpoint to be updated.
+.sp
+BlueGreenUpdatePolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+TrafficRoutingConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Type \-> (string)
+.sp
+WaitIntervalInSeconds \-> (integer)
+.sp
+CanarySize \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This API is not supported.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (integer)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TerminationWaitInSeconds \-> (integer)
+.sp
+MaximumExecutionTimeoutInSeconds \-> (integer)
+.UNINDENT
+.UNINDENT
+.sp
+AutoRollbackConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Alarms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This API is not supported.
+.sp
+AlarmName \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "BlueGreenUpdatePolicy": {
+    "TrafficRoutingConfiguration": {
+      "Type": "ALL_AT_ONCE"|"CANARY",
+      "WaitIntervalInSeconds": integer,
+      "CanarySize": {
+        "Type": "INSTANCE_COUNT"|"CAPACITY_PERCENT",
+        "Value": integer
+      }
+    },
+    "TerminationWaitInSeconds": integer,
+    "MaximumExecutionTimeoutInSeconds": integer
+  },
+  "AutoRollbackConfiguration": {
+    "Alarms": [
+      {
+        "AlarmName": "string"
+      }
+      ...
+    ]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+EndpointArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the endpoint.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,951 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ACM-PCA-ISSUE-CERTIFICATE" "a" "" ""
+.SH NAME
+acm-pca-issue-certificate \- Uses your private certificate authority (CA), or one that has been shared with you, to issue a client certificate
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Uses your private certificate authority (CA), or one that has been shared with you, to issue a client certificate. This action returns the Amazon Resource Name (ARN) of the certificate. You can retrieve the certificate by calling the \fI\%GetCertificate\fP action and specifying the ARN.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You cannot use the ACM \fBListCertificateAuthorities\fP action to retrieve the ARNs of the certificates that you issue by using ACM Private CA.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  issue\-certificate
+[\-\-api\-passthrough <value>]
+\-\-certificate\-authority\-arn <value>
+\-\-csr <value>
+\-\-signing\-algorithm <value>
+[\-\-template\-arn <value>]
+\-\-validity <value>
+[\-\-validity\-not\-before <value>]
+[\-\-idempotency\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-api\-passthrough\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies X.509 certificate information to be included in the issued certificate. An \fBAPIPassthrough\fP or \fBAPICSRPassthrough\fP template variant must be selected, or else this parameter is ignored. For more information about using these templates, see \fI\%Understanding Certificate Templates\fP .
+.sp
+If conflicting or duplicate certificate information is supplied during certificate issuance, ACM Private CA applies \fI\%order of operation rules\fP to determine what information is used.
+.sp
+Extensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies X.509 extension information for a certificate.
+.sp
+CertificatePolicies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains a sequence of one or more policy information terms, each of which consists of an object identifier (OID) and optional qualifiers. For more information, see NIST\(aqs definition of \fI\%Object Identifier (OID)\fP .
+.sp
+In an end\-entity certificate, these terms indicate the policy under which the certificate was issued and the purposes for which it may be used. In a CA certificate, these terms limit the set of policies for certification paths that include this certificate.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines the X.509 \fBCertificatePolicies\fP extension.
+.sp
+CertPolicyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the object identifier (OID) of the certificate policy under which the certificate was issued. For more information, see NIST\(aqs definition of \fI\%Object Identifier (OID)\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PolicyQualifiers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Modifies the given \fBCertPolicyId\fP with a qualifier. ACM Private CA supports the certification practice statement (CPS) qualifier.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Modifies the \fBCertPolicyId\fP of a \fBPolicyInformation\fP object with a qualifier. ACM Private CA supports the certification practice statement (CPS) qualifier.
+.sp
+PolicyQualifierId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the qualifier modifying a \fBCertPolicyId\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Qualifier \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines the qualifier type. ACM Private CA supports the use of a URI for a CPS qualifier in this field.
+.sp
+CpsUri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains a pointer to a certification practice statement (CPS) published by the CA.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ExtendedKeyUsage \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies additional purposes for which the certified public key may be used other than basic purposes indicated in the \fBKeyUsage\fP extension.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies additional purposes for which the certified public key may be used other than basic purposes indicated in the \fBKeyUsage\fP extension.
+.sp
+ExtendedKeyUsageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a standard \fBExtendedKeyUsage\fP as defined as in \fI\%RFC 5280\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ExtendedKeyUsageObjectIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a custom \fBExtendedKeyUsage\fP with an object identifier (OID).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KeyUsage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines one or more purposes for which the key contained in the certificate can be used. Default value for each option is false.
+.sp
+DigitalSignature \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used for digital signing.
+.UNINDENT
+.UNINDENT
+.sp
+NonRepudiation \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used for non\-repudiation.
+.UNINDENT
+.UNINDENT
+.sp
+KeyEncipherment \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to encipher data.
+.UNINDENT
+.UNINDENT
+.sp
+DataEncipherment \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to decipher data.
+.UNINDENT
+.UNINDENT
+.sp
+KeyAgreement \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used in a key\-agreement protocol.
+.UNINDENT
+.UNINDENT
+.sp
+KeyCertSign \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to sign certificates.
+.UNINDENT
+.UNINDENT
+.sp
+CRLSign \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to sign CRLs.
+.UNINDENT
+.UNINDENT
+.sp
+EncipherOnly \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used only to encipher data.
+.UNINDENT
+.UNINDENT
+.sp
+DecipherOnly \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used only to decipher data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SubjectAlternativeNames \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The subject alternative name extension allows identities to be bound to the subject of the certificate. These identities may be included in addition to or in place of the identity in the subject field of the certificate.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an ASN.1 X.400 \fBGeneralName\fP as defined in \fI\%RFC 5280\fP . Only one of the following naming options should be provided. Providing more than one option results in an \fBInvalidArgsException\fP error.
+.sp
+OtherName \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP using an \fBOtherName\fP object.
+.sp
+TypeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an OID.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an OID value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Rfc822Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an \fI\%RFC 822\fP email address.
+.UNINDENT
+.UNINDENT
+.sp
+DnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as a DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+DirectoryName \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the certificate subject. The \fBSubject\fP field in the certificate identifies the entity that owns or controls the public key in the certificate. The entity can be a user, computer, device, or service. The \fBSubject\fP must contain an X.500 distinguished name (DN). A DN is a sequence of relative distinguished names (RDNs). The RDNs are separated by commas in the certificate.
+.sp
+Country \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Two\-digit code that specifies the country in which the certificate subject located.
+.UNINDENT
+.UNINDENT
+.sp
+Organization \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Legal name of the organization with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationalUnit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A subdivision or unit of the organization (such as sales or finance) with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+DistinguishedNameQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Disambiguating information for the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+State in which the subject of the certificate is located.
+.UNINDENT
+.UNINDENT
+.sp
+CommonName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For CA and end\-entity certificates in a private PKI, the common name (CN) can be any string within the length limit.
+.sp
+Note: In publicly trusted certificates, the common name must be a fully qualified domain name (FQDN) associated with the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+SerialNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The certificate serial number.
+.UNINDENT
+.UNINDENT
+.sp
+Locality \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The locality (such as a city or town) in which the certificate subject is located.
+.UNINDENT
+.UNINDENT
+.sp
+Title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A title such as Mr. or Ms., which is pre\-pended to the name to refer formally to the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+Surname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Family name. In the US and the UK, for example, the surname of an individual is ordered last. In Asian cultures the surname is typically ordered first.
+.UNINDENT
+.UNINDENT
+.sp
+GivenName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First name.
+.UNINDENT
+.UNINDENT
+.sp
+Initials \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Concatenation that typically contains the first letter of the \fBGivenName\fP , the first letter of the middle name if one exists, and the first letter of the \fBSurname\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Pseudonym \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a shortened version of a longer \fBGivenName\fP . For example, Jonathan is often shortened to John. Elizabeth is often shortened to Beth, Liz, or Eliza.
+.UNINDENT
+.UNINDENT
+.sp
+GenerationQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a qualifier appended to the name of an individual. Examples include Jr. for junior, Sr. for senior, and III for third.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EdiPartyName \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an \fBEdiPartyName\fP object.
+.sp
+PartyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the party name.
+.UNINDENT
+.UNINDENT
+.sp
+NameAssigner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name assigner.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UniformResourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as a URI.
+.UNINDENT
+.UNINDENT
+.sp
+IpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an IPv4 or IPv6 address.
+.UNINDENT
+.UNINDENT
+.sp
+RegisteredId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an object identifier (OID).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Subject \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the certificate subject. The \fBSubject\fP field in the certificate identifies the entity that owns or controls the public key in the certificate. The entity can be a user, computer, device, or service. The \fBSubject\fP must contain an X.500 distinguished name (DN). A DN is a sequence of relative distinguished names (RDNs). The RDNs are separated by commas in the certificate.
+.sp
+Country \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Two\-digit code that specifies the country in which the certificate subject located.
+.UNINDENT
+.UNINDENT
+.sp
+Organization \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Legal name of the organization with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationalUnit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A subdivision or unit of the organization (such as sales or finance) with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+DistinguishedNameQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Disambiguating information for the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+State in which the subject of the certificate is located.
+.UNINDENT
+.UNINDENT
+.sp
+CommonName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For CA and end\-entity certificates in a private PKI, the common name (CN) can be any string within the length limit.
+.sp
+Note: In publicly trusted certificates, the common name must be a fully qualified domain name (FQDN) associated with the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+SerialNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The certificate serial number.
+.UNINDENT
+.UNINDENT
+.sp
+Locality \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The locality (such as a city or town) in which the certificate subject is located.
+.UNINDENT
+.UNINDENT
+.sp
+Title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A title such as Mr. or Ms., which is pre\-pended to the name to refer formally to the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+Surname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Family name. In the US and the UK, for example, the surname of an individual is ordered last. In Asian cultures the surname is typically ordered first.
+.UNINDENT
+.UNINDENT
+.sp
+GivenName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First name.
+.UNINDENT
+.UNINDENT
+.sp
+Initials \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Concatenation that typically contains the first letter of the \fBGivenName\fP , the first letter of the middle name if one exists, and the first letter of the \fBSurname\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Pseudonym \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a shortened version of a longer \fBGivenName\fP . For example, Jonathan is often shortened to John. Elizabeth is often shortened to Beth, Liz, or Eliza.
+.UNINDENT
+.UNINDENT
+.sp
+GenerationQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a qualifier appended to the name of an individual. Examples include Jr. for junior, Sr. for senior, and III for third.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Extensions": {
+    "CertificatePolicies": [
+      {
+        "CertPolicyId": "string",
+        "PolicyQualifiers": [
+          {
+            "PolicyQualifierId": "CPS",
+            "Qualifier": {
+              "CpsUri": "string"
+            }
+          }
+          ...
+        ]
+      }
+      ...
+    ],
+    "ExtendedKeyUsage": [
+      {
+        "ExtendedKeyUsageType": "SERVER_AUTH"|"CLIENT_AUTH"|"CODE_SIGNING"|"EMAIL_PROTECTION"|"TIME_STAMPING"|"OCSP_SIGNING"|"SMART_CARD_LOGIN"|"DOCUMENT_SIGNING"|"CERTIFICATE_TRANSPARENCY",
+        "ExtendedKeyUsageObjectIdentifier": "string"
+      }
+      ...
+    ],
+    "KeyUsage": {
+      "DigitalSignature": true|false,
+      "NonRepudiation": true|false,
+      "KeyEncipherment": true|false,
+      "DataEncipherment": true|false,
+      "KeyAgreement": true|false,
+      "KeyCertSign": true|false,
+      "CRLSign": true|false,
+      "EncipherOnly": true|false,
+      "DecipherOnly": true|false
+    },
+    "SubjectAlternativeNames": [
+      {
+        "OtherName": {
+          "TypeId": "string",
+          "Value": "string"
+        },
+        "Rfc822Name": "string",
+        "DnsName": "string",
+        "DirectoryName": {
+          "Country": "string",
+          "Organization": "string",
+          "OrganizationalUnit": "string",
+          "DistinguishedNameQualifier": "string",
+          "State": "string",
+          "CommonName": "string",
+          "SerialNumber": "string",
+          "Locality": "string",
+          "Title": "string",
+          "Surname": "string",
+          "GivenName": "string",
+          "Initials": "string",
+          "Pseudonym": "string",
+          "GenerationQualifier": "string"
+        },
+        "EdiPartyName": {
+          "PartyName": "string",
+          "NameAssigner": "string"
+        },
+        "UniformResourceIdentifier": "string",
+        "IpAddress": "string",
+        "RegisteredId": "string"
+      }
+      ...
+    ]
+  },
+  "Subject": {
+    "Country": "string",
+    "Organization": "string",
+    "OrganizationalUnit": "string",
+    "DistinguishedNameQualifier": "string",
+    "State": "string",
+    "CommonName": "string",
+    "SerialNumber": "string",
+    "Locality": "string",
+    "Title": "string",
+    "Surname": "string",
+    "GivenName": "string",
+    "Initials": "string",
+    "Pseudonym": "string",
+    "GenerationQualifier": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-authority\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) that was returned when you called \fI\%CreateCertificateAuthority\fP . This must be of the form:
+.INDENT 0.0
+.INDENT 3.5
+
+.nf
+\(ga\(ga
+.fi
+arn:aws:acm\-pca:\fIregion\fP :\fIaccount\fP :certificate\-authority/\fI12345678\-1234\-1234\-1234\-123456789012\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 846)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-csr\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The certificate signing request (CSR) for the certificate you want to issue. As an example, you can use the following OpenSSL command to create the CSR and a 2048 bit RSA private key.
+.INDENT 0.0
+.INDENT 3.5
+\fBopenssl req \-new \-newkey rsa:2048 \-days 365 \-keyout private/test_cert_priv_key.pem \-out csr/test_cert_.csr\fP
+.UNINDENT
+.UNINDENT
+.sp
+If you have a configuration file, you can then use the following OpenSSL command. The \fBusr_cert\fP block in the configuration file contains your X509 version 3 extensions.
+.INDENT 0.0
+.INDENT 3.5
+\fBopenssl req \-new \-config openssl_rsa.cnf \-extensions usr_cert \-newkey rsa:2048 \-days \-365 \-keyout private/test_cert_priv_key.pem \-out csr/test_cert_.csr\fP
+.UNINDENT
+.UNINDENT
+.sp
+Note: A CSR must provide either a \fIsubject name\fP or a \fIsubject alternative name\fP or the request will be rejected.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-signing\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the algorithm that will be used to sign the certificate to be issued.
+.sp
+This parameter should not be confused with the \fBSigningAlgorithm\fP parameter used to sign a CSR in the \fBCreateCertificateAuthority\fP action.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSHA256WITHECDSA\fP
+.IP \(bu 2
+\fBSHA384WITHECDSA\fP
+.IP \(bu 2
+\fBSHA512WITHECDSA\fP
+.IP \(bu 2
+\fBSHA256WITHRSA\fP
+.IP \(bu 2
+\fBSHA384WITHRSA\fP
+.IP \(bu 2
+\fBSHA512WITHRSA\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-template\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a custom configuration template to use when issuing a certificate. If this parameter is not provided, ACM Private CA defaults to the \fBEndEntityCertificate/V1\fP template. For CA certificates, you should choose the shortest path length that meets your needs. The path length is indicated by the PathLen*N* portion of the ARN, where \fIN\fP is the \fI\%CA depth\fP .
+.sp
+Note: The CA depth configured on a subordinate CA certificate must not exceed the limit set by its parents in the CA hierarchy.
+.sp
+For a list of \fBTemplateArn\fP values supported by ACM Private CA, see \fI\%Understanding Certificate Templates\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-validity\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information describing the end of the validity period of the certificate. This parameter sets the “Not After” date for the certificate.
+.sp
+Certificate validity is the period of time during which a certificate is valid. Validity can be expressed as an explicit date and time when the certificate expires, or as a span of time after issuance, stated in days, months, or years. For more information, see \fI\%Validity\fP in RFC 5280.
+.sp
+This value is unaffected when \fBValidityNotBefore\fP is also specified. For example, if \fBValidity\fP is set to 20 days in the future, the certificate will expire 20 days from issuance time regardless of the \fBValidityNotBefore\fP value.
+.sp
+The end of the validity period configured on a certificate must not exceed the limit set on its parents in the CA hierarchy.
+.sp
+Value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A long integer interpreted according to the value of \fBType\fP , below.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines how \fIACM Private CA\fP interprets the \fBValue\fP parameter, an integer. Supported validity types include those listed below. Type definitions with values include a sample input value and the resulting output.
+.INDENT 0.0
+.INDENT 3.5
+\fBEND_DATE\fP : The specific date and time when the certificate will expire, expressed using UTCTime (YYMMDDHHMMSS) or GeneralizedTime (YYYYMMDDHHMMSS) format. When UTCTime is used, if the year field (YY) is greater than or equal to 50, the year is interpreted as 19YY. If the year field is less than 50, the year is interpreted as 20YY.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Sample input value: 491231235959 (UTCTime format)
+.IP \(bu 2
+Output expiration date/time: 12/31/2049 23:59:59
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBABSOLUTE\fP : The specific date and time when the validity of a certificate will start or expire, expressed in seconds since the Unix Epoch.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Sample input value: 2524608000
+.IP \(bu 2
+Output expiration date/time: 01/01/2050 00:00:00
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBDAYS\fP , \fBMONTHS\fP , \fBYEARS\fP : The relative time from the moment of issuance until the certificate will expire, expressed in days, months, or years.
+.UNINDENT
+.UNINDENT
+.sp
+Example if \fBDAYS\fP , issued on 10/12/2020 at 12:34:54 UTC:
+.INDENT 0.0
+.IP \(bu 2
+Sample input value: 90
+.IP \(bu 2
+Output expiration date: 01/10/2020 12:34:54 UTC
+.UNINDENT
+.sp
+The minimum validity duration for a certificate using relative time (\fBDAYS\fP ) is one day. The minimum validity for a certificate using absolute time (\fBABSOLUTE\fP or \fBEND_DATE\fP ) is one second.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Value=long,Type=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Value": long,
+  "Type": "END_DATE"|"ABSOLUTE"|"DAYS"|"MONTHS"|"YEARS"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-validity\-not\-before\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information describing the start of the validity period of the certificate. This parameter sets the “Not Before" date for the certificate.
+.sp
+By default, when issuing a certificate, ACM Private CA sets the "Not Before" date to the issuance time minus 60 minutes. This compensates for clock inconsistencies across computer systems. The \fBValidityNotBefore\fP parameter can be used to customize the “Not Before” value.
+.sp
+Unlike the \fBValidity\fP parameter, the \fBValidityNotBefore\fP parameter is optional.
+.sp
+The \fBValidityNotBefore\fP value is expressed as an explicit date and time, using the \fBValidity\fP type value \fBABSOLUTE\fP . For more information, see \fI\%Validity\fP in this API reference and \fI\%Validity\fP in RFC 5280.
+.sp
+Value \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A long integer interpreted according to the value of \fBType\fP , below.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines how \fIACM Private CA\fP interprets the \fBValue\fP parameter, an integer. Supported validity types include those listed below. Type definitions with values include a sample input value and the resulting output.
+.INDENT 0.0
+.INDENT 3.5
+\fBEND_DATE\fP : The specific date and time when the certificate will expire, expressed using UTCTime (YYMMDDHHMMSS) or GeneralizedTime (YYYYMMDDHHMMSS) format. When UTCTime is used, if the year field (YY) is greater than or equal to 50, the year is interpreted as 19YY. If the year field is less than 50, the year is interpreted as 20YY.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Sample input value: 491231235959 (UTCTime format)
+.IP \(bu 2
+Output expiration date/time: 12/31/2049 23:59:59
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBABSOLUTE\fP : The specific date and time when the validity of a certificate will start or expire, expressed in seconds since the Unix Epoch.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Sample input value: 2524608000
+.IP \(bu 2
+Output expiration date/time: 01/01/2050 00:00:00
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBDAYS\fP , \fBMONTHS\fP , \fBYEARS\fP : The relative time from the moment of issuance until the certificate will expire, expressed in days, months, or years.
+.UNINDENT
+.UNINDENT
+.sp
+Example if \fBDAYS\fP , issued on 10/12/2020 at 12:34:54 UTC:
+.INDENT 0.0
+.IP \(bu 2
+Sample input value: 90
+.IP \(bu 2
+Output expiration date: 01/10/2020 12:34:54 UTC
+.UNINDENT
+.sp
+The minimum validity duration for a certificate using relative time (\fBDAYS\fP ) is one day. The minimum validity for a certificate using absolute time (\fBABSOLUTE\fP or \fBEND_DATE\fP ) is one second.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Value=long,Type=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Value": long,
+  "Type": "END_DATE"|"ABSOLUTE"|"DAYS"|"MONTHS"|"YEARS"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-idempotency\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Alphanumeric string that can be used to distinguish between calls to the \fBIssueCertificate\fP action. Idempotency tokens for \fBIssueCertificate\fP time out after one minute. Therefore, if you call \fBIssueCertificate\fP multiple times with the same idempotency token within one minute, ACM Private CA recognizes that you are requesting only one certificate and will issue only one. If you change the idempotency token for each call, PCA recognizes that you are requesting multiple certificates.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo issue a private certificate\fP
+.sp
+The following \fBissue\-certificate\fP command uses the private CA specified by the ARN to issue a private certificate.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm\-pca issue\-certificate \-\-certificate\-authority\-arn arn:aws:acm\-pca:us\-west\-2:123456789012:certificate\-authority/12345678\-1234\-1234\-1234\-123456789012 \-\-csr fileb://C:\ecert_1.csr \-\-signing\-algorithm "SHA256WITHRSA" \-\-validity Value=365,Type="DAYS" \-\-idempotency\-token 1234
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+CertificateArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the issued certificate and the certificate serial number. This is of the form:
+.INDENT 0.0
+.INDENT 3.5
+
+.nf
+\(ga\(ga
+.fi
+arn:aws:acm\-pca:\fIregion\fP :\fIaccount\fP :certificate\-authority/\fI12345678\-1234\-1234\-1234\-123456789012\fP /certificate/\fI286535153982981100925020015808220737245\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 1165)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

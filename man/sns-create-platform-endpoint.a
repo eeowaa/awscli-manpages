@@ -1,0 +1,165 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SNS-CREATE-PLATFORM-ENDPOINT" "a" "" ""
+.SH NAME
+sns-create-platform-endpoint \- Creates an endpoint for a device and mobile app on one of the supported push notification services, such as GCM (Firebase Cloud Messaging) and APNS
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an endpoint for a device and mobile app on one of the supported push notification services, such as GCM (Firebase Cloud Messaging) and APNS. \fBCreatePlatformEndpoint\fP requires the \fBPlatformApplicationArn\fP that is returned from \fBCreatePlatformApplication\fP . You can use the returned \fBEndpointArn\fP to send a message to a mobile app or by the \fBSubscribe\fP action for subscription to a topic. The \fBCreatePlatformEndpoint\fP action is idempotent, so if the requester already owns an endpoint with the same device token and attributes, that endpoint\(aqs ARN is returned without creating a new endpoint. For more information, see \fI\%Using Amazon SNS Mobile Push Notifications\fP .
+.sp
+When using \fBCreatePlatformEndpoint\fP with Baidu, two attributes must be provided: ChannelId and UserId. The token field must also contain the ChannelId. For more information, see \fI\%Creating an Amazon SNS Endpoint for Baidu\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-platform\-endpoint
+\-\-platform\-application\-arn <value>
+\-\-token <value>
+[\-\-custom\-user\-data <value>]
+[\-\-attributes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-platform\-application\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+PlatformApplicationArn returned from CreatePlatformApplication is used to create a an endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier created by the notification service for an app on a device. The specific name for Token will vary, depending on which notification service is being used. For example, when using APNS as the notification service, you need the device token. Alternatively, when using GCM (Firebase Cloud Messaging) or ADM, the device token equivalent is called the registration ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-user\-data\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Arbitrary user data to associate with the endpoint. Amazon SNS does not use this data. The data must be in UTF\-8 format and less than 2KB.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+For a list of attributes, see \fI\%SetEndpointAttributes\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a platform application endpoint\fP
+.sp
+The following \fBcreate\-platform\-endpoint\fP example creates an endpoint for the specified platform application using the specified token.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sns create\-platform\-endpoint \e
+    \-\-platform\-application\-arn arn:aws:sns:us\-west\-2:123456789012:app/GCM/MyApplication \e
+    \-\-token EXAMPLE12345...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+      "EndpointArn": "arn:aws:sns:us\-west\-2:1234567890:endpoint/GCM/MyApplication/12345678\-abcd\-9012\-efgh\-345678901234"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+EndpointArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+EndpointArn returned from CreateEndpoint action.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,195 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IAM-CREATE-LOGIN-PROFILE" "a" "" ""
+.SH NAME
+iam-create-login-profile \- Creates a password for the specified IAM user
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a password for the specified IAM user. A password allows an IAM user to access AWS services through the AWS Management Console.
+.sp
+You can use the AWS CLI, the AWS API, or the \fBUsers\fP page in the IAM console to create a password for any IAM user. Use  ChangePassword to update your own existing password in the \fBMy Security Credentials\fP page in the AWS Management Console.
+.sp
+For more information about managing passwords, see \fI\%Managing passwords\fP in the \fIIAM User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-login\-profile
+\-\-user\-name <value>
+\-\-password <value>
+[\-\-password\-reset\-required | \-\-no\-password\-reset\-required]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-user\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the IAM user to create a password for. The user must already exist.
+.sp
+This parameter allows (through its \fI\%regex pattern\fP ) a string of characters consisting of upper and lowercase alphanumeric characters with no spaces. You can also include any of the following characters: _+=,.@\-
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-password\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The new password for the user.
+.sp
+The \fI\%regex pattern\fP that is used to validate this parameter is a string of characters. That string can include almost any printable ASCII character from the space (\fB\eu0020\fP ) through the end of the ASCII character range (\fB\eu00FF\fP ). You can also include the tab (\fB\eu0009\fP ), line feed (\fB\eu000A\fP ), and carriage return (\fB\eu000D\fP ) characters. Any of these characters are valid in a password. However, many tools, such as the AWS Management Console, might restrict the ability to type certain characters because they have special meaning within that tool.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-password\-reset\-required\fP | \fB\-\-no\-password\-reset\-required\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the user is required to set a new password on next sign\-in.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a password for an IAM user\fP
+.sp
+To create a password for an IAM user, we recommend using the \fB\-\-cli\-input\-json\fP parameter to pass a JSON file that contains the password. Using this method, you can create a strong password with non\-alphanumeric characters. It can be difficult to create a password with non\-alphanumeric characters when you pass it as a command line parameter.
+.sp
+To use the \fB\-\-cli\-input\-json\fP parameter, start by using the \fBcreate\-login\-profile\fP command with the \fB\-\-generate\-cli\-skeleton\fP parameter, as in the following example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam create\-login\-profile \-\-generate\-cli\-skeleton > create\-login\-profile.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The previous command creates a JSON file called create\-login\-profile.json that you can use to fill in the information for a subsequent \fBcreate\-login\-profile\fP command. For example:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "UserName": "Bob",
+    "Password": "&1\-3a6u:RA0djs",
+    "PasswordResetRequired": true
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Next, to create a password for an IAM user, use the \fBcreate\-login\-profile\fP command again, this time passing the \fB\-\-cli\-input\-json\fP parameter to specify your JSON file. The following \fBcreate\-login\-profile\fP command uses the \fB\-\-cli\-input\-json\fP parameter with a JSON file called create\-login\-profile.json:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iam create\-login\-profile \-\-cli\-input\-json file://create\-login\-profile.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "LoginProfile": {
+        "UserName": "Bob",
+        "CreateDate": "2015\-03\-10T20:55:40.274Z",
+        "PasswordResetRequired": true
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If the new password violates the account password policy, the command returns a \fBPasswordPolicyViolation\fP error.
+.sp
+To change the password for a user that already has one, use \fBupdate\-login\-profile\fP\&. To set a password policy for the account, use the \fBupdate\-account\-password\-policy\fP command.
+.sp
+If the account password policy allows them to, IAM users can change their own passwords using the \fBchange\-password\fP command.
+.sp
+For more information, see \fI\%Managing Passwords for IAM Users\fP in the \fIUsing IAM\fP guide.
+.SH OUTPUT
+.sp
+LoginProfile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure containing the user name and password create date.
+.sp
+UserName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the user, which can be used for signing in to the AWS Management Console.
+.UNINDENT
+.UNINDENT
+.sp
+CreateDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the password for the user was created.
+.UNINDENT
+.UNINDENT
+.sp
+PasswordResetRequired \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the user is required to set a new password on next sign\-in.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

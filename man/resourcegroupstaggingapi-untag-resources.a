@@ -1,0 +1,196 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RESOURCEGROUPSTAGGINGAPI-UNTAG-RESOURCES" "a" "" ""
+.SH NAME
+resourcegroupstaggingapi-untag-resources \- Removes the specified tags from the specified resources
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Removes the specified tags from the specified resources. When you specify a tag key, the action removes both that key and its associated value. The operation succeeds even if you attempt to remove tags from a resource that were already removed. Note the following:
+.INDENT 0.0
+.IP \(bu 2
+To remove tags from a resource, you need the necessary permissions for the service that the resource belongs to as well as permissions for removing tags. For more information, see the documentation for the service whose resource you want to untag.
+.IP \(bu 2
+You can only tag resources that are located in the specified AWS Region for the calling AWS account.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  untag\-resources
+\-\-resource\-arn\-list <value>
+\-\-tag\-keys <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-resource\-arn\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a list of ARNs of the resources that you want to remove tags from.
+.sp
+An ARN (Amazon Resource Name) uniquely identifies a resource. For more information, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the \fIAWS General Reference\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-keys\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a list of tag keys that you want to remove from the specified resources.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo remove a tag from a resource\fP
+.sp
+The following \fBuntag\-resources\fP example removes the specified tag keys and any associated values from the specified resource.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws resourcegroupstaggingapi untag\-resources \e
+    \-\-resource\-arn\-list arn:aws:s3:::awsexamplebucket \e
+    \-\-tag\-keys Environment CostCenter
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "FailedResourcesMap": {}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%UntagResources\fP in the \fIResource Groups Tagging API Reference\fP\&.
+.SH OUTPUT
+.sp
+FailedResourcesMap \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map containing a key\-value pair for each failed item that couldn\(aqt be untagged. The key is the ARN of the failed resource. The value is a \fBFailureInfo\fP object that contains an error code, a status code, and an error message. If there are no errors, the \fBFailedResourcesMap\fP is empty.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the errors that are returned for each failed resource. This information can include \fBInternalServiceException\fP and \fBInvalidParameterException\fP errors. It can also include any valid error code returned by the AWS service that hosts the resource that the ARN key represents.
+.sp
+The following are common error codes that you might receive from other AWS services:
+.INDENT 0.0
+.IP \(bu 2
+\fBInternalServiceException\fP – This can mean that the Resource Groups Tagging API didn\(aqt receive a response from another AWS service. It can also mean the the resource type in the request is not supported by the Resource Groups Tagging API. In these cases, it\(aqs safe to retry the request and then call \fI\%GetResources\fP to verify the changes.
+.IP \(bu 2
+\fBAccessDeniedException\fP – This can mean that you need permission to calling tagging operations in the AWS service that contains the resource. For example, to use the Resource Groups Tagging API to tag a CloudWatch alarm resource, you need permission to call \(ga \fBTagResources\fP \fI\%http://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/API_TagResources\fP\&.html\(ga__  \fIand\fP  \(ga \fBTagResource\fP \fI\%http://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_TagResource\fP\&.html\(ga__ in the CloudWatch API.
+.UNINDENT
+.sp
+For more information on errors that are generated from other AWS services, see the documentation for that service.
+.sp
+StatusCode \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The HTTP status code of the common error.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The code of the common error. Valid values include \fBInternalServiceException\fP , \fBInvalidParameterException\fP , and any valid error code returned by the AWS service that hosts the resource that you want to tag.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message of the common error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

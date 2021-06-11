@@ -1,0 +1,258 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "FIREHOSE-PUT-RECORD-BATCH" "a" "" ""
+.SH NAME
+firehose-put-record-batch \- Writes multiple data records into a delivery stream in a single call, which can achieve higher throughput per producer than when writing single records
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Writes multiple data records into a delivery stream in a single call, which can achieve higher throughput per producer than when writing single records. To write single data records into a delivery stream, use  PutRecord . Applications using these operations are referred to as producers.
+.sp
+For information about service quota, see \fI\%Amazon Kinesis Data Firehose Quota\fP .
+.sp
+Each  PutRecordBatch request supports up to 500 records. Each record in the request can be as large as 1,000 KB (before 64\-bit encoding), up to a limit of 4 MB for the entire request. These limits cannot be changed.
+.sp
+You must specify the name of the delivery stream and the data record when using  PutRecord . The data record consists of a data blob that can be up to 1,000 KB in size, and any kind of data. For example, it could be a segment from a log file, geographic location data, website clickstream data, and so on.
+.sp
+Kinesis Data Firehose buffers records before delivering them to the destination. To disambiguate the data blobs at the destination, a common solution is to use delimiters in the data, such as a newline (\fB\en\fP ) or some other character unique within the data. This allows the consumer application to parse individual data items when reading the data from the destination.
+.sp
+The  PutRecordBatch response includes a count of failed records, \fBFailedPutCount\fP , and an array of responses, \fBRequestResponses\fP . Even if the  PutRecordBatch call succeeds, the value of \fBFailedPutCount\fP may be greater than 0, indicating that there are records for which the operation didn\(aqt succeed. Each entry in the \fBRequestResponses\fP array provides additional information about the processed record. It directly correlates with a record in the request array using the same ordering, from the top to the bottom. The response array always includes the same number of records as the request array. \fBRequestResponses\fP includes both successfully and unsuccessfully processed records. Kinesis Data Firehose tries to process all records in each  PutRecordBatch request. A single record failure does not stop the processing of subsequent records.
+.sp
+A successfully processed record includes a \fBRecordId\fP value, which is unique for the record. An unsuccessfully processed record includes \fBErrorCode\fP and \fBErrorMessage\fP values. \fBErrorCode\fP reflects the type of error, and is one of the following values: \fBServiceUnavailableException\fP or \fBInternalFailure\fP . \fBErrorMessage\fP provides more detailed information about the error.
+.sp
+If there is an internal server error or a timeout, the write might have completed or it might have failed. If \fBFailedPutCount\fP is greater than 0, retry the request, resending only those records that might have failed processing. This minimizes the possible duplicate records and also reduces the total bytes sent (and corresponding charges). We recommend that you handle any duplicates at the destination.
+.sp
+If  PutRecordBatch throws \fBServiceUnavailableException\fP , back off and retry. If the exception persists, it is possible that the throughput limits have been exceeded for the delivery stream.
+.sp
+Data records sent to Kinesis Data Firehose are stored for 24 hours from the time they are added to a delivery stream as it attempts to send the records to the destination. If the destination is unreachable for more than 24 hours, the data is no longer available.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Don\(aqt concatenate two or more base64 strings to form the data fields of your records. Instead, concatenate the raw data, then perform base64 encoding.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-record\-batch
+\-\-delivery\-stream\-name <value>
+\-\-records <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-delivery\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the delivery stream.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-records\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more records.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The unit of data in a delivery stream.
+.sp
+Data \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The data blob, which is base64\-encoded when the blob is serialized. The maximum size of the data blob, before base64\-encoding, is 1,000 KiB.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+\-\-records Data1 Data2 Data3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Data": blob
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo write multiple records to a stream\fP
+.sp
+The following \fBput\-record\-batch\fP example writes three records to a stream. The data is encoded in Base64 format.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws firehose put\-record\-batch \e
+    \-\-delivery\-stream\-name my\-stream \e
+    \-\-records file://records.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBmyfile.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {"Data": "Rmlyc3QgdGhpbmc="},
+    {"Data": "U2Vjb25kIHRoaW5n"},
+    {"Data": "VGhpcmQgdGhpbmc="}
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "FailedPutCount": 0,
+    "Encrypted": false,
+    "RequestResponses": [
+        {
+            "RecordId": "9D2OJ6t2EqCTZTXwGzeSv/EVHxRoRCw89xd+o3+sXg8DhYOaWKPSmZy/CGlRVEys1u1xbeKh6VofEYKkoeiDrcjrxhQp9iF7sUW7pujiMEQ5LzlrzCkGosxQn+3boDnURDEaD42V7GiixpOyLJkYZcae1i7HzlCEoy9LJhMr8EjDSi4Om/9Vc2uhwwuAtGE0XKpxJ2WD7ZRWtAnYlKAnvgSPRgg7zOWL"
+        },
+        {
+            "RecordId": "jFirejqxCLlK5xjH/UNmlMVcjktEN76I7916X9PaZ+PVaOSXDfU1WGOqEZhxq2js7xcZ552eoeDxsuTU1MSq9nZTbVfb6cQTIXnm/GsuF37Uhg67GKmR5z90l6XKJ+/+pDloFv7Hh9a3oUS6wYm3DcNRLTHHAimANp1PhkQvWpvLRfzbuCUkBphR2QVzhP9OiHLbzGwy8/DfH8sqWEUYASNJKS8GXP5s"
+        },
+        {
+            "RecordId": "oy0amQ40o5Y2YV4vxzufdcMOOw6n3EPr3tpPJGoYVNKH4APPVqNcbUgefo1stEFRg4hTLrf2k6eliHu/9+YJ5R3iiedHkdsfkIqX0XTySSutvgFYTjNY1TSrK0pM2sWxpjqqnk3+2UX1MV5z88xGro3cQm/DTBt3qBlmTj7Xq8SKVbO1S7YvMTpWkMKA86f8JfmT8BMKoMb4XZS/sOkQLe+qh0sYKXWl"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Sending Data to an Amazon Kinesis Data Firehose Delivery Stream\fP in the \fIAmazon Kinesis Data Firehose Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+FailedPutCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of records that might have failed processing. This number might be greater than 0 even if the  PutRecordBatch call succeeds. Check \fBFailedPutCount\fP to determine whether there are records that you need to resend.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether server\-side encryption (SSE) was enabled during this operation.
+.UNINDENT
+.UNINDENT
+.sp
+RequestResponses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The results array. For each record, the index of the response element is the same as the index used in the request array.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the result for an individual record from a  PutRecordBatch request. If the record is successfully added to your delivery stream, it receives a record ID. If the record fails to be added to your delivery stream, the result includes an error code and an error message.
+.sp
+RecordId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the record.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code for an individual record result.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message for an individual record result.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

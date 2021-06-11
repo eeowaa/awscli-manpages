@@ -1,0 +1,397 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CONFIGSERVICE-DESCRIBE-CONFIG-RULES" "a" "" ""
+.SH NAME
+configservice-describe-config-rules \- Returns details about your AWS Config rules
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns details about your AWS Config rules.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBdescribe\-config\-rules\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBConfigRules\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-config\-rules
+[\-\-config\-rule\-names <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-config\-rule\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The names of the AWS Config rules for which you want details. If you do not specify any names, AWS Config returns details for all your rules.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get details for an AWS Config rule\fP
+.sp
+The following command returns details for an AWS Config rule named \fBInstanceTypesAreT2micro\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws configservice describe\-config\-rules \-\-config\-rule\-names InstanceTypesAreT2micro
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ConfigRules": [
+        {
+            "ConfigRuleState": "ACTIVE",
+            "Description": "Evaluates whether EC2 instances are the t2.micro type.",
+            "ConfigRuleName": "InstanceTypesAreT2micro",
+            "ConfigRuleArn": "arn:aws:config:us\-east\-1:123456789012:config\-rule/config\-rule\-abcdef",
+            "Source": {
+                "Owner": "CUSTOM_LAMBDA",
+                "SourceIdentifier": "arn:aws:lambda:us\-east\-1:123456789012:function:InstanceTypeCheck",
+                "SourceDetails": [
+                    {
+                        "EventSource": "aws.config",
+                        "MessageType": "ConfigurationItemChangeNotification"
+                    }
+                ]
+            },
+            "InputParameters": "{\e"desiredInstanceType\e":\e"t2.micro\e"}",
+            "Scope": {
+                "ComplianceResourceTypes": [
+                    "AWS::EC2::Instance"
+                ]
+            },
+            "ConfigRuleId": "config\-rule\-abcdef"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+ConfigRules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The details about your AWS Config rules.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An AWS Config rule represents an AWS Lambda function that you create for a custom rule or a predefined function for an AWS managed rule. The function evaluates configuration items to assess whether your AWS resources comply with your desired configurations. This function can run when AWS Config detects a configuration change to an AWS resource and at a periodic frequency that you choose (for example, every 24 hours).
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can use the AWS CLI and AWS SDKs if you want to create a rule that triggers evaluations for your resources when AWS Config delivers the configuration snapshot. For more information, see  ConfigSnapshotDeliveryProperties .
+.UNINDENT
+.UNINDENT
+.sp
+For more information about developing and using AWS Config rules, see \fI\%Evaluating AWS Resource Configurations with AWS Config\fP in the \fIAWS Config Developer Guide\fP .
+.sp
+ConfigRuleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name that you assign to the AWS Config rule. The name is required if you are adding a new rule.
+.UNINDENT
+.UNINDENT
+.sp
+ConfigRuleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the AWS Config rule.
+.UNINDENT
+.UNINDENT
+.sp
+ConfigRuleId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS Config rule.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description that you provide for the AWS Config rule.
+.UNINDENT
+.UNINDENT
+.sp
+Scope \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Defines which resources can trigger an evaluation for the rule. The scope can include one or more resource types, a combination of one resource type and one resource ID, or a combination of a tag key and value. Specify a scope to constrain the resources that can trigger an evaluation for the rule. If you do not specify a scope, evaluations are triggered when any resource in the recording group changes.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The scope can be empty.
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceResourceTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The resource types of only those AWS resources that you want to trigger an evaluation for the rule. You can only specify one type if you also specify a resource ID for \fBComplianceResourceId\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+TagKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag key that is applied to only those AWS resources that you want to trigger an evaluation for the rule.
+.UNINDENT
+.UNINDENT
+.sp
+TagValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag value applied to only those AWS resources that you want to trigger an evaluation for the rule. If you specify a value for \fBTagValue\fP , you must also specify a value for \fBTagKey\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the only AWS resource that you want to trigger an evaluation for the rule. If you specify a resource ID, you must specify one resource type for \fBComplianceResourceTypes\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Source \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the rule owner (AWS or customer), the rule identifier, and the notifications that cause the function to evaluate your AWS resources.
+.sp
+Owner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether AWS or the customer owns and manages the AWS Config rule.
+.UNINDENT
+.UNINDENT
+.sp
+SourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For AWS Config managed rules, a predefined identifier from a list. For example, \fBIAM_PASSWORD_POLICY\fP is a managed rule. To reference a managed rule, see \fI\%Using AWS Managed Config Rules\fP .
+.sp
+For custom rules, the identifier is the Amazon Resource Name (ARN) of the rule\(aqs AWS Lambda function, such as \fBarn:aws:lambda:us\-east\-2:123456789012:function:custom_rule_name\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SourceDetails \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Provides the source and type of the event that causes AWS Config to evaluate your AWS resources.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the source and the message types that trigger AWS Config to evaluate your AWS resources against a rule. It also provides the frequency with which you want AWS Config to run evaluations for the rule if the trigger type is periodic. You can specify the parameter values for \fBSourceDetail\fP only for custom rules.
+.sp
+EventSource \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source of the event, such as an AWS service, that triggers AWS Config to evaluate your AWS resources.
+.UNINDENT
+.UNINDENT
+.sp
+MessageType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of notification that triggers AWS Config to run an evaluation for a rule. You can specify the following notification types:
+.INDENT 0.0
+.IP \(bu 2
+\fBConfigurationItemChangeNotification\fP \- Triggers an evaluation when AWS Config delivers a configuration item as a result of a resource change.
+.IP \(bu 2
+\fBOversizedConfigurationItemChangeNotification\fP \- Triggers an evaluation when AWS Config delivers an oversized configuration item. AWS Config may generate this notification type when a resource changes and the notification exceeds the maximum size allowed by Amazon SNS.
+.IP \(bu 2
+\fBScheduledNotification\fP \- Triggers a periodic evaluation at the frequency specified for \fBMaximumExecutionFrequency\fP .
+.IP \(bu 2
+\fBConfigurationSnapshotDeliveryCompleted\fP \- Triggers a periodic evaluation when AWS Config delivers a configuration snapshot.
+.UNINDENT
+.sp
+If you want your custom rule to be triggered by configuration changes, specify two SourceDetail objects, one for \fBConfigurationItemChangeNotification\fP and one for \fBOversizedConfigurationItemChangeNotification\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MaximumExecutionFrequency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The frequency at which you want AWS Config to run evaluations for a custom rule with a periodic trigger. If you specify a value for \fBMaximumExecutionFrequency\fP , then \fBMessageType\fP must use the \fBScheduledNotification\fP value.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+By default, rules with a periodic trigger are evaluated every 24 hours. To change the frequency, specify a valid value for the \fBMaximumExecutionFrequency\fP parameter.
+.sp
+Based on the valid value you choose, AWS Config runs evaluations once for each valid value. For example, if you choose \fBThree_Hours\fP , AWS Config runs evaluations once every three hours. In this case, \fBThree_Hours\fP is the frequency of this rule.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputParameters \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A string, in JSON format, that is passed to the AWS Config rule Lambda function.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumExecutionFrequency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum frequency with which AWS Config runs evaluations for a rule. You can specify a value for \fBMaximumExecutionFrequency\fP when:
+.INDENT 0.0
+.IP \(bu 2
+You are using an AWS managed rule that is triggered at a periodic frequency.
+.IP \(bu 2
+Your custom rule is triggered when AWS Config delivers the configuration snapshot. For more information, see  ConfigSnapshotDeliveryProperties .
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+By default, rules with a periodic trigger are evaluated every 24 hours. To change the frequency, specify a valid value for the \fBMaximumExecutionFrequency\fP parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ConfigRuleState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the AWS Config rule is active or is currently being deleted by AWS Config. It can also indicate the evaluation status for the AWS Config rule.
+.sp
+AWS Config sets the state of the rule to \fBEVALUATING\fP temporarily after you use the \fBStartConfigRulesEvaluation\fP request to evaluate your resources against the AWS Config rule.
+.sp
+AWS Config sets the state of the rule to \fBDELETING_RESULTS\fP temporarily after you use the \fBDeleteEvaluationResults\fP request to delete the current evaluation results for the AWS Config rule.
+.sp
+AWS Config temporarily sets the state of a rule to \fBDELETING\fP after you use the \fBDeleteConfigRule\fP request to delete the rule. After AWS Config deletes the rule, the rule and all of its evaluations are erased and are no longer available.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Service principal name of the service that created the rule.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The field is populated only if the service linked rule is created by a service. The field is empty if you create your own rule.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The string that you use in a subsequent request to get the next page of results in a paginated response.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

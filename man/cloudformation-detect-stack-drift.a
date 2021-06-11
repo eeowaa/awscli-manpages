@@ -1,0 +1,146 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFORMATION-DETECT-STACK-DRIFT" "a" "" ""
+.SH NAME
+cloudformation-detect-stack-drift \- Detects whether a stack(aqs actual configuration differs, or has drifted , from it(aqs expected configuration, as defined in the stack template and any values specified as template parameters
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Detects whether a stack\(aqs actual configuration differs, or has \fIdrifted\fP , from it\(aqs expected configuration, as defined in the stack template and any values specified as template parameters. For each resource in the stack that supports drift detection, AWS CloudFormation compares the actual configuration of the resource with its expected template configuration. Only resource properties explicitly defined in the stack template are checked for drift. A stack is considered to have drifted if one or more of its resources differ from their expected template configurations. For more information, see \fI\%Detecting Unregulated Configuration Changes to Stacks and Resources\fP .
+.sp
+Use \fBDetectStackDrift\fP to detect drift on all supported resources for a given stack, or  DetectStackResourceDrift to detect drift on individual resources.
+.sp
+For a list of stack resources that currently support drift detection, see \fI\%Resources that Support Drift Detection\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBDetectStackDrift\fP can take up to several minutes, depending on the number of resources contained within the stack. Use  DescribeStackDriftDetectionStatus to monitor the progress of a detect stack drift operation. Once the drift detection operation has completed, use  DescribeStackResourceDrifts to return drift information about the stack and its resources.
+.UNINDENT
+.UNINDENT
+.sp
+When detecting drift on a stack, AWS CloudFormation does not detect drift on any nested stacks belonging to that stack. Perform \fBDetectStackDrift\fP directly on the nested stack itself.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  detect\-stack\-drift
+\-\-stack\-name <value>
+[\-\-logical\-resource\-ids <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stack\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stack for which you want to detect drift.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-logical\-resource\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The logical names of any resources you want to use as filters.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo detect drifted resources\fP
+.sp
+The following \fBdetect\-stack\-drift\fP example initiates drift detection for the specified stack.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation detect\-stack\-drift \e
+    \-\-stack\-name my\-stack
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StackDriftDetectionId": "1a229160\-e4d9\-xmpl\-ab67\-0a4f93df83d4"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+You can then use this ID with the \fBdescribe\-stack\-resource\-drifts\fP command to describe drifted resources.
+.SH OUTPUT
+.sp
+StackDriftDetectionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the drift detection results of this operation.
+.sp
+AWS CloudFormation generates new results, with a new drift detection ID, each time this operation is run. However, the number of drift results AWS CloudFormation retains for any given stack, and for how long, may vary.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

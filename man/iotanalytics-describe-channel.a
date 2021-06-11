@@ -1,0 +1,272 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOTANALYTICS-DESCRIBE-CHANNEL" "a" "" ""
+.SH NAME
+iotanalytics-describe-channel \- Retrieves information about a channel
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves information about a channel.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-channel
+\-\-channel\-name <value>
+[\-\-include\-statistics | \-\-no\-include\-statistics]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-channel\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the channel whose information is retrieved.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-include\-statistics\fP | \fB\-\-no\-include\-statistics\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, additional statistical information about the channel is included in the response. This feature cannot be used with a channel whose S3 storage is customer\-managed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo retrieve information about a channel\fP
+.sp
+The following \fBdescribe\-channel\fP example displays details, including statistics, for the specified channel.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iotanalytics describe\-channel \e
+    \-\-channel\-name mychannel \e
+    \-\-include\-statistics
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "statistics": {
+        "size": {
+            "estimatedSizeInBytes": 402.0,
+            "estimatedOn": 1561504380.0
+        }
+    },
+    "channel": {
+        "status": "ACTIVE",
+        "name": "mychannel",
+        "lastUpdateTime": 1557860351.001,
+        "creationTime": 1557860351.001,
+        "retentionPeriod": {
+            "unlimited": true
+        },
+        "arn": "arn:aws:iotanalytics:us\-west\-2:123456789012:channel/mychannel"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%DescribeChannel\fP in the \fIAWS IoT Analytics API Reference\fP\&.
+.SH OUTPUT
+.sp
+channel \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that contains information about the channel.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the channel.
+.UNINDENT
+.UNINDENT
+.sp
+storage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Where channel data is stored. You can choose one of \fBserviceManagedS3\fP or \fBcustomerManagedS3\fP storage. If not specified, the default is \fBserviceManagedS3\fP . You cannot change this storage option after the channel is created.
+.sp
+serviceManagedS3 \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use this to store channel data in an S3 bucket managed by AWS IoT Analytics. You cannot change the choice of service\-managed or customer\-managed S3 storage after the channel is created.
+.UNINDENT
+.UNINDENT
+.sp
+customerManagedS3 \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Use this to store channel data in an S3 bucket that you manage. If customer managed storage is selected, the \fBretentionPeriod\fP parameter is ignored. You cannot change the choice of service\-managed or customer\-managed S3 storage after the channel is created.
+.sp
+bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket in which channel data is stored.
+.UNINDENT
+.UNINDENT
+.sp
+keyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Optional. The prefix used to create the keys of the channel data objects. Each object in an S3 bucket has a key that is its unique identifier in the bucket. Each object in a bucket has exactly one key. The prefix must end with a forward slash (/).
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants AWS IoT Analytics permission to interact with your Amazon S3 resources.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the channel.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the channel.
+.UNINDENT
+.UNINDENT
+.sp
+retentionPeriod \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+How long, in days, message data is kept for the channel.
+.sp
+unlimited \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, message data is kept indefinitely.
+.UNINDENT
+.UNINDENT
+.sp
+numberOfDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days that message data is kept. The \fBunlimited\fP parameter must be false.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+creationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+When the channel was created.
+.UNINDENT
+.UNINDENT
+.sp
+lastUpdateTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+When the channel was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+lastMessageArrivalTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last time when a new message arrived in the channel.
+.sp
+AWS IoT Analytics updates this value at most once per minute for one channel. Hence, the \fBlastMessageArrivalTime\fP value is an approximation.
+.sp
+This feature only applies to messages that arrived in the data store after October 23, 2020.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+statistics \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Statistics about the channel. Included if the \fBincludeStatistics\fP parameter is set to \fBtrue\fP in the request.
+.sp
+size \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The estimated size of the channel.
+.sp
+estimatedSizeInBytes \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The estimated size of the resource, in bytes.
+.UNINDENT
+.UNINDENT
+.sp
+estimatedOn \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time when the estimate of the size of the resource was made.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

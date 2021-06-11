@@ -1,0 +1,712 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-CREATE-MULTIPART-UPLOAD" "a" "" ""
+.SH NAME
+s3api-create-multipart-upload \- This action initiates a multipart upload and returns an upload ID
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This action initiates a multipart upload and returns an upload ID. This upload ID is used to associate all of the parts in the specific multipart upload. You specify this upload ID in each of your subsequent upload part requests (see \fI\%UploadPart\fP ). You also include this upload ID in the final request to either complete or abort the multipart upload request.
+.sp
+For more information about multipart uploads, see \fI\%Multipart Upload Overview\fP .
+.sp
+If you have configured a lifecycle rule to abort incomplete multipart uploads, the upload must complete within the number of days specified in the bucket lifecycle configuration. Otherwise, the incomplete multipart upload becomes eligible for an abort action and Amazon S3 aborts the multipart upload. For more information, see \fI\%Aborting Incomplete Multipart Uploads Using a Bucket Lifecycle Policy\fP .
+.sp
+For information about the permissions required to use the multipart upload API, see \fI\%Multipart Upload and Permissions\fP .
+.sp
+For request signing, multipart upload is just a series of regular requests. You initiate a multipart upload, send one or more requests to upload parts, and then complete the multipart upload process. You sign each request individually. There is nothing special about signing multipart upload requests. For more information about signing, see \fI\%Authenticating Requests (AWS Signature Version 4)\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+After you initiate a multipart upload and upload one or more parts, to stop being charged for storing the uploaded parts, you must either complete or abort the multipart upload. Amazon S3 frees up the space used to store the parts and stop charging you for storing them only after you either complete or abort a multipart upload.
+.UNINDENT
+.UNINDENT
+.sp
+You can optionally request server\-side encryption. For server\-side encryption, Amazon S3 encrypts your data as it writes it to disks in its data centers and decrypts it when you access it. You can provide your own encryption key, or use AWS Key Management Service (AWS KMS) customer master keys (CMKs) or Amazon S3\-managed encryption keys. If you choose to provide your own encryption key, the request headers you provide in \fI\%UploadPart\fP and \fI\%UploadPartCopy\fP requests must match the headers you used in the request to initiate the upload by using \fBCreateMultipartUpload\fP .
+.sp
+To perform a multipart upload with encryption using an AWS KMS CMK, the requester must have permission to the \fBkms:Decrypt\fP and \fBkms:GenerateDataKey*\fP actions on the key. These permissions are required because Amazon S3 must decrypt and read data from the encrypted file parts before it completes the multipart upload. For more information, see \fI\%Multipart upload API and permissions\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+If your AWS Identity and Access Management (IAM) user or role is in the same AWS account as the AWS KMS CMK, then you must have these permissions on the key policy. If your IAM user or role belongs to a different account than the key, then you must have the permissions on both the key policy and your IAM user or role.
+.sp
+For more information, see \fI\%Protecting Data Using Server\-Side Encryption\fP .
+.INDENT 0.0
+.INDENT 3.5
+Access Permissions
+.UNINDENT
+.UNINDENT
+.sp
+When copying an object, you can optionally specify the accounts or groups that should be granted specific permissions on the new object. There are two ways to grant the permissions using the request headers:
+.INDENT 0.0
+.IP \(bu 2
+Specify a canned ACL with the \fBx\-amz\-acl\fP request header. For more information, see \fI\%Canned ACL\fP .
+.IP \(bu 2
+Specify access permissions explicitly with the \fBx\-amz\-grant\-read\fP , \fBx\-amz\-grant\-read\-acp\fP , \fBx\-amz\-grant\-write\-acp\fP , and \fBx\-amz\-grant\-full\-control\fP headers. These parameters map to the set of permissions that Amazon S3 supports in an ACL. For more information, see \fI\%Access Control List (ACL) Overview\fP .
+.UNINDENT
+.sp
+You can use either a canned ACL or specify access permissions explicitly. You cannot do both.
+.INDENT 0.0
+.INDENT 3.5
+Server\-Side\- Encryption\-Specific Request Headers
+.UNINDENT
+.UNINDENT
+.sp
+You can optionally tell Amazon S3 to encrypt data at rest using server\-side encryption. Server\-side encryption is for data encryption at rest. Amazon S3 encrypts your data as it writes it to disks in its data centers and decrypts it when you access it. The option you use depends on whether you want to use AWS managed encryption keys or provide your own encryption key.
+.INDENT 0.0
+.IP \(bu 2
+Use encryption keys managed by Amazon S3 or customer master keys (CMKs) stored in AWS Key Management Service (AWS KMS) – If you want AWS to manage the keys used to encrypt data, specify the following headers in the request.
+.INDENT 2.0
+.IP \(bu 2
+x\-amz\-server\-side\-encryption
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-aws\-kms\-key\-id
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-context
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify \fBx\-amz\-server\-side\-encryption:aws:kms\fP , but don\(aqt provide \fBx\-amz\-server\-side\-encryption\-aws\-kms\-key\-id\fP , Amazon S3 uses the AWS managed CMK in AWS KMS to protect the data.
+.UNINDENT
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+All GET and PUT requests for an object protected by AWS KMS fail if you don\(aqt make them with SSL or by using SigV4.
+.UNINDENT
+.UNINDENT
+.sp
+For more information about server\-side encryption with CMKs stored in AWS KMS (SSE\-KMS), see \fI\%Protecting Data Using Server\-Side Encryption with CMKs stored in AWS KMS\fP .
+.INDENT 0.0
+.IP \(bu 2
+Use customer\-provided encryption keys – If you want to manage your own encryption keys, provide all the following headers in the request.
+.INDENT 2.0
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-customer\-algorithm
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-customer\-key
+.IP \(bu 2
+x\-amz\-server\-side\-encryption\-customer\-key\-MD5
+.UNINDENT
+.UNINDENT
+.sp
+For more information about server\-side encryption with CMKs stored in AWS KMS (SSE\-KMS), see \fI\%Protecting Data Using Server\-Side Encryption with CMKs stored in AWS KMS\fP .
+.INDENT 0.0
+.INDENT 3.5
+Access\-Control\-List (ACL)\-Specific Request Headers
+.UNINDENT
+.UNINDENT
+.sp
+You also can use the following access control–related headers with this operation. By default, all objects are private. Only the owner has full access control. When adding a new object, you can grant permissions to individual AWS accounts or to predefined groups defined by Amazon S3. These permissions are then added to the access control list (ACL) on the object. For more information, see \fI\%Using ACLs\fP . With this operation, you can grant access permissions using one of the following two methods:
+.INDENT 0.0
+.IP \(bu 2
+Specify a canned ACL (\fBx\-amz\-acl\fP ) — Amazon S3 supports a set of predefined ACLs, known as \fIcanned ACLs\fP . Each canned ACL has a predefined set of grantees and permissions. For more information, see \fI\%Canned ACL\fP .
+.IP \(bu 2
+Specify access permissions explicitly — To explicitly grant access permissions to specific AWS accounts or groups, use the following headers. Each header maps to specific permissions that Amazon S3 supports in an ACL. For more information, see \fI\%Access Control List (ACL) Overview\fP . In the header, you specify a list of grantees who get the specific permission. To grant permissions explicitly, use:
+.INDENT 2.0
+.IP \(bu 2
+x\-amz\-grant\-read
+.IP \(bu 2
+x\-amz\-grant\-write
+.IP \(bu 2
+x\-amz\-grant\-read\-acp
+.IP \(bu 2
+x\-amz\-grant\-write\-acp
+.IP \(bu 2
+x\-amz\-grant\-full\-control
+.UNINDENT
+.UNINDENT
+.sp
+You specify each grantee as a type=value pair, where the type is one of the following:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBid\fP – if the value specified is the canonical user ID of an AWS account
+.IP \(bu 2
+\fBuri\fP – if you are granting permissions to a predefined group
+.IP \(bu 2
+\fBemailAddress\fP – if the value specified is the email address of an AWS account
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Using email addresses to specify a grantee is only supported in the following AWS Regions:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+US East (N. Virginia)
+.IP \(bu 2
+US West (N. California)
+.IP \(bu 2
+US West (Oregon)
+.IP \(bu 2
+Asia Pacific (Singapore)
+.IP \(bu 2
+Asia Pacific (Sydney)
+.IP \(bu 2
+Asia Pacific (Tokyo)
+.IP \(bu 2
+Europe (Ireland)
+.IP \(bu 2
+South America (São Paulo)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+For a list of all the Amazon S3 supported Regions and endpoints, see \fI\%Regions and Endpoints\fP in the AWS General Reference.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+For example, the following \fBx\-amz\-grant\-read\fP header grants the AWS accounts identified by account IDs permissions to read object data and its metadata:
+.INDENT 0.0
+.INDENT 3.5
+\fBx\-amz\-grant\-read: id="11112222333", id="444455556666"\fP
+.UNINDENT
+.UNINDENT
+.sp
+The following operations are related to \fBCreateMultipartUpload\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%UploadPart\fP
+.IP \(bu 2
+\fI\%CompleteMultipartUpload\fP
+.IP \(bu 2
+\fI\%AbortMultipartUpload\fP
+.IP \(bu 2
+\fI\%ListParts\fP
+.IP \(bu 2
+\fI\%ListMultipartUploads\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-multipart\-upload
+[\-\-acl <value>]
+\-\-bucket <value>
+[\-\-cache\-control <value>]
+[\-\-content\-disposition <value>]
+[\-\-content\-encoding <value>]
+[\-\-content\-language <value>]
+[\-\-content\-type <value>]
+[\-\-expires <value>]
+[\-\-grant\-full\-control <value>]
+[\-\-grant\-read <value>]
+[\-\-grant\-read\-acp <value>]
+[\-\-grant\-write\-acp <value>]
+\-\-key <value>
+[\-\-metadata <value>]
+[\-\-server\-side\-encryption <value>]
+[\-\-storage\-class <value>]
+[\-\-website\-redirect\-location <value>]
+[\-\-sse\-customer\-algorithm <value>]
+[\-\-sse\-customer\-key <value>]
+[\-\-sse\-customer\-key\-md5 <value>]
+[\-\-ssekms\-key\-id <value>]
+[\-\-ssekms\-encryption\-context <value>]
+[\-\-bucket\-key\-enabled | \-\-no\-bucket\-key\-enabled]
+[\-\-request\-payer <value>]
+[\-\-tagging <value>]
+[\-\-object\-lock\-mode <value>]
+[\-\-object\-lock\-retain\-until\-date <value>]
+[\-\-object\-lock\-legal\-hold\-status <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-acl\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The canned ACL to apply to the object.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBprivate\fP
+.IP \(bu 2
+\fBpublic\-read\fP
+.IP \(bu 2
+\fBpublic\-read\-write\fP
+.IP \(bu 2
+\fBauthenticated\-read\fP
+.IP \(bu 2
+\fBaws\-exec\-read\fP
+.IP \(bu 2
+\fBbucket\-owner\-read\fP
+.IP \(bu 2
+\fBbucket\-owner\-full\-control\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket to which to initiate the upload
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\-control\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies caching behavior along the request/reply chain.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-disposition\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies presentational information for the object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-encoding\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies what content encodings have been applied to the object and thus what decoding mechanisms must be applied to obtain the media\-type referenced by the Content\-Type header field.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-language\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The language the content is in.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A standard MIME type describing the format of the object data.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expires\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time at which the object is no longer cacheable.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-full\-control\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Gives the grantee READ, READ_ACP, and WRITE_ACP permissions on the object.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-read\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Allows grantee to read the object data and its metadata.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-read\-acp\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Allows grantee to read the object ACL.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-write\-acp\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Allows grantee to write the ACL for the applicable object.
+.sp
+This action is not supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key for which the multipart upload is to be initiated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metadata\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of metadata to store with the object in S3.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-server\-side\-encryption\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing this object in Amazon S3 (for example, AES256, aws:kms).
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAES256\fP
+.IP \(bu 2
+\fBaws:kms\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-storage\-class\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+By default, Amazon S3 uses the STANDARD Storage Class to store newly created objects. The STANDARD storage class provides high durability and high availability. Depending on performance needs, you can specify a different Storage Class. Amazon S3 on Outposts only uses the OUTPOSTS Storage Class. For more information, see \fI\%Storage Classes\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSTANDARD\fP
+.IP \(bu 2
+\fBREDUCED_REDUNDANCY\fP
+.IP \(bu 2
+\fBSTANDARD_IA\fP
+.IP \(bu 2
+\fBONEZONE_IA\fP
+.IP \(bu 2
+\fBINTELLIGENT_TIERING\fP
+.IP \(bu 2
+\fBGLACIER\fP
+.IP \(bu 2
+\fBDEEP_ARCHIVE\fP
+.IP \(bu 2
+\fBOUTPOSTS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-website\-redirect\-location\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is configured as a website, redirects requests for this object to another object in the same bucket or to an external URL. Amazon S3 stores the value of this header in the object metadata.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the algorithm to use to when encrypting the object (for example, AES256).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the customer\-provided encryption key for Amazon S3 to use in encrypting data. This value is used to store the object and then it is discarded; Amazon S3 does not store the encryption key. The key must be appropriate for use with the algorithm specified in the \fBx\-amz\-server\-side\-encryption\-customer\-algorithm\fP header.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sse\-customer\-key\-md5\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the 128\-bit MD5 digest of the encryption key according to RFC 1321. Amazon S3 uses this header for a message integrity check to ensure that the encryption key was transmitted without error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ssekms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ID of the symmetric customer managed AWS KMS CMK to use for object encryption. All GET and PUT requests for an object protected by AWS KMS will fail if not made via SSL or using SigV4. For information about configuring using any of the officially supported AWS SDKs and AWS CLI, see \fI\%Specifying the Signature Version in Request Authentication\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ssekms\-encryption\-context\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the AWS KMS Encryption Context to use for object encryption. The value of this header is a base64\-encoded UTF\-8 string holding JSON with the encryption context key\-value pairs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bucket\-key\-enabled\fP | \fB\-\-no\-bucket\-key\-enabled\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether Amazon S3 should use an S3 Bucket Key for object encryption with server\-side encryption using AWS KMS (SSE\-KMS). Setting this header to \fBtrue\fP causes Amazon S3 to use an S3 Bucket Key for object encryption with SSE\-KMS.
+.sp
+Specifying this header with an object action doesn’t affect bucket\-level settings for S3 Bucket Key.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tagging\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag\-set for the object. The tag\-set must be encoded as URL Query parameters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-object\-lock\-mode\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Object Lock mode that you want to apply to the uploaded object.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBGOVERNANCE\fP
+.IP \(bu 2
+\fBCOMPLIANCE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-object\-lock\-retain\-until\-date\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the date and time when you want the Object Lock to expire.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-object\-lock\-legal\-hold\-status\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether you want to apply a Legal Hold to the uploaded object.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBON\fP
+.IP \(bu 2
+\fBOFF\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command creates a multipart upload in the bucket \fBmy\-bucket\fP with the key \fBmultipart/01\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api create\-multipart\-upload \-\-bucket my\-bucket \-\-key \(aqmultipart/01\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Bucket": "my\-bucket",
+    "UploadId": "dfRtDYU0WWCCcH43C3WFbkRONycyCpTJJvxu2i5GYkZljF.Yxwh6XG7WfS2vC4to6HiV6Yjlx.cph0gtNBtJ8P3URCSbB7rjxI5iEwVDmgaXZOGgkk5nVTW16HOQ5l0R",
+    "Key": "multipart/01"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The completed file will be named \fB01\fP in a folder called \fBmultipart\fP in the bucket \fBmy\-bucket\fP\&. Save the upload ID, key and bucket name for use with the \fBupload\-part\fP command.
+.SH OUTPUT
+.sp
+AbortDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket has a lifecycle rule configured with an action to abort incomplete multipart uploads and the prefix in the lifecycle rule matches the object name in the request, the response includes this header. The header indicates when the initiated multipart upload becomes eligible for an abort operation. For more information, see \fI\%Aborting Incomplete Multipart Uploads Using a Bucket Lifecycle Policy\fP .
+.sp
+The response also includes the \fBx\-amz\-abort\-rule\-id\fP header that provides the ID of the lifecycle configuration rule that defines this action.
+.UNINDENT
+.UNINDENT
+.sp
+AbortRuleId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This header is returned along with the \fBx\-amz\-abort\-date\fP header. It identifies the applicable lifecycle configuration rule that defines the action to abort incomplete multipart uploads.
+.UNINDENT
+.UNINDENT
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket to which the multipart upload was initiated.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key for which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+UploadId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ID for the initiated multipart upload.
+.UNINDENT
+.UNINDENT
+.sp
+ServerSideEncryption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\-side encryption algorithm used when storing this object in Amazon S3 (for example, AES256, aws:kms).
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header confirming the encryption algorithm used.
+.UNINDENT
+.UNINDENT
+.sp
+SSECustomerKeyMD5 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If server\-side encryption with a customer\-provided encryption key was requested, the response will include this header to provide round\-trip message integrity verification of the customer\-provided encryption key.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the ID of the AWS Key Management Service (AWS KMS) symmetric customer managed customer master key (CMK) that was used for the object.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMSEncryptionContext \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the AWS KMS Encryption Context to use for object encryption. The value of this header is a base64\-encoded UTF\-8 string holding JSON with the encryption context key\-value pairs.
+.UNINDENT
+.UNINDENT
+.sp
+BucketKeyEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the multipart upload uses an S3 Bucket Key for server\-side encryption with AWS KMS (SSE\-KMS).
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

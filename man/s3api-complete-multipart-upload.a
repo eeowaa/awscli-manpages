@@ -1,0 +1,378 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-COMPLETE-MULTIPART-UPLOAD" "a" "" ""
+.SH NAME
+s3api-complete-multipart-upload \- Completes a multipart upload by assembling previously uploaded parts
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Completes a multipart upload by assembling previously uploaded parts.
+.sp
+You first initiate the multipart upload and then upload all parts using the \fI\%UploadPart\fP operation. After successfully uploading all relevant parts of an upload, you call this action to complete the upload. Upon receiving this request, Amazon S3 concatenates all the parts in ascending order by part number to create a new object. In the Complete Multipart Upload request, you must provide the parts list. You must ensure that the parts list is complete. This action concatenates the parts that you provide in the list. For each part in the list, you must provide the part number and the \fBETag\fP value, returned after that part was uploaded.
+.sp
+Processing of a Complete Multipart Upload request could take several minutes to complete. After Amazon S3 begins processing the request, it sends an HTTP response header that specifies a 200 OK response. While processing is in progress, Amazon S3 periodically sends white space characters to keep the connection from timing out. Because a request could fail after the initial 200 OK response has been sent, it is important that you check the response body to determine whether the request succeeded.
+.sp
+Note that if \fBCompleteMultipartUpload\fP fails, applications should be prepared to retry the failed requests. For more information, see \fI\%Amazon S3 Error Best Practices\fP .
+.sp
+For more information about multipart uploads, see \fI\%Uploading Objects Using Multipart Upload\fP .
+.sp
+For information about permissions required to use the multipart upload API, see \fI\%Multipart Upload and Permissions\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCompleteMultipartUpload\fP has the following special errors:
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Error code: \fBEntityTooSmall\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: Your proposed upload is smaller than the minimum allowed object size. Each part must be at least 5 MB in size, except the last part.
+.IP \(bu 2
+400 Bad Request
+.UNINDENT
+.IP \(bu 2
+Error code: \fBInvalidPart\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: One or more of the specified parts could not be found. The part might not have been uploaded, or the specified entity tag might not have matched the part\(aqs entity tag.
+.IP \(bu 2
+400 Bad Request
+.UNINDENT
+.IP \(bu 2
+Error code: \fBInvalidPartOrder\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: The list of parts was not in ascending order. The parts list must be specified in order by part number.
+.IP \(bu 2
+400 Bad Request
+.UNINDENT
+.IP \(bu 2
+Error code: \fBNoSuchUpload\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: The specified multipart upload does not exist. The upload ID might be invalid, or the multipart upload might have been aborted or completed.
+.IP \(bu 2
+404 Not Found
+.UNINDENT
+.UNINDENT
+.sp
+The following operations are related to \fBCompleteMultipartUpload\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%CreateMultipartUpload\fP
+.IP \(bu 2
+\fI\%UploadPart\fP
+.IP \(bu 2
+\fI\%AbortMultipartUpload\fP
+.IP \(bu 2
+\fI\%ListParts\fP
+.IP \(bu 2
+\fI\%ListMultipartUploads\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  complete\-multipart\-upload
+\-\-bucket <value>
+\-\-key <value>
+[\-\-multipart\-upload <value>]
+\-\-upload\-id <value>
+[\-\-request\-payer <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the bucket to which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Object key for which the multipart upload was initiated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-multipart\-upload\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The container for the multipart upload request information.
+.sp
+Parts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Array of CompletedPart data types.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details of the parts that were uploaded.
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Entity tag returned when the part was uploaded.
+.UNINDENT
+.UNINDENT
+.sp
+PartNumber \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Part number that identifies the part. This is a positive integer between 1 and 10,000.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Parts=[{ETag=string,PartNumber=integer},{ETag=string,PartNumber=integer}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Parts": [
+    {
+      "ETag": "string",
+      "PartNumber": integer
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-upload\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+ID for the initiated multipart upload.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command completes a multipart upload for the key \fBmultipart/01\fP in the bucket \fBmy\-bucket\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api complete\-multipart\-upload \-\-multipart\-upload file://mpustruct \-\-bucket my\-bucket \-\-key \(aqmultipart/01\(aq \-\-upload\-id dfRtDYU0WWCCcH43C3WFbkRONycyCpTJJvxu2i5GYkZljF.Yxwh6XG7WfS2vC4to6HiV6Yjlx.cph0gtNBtJ8P3URCSbB7rjxI5iEwVDmgaXZOGgkk5nVTW16HOQ5l0R
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The upload ID required by this command is output by \fBcreate\-multipart\-upload\fP and can also be retrieved with \fBlist\-multipart\-uploads\fP\&.
+.sp
+The multipart upload option in the above command takes a JSON structure that describes the parts of the multipart upload that should be reassembled into the complete file. In this example, the \fBfile://\fP prefix is used to load the JSON structure from a file in the local folder named \fBmpustruct\fP\&.
+.sp
+mpustruct:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Parts": [
+    {
+      "ETag": "e868e0f4719e394144ef36531ee6824c",
+      "PartNumber": 1
+    },
+    {
+      "ETag": "6bb2b12753d66fe86da4998aa33fffb0",
+      "PartNumber": 2
+    },
+    {
+      "ETag": "d0a0112e841abec9c9ec83406f0159c8",
+      "PartNumber": 3
+    }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The ETag value for each part is upload is output each time you upload a part using the \fBupload\-part\fP command and can also be retrieved by calling \fBlist\-parts\fP or calculated by taking the MD5 checksum of each part.
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ETag": "\e"3944a9f7a4faab7f78788ff6210f63f0\-3\e"",
+    "Bucket": "my\-bucket",
+    "Location": "https://my\-bucket.s3.amazonaws.com/multipart%2F01",
+    "Key": "multipart/01"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URI that identifies the newly created object.
+.UNINDENT
+.UNINDENT
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket that contains the newly created object.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The object key of the newly created object.
+.UNINDENT
+.UNINDENT
+.sp
+Expiration \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the object expiration is configured, this will contain the expiration date (expiry\-date) and rule ID (rule\-id). The value of rule\-id is URL encoded.
+.UNINDENT
+.UNINDENT
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Entity tag that identifies the newly created object\(aqs data. Objects with different object data will have different entity tags. The entity tag is an opaque string. The entity tag may or may not be an MD5 digest of the object data. If the entity tag is not an MD5 digest of the object data, it will contain one or more nonhexadecimal characters and/or will consist of less than 32 or more than 32 hexadecimal digits.
+.UNINDENT
+.UNINDENT
+.sp
+ServerSideEncryption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If you specified server\-side encryption either with an Amazon S3\-managed encryption key or an AWS KMS customer master key (CMK) in your initiate multipart upload request, the response includes this header. It confirms the encryption algorithm that Amazon S3 used to encrypt the object.
+.UNINDENT
+.UNINDENT
+.sp
+VersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Version ID of the newly created object, in case the bucket has versioning turned on.
+.UNINDENT
+.UNINDENT
+.sp
+SSEKMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, specifies the ID of the AWS Key Management Service (AWS KMS) symmetric customer managed customer master key (CMK) that was used for the object.
+.UNINDENT
+.UNINDENT
+.sp
+BucketKeyEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the multipart upload uses an S3 Bucket Key for server\-side encryption with AWS KMS (SSE\-KMS).
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

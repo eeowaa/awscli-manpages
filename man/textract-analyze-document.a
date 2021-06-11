@@ -1,0 +1,636 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "TEXTRACT-ANALYZE-DOCUMENT" "a" "" ""
+.SH NAME
+textract-analyze-document \- Analyzes an input document for relationships between detected items
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Analyzes an input document for relationships between detected items.
+.sp
+The types of information returned are as follows:
+.INDENT 0.0
+.IP \(bu 2
+Form data (key\-value pairs). The related information is returned in two  Block objects, each of type \fBKEY_VALUE_SET\fP : a KEY \fBBlock\fP object and a VALUE \fBBlock\fP object. For example, \fIName: Ana Silva Carolina\fP contains a key and value. \fIName:\fP is the key. \fIAna Silva Carolina\fP is the value.
+.IP \(bu 2
+Table and table cell data. A TABLE \fBBlock\fP object contains information about a detected table. A CELL \fBBlock\fP object is returned for each cell in a table.
+.IP \(bu 2
+Lines and words of text. A LINE \fBBlock\fP object contains one or more WORD \fBBlock\fP objects. All lines and words that are detected in the document are returned (including text that doesn\(aqt have a relationship with the value of \fBFeatureTypes\fP ).
+.UNINDENT
+.sp
+Selection elements such as check boxes and option buttons (radio buttons) can be detected in form data and in tables. A SELECTION_ELEMENT \fBBlock\fP object contains information about a selection element, including the selection status.
+.sp
+You can choose which type of analysis to perform by specifying the \fBFeatureTypes\fP list.
+.sp
+The output is returned in a list of \fBBlock\fP objects.
+.INDENT 0.0
+.INDENT 3.5
+\fBAnalyzeDocument\fP is a synchronous operation. To analyze documents asynchronously, use  StartDocumentAnalysis .
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Document Text Analysis\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  analyze\-document
+\-\-document <value>
+\-\-feature\-types <value>
+[\-\-human\-loop\-config <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-document\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The input document as base64\-encoded bytes or an Amazon S3 object. If you use the AWS CLI to call Amazon Textract operations, you can\(aqt pass image bytes. The document must be an image in JPEG or PNG format.
+.sp
+If you\(aqre using an AWS SDK to call Amazon Textract, you might not need to base64\-encode image bytes that are passed using the \fBBytes\fP field.
+.sp
+Bytes \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+A blob of base64\-encoded document bytes. The maximum size of a document that\(aqs provided in a blob of bytes is 5 MB. The document bytes must be in PNG or JPEG format.
+.sp
+If you\(aqre using an AWS SDK to call Amazon Textract, you might not need to base64\-encode image bytes passed using the \fBBytes\fP field.
+.UNINDENT
+.UNINDENT
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an S3 object as the document source. The maximum size of a document that\(aqs stored in an S3 bucket is 5 MB.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file name of the input document. Synchronous operations can use image files that are in JPEG or PNG format. Asynchronous operations also support PDF format files.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket has versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Bytes=blob,S3Object={Bucket=string,Name=string,Version=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Bytes": blob,
+  "S3Object": {
+    "Bucket": "string",
+    "Name": "string",
+    "Version": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-feature\-types\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the types of analysis to perform. Add TABLES to the list to return information about the tables that are detected in the input document. Add FORMS to return detected form data. To perform both types of analysis, add TABLES and FORMS to \fBFeatureTypes\fP . All lines and words detected in the document are included in the response (including text that isn\(aqt related to the value of \fBFeatureTypes\fP ).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  TABLES
+  FORMS
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-human\-loop\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Sets the configuration for the human in the loop workflow for analyzing documents.
+.sp
+HumanLoopName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the human workflow used for this image. This should be kept unique within a region.
+.UNINDENT
+.UNINDENT
+.sp
+FlowDefinitionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the flow definition.
+.UNINDENT
+.UNINDENT
+.sp
+DataAttributes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Sets attributes of the input data.
+.sp
+ContentClassifiers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Sets whether the input image is free of personally identifiable information or adult content.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+HumanLoopName=string,FlowDefinitionArn=string,DataAttributes={ContentClassifiers=[string,string]}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "HumanLoopName": "string",
+  "FlowDefinitionArn": "string",
+  "DataAttributes": {
+    "ContentClassifiers": ["FreeOfPersonallyIdentifiableInformation"|"FreeOfAdultContent", ...]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo analyze text in a document\fP
+.sp
+The following \fBanalyze\-document\fP example shows how to analyze text in a document.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws textract analyze\-document \-\-document \(aq{"S3Object":{"Bucket":"bucket","Name":"document"}}\(aq \-\-feature\-types \(aq["TABLES","FORMS"]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Blocks": [
+        {
+            "Geometry": {
+                "BoundingBox": {
+                    "Width": 1.0,
+                    "Top": 0.0,
+                    "Left": 0.0,
+                    "Height": 1.0
+                },
+                "Polygon": [
+                    {
+                        "Y": 0.0,
+                        "X": 0.0
+                    },
+                    {
+                        "Y": 0.0,
+                        "X": 1.0
+                    },
+                    {
+                        "Y": 1.0,
+                        "X": 1.0
+                    },
+                    {
+                        "Y": 1.0,
+                        "X": 0.0
+                    }
+                ]
+            },
+            "Relationships": [
+                {
+                    "Type": "CHILD",
+                    "Ids": [
+                        "87586964\-d50d\-43e2\-ace5\-8a890657b9a0",
+                        "a1e72126\-21d9\-44f4\-a8d6\-5c385f9002ba",
+                        "e889d012\-8a6b\-4d2e\-b7cd\-7a8b327d876a"
+                    ]
+                }
+            ],
+            "BlockType": "PAGE",
+            "Id": "c2227f12\-b25d\-4e1f\-baea\-1ee180d926b2"
+        }
+    ],
+    "DocumentMetadata": {
+        "Pages": 1
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Analyzing Document Text with Amazon Textract\fP in the \fIAmazon Textract Developers Guide\fP
+.SH OUTPUT
+.sp
+DocumentMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata about the analyzed document. An example is the number of pages.
+.sp
+Pages \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of pages that are detected in the document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Blocks \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The items that are detected and analyzed by \fBAnalyzeDocument\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBBlock\fP represents items that are recognized in a document within a group of pixels close to each other. The information returned in a \fBBlock\fP object depends on the type of operation. In text detection for documents (for example  DetectDocumentText ), you get information about the detected words and lines of text. In text analysis (for example  AnalyzeDocument ), you can also get information about the fields, tables, and selection elements that are detected in the document.
+.sp
+An array of \fBBlock\fP objects is returned by both synchronous and asynchronous operations. In synchronous operations, such as  DetectDocumentText , the array of \fBBlock\fP objects is the entire set of results. In asynchronous operations, such as  GetDocumentAnalysis , the array is returned over one or more responses.
+.sp
+For more information, see \fI\%How Amazon Textract Works\fP .
+.sp
+BlockType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of text item that\(aqs recognized. In operations for text detection, the following types are returned:
+.INDENT 0.0
+.IP \(bu 2
+\fIPAGE\fP \- Contains a list of the LINE \fBBlock\fP objects that are detected on a document page.
+.IP \(bu 2
+\fIWORD\fP \- A word detected on a document page. A word is one or more ISO basic Latin script characters that aren\(aqt separated by spaces.
+.IP \(bu 2
+\fILINE\fP \- A string of tab\-delimited, contiguous words that are detected on a document page.
+.UNINDENT
+.sp
+In text analysis operations, the following types are returned:
+.INDENT 0.0
+.IP \(bu 2
+\fIPAGE\fP \- Contains a list of child \fBBlock\fP objects that are detected on a document page.
+.IP \(bu 2
+\fIKEY_VALUE_SET\fP \- Stores the KEY and VALUE \fBBlock\fP objects for linked text that\(aqs detected on a document page. Use the \fBEntityType\fP field to determine if a KEY_VALUE_SET object is a KEY \fBBlock\fP object or a VALUE \fBBlock\fP object.
+.IP \(bu 2
+\fIWORD\fP \- A word that\(aqs detected on a document page. A word is one or more ISO basic Latin script characters that aren\(aqt separated by spaces.
+.IP \(bu 2
+\fILINE\fP \- A string of tab\-delimited, contiguous words that are detected on a document page.
+.IP \(bu 2
+\fITABLE\fP \- A table that\(aqs detected on a document page. A table is grid\-based information with two or more rows or columns, with a cell span of one row and one column each.
+.IP \(bu 2
+\fICELL\fP \- A cell within a detected table. The cell is the parent of the block that contains the text in the cell.
+.IP \(bu 2
+\fISELECTION_ELEMENT\fP \- A selection element such as an option button (radio button) or a check box that\(aqs detected on a document page. Use the value of \fBSelectionStatus\fP to determine the status of the selection element.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The confidence score that Amazon Textract has in the accuracy of the recognized text and the accuracy of the geometry points around the recognized text.
+.UNINDENT
+.UNINDENT
+.sp
+Text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The word or line of text that\(aqs recognized by Amazon Textract.
+.UNINDENT
+.UNINDENT
+.sp
+TextType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The kind of text that Amazon Textract has detected. Can check for handwritten text and printed text.
+.UNINDENT
+.UNINDENT
+.sp
+RowIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The row in which a table cell is located. The first row position is 1. \fBRowIndex\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ColumnIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The column in which a table cell appears. The first column position is 1. \fBColumnIndex\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RowSpan \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of rows that a table cell spans. Currently this value is always 1, even if the number of rows spanned is greater than 1. \fBRowSpan\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ColumnSpan \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of columns that a table cell spans. Currently this value is always 1, even if the number of columns spanned is greater than 1. \fBColumnSpan\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Geometry \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location of the recognized text on the image. It includes an axis\-aligned, coarse bounding box that surrounds the text, and a finer\-grain polygon for more accurate spatial information.
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An axis\-aligned coarse representation of the location of the recognized item on the document page.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The width of the bounding box as a ratio of the overall document page width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The height of the bounding box as a ratio of the overall document page height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The left coordinate of the bounding box as a ratio of overall document page width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The top coordinate of the bounding box as a ratio of overall document page height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Polygon \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Within the bounding box, a fine\-grained polygon around the recognized item.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The X and Y coordinates of a point on a document page. The X and Y values that are returned are ratios of the overall document page size. For example, if the input document is 700 x 200 and the operation returns X=0.5 and Y=0.25, then the point is at the (350,50) pixel coordinate on the document page.
+.sp
+An array of \fBPoint\fP objects, \fBPolygon\fP , is returned by  DetectDocumentText . \fBPolygon\fP represents a fine\-grained polygon around detected text. For more information, see Geometry in the Amazon Textract Developer Guide.
+.sp
+X \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The value of the X coordinate for a point on a \fBPolygon\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Y \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The value of the Y coordinate for a point on a \fBPolygon\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the recognized text. The identifier is only unique for a single operation.
+.UNINDENT
+.UNINDENT
+.sp
+Relationships \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of child blocks of the current block. For example, a LINE object has child blocks for each WORD block that\(aqs part of the line of text. There aren\(aqt Relationship objects in the list for relationships that don\(aqt exist, such as when the current block has no child blocks. The list size can be the following:
+.INDENT 0.0
+.IP \(bu 2
+0 \- The block has no child blocks.
+.IP \(bu 2
+1 \- The block has child blocks.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about how blocks are related to each other. A \fBBlock\fP object contains 0 or more \fBRelation\fP objects in a list, \fBRelationships\fP . For more information, see  Block .
+.sp
+The \fBType\fP element provides the type of the relationship for all blocks in the \fBIDs\fP array.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of relationship that the blocks in the IDs array have with the current block. The relationship can be \fBVALUE\fP or \fBCHILD\fP . A relationship of type VALUE is a list that contains the ID of the VALUE block that\(aqs associated with the KEY of a key\-value pair. A relationship of type CHILD is a list of IDs that identify WORD blocks in the case of lines Cell blocks in the case of Tables, and WORD blocks in the case of Selection Elements.
+.UNINDENT
+.UNINDENT
+.sp
+Ids \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of IDs for related blocks. You can get the type of the relationship from the \fBType\fP element.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EntityTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The type of entity. The following can be returned:
+.INDENT 0.0
+.IP \(bu 2
+\fIKEY\fP \- An identifier for a field on the document.
+.IP \(bu 2
+\fIVALUE\fP \- The field text.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBEntityTypes\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SelectionStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The selection status of a selection element, such as an option button or check box.
+.UNINDENT
+.UNINDENT
+.sp
+Page \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The page on which a block was detected. \fBPage\fP is returned by asynchronous operations. Page values greater than 1 are only returned for multipage documents that are in PDF format. A scanned image (JPEG/PNG), even if it contains multiple document pages, is considered to be a single\-page document. The value of \fBPage\fP is always 1. Synchronous operations don\(aqt return \fBPage\fP because every input document is considered to be a single\-page document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HumanLoopActivationOutput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Shows the results of the human in the loop evaluation.
+.sp
+HumanLoopArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the HumanLoop created.
+.UNINDENT
+.UNINDENT
+.sp
+HumanLoopActivationReasons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Shows if and why human review was needed.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+HumanLoopActivationConditionsEvaluationResults \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Shows the result of condition evaluations, including those conditions which activated a human review.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AnalyzeDocumentModelVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the model used to analyze the document.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,1134 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CE-GET-SAVINGS-PLANS-UTILIZATION-DETAILS" "a" "" ""
+.SH NAME
+ce-get-savings-plans-utilization-details \- Retrieves attribute data along with aggregate utilization and savings data for a given time period
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves attribute data along with aggregate utilization and savings data for a given time period. This doesn\(aqt support granular or grouped data (daily/monthly) in response. You can\(aqt retrieve data by dates in a single response similar to \fBGetSavingsPlanUtilization\fP , but you have the option to make multiple calls to \fBGetSavingsPlanUtilizationDetails\fP by providing individual dates. You can use \fBGetDimensionValues\fP in \fBSAVINGS_PLANS\fP to determine the possible dimension values.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBGetSavingsPlanUtilizationDetails\fP internally groups data by \fBSavingsPlansArn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-savings\-plans\-utilization\-details
+\-\-time\-period <value>
+[\-\-filter <value>]
+[\-\-data\-type <value>]
+[\-\-next\-token <value>]
+[\-\-max\-results <value>]
+[\-\-sort\-by <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-time\-period\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The time period that you want the usage and costs for. The \fBStart\fP date must be within 13 months. The \fBEnd\fP date must be after the \fBStart\fP date, and before the current date. Future dates can\(aqt be used as an \fBEnd\fP date.
+.sp
+Start \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The beginning of the time period. The start date is inclusive. For example, if \fBstart\fP is \fB2017\-01\-01\fP , AWS retrieves cost and usage data starting at \fB2017\-01\-01\fP up to the end date. The start date must be equal to or no later than the current date to avoid a validation error.
+.UNINDENT
+.UNINDENT
+.sp
+End \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The end of the time period. The end date is exclusive. For example, if \fBend\fP is \fB2017\-05\-01\fP , AWS retrieves cost and usage data from the start date up to, but not including, \fB2017\-05\-01\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Start=string,End=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Start": "string",
+  "End": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Filters Savings Plans utilization coverage data for active Savings Plans dimensions. You can filter data with the following dimensions:
+.INDENT 0.0
+.IP \(bu 2
+\fBLINKED_ACCOUNT\fP
+.IP \(bu 2
+\fBSAVINGS_PLAN_ARN\fP
+.IP \(bu 2
+\fBREGION\fP
+.IP \(bu 2
+\fBPAYMENT_OPTION\fP
+.IP \(bu 2
+\fBINSTANCE_TYPE_FAMILY\fP
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBGetSavingsPlansUtilizationDetails\fP uses the same \fI\%Expression\fP object as the other operations, but only \fBAND\fP is supported among each dimension.
+.UNINDENT
+.UNINDENT
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Use \fBExpression\fP to filter by cost or by usage. There are two patterns:
+.INDENT 0.0
+.IP \(bu 2
+Simple dimension values \- You can set the dimension name and values for the filters that you plan to use. For example, you can filter for \fBREGION==us\-east\-1 OR REGION==us\-west\-1\fP . For \fBGetRightsizingRecommendation\fP , the Region is a full name (for example, \fBREGION==US East (N. Virginia)\fP . The \fBExpression\fP example looks like:  \fB{ "Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", “us\-west\-1” ] } }\fP   The list of dimension values are OR\(aqd together to retrieve cost or usage data. You can create \fBExpression\fP and \fBDimensionValues\fP objects using either \fBwith*\fP methods or \fBset*\fP methods in multiple lines.
+.IP \(bu 2
+Compound dimension values with logical operations \- You can use multiple \fBExpression\fP types and the logical operators \fBAND/OR/NOT\fP to create a list of one or more \fBExpression\fP objects. This allows you to filter on more advanced options. For example, you can filter on \fB((REGION == us\-east\-1 OR REGION == us\-west\-1) OR (TAG.Type == Type1)) AND (USAGE_TYPE != DataTransfer)\fP . The \fBExpression\fP for that looks like this:  \fB{ "And": [ {"Or": [ {"Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", "us\-west\-1" ] }}, {"Tags": { "Key": "TagName", "Values": ["Value1"] } } ]}, {"Not": {"Dimensions": { "Key": "USAGE_TYPE", "Values": ["DataTransfer"] }}} ] }\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Because each \fBExpression\fP can have only one operator, the service returns an error if more than one is specified. The following example shows an \fBExpression\fP object that creates an error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{ "And": [ ... ], "DimensionValues": { "Dimension": "USAGE_TYPE", "Values": [ "DataTransfer" ] } }\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For the \fBGetRightsizingRecommendation\fP action, a combination of OR and NOT is not supported. OR is not supported between different dimensions, or dimensions and tags. NOT operators aren\(aqt supported. Dimensions are also limited to \fBLINKED_ACCOUNT\fP , \fBREGION\fP , or \fBRIGHTSIZING_TYPE\fP .
+.sp
+For the \fBGetReservationPurchaseRecommendation\fP action, only NOT is supported. AND and OR are not supported. Dimensions are limited to \fBLINKED_ACCOUNT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Use \fBExpression\fP to filter by cost or by usage. There are two patterns:
+.INDENT 0.0
+.IP \(bu 2
+Simple dimension values \- You can set the dimension name and values for the filters that you plan to use. For example, you can filter for \fBREGION==us\-east\-1 OR REGION==us\-west\-1\fP . For \fBGetRightsizingRecommendation\fP , the Region is a full name (for example, \fBREGION==US East (N. Virginia)\fP . The \fBExpression\fP example looks like:  \fB{ "Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", “us\-west\-1” ] } }\fP   The list of dimension values are OR\(aqd together to retrieve cost or usage data. You can create \fBExpression\fP and \fBDimensionValues\fP objects using either \fBwith*\fP methods or \fBset*\fP methods in multiple lines.
+.IP \(bu 2
+Compound dimension values with logical operations \- You can use multiple \fBExpression\fP types and the logical operators \fBAND/OR/NOT\fP to create a list of one or more \fBExpression\fP objects. This allows you to filter on more advanced options. For example, you can filter on \fB((REGION == us\-east\-1 OR REGION == us\-west\-1) OR (TAG.Type == Type1)) AND (USAGE_TYPE != DataTransfer)\fP . The \fBExpression\fP for that looks like this:  \fB{ "And": [ {"Or": [ {"Dimensions": { "Key": "REGION", "Values": [ "us\-east\-1", "us\-west\-1" ] }}, {"Tags": { "Key": "TagName", "Values": ["Value1"] } } ]}, {"Not": {"Dimensions": { "Key": "USAGE_TYPE", "Values": ["DataTransfer"] }}} ] }\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Because each \fBExpression\fP can have only one operator, the service returns an error if more than one is specified. The following example shows an \fBExpression\fP object that creates an error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB{ "And": [ ... ], "DimensionValues": { "Dimension": "USAGE_TYPE", "Values": [ "DataTransfer" ] } }\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For the \fBGetRightsizingRecommendation\fP action, a combination of OR and NOT is not supported. OR is not supported between different dimensions, or dimensions and tags. NOT operators aren\(aqt supported. Dimensions are also limited to \fBLINKED_ACCOUNT\fP , \fBREGION\fP , or \fBRIGHTSIZING_TYPE\fP .
+.sp
+For the \fBGetReservationPurchaseRecommendation\fP action, only NOT is supported. AND and OR are not supported. Dimensions are limited to \fBLINKED_ACCOUNT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Not \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Return results that don\(aqt match a \fBDimension\fP object.
+.sp
+Or \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match either \fBDimension\fP object.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Return results that match both \fBDimension\fP objects.
+.sp
+( ... recursive ... )
+.UNINDENT
+.UNINDENT
+.sp
+( ... recursive ... )Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBDimension\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The names of the metadata types that you can use to filter and group your results. For example, \fBAZ\fP returns a list of Availability Zones.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata values that you can use to filter and group your results. You can use \fBGetDimensionValues\fP to find specific values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The specific \fBTag\fP to use for \fBExpression\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the tag.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. \fBMatchOptions\fP is only applicable for actions related to Cost Category. The default values for \fBMatchOptions\fP are \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CostCategories \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter based on \fBCostCategory\fP values.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique name of the Cost Category.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific value of the Cost Category.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MatchOptions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The match options that you can use to filter your results. MatchOptions is only applicable for actions related to cost category. The default values for \fBMatchOptions\fP is \fBEQUALS\fP and \fBCASE_SENSITIVE\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Or": [
+    {
+      "Or": [
+        { ... recursive ... }
+        ...
+      ],
+      "And": [
+        { ... recursive ... }
+        ...
+      ],
+      "Not": { ... recursive ... },
+      "Dimensions": {
+        "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "Tags": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "CostCategories": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      }
+    }
+    ...
+  ],
+  "And": [
+    {
+      "Or": [
+        { ... recursive ... }
+        ...
+      ],
+      "And": [
+        { ... recursive ... }
+        ...
+      ],
+      "Not": { ... recursive ... },
+      "Dimensions": {
+        "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "Tags": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      },
+      "CostCategories": {
+        "Key": "string",
+        "Values": ["string", ...],
+        "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+      }
+    }
+    ...
+  ],
+  "Not": {
+    "Or": [
+      { ... recursive ... }
+      ...
+    ],
+    "And": [
+      { ... recursive ... }
+      ...
+    ],
+    "Not": { ... recursive ... },
+    "Dimensions": {
+      "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+      "Values": ["string", ...],
+      "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+    },
+    "Tags": {
+      "Key": "string",
+      "Values": ["string", ...],
+      "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+    },
+    "CostCategories": {
+      "Key": "string",
+      "Values": ["string", ...],
+      "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+    }
+  },
+  "Dimensions": {
+    "Key": "AZ"|"INSTANCE_TYPE"|"LINKED_ACCOUNT"|"LINKED_ACCOUNT_NAME"|"OPERATION"|"PURCHASE_TYPE"|"REGION"|"SERVICE"|"SERVICE_CODE"|"USAGE_TYPE"|"USAGE_TYPE_GROUP"|"RECORD_TYPE"|"OPERATING_SYSTEM"|"TENANCY"|"SCOPE"|"PLATFORM"|"SUBSCRIPTION_ID"|"LEGAL_ENTITY_NAME"|"DEPLOYMENT_OPTION"|"DATABASE_ENGINE"|"CACHE_ENGINE"|"INSTANCE_TYPE_FAMILY"|"BILLING_ENTITY"|"RESERVATION_ID"|"RESOURCE_ID"|"RIGHTSIZING_TYPE"|"SAVINGS_PLANS_TYPE"|"SAVINGS_PLAN_ARN"|"PAYMENT_OPTION"|"AGREEMENT_END_DATE_TIME_AFTER"|"AGREEMENT_END_DATE_TIME_BEFORE",
+    "Values": ["string", ...],
+    "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+  },
+  "Tags": {
+    "Key": "string",
+    "Values": ["string", ...],
+    "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+  },
+  "CostCategories": {
+    "Key": "string",
+    "Values": ["string", ...],
+    "MatchOptions": ["EQUALS"|"ABSENT"|"STARTS_WITH"|"ENDS_WITH"|"CONTAINS"|"CASE_SENSITIVE"|"CASE_INSENSITIVE", ...]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-data\-type\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The data type.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  ATTRIBUTES
+  UTILIZATION
+  AMORTIZED_COMMITMENT
+  SAVINGS
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to retrieve the next set of results. Amazon Web Services provides the token when the response from a previous call has more results than the maximum page size.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-results\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of items to be returned in a response. The default is \fB20\fP , with a minimum value of \fB1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sort\-by\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value by which you want to sort the data.
+.sp
+The following values are supported for \fBKey\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fBUtilizationPercentage\fP
+.IP \(bu 2
+\fBTotalCommitment\fP
+.IP \(bu 2
+\fBUsedCommitment\fP
+.IP \(bu 2
+\fBUnusedCommitment\fP
+.IP \(bu 2
+\fBNetSavings\fP
+.IP \(bu 2
+\fBAmortizedRecurringCommitment\fP
+.IP \(bu 2
+\fBAmortizedUpfrontCommitment\fP
+.UNINDENT
+.sp
+Supported values for \fBSortOrder\fP are \fBASCENDING\fP or \fBDESCENDING\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key by which to sort the data.
+.UNINDENT
+.UNINDENT
+.sp
+SortOrder \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The order in which to sort the data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,SortOrder=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Key": "string",
+  "SortOrder": "ASCENDING"|"DESCENDING"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+SavingsPlansUtilizationDetails \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Retrieves a single daily or monthly Savings Plans utilization rate and details for your account.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single daily or monthly Savings Plans utilization rate, and details for your account. A management account in an organization have access to member accounts. You can use \fBGetDimensionValues\fP to determine the possible dimension values.
+.sp
+SavingsPlanArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique Amazon Resource Name (ARN) for a particular Savings Plan.
+.UNINDENT
+.UNINDENT
+.sp
+Attributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The attribute that applies to a specific \fBDimension\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Utilization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A ratio of your effectiveness of using existing Savings Plans to apply to workloads that are Savings Plans eligible.
+.sp
+TotalCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The total amount of Savings Plans commitment that\(aqs been purchased in an account (or set of accounts).
+.UNINDENT
+.UNINDENT
+.sp
+UsedCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amount of your Savings Plans commitment that was consumed from Savings Plans eligible usage in a specific period.
+.UNINDENT
+.UNINDENT
+.sp
+UnusedCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amount of your Savings Plans commitment that was not consumed from Savings Plans eligible usage in a specific period.
+.UNINDENT
+.UNINDENT
+.sp
+UtilizationPercentage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amount of \fBUsedCommitment\fP divided by the \fBTotalCommitment\fP for your Savings Plans.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Savings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The amount saved by using existing Savings Plans. Savings returns both net savings from savings plans as well as the \fBonDemandCostEquivalent\fP of the Savings Plans when considering the utilization rate.
+.sp
+NetSavings \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The savings amount that you are accumulating for the usage that is covered by a Savings Plans, when compared to the On\-Demand equivalent of the same usage.
+.UNINDENT
+.UNINDENT
+.sp
+OnDemandCostEquivalent \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much the amount that the usage would have cost if it was accrued at the On\-Demand rate.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AmortizedCommitment \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The total amortized commitment for a Savings Plans. Includes the sum of the upfront and recurring Savings Plans fees.
+.sp
+AmortizedRecurringCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amortized amount of your Savings Plans commitment that was purchased with either a \fBPartial\fP or a \fBNoUpfront\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AmortizedUpfrontCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amortized amount of your Savings Plans commitment that was purchased with an \fBUpfront\fP or \fBPartialUpfront\fP Savings Plans.
+.UNINDENT
+.UNINDENT
+.sp
+TotalAmortizedCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The total amortized amount of your Savings Plans commitment, regardless of your Savings Plans purchase method.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Total \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The total Savings Plans utilization, regardless of time period.
+.sp
+Utilization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A ratio of your effectiveness of using existing Savings Plans to apply to workloads that are Savings Plans eligible.
+.sp
+TotalCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The total amount of Savings Plans commitment that\(aqs been purchased in an account (or set of accounts).
+.UNINDENT
+.UNINDENT
+.sp
+UsedCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amount of your Savings Plans commitment that was consumed from Savings Plans eligible usage in a specific period.
+.UNINDENT
+.UNINDENT
+.sp
+UnusedCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amount of your Savings Plans commitment that was not consumed from Savings Plans eligible usage in a specific period.
+.UNINDENT
+.UNINDENT
+.sp
+UtilizationPercentage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amount of \fBUsedCommitment\fP divided by the \fBTotalCommitment\fP for your Savings Plans.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Savings \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The amount saved by using existing Savings Plans. Savings returns both net savings from Savings Plans, as well as the \fBonDemandCostEquivalent\fP of the Savings Plans when considering the utilization rate.
+.sp
+NetSavings \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The savings amount that you are accumulating for the usage that is covered by a Savings Plans, when compared to the On\-Demand equivalent of the same usage.
+.UNINDENT
+.UNINDENT
+.sp
+OnDemandCostEquivalent \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+How much the amount that the usage would have cost if it was accrued at the On\-Demand rate.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AmortizedCommitment \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The total amortized commitment for a Savings Plans. This includes the sum of the upfront and recurring Savings Plans fees.
+.sp
+AmortizedRecurringCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amortized amount of your Savings Plans commitment that was purchased with either a \fBPartial\fP or a \fBNoUpfront\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AmortizedUpfrontCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The amortized amount of your Savings Plans commitment that was purchased with an \fBUpfront\fP or \fBPartialUpfront\fP Savings Plans.
+.UNINDENT
+.UNINDENT
+.sp
+TotalAmortizedCommitment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The total amortized amount of your Savings Plans commitment, regardless of your Savings Plans purchase method.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TimePeriod \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The time period of the request.
+.sp
+Start \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The beginning of the time period. The start date is inclusive. For example, if \fBstart\fP is \fB2017\-01\-01\fP , AWS retrieves cost and usage data starting at \fB2017\-01\-01\fP up to the end date. The start date must be equal to or no later than the current date to avoid a validation error.
+.UNINDENT
+.UNINDENT
+.sp
+End \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The end of the time period. The end date is exclusive. For example, if \fBend\fP is \fB2017\-05\-01\fP , AWS retrieves cost and usage data from the start date up to, but not including, \fB2017\-05\-01\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to retrieve the next set of results. Amazon Web Services provides the token when the response from a previous call has more results than the maximum page size.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

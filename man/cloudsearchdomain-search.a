@@ -1,0 +1,532 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDSEARCHDOMAIN-SEARCH" "a" "" ""
+.SH NAME
+cloudsearchdomain-search \- Retrieves a list of documents that match the specified search criteria
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves a list of documents that match the specified search criteria. How you specify the search criteria depends on which query parser you use. Amazon CloudSearch supports four query parsers:
+.INDENT 0.0
+.IP \(bu 2
+\fBsimple\fP : search all \fBtext\fP and \fBtext\-array\fP fields for the specified string. Search for phrases, individual terms, and prefixes.
+.IP \(bu 2
+\fBstructured\fP : search specific fields, construct compound queries using Boolean operators, and use advanced features such as term boosting and proximity searching.
+.IP \(bu 2
+\fBlucene\fP : specify search criteria using the Apache Lucene query parser syntax.
+.IP \(bu 2
+\fBdismax\fP : specify search criteria using the simplified subset of the Apache Lucene query parser syntax defined by the DisMax query parser.
+.UNINDENT
+.sp
+For more information, see \fI\%Searching Your Data\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.sp
+The endpoint for submitting \fBSearch\fP requests is domain\-specific. You submit search requests to a domain\(aqs search endpoint. To get the search endpoint for your domain, use the Amazon CloudSearch configuration service \fBDescribeDomains\fP action. A domain\(aqs endpoints are also displayed on the domain dashboard in the Amazon CloudSearch console.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  search
+[\-\-cursor <value>]
+[\-\-expr <value>]
+[\-\-facet <value>]
+[\-\-filter\-query <value>]
+[\-\-highlight <value>]
+[\-\-partial | \-\-no\-partial]
+[\-\-query\-options <value>]
+[\-\-query\-parser <value>]
+[\-\-return <value>]
+[\-\-size <value>]
+[\-\-sort <value>]
+[\-\-start <value>]
+[\-\-stats <value>]
+\-\-search\-query <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cursor\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Retrieves a cursor value you can use to page through large result sets. Use the \fBsize\fP parameter to control the number of hits to include in each response. You can specify either the \fBcursor\fP or \fBstart\fP parameter in a request; they are mutually exclusive. To get the first cursor, set the cursor value to \fBinitial\fP . In subsequent requests, specify the cursor value returned in the hits section of the response.
+.sp
+For more information, see \fI\%Paginating Results\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expr\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines one or more numeric expressions that can be used to sort results or specify search or filter criteria. You can also specify expressions as return fields.
+.sp
+You specify the expressions in JSON using the form \fB{"EXPRESSIONNAME":"EXPRESSION"}\fP . You can define and use multiple expressions in a search request. For example:
+.sp
+\fB{"expression1":"_score*rating", "expression2":"(1/rank)*year"}\fP
+.sp
+For information about the variables, operators, and functions you can use in expressions, see \fI\%Writing Expressions\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-facet\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies one or more fields for which to get facet information, and options that control how the facet information is returned. Each specified field must be facet\-enabled in the domain configuration. The fields and options are specified in JSON using the form \fB{"FIELD":{"OPTION":VALUE,"OPTION:"STRING"},"FIELD":{"OPTION":VALUE,"OPTION":"STRING"}}\fP .
+.sp
+You can specify the following faceting options:
+.INDENT 0.0
+.IP \(bu 2
+\fBbuckets\fP specifies an array of the facet values or ranges to count. Ranges are specified using the same syntax that you use to search for a range of values. For more information, see \fI\%Searching for a Range of Values\fP in the \fIAmazon CloudSearch Developer Guide\fP . Buckets are returned in the order they are specified in the request. The \fBsort\fP and \fBsize\fP options are not valid if you specify \fBbuckets\fP .
+.IP \(bu 2
+\fBsize\fP specifies the maximum number of facets to include in the results. By default, Amazon CloudSearch returns counts for the top 10. The \fBsize\fP parameter is only valid when you specify the \fBsort\fP option; it cannot be used in conjunction with \fBbuckets\fP .
+.IP \(bu 2
+\fBsort\fP specifies how you want to sort the facets in the results: \fBbucket\fP or \fBcount\fP . Specify \fBbucket\fP to sort alphabetically or numerically by facet value (in ascending order). Specify \fBcount\fP to sort by the facet counts computed for each facet value (in descending order). To retrieve facet counts for particular values or ranges of values, use the \fBbuckets\fP option instead of \fBsort\fP .
+.UNINDENT
+.sp
+If no facet options are specified, facet counts are computed for all field values, the facets are sorted by facet count, and the top 10 facets are returned in the results.
+.sp
+To count particular buckets of values, use the \fBbuckets\fP option. For example, the following request uses the \fBbuckets\fP option to calculate and return facet counts by decade.
+.sp
+\fB{"year":{"buckets":["[1970,1979]","[1980,1989]","[1990,1999]","[2000,2009]","[2010,}"]}}\fP
+.sp
+To sort facets by facet count, use the \fBcount\fP option. For example, the following request sets the \fBsort\fP option to \fBcount\fP to sort the facet values by facet count, with the facet values that have the most matching documents listed first. Setting the \fBsize\fP option to 3 returns only the top three facet values.
+.sp
+\fB{"year":{"sort":"count","size":3}}\fP
+.sp
+To sort the facets by value, use the \fBbucket\fP option. For example, the following request sets the \fBsort\fP option to \fBbucket\fP to sort the facet values numerically by year, with earliest year listed first.
+.sp
+\fB{"year":{"sort":"bucket"}}\fP
+.sp
+For more information, see \fI\%Getting and Using Facet Information\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\-query\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a structured query that filters the results of a search without affecting how the results are scored and sorted. You use \fBfilterQuery\fP in conjunction with the \fBquery\fP parameter to filter the documents that match the constraints specified in the \fBquery\fP parameter. Specifying a filter controls only which matching documents are included in the results, it has no effect on how they are scored and sorted. The \fBfilterQuery\fP parameter supports the full structured query syntax.
+.sp
+For more information about using filters, see \fI\%Filtering Matching Documents\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-highlight\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Retrieves highlights for matches in the specified \fBtext\fP or \fBtext\-array\fP fields. Each specified field must be highlight enabled in the domain configuration. The fields and options are specified in JSON using the form \fB{"FIELD":{"OPTION":VALUE,"OPTION:"STRING"},"FIELD":{"OPTION":VALUE,"OPTION":"STRING"}}\fP .
+.sp
+You can specify the following highlight options:
+.INDENT 0.0
+.IP \(bu 2
+\fBformat\fP : specifies the format of the data in the text field: \fBtext\fP or \fBhtml\fP . When data is returned as HTML, all non\-alphanumeric characters are encoded. The default is \fBhtml\fP .
+.IP \(bu 2
+\fBmax_phrases\fP : specifies the maximum number of occurrences of the search term(s) you want to highlight. By default, the first occurrence is highlighted.
+.IP \(bu 2
+\fBpre_tag\fP : specifies the string to prepend to an occurrence of a search term. The default for HTML highlights is \fB&lt;em&gt;\fP . The default for text highlights is \fB*\fP .
+.IP \(bu 2
+\fBpost_tag\fP : specifies the string to append to an occurrence of a search term. The default for HTML highlights is \fB&lt;/em&gt;\fP . The default for text highlights is \fB*\fP .
+.UNINDENT
+.sp
+If no highlight options are specified for a field, the returned field text is treated as HTML and the first match is highlighted with emphasis tags: \fB&lt;em>search\-term&lt;/em&gt;\fP .
+.sp
+For example, the following request retrieves highlights for the \fBactors\fP and \fBtitle\fP fields.
+.INDENT 0.0
+.INDENT 3.5
+\fB{ "actors": {}, "title": {"format": "text","max_phrases": 2,"pre_tag": "**","post_tag": "** "} }\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-partial\fP | \fB\-\-no\-partial\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables partial results to be returned if one or more index partitions are unavailable. When your search index is partitioned across multiple search instances, by default Amazon CloudSearch only returns results if every partition can be queried. This means that the failure of a single search instance can result in 5xx (internal server) errors. When you enable partial results, Amazon CloudSearch returns whatever results are available and includes the percentage of documents searched in the search results (percent\-searched). This enables you to more gracefully degrade your users\(aq search experience. For example, rather than displaying no results, you could display the partial results and a message indicating that the results might be incomplete due to a temporary system outage.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-query\-options\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Configures options for the query parser specified in the \fBqueryParser\fP parameter. You specify the options in JSON using the following form \fB{"OPTION1":"VALUE1","OPTION2":VALUE2"..."OPTIONN":"VALUEN"}.\fP
+.sp
+The options you can configure vary according to which parser you use:
+.INDENT 0.0
+.IP \(bu 2
+\fBdefaultOperator\fP : The default operator used to combine individual terms in the search string. For example: \fBdefaultOperator: \(aqor\(aq\fP . For the \fBdismax\fP parser, you specify a percentage that represents the percentage of terms in the search string (rounded down) that must match, rather than a default operator. A value of \fB0%\fP is the equivalent to OR, and a value of \fB100%\fP is equivalent to AND. The percentage must be specified as a value in the range 0\-100 followed by the percent (%) symbol. For example, \fBdefaultOperator: 50%\fP . Valid values: \fBand\fP , \fBor\fP , a percentage in the range 0%\-100% (\fBdismax\fP ). Default: \fBand\fP (\fBsimple\fP , \fBstructured\fP , \fBlucene\fP ) or \fB100\fP (\fBdismax\fP ). Valid for: \fBsimple\fP , \fBstructured\fP , \fBlucene\fP , and \fBdismax\fP .
+.IP \(bu 2
+\fBfields\fP : An array of the fields to search when no fields are specified in a search. If no fields are specified in a search and this option is not specified, all text and text\-array fields are searched. You can specify a weight for each field to control the relative importance of each field when Amazon CloudSearch calculates relevance scores. To specify a field weight, append a caret (\fB^\fP ) symbol and the weight to the field name. For example, to boost the importance of the \fBtitle\fP field over the \fBdescription\fP field you could specify: \fB"fields":["title^5","description"]\fP . Valid values: The name of any configured field and an optional numeric value greater than zero. Default: All \fBtext\fP and \fBtext\-array\fP fields. Valid for: \fBsimple\fP , \fBstructured\fP , \fBlucene\fP , and \fBdismax\fP .
+.IP \(bu 2
+\fBoperators\fP : An array of the operators or special characters you want to disable for the simple query parser. If you disable the \fBand\fP , \fBor\fP , or \fBnot\fP operators, the corresponding operators (\fB+\fP , \fB|\fP , \fB\-\fP ) have no special meaning and are dropped from the search string. Similarly, disabling \fBprefix\fP disables the wildcard operator (\fB*\fP ) and disabling \fBphrase\fP disables the ability to search for phrases by enclosing phrases in double quotes. Disabling precedence disables the ability to control order of precedence using parentheses. Disabling \fBnear\fP disables the ability to use the ~ operator to perform a sloppy phrase search. Disabling the \fBfuzzy\fP operator disables the ability to use the ~ operator to perform a fuzzy search. \fBescape\fP disables the ability to use a backslash (\fB\e\fP ) to escape special characters within the search string. Disabling whitespace is an advanced option that prevents the parser from tokenizing on whitespace, which can be useful for Vietnamese. (It prevents Vietnamese words from being split incorrectly.) For example, you could disable all operators other than the phrase operator to support just simple term and phrase queries: \fB"operators":["and","not","or", "prefix"]\fP . Valid values: \fBand\fP , \fBescape\fP , \fBfuzzy\fP , \fBnear\fP , \fBnot\fP , \fBor\fP , \fBphrase\fP , \fBprecedence\fP , \fBprefix\fP , \fBwhitespace\fP . Default: All operators and special characters are enabled. Valid for: \fBsimple\fP .
+.IP \(bu 2
+\fBphraseFields\fP : An array of the \fBtext\fP or \fBtext\-array\fP fields you want to use for phrase searches. When the terms in the search string appear in close proximity within a field, the field scores higher. You can specify a weight for each field to boost that score. The \fBphraseSlop\fP option controls how much the matches can deviate from the search string and still be boosted. To specify a field weight, append a caret (\fB^\fP ) symbol and the weight to the field name. For example, to boost phrase matches in the \fBtitle\fP field over the \fBabstract\fP field, you could specify: \fB"phraseFields":["title^3", "plot"]\fP Valid values: The name of any \fBtext\fP or \fBtext\-array\fP field and an optional numeric value greater than zero. Default: No fields. If you don\(aqt specify any fields with \fBphraseFields\fP , proximity scoring is disabled even if \fBphraseSlop\fP is specified. Valid for: \fBdismax\fP .
+.IP \(bu 2
+\fBphraseSlop\fP : An integer value that specifies how much matches can deviate from the search phrase and still be boosted according to the weights specified in the \fBphraseFields\fP option; for example, \fBphraseSlop: 2\fP . You must also specify \fBphraseFields\fP to enable proximity scoring. Valid values: positive integers. Default: 0. Valid for: \fBdismax\fP .
+.IP \(bu 2
+\fBexplicitPhraseSlop\fP : An integer value that specifies how much a match can deviate from the search phrase when the phrase is enclosed in double quotes in the search string. (Phrases that exceed this proximity distance are not considered a match.) For example, to specify a slop of three for dismax phrase queries, you would specify \fB"explicitPhraseSlop":3\fP . Valid values: positive integers. Default: 0. Valid for: \fBdismax\fP .
+.IP \(bu 2
+\fBtieBreaker\fP : When a term in the search string is found in a document\(aqs field, a score is calculated for that field based on how common the word is in that field compared to other documents. If the term occurs in multiple fields within a document, by default only the highest scoring field contributes to the document\(aqs overall score. You can specify a \fBtieBreaker\fP value to enable the matches in lower\-scoring fields to contribute to the document\(aqs score. That way, if two documents have the same max field score for a particular term, the score for the document that has matches in more fields will be higher. The formula for calculating the score with a tieBreaker is \fB(max field score) + (tieBreaker) * (sum of the scores for the rest of the matching fields)\fP . Set \fBtieBreaker\fP to 0 to disregard all but the highest scoring field (pure max): \fB"tieBreaker":0\fP . Set to 1 to sum the scores from all fields (pure sum): \fB"tieBreaker":1\fP . Valid values: 0.0 to 1.0. Default: 0.0. Valid for: \fBdismax\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-query\-parser\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies which query parser to use to process the request. If \fBqueryParser\fP is not specified, Amazon CloudSearch uses the \fBsimple\fP query parser.
+.sp
+Amazon CloudSearch supports four query parsers:
+.INDENT 0.0
+.IP \(bu 2
+\fBsimple\fP : perform simple searches of \fBtext\fP and \fBtext\-array\fP fields. By default, the \fBsimple\fP query parser searches all \fBtext\fP and \fBtext\-array\fP fields. You can specify which fields to search by with the \fBqueryOptions\fP parameter. If you prefix a search term with a plus sign (+) documents must contain the term to be considered a match. (This is the default, unless you configure the default operator with the \fBqueryOptions\fP parameter.) You can use the \fB\-\fP (NOT), \fB|\fP (OR), and \fB*\fP (wildcard) operators to exclude particular terms, find results that match any of the specified terms, or search for a prefix. To search for a phrase rather than individual terms, enclose the phrase in double quotes. For more information, see \fI\%Searching for Text\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.IP \(bu 2
+\fBstructured\fP : perform advanced searches by combining multiple expressions to define the search criteria. You can also search within particular fields, search for values and ranges of values, and use advanced options such as term boosting, \fBmatchall\fP , and \fBnear\fP . For more information, see \fI\%Constructing Compound Queries\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.IP \(bu 2
+\fBlucene\fP : search using the Apache Lucene query parser syntax. For more information, see \fI\%Apache Lucene Query Parser Syntax\fP .
+.IP \(bu 2
+\fBdismax\fP : search using the simplified subset of the Apache Lucene query parser syntax defined by the DisMax query parser. For more information, see \fI\%DisMax Query Parser Syntax\fP .
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBsimple\fP
+.IP \(bu 2
+\fBstructured\fP
+.IP \(bu 2
+\fBlucene\fP
+.IP \(bu 2
+\fBdismax\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-return\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the field and expression values to include in the response. Multiple fields or expressions are specified as a comma\-separated list. By default, a search response includes all return enabled fields (\fB_all_fields\fP ). To return only the document IDs for the matching documents, specify \fB_no_fields\fP . To retrieve the relevance score calculated for each document, specify \fB_score\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-size\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the maximum number of search hits to include in the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sort\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the fields or custom expressions to use to sort the search results. Multiple fields or expressions are specified as a comma\-separated list. You must specify the sort direction (\fBasc\fP or \fBdesc\fP ) for each field; for example, \fByear desc,title asc\fP . To use a field to sort results, the field must be sort\-enabled in the domain configuration. Array type fields cannot be used for sorting. If no \fBsort\fP parameter is specified, results are sorted by their default relevance scores in descending order: \fB_score desc\fP . You can also sort by document ID (\fB_id asc\fP ) and version (\fB_version desc\fP ).
+.sp
+For more information, see \fI\%Sorting Results\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the offset of the first search hit you want to return. Note that the result set is zero\-based; the first result is at index 0. You can specify either the \fBstart\fP or \fBcursor\fP parameter in a request, they are mutually exclusive.
+.sp
+For more information, see \fI\%Paginating Results\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stats\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies one or more fields for which to get statistics information. Each specified field must be facet\-enabled in the domain configuration. The fields are specified in JSON using the form:
+.INDENT 0.0
+.INDENT 3.5
+\fB{"FIELD\-A":{},"FIELD\-B":{}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+There are currently no options supported for statistics.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-search\-query\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the search criteria for the request. How you specify the search criteria depends on the query parser used for the request and the parser options specified in the \fBqueryOptions\fP parameter. By default, the \fBsimple\fP query parser is used to process requests. To use the \fBstructured\fP , \fBlucene\fP , or \fBdismax\fP query parser, you must also specify the \fBqueryParser\fP parameter.
+.sp
+For more information about specifying search criteria, see \fI\%Searching Your Data\fP in the \fIAmazon CloudSearch Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The status information returned for the search request.
+.sp
+timems \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+How long it took to process the request, in milliseconds.
+.UNINDENT
+.UNINDENT
+.sp
+rid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The encrypted resource ID for the request.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+hits \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The documents that match the search criteria.
+.sp
+found \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The total number of documents that match the search request.
+.UNINDENT
+.UNINDENT
+.sp
+start \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The index of the first matching document.
+.UNINDENT
+.UNINDENT
+.sp
+cursor \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A cursor that can be used to retrieve the next set of matching documents when you want to page through a large result set.
+.UNINDENT
+.UNINDENT
+.sp
+hit \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A document that matches the search request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a document that matches the search request.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document ID of a document that matches the search request.
+.UNINDENT
+.UNINDENT
+.sp
+fields \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The fields returned from a document that matches the search request.
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+exprs \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The expressions returned from a document that matches the search request.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+highlights \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The highlights returned from a document that matches the search request.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+facets \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The requested facet information.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A container for the calculated facet values and counts.
+.sp
+buckets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the calculated facet values and counts.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A container for facet information.
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The facet value being counted.
+.UNINDENT
+.UNINDENT
+.sp
+count \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of hits that contain the facet value in the specified facet field.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+stats \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The requested field statistics information.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The statistics for a field calculated in the request.
+.sp
+min \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The minimum value found in the specified field in the result set.
+.sp
+If the field is numeric (\fBint\fP , \fBint\-array\fP , \fBdouble\fP , or \fBdouble\-array\fP ), \fBmin\fP is the string representation of a double\-precision 64\-bit floating point value. If the field is \fBdate\fP or \fBdate\-array\fP , \fBmin\fP is the string representation of a date with the format specified in \fI\%IETF RFC3339\fP : yyyy\-mm\-ddTHH:mm:ss.SSSZ.
+.UNINDENT
+.UNINDENT
+.sp
+max \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum value found in the specified field in the result set.
+.sp
+If the field is numeric (\fBint\fP , \fBint\-array\fP , \fBdouble\fP , or \fBdouble\-array\fP ), \fBmax\fP is the string representation of a double\-precision 64\-bit floating point value. If the field is \fBdate\fP or \fBdate\-array\fP , \fBmax\fP is the string representation of a date with the format specified in \fI\%IETF RFC3339\fP : yyyy\-mm\-ddTHH:mm:ss.SSSZ.
+.UNINDENT
+.UNINDENT
+.sp
+count \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of documents that contain a value in the specified field in the result set.
+.UNINDENT
+.UNINDENT
+.sp
+missing \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of documents that do not contain a value in the specified field in the result set.
+.UNINDENT
+.UNINDENT
+.sp
+sum \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The sum of the field values across the documents in the result set. \fBnull\fP for date fields.
+.UNINDENT
+.UNINDENT
+.sp
+sumOfSquares \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The sum of all field values in the result set squared.
+.UNINDENT
+.UNINDENT
+.sp
+mean \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The average of the values found in the specified field in the result set.
+.sp
+If the field is numeric (\fBint\fP , \fBint\-array\fP , \fBdouble\fP , or \fBdouble\-array\fP ), \fBmean\fP is the string representation of a double\-precision 64\-bit floating point value. If the field is \fBdate\fP or \fBdate\-array\fP , \fBmean\fP is the string representation of a date with the format specified in \fI\%IETF RFC3339\fP : yyyy\-mm\-ddTHH:mm:ss.SSSZ.
+.UNINDENT
+.UNINDENT
+.sp
+stddev \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The standard deviation of the values in the specified field in the result set.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

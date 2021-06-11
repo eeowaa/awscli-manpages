@@ -1,0 +1,203 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-DESCRIBE-PATCH-GROUP-STATE" "a" "" ""
+.SH NAME
+ssm-describe-patch-group-state \- Returns high-level aggregated patch compliance state for a patch group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns high\-level aggregated patch compliance state for a patch group.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-patch\-group\-state
+\-\-patch\-group <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-patch\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the patch group whose patch snapshot should be retrieved.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the state of a patch group\fP
+.sp
+The following \fBdescribe\-patch\-group\-state\fP example retrieves the high\-level patch compliance summary for a patch group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm describe\-patch\-group\-state \e
+    \-\-patch\-group "Production"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Instances": 21,
+    "InstancesWithInstalledPendingRebootPatches": 2,
+    "InstancesWithNotApplicablePatches": 1,
+    "InstancesWithMissingPatches": 0,
+    "InstancesWithInstalledPatches": 10,
+    "InstancesWithFailedPatches": 3,
+    "InstancesWithInstalledOtherPatches": 2,
+    "InstancesWithInstalledRejectedPatches": 2,
+    "InstancesWithUnreportedNotApplicablePatches": 1
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fIAbout Patch Groups\fP <\fI\%https://docs.aws.amazon.com/systems\-manager/latest/userguide/sysman\-patch\-patchgroups.html\fP>__ and \fI\%About Patch Compliance States\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+Instances \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances in the patch group.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithInstalledPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with installed patches.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithInstalledOtherPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with patches installed that aren\(aqt defined in the patch baseline.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithInstalledPendingRebootPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with patches installed by Patch Manager that have not been rebooted after the patch installation. The status of these instances is NON_COMPLIANT.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithInstalledRejectedPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with patches installed that are specified in a RejectedPatches list. Patches with a status of \fIINSTALLED_REJECTED\fP were typically installed before they were added to a RejectedPatches list.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If ALLOW_AS_DEPENDENCY is the specified option for RejectedPatchesAction, the value of InstancesWithInstalledRejectedPatches will always be 0 (zero).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithMissingPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with missing patches from the patch baseline.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithFailedPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with patches from the patch baseline that failed to install.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithNotApplicablePatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with patches that aren\(aqt applicable.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithUnreportedNotApplicablePatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with \fBNotApplicable\fP patches beyond the supported limit, which are not reported by name to Systems Manager Inventory.
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithCriticalNonCompliantPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances where patches that are specified as "Critical" for compliance reporting in the patch baseline are not installed. These patches might be missing, have failed installation, were rejected, or were installed but awaiting a required instance reboot. The status of these instances is \fBNON_COMPLIANT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithSecurityNonCompliantPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances where patches that are specified as "Security" in a patch advisory are not installed. These patches might be missing, have failed installation, were rejected, or were installed but awaiting a required instance reboot. The status of these instances is \fBNON_COMPLIANT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+InstancesWithOtherNonCompliantPatches \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances with patches installed that are specified as other than "Critical" or "Security" but are not compliant with the patch baseline. The status of these instances is NON_COMPLIANT.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

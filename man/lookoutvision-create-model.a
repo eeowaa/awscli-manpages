@@ -1,0 +1,298 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LOOKOUTVISION-CREATE-MODEL" "a" "" ""
+.SH NAME
+lookoutvision-create-model \- Creates a new version of a model within an an Amazon Lookout for Vision project
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new version of a model within an an Amazon Lookout for Vision project. \fBCreateModel\fP is an asynchronous operation in which Amazon Lookout for Vision trains, tests, and evaluates a new version of a model.
+.sp
+To get the current status, check the \fBStatus\fP field returned in the response from  DescribeModel .
+.sp
+If the project has a single dataset, Amazon Lookout for Vision internally splits the dataset to create a training and a test dataset. If the project has a training and a test dataset, Lookout for Vision uses the respective datasets to train and test the model.
+.sp
+After training completes, the evaluation metrics are stored at the location specified in \fBOutputConfig\fP .
+.sp
+This operation requires permissions to perform the \fBlookoutvision:CreateModel\fP operation. If you want to tag your model, you also require permission to the \fBlookoutvision:TagResource\fP operation.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-model
+\-\-project\-name <value>
+[\-\-description <value>]
+[\-\-client\-token <value>]
+\-\-output\-config <value>
+[\-\-kms\-key\-id <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-project\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the project in which you want to create a model version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description for the version of the model.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+ClientToken is an idempotency token that ensures a call to \fBCreateModel\fP completes only once. You choose the value to pass. For example, An issue, such as an network outage, might prevent you from getting a response from \fBCreateModel\fP . In this case, safely retry your call to \fBCreateModel\fP by using the same \fBClientToken\fP parameter value. An error occurs if the other input parameters are not the same as in the first request. Using a different value for \fBClientToken\fP is considered a new call to \fBCreateModel\fP . An idempotency token is active for 8 hours.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-output\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location where Amazon Lookout for Vision saves the training results.
+.sp
+S3Location \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The S3 location for the output.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket that contains the training output.
+.UNINDENT
+.UNINDENT
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The path of the folder, within the S3 bucket, that contains the training output.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Location={Bucket=string,Prefix=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Location": {
+    "Bucket": "string",
+    "Prefix": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for your AWS Key Management Service (AWS KMS) customer master key (CMK). The key is used to encrypt training and test images copied into the service for model training. Your source images are unaffected. If this parameter is not specified, the copied images are encrypted by a key that AWS owns and manages.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of tags (key\-value pairs) that you want to attach to the model.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key and value pair that is attached to the specified Amazon Lookout for Vision model.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag that is attached to the specified model.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag that is attached to the specified model.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ModelMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The response from a call to \fBCreateModel\fP .
+.sp
+CreationTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The unix timestamp for the date and time that the model was created.
+.UNINDENT
+.UNINDENT
+.sp
+ModelVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the model.
+.UNINDENT
+.UNINDENT
+.sp
+ModelArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the model.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description for the model.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the model.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status message for the model.
+.UNINDENT
+.UNINDENT
+.sp
+Performance \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Performance metrics for the model. Not available until training has successfully completed.
+.sp
+F1Score \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The overall F1 score metric for the trained model.
+.UNINDENT
+.UNINDENT
+.sp
+Recall \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The overall recall metric value for the trained model.
+.UNINDENT
+.UNINDENT
+.sp
+Precision \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The overall precision metric value for the trained model.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,928 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELASTICACHE-DECREASE-REPLICA-COUNT" "a" "" ""
+.SH NAME
+elasticache-decrease-replica-count \- Dynamically decreases the number of replicas in a Redis (cluster mode disabled) replication group or the number of replica nodes in one or more node groups (shards) of a Redis (cluster mode enabled) replication group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Dynamically decreases the number of replicas in a Redis (cluster mode disabled) replication group or the number of replica nodes in one or more node groups (shards) of a Redis (cluster mode enabled) replication group. This operation is performed with no cluster down time.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  decrease\-replica\-count
+\-\-replication\-group\-id <value>
+[\-\-new\-replica\-count <value>]
+[\-\-replica\-configuration <value>]
+[\-\-replicas\-to\-remove <value>]
+\-\-apply\-immediately | \-\-no\-apply\-immediately
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-replication\-group\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The id of the replication group from which you want to remove replica nodes.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-new\-replica\-count\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of read replica nodes you want at the completion of this operation. For Redis (cluster mode disabled) replication groups, this is the number of replica nodes in the replication group. For Redis (cluster mode enabled) replication groups, this is the number of replica nodes in each of the replication group\(aqs node groups.
+.sp
+The minimum number of replicas in a shard or replication group is:
+.INDENT 0.0
+.IP \(bu 2
+Redis (cluster mode disabled)
+.INDENT 2.0
+.IP \(bu 2
+If Multi\-AZ is enabled: 1
+.IP \(bu 2
+If Multi\-AZ is not enabled: 0
+.UNINDENT
+.IP \(bu 2
+Redis (cluster mode enabled): 0 (though you will not be able to failover to a replica if your primary node fails)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-replica\-configuration\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBConfigureShard\fP objects that can be used to configure each shard in a Redis (cluster mode enabled) replication group. The \fBConfigureShard\fP has three members: \fBNewReplicaCount\fP , \fBNodeGroupId\fP , and \fBPreferredAvailabilityZones\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Node group (shard) configuration options when adding or removing replicas. Each node group (shard) configuration has the following members: NodeGroupId, NewReplicaCount, and PreferredAvailabilityZones.
+.sp
+NodeGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The 4\-digit id for the node group you are configuring. For Redis (cluster mode disabled) replication groups, the node group id is always 0001. To find a Redis (cluster mode enabled)\(aqs node group\(aqs (shard\(aqs) id, see \fI\%Finding a Shard\(aqs Id\fP .
+.UNINDENT
+.UNINDENT
+.sp
+NewReplicaCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of replicas you want in this node group at the end of this operation. The maximum value for \fBNewReplicaCount\fP is 5. The minimum value depends upon the type of Redis replication group you are working with.
+.sp
+The minimum number of replicas in a shard or replication group is:
+.INDENT 0.0
+.IP \(bu 2
+Redis (cluster mode disabled)
+.INDENT 2.0
+.IP \(bu 2
+If Multi\-AZ: 1
+.IP \(bu 2
+If Multi\-AZ: 0
+.UNINDENT
+.IP \(bu 2
+Redis (cluster mode enabled): 0 (though you will not be able to failover to a replica if your primary node fails)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PreferredAvailabilityZones \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBPreferredAvailabilityZone\fP strings that specify which availability zones the replication group\(aqs nodes are to be in. The nummber of \fBPreferredAvailabilityZone\fP values must equal the value of \fBNewReplicaCount\fP plus 1 to account for the primary node. If this member of \fBReplicaConfiguration\fP is omitted, ElastiCache for Redis selects the availability zone for each of the replicas.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+PreferredOutpostArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The outpost ARNs in which the cache cluster is created.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+NodeGroupId=string,NewReplicaCount=integer,PreferredAvailabilityZones=string,string,PreferredOutpostArns=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "NodeGroupId": "string",
+    "NewReplicaCount": integer,
+    "PreferredAvailabilityZones": ["string", ...],
+    "PreferredOutpostArns": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-replicas\-to\-remove\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the node ids to remove from the replication group or node group (shard).
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-apply\-immediately\fP | \fB\-\-no\-apply\-immediately\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If \fBTrue\fP , the number of replica nodes is decreased immediately. \fBApplyImmediately=False\fP is not currently supported.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo decrease replica count\fP
+.sp
+The following \fBdecrease\-replica\-count\fP example dynamically decreases the number of replics in a Redis (cluster mode disabled) replication group or the number of replica nodes in one or more node groups (shards) of a Redis (cluster mode enabled) replication group. This operation is performed with no cluster downtime.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elasticache decrease\-replica\-count \e
+    \-\-replication\-group\-id my\-cluster \e
+    \-\-apply\-immediately  \e
+    \-\-new\-replica\-count 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ReplicationGroup": {
+        "ReplicationGroupId": "my\-cluster",
+        "Description": " ",
+        "Status": "modifying",
+        "PendingModifiedValues": {},
+        "MemberClusters": [
+            "myrepliace",
+            "my\-cluster\-001",
+            "my\-cluster\-002",
+            "my\-cluster\-003"
+        ],
+        "NodeGroups": [
+            {
+                "NodeGroupId": "0001",
+                "Status": "modifying",
+                "PrimaryEndpoint": {
+                    "Address": "my\-cluster.xxxxx.ng.0001.usw2.cache.amazonaws.com",
+                    "Port": 6379
+                },
+                "ReaderEndpoint": {
+                    "Address": "my\-cluster\-ro.xxxxx.ng.0001.usw2.cache.amazonaws.com",
+                    "Port": 6379
+                },
+                "NodeGroupMembers": [
+                    {
+                        "CacheClusterId": "myrepliace",
+                        "CacheNodeId": "0001",
+                        "ReadEndpoint": {
+                            "Address": "myrepliace.xxxxx.0001.usw2.cache.amazonaws.com",
+                            "Port": 6379
+                        },
+                        "PreferredAvailabilityZone": "us\-west\-2a",
+                        "CurrentRole": "replica"
+                    },
+                    {
+                        "CacheClusterId": "my\-cluster\-001",
+                        "CacheNodeId": "0001",
+                        "ReadEndpoint": {
+                            "Address": "my\-cluster\-001.xxxxx.0001.usw2.cache.amazonaws.com",
+                            "Port": 6379
+                        },
+                        "PreferredAvailabilityZone": "us\-west\-2a",
+                        "CurrentRole": "primary"
+                    },
+                    {
+                        "CacheClusterId": "my\-cluster\-002",
+                        "CacheNodeId": "0001",
+                        "ReadEndpoint": {
+                            "Address": "my\-cluster\-002.xxxxx.0001.usw2.cache.amazonaws.com",
+                            "Port": 6379
+                        },
+                        "PreferredAvailabilityZone": "us\-west\-2a",
+                        "CurrentRole": "replica"
+                    },
+                    {
+                        "CacheClusterId": "my\-cluster\-003",
+                        "CacheNodeId": "0001",
+                        "ReadEndpoint": {
+                            "Address": "my\-cluster\-003.xxxxx.0001.usw2.cache.amazonaws.com",
+                            "Port": 6379
+                        },
+                        "PreferredAvailabilityZone": "us\-west\-2a",
+                        "CurrentRole": "replica"
+                    }
+                ]
+            }
+        ],
+        "AutomaticFailover": "disabled",
+        "SnapshotRetentionLimit": 0,
+        "SnapshotWindow": "07:30\-08:30",
+        "ClusterEnabled": false,
+        "CacheNodeType": "cache.r5.xlarge",
+        "TransitEncryptionEnabled": false,
+        "AtRestEncryptionEnabled": false
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Changing the Number of Replicas\fP in the \fIElasticache User Guide\fP\&.
+.SH OUTPUT
+.sp
+ReplicationGroup \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains all of the attributes of a specific Redis replication group.
+.sp
+ReplicationGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the replication group.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user supplied description of the replication group.
+.UNINDENT
+.UNINDENT
+.sp
+GlobalReplicationGroupInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Global datastore and role of this replication group in the Global datastore.
+.sp
+GlobalReplicationGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Global datastore
+.UNINDENT
+.UNINDENT
+.sp
+GlobalReplicationGroupMemberRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The role of the replication group in a Global datastore. Can be primary or secondary.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of this replication group \- \fBcreating\fP , \fBavailable\fP , \fBmodifying\fP , \fBdeleting\fP , \fBcreate\-failed\fP , \fBsnapshotting\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PendingModifiedValues \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A group of settings to be applied to the replication group, either immediately or during the next maintenance window.
+.sp
+PrimaryClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The primary cluster ID that is applied immediately (if \fB\-\-apply\-immediately\fP was specified), or during the next maintenance window.
+.UNINDENT
+.UNINDENT
+.sp
+AutomaticFailoverStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the status of automatic failover for this Redis replication group.
+.UNINDENT
+.UNINDENT
+.sp
+Resharding \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The status of an online resharding operation.
+.sp
+SlotMigration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the progress of an online resharding operation.
+.sp
+ProgressPercentage \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of the slot migration that is complete.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AuthTokenStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The auth token status
+.UNINDENT
+.UNINDENT
+.sp
+UserGroups \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The user groups being modified.
+.sp
+UserGroupIdsToAdd \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of user group IDs to add.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+UserGroupIdsToRemove \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of user group IDs to remove.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogDeliveryConfigurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The log delivery configurations being modified
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The log delivery configurations being modified
+.sp
+LogType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Refers to \fI\%slow\-log\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination type, either CloudWatch Logs or Kinesis Data Firehose.
+.UNINDENT
+.UNINDENT
+.sp
+DestinationDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration details of either a CloudWatch Logs destination or Kinesis Data Firehose destination.
+.sp
+CloudWatchLogsDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the CloudWatch Logs destination.
+.sp
+LogGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch Logs log group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisFirehoseDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the Kinesis Data Firehose destination.
+.sp
+DeliveryStream \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the log format, either JSON or TEXT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MemberClusters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The names of all the cache clusters that are part of this replication group.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NodeGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of node groups in this replication group. For Redis (cluster mode disabled) replication groups, this is a single\-element list. For Redis (cluster mode enabled) replication groups, the list contains an entry for each node group (shard).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a collection of cache nodes in a replication group. One node in the node group is the read/write primary node. All the other nodes are read\-only Replica nodes.
+.sp
+NodeGroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the node group (shard). A Redis (cluster mode disabled) replication group contains only 1 node group; therefore, the node group ID is 0001. A Redis (cluster mode enabled) replication group contains 1 to 90 node groups numbered 0001 to 0090. Optionally, the user can provide the id for a node group.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of this replication group \- \fBcreating\fP , \fBavailable\fP , \fBmodifying\fP , \fBdeleting\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PrimaryEndpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The endpoint of the primary node in this node group (shard).
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS hostname of the cache node.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number that the cache engine is listening on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ReaderEndpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The endpoint of the replica nodes in this node group (shard).
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS hostname of the cache node.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number that the cache engine is listening on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Slots \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The keyspace for this node group (shard).
+.UNINDENT
+.UNINDENT
+.sp
+NodeGroupMembers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list containing information about individual nodes within the node group (shard).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a single node within a node group (shard).
+.sp
+CacheClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the cluster to which the node belongs.
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the node within its cluster. A node ID is a numeric identifier (0001, 0002, etc.).
+.UNINDENT
+.UNINDENT
+.sp
+ReadEndpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The information required for client programs to connect to a node for read operations. The read endpoint is only applicable on Redis (cluster mode disabled) clusters.
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS hostname of the cache node.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number that the cache engine is listening on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PreferredAvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Availability Zone in which the node is located.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredOutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The outpost ARN of the node group member.
+.UNINDENT
+.UNINDENT
+.sp
+CurrentRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The role that is currently assigned to the node \- \fBprimary\fP or \fBreplica\fP . This member is only applicable for Redis (cluster mode disabled) replication groups.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SnapshottingClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cluster ID that is used as the daily snapshot source for the replication group.
+.UNINDENT
+.UNINDENT
+.sp
+AutomaticFailover \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the status of automatic failover for this Redis replication group.
+.UNINDENT
+.UNINDENT
+.sp
+MultiAZ \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A flag indicating if you have Multi\-AZ enabled to enhance fault tolerance. For more information, see \fI\%Minimizing Downtime: Multi\-AZ\fP
+.UNINDENT
+.UNINDENT
+.sp
+ConfigurationEndpoint \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration endpoint for this replication group. Use the configuration endpoint to connect to this replication group.
+.sp
+Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS hostname of the cache node.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number that the cache engine is listening on.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotRetentionLimit \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days for which ElastiCache retains automatic cluster snapshots before deleting them. For example, if you set \fBSnapshotRetentionLimit\fP to 5, a snapshot that was taken today is retained for 5 days before being deleted.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the value of \fBSnapshotRetentionLimit\fP is set to zero (0), backups are turned off.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotWindow \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The daily time range (in UTC) during which ElastiCache begins taking a daily snapshot of your node group (shard).
+.sp
+Example: \fB05:00\-09:00\fP
+.sp
+If you do not specify this parameter, ElastiCache automatically chooses an appropriate time range.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter is only valid if the \fBEngine\fP parameter is \fBredis\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ClusterEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag indicating whether or not this replication group is cluster enabled; i.e., whether its data can be partitioned across multiple shards (API/CLI: node groups).
+.sp
+Valid values: \fBtrue\fP | \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+CacheNodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the compute and memory capacity node type for each node in the replication group.
+.UNINDENT
+.UNINDENT
+.sp
+AuthTokenEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that enables using an \fBAuthToken\fP (password) when issuing Redis commands.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+AuthTokenLastModifiedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date the auth token was last modified
+.UNINDENT
+.UNINDENT
+.sp
+TransitEncryptionEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that enables in\-transit encryption when set to \fBtrue\fP .
+.sp
+You cannot modify the value of \fBTransitEncryptionEnabled\fP after the cluster is created. To enable in\-transit encryption on a cluster you must set \fBTransitEncryptionEnabled\fP to \fBtrue\fP when you create a cluster.
+.INDENT 0.0
+.INDENT 3.5
+\fBRequired:\fP Only available when creating a replication group in an Amazon VPC using redis version \fB3.2.6\fP , \fB4.x\fP or later.
+.UNINDENT
+.UNINDENT
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+AtRestEncryptionEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag that enables encryption at\-rest when set to \fBtrue\fP .
+.sp
+You cannot modify the value of \fBAtRestEncryptionEnabled\fP after the cluster is created. To enable encryption at\-rest on a cluster you must set \fBAtRestEncryptionEnabled\fP to \fBtrue\fP when you create a cluster.
+.INDENT 0.0
+.INDENT 3.5
+\fBRequired:\fP Only available when creating a replication group in an Amazon VPC using redis version \fB3.2.6\fP , \fB4.x\fP or later.
+.UNINDENT
+.UNINDENT
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+MemberClustersOutpostArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The outpost ARNs of the replication group\(aqs member clusters.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the KMS key used to encrypt the disk in the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+ARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN (Amazon Resource Name) of the replication group.
+.UNINDENT
+.UNINDENT
+.sp
+UserGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of user group IDs that have access to the replication group.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+LogDeliveryConfigurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination, format and type of the logs.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination, format and type of the logs.
+.sp
+LogType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Refers to \fI\%slow\-log\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the destination type, either \fBcloudwatch\-logs\fP or \fBkinesis\-firehose\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DestinationDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration details of either a CloudWatch Logs destination or Kinesis Data Firehose destination.
+.sp
+CloudWatchLogsDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the CloudWatch Logs destination.
+.sp
+LogGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the CloudWatch Logs log group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisFirehoseDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration details of the Kinesis Data Firehose destination.
+.sp
+DeliveryStream \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Kinesis Data Firehose delivery stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogFormat \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the log format, either JSON or TEXT.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns the log delivery configuration status. Values are one of \fBenabling\fP | \fBdisabling\fP | \fBmodifying\fP | \fBactive\fP | \fBerror\fP
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns an error message for the log delivery configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

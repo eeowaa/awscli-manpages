@@ -1,0 +1,260 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "BATCH-UPDATE-COMPUTE-ENVIRONMENT" "a" "" ""
+.SH NAME
+batch-update-compute-environment \- Updates an AWS Batch compute environment
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates an AWS Batch compute environment.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-compute\-environment
+\-\-compute\-environment <value>
+[\-\-state <value>]
+[\-\-compute\-resources <value>]
+[\-\-service\-role <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-compute\-environment\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or full Amazon Resource Name (ARN) of the compute environment to update.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-state\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the compute environment. Compute environments in the \fBENABLED\fP state can accept jobs from a queue and scale in or out automatically based on the workload demand of its associated queues.
+.sp
+If the state is \fBENABLED\fP , then the AWS Batch scheduler can attempt to place jobs from an associated job queue on the compute resources within the environment. If the compute environment is managed, then it can scale its instances out or in automatically, based on the job queue demand.
+.sp
+If the state is \fBDISABLED\fP , then the AWS Batch scheduler doesn\(aqt attempt to place jobs within the environment. Jobs in a \fBSTARTING\fP or \fBRUNNING\fP state continue to progress normally. Managed compute environments in the \fBDISABLED\fP state don\(aqt scale out. However, they scale in to \fBminvCpus\fP value after instances become idle.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBENABLED\fP
+.IP \(bu 2
+\fBDISABLED\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-compute\-resources\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details of the compute resources managed by the compute environment. Required for a managed compute environment. For more information, see \fI\%Compute Environments\fP in the \fIAWS Batch User Guide\fP .
+.sp
+minvCpus \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum number of Amazon EC2 vCPUs that an environment should maintain.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter isn\(aqt applicable to jobs running on Fargate resources, and shouldn\(aqt be specified.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maxvCpus \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of Amazon EC2 vCPUs that an environment can reach.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+With both \fBBEST_FIT_PROGRESSIVE\fP and \fBSPOT_CAPACITY_OPTIMIZED\fP allocation strategies, AWS Batch might need to exceed \fBmaxvCpus\fP to meet your capacity requirements. In this event, AWS Batch never exceeds \fBmaxvCpus\fP by more than a single instance. That is, no more than a single instance from among those specified in your compute environment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+desiredvCpus \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The desired number of Amazon EC2 vCPUS in the compute environment.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This parameter isn\(aqt applicable to jobs running on Fargate resources, and shouldn\(aqt be specified.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The VPC subnets that the compute resources are launched into. Fargate compute resources can contain up to 16 subnets. Providing an empty list will be handled as if this parameter wasn\(aqt specified and no change is made. This can\(aqt be specified for EC2 compute resources. For more information, see \fI\%VPCs and Subnets\fP in the \fIAmazon VPC User Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+securityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon EC2 security groups associated with instances launched in the compute environment. This parameter is required for Fargate compute resources, where it can contain up to 5 security groups. This can\(aqt be specified for EC2 compute resources. Providing an empty list is handled as if this parameter wasn\(aqt specified and no change is made.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+minvCpus=integer,maxvCpus=integer,desiredvCpus=integer,subnets=string,string,securityGroupIds=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "minvCpus": integer,
+  "maxvCpus": integer,
+  "desiredvCpus": integer,
+  "subnets": ["string", ...],
+  "securityGroupIds": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The full Amazon Resource Name (ARN) of the IAM role that allows AWS Batch to make calls to other AWS services on your behalf. For more information, see \fI\%AWS Batch service IAM role\fP in the \fIAWS Batch User Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If the compute environment has a service\-linked role, it cannot be changed to use a regular IAM role. If the compute environment has a regular IAM role, it cannot be changed to use a service\-linked role.
+.UNINDENT
+.UNINDENT
+.sp
+If your specified role has a path other than \fB/\fP , then you must either specify the full role ARN (this is recommended) or prefix the role name with the path.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Depending on how you created your AWS Batch service role, its ARN might contain the \fBservice\-role\fP path prefix. When you only specify the name of the service role, AWS Batch assumes that your ARN doesn\(aqt use the \fBservice\-role\fP path prefix. Because of this, we recommend that you specify the full ARN of your service role when you create compute environments.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update a compute environment\fP
+.sp
+This example disables the \fIP2OnDemand\fP compute environment so it can be deleted.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws batch update\-compute\-environment \-\-compute\-environment P2OnDemand \-\-state DISABLED
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "computeEnvironmentName": "P2OnDemand",
+    "computeEnvironmentArn": "arn:aws:batch:us\-east\-1:012345678910:compute\-environment/P2OnDemand"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+computeEnvironmentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the compute environment. Up to 128 letters (uppercase and lowercase), numbers, hyphens, and underscores are allowed.
+.UNINDENT
+.UNINDENT
+.sp
+computeEnvironmentArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the compute environment.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

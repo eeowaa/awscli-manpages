@@ -1,0 +1,258 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-PUT-KEY-POLICY" "a" "" ""
+.SH NAME
+kms-put-key-policy \- Attaches a key policy to the specified customer master key (CMK)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Attaches a key policy to the specified customer master key (CMK).
+.sp
+For more information about key policies, see \fI\%Key Policies\fP in the \fIAWS Key Management Service Developer Guide\fP . For help writing and formatting a JSON policy document, see the \fI\%IAM JSON Policy Reference\fP in the * \fIIAM User Guide\fP * . For examples of adding a key policy in multiple programming languages, see \fI\%Setting a key policy\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : No. You cannot perform this operation on a CMK in a different AWS account.
+.sp
+\fBRequired permissions\fP : \fI\%kms:PutKeyPolicy\fP (key policy)
+.sp
+\fBRelated operations\fP :  GetKeyPolicy
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-key\-policy
+\-\-key\-id <value>
+\-\-policy\-name <value>
+\-\-policy <value>
+[\-\-bypass\-policy\-lockout\-safety\-check | \-\-no\-bypass\-policy\-lockout\-safety\-check]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the customer master key (CMK).
+.sp
+Specify the key ID or the Amazon Resource Name (ARN) of the CMK.
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.UNINDENT
+.sp
+To get the key ID and key ARN for a CMK, use  ListKeys or  DescribeKey .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key policy. The only valid value is \fBdefault\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The key policy to attach to the CMK.
+.sp
+The key policy must meet the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+If you don\(aqt set \fBBypassPolicyLockoutSafetyCheck\fP to true, the key policy must allow the principal that is making the \fBPutKeyPolicy\fP request to make a subsequent \fBPutKeyPolicy\fP request on the CMK. This reduces the risk that the CMK becomes unmanageable. For more information, refer to the scenario in the \fI\%Default Key Policy\fP section of the \fIAWS Key Management Service Developer Guide\fP .
+.IP \(bu 2
+Each statement in the key policy must contain one or more principals. The principals in the key policy must exist and be visible to AWS KMS. When you create a new AWS principal (for example, an IAM user or role), you might need to enforce a delay before including the new principal in a key policy because the new principal might not be immediately visible to AWS KMS. For more information, see \fI\%Changes that I make are not always immediately visible\fP in the \fIAWS Identity and Access Management User Guide\fP .
+.UNINDENT
+.sp
+The key policy cannot exceed 32 kilobytes (32768 bytes). For more information, see \fI\%Resource Quotas\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bypass\-policy\-lockout\-safety\-check\fP | \fB\-\-no\-bypass\-policy\-lockout\-safety\-check\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag to indicate whether to bypass the key policy lockout safety check.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Setting this value to true increases the risk that the CMK becomes unmanageable. Do not set this value to true indiscriminately.
+.sp
+For more information, refer to the scenario in the \fI\%Default Key Policy\fP section in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Use this parameter only when you intend to prevent the principal that is making the request from making a subsequent \fBPutKeyPolicy\fP request on the CMK.
+.sp
+The default value is false.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo change the key policy for a customer master key (CMK)\fP
+.sp
+The following \fBput\-key\-policy\fP example changes the key policy for a customer managed CMK.
+.sp
+To begin, create a key policy and save it in a local JSON file. In this example, the file is \fBkey_policy.json\fP\&. You can also specify the key policy as a string value of the \fBpolicy\fP parameter.
+.sp
+The first statement in this key policy gives the AWS account permission to use IAM policies to control access to the CMK. The second statement gives the \fBtest\-user\fP user permission to run the \fBdescribe\-key\fP and \fBlist\-keys\fP commands on the CMK.
+.sp
+Contents of \fBkey_policy.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Version" : "2012\-10\-17",
+    "Id" : "key\-default\-1",
+    "Statement" : [
+        {
+            "Sid" : "Enable IAM User Permissions",
+            "Effect" : "Allow",
+            "Principal" : {
+                "AWS" : "arn:aws:iam::111122223333:root"
+            },
+            "Action" : "kms:",
+            "Resource" : "*"
+        },
+        {
+            "Sid" : "Allow Use of Key",
+            "Effect" : "Allow",
+            "Principal" : {
+                "AWS" : "arn:aws:iam::111122223333:user/test\-user"
+            },
+            "Action" : [
+                "kms:DescribeKey",
+                "kms:ListKeys"
+            ],
+            "Resource" : "*"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+To identify the CMK, this example uses the key ID, but you can also usa key ARN. To specify the key policy, the command uses the \fBpolicy\fP parameter. To indicate that the policy is in a file, it uses the required \fBfile://\fP prefix. This prefix is required to identify files on all supported operating systems. Finally, the command uses the \fBpolicy\-name\fP parameter with a value of \fBdefault\fP\&. This parameter is required, even though \fBdefault\fP is the only valid value.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms put\-key\-policy \e
+    \-\-policy\-name default \e
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab \e
+    \-\-policy file://key_policy.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command does not produce any output. To verify that the command was effective, use the \fBget\-key\-policy\fP command. The following example command gets the key policy for the same CMK. The \fBoutput\fP parameter with a value of \fBtext\fP returns a text format that is easy to read.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms get\-key\-policy \e
+    \-\-policy\-name default \e
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab \e
+    \-\-output text
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Version" : "2012\-10\-17",
+    "Id" : "key\-default\-1",
+    "Statement" : [
+        {
+            "Sid" : "Enable IAM User Permissions",
+            "Effect" : "Allow",
+            "Principal" : {
+                "AWS" : "arn:aws:iam::111122223333:root"
+            },
+            "Action" : "kms:",
+            "Resource" : "*"
+            },
+            {
+            "Sid" : "Allow Use of Key",
+            "Effect" : "Allow",
+            "Principal" : {
+                "AWS" : "arn:aws:iam::111122223333:user/test\-user"
+            },
+            "Action" : [ "kms:Describe", "kms:List" ],
+            "Resource" : "*"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Changing a Key Policy\fP in the \fIAWS Key Management Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

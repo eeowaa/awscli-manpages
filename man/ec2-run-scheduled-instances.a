@@ -1,0 +1,659 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-RUN-SCHEDULED-INSTANCES" "a" "" ""
+.SH NAME
+ec2-run-scheduled-instances \- Launches the specified Scheduled Instances
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Launches the specified Scheduled Instances.
+.sp
+Before you can launch a Scheduled Instance, you must purchase it and obtain an identifier using  PurchaseScheduledInstances .
+.sp
+You must launch a Scheduled Instance during its scheduled time period. You can\(aqt stop or reboot a Scheduled Instance, but you can terminate it as needed. If you terminate a Scheduled Instance before the current scheduled time period ends, you can launch it again after a few minutes. For more information, see \fI\%Scheduled Instances\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  run\-scheduled\-instances
+[\-\-client\-token <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-instance\-count <value>]
+\-\-launch\-specification <value>
+\-\-scheduled\-instance\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, case\-sensitive identifier that ensures the idempotency of the request. For more information, see \fI\%Ensuring Idempotency\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-count\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances.
+.sp
+Default: 1
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-launch\-specification\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch specification. You must match the instance type, Availability Zone, network, and platform of the schedule that you purchased.
+.sp
+BlockDeviceMappings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The block device mapping entries.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a block device mapping for a Scheduled Instance.
+.sp
+DeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name (for example, \fB/dev/sdh\fP or \fBxvdh\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+Ebs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters used to set up EBS volumes automatically when the instance is launched.
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the volume is deleted on instance termination.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the volume is encrypted. You can attached encrypted volumes only to instances that support them.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of I/O operations per second (IOPS) to provision for an \fBio1\fP or \fBio2\fP volume, with a maximum ratio of 50 IOPS/GiB for \fBio1\fP , and 500 IOPS/GiB for \fBio2\fP . Range is 100 to 64,000 IOPS for volumes in most Regions. Maximum IOPS of 64,000 is guaranteed only on \fI\%instances built on the Nitro System\fP . Other instance families guarantee performance up to 32,000 IOPS. For more information, see \fI\%Amazon EBS volume types\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+This parameter is valid only for Provisioned IOPS SSD (\fBio1\fP and \fBio2\fP ) volumes.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the volume, in GiB.
+.sp
+Default: If you\(aqre creating the volume from a snapshot and don\(aqt specify a volume size, the default is the snapshot size.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume type. \fBgp2\fP for General Purpose SSD, \fBio1\fP or \fBio2\fP for Provisioned IOPS SSD, Throughput Optimized HDD for \fBst1\fP , Cold HDD for \fBsc1\fP , or \fBstandard\fP for Magnetic.
+.sp
+Default: \fBgp2\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NoDevice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+To omit the device from the block device mapping, specify an empty string.
+.UNINDENT
+.UNINDENT
+.sp
+VirtualName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual device name (\fBephemeral\fP N). Instance store volumes are numbered starting from 0. An instance type with two available instance store volumes can specify mappings for \fBephemeral0\fP and \fBephemeral1\fP . The number of available instance store volumes depends on the instance type. After you connect to the instance, you must mount the volume.
+.sp
+Constraints: For M3 instances, you must specify instance store volumes in the block device mapping for the instance. When you launch an M3 instance, we ignore any instance store volumes specified in the block device mapping for the AMI.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EbsOptimized \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instances are optimized for EBS I/O. This optimization provides dedicated throughput to Amazon EBS and an optimized configuration stack to provide optimal EBS I/O performance. This optimization isn\(aqt available with all instance types. Additional usage charges apply when using an EBS\-optimized instance.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+IamInstanceProfile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The IAM instance profile.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN).
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Amazon Machine Image (AMI).
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type.
+.UNINDENT
+.UNINDENT
+.sp
+KernelId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the kernel.
+.UNINDENT
+.UNINDENT
+.sp
+KeyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key pair.
+.UNINDENT
+.UNINDENT
+.sp
+Monitoring \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Enable or disable monitoring for the instances.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether monitoring is enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaces \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The network interfaces.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a network interface for a Scheduled Instance.
+.sp
+AssociatePublicIpAddress \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to assign a public IPv4 address to instances launched in a VPC. The public IPv4 address can only be assigned to a network interface for eth0, and can only be assigned to a new network interface, not an existing one. You cannot specify more than one network interface in the request. If launching into a default subnet, the default value is \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to delete the interface when the instance is terminated.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The index of the device for the network interface attachment.
+.UNINDENT
+.UNINDENT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6AddressCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of IPv6 addresses to assign to the network interface. The IPv6 addresses are automatically selected from the subnet range.
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6Addresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The specific IPv6 addresses from the subnet range.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 address.
+.sp
+Ipv6Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 address of the network interface within the subnet.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddressConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 addresses.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a private IPv4 address for a Scheduled Instance.
+.sp
+Primary \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this is a primary IPv4 address. Otherwise, this is a secondary IPv4 address.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SecondaryPrivateIpAddressCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of secondary private IPv4 addresses.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnet.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Placement \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The placement information.
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone.
+.UNINDENT
+.UNINDENT
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the placement group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RamdiskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the RAM disk.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnet in which to launch the instances.
+.UNINDENT
+.UNINDENT
+.sp
+UserData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The base64\-encoded MIME user data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "BlockDeviceMappings": [
+    {
+      "DeviceName": "string",
+      "Ebs": {
+        "DeleteOnTermination": true|false,
+        "Encrypted": true|false,
+        "Iops": integer,
+        "SnapshotId": "string",
+        "VolumeSize": integer,
+        "VolumeType": "string"
+      },
+      "NoDevice": "string",
+      "VirtualName": "string"
+    }
+    ...
+  ],
+  "EbsOptimized": true|false,
+  "IamInstanceProfile": {
+    "Arn": "string",
+    "Name": "string"
+  },
+  "ImageId": "string",
+  "InstanceType": "string",
+  "KernelId": "string",
+  "KeyName": "string",
+  "Monitoring": {
+    "Enabled": true|false
+  },
+  "NetworkInterfaces": [
+    {
+      "AssociatePublicIpAddress": true|false,
+      "DeleteOnTermination": true|false,
+      "Description": "string",
+      "DeviceIndex": integer,
+      "Groups": ["string", ...],
+      "Ipv6AddressCount": integer,
+      "Ipv6Addresses": [
+        {
+          "Ipv6Address": "string"
+        }
+        ...
+      ],
+      "NetworkInterfaceId": "string",
+      "PrivateIpAddress": "string",
+      "PrivateIpAddressConfigs": [
+        {
+          "Primary": true|false,
+          "PrivateIpAddress": "string"
+        }
+        ...
+      ],
+      "SecondaryPrivateIpAddressCount": integer,
+      "SubnetId": "string"
+    }
+    ...
+  ],
+  "Placement": {
+    "AvailabilityZone": "string",
+    "GroupName": "string"
+  },
+  "RamdiskId": "string",
+  "SecurityGroupIds": ["string", ...],
+  "SubnetId": "string",
+  "UserData": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scheduled\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Scheduled Instance ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo launch a Scheduled Instance\fP
+.sp
+This example launches the specified Scheduled Instance in a VPC.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-scheduled\-instances \-\-scheduled\-instance\-id sci\-1234\-1234\-1234\-1234\-123456789012 \-\-instance\-count 1 \-\-launch\-specification file://launch\-specification.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Launch\-specification.json:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ImageId": "ami\-12345678",
+  "KeyName": "my\-key\-pair",
+  "InstanceType": "c4.large",
+  "NetworkInterfaces": [
+    {
+        "DeviceIndex": 0,
+        "SubnetId": "subnet\-12345678",
+        "AssociatePublicIpAddress": true,
+        "Groups": ["sg\-12345678"]
+    }
+  ],
+  "IamInstanceProfile": {
+      "Name": "my\-iam\-role"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceIdSet": [
+      "i\-1234567890abcdef0"
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This example launches the specified Scheduled Instance in EC2\-Classic.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-scheduled\-instances \-\-scheduled\-instance\-id sci\-1234\-1234\-1234\-1234\-123456789012 \-\-instance\-count 1 \-\-launch\-specification file://launch\-specification.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Launch\-specification.json:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ImageId": "ami\-12345678",
+  "KeyName": "my\-key\-pair",
+  "SecurityGroupIds": ["sg\-12345678"],
+  "InstanceType": "c4.large",
+  "Placement": {
+    "AvailabilityZone": "us\-west\-2b"
+  }
+  "IamInstanceProfile": {
+      "Name": "my\-iam\-role"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceIdSet": [
+      "i\-1234567890abcdef0"
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+InstanceIdSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the newly launched instances.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

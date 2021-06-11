@@ -1,0 +1,183 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SDB-BATCH-PUT-ATTRIBUTES" "a" "" ""
+.SH NAME
+sdb-batch-put-attributes \- The BatchPutAttributes operation creates or replaces attributes within one or more items
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+The \fBBatchPutAttributes\fP operation creates or replaces attributes within one or more items. By using this operation, the client can perform multiple  PutAttribute operation with a single call. This helps yield savings in round trips and latencies, enabling Amazon SimpleDB to optimize requests and generally produce better throughput.
+.sp
+The client may specify the item name with the \fBItem.X.ItemName\fP parameter. The client may specify new attributes using a combination of the \fBItem.X.Attribute.Y.Name\fP and \fBItem.X.Attribute.Y.Value\fP parameters. The client may specify the first attribute for the first item using the parameters \fBItem.0.Attribute.0.Name\fP and \fBItem.0.Attribute.0.Value\fP , and for the second attribute for the first item by the parameters \fBItem.0.Attribute.1.Name\fP and \fBItem.0.Attribute.1.Value\fP , and so on.
+.sp
+Attributes are uniquely identified within an item by their name/value combination. For example, a single item can have the attributes \fB{ "first_name", "first_value" }\fP and \fB{ "first_name", "second_value" }\fP . However, it cannot have two attribute instances where both the \fBItem.X.Attribute.Y.Name\fP and \fBItem.X.Attribute.Y.Value\fP are the same.
+.sp
+Optionally, the requester can supply the \fBReplace\fP parameter for each individual value. Setting this value to \fBtrue\fP will cause the new attribute values to replace the existing attribute values. For example, if an item \fBI\fP has the attributes \fB{ \(aqa\(aq, \(aq1\(aq }, { \(aqb\(aq, \(aq2\(aq}\fP and \fB{ \(aqb\(aq, \(aq3\(aq }\fP and the requester does a BatchPutAttributes of \fB{\(aqI\(aq, \(aqb\(aq, \(aq4\(aq }\fP with the Replace parameter set to true, the final attributes of the item will be \fB{ \(aqa\(aq, \(aq1\(aq }\fP and \fB{ \(aqb\(aq, \(aq4\(aq }\fP , replacing the previous values of the \(aqb\(aq attribute with the new value.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+This operation is vulnerable to exceeding the maximum URL size when making a REST request using the HTTP GET method. This operation does not support conditions using \fBExpected.X.Name\fP , \fBExpected.X.Value\fP , or \fBExpected.X.Exists\fP .
+.UNINDENT
+.UNINDENT
+.sp
+You can execute multiple \fBBatchPutAttributes\fP operations and other operations in parallel. However, large numbers of concurrent \fBBatchPutAttributes\fP calls can result in Service Unavailable (503) responses.
+.sp
+The following limitations are enforced for this operation:
+.INDENT 0.0
+.IP \(bu 2
+256 attribute name\-value pairs per item
+.IP \(bu 2
+1 MB request size
+.IP \(bu 2
+1 billion attributes per domain
+.IP \(bu 2
+10 GB of total user data storage per domain
+.IP \(bu 2
+25 item limit per \fBBatchPutAttributes\fP operation
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  batch\-put\-attributes
+\-\-domain\-name <value>
+\-\-items <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\-name\fP (string)
+The name of the domain in which the attributes are being stored.
+.sp
+\fB\-\-items\fP (list)
+A list of items on which to perform the operation.(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the replaceable item.
+.UNINDENT
+.UNINDENT
+.sp
+Attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of attributes for a replaceable item.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the replaceable attribute.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the replaceable attribute.
+.UNINDENT
+.UNINDENT
+.sp
+Replace \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A flag specifying whether or not to replace the attribute/value pair or to add a new attribute/value pair. The default setting is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Attributes=[{Name=string,Value=string,Replace=boolean},{Name=string,Value=string,Replace=boolean}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Attributes": [
+      {
+        "Name": "string",
+        "Value": "string",
+        "Replace": true|false
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

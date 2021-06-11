@@ -1,0 +1,243 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-UPDATE-ACCOUNT-AUDIT-CONFIGURATION" "a" "" ""
+.SH NAME
+iot-update-account-audit-configuration \- Configures or reconfigures the Device Defender audit settings for this account
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Configures or reconfigures the Device Defender audit settings for this account. Settings include how audit notifications are sent and which audit checks are enabled or disabled.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-account\-audit\-configuration
+[\-\-role\-arn <value>]
+[\-\-audit\-notification\-target\-configurations <value>]
+[\-\-audit\-check\-configurations <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the role that grants permission to AWS IoT to access information about your devices, policies, certificates, and other items as required when performing an audit.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-audit\-notification\-target\-configurations\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Information about the targets to which audit notifications are sent.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the targets to which audit notifications are sent.
+.sp
+targetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the target (SNS topic) to which audit notifications are sent.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants permission to send notifications to the target.
+.UNINDENT
+.UNINDENT
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if notifications to the target are enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  KeyName1=targetArn=string,roleArn=string,enabled=boolean,KeyName2=targetArn=string,roleArn=string,enabled=boolean
+
+Where valid key names are:
+  SNS
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"SNS": {
+      "targetArn": "string",
+      "roleArn": "string",
+      "enabled": true|false
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-audit\-check\-configurations\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Specifies which audit checks are enabled and disabled for this account. Use \fBDescribeAccountAuditConfiguration\fP to see the list of all checks, including those that are currently enabled.
+.sp
+Some data collection might start immediately when certain checks are enabled. When a check is disabled, any data collected so far in relation to the check is deleted.
+.sp
+You cannot disable a check if it\(aqs used by any scheduled audit. You must first delete the check from the scheduled audit or delete the scheduled audit itself.
+.sp
+On the first call to \fBUpdateAccountAuditConfiguration\fP , this parameter is required and must specify at least one enabled check.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An audit check name. Checks must be enabled for your account. (Use \fBDescribeAccountAuditConfiguration\fP to see the list of all checks, including those that are enabled or use \fBUpdateAccountAuditConfiguration\fP to select which checks are enabled.)
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Which audit checks are enabled and disabled for this account.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if this audit check is enabled for this account.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=enabled=boolean,KeyName2=enabled=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "enabled": true|false
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To enable Amazon SNS notifications for audit notifications\fP
+.sp
+The following \fBupdate\-account\-audit\-configuration\fP example enables Amazon SNS notifications for AWS IoT Device Defender audit notifications, specifying a target and the role used to write to that target.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot update\-account\-audit\-configuration \e
+    \-\-audit\-notification\-target\-configurations "SNS={targetArn=\e"arn:aws:sns:us\-west\-2:123456789012:ddaudits\e",roleArn=\e"arn:aws:iam::123456789012:role/service\-role/AWSIoTDeviceDefenderAudit\e",enabled=true}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fBExample 2: To enable an audit check\fP
+.sp
+The following \fBupdate\-account\-audit\-configuration\fP example enables the AWS IoT Device Defender audit check named \fBAUTHENTICATED_COGNITO_ROLE_OVERLY_PERMISSIVE_CHECK\fP\&. You cannot disable an audit check if it is part of the \fBtargetCheckNames\fP for one or more scheduled audits for the AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot update\-account\-audit\-configuration \e
+    \-\-audit\-check\-configurations "{\e"AUTHENTICATED_COGNITO_ROLE_OVERLY_PERMISSIVE_CHECK\e":{\e"enabled\e":true}}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Audit Commands\fP in the \fIAWS IoT Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

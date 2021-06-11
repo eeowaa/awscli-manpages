@@ -1,0 +1,184 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESIS-VIDEO-ARCHIVED-MEDIA-GET-CLIP" "a" "" ""
+.SH NAME
+kinesis-video-archived-media-get-clip \- Downloads an MP4 file (clip) containing the archived, on-demand media from the specified video stream over the specified time range
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Downloads an MP4 file (clip) containing the archived, on\-demand media from the specified video stream over the specified time range.
+.sp
+Both the StreamName and the StreamARN parameters are optional, but you must specify either the StreamName or the StreamARN when invoking this API operation.
+.sp
+As a prerequisite to using GetCLip API, you must obtain an endpoint using \fBGetDataEndpoint\fP , specifying GET_CLIP forthe \fBAPIName\fP parameter.
+.sp
+An Amazon Kinesis video stream has the following requirements for providing data through MP4:
+.INDENT 0.0
+.IP \(bu 2
+The media must contain h.264 or h.265 encoded video and, optionally, AAC or G.711 encoded audio. Specifically, the codec ID of track 1 should be \fBV_MPEG/ISO/AVC\fP (for h.264) or V_MPEGH/ISO/HEVC (for H.265). Optionally, the codec ID of track 2 should be \fBA_AAC\fP (for AAC) or A_MS/ACM (for G.711).
+.IP \(bu 2
+Data retention must be greater than 0.
+.IP \(bu 2
+The video track of each fragment must contain codec private data in the Advanced Video Coding (AVC) for H.264 format and HEVC for H.265 format. For more information, see \fI\%MPEG\-4 specification ISO/IEC 14496\-15\fP . For information about adapting stream data to a given format, see \fI\%NAL Adaptation Flags\fP .
+.IP \(bu 2
+The audio track (if present) of each fragment must contain codec private data in the AAC format (\fI\%AAC specification ISO/IEC 13818\-7\fP ) or the \fI\%MS Wave format\fP .
+.UNINDENT
+.sp
+You can monitor the amount of outgoing data by monitoring the \fBGetClip.OutgoingBytes\fP Amazon CloudWatch metric. For information about using CloudWatch to monitor Kinesis Video Streams, see \fI\%Monitoring Kinesis Video Streams\fP . For pricing information, see \fI\%Amazon Kinesis Video Streams Pricing\fP and \fI\%AWS Pricing\fP . Charges for outgoing AWS data apply.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-clip
+[\-\-stream\-name <value>]
+[\-\-stream\-arn <value>]
+\-\-clip\-fragment\-selector <value>
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stream for which to retrieve the media clip.
+.sp
+You must specify either the StreamName or the StreamARN.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stream\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the stream for which to retrieve the media clip.
+.sp
+You must specify either the StreamName or the StreamARN.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-clip\-fragment\-selector\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The time range of the requested clip and the source of the timestamps.
+.sp
+FragmentSelectorType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The origin of the timestamps to use (Server or Producer).
+.UNINDENT
+.UNINDENT
+.sp
+TimestampRange \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The range of timestamps to return.
+.sp
+StartTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The starting timestamp in the range of timestamps for which to return fragments.
+.sp
+Only fragments that start exactly at or after \fBStartTimestamp\fP are included in the session. Fragments that start before \fBStartTimestamp\fP and continue past it aren\(aqt included in the session. If \fBFragmentSelectorType\fP is \fBSERVER_TIMESTAMP\fP , the \fBStartTimestamp\fP must be later than the stream head.
+.UNINDENT
+.UNINDENT
+.sp
+EndTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The end of the timestamp range for the requested media.
+.sp
+This value must be within 24 hours of the specified \fBStartTimestamp\fP , and it must be later than the \fBStartTimestamp\fP value. If \fBFragmentSelectorType\fP for the request is \fBSERVER_TIMESTAMP\fP , this value must be in the past.
+.sp
+This value is inclusive. The \fBEndTimestamp\fP is compared to the (starting) timestamp of the fragment. Fragments that start before the \fBEndTimestamp\fP value and continue past it are included in the session.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FragmentSelectorType=string,TimestampRange={StartTimestamp=timestamp,EndTimestamp=timestamp}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "FragmentSelectorType": "PRODUCER_TIMESTAMP"|"SERVER_TIMESTAMP",
+  "TimestampRange": {
+    "StartTimestamp": timestamp,
+    "EndTimestamp": timestamp
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The content type of the media in the requested clip.
+.UNINDENT
+.UNINDENT
+.sp
+Payload \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Traditional MP4 file that contains the media clip from the specified video stream. The output will contain the first 100 MB or the first 200 fragments from the specified start timestamp. For more information, see \fI\%Kinesis Video Streams Limits\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

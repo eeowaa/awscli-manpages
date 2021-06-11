@@ -1,0 +1,818 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ACM-PCA-CREATE-CERTIFICATE-AUTHORITY" "a" "" ""
+.SH NAME
+acm-pca-create-certificate-authority \- Creates a root or subordinate private certificate authority (CA)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a root or subordinate private certificate authority (CA). You must specify the CA configuration, the certificate revocation list (CRL) configuration, the CA type, and an optional idempotency token to avoid accidental creation of multiple CAs. The CA configuration specifies the name of the algorithm and key size to be used to create the CA private key, the type of signing algorithm that the CA uses, and X.500 subject information. The CRL configuration specifies the CRL expiration period in days (the validity period of the CRL), the Amazon S3 bucket that will contain the CRL, and a CNAME alias for the S3 bucket that is included in certificates issued by the CA. If successful, this action returns the Amazon Resource Name (ARN) of the CA.
+.sp
+ACM Private CA assets that are stored in Amazon S3 can be protected with encryption. For more information, see \fI\%Encrypting Your CRLs\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Both PCA and the IAM principal must have permission to write to the S3 bucket that you specify. If the IAM principal making the call does not have permission to write to the bucket, then an exception is thrown. For more information, see \fI\%Configure Access to ACM Private CA\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-certificate\-authority
+\-\-certificate\-authority\-configuration <value>
+[\-\-revocation\-configuration <value>]
+\-\-certificate\-authority\-type <value>
+[\-\-idempotency\-token <value>]
+[\-\-key\-storage\-security\-standard <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-certificate\-authority\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Name and bit size of the private key algorithm, the name of the signing algorithm, and X.500 certificate subject information.
+.sp
+KeyAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of the public key algorithm and size, in bits, of the key pair that your CA creates when it issues a certificate. When you create a subordinate CA, you must use a key algorithm supported by the parent CA.
+.UNINDENT
+.UNINDENT
+.sp
+SigningAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the algorithm your private CA uses to sign certificate requests.
+.sp
+This parameter should not be confused with the \fBSigningAlgorithm\fP parameter used to sign certificates when they are issued.
+.UNINDENT
+.UNINDENT
+.sp
+Subject \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Structure that contains X.500 distinguished name information for your private CA.
+.sp
+Country \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Two\-digit code that specifies the country in which the certificate subject located.
+.UNINDENT
+.UNINDENT
+.sp
+Organization \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Legal name of the organization with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationalUnit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A subdivision or unit of the organization (such as sales or finance) with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+DistinguishedNameQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Disambiguating information for the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+State in which the subject of the certificate is located.
+.UNINDENT
+.UNINDENT
+.sp
+CommonName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For CA and end\-entity certificates in a private PKI, the common name (CN) can be any string within the length limit.
+.sp
+Note: In publicly trusted certificates, the common name must be a fully qualified domain name (FQDN) associated with the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+SerialNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The certificate serial number.
+.UNINDENT
+.UNINDENT
+.sp
+Locality \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The locality (such as a city or town) in which the certificate subject is located.
+.UNINDENT
+.UNINDENT
+.sp
+Title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A title such as Mr. or Ms., which is pre\-pended to the name to refer formally to the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+Surname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Family name. In the US and the UK, for example, the surname of an individual is ordered last. In Asian cultures the surname is typically ordered first.
+.UNINDENT
+.UNINDENT
+.sp
+GivenName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First name.
+.UNINDENT
+.UNINDENT
+.sp
+Initials \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Concatenation that typically contains the first letter of the \fBGivenName\fP , the first letter of the middle name if one exists, and the first letter of the \fBSurname\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Pseudonym \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a shortened version of a longer \fBGivenName\fP . For example, Jonathan is often shortened to John. Elizabeth is often shortened to Beth, Liz, or Eliza.
+.UNINDENT
+.UNINDENT
+.sp
+GenerationQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a qualifier appended to the name of an individual. Examples include Jr. for junior, Sr. for senior, and III for third.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CsrExtensions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies information to be added to the extension section of the certificate signing request (CSR).
+.sp
+KeyUsage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the purpose of the certificate and of the key contained in the certificate.
+.sp
+DigitalSignature \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used for digital signing.
+.UNINDENT
+.UNINDENT
+.sp
+NonRepudiation \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used for non\-repudiation.
+.UNINDENT
+.UNINDENT
+.sp
+KeyEncipherment \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to encipher data.
+.UNINDENT
+.UNINDENT
+.sp
+DataEncipherment \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to decipher data.
+.UNINDENT
+.UNINDENT
+.sp
+KeyAgreement \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used in a key\-agreement protocol.
+.UNINDENT
+.UNINDENT
+.sp
+KeyCertSign \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to sign certificates.
+.UNINDENT
+.UNINDENT
+.sp
+CRLSign \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used to sign CRLs.
+.UNINDENT
+.UNINDENT
+.sp
+EncipherOnly \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used only to encipher data.
+.UNINDENT
+.UNINDENT
+.sp
+DecipherOnly \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Key can be used only to decipher data.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SubjectInformationAccess \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+For CA certificates, provides a path to additional information pertaining to the CA, such as revocation and policy. For more information, see \fI\%Subject Information Access\fP in RFC 5280.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides access information used by the \fBauthorityInfoAccess\fP and \fBsubjectInfoAccess\fP extensions described in \fI\%RFC 5280\fP .
+.sp
+AccessMethod \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The type and format of \fBAccessDescription\fP information.
+.sp
+CustomObjectIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An object identifier (OID) specifying the \fBAccessMethod\fP . The OID must satisfy the regular expression shown below. For more information, see NIST\(aqs definition of \fI\%Object Identifier (OID)\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AccessMethodType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the \fBAccessMethod\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AccessLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location of \fBAccessDescription\fP information.
+.sp
+OtherName \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP using an \fBOtherName\fP object.
+.sp
+TypeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an OID.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an OID value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Rfc822Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an \fI\%RFC 822\fP email address.
+.UNINDENT
+.UNINDENT
+.sp
+DnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as a DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+DirectoryName \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the certificate subject. The \fBSubject\fP field in the certificate identifies the entity that owns or controls the public key in the certificate. The entity can be a user, computer, device, or service. The \fBSubject\fP must contain an X.500 distinguished name (DN). A DN is a sequence of relative distinguished names (RDNs). The RDNs are separated by commas in the certificate.
+.sp
+Country \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Two\-digit code that specifies the country in which the certificate subject located.
+.UNINDENT
+.UNINDENT
+.sp
+Organization \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Legal name of the organization with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+OrganizationalUnit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A subdivision or unit of the organization (such as sales or finance) with which the certificate subject is affiliated.
+.UNINDENT
+.UNINDENT
+.sp
+DistinguishedNameQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Disambiguating information for the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+State in which the subject of the certificate is located.
+.UNINDENT
+.UNINDENT
+.sp
+CommonName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For CA and end\-entity certificates in a private PKI, the common name (CN) can be any string within the length limit.
+.sp
+Note: In publicly trusted certificates, the common name must be a fully qualified domain name (FQDN) associated with the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+SerialNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The certificate serial number.
+.UNINDENT
+.UNINDENT
+.sp
+Locality \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The locality (such as a city or town) in which the certificate subject is located.
+.UNINDENT
+.UNINDENT
+.sp
+Title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A title such as Mr. or Ms., which is pre\-pended to the name to refer formally to the certificate subject.
+.UNINDENT
+.UNINDENT
+.sp
+Surname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Family name. In the US and the UK, for example, the surname of an individual is ordered last. In Asian cultures the surname is typically ordered first.
+.UNINDENT
+.UNINDENT
+.sp
+GivenName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+First name.
+.UNINDENT
+.UNINDENT
+.sp
+Initials \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Concatenation that typically contains the first letter of the \fBGivenName\fP , the first letter of the middle name if one exists, and the first letter of the \fBSurname\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Pseudonym \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a shortened version of a longer \fBGivenName\fP . For example, Jonathan is often shortened to John. Elizabeth is often shortened to Beth, Liz, or Eliza.
+.UNINDENT
+.UNINDENT
+.sp
+GenerationQualifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Typically a qualifier appended to the name of an individual. Examples include Jr. for junior, Sr. for senior, and III for third.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EdiPartyName \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an \fBEdiPartyName\fP object.
+.sp
+PartyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the party name.
+.UNINDENT
+.UNINDENT
+.sp
+NameAssigner \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name assigner.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UniformResourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as a URI.
+.UNINDENT
+.UNINDENT
+.sp
+IpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an IPv4 or IPv6 address.
+.UNINDENT
+.UNINDENT
+.sp
+RegisteredId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents \fBGeneralName\fP as an object identifier (OID).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "KeyAlgorithm": "RSA_2048"|"RSA_4096"|"EC_prime256v1"|"EC_secp384r1",
+  "SigningAlgorithm": "SHA256WITHECDSA"|"SHA384WITHECDSA"|"SHA512WITHECDSA"|"SHA256WITHRSA"|"SHA384WITHRSA"|"SHA512WITHRSA",
+  "Subject": {
+    "Country": "string",
+    "Organization": "string",
+    "OrganizationalUnit": "string",
+    "DistinguishedNameQualifier": "string",
+    "State": "string",
+    "CommonName": "string",
+    "SerialNumber": "string",
+    "Locality": "string",
+    "Title": "string",
+    "Surname": "string",
+    "GivenName": "string",
+    "Initials": "string",
+    "Pseudonym": "string",
+    "GenerationQualifier": "string"
+  },
+  "CsrExtensions": {
+    "KeyUsage": {
+      "DigitalSignature": true|false,
+      "NonRepudiation": true|false,
+      "KeyEncipherment": true|false,
+      "DataEncipherment": true|false,
+      "KeyAgreement": true|false,
+      "KeyCertSign": true|false,
+      "CRLSign": true|false,
+      "EncipherOnly": true|false,
+      "DecipherOnly": true|false
+    },
+    "SubjectInformationAccess": [
+      {
+        "AccessMethod": {
+          "CustomObjectIdentifier": "string",
+          "AccessMethodType": "CA_REPOSITORY"|"RESOURCE_PKI_MANIFEST"|"RESOURCE_PKI_NOTIFY"
+        },
+        "AccessLocation": {
+          "OtherName": {
+            "TypeId": "string",
+            "Value": "string"
+          },
+          "Rfc822Name": "string",
+          "DnsName": "string",
+          "DirectoryName": {
+            "Country": "string",
+            "Organization": "string",
+            "OrganizationalUnit": "string",
+            "DistinguishedNameQualifier": "string",
+            "State": "string",
+            "CommonName": "string",
+            "SerialNumber": "string",
+            "Locality": "string",
+            "Title": "string",
+            "Surname": "string",
+            "GivenName": "string",
+            "Initials": "string",
+            "Pseudonym": "string",
+            "GenerationQualifier": "string"
+          },
+          "EdiPartyName": {
+            "PartyName": "string",
+            "NameAssigner": "string"
+          },
+          "UniformResourceIdentifier": "string",
+          "IpAddress": "string",
+          "RegisteredId": "string"
+        }
+      }
+      ...
+    ]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-revocation\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains a Boolean value that you can use to enable a certification revocation list (CRL) for the CA, the name of the S3 bucket to which ACM Private CA will write the CRL, and an optional CNAME alias that you can use to hide the name of your bucket in the \fBCRL Distribution Points\fP extension of your CA certificate. For more information, see the \fI\%CrlConfiguration\fP structure.
+.sp
+CrlConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration of the certificate revocation list (CRL), if any, maintained by your private CA.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that specifies whether certificate revocation lists (CRLs) are enabled. You can use this value to enable certificate revocation for a new CA when you call the \fI\%CreateCertificateAuthority\fP action or for an existing CA when you call the \fI\%UpdateCertificateAuthority\fP action.
+.UNINDENT
+.UNINDENT
+.sp
+ExpirationInDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Validity period of the CRL in days.
+.UNINDENT
+.UNINDENT
+.sp
+CustomCname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name inserted into the certificate \fBCRL Distribution Points\fP extension that enables the use of an alias for the CRL distribution point. Use this value if you don\(aqt want the name of your S3 bucket to be public.
+.UNINDENT
+.UNINDENT
+.sp
+S3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket that contains the CRL. If you do not provide a value for the \fBCustomCname\fP argument, the name of your S3 bucket is placed into the \fBCRL Distribution Points\fP extension of the issued certificate. You can change the name of your bucket by calling the \fI\%UpdateCertificateAuthority\fP action. You must specify a \fI\%bucket policy\fP that allows ACM Private CA to write the CRL to your bucket.
+.UNINDENT
+.UNINDENT
+.sp
+S3ObjectAcl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines whether the CRL will be publicly readable or privately held in the CRL Amazon S3 bucket. If you choose PUBLIC_READ, the CRL will be accessible over the public internet. If you choose BUCKET_OWNER_FULL_CONTROL, only the owner of the CRL S3 bucket can access the CRL, and your PKI clients may need an alternative method of access.
+.sp
+If no value is specified, the default is \fBPUBLIC_READ\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fINote:\fP This default can cause CA creation to fail in some circumstances. If you have have enabled the Block Public Access (BPA) feature in your S3 account, then you must specify the value of this parameter as \fBBUCKET_OWNER_FULL_CONTROL\fP , and not doing so results in an error. If you have disabled BPA in S3, then you can specify either \fBBUCKET_OWNER_FULL_CONTROL\fP or \fBPUBLIC_READ\fP as the value.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Blocking public access to the S3 bucket\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CrlConfiguration={Enabled=boolean,ExpirationInDays=integer,CustomCname=string,S3BucketName=string,S3ObjectAcl=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CrlConfiguration": {
+    "Enabled": true|false,
+    "ExpirationInDays": integer,
+    "CustomCname": "string",
+    "S3BucketName": "string",
+    "S3ObjectAcl": "PUBLIC_READ"|"BUCKET_OWNER_FULL_CONTROL"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-authority\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the certificate authority.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBROOT\fP
+.IP \(bu 2
+\fBSUBORDINATE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-idempotency\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Custom string that can be used to distinguish between calls to the \fBCreateCertificateAuthority\fP action. Idempotency tokens for \fBCreateCertificateAuthority\fP time out after five minutes. Therefore, if you call \fBCreateCertificateAuthority\fP multiple times with the same idempotency token within five minutes, ACM Private CA recognizes that you are requesting only certificate authority and will issue only one. If you change the idempotency token for each call, PCA recognizes that you are requesting multiple certificate authorities.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-storage\-security\-standard\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a cryptographic key management compliance standard used for handling CA keys.
+.sp
+Default: FIPS_140_2_LEVEL_3_OR_HIGHER
+.sp
+Note: \fBFIPS_140_2_LEVEL_3_OR_HIGHER\fP is not supported in Region ap\-northeast\-3. When creating a CA in the ap\-northeast\-3, you must provide \fBFIPS_140_2_LEVEL_2_OR_HIGHER\fP as the argument for \fBKeyStorageSecurityStandard\fP . Failure to do this results in an \fBInvalidArgsException\fP with the message, "A certificate authority cannot be created in this region with the specified security standard."
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBFIPS_140_2_LEVEL_2_OR_HIGHER\fP
+.IP \(bu 2
+\fBFIPS_140_2_LEVEL_3_OR_HIGHER\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Key\-value pairs that will be attached to the new private CA. You can associate up to 50 tags with a private CA. For information using tags with IAM to manage permissions, see \fI\%Controlling Access Using IAM Tags\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Tags are labels that you can use to identify and organize your private CAs. Each tag consists of a key and an optional value. You can associate up to 50 tags with a private CA. To add one or more tags to a private CA, call the \fI\%TagCertificateAuthority\fP action. To remove a tag, call the \fI\%UntagCertificateAuthority\fP action.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Key (name) of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a private certificate authority\fP
+.sp
+The following \fBcreate\-certificate\-authority\fP command creates a private certificate authority in your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm\-pca create\-certificate\-authority \-\-certificate\-authority\-configuration file://C:\eca_config.txt \-\-revocation\-configuration file://C:\erevoke_config.txt \-\-certificate\-authority\-type "SUBORDINATE" \-\-idempotency\-token 98256344
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+CertificateAuthorityArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If successful, the Amazon Resource Name (ARN) of the certificate authority (CA). This is of the form:
+.INDENT 0.0
+.INDENT 3.5
+
+.nf
+\(ga\(ga
+.fi
+arn:aws:acm\-pca:\fIregion\fP :\fIaccount\fP :certificate\-authority/\fI12345678\-1234\-1234\-1234\-123456789012\fP \(ga\(ga .
+.IP "System Message: WARNING/2 (<string>:, line 1008)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

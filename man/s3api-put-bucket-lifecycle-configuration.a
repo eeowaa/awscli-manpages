@@ -1,0 +1,505 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-PUT-BUCKET-LIFECYCLE-CONFIGURATION" "a" "" ""
+.SH NAME
+s3api-put-bucket-lifecycle-configuration \- Creates a new lifecycle configuration for the bucket or replaces an existing lifecycle configuration
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new lifecycle configuration for the bucket or replaces an existing lifecycle configuration. For information about lifecycle configuration, see \fI\%Managing your storage lifecycle\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Bucket lifecycle configuration now supports specifying a lifecycle rule using an object key name prefix, one or more object tags, or a combination of both. Accordingly, this section describes the latest API. The previous version of the API supported filtering based only on an object key name prefix, which is supported for backward compatibility. For the related API description, see \fI\%PutBucketLifecycle\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fBRules\fP
+.UNINDENT
+.UNINDENT
+.sp
+You specify the lifecycle configuration in your request body. The lifecycle configuration is specified as XML consisting of one or more rules. Each rule consists of the following:
+.INDENT 0.0
+.IP \(bu 2
+Filter identifying a subset of objects to which the rule applies. The filter can be based on a key name prefix, object tags, or a combination of both.
+.IP \(bu 2
+Status whether the rule is in effect.
+.IP \(bu 2
+One or more lifecycle transition and expiration actions that you want Amazon S3 to perform on the objects identified by the filter. If the state of your bucket is versioning\-enabled or versioning\-suspended, you can have many versions of the same object (one current version and zero or more noncurrent versions). Amazon S3 provides predefined actions that you can specify for current and noncurrent object versions.
+.UNINDENT
+.sp
+For more information, see \fI\%Object Lifecycle Management\fP and \fI\%Lifecycle Configuration Elements\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBPermissions\fP
+.UNINDENT
+.UNINDENT
+.sp
+By default, all Amazon S3 resources are private, including buckets, objects, and related subresources (for example, lifecycle configuration and website configuration). Only the resource owner (that is, the AWS account that created it) can access the resource. The resource owner can optionally grant access permissions to others by writing an access policy. For this operation, a user must get the s3:PutLifecycleConfiguration permission.
+.sp
+You can also explicitly deny permissions. Explicit deny also supersedes any other permissions. If you want to block users or accounts from removing or deleting objects from your bucket, you must deny them permissions for the following actions:
+.INDENT 0.0
+.IP \(bu 2
+s3:DeleteObject
+.IP \(bu 2
+s3:DeleteObjectVersion
+.IP \(bu 2
+s3:PutLifecycleConfiguration
+.UNINDENT
+.sp
+For more information about permissions, see \fI\%Managing Access Permissions to Your Amazon S3 Resources\fP .
+.sp
+The following are related to \fBPutBucketLifecycleConfiguration\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%Examples of Lifecycle Configuration\fP
+.IP \(bu 2
+\fI\%GetBucketLifecycleConfiguration\fP
+.IP \(bu 2
+\fI\%DeleteBucketLifecycle\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-bucket\-lifecycle\-configuration
+\-\-bucket <value>
+[\-\-lifecycle\-configuration <value>]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket for which to set the configuration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-lifecycle\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for lifecycle rules. You can add as many as 1,000 rules.
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A lifecycle rule for individual objects in an Amazon S3 bucket.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A lifecycle rule for individual objects in an Amazon S3 bucket.
+.sp
+Expiration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the expiration for the lifecycle of the object in the form of date, days and, whether the object has a delete marker.
+.sp
+Date \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Indicates at what date the object is to be moved or deleted. Should be in GMT ISO 8601 Format.
+.UNINDENT
+.UNINDENT
+.sp
+Days \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the lifetime, in days, of the objects that are subject to the rule. The value must be a non\-zero positive integer.
+.UNINDENT
+.UNINDENT
+.sp
+ExpiredObjectDeleteMarker \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether Amazon S3 will remove a delete marker with no noncurrent versions. If set to true, the delete marker will be expired; if set to false the policy takes no action. This cannot be specified with Days or Date in a Lifecycle Expiration Policy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier for the rule. The value cannot be longer than 255 characters.
+.UNINDENT
+.UNINDENT
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Prefix identifying one or more objects to which the rule applies. This is no longer used; use \fBFilter\fP instead.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see \fI\%XML related object key constraints\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Filter \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBFilter\fP is used to identify objects that a Lifecycle Rule applies to. A \fBFilter\fP must have exactly one of \fBPrefix\fP , \fBTag\fP , or \fBAnd\fP specified. \fBFilter\fP is required if the \fBLifecycleRule\fP does not containt a \fBPrefix\fP element.
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Prefix identifying one or more objects to which the rule applies.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see \fI\%XML related object key constraints\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tag \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+This tag must exist in the object\(aqs tag set in order for the rule to apply.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the object key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+And \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+This is used in a Lifecycle Rule Filter to apply a logical AND to two or more predicates. The Lifecycle Rule will apply to any object matching all of the predicates configured inside the And operator.
+.sp
+Prefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Prefix identifying one or more objects to which the rule applies.
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+All of these tags must exist in the object\(aqs tag set in order for the rule to apply.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A container of a key value name pair.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the object key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If \(aqEnabled\(aq, the rule is currently being applied. If \(aqDisabled\(aq, the rule is not currently being applied.
+.UNINDENT
+.UNINDENT
+.sp
+Transitions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies when an Amazon S3 object transitions to a specified storage class.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies when an object transitions to a specified storage class. For more information about Amazon S3 lifecycle configuration rules, see \fI\%Transitioning Objects Using Amazon S3 Lifecycle\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Date \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Indicates when objects are transitioned to the specified storage class. The date value must be in ISO 8601 format. The time is always midnight UTC.
+.UNINDENT
+.UNINDENT
+.sp
+Days \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the number of days after creation when objects are transitioned to the specified storage class. The value must be a positive integer.
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The storage class to which you want the object to transition.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NoncurrentVersionTransitions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the transition rule for the lifecycle rule that describes when noncurrent objects transition to a specific storage class. If your bucket is versioning\-enabled (or versioning is suspended), you can set this action to request that Amazon S3 transition noncurrent object versions to a specific storage class at a set period in the object\(aqs lifetime.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for the transition rule that describes when noncurrent objects transition to the \fBSTANDARD_IA\fP , \fBONEZONE_IA\fP , \fBINTELLIGENT_TIERING\fP , \fBGLACIER\fP , or \fBDEEP_ARCHIVE\fP storage class. If your bucket is versioning\-enabled (or versioning is suspended), you can set this action to request that Amazon S3 transition noncurrent object versions to the \fBSTANDARD_IA\fP , \fBONEZONE_IA\fP , \fBINTELLIGENT_TIERING\fP , \fBGLACIER\fP , or \fBDEEP_ARCHIVE\fP storage class at a specific period in the object\(aqs lifetime.
+.sp
+NoncurrentDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days an object is noncurrent before Amazon S3 can perform the associated action. For information about the noncurrent days calculations, see \fI\%How Amazon S3 Calculates How Long an Object Has Been Noncurrent\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The class of storage used to store the object.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NoncurrentVersionExpiration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies when noncurrent object versions expire. Upon expiration, Amazon S3 permanently deletes the noncurrent object versions. You set this lifecycle configuration action on a bucket that has versioning enabled (or suspended) to request that Amazon S3 delete noncurrent object versions at a specific period in the object\(aqs lifetime.
+.sp
+NoncurrentDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days an object is noncurrent before Amazon S3 can perform the associated action. For information about the noncurrent days calculations, see \fI\%How Amazon S3 Calculates When an Object Became Noncurrent\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AbortIncompleteMultipartUpload \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the days since the initiation of an incomplete multipart upload that Amazon S3 will wait before permanently removing all parts of the upload. For more information, see \fI\%Aborting Incomplete Multipart Uploads Using a Bucket Lifecycle Policy\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+DaysAfterInitiation \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of days after which Amazon S3 aborts an incomplete multipart upload.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Rules": [
+    {
+      "Expiration": {
+        "Date": timestamp,
+        "Days": integer,
+        "ExpiredObjectDeleteMarker": true|false
+      },
+      "ID": "string",
+      "Prefix": "string",
+      "Filter": {
+        "Prefix": "string",
+        "Tag": {
+          "Key": "string",
+          "Value": "string"
+        },
+        "And": {
+          "Prefix": "string",
+          "Tags": [
+            {
+              "Key": "string",
+              "Value": "string"
+            }
+            ...
+          ]
+        }
+      },
+      "Status": "Enabled"|"Disabled",
+      "Transitions": [
+        {
+          "Date": timestamp,
+          "Days": integer,
+          "StorageClass": "GLACIER"|"STANDARD_IA"|"ONEZONE_IA"|"INTELLIGENT_TIERING"|"DEEP_ARCHIVE"
+        }
+        ...
+      ],
+      "NoncurrentVersionTransitions": [
+        {
+          "NoncurrentDays": integer,
+          "StorageClass": "GLACIER"|"STANDARD_IA"|"ONEZONE_IA"|"INTELLIGENT_TIERING"|"DEEP_ARCHIVE"
+        }
+        ...
+      ],
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": integer
+      },
+      "AbortIncompleteMultipartUpload": {
+        "DaysAfterInitiation": integer
+      }
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command applies a lifecycle configuration to a bucket named \fBmy\-bucket\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api put\-bucket\-lifecycle\-configuration \-\-bucket my\-bucket \-\-lifecycle\-configuration  file://lifecycle.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The file \fBlifecycle.json\fP is a JSON document in the current folder that specifies two rules:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Rules": [
+        {
+            "ID": "Move rotated logs to Glacier",
+            "Prefix": "rotated/",
+            "Status": "Enabled",
+            "Transitions": [
+                {
+                    "Date": "2015\-11\-10T00:00:00.000Z",
+                    "StorageClass": "GLACIER"
+                }
+            ]
+        },
+        {
+            "Status": "Enabled",
+            "Prefix": "",
+            "NoncurrentVersionTransitions": [
+                {
+                    "NoncurrentDays": 2,
+                    "StorageClass": "GLACIER"
+                }
+            ],
+            "ID": "Move old versions to Glacier"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The first rule moves files with the prefix \fBrotated\fP to Glacier on the specified date. The second rule moves old object versions to Glacier when they are no longer current. For information on acceptable timestamp formats, see \fI\%Specifying Parameter Values\fP in the \fIAWS CLI User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

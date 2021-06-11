@@ -1,0 +1,414 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-ACCEPT-VPC-PEERING-CONNECTION" "a" "" ""
+.SH NAME
+ec2-accept-vpc-peering-connection \- Accept a VPC peering connection request
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Accept a VPC peering connection request. To accept a request, the VPC peering connection must be in the \fBpending\-acceptance\fP state, and you must be the owner of the peer VPC. Use  DescribeVpcPeeringConnections to view your outstanding VPC peering connection requests.
+.sp
+For an inter\-Region VPC peering connection request, you must accept the VPC peering connection in the Region of the accepter VPC.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  accept\-vpc\-peering\-connection
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-vpc\-peering\-connection\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-peering\-connection\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC peering connection. You must specify this parameter in the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo accept a VPC peering connection\fP
+.sp
+This example accepts the specified VPC peering connection request.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 accept\-vpc\-peering\-connection \-\-vpc\-peering\-connection\-id pcx\-1a2b3c4d
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "VpcPeeringConnection": {
+    "Status": {
+      "Message": "Provisioning",
+      "Code": "provisioning"
+    },
+    "Tags": [],
+    "AccepterVpcInfo": {
+      "OwnerId": "444455556666",
+      "VpcId": "vpc\-44455566",
+      "CidrBlock": "10.0.1.0/28"
+    },
+    "VpcPeeringConnectionId": "pcx\-1a2b3c4d",
+    "RequesterVpcInfo": {
+      "OwnerId": "444455556666",
+      "VpcId": "vpc\-111abc45",
+      "CidrBlock": "10.0.0.0/28"
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+VpcPeeringConnection \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the VPC peering connection.
+.sp
+AccepterVpcInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the accepter VPC. CIDR block information is only returned when describing an active VPC peering connection.
+.sp
+CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 CIDR block for the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6CidrBlockSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 CIDR block for the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 CIDR block.
+.sp
+Ipv6CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 CIDR block.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CidrBlockSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the IPv4 CIDR blocks for the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv4 CIDR block.
+.sp
+CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 CIDR block.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID of the VPC owner.
+.UNINDENT
+.UNINDENT
+.sp
+PeeringOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the VPC peering connection options for the accepter or requester VPC.
+.sp
+AllowDnsResolutionFromRemoteVpc \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a local VPC can resolve public DNS hostnames to private IP addresses when queried from instances in a peer VPC.
+.UNINDENT
+.UNINDENT
+.sp
+AllowEgressFromLocalClassicLinkToRemoteVpc \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a local ClassicLink connection can communicate with the peer VPC over the VPC peering connection.
+.UNINDENT
+.UNINDENT
+.sp
+AllowEgressFromLocalVpcToRemoteClassicLink \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a local VPC can communicate with a ClassicLink connection in the peer VPC over the VPC peering connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Region in which the VPC is located.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ExpirationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that an unaccepted VPC peering connection will expire.
+.UNINDENT
+.UNINDENT
+.sp
+RequesterVpcInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the requester VPC. CIDR block information is only returned when describing an active VPC peering connection.
+.sp
+CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 CIDR block for the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6CidrBlockSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 CIDR block for the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 CIDR block.
+.sp
+Ipv6CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 CIDR block.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CidrBlockSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the IPv4 CIDR blocks for the VPC.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv4 CIDR block.
+.sp
+CidrBlock \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 CIDR block.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID of the VPC owner.
+.UNINDENT
+.UNINDENT
+.sp
+PeeringOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the VPC peering connection options for the accepter or requester VPC.
+.sp
+AllowDnsResolutionFromRemoteVpc \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a local VPC can resolve public DNS hostnames to private IP addresses when queried from instances in a peer VPC.
+.UNINDENT
+.UNINDENT
+.sp
+AllowEgressFromLocalClassicLinkToRemoteVpc \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a local ClassicLink connection can communicate with the peer VPC over the VPC peering connection.
+.UNINDENT
+.UNINDENT
+.sp
+AllowEgressFromLocalVpcToRemoteClassicLink \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a local VPC can communicate with a ClassicLink connection in the peer VPC over the VPC peering connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Region in which the VPC is located.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The status of the VPC peering connection.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the VPC peering connection.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message that provides more information about the status, if applicable.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VpcPeeringConnectionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC peering connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

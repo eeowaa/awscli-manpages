@@ -1,0 +1,358 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SES-SEND-BOUNCE" "a" "" ""
+.SH NAME
+ses-send-bounce \- Generates and sends a bounce message to the sender of an email you received through Amazon SES
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Generates and sends a bounce message to the sender of an email you received through Amazon SES. You can only use this API on an email up to 24 hours after you receive it.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You cannot use this API to send generic bounces for mail that was not received by Amazon SES.
+.UNINDENT
+.UNINDENT
+.sp
+For information about receiving email through Amazon SES, see the \fI\%Amazon SES Developer Guide\fP .
+.sp
+You can execute this operation no more than once per second.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  send\-bounce
+\-\-original\-message\-id <value>
+\-\-bounce\-sender <value>
+[\-\-explanation <value>]
+[\-\-message\-dsn <value>]
+\-\-bounced\-recipient\-info\-list <value>
+[\-\-bounce\-sender\-arn <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-original\-message\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The message ID of the message to be bounced.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bounce\-sender\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The address to use in the "From" header of the bounce message. This must be an identity that you have verified with Amazon SES.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-explanation\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Human\-readable text for the bounce message to explain the failure. If not specified, the text will be auto\-generated based on the bounced recipient information.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-dsn\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Message\-related DSN fields. If not specified, Amazon SES will choose the values.
+.sp
+ReportingMta \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reporting MTA that attempted to deliver the message, formatted as specified in \fI\%RFC 3464\fP (\fBmta\-name\-type; mta\-name\fP ). The default value is \fBdns; inbound\-smtp.[region].amazonaws.com\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ArrivalDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+When the message was received by the reporting mail transfer agent (MTA), in \fI\%RFC 822\fP date\-time format.
+.UNINDENT
+.UNINDENT
+.sp
+ExtensionFields \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Additional X\-headers to include in the DSN.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Additional X\-headers to include in the Delivery Status Notification (DSN) when an email that Amazon SES receives on your behalf bounces.
+.sp
+For information about receiving email through Amazon SES, see the \fI\%Amazon SES Developer Guide\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the header to add. Must be between 1 and 50 characters, inclusive, and consist of alphanumeric (a\-z, A\-Z, 0\-9) characters and dashes only.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the header to add. Must be less than 2048 characters, and must not contain newline characters ("r" or "n").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ReportingMta=string,ArrivalDate=timestamp,ExtensionFields=[{Name=string,Value=string},{Name=string,Value=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ReportingMta": "string",
+  "ArrivalDate": timestamp,
+  "ExtensionFields": [
+    {
+      "Name": "string",
+      "Value": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bounced\-recipient\-info\-list\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of recipients of the bounced message, including the information required to create the Delivery Status Notifications (DSNs) for the recipients. You must specify at least one \fBBouncedRecipientInfo\fP in the list.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Recipient\-related information to include in the Delivery Status Notification (DSN) when an email that Amazon SES receives on your behalf bounces.
+.sp
+For information about receiving email through Amazon SES, see the \fI\%Amazon SES Developer Guide\fP .
+.sp
+Recipient \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address of the recipient of the bounced email.
+.UNINDENT
+.UNINDENT
+.sp
+RecipientArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is used only for sending authorization. It is the ARN of the identity that is associated with the sending authorization policy that permits you to receive email for the recipient of the bounced email. For more information about sending authorization, see the \fI\%Amazon SES Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BounceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the bounce. You must provide either this parameter or \fBRecipientDsnFields\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RecipientDsnFields \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Recipient\-related DSN fields, most of which would normally be filled in automatically when provided with a \fBBounceType\fP . You must provide either this parameter or \fBBounceType\fP .
+.sp
+FinalRecipient \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address that the message was ultimately delivered to. This corresponds to the \fBFinal\-Recipient\fP in the DSN. If not specified, \fBFinalRecipient\fP will be set to the \fBRecipient\fP specified in the \fBBouncedRecipientInfo\fP structure. Either \fBFinalRecipient\fP or the recipient in \fBBouncedRecipientInfo\fP must be a recipient of the original bounced message.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Do not prepend the \fBFinalRecipient\fP email address with \fBrfc 822;\fP , as described in \fI\%RFC 3798\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action performed by the reporting mail transfer agent (MTA) as a result of its attempt to deliver the message to the recipient address. This is required by \fI\%RFC 3464\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RemoteMta \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The MTA to which the remote MTA attempted to deliver the message, formatted as specified in \fI\%RFC 3464\fP (\fBmta\-name\-type; mta\-name\fP ). This parameter typically applies only to propagating synchronous bounces.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status code that indicates what went wrong. This is required by \fI\%RFC 3464\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DiagnosticCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An extended explanation of what went wrong; this is usually an SMTP response. See \fI\%RFC 3463\fP for the correct formatting of this parameter.
+.UNINDENT
+.UNINDENT
+.sp
+LastAttemptDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the final delivery attempt was made, in \fI\%RFC 822\fP date\-time format.
+.UNINDENT
+.UNINDENT
+.sp
+ExtensionFields \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Additional X\-headers to include in the DSN.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Additional X\-headers to include in the Delivery Status Notification (DSN) when an email that Amazon SES receives on your behalf bounces.
+.sp
+For information about receiving email through Amazon SES, see the \fI\%Amazon SES Developer Guide\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the header to add. Must be between 1 and 50 characters, inclusive, and consist of alphanumeric (a\-z, A\-Z, 0\-9) characters and dashes only.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the header to add. Must be less than 2048 characters, and must not contain newline characters ("r" or "n").
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Recipient": "string",
+    "RecipientArn": "string",
+    "BounceType": "DoesNotExist"|"MessageTooLarge"|"ExceededQuota"|"ContentRejected"|"Undefined"|"TemporaryFailure",
+    "RecipientDsnFields": {
+      "FinalRecipient": "string",
+      "Action": "failed"|"delayed"|"delivered"|"relayed"|"expanded",
+      "RemoteMta": "string",
+      "Status": "string",
+      "DiagnosticCode": "string",
+      "LastAttemptDate": timestamp,
+      "ExtensionFields": [
+        {
+          "Name": "string",
+          "Value": "string"
+        }
+        ...
+      ]
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bounce\-sender\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is used only for sending authorization. It is the ARN of the identity that is associated with the sending authorization policy that permits you to use the address in the "From" header of the bounce. For more information about sending authorization, see the \fI\%Amazon SES Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+MessageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message ID of the bounce message.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

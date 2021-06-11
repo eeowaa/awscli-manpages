@@ -1,0 +1,1118 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DEPLOY-GET-DEPLOYMENT" "a" "" ""
+.SH NAME
+deploy-get-deployment \- Gets information about a deployment
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets information about a deployment.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBcontent\fP property of the \fBappSpecContent\fP object in the returned revision is always null. Use \fBGetApplicationRevision\fP and the \fBsha256\fP property of the returned \fBappSpecContent\fP object to get the content of the deployment’s AppSpec file.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-deployment
+\-\-deployment\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-deployment\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID of a deployment associated with the IAM user or AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get information about a deployment\fP
+.sp
+The following \fBget\-deployment\fP example displays information about a deployment that is associated with the user\(aqs AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws deploy get\-deployment \-\-deployment\-id d\-A1B2C3123
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "deploymentInfo": {
+        "applicationName": "WordPress_App",
+        "status": "Succeeded",
+        "deploymentOverview": {
+            "Failed": 0,
+            "InProgress": 0,
+            "Skipped": 0,
+            "Succeeded": 1,
+            "Pending": 0
+        },
+        "deploymentConfigName": "CodeDeployDefault.OneAtATime",
+        "creator": "user",
+        "description": "My WordPress app deployment",
+        "revision": {
+            "revisionType": "S3",
+            "s3Location":  {
+            "bundleType": "zip",
+            "eTag": "\e"dd56cfdEXAMPLE8e768f9d77fEXAMPLE\e"",
+            "bucket": "CodeDeployDemoBucket",
+            "key": "WordPressApp.zip"
+            }
+        },
+        "deploymentId": "d\-A1B2C3123",
+        "deploymentGroupName": "WordPress_DG",
+        "createTime": 1409764576.589,
+        "completeTime": 1409764596.101,
+        "ignoreApplicationStopFailures": false
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+deploymentInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the deployment.
+.sp
+applicationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The application name.
+.UNINDENT
+.UNINDENT
+.sp
+deploymentGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment group name.
+.UNINDENT
+.UNINDENT
+.sp
+deploymentConfigName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment configuration name.
+.UNINDENT
+.UNINDENT
+.sp
+deploymentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID of a deployment.
+.UNINDENT
+.UNINDENT
+.sp
+previousRevision \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the application revision that was deployed to the deployment group before the most recent successful deployment.
+.sp
+revisionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of application revision:
+.INDENT 0.0
+.IP \(bu 2
+S3: An application revision stored in Amazon S3.
+.IP \(bu 2
+GitHub: An application revision stored in GitHub (EC2/On\-premises deployments only).
+.IP \(bu 2
+String: A YAML\-formatted or JSON\-formatted string (AWS Lambda deployments only).
+.IP \(bu 2
+AppSpecContent: An \fBAppSpecContent\fP object that contains the contents of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML stored as a RawString.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+s3Location \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of a revision stored in Amazon S3.
+.sp
+bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket where the application revision is stored.
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 object that represents the bundled artifacts for the application revision.
+.UNINDENT
+.UNINDENT
+.sp
+bundleType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file type of the application revision. Must be one of the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBtar\fP : A tar archive file.
+.IP \(bu 2
+\fBtgz\fP : A compressed tar archive file.
+.IP \(bu 2
+\fBzip\fP : A zip archive file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A specific version of the Amazon S3 object that represents the bundled artifacts for the application revision.
+.sp
+If the version is not specified, the system uses the most recent version by default.
+.UNINDENT
+.UNINDENT
+.sp
+eTag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ETag of the Amazon S3 object that represents the bundled artifacts for the application revision.
+.sp
+If the ETag is not specified as an input parameter, ETag validation of the object is skipped.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+gitHubLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of application artifacts stored in GitHub.
+.sp
+repository \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The GitHub account and repository pair that stores a reference to the commit that represents the bundled artifacts for the application revision.
+.sp
+Specified as account/repository.
+.UNINDENT
+.UNINDENT
+.sp
+commitId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA1 commit ID of the GitHub commit that represents the bundled artifacts for the application revision.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+string \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of an AWS Lambda deployment revision stored as a RawString.
+.sp
+content \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The YAML\-formatted or JSON\-formatted revision string. It includes information about which Lambda function to update and optional Lambda functions that validate deployment lifecycle events.
+.UNINDENT
+.UNINDENT
+.sp
+sha256 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 hash value of the revision content.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+appSpecContent \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The content of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML and stored as a RawString.
+.sp
+content \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The YAML\-formatted or JSON\-formatted revision string.
+.sp
+For an AWS Lambda deployment, the content includes a Lambda function name, the alias for its original version, and the alias for its replacement version. The deployment shifts traffic from the original version of the Lambda function to the replacement version.
+.sp
+For an Amazon ECS deployment, the content includes the task name, information about the load balancer that serves traffic to the container, and more.
+.sp
+For both types of deployments, the content can specify Lambda functions that run at specified hooks, such as \fBBeforeInstall\fP , during a deployment.
+.UNINDENT
+.UNINDENT
+.sp
+sha256 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 hash value of the revision content.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+revision \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of stored application artifacts and the service from which to retrieve them.
+.sp
+revisionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of application revision:
+.INDENT 0.0
+.IP \(bu 2
+S3: An application revision stored in Amazon S3.
+.IP \(bu 2
+GitHub: An application revision stored in GitHub (EC2/On\-premises deployments only).
+.IP \(bu 2
+String: A YAML\-formatted or JSON\-formatted string (AWS Lambda deployments only).
+.IP \(bu 2
+AppSpecContent: An \fBAppSpecContent\fP object that contains the contents of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML stored as a RawString.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+s3Location \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of a revision stored in Amazon S3.
+.sp
+bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket where the application revision is stored.
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 object that represents the bundled artifacts for the application revision.
+.UNINDENT
+.UNINDENT
+.sp
+bundleType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file type of the application revision. Must be one of the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBtar\fP : A tar archive file.
+.IP \(bu 2
+\fBtgz\fP : A compressed tar archive file.
+.IP \(bu 2
+\fBzip\fP : A zip archive file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A specific version of the Amazon S3 object that represents the bundled artifacts for the application revision.
+.sp
+If the version is not specified, the system uses the most recent version by default.
+.UNINDENT
+.UNINDENT
+.sp
+eTag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ETag of the Amazon S3 object that represents the bundled artifacts for the application revision.
+.sp
+If the ETag is not specified as an input parameter, ETag validation of the object is skipped.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+gitHubLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of application artifacts stored in GitHub.
+.sp
+repository \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The GitHub account and repository pair that stores a reference to the commit that represents the bundled artifacts for the application revision.
+.sp
+Specified as account/repository.
+.UNINDENT
+.UNINDENT
+.sp
+commitId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA1 commit ID of the GitHub commit that represents the bundled artifacts for the application revision.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+string \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location of an AWS Lambda deployment revision stored as a RawString.
+.sp
+content \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The YAML\-formatted or JSON\-formatted revision string. It includes information about which Lambda function to update and optional Lambda functions that validate deployment lifecycle events.
+.UNINDENT
+.UNINDENT
+.sp
+sha256 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 hash value of the revision content.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+appSpecContent \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The content of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML and stored as a RawString.
+.sp
+content \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The YAML\-formatted or JSON\-formatted revision string.
+.sp
+For an AWS Lambda deployment, the content includes a Lambda function name, the alias for its original version, and the alias for its replacement version. The deployment shifts traffic from the original version of the Lambda function to the replacement version.
+.sp
+For an Amazon ECS deployment, the content includes the task name, information about the load balancer that serves traffic to the container, and more.
+.sp
+For both types of deployments, the content can specify Lambda functions that run at specified hooks, such as \fBBeforeInstall\fP , during a deployment.
+.UNINDENT
+.UNINDENT
+.sp
+sha256 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 hash value of the revision content.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the deployment as a whole.
+.UNINDENT
+.UNINDENT
+.sp
+errorInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about any error associated with this deployment.
+.sp
+code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For more information, see \fI\%Error Codes for AWS CodeDeploy\fP in the \fI\%AWS CodeDeploy User Guide\fP .
+.sp
+The error code:
+.INDENT 0.0
+.IP \(bu 2
+APPLICATION_MISSING: The application was missing. This error code is most likely raised if the application is deleted after the deployment is created, but before it is started.
+.IP \(bu 2
+DEPLOYMENT_GROUP_MISSING: The deployment group was missing. This error code is most likely raised if the deployment group is deleted after the deployment is created, but before it is started.
+.IP \(bu 2
+HEALTH_CONSTRAINTS: The deployment failed on too many instances to be successfully deployed within the instance health constraints specified.
+.IP \(bu 2
+HEALTH_CONSTRAINTS_INVALID: The revision cannot be successfully deployed within the instance health constraints specified.
+.IP \(bu 2
+IAM_ROLE_MISSING: The service role cannot be accessed.
+.IP \(bu 2
+IAM_ROLE_PERMISSIONS: The service role does not have the correct permissions.
+.IP \(bu 2
+INTERNAL_ERROR: There was an internal error.
+.IP \(bu 2
+NO_EC2_SUBSCRIPTION: The calling account is not subscribed to Amazon EC2.
+.IP \(bu 2
+NO_INSTANCES: No instances were specified, or no instances can be found.
+.IP \(bu 2
+OVER_MAX_INSTANCES: The maximum number of instances was exceeded.
+.IP \(bu 2
+THROTTLED: The operation was throttled because the calling account exceeded the throttling limits of one or more AWS services.
+.IP \(bu 2
+TIMEOUT: The deployment has timed out.
+.IP \(bu 2
+REVISION_MISSING: The revision ID was missing. This error code is most likely raised if the revision is deleted after the deployment is created, but before it is started.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An accompanying error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+createTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp that indicates when the deployment was created.
+.UNINDENT
+.UNINDENT
+.sp
+startTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp that indicates when the deployment was deployed to the deployment group.
+.sp
+In some cases, the reported value of the start time might be later than the complete time. This is due to differences in the clock settings of backend servers that participate in the deployment process.
+.UNINDENT
+.UNINDENT
+.sp
+completeTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A timestamp that indicates when the deployment was complete.
+.UNINDENT
+.UNINDENT
+.sp
+deploymentOverview \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A summary of the deployment status of the instances in the deployment.
+.sp
+Pending \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances in the deployment in a pending state.
+.UNINDENT
+.UNINDENT
+.sp
+InProgress \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances in which the deployment is in progress.
+.UNINDENT
+.UNINDENT
+.sp
+Succeeded \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances in the deployment to which revisions have been successfully deployed.
+.UNINDENT
+.UNINDENT
+.sp
+Failed \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances in the deployment in a failed state.
+.UNINDENT
+.UNINDENT
+.sp
+Skipped \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances in the deployment in a skipped state.
+.UNINDENT
+.UNINDENT
+.sp
+Ready \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of instances in a replacement environment ready to receive traffic in a blue/green deployment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A comment about the deployment.
+.UNINDENT
+.UNINDENT
+.sp
+creator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The means by which the deployment was created:
+.INDENT 0.0
+.IP \(bu 2
+\fBuser\fP : A user created the deployment.
+.IP \(bu 2
+\fBautoscaling\fP : Amazon EC2 Auto Scaling created the deployment.
+.IP \(bu 2
+\fBcodeDeployRollback\fP : A rollback process created the deployment.
+.IP \(bu 2
+\fBCodeDeployAutoUpdate\fP : An auto\-update process created the deployment when it detected outdated EC2 instances.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ignoreApplicationStopFailures \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, then if an \fBApplicationStop\fP , \fBBeforeBlockTraffic\fP , or \fBAfterBlockTraffic\fP deployment lifecycle event to an instance fails, then the deployment continues to the next deployment lifecycle event. For example, if \fBApplicationStop\fP fails, the deployment continues with DownloadBundle. If \fBBeforeBlockTraffic\fP fails, the deployment continues with \fBBlockTraffic\fP . If \fBAfterBlockTraffic\fP fails, the deployment continues with \fBApplicationStop\fP .
+.sp
+If false or not specified, then if a lifecycle event fails during a deployment to an instance, that deployment fails. If deployment to that instance is part of an overall deployment and the number of healthy hosts is not less than the minimum number of healthy hosts, then a deployment to the next instance is attempted.
+.sp
+During a deployment, the AWS CodeDeploy agent runs the scripts specified for \fBApplicationStop\fP , \fBBeforeBlockTraffic\fP , and \fBAfterBlockTraffic\fP in the AppSpec file from the previous successful deployment. (All other scripts are run from the AppSpec file in the current deployment.) If one of these scripts contains an error and does not run successfully, the deployment can fail.
+.sp
+If the cause of the failure is a script from the last successful deployment that will never run successfully, create a new deployment and use \fBignoreApplicationStopFailures\fP to specify that the \fBApplicationStop\fP , \fBBeforeBlockTraffic\fP , and \fBAfterBlockTraffic\fP failures should be ignored.
+.UNINDENT
+.UNINDENT
+.sp
+autoRollbackConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the automatic rollback configuration associated with the deployment.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a defined automatic rollback configuration is currently enabled.
+.UNINDENT
+.UNINDENT
+.sp
+events \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The event type or types that trigger a rollback.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+updateOutdatedInstancesOnly \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether only instances that are not running the latest application revision are to be deployed to.
+.UNINDENT
+.UNINDENT
+.sp
+rollbackInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a deployment rollback.
+.sp
+rollbackDeploymentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the deployment rollback.
+.UNINDENT
+.UNINDENT
+.sp
+rollbackTriggeringDeploymentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment ID of the deployment that was underway and triggered a rollback deployment because it failed or was stopped.
+.UNINDENT
+.UNINDENT
+.sp
+rollbackMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information that describes the status of a deployment rollback (for example, whether the deployment can\(aqt be rolled back, is in progress, failed, or succeeded).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deploymentStyle \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the type of deployment, either in\-place or blue/green, you want to run and whether to route deployment traffic behind a load balancer.
+.sp
+deploymentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to run an in\-place deployment or a blue/green deployment.
+.UNINDENT
+.UNINDENT
+.sp
+deploymentOption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to route deployment traffic behind a load balancer.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+targetInstances \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the instances that belong to the replacement environment in a blue/green deployment.
+.sp
+tagFilters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tag filter key, type, and value used to identify Amazon EC2 instances in a replacement environment for a blue/green deployment. Cannot be used in the same call as \fBec2TagSet\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about an EC2 tag filter.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag filter key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag filter value.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag filter type:
+.INDENT 0.0
+.IP \(bu 2
+\fBKEY_ONLY\fP : Key only.
+.IP \(bu 2
+\fBVALUE_ONLY\fP : Value only.
+.IP \(bu 2
+\fBKEY_AND_VALUE\fP : Key and value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+autoScalingGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The names of one or more Auto Scaling groups to identify a replacement environment for a blue/green deployment.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ec2TagSet \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the groups of EC2 instance tags that an instance must be identified by in order for it to be included in the replacement environment for a blue/green deployment. Cannot be used in the same call as \fBtagFilters\fP .
+.sp
+ec2TagSetList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list that contains other lists of EC2 instance tag groups. For an instance to be included in the deployment group, it must be identified by all of the tag groups in the list.
+.sp
+(list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about an EC2 tag filter.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag filter key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag filter value.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag filter type:
+.INDENT 0.0
+.IP \(bu 2
+\fBKEY_ONLY\fP : Key only.
+.IP \(bu 2
+\fBVALUE_ONLY\fP : Value only.
+.IP \(bu 2
+\fBKEY_AND_VALUE\fP : Key and value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+instanceTerminationWaitTimeStarted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the wait period set for the termination of instances in the original environment has started. Status is \(aqfalse\(aq if the KEEP_ALIVE option is specified. Otherwise, \(aqtrue\(aq as soon as the termination wait period starts.
+.UNINDENT
+.UNINDENT
+.sp
+blueGreenDeploymentConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about blue/green deployment options for this deployment.
+.sp
+terminateBlueInstancesOnDeploymentSuccess \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about whether to terminate instances in the original fleet during a blue/green deployment.
+.sp
+action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action to take on instances in the original environment after a successful blue/green deployment.
+.INDENT 0.0
+.IP \(bu 2
+\fBTERMINATE\fP : Instances are terminated after a specified wait time.
+.IP \(bu 2
+\fBKEEP_ALIVE\fP : Instances are left running after they are deregistered from the load balancer and removed from the deployment group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+terminationWaitTimeInMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+For an Amazon EC2 deployment, the number of minutes to wait after a successful blue/green deployment before terminating instances from the original environment.
+.sp
+For an Amazon ECS deployment, the number of minutes before deleting the original (blue) task set. During an Amazon ECS deployment, CodeDeploy shifts traffic from the original (blue) task set to a replacement (green) task set.
+.sp
+The maximum setting is 2880 minutes (2 days).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deploymentReadyOption \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the action to take when newly provisioned instances are ready to receive traffic in a blue/green deployment.
+.sp
+actionOnTimeout \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about when to reroute traffic from an original environment to a replacement environment in a blue/green deployment.
+.INDENT 0.0
+.IP \(bu 2
+CONTINUE_DEPLOYMENT: Register new instances with the load balancer immediately after the new application revision is installed on the instances in the replacement environment.
+.IP \(bu 2
+STOP_DEPLOYMENT: Do not register new instances with a load balancer unless traffic rerouting is started using  ContinueDeployment . If traffic rerouting is not started before the end of the specified wait period, the deployment status is changed to Stopped.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+waitTimeInMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of minutes to wait before the status of a blue/green deployment is changed to Stopped if rerouting is not started manually. Applies only to the \fBSTOP_DEPLOYMENT\fP option for \fBactionOnTimeout\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+greenFleetProvisioningOption \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about how instances are provisioned for a replacement environment in a blue/green deployment.
+.sp
+action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The method used to add instances to a replacement environment.
+.INDENT 0.0
+.IP \(bu 2
+\fBDISCOVER_EXISTING\fP : Use instances that already exist or will be created manually.
+.IP \(bu 2
+\fBCOPY_AUTO_SCALING_GROUP\fP : Use settings from a specified Auto Scaling group to define and create instances in a new Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+loadBalancerInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the load balancer used in the deployment.
+.sp
+elbInfoList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array that contains information about the load balancer to use for load balancing in a deployment. In Elastic Load Balancing, load balancers are used with Classic Load Balancers.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Adding more than one load balancer to the array is not supported.
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a load balancer in Elastic Load Balancing to use in a deployment. Instances are registered directly with a load balancer, and traffic is routed to the load balancer.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For blue/green deployments, the name of the load balancer that is used to route traffic from original instances to replacement instances in a blue/green deployment. For in\-place deployments, the name of the load balancer that instances are deregistered from so they are not serving traffic during a deployment, and then re\-registered with after the deployment is complete.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+targetGroupInfoList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array that contains information about the target group to use for load balancing in a deployment. In Elastic Load Balancing, target groups are used with Application Load Balancers.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Adding more than one target group to the array is not supported.
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a target group in Elastic Load Balancing to use in a deployment. Instances are registered as targets in a target group, and traffic is routed to the target group.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For blue/green deployments, the name of the target group that instances in the original environment are deregistered from, and instances in the replacement environment are registered with. For in\-place deployments, the name of the target group that instances are deregistered from, so they are not serving traffic during a deployment, and then re\-registered with after the deployment is complete.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+targetGroupPairInfoList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The target group pair information. This is an array of \fBTargeGroupPairInfo\fP objects with a maximum size of one.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about two target groups and how traffic is routed during an Amazon ECS deployment. An optional test traffic route can be specified.
+.sp
+targetGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One pair of target groups. One is associated with the original task set. The second is associated with the task set that serves traffic after the deployment is complete.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a target group in Elastic Load Balancing to use in a deployment. Instances are registered as targets in a target group, and traffic is routed to the target group.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For blue/green deployments, the name of the target group that instances in the original environment are deregistered from, and instances in the replacement environment are registered with. For in\-place deployments, the name of the target group that instances are deregistered from, so they are not serving traffic during a deployment, and then re\-registered with after the deployment is complete.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+prodTrafficRoute \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The path used by a load balancer to route production traffic when an Amazon ECS deployment is complete.
+.sp
+listenerArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of one listener. The listener identifies the route between a target group and a load balancer. This is an array of strings with a maximum size of one.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+testTrafficRoute \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An optional path used by a load balancer to route test traffic after an Amazon ECS deployment. Validation can occur while test traffic is served during a deployment.
+.sp
+listenerArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of one listener. The listener identifies the route between a target group and a load balancer. This is an array of strings with a maximum size of one.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+additionalDeploymentStatusInfo \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about the results of a deployment, such as whether instances in the original environment in a blue/green deployment were not terminated.
+.UNINDENT
+.UNINDENT
+.sp
+fileExistsBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about how AWS CodeDeploy handles files that already exist in a deployment target location but weren\(aqt part of the previous successful deployment.
+.INDENT 0.0
+.IP \(bu 2
+\fBDISALLOW\fP : The deployment fails. This is also the default behavior if no option is specified.
+.IP \(bu 2
+\fBOVERWRITE\fP : The version of the file from the application revision currently being deployed replaces the version already on the instance.
+.IP \(bu 2
+\fBRETAIN\fP : The version of the file already on the instance is kept and used as part of the new deployment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deploymentStatusMessages \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Messages that contain information about the status of a deployment.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+computePlatform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The destination platform type for the deployment (\fBLambda\fP , \fBServer\fP , or \fBECS\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+externalId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID for an external resource (for example, a CloudFormation stack ID) that is linked to this deployment.
+.UNINDENT
+.UNINDENT
+.sp
+relatedDeployments \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about deployments related to the specified deployment.
+.sp
+autoUpdateOutdatedInstancesRootDeploymentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment ID of the root deployment that triggered this deployment.
+.UNINDENT
+.UNINDENT
+.sp
+autoUpdateOutdatedInstancesDeploymentIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The deployment IDs of \(aqauto\-update outdated instances\(aq deployments triggered by this deployment.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

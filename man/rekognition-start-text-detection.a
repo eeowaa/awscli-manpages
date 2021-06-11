@@ -1,0 +1,322 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "REKOGNITION-START-TEXT-DETECTION" "a" "" ""
+.SH NAME
+rekognition-start-text-detection \- Starts asynchronous detection of text in a stored video
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Starts asynchronous detection of text in a stored video.
+.sp
+Amazon Rekognition Video can detect text in a video stored in an Amazon S3 bucket. Use  Video to specify the bucket name and the filename of the video. \fBStartTextDetection\fP returns a job identifier (\fBJobId\fP ) which you use to get the results of the operation. When text detection is finished, Amazon Rekognition Video publishes a completion status to the Amazon Simple Notification Service topic that you specify in \fBNotificationChannel\fP .
+.sp
+To get the results of the text detection operation, first check that the status value published to the Amazon SNS topic is \fBSUCCEEDED\fP . if so, call  GetTextDetection and pass the job identifier (\fBJobId\fP ) from the initial call to \fBStartTextDetection\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-text\-detection
+\-\-video <value>
+[\-\-client\-request\-token <value>]
+[\-\-notification\-channel <value>]
+[\-\-job\-tag <value>]
+[\-\-filters <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-video\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Video file stored in an Amazon S3 bucket. Amazon Rekognition video start operations such as  StartLabelDetection use \fBVideo\fP to specify a video for analysis. The supported file formats are .mp4, .mov and .avi.
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket name and file name for the video.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+S3 object key name.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Object={Bucket=string,Name=string,Version=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Object": {
+    "Bucket": "string",
+    "Name": "string",
+    "Version": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Idempotent token used to identify the start request. If you use the same token with multiple \fBStartTextDetection\fP requests, the same \fBJobId\fP is returned. Use \fBClientRequestToken\fP to prevent the same job from being accidentaly started more than once.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-channel\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Simple Notification Service topic to which Amazon Rekognition publishes the completion status of a video analysis operation. For more information, see  api\-video .
+.sp
+SNSTopicArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon SNS topic to which Amazon Rekognition to posts the completion status.
+.UNINDENT
+.UNINDENT
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of an IAM role that gives Amazon Rekognition publishing permissions to the Amazon SNS topic.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SNSTopicArn=string,RoleArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SNSTopicArn": "string",
+  "RoleArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-job\-tag\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier returned in the completion status published by your Amazon Simple Notification Service topic. For example, you can use \fBJobTag\fP to group related jobs and identify them in the completion notification.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Optional parameters that let you set criteria the text must meet to be included in your response.
+.sp
+WordFilter \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Filters focusing on qualities of the text, such as confidence or size.
+.sp
+MinConfidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Sets the confidence of word detection. Words with detection confidence below this will be excluded from the result. Values should be between 50 and 100 as Text in Video will not return any result below 50.
+.UNINDENT
+.UNINDENT
+.sp
+MinBoundingBoxHeight \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Sets the minimum height of the word bounding box. Words with bounding box heights lesser than this value will be excluded from the result. Value is relative to the video frame height.
+.UNINDENT
+.UNINDENT
+.sp
+MinBoundingBoxWidth \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Sets the minimum width of the word bounding box. Words with bounding boxes widths lesser than this value will be excluded from the result. Value is relative to the video frame width.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RegionsOfInterest \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Filter focusing on a certain area of the frame. Uses a \fBBoundingBox\fP object to set the region of the screen.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a location within the frame that Rekognition checks for text. Uses a \fBBoundingBox\fP object to set a region of the screen.
+.sp
+A word is included in the region if the word is more than half in that region. If there is more than one region, the word will be compared with all regions of the screen. Any word more than half in a region is kept in the results.
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The box representing a region of interest on screen.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Width of the bounding box as a ratio of the overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Height of the bounding box as a ratio of the overall image height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Left coordinate of the bounding box as a ratio of overall image width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Top coordinate of the bounding box as a ratio of overall image height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "WordFilter": {
+    "MinConfidence": float,
+    "MinBoundingBoxHeight": float,
+    "MinBoundingBoxWidth": float
+  },
+  "RegionsOfInterest": [
+    {
+      "BoundingBox": {
+        "Width": float,
+        "Height": float,
+        "Left": float,
+        "Top": float
+      }
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+JobId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifier for the text detection job. Use \fBJobId\fP to identify the job in a subsequent call to \fBGetTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

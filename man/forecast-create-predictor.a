@@ -1,0 +1,1099 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "FORECAST-CREATE-PREDICTOR" "a" "" ""
+.SH NAME
+forecast-create-predictor \- Creates an Amazon Forecast predictor
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an Amazon Forecast predictor.
+.sp
+In the request, provide a dataset group and either specify an algorithm or let Amazon Forecast choose an algorithm for you using AutoML. If you specify an algorithm, you also can override algorithm\-specific hyperparameters.
+.sp
+Amazon Forecast uses the algorithm to train a predictor using the latest version of the datasets in the specified dataset group. You can then generate a forecast using the  CreateForecast operation.
+.sp
+To see the evaluation metrics, use the  GetAccuracyMetrics operation.
+.sp
+You can specify a featurization configuration to fill and aggregate the data fields in the \fBTARGET_TIME_SERIES\fP dataset to improve model training. For more information, see  FeaturizationConfig .
+.sp
+For RELATED_TIME_SERIES datasets, \fBCreatePredictor\fP verifies that the \fBDataFrequency\fP specified when the dataset was created matches the \fBForecastFrequency\fP . TARGET_TIME_SERIES datasets don\(aqt have this restriction. Amazon Forecast also verifies the delimiter and timestamp format. For more information, see  howitworks\-datasets\-groups .
+.sp
+By default, predictors are trained and evaluated at the 0.1 (P10), 0.5 (P50), and 0.9 (P90) quantiles. You can choose custom forecast types to train and evaluate your predictor by setting the \fBForecastTypes\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBAutoML\fP
+.UNINDENT
+.UNINDENT
+.sp
+If you want Amazon Forecast to evaluate each algorithm and choose the one that minimizes the \fBobjective function\fP , set \fBPerformAutoML\fP to \fBtrue\fP . The \fBobjective function\fP is defined as the mean of the weighted losses over the forecast types. By default, these are the p10, p50, and p90 quantile losses. For more information, see  EvaluationResult .
+.sp
+When AutoML is enabled, the following properties are disallowed:
+.INDENT 0.0
+.IP \(bu 2
+\fBAlgorithmArn\fP
+.IP \(bu 2
+\fBHPOConfig\fP
+.IP \(bu 2
+\fBPerformHPO\fP
+.IP \(bu 2
+\fBTrainingParameters\fP
+.UNINDENT
+.sp
+To get a list of all of your predictors, use the  ListPredictors operation.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Before you can use the predictor to create a forecast, the \fBStatus\fP of the predictor must be \fBACTIVE\fP , signifying that training has completed. To get the status, use the  DescribePredictor operation.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-predictor
+\-\-predictor\-name <value>
+[\-\-algorithm\-arn <value>]
+\-\-forecast\-horizon <value>
+[\-\-forecast\-types <value>]
+[\-\-perform\-auto\-ml | \-\-no\-perform\-auto\-ml]
+[\-\-perform\-hpo | \-\-no\-perform\-hpo]
+[\-\-training\-parameters <value>]
+[\-\-evaluation\-parameters <value>]
+[\-\-hpo\-config <value>]
+\-\-input\-data\-config <value>
+\-\-featurization\-config <value>
+[\-\-encryption\-config <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-predictor\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A name for the predictor.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-algorithm\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the algorithm to use for model training. Required if \fBPerformAutoML\fP is not set to \fBtrue\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBSupported algorithms:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBarn:aws:forecast:::algorithm/ARIMA\fP
+.IP \(bu 2
+\fBarn:aws:forecast:::algorithm/CNN\-QR\fP
+.IP \(bu 2
+\fBarn:aws:forecast:::algorithm/Deep_AR_Plus\fP
+.IP \(bu 2
+\fBarn:aws:forecast:::algorithm/ETS\fP
+.IP \(bu 2
+\fBarn:aws:forecast:::algorithm/NPTS\fP
+.IP \(bu 2
+\fBarn:aws:forecast:::algorithm/Prophet\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-forecast\-horizon\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number of time\-steps that the model is trained to predict. The forecast horizon is also called the prediction length.
+.sp
+For example, if you configure a dataset for daily data collection (using the \fBDataFrequency\fP parameter of the  CreateDataset operation) and set the forecast horizon to 10, the model returns predictions for 10 days.
+.sp
+The maximum forecast horizon is the lesser of 500 time\-steps or 1/3 of the TARGET_TIME_SERIES dataset length.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-forecast\-types\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the forecast types used to train a predictor. You can specify up to five forecast types. Forecast types can be quantiles from 0.01 to 0.99, by increments of 0.01 or higher. You can also specify the mean forecast with \fBmean\fP .
+.sp
+The default value is \fB["0.10", "0.50", "0.9"]\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-perform\-auto\-ml\fP | \fB\-\-no\-perform\-auto\-ml\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to perform AutoML. When Amazon Forecast performs AutoML, it evaluates the algorithms it provides and chooses the best algorithm and configuration for your training dataset.
+.sp
+The default value is \fBfalse\fP . In this case, you are required to specify an algorithm.
+.sp
+Set \fBPerformAutoML\fP to \fBtrue\fP to have Amazon Forecast perform AutoML. This is a good option if you aren\(aqt sure which algorithm is suitable for your training data. In this case, \fBPerformHPO\fP must be false.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-perform\-hpo\fP | \fB\-\-no\-perform\-hpo\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to perform hyperparameter optimization (HPO). HPO finds optimal hyperparameter values for your training data. The process of performing HPO is known as running a hyperparameter tuning job.
+.sp
+The default value is \fBfalse\fP . In this case, Amazon Forecast uses default hyperparameter values from the chosen algorithm.
+.sp
+To override the default values, set \fBPerformHPO\fP to \fBtrue\fP and, optionally, supply the  HyperParameterTuningJobConfig object. The tuning job specifies a metric to optimize, which hyperparameters participate in tuning, and the valid range for each tunable hyperparameter. In this case, you are required to specify an algorithm and \fBPerformAutoML\fP must be false.
+.sp
+The following algorithms support HPO:
+.INDENT 0.0
+.IP \(bu 2
+DeepAR+
+.IP \(bu 2
+CNN\-QR
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-training\-parameters\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+The hyperparameters to override for model training. The hyperparameters that you can override are listed in the individual algorithms. For the list of supported algorithms, see  aws\-forecast\-choosing\-recipes .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-evaluation\-parameters\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Used to override the default evaluation parameters of the specified algorithm. Amazon Forecast evaluates a predictor by splitting a dataset into training data and testing data. The evaluation parameters define how to perform the split and the number of iterations.
+.sp
+NumberOfBacktestWindows \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of times to split the input data. The default is 1. Valid values are 1 through 5.
+.UNINDENT
+.UNINDENT
+.sp
+BackTestWindowOffset \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The point from the end of the dataset where you want to split the data for model training and testing (evaluation). Specify the value as the number of data points. The default is the value of the forecast horizon. \fBBackTestWindowOffset\fP can be used to mimic a past virtual forecast start date. This value must be greater than or equal to the forecast horizon and less than half of the TARGET_TIME_SERIES dataset length.
+.INDENT 0.0
+.INDENT 3.5
+\fBForecastHorizon\fP <= \fBBackTestWindowOffset\fP < 1/2 * TARGET_TIME_SERIES dataset length
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+NumberOfBacktestWindows=integer,BackTestWindowOffset=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "NumberOfBacktestWindows": integer,
+  "BackTestWindowOffset": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-hpo\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides hyperparameter override values for the algorithm. If you don\(aqt provide this parameter, Amazon Forecast uses default values. The individual algorithms specify which hyperparameters support hyperparameter optimization (HPO). For more information, see  aws\-forecast\-choosing\-recipes .
+.sp
+If you included the \fBHPOConfig\fP object, you must set \fBPerformHPO\fP to true.
+.sp
+ParameterRanges \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ranges of valid values for the hyperparameters.
+.sp
+CategoricalParameterRanges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the tunable range for each categorical hyperparameter.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a categorical hyperparameter and it\(aqs range of tunable values. This object is part of the  ParameterRanges object.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the categorical hyperparameter to tune.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the tunable categories for the hyperparameter.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ContinuousParameterRanges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the tunable range for each continuous hyperparameter.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a continuous hyperparameter and it\(aqs range of tunable values. This object is part of the  ParameterRanges object.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the hyperparameter to tune.
+.UNINDENT
+.UNINDENT
+.sp
+MaxValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The maximum tunable value of the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+MinValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The minimum tunable value of the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The scale that hyperparameter tuning uses to search the hyperparameter range. Valid values:
+.INDENT 0.0
+.INDENT 3.5
+Auto
+.UNINDENT
+.UNINDENT
+.sp
+Amazon Forecast hyperparameter tuning chooses the best scale for the hyperparameter.
+.INDENT 0.0
+.INDENT 3.5
+Linear
+.UNINDENT
+.UNINDENT
+.sp
+Hyperparameter tuning searches the values in the hyperparameter range by using a linear scale.
+.INDENT 0.0
+.INDENT 3.5
+Logarithmic
+.UNINDENT
+.UNINDENT
+.sp
+Hyperparameter tuning searches the values in the hyperparameter range by using a logarithmic scale.
+.sp
+Logarithmic scaling works only for ranges that have values greater than 0.
+.INDENT 0.0
+.INDENT 3.5
+ReverseLogarithmic
+.UNINDENT
+.UNINDENT
+.sp
+hyperparameter tuning searches the values in the hyperparameter range by using a reverse logarithmic scale.
+.sp
+Reverse logarithmic scaling works only for ranges that are entirely within the range 0 <= x < 1.0.
+.sp
+For information about choosing a hyperparameter scale, see \fI\%Hyperparameter Scaling\fP . One of the following values:
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IntegerParameterRanges \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the tunable range for each integer hyperparameter.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an integer hyperparameter and it\(aqs range of tunable values. This object is part of the  ParameterRanges object.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the hyperparameter to tune.
+.UNINDENT
+.UNINDENT
+.sp
+MaxValue \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum tunable value of the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+MinValue \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum tunable value of the hyperparameter.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The scale that hyperparameter tuning uses to search the hyperparameter range. Valid values:
+.INDENT 0.0
+.INDENT 3.5
+Auto
+.UNINDENT
+.UNINDENT
+.sp
+Amazon Forecast hyperparameter tuning chooses the best scale for the hyperparameter.
+.INDENT 0.0
+.INDENT 3.5
+Linear
+.UNINDENT
+.UNINDENT
+.sp
+Hyperparameter tuning searches the values in the hyperparameter range by using a linear scale.
+.INDENT 0.0
+.INDENT 3.5
+Logarithmic
+.UNINDENT
+.UNINDENT
+.sp
+Hyperparameter tuning searches the values in the hyperparameter range by using a logarithmic scale.
+.sp
+Logarithmic scaling works only for ranges that have values greater than 0.
+.INDENT 0.0
+.INDENT 3.5
+ReverseLogarithmic
+.UNINDENT
+.UNINDENT
+.sp
+Not supported for \fBIntegerParameterRange\fP .
+.sp
+Reverse logarithmic scaling works only for ranges that are entirely within the range 0 <= x < 1.0.
+.sp
+For information about choosing a hyperparameter scale, see \fI\%Hyperparameter Scaling\fP . One of the following values:
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ParameterRanges": {
+    "CategoricalParameterRanges": [
+      {
+        "Name": "string",
+        "Values": ["string", ...]
+      }
+      ...
+    ],
+    "ContinuousParameterRanges": [
+      {
+        "Name": "string",
+        "MaxValue": double,
+        "MinValue": double,
+        "ScalingType": "Auto"|"Linear"|"Logarithmic"|"ReverseLogarithmic"
+      }
+      ...
+    ],
+    "IntegerParameterRanges": [
+      {
+        "Name": "string",
+        "MaxValue": integer,
+        "MinValue": integer,
+        "ScalingType": "Auto"|"Linear"|"Logarithmic"|"ReverseLogarithmic"
+      }
+      ...
+    ]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-input\-data\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the dataset group that contains the data to use to train the predictor.
+.sp
+DatasetGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the dataset group.
+.UNINDENT
+.UNINDENT
+.sp
+SupplementaryFeatures \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of supplementary features. The only supported feature is a holiday calendar.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a supplementary feature of a dataset group. This object is part of the  InputDataConfig object. Forecast supports the Weather Index and Holidays built\-in featurizations.
+.INDENT 0.0
+.INDENT 3.5
+\fBWeather Index\fP
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Forecast Weather Index is a built\-in featurization that incorporates historical and projected weather information into your model. The Weather Index supplements your datasets with over two years of historical weather data and up to 14 days of projected weather data. For more information, see \fI\%Amazon Forecast Weather Index\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBHolidays\fP
+.UNINDENT
+.UNINDENT
+.sp
+Holidays is a built\-in featurization that incorporates a feature\-engineered dataset of national holiday information into your model. It provides native support for the holiday calendars of 66 countries. To view the holiday calendars, refer to the \fI\%Jollyday\fP library. For more information, see \fI\%Holidays Featurization\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the feature. Valid values: \fB"holiday"\fP and \fB"weather"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fBWeather Index\fP
+.UNINDENT
+.UNINDENT
+.sp
+To enable the Weather Index, set the value to \fB"true"\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBHolidays\fP
+.UNINDENT
+.UNINDENT
+.sp
+To enable Holidays, specify a country with one of the following two\-letter country codes:
+.INDENT 0.0
+.IP \(bu 2
+"AL" \- ALBANIA
+.IP \(bu 2
+"AR" \- ARGENTINA
+.IP \(bu 2
+"AT" \- AUSTRIA
+.IP \(bu 2
+"AU" \- AUSTRALIA
+.IP \(bu 2
+"BA" \- BOSNIA HERZEGOVINA
+.IP \(bu 2
+"BE" \- BELGIUM
+.IP \(bu 2
+"BG" \- BULGARIA
+.IP \(bu 2
+"BO" \- BOLIVIA
+.IP \(bu 2
+"BR" \- BRAZIL
+.IP \(bu 2
+"BY" \- BELARUS
+.IP \(bu 2
+"CA" \- CANADA
+.IP \(bu 2
+"CL" \- CHILE
+.IP \(bu 2
+"CO" \- COLOMBIA
+.IP \(bu 2
+"CR" \- COSTA RICA
+.IP \(bu 2
+"HR" \- CROATIA
+.IP \(bu 2
+"CZ" \- CZECH REPUBLIC
+.IP \(bu 2
+"DK" \- DENMARK
+.IP \(bu 2
+"EC" \- ECUADOR
+.IP \(bu 2
+"EE" \- ESTONIA
+.IP \(bu 2
+"ET" \- ETHIOPIA
+.IP \(bu 2
+"FI" \- FINLAND
+.IP \(bu 2
+"FR" \- FRANCE
+.IP \(bu 2
+"DE" \- GERMANY
+.IP \(bu 2
+"GR" \- GREECE
+.IP \(bu 2
+"HU" \- HUNGARY
+.IP \(bu 2
+"IS" \- ICELAND
+.IP \(bu 2
+"IN" \- INDIA
+.IP \(bu 2
+"IE" \- IRELAND
+.IP \(bu 2
+"IT" \- ITALY
+.IP \(bu 2
+"JP" \- JAPAN
+.IP \(bu 2
+"KZ" \- KAZAKHSTAN
+.IP \(bu 2
+"KR" \- KOREA
+.IP \(bu 2
+"LV" \- LATVIA
+.IP \(bu 2
+"LI" \- LIECHTENSTEIN
+.IP \(bu 2
+"LT" \- LITHUANIA
+.IP \(bu 2
+"LU" \- LUXEMBOURG
+.IP \(bu 2
+"MK" \- MACEDONIA
+.IP \(bu 2
+"MT" \- MALTA
+.IP \(bu 2
+"MX" \- MEXICO
+.IP \(bu 2
+"MD" \- MOLDOVA
+.IP \(bu 2
+"ME" \- MONTENEGRO
+.IP \(bu 2
+"NL" \- NETHERLANDS
+.IP \(bu 2
+"NZ" \- NEW ZEALAND
+.IP \(bu 2
+"NI" \- NICARAGUA
+.IP \(bu 2
+"NG" \- NIGERIA
+.IP \(bu 2
+"NO" \- NORWAY
+.IP \(bu 2
+"PA" \- PANAMA
+.IP \(bu 2
+"PY" \- PARAGUAY
+.IP \(bu 2
+"PE" \- PERU
+.IP \(bu 2
+"PL" \- POLAND
+.IP \(bu 2
+"PT" \- PORTUGAL
+.IP \(bu 2
+"RO" \- ROMANIA
+.IP \(bu 2
+"RU" \- RUSSIA
+.IP \(bu 2
+"RS" \- SERBIA
+.IP \(bu 2
+"SK" \- SLOVAKIA
+.IP \(bu 2
+"SI" \- SLOVENIA
+.IP \(bu 2
+"ZA" \- SOUTH AFRICA
+.IP \(bu 2
+"ES" \- SPAIN
+.IP \(bu 2
+"SE" \- SWEDEN
+.IP \(bu 2
+"CH" \- SWITZERLAND
+.IP \(bu 2
+"UA" \- UKRAINE
+.IP \(bu 2
+"AE" \- UNITED ARAB EMIRATES
+.IP \(bu 2
+"US" \- UNITED STATES
+.IP \(bu 2
+"UK" \- UNITED KINGDOM
+.IP \(bu 2
+"UY" \- URUGUAY
+.IP \(bu 2
+"VE" \- VENEZUELA
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DatasetGroupArn=string,SupplementaryFeatures=[{Name=string,Value=string},{Name=string,Value=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "DatasetGroupArn": "string",
+  "SupplementaryFeatures": [
+    {
+      "Name": "string",
+      "Value": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-featurization\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The featurization configuration.
+.sp
+ForecastFrequency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The frequency of predictions in a forecast.
+.sp
+Valid intervals are Y (Year), M (Month), W (Week), D (Day), H (Hour), 30min (30 minutes), 15min (15 minutes), 10min (10 minutes), 5min (5 minutes), and 1min (1 minute). For example, "Y" indicates every year and "5min" indicates every five minutes.
+.sp
+The frequency must be greater than or equal to the TARGET_TIME_SERIES dataset frequency.
+.sp
+When a RELATED_TIME_SERIES dataset is provided, the frequency must be equal to the RELATED_TIME_SERIES dataset frequency.
+.UNINDENT
+.UNINDENT
+.sp
+ForecastDimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of dimension (field) names that specify how to group the generated forecast.
+.sp
+For example, suppose that you are generating a forecast for item sales across all of your stores, and your dataset contains a \fBstore_id\fP field. If you want the sales forecast for each item by store, you would specify \fBstore_id\fP as the dimension.
+.sp
+All forecast dimensions specified in the \fBTARGET_TIME_SERIES\fP dataset don\(aqt need to be specified in the \fBCreatePredictor\fP request. All forecast dimensions specified in the \fBRELATED_TIME_SERIES\fP dataset must be specified in the \fBCreatePredictor\fP request.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Featurizations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of featurization (transformation) information for the fields of a dataset.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides featurization (transformation) information for a dataset field. This object is part of the  FeaturizationConfig object.
+.sp
+For example:
+.INDENT 0.0
+.INDENT 3.5
+\fB{\fP
+.sp
+\fB"AttributeName": "demand",\fP
+.sp
+\fBFeaturizationPipeline [ {\fP
+.sp
+\fB"FeaturizationMethodName": "filling",\fP
+.sp
+\fB"FeaturizationMethodParameters": {"aggregation": "avg", "backfill": "nan"}\fP
+.sp
+\fB} ]\fP
+.sp
+\fB}\fP
+.UNINDENT
+.UNINDENT
+.sp
+AttributeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the schema attribute that specifies the data field to be featurized. Amazon Forecast supports the target field of the \fBTARGET_TIME_SERIES\fP and the \fBRELATED_TIME_SERIES\fP datasets. For example, for the \fBRETAIL\fP domain, the target is \fBdemand\fP , and for the \fBCUSTOM\fP domain, the target is \fBtarget_value\fP . For more information, see  howitworks\-missing\-values .
+.UNINDENT
+.UNINDENT
+.sp
+FeaturizationPipeline \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of one \fBFeaturizationMethod\fP object that specifies the feature transformation method.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about the method that featurizes (transforms) a dataset field. The method is part of the \fBFeaturizationPipeline\fP of the  Featurization object.
+.sp
+The following is an example of how you specify a \fBFeaturizationMethod\fP object.
+.INDENT 0.0
+.INDENT 3.5
+\fB{\fP
+.sp
+\fB"FeaturizationMethodName": "filling",\fP
+.sp
+\fB"FeaturizationMethodParameters": {"aggregation": "sum", "middlefill": "zero", "backfill": "zero"}\fP
+.sp
+\fB}\fP
+.UNINDENT
+.UNINDENT
+.sp
+FeaturizationMethodName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the method. The "filling" method is the only supported method.
+.UNINDENT
+.UNINDENT
+.sp
+FeaturizationMethodParameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The method parameters (key\-value pairs), which are a map of override parameters. Specify these parameters to override the default values. Related Time Series attributes do not accept aggregation parameters.
+.sp
+The following list shows the parameters and their valid values for the "filling" featurization method for a \fBTarget Time Series\fP dataset. Bold signifies the default value.
+.INDENT 0.0
+.IP \(bu 2
+\fBaggregation\fP : \fBsum\fP , \fBavg\fP , \fBfirst\fP , \fBmin\fP , \fBmax\fP
+.IP \(bu 2
+\fBfrontfill\fP : \fBnone\fP
+.IP \(bu 2
+\fBmiddlefill\fP : \fBzero\fP , \fBnan\fP (not a number), \fBvalue\fP , \fBmedian\fP , \fBmean\fP , \fBmin\fP , \fBmax\fP
+.IP \(bu 2
+\fBbackfill\fP : \fBzero\fP , \fBnan\fP , \fBvalue\fP , \fBmedian\fP , \fBmean\fP , \fBmin\fP , \fBmax\fP
+.UNINDENT
+.sp
+The following list shows the parameters and their valid values for a \fBRelated Time Series\fP featurization method (there are no defaults):
+.INDENT 0.0
+.IP \(bu 2
+\fBmiddlefill\fP : \fBzero\fP , \fBvalue\fP , \fBmedian\fP , \fBmean\fP , \fBmin\fP , \fBmax\fP
+.IP \(bu 2
+\fBbackfill\fP : \fBzero\fP , \fBvalue\fP , \fBmedian\fP , \fBmean\fP , \fBmin\fP , \fBmax\fP
+.IP \(bu 2
+\fBfuturefill\fP : \fBzero\fP , \fBvalue\fP , \fBmedian\fP , \fBmean\fP , \fBmin\fP , \fBmax\fP
+.UNINDENT
+.sp
+To set a filling method to a specific value, set the fill parameter to \fBvalue\fP and define the value in a corresponding \fB_value\fP parameter. For example, to set backfilling to a value of 2, include the following: \fB"backfill": "value"\fP and \fB"backfill_value":"2"\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ForecastFrequency": "string",
+  "ForecastDimensions": ["string", ...],
+  "Featurizations": [
+    {
+      "AttributeName": "string",
+      "FeaturizationPipeline": [
+        {
+          "FeaturizationMethodName": "filling",
+          "FeaturizationMethodParameters": {"string": "string"
+            ...}
+        }
+        ...
+      ]
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encryption\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An AWS Key Management Service (KMS) key and the AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the key.
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role that Amazon Forecast can assume to access the AWS KMS key.
+.sp
+Passing a role across AWS accounts is not allowed. If you pass a role that isn\(aqt in your account, you get an \fBInvalidInputException\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+KMSKeyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the KMS key.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+RoleArn=string,KMSKeyArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RoleArn": "string",
+  "KMSKeyArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The optional metadata that you apply to the predictor to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50.
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8.
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8.
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for keys as it is reserved for AWS use. You cannot edit or delete tag keys with this prefix. Values can have this prefix. If a tag value has \fBaws\fP as its prefix but the key does not, then Forecast considers it to be a user tag and will count against the limit of 50 tags. Tags with only the key prefix of \fBaws\fP do not count against your tags per resource limit.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The optional metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50.
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8.
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8.
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for keys as it is reserved for AWS use. You cannot edit or delete tag keys with this prefix. Values can have this prefix. If a tag value has \fBaws\fP as its prefix but the key does not, then Forecast considers it to be a user tag and will count against the limit of 50 tags. Tags with only the key prefix of \fBaws\fP do not count against your tags per resource limit.
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that makes up a tag. A \fBkey\fP is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that makes up a tag. A \fBvalue\fP acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+PredictorArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the predictor.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

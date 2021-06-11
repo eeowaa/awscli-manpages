@@ -1,0 +1,371 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "REKOGNITION-CREATE-PROJECT-VERSION" "a" "" ""
+.SH NAME
+rekognition-create-project-version \- Creates a new version of a model and begins training
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new version of a model and begins training. Models are managed as part of an Amazon Rekognition Custom Labels project. You can specify one training dataset and one testing dataset. The response from \fBCreateProjectVersion\fP is an Amazon Resource Name (ARN) for the version of the model.
+.sp
+Training takes a while to complete. You can get the current status by calling  DescribeProjectVersions .
+.sp
+Once training has successfully completed, call  DescribeProjectVersions to get the training results and evaluate the model.
+.sp
+After evaluating the model, you start the model by calling  StartProjectVersion .
+.sp
+This operation requires permissions to perform the \fBrekognition:CreateProjectVersion\fP action.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-project\-version
+\-\-project\-arn <value>
+\-\-version\-name <value>
+\-\-output\-config <value>
+\-\-training\-data <value>
+\-\-testing\-data <value>
+[\-\-tags <value>]
+[\-\-kms\-key\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-project\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Amazon Rekognition Custom Labels project that manages the model that you want to train.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-version\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A name for the version of the model. This value must be unique.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-output\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 location to store the results of training.
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket where training output is placed.
+.UNINDENT
+.UNINDENT
+.sp
+S3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The prefix applied to the training output files.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Bucket=string,S3KeyPrefix=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Bucket": "string",
+  "S3KeyPrefix": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-training\-data\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dataset to use for training.
+.sp
+Assets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A Sagemaker GroundTruth manifest file that contains the training images (assets).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Assets are the images that you use to train and evaluate a model version. Assets can also contain validation information that you use to debug a failed model training.
+.sp
+GroundTruthManifest \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket that contains an Amazon Sagemaker Ground Truth format manifest file.
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the S3 bucket name and object name.
+.sp
+The region for the S3 bucket containing the S3 object must match the region you use for Amazon Rekognition operations.
+.sp
+For Amazon Rekognition to process an S3 object, the user must have permission to access the S3 object. For more information, see Resource\-Based Policies in the Amazon Rekognition Developer Guide.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+S3 object key name.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Assets": [
+    {
+      "GroundTruthManifest": {
+        "S3Object": {
+          "Bucket": "string",
+          "Name": "string",
+          "Version": "string"
+        }
+      }
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-testing\-data\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dataset to use for testing.
+.sp
+Assets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The assets used for testing.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Assets are the images that you use to train and evaluate a model version. Assets can also contain validation information that you use to debug a failed model training.
+.sp
+GroundTruthManifest \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket that contains an Amazon Sagemaker Ground Truth format manifest file.
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides the S3 bucket name and object name.
+.sp
+The region for the S3 bucket containing the S3 object must match the region you use for Amazon Rekognition operations.
+.sp
+For Amazon Rekognition to process an S3 object, the user must have permission to access the S3 object. For more information, see Resource\-Based Policies in the Amazon Rekognition Developer Guide.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+S3 object key name.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AutoCreate \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If specified, Amazon Rekognition Custom Labels creates a testing dataset with an 80/20 split of the training dataset.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Assets": [
+    {
+      "GroundTruthManifest": {
+        "S3Object": {
+          "Bucket": "string",
+          "Name": "string",
+          "Version": "string"
+        }
+      }
+    }
+    ...
+  ],
+  "AutoCreate": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A set of tags (key\-value pairs) that you want to attach to the model.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for your AWS Key Management Service (AWS KMS) customer master key (CMK). You can supply the Amazon Resource Name (ARN) of your CMK, the ID of your CMK, or an alias for your CMK. The key is used to encrypt training and test images copied into the service for model training. Your source images are unaffected. The key is also used to encrypt training results and manifest files written to the output Amazon S3 bucket (\fBOutputConfig\fP ).
+.sp
+If you don\(aqt specify a value for \fBKmsKeyId\fP , images copied into the service are encrypted using a key that AWS owns and manages.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ProjectVersionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the model version that was created. Use \fBDescribeProjectVersion\fP to get the current status of the training operation.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

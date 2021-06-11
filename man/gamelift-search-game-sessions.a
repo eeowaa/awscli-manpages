@@ -1,0 +1,420 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-SEARCH-GAME-SESSIONS" "a" "" ""
+.SH NAME
+gamelift-search-game-sessions \- Retrieves all active game sessions that match a set of search criteria and sorts them into a specified order
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves all active game sessions that match a set of search criteria and sorts them into a specified order.
+.sp
+When searching for game sessions, you specify exactly where you want to search and provide a search filter expression, a sort expression, or both. A search request can search only one fleet, but it can search all of a fleet\(aqs locations.
+.sp
+This operation can be used in the following ways:
+.INDENT 0.0
+.IP \(bu 2
+To search all game sessions that are currently running on all locations in a fleet, provide a fleet or alias ID. This approach returns game sessions in the fleet\(aqs home Region and all remote locations that fit the search criteria.
+.IP \(bu 2
+To search all game sessions that are currently running on a specific fleet location, provide a fleet or alias ID and a location name. For location, you can specify a fleet\(aqs home Region or any remote location.
+.UNINDENT
+.sp
+Use the pagination parameters to retrieve results as a set of sequential pages.
+.sp
+If successful, a \fBGameSession\fP object is returned for each game session that matches the request. Search finds game sessions that are in \fBACTIVE\fP status only. To retrieve information on game sessions in other statuses, use  DescribeGameSessions .
+.sp
+You can search or sort by the following game session attributes:
+.INDENT 0.0
+.IP \(bu 2
+\fBgameSessionId\fP \-\- A unique identifier for the game session. You can use either a \fBGameSessionId\fP or \fBGameSessionArn\fP value.
+.IP \(bu 2
+\fBgameSessionName\fP \-\- Name assigned to a game session. This value is set when requesting a new game session with  CreateGameSession or updating with  UpdateGameSession . Game session names do not need to be unique to a game session.
+.IP \(bu 2
+\fBgameSessionProperties\fP \-\- Custom data defined in a game session\(aqs \fBGameProperty\fP parameter. \fBGameProperty\fP values are stored as key:value pairs; the filter expression must indicate the key and a string to search the data values for. For example, to search for game sessions with custom data containing the key:value pair "gameMode:brawl", specify the following: \fBgameSessionProperties.gameMode = "brawl"\fP . All custom data values are searched as strings.
+.IP \(bu 2
+\fBmaximumSessions\fP \-\- Maximum number of player sessions allowed for a game session. This value is set when requesting a new game session with  CreateGameSession or updating with  UpdateGameSession .
+.IP \(bu 2
+\fBcreationTimeMillis\fP \-\- Value indicating when a game session was created. It is expressed in Unix time as milliseconds.
+.IP \(bu 2
+\fBplayerSessionCount\fP \-\- Number of players currently connected to a game session. This value changes rapidly as players join the session or drop out.
+.IP \(bu 2
+\fBhasAvailablePlayerSessions\fP \-\- Boolean value indicating whether a game session has reached its maximum number of players. It is highly recommended that all search requests include this filter attribute to optimize search performance and return only sessions that players can join.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+Returned values for \fBplayerSessionCount\fP and \fBhasAvailablePlayerSessions\fP change quickly as players join sessions and others drop out. Results should be considered a snapshot in time. Be sure to refresh search results often, and handle sessions that fill up before a player can join.
+.UNINDENT
+.UNINDENT
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateGameSession |  DescribeGameSessions |  DescribeGameSessionDetails |  SearchGameSessions |  UpdateGameSession |  GetGameSessionLogUrl |  StartGameSessionPlacement |  DescribeGameSessionPlacement |  StopGameSessionPlacement | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBsearch\-game\-sessions\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBGameSessions\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  search\-game\-sessions
+[\-\-fleet\-id <value>]
+[\-\-alias\-id <value>]
+[\-\-location <value>]
+[\-\-filter\-expression <value>]
+[\-\-sort\-expression <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-fleet\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the fleet to search for active game sessions. You can use either the fleet ID or ARN value. Each request must reference either a fleet ID or alias ID, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-alias\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the alias associated with the fleet to search for active game sessions. You can use either the alias ID or ARN value. Each request must reference either a fleet ID or alias ID, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-location\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A fleet location to search for game sessions. You can specify a fleet\(aqs home Region or a remote location. Use the AWS Region code format, such as \fBus\-west\-2\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filter\-expression\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+String containing the search criteria for the session search. If no filter expression is included, the request returns results for all game sessions in the fleet that are in \fBACTIVE\fP status.
+.sp
+A filter expression can contain one or multiple conditions. Each condition consists of the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBOperand\fP \-\- Name of a game session attribute. Valid values are \fBgameSessionName\fP , \fBgameSessionId\fP , \fBgameSessionProperties\fP , \fBmaximumSessions\fP , \fBcreationTimeMillis\fP , \fBplayerSessionCount\fP , \fBhasAvailablePlayerSessions\fP .
+.IP \(bu 2
+\fBComparator\fP \-\- Valid comparators are: \fB=\fP , \fB<>\fP , \fB<\fP , \fB>\fP , \fB<=\fP , \fB>=\fP .
+.IP \(bu 2
+\fBValue\fP \-\- Value to be searched for. Values may be numbers, boolean values (true/false) or strings depending on the operand. String values are case sensitive and must be enclosed in single quotes. Special characters must be escaped. Boolean and string values can only be used with the comparators \fB=\fP and \fB<>\fP . For example, the following filter expression searches on \fBgameSessionName\fP : "\fBFilterExpression": "gameSessionName = \(aqMatt\e\e\(aqs Awesome Game 1\(aq"\fP .
+.UNINDENT
+.sp
+To chain multiple conditions in a single expression, use the logical keywords \fBAND\fP , \fBOR\fP , and \fBNOT\fP and parentheses as needed. For example: \fBx AND y AND NOT z\fP , \fBNOT (x OR y)\fP .
+.sp
+Session search evaluates conditions from left to right using the following precedence rules:
+.INDENT 0.0
+.IP \(bu 2
+\fB=\fP , \fB<>\fP , \fB<\fP , \fB>\fP , \fB<=\fP , \fB>=\fP
+.IP \(bu 2
+Parentheses
+.IP \(bu 2
+NOT
+.IP \(bu 2
+AND
+.IP \(bu 2
+OR
+.UNINDENT
+.sp
+For example, this filter expression retrieves game sessions hosting at least ten players that have an open player slot: \fB"maximumSessions>=10 AND hasAvailablePlayerSessions=true"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sort\-expression\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Instructions on how to sort the search results. If no sort expression is included, the request returns results in random order. A sort expression consists of the following elements:
+.INDENT 0.0
+.IP \(bu 2
+\fBOperand\fP \-\- Name of a game session attribute. Valid values are \fBgameSessionName\fP , \fBgameSessionId\fP , \fBgameSessionProperties\fP , \fBmaximumSessions\fP , \fBcreationTimeMillis\fP , \fBplayerSessionCount\fP , \fBhasAvailablePlayerSessions\fP .
+.IP \(bu 2
+\fBOrder\fP \-\- Valid sort orders are \fBASC\fP (ascending) and \fBDESC\fP (descending).
+.UNINDENT
+.sp
+For example, this sort expression returns the oldest active sessions first: \fB"SortExpression": "creationTimeMillis ASC"\fP . Results with a null value for the sort operand are returned at the end of the list.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+GameSessions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of objects containing game session properties for each session that matches the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Properties describing a game session.
+.sp
+A game session in ACTIVE status can host players. When a game session ends, its status is set to \fBTERMINATED\fP .
+.sp
+Once the session ends, the game session object is retained for 30 days. This means you can reuse idempotency token values after this time. Game session logs are retained for 14 days.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateGameSession |  DescribeGameSessions |  DescribeGameSessionDetails |  SearchGameSessions |  UpdateGameSession |  GetGameSessionLogUrl |  StartGameSessionPlacement |  DescribeGameSessionPlacement |  StopGameSessionPlacement | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the game session. A game session ARN has the following format: \fBarn:aws:gamelift:<region>::gamesession/<fleet ID>/<custom ID string or idempotency token>\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with a game session. Session names do not need to be unique.
+.UNINDENT
+.UNINDENT
+.sp
+FleetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the fleet that the game session is running on.
+.UNINDENT
+.UNINDENT
+.sp
+FleetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) associated with the GameLift fleet that this game session is running on.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A time stamp indicating when this data object was created. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+TerminationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A time stamp indicating when this data object was terminated. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+CurrentPlayerSessionCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Number of players currently in the game session.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumPlayerSessionCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of players that can be connected simultaneously to the game session.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Current status of the game session. A game session must have an \fBACTIVE\fP status to have player sessions.
+.UNINDENT
+.UNINDENT
+.sp
+StatusReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides additional information about game session status. \fBINTERRUPTED\fP indicates that the game session was hosted on a spot instance that was reclaimed, causing the active game session to be terminated.
+.UNINDENT
+.UNINDENT
+.sp
+GameProperties \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of custom properties for a game session, formatted as key:value pairs. These properties are passed to a game server process in the  GameSession object with a request to start a new game session. You can search for active game sessions based on this custom data with  SearchGameSessions .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Set of key\-value pairs that contain information about a game session. When included in a game session request, these properties communicate details to be used when setting up the new game session. For example, a game property might specify a game mode, level, or map. Game properties are passed to the game server process when initiating a new game session. For more information, see the \fI\%GameLift Developer Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The game property identifier.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The game property value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP address of the game session. To connect to a GameLift game server, an app needs both the IP address and port number.
+.UNINDENT
+.UNINDENT
+.sp
+DnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS identifier assigned to the instance that is running the game session. Values have the following format:
+.INDENT 0.0
+.IP \(bu 2
+TLS\-enabled fleets: \fB<unique identifier>.<region identifier>.amazongamelift.com\fP .
+.IP \(bu 2
+Non\-TLS\-enabled fleets: \fBec2\-<unique identifier>.compute.amazonaws.com\fP . (See \fI\%Amazon EC2 Instance IP Addressing\fP .)
+.UNINDENT
+.sp
+When connecting to a game session that is running on a TLS\-enabled fleet, you must use the DNS name, not the IP address.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number for the game session. To connect to a GameLift game server, an app needs both the IP address and port number.
+.UNINDENT
+.UNINDENT
+.sp
+PlayerSessionCreationPolicy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether or not the game session is accepting new players.
+.UNINDENT
+.UNINDENT
+.sp
+CreatorId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player. This ID is used to enforce a resource protection policy (if one exists), that limits the number of game sessions a player can create.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A set of custom game session properties, formatted as a single string value. This data is passed to a game server process in the  GameSession object with a request to start a new game session.
+.UNINDENT
+.UNINDENT
+.sp
+MatchmakerData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the matchmaking process that was used to create the game session. It is in JSON syntax, formatted as a string. In addition the matchmaking configuration used, it contains data on all players assigned to the match, including player attributes and team assignments. For more details on matchmaker data, see \fI\%Match Data\fP . Matchmaker data is useful when requesting match backfills, and is updated whenever new players are added during a successful backfill (see  StartMatchBackfill ).
+.UNINDENT
+.UNINDENT
+.sp
+Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fleet location where the game session is running. This value might specify the fleet\(aqs home Region or a remote location. Location is expressed as an AWS Region code such as \fBus\-west\-2\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A token that indicates where to resume retrieving results on the next call to this operation. If no token is returned, these results represent the end of the list.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

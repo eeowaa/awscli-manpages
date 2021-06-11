@@ -1,0 +1,300 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SWF-REGISTER-WORKFLOW-TYPE" "a" "" ""
+.SH NAME
+swf-register-workflow-type \- Registers a new workflow type and its configuration settings in the specified domain
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Registers a new \fIworkflow type\fP and its configuration settings in the specified domain.
+.sp
+The retention period for the workflow history is set by the  RegisterDomain action.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+If the type already exists, then a \fBTypeAlreadyExists\fP fault is returned. You cannot change the configuration settings of a workflow type once it is registered and it must be registered as a new version.
+.UNINDENT
+.UNINDENT
+.sp
+\fBAccess Control\fP
+.UNINDENT
+.UNINDENT
+.sp
+You can use IAM policies to control this action\(aqs access to Amazon SWF resources as follows:
+.INDENT 0.0
+.IP \(bu 2
+Use a \fBResource\fP element with the domain name to limit the action to only specified domains.
+.IP \(bu 2
+Use an \fBAction\fP element to allow or deny permission to call this action.
+.IP \(bu 2
+Constrain the following parameters by using a \fBCondition\fP element with the appropriate keys.
+.INDENT 2.0
+.IP \(bu 2
+\fBdefaultTaskList.name\fP : String constraint. The key is \fBswf:defaultTaskList.name\fP .
+.IP \(bu 2
+\fBname\fP : String constraint. The key is \fBswf:name\fP .
+.IP \(bu 2
+\fBversion\fP : String constraint. The key is \fBswf:version\fP .
+.UNINDENT
+.UNINDENT
+.sp
+If the caller doesn\(aqt have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute\(aqs \fBcause\fP parameter is set to \fBOPERATION_NOT_PERMITTED\fP . For details and example IAM policies, see \fI\%Using IAM to Manage Access to Amazon SWF Workflows\fP in the \fIAmazon SWF Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-workflow\-type
+\-\-domain <value>
+\-\-name <value>
+[\-\-description <value>]
+[\-\-default\-task\-start\-to\-close\-timeout <value>]
+[\-\-default\-execution\-start\-to\-close\-timeout <value>]
+[\-\-default\-task\-list <value>]
+[\-\-default\-task\-priority <value>]
+[\-\-default\-child\-policy <value>]
+[\-\-default\-lambda\-role <value>]
+\-\-workflow\-version <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the domain in which to register the workflow type.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the workflow type.
+.sp
+The specified string must not start or end with whitespace. It must not contain a \fB:\fP (colon), \fB/\fP (slash), \fB|\fP (vertical bar), or any control characters (\fB\eu0000\-\eu001f\fP | \fB\eu007f\-\eu009f\fP ). Also, it must not \fIbe\fP the literal string \fBarn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Textual description of the workflow type.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-start\-to\-close\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default maximum duration of decision tasks for this workflow type. This default can be overridden when starting a workflow execution using the  StartWorkflowExecution action or the \fBStartChildWorkflowExecution\fP   Decision .
+.sp
+The duration is specified in seconds, an integer greater than or equal to \fB0\fP . You can use \fBNONE\fP to specify unlimited duration.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-execution\-start\-to\-close\-timeout\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default maximum duration for executions of this workflow type. You can override this default when starting an execution through the  StartWorkflowExecution Action or \fBStartChildWorkflowExecution\fP   Decision .
+.sp
+The duration is specified in seconds; an integer greater than or equal to 0. Unlike some of the other timeout parameters in Amazon SWF, you cannot specify a value of "NONE" for \fBdefaultExecutionStartToCloseTimeout\fP ; there is a one\-year max limit on the time that a workflow execution can run. Exceeding this limit always causes the workflow execution to time out.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-list\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default task list to use for scheduling decision tasks for executions of this workflow type. This default is used only if a task list isn\(aqt provided when starting the execution through the  StartWorkflowExecution Action or \fBStartChildWorkflowExecution\fP   Decision .
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the task list.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+name=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "name": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-task\-priority\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The default task priority to assign to the workflow type. If not assigned, then \fB0\fP is used. Valid values are integers that range from Java\(aqs \fBInteger.MIN_VALUE\fP (\-2147483648) to \fBInteger.MAX_VALUE\fP (2147483647). Higher numbers indicate higher priority.
+.sp
+For more information about setting task priority, see \fI\%Setting Task Priority\fP in the \fIAmazon SWF Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-child\-policy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If set, specifies the default policy to use for the child workflow executions when a workflow execution of this type is terminated, by calling the  TerminateWorkflowExecution action explicitly or due to an expired timeout. This default can be overridden when starting a workflow execution using the  StartWorkflowExecution action or the \fBStartChildWorkflowExecution\fP   Decision .
+.sp
+The supported child policies are:
+.INDENT 0.0
+.IP \(bu 2
+\fBTERMINATE\fP – The child executions are terminated.
+.IP \(bu 2
+\fBREQUEST_CANCEL\fP – A request to cancel is attempted for each child execution by recording a \fBWorkflowExecutionCancelRequested\fP event in its history. It is up to the decider to take appropriate actions when it receives an execution history with this event.
+.IP \(bu 2
+\fBABANDON\fP – No action is taken. The child executions continue to run.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTERMINATE\fP
+.IP \(bu 2
+\fBREQUEST_CANCEL\fP
+.IP \(bu 2
+\fBABANDON\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-lambda\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The default IAM role attached to this workflow type.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Executions of this workflow type need IAM roles to invoke Lambda functions. If you don\(aqt specify an IAM role when you start this workflow type, the default Lambda role is attached to the execution. For more information, see \fI\%https://docs.aws.amazon.com/amazonswf/latest/developerguide/lambda\-task.html\fP in the \fIAmazon SWF Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-workflow\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the workflow type.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The workflow type consists of the name and version, the combination of which must be unique within the domain. To get a list of all currently registered workflow types, use the  ListWorkflowTypes action.
+.UNINDENT
+.UNINDENT
+.sp
+The specified string must not start or end with whitespace. It must not contain a \fB:\fP (colon), \fB/\fP (slash), \fB|\fP (vertical bar), or any control characters (\fB\eu0000\-\eu001f\fP | \fB\eu007f\-\eu009f\fP ). Also, it must not \fIbe\fP the literal string \fBarn\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.SS Registering a Workflow Type
+.sp
+To register a Workflow type with the AWS CLI, use the \fBswf register\-workflow\-type\fP command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws swf register\-workflow\-type \-\-domain DataFrobtzz \-\-name "MySimpleWorkflow" \-\-workflow\-version "v1"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+If successful, the command returns no result. On an error (for example, if you try to register the same workflow type
+twice, or specify a domain that doesn\(aqt exist) you will get a response in JSON:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "message": "WorkflowType=[name=MySimpleWorkflow, version=v1]",
+    "__type": "com.amazonaws.swf.base.model#TypeAlreadyExistsFault"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The \fB\-\-domain\fP, \fB\-\-name\fP and \fB\-\-workflow\-version\fP are required. You can also set the workflow description,
+timeouts, and child workflow policy.
+.SS See Also
+.INDENT 0.0
+.IP \(bu 2
+.INDENT 2.0
+.TP
+.B \fIRegisterWorkflowType <http://docs.aws.amazon.com/amazonswf/latest/apireference/API_RegisterWorkflowType.html>\fP in the
+\fIAmazon Simple Workflow Service API Reference\fP
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

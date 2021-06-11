@@ -1,0 +1,1605 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DEVICEFARM-SCHEDULE-RUN" "a" "" ""
+.SH NAME
+devicefarm-schedule-run \- Schedules a run
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Schedules a run.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  schedule\-run
+\-\-project\-arn <value>
+[\-\-app\-arn <value>]
+[\-\-device\-pool\-arn <value>]
+[\-\-device\-selection\-configuration <value>]
+[\-\-name <value>]
+\-\-test <value>
+[\-\-configuration <value>]
+[\-\-execution\-configuration <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-project\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the project for the run to be scheduled.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-app\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of an application package to run tests against, created with  CreateUpload . See  ListUploads .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-device\-pool\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the device pool for the run to be scheduled.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-device\-selection\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The filter criteria used to dynamically select a set of devices for a test run and the maximum number of devices to be included in the run.
+.sp
+Either ** \fBdevicePoolArn\fP ** or ** \fBdeviceSelectionConfiguration\fP ** is required in a request.
+.sp
+filters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Used to dynamically select a set of devices for a test run. A filter is made up of an attribute, an operator, and one or more values.
+.INDENT 0.0
+.IP \(bu 2
+\fBAttribute\fP   The aspect of a device such as platform or model used as the selection criteria in a device filter. Allowed values include:
+.INDENT 2.0
+.IP \(bu 2
+ARN: The Amazon Resource Name (ARN) of the device (for example, \fBarn:aws:devicefarm:us\-west\-2::device:12345Example\fP ).
+.IP \(bu 2
+PLATFORM: The device platform. Valid values are ANDROID or IOS.
+.IP \(bu 2
+OS_VERSION: The operating system version (for example, 10.3.2).
+.IP \(bu 2
+MODEL: The device model (for example, iPad 5th Gen).
+.IP \(bu 2
+AVAILABILITY: The current availability of the device. Valid values are AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.IP \(bu 2
+FORM_FACTOR: The device form factor. Valid values are PHONE or TABLET.
+.IP \(bu 2
+MANUFACTURER: The device manufacturer (for example, Apple).
+.IP \(bu 2
+REMOTE_ACCESS_ENABLED: Whether the device is enabled for remote access. Valid values are TRUE or FALSE.
+.IP \(bu 2
+REMOTE_DEBUG_ENABLED: Whether the device is enabled for remote debugging. Valid values are TRUE or FALSE. Because remote debugging is \fI\%no longer supported\fP , this filter is ignored.
+.IP \(bu 2
+INSTANCE_ARN: The Amazon Resource Name (ARN) of the device instance.
+.IP \(bu 2
+INSTANCE_LABELS: The label of the device instance.
+.IP \(bu 2
+FLEET_TYPE: The fleet type. Valid values are PUBLIC or PRIVATE.
+.UNINDENT
+.IP \(bu 2
+\fBOperator\fP   The filter operator.
+.INDENT 2.0
+.IP \(bu 2
+The EQUALS operator is available for every attribute except INSTANCE_LABELS.
+.IP \(bu 2
+The CONTAINS operator is available for the INSTANCE_LABELS and MODEL attributes.
+.IP \(bu 2
+The IN and NOT_IN operators are available for the ARN, OS_VERSION, MODEL, MANUFACTURER, and INSTANCE_ARN attributes.
+.IP \(bu 2
+The LESS_THAN, GREATER_THAN, LESS_THAN_OR_EQUALS, and GREATER_THAN_OR_EQUALS operators are also available for the OS_VERSION attribute.
+.UNINDENT
+.IP \(bu 2
+\fBValues\fP   An array of one or more filter values.  \fBOperator Values\fP
+.INDENT 2.0
+.IP \(bu 2
+The IN and NOT_IN operators can take a values array that has more than one element.
+.IP \(bu 2
+The other operators require an array with a single element.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAttribute Values\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+The PLATFORM attribute can be set to ANDROID or IOS.
+.IP \(bu 2
+The AVAILABILITY attribute can be set to AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.IP \(bu 2
+The FORM_FACTOR attribute can be set to PHONE or TABLET.
+.IP \(bu 2
+The FLEET_TYPE attribute can be set to PUBLIC or PRIVATE.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a device filter used to select a set of devices to be included in a test run. This data structure is passed in as the \fBdeviceSelectionConfiguration\fP parameter to \fBScheduleRun\fP . For an example of the JSON request syntax, see  ScheduleRun .
+.sp
+It is also passed in as the \fBfilters\fP parameter to \fBListDevices\fP . For an example of the JSON request syntax, see  ListDevices .
+.sp
+attribute \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The aspect of a device such as platform or model used as the selection criteria in a device filter.
+.sp
+The supported operators for each attribute are provided in the following list.
+.INDENT 0.0
+.INDENT 3.5
+ARN
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Resource Name (ARN) of the device (for example, \fBarn:aws:devicefarm:us\-west\-2::device:12345Example\fP ).
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+PLATFORM
+.UNINDENT
+.UNINDENT
+.sp
+The device platform. Valid values are ANDROID or IOS.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+OS_VERSION
+.UNINDENT
+.UNINDENT
+.sp
+The operating system version (for example, 10.3.2).
+.sp
+Supported operators: \fBEQUALS\fP , \fBGREATER_THAN\fP , \fBGREATER_THAN_OR_EQUALS\fP , \fBIN\fP , \fBLESS_THAN\fP , \fBLESS_THAN_OR_EQUALS\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+MODEL
+.UNINDENT
+.UNINDENT
+.sp
+The device model (for example, iPad 5th Gen).
+.sp
+Supported operators: \fBCONTAINS\fP , \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+AVAILABILITY
+.UNINDENT
+.UNINDENT
+.sp
+The current availability of the device. Valid values are AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+FORM_FACTOR
+.UNINDENT
+.UNINDENT
+.sp
+The device form factor. Valid values are PHONE or TABLET.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+MANUFACTURER
+.UNINDENT
+.UNINDENT
+.sp
+The device manufacturer (for example, Apple).
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+REMOTE_ACCESS_ENABLED
+.UNINDENT
+.UNINDENT
+.sp
+Whether the device is enabled for remote access. Valid values are TRUE or FALSE.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+REMOTE_DEBUG_ENABLED
+.UNINDENT
+.UNINDENT
+.sp
+Whether the device is enabled for remote debugging. Valid values are TRUE or FALSE.
+.sp
+Supported operators: \fBEQUALS\fP
+.sp
+Because remote debugging is \fI\%no longer supported\fP , this filter is ignored.
+.INDENT 0.0
+.INDENT 3.5
+INSTANCE_ARN
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Resource Name (ARN) of the device instance.
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+INSTANCE_LABELS
+.UNINDENT
+.UNINDENT
+.sp
+The label of the device instance.
+.sp
+Supported operators: \fBCONTAINS\fP
+.INDENT 0.0
+.INDENT 3.5
+FLEET_TYPE
+.UNINDENT
+.UNINDENT
+.sp
+The fleet type. Valid values are PUBLIC or PRIVATE.
+.sp
+Supported operators: \fBEQUALS\fP
+.UNINDENT
+.UNINDENT
+.sp
+operator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how Device Farm compares the filter\(aqs attribute to the value. See the attribute descriptions.
+.UNINDENT
+.UNINDENT
+.sp
+values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of one or more filter values used in a device filter.
+.INDENT 0.0
+.INDENT 3.5
+\fBOperator Values\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+The IN and NOT_IN operators can take a values array that has more than one element.
+.IP \(bu 2
+The other operators require an array with a single element.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAttribute Values\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+The PLATFORM attribute can be set to ANDROID or IOS.
+.IP \(bu 2
+The AVAILABILITY attribute can be set to AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.IP \(bu 2
+The FORM_FACTOR attribute can be set to PHONE or TABLET.
+.IP \(bu 2
+The FLEET_TYPE attribute can be set to PUBLIC or PRIVATE.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maxDevices \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of devices to be included in a test run.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "filters": [
+    {
+      "attribute": "ARN"|"PLATFORM"|"OS_VERSION"|"MODEL"|"AVAILABILITY"|"FORM_FACTOR"|"MANUFACTURER"|"REMOTE_ACCESS_ENABLED"|"REMOTE_DEBUG_ENABLED"|"INSTANCE_ARN"|"INSTANCE_LABELS"|"FLEET_TYPE",
+      "operator": "EQUALS"|"LESS_THAN"|"LESS_THAN_OR_EQUALS"|"GREATER_THAN"|"GREATER_THAN_OR_EQUALS"|"IN"|"NOT_IN"|"CONTAINS",
+      "values": ["string", ...]
+    }
+    ...
+  ],
+  "maxDevices": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the run to be scheduled.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-test\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the test for the run to be scheduled.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The test\(aqs type.
+.sp
+Must be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+BUILTIN_FUZZ
+.IP \(bu 2
+BUILTIN_EXPLORER. For Android, an app explorer that traverses an Android app, interacting with it and capturing screenshots at the same time.
+.IP \(bu 2
+APPIUM_JAVA_JUNIT
+.IP \(bu 2
+APPIUM_JAVA_TESTNG
+.IP \(bu 2
+APPIUM_PYTHON
+.IP \(bu 2
+APPIUM_NODE
+.IP \(bu 2
+APPIUM_RUBY
+.IP \(bu 2
+APPIUM_WEB_JAVA_JUNIT
+.IP \(bu 2
+APPIUM_WEB_JAVA_TESTNG
+.IP \(bu 2
+APPIUM_WEB_PYTHON
+.IP \(bu 2
+APPIUM_WEB_NODE
+.IP \(bu 2
+APPIUM_WEB_RUBY
+.IP \(bu 2
+CALABASH
+.IP \(bu 2
+INSTRUMENTATION
+.IP \(bu 2
+UIAUTOMATION
+.IP \(bu 2
+UIAUTOMATOR
+.IP \(bu 2
+XCTEST
+.IP \(bu 2
+XCTEST_UI
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+testPackageArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the uploaded test to be run.
+.UNINDENT
+.UNINDENT
+.sp
+testSpecArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the YAML\-formatted test specification.
+.UNINDENT
+.UNINDENT
+.sp
+filter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The test\(aqs filter.
+.UNINDENT
+.UNINDENT
+.sp
+parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The test\(aqs parameters, such as test framework parameters and fixture settings. Parameters are represented by name\-value pairs of strings.
+.sp
+For all tests:
+.INDENT 0.0
+.IP \(bu 2
+\fBapp_performance_monitoring\fP : Performance monitoring is enabled by default. Set this parameter to false to disable it.
+.UNINDENT
+.sp
+For Calabash tests:
+.INDENT 0.0
+.IP \(bu 2
+profile: A cucumber profile (for example, \fBmy_profile_name\fP ).
+.IP \(bu 2
+tags: You can limit execution to features or scenarios that have (or don\(aqt have) certain tags (for example, @smoke or @smoke,~@wip).
+.UNINDENT
+.sp
+For Appium tests (all types):
+.INDENT 0.0
+.IP \(bu 2
+appium_version: The Appium version. Currently supported values are 1.6.5 (and later), latest, and default.
+.INDENT 2.0
+.IP \(bu 2
+latest runs the latest Appium version supported by Device Farm (1.9.1).
+.IP \(bu 2
+For default, Device Farm selects a compatible version of Appium for the device. The current behavior is to run 1.7.2 on Android devices and iOS 9 and earlier and 1.7.2 for iOS 10 and later.
+.IP \(bu 2
+This behavior is subject to change.
+.UNINDENT
+.UNINDENT
+.sp
+For fuzz tests (Android only):
+.INDENT 0.0
+.IP \(bu 2
+event_count: The number of events, between 1 and 10000, that the UI fuzz test should perform.
+.IP \(bu 2
+throttle: The time, in ms, between 0 and 1000, that the UI fuzz test should wait between events.
+.IP \(bu 2
+seed: A seed to use for randomizing the UI fuzz test. Using the same seed value between tests ensures identical event sequences.
+.UNINDENT
+.sp
+For Explorer tests:
+.INDENT 0.0
+.IP \(bu 2
+username: A user name to use if the Explorer encounters a login form. If not supplied, no user name is inserted.
+.IP \(bu 2
+password: A password to use if the Explorer encounters a login form. If not supplied, no password is inserted.
+.UNINDENT
+.sp
+For Instrumentation:
+.INDENT 0.0
+.IP \(bu 2
+filter: A test filter string. Examples:
+.INDENT 2.0
+.IP \(bu 2
+Running a single test case: \fBcom.android.abc.Test1\fP
+.IP \(bu 2
+Running a single test: \fBcom.android.abc.Test1#smoke\fP
+.IP \(bu 2
+Running multiple tests: \fBcom.android.abc.Test1,com.android.abc.Test2\fP
+.UNINDENT
+.UNINDENT
+.sp
+For XCTest and XCTestUI:
+.INDENT 0.0
+.IP \(bu 2
+filter: A test filter string. Examples:
+.INDENT 2.0
+.IP \(bu 2
+Running a single test class: \fBLoginTests\fP
+.IP \(bu 2
+Running a multiple test classes: \fBLoginTests,SmokeTests\fP
+.IP \(bu 2
+Running a single test: \fBLoginTests/testValid\fP
+.IP \(bu 2
+Running multiple tests: \fBLoginTests/testValid,LoginTests/testInvalid\fP
+.UNINDENT
+.UNINDENT
+.sp
+For UIAutomator:
+.INDENT 0.0
+.IP \(bu 2
+filter: A test filter string. Examples:
+.INDENT 2.0
+.IP \(bu 2
+Running a single test case: \fBcom.android.abc.Test1\fP
+.IP \(bu 2
+Running a single test: \fBcom.android.abc.Test1#smoke\fP
+.IP \(bu 2
+Running multiple tests: \fBcom.android.abc.Test1,com.android.abc.Test2\fP
+.UNINDENT
+.UNINDENT
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,testPackageArn=string,testSpecArn=string,filter=string,parameters={KeyName1=string,KeyName2=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "type": "BUILTIN_FUZZ"|"BUILTIN_EXPLORER"|"WEB_PERFORMANCE_PROFILE"|"APPIUM_JAVA_JUNIT"|"APPIUM_JAVA_TESTNG"|"APPIUM_PYTHON"|"APPIUM_NODE"|"APPIUM_RUBY"|"APPIUM_WEB_JAVA_JUNIT"|"APPIUM_WEB_JAVA_TESTNG"|"APPIUM_WEB_PYTHON"|"APPIUM_WEB_NODE"|"APPIUM_WEB_RUBY"|"CALABASH"|"INSTRUMENTATION"|"UIAUTOMATION"|"UIAUTOMATOR"|"XCTEST"|"XCTEST_UI"|"REMOTE_ACCESS_RECORD"|"REMOTE_ACCESS_REPLAY",
+  "testPackageArn": "string",
+  "testSpecArn": "string",
+  "filter": "string",
+  "parameters": {"string": "string"
+    ...}
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the settings for the run to be scheduled.
+.sp
+extraDataPackageArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the extra data for the run. The extra data is a .zip file that AWS Device Farm extracts to external data for Android or the app\(aqs sandbox for iOS.
+.UNINDENT
+.UNINDENT
+.sp
+networkProfileArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Reserved for internal use.
+.UNINDENT
+.UNINDENT
+.sp
+locale \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the locale that is used for the run.
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location that is used for the run.
+.sp
+latitude \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The latitude.
+.UNINDENT
+.UNINDENT
+.sp
+longitude \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The longitude.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+vpceConfigurationArns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of ARNs for your VPC endpoint configurations.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+customerArtifactPaths \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Input \fBCustomerArtifactPaths\fP object for the scheduled run configuration.
+.sp
+iosPaths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Comma\-separated list of paths on the iOS device where the artifacts generated by the customer\(aqs tests are pulled from.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+androidPaths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Comma\-separated list of paths on the Android device where the artifacts generated by the customer\(aqs tests are pulled from.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+deviceHostPaths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Comma\-separated list of paths in the test execution environment where the artifacts generated by the customer\(aqs tests are pulled from.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+radios \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the radio states for the run.
+.sp
+wifi \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if Wi\-Fi is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+bluetooth \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if Bluetooth is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+nfc \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if NFC is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+gps \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if GPS is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+auxiliaryApps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of upload ARNs for app packages to be installed with your app.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+billingMethod \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the billing method for a test run: \fBmetered\fP or \fBunmetered\fP . If the parameter is not specified, the default value is \fBmetered\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you have purchased unmetered device slots, you must set this parameter to \fBunmetered\fP to make use of them. Otherwise, your run counts against your metered time.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+extraDataPackageArn=string,networkProfileArn=string,locale=string,location={latitude=double,longitude=double},vpceConfigurationArns=string,string,customerArtifactPaths={iosPaths=[string,string],androidPaths=[string,string],deviceHostPaths=[string,string]},radios={wifi=boolean,bluetooth=boolean,nfc=boolean,gps=boolean},auxiliaryApps=string,string,billingMethod=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "extraDataPackageArn": "string",
+  "networkProfileArn": "string",
+  "locale": "string",
+  "location": {
+    "latitude": double,
+    "longitude": double
+  },
+  "vpceConfigurationArns": ["string", ...],
+  "customerArtifactPaths": {
+    "iosPaths": ["string", ...],
+    "androidPaths": ["string", ...],
+    "deviceHostPaths": ["string", ...]
+  },
+  "radios": {
+    "wifi": true|false,
+    "bluetooth": true|false,
+    "nfc": true|false,
+    "gps": true|false
+  },
+  "auxiliaryApps": ["string", ...],
+  "billingMethod": "METERED"|"UNMETERED"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-execution\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies configuration information about a test run, such as the execution timeout (in minutes).
+.sp
+jobTimeoutMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of minutes a test run executes before it times out.
+.UNINDENT
+.UNINDENT
+.sp
+accountsCleanup \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if account cleanup is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+appPackagesCleanup \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if app package cleanup is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+videoCapture \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Set to true to enable video capture. Otherwise, set to false. The default is true.
+.UNINDENT
+.UNINDENT
+.sp
+skipAppResign \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When set to \fBtrue\fP , for private devices, Device Farm does not sign your app again. For public devices, Device Farm always signs your apps again.
+.sp
+For more information about how Device Farm re\-signs your apps, see \fI\%Do you modify my app?\fP in the \fIAWS Device Farm FAQs\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+jobTimeoutMinutes=integer,accountsCleanup=boolean,appPackagesCleanup=boolean,videoCapture=boolean,skipAppResign=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "jobTimeoutMinutes": integer,
+  "accountsCleanup": true|false,
+  "appPackagesCleanup": true|false,
+  "videoCapture": true|false,
+  "skipAppResign": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+run \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the scheduled run.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs ARN.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs name.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs type.
+.sp
+Must be one of the following values:
+.INDENT 0.0
+.IP \(bu 2
+BUILTIN_FUZZ
+.IP \(bu 2
+BUILTIN_EXPLORER
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For Android, an app explorer that traverses an Android app, interacting with it and capturing screenshots at the same time.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+APPIUM_JAVA_JUNIT
+.IP \(bu 2
+APPIUM_JAVA_TESTNG
+.IP \(bu 2
+APPIUM_PYTHON
+.IP \(bu 2
+APPIUM_NODE
+.IP \(bu 2
+APPIUM_RUBY
+.IP \(bu 2
+APPIUM_WEB_JAVA_JUNIT
+.IP \(bu 2
+APPIUM_WEB_JAVA_TESTNG
+.IP \(bu 2
+APPIUM_WEB_PYTHON
+.IP \(bu 2
+APPIUM_WEB_NODE
+.IP \(bu 2
+APPIUM_WEB_RUBY
+.IP \(bu 2
+CALABASH
+.IP \(bu 2
+INSTRUMENTATION
+.IP \(bu 2
+UIAUTOMATION
+.IP \(bu 2
+UIAUTOMATOR
+.IP \(bu 2
+XCTEST
+.IP \(bu 2
+XCTEST_UI
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs platform.
+.sp
+Allowed values include:
+.INDENT 0.0
+.IP \(bu 2
+ANDROID
+.IP \(bu 2
+IOS
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+created \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+When the run was created.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs status.
+.sp
+Allowed values include:
+.INDENT 0.0
+.IP \(bu 2
+PENDING
+.IP \(bu 2
+PENDING_CONCURRENCY
+.IP \(bu 2
+PENDING_DEVICE
+.IP \(bu 2
+PROCESSING
+.IP \(bu 2
+SCHEDULING
+.IP \(bu 2
+PREPARING
+.IP \(bu 2
+RUNNING
+.IP \(bu 2
+COMPLETED
+.IP \(bu 2
+STOPPING
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+result \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs result.
+.sp
+Allowed values include:
+.INDENT 0.0
+.IP \(bu 2
+PENDING
+.IP \(bu 2
+PASSED
+.IP \(bu 2
+WARNED
+.IP \(bu 2
+FAILED
+.IP \(bu 2
+SKIPPED
+.IP \(bu 2
+ERRORED
+.IP \(bu 2
+STOPPED
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+started \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs start time.
+.UNINDENT
+.UNINDENT
+.sp
+stopped \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs stop time.
+.UNINDENT
+.UNINDENT
+.sp
+counters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The run\(aqs result counters.
+.sp
+total \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of entities.
+.UNINDENT
+.UNINDENT
+.sp
+passed \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of passed entities.
+.UNINDENT
+.UNINDENT
+.sp
+failed \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of failed entities.
+.UNINDENT
+.UNINDENT
+.sp
+warned \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of warned entities.
+.UNINDENT
+.UNINDENT
+.sp
+errored \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of errored entities.
+.UNINDENT
+.UNINDENT
+.sp
+stopped \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of stopped entities.
+.UNINDENT
+.UNINDENT
+.sp
+skipped \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of skipped entities.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message about the run\(aqs result.
+.UNINDENT
+.UNINDENT
+.sp
+totalJobs \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of jobs for the run.
+.UNINDENT
+.UNINDENT
+.sp
+completedJobs \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of completed jobs.
+.UNINDENT
+.UNINDENT
+.sp
+billingMethod \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the billing method for a test run: \fBmetered\fP or \fBunmetered\fP . If the parameter is not specified, the default value is \fBmetered\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you have unmetered device slots, you must set this to \fBunmetered\fP to use them. Otherwise, the run is counted toward metered device minutes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deviceMinutes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the total (metered or unmetered) minutes used by the test run.
+.sp
+total \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+When specified, represents the total minutes used by the resource to run tests.
+.UNINDENT
+.UNINDENT
+.sp
+metered \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+When specified, represents only the sum of metered minutes used by the resource to run tests.
+.UNINDENT
+.UNINDENT
+.sp
+unmetered \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+When specified, represents only the sum of unmetered minutes used by the resource to run tests.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+networkProfile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The network profile being used for a test run.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the network profile.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the network profile.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the network profile.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of network profile. Valid values are listed here.
+.UNINDENT
+.UNINDENT
+.sp
+uplinkBandwidthBits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The data throughput rate in bits per second, as an integer from 0 to 104857600.
+.UNINDENT
+.UNINDENT
+.sp
+downlinkBandwidthBits \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The data throughput rate in bits per second, as an integer from 0 to 104857600.
+.UNINDENT
+.UNINDENT
+.sp
+uplinkDelayMs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Delay time for all packets to destination in milliseconds as an integer from 0 to 2000.
+.UNINDENT
+.UNINDENT
+.sp
+downlinkDelayMs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Delay time for all packets to destination in milliseconds as an integer from 0 to 2000.
+.UNINDENT
+.UNINDENT
+.sp
+uplinkJitterMs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Time variation in the delay of received packets in milliseconds as an integer from 0 to 2000.
+.UNINDENT
+.UNINDENT
+.sp
+downlinkJitterMs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+Time variation in the delay of received packets in milliseconds as an integer from 0 to 2000.
+.UNINDENT
+.UNINDENT
+.sp
+uplinkLossPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Proportion of transmitted packets that fail to arrive from 0 to 100 percent.
+.UNINDENT
+.UNINDENT
+.sp
+downlinkLossPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Proportion of received packets that fail to arrive from 0 to 100 percent.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+parsingResultUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Read\-only URL for an object in an S3 bucket where you can get the parsing results of the test package. If the test package doesn\(aqt parse, the reason why it doesn\(aqt parse appears in the file that this URL points to.
+.UNINDENT
+.UNINDENT
+.sp
+resultCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Supporting field for the result field. Set only if \fBresult\fP is \fBSKIPPED\fP . \fBPARSING_FAILED\fP if the result is skipped because of test package parsing failure.
+.UNINDENT
+.UNINDENT
+.sp
+seed \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+For fuzz tests, this is a seed to use for randomizing the UI fuzz test. Using the same seed value between tests ensures identical event sequences.
+.UNINDENT
+.UNINDENT
+.sp
+appUpload \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An app to upload or that has been uploaded.
+.UNINDENT
+.UNINDENT
+.sp
+eventCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+For fuzz tests, this is the number of events, between 1 and 10000, that the UI fuzz test should perform.
+.UNINDENT
+.UNINDENT
+.sp
+jobTimeoutMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of minutes the job executes before it times out.
+.UNINDENT
+.UNINDENT
+.sp
+devicePoolArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the device pool for the run.
+.UNINDENT
+.UNINDENT
+.sp
+locale \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the locale that is used for the run.
+.UNINDENT
+.UNINDENT
+.sp
+radios \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the radio states for the run.
+.sp
+wifi \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if Wi\-Fi is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+bluetooth \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if Bluetooth is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+nfc \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if NFC is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.sp
+gps \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if GPS is enabled at the beginning of the test. Otherwise, false.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+location \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the location that is used for the run.
+.sp
+latitude \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The latitude.
+.UNINDENT
+.UNINDENT
+.sp
+longitude \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The longitude.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+customerArtifactPaths \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Output \fBCustomerArtifactPaths\fP object for the test run.
+.sp
+iosPaths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Comma\-separated list of paths on the iOS device where the artifacts generated by the customer\(aqs tests are pulled from.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+androidPaths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Comma\-separated list of paths on the Android device where the artifacts generated by the customer\(aqs tests are pulled from.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+deviceHostPaths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Comma\-separated list of paths in the test execution environment where the artifacts generated by the customer\(aqs tests are pulled from.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+webUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Device Farm console URL for the recording of the run.
+.UNINDENT
+.UNINDENT
+.sp
+skipAppResign \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When set to \fBtrue\fP , for private devices, Device Farm does not sign your app again. For public devices, Device Farm always signs your apps again.
+.sp
+For more information about how Device Farm re\-signs your apps, see \fI\%Do you modify my app?\fP in the \fIAWS Device Farm FAQs\fP .
+.UNINDENT
+.UNINDENT
+.sp
+testSpecArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the YAML\-formatted test specification for the run.
+.UNINDENT
+.UNINDENT
+.sp
+deviceSelectionResult \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The results of a device filter used to select the devices for a test run.
+.sp
+filters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The filters in a device selection result.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a device filter used to select a set of devices to be included in a test run. This data structure is passed in as the \fBdeviceSelectionConfiguration\fP parameter to \fBScheduleRun\fP . For an example of the JSON request syntax, see  ScheduleRun .
+.sp
+It is also passed in as the \fBfilters\fP parameter to \fBListDevices\fP . For an example of the JSON request syntax, see  ListDevices .
+.sp
+attribute \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The aspect of a device such as platform or model used as the selection criteria in a device filter.
+.sp
+The supported operators for each attribute are provided in the following list.
+.INDENT 0.0
+.INDENT 3.5
+ARN
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Resource Name (ARN) of the device (for example, \fBarn:aws:devicefarm:us\-west\-2::device:12345Example\fP ).
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+PLATFORM
+.UNINDENT
+.UNINDENT
+.sp
+The device platform. Valid values are ANDROID or IOS.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+OS_VERSION
+.UNINDENT
+.UNINDENT
+.sp
+The operating system version (for example, 10.3.2).
+.sp
+Supported operators: \fBEQUALS\fP , \fBGREATER_THAN\fP , \fBGREATER_THAN_OR_EQUALS\fP , \fBIN\fP , \fBLESS_THAN\fP , \fBLESS_THAN_OR_EQUALS\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+MODEL
+.UNINDENT
+.UNINDENT
+.sp
+The device model (for example, iPad 5th Gen).
+.sp
+Supported operators: \fBCONTAINS\fP , \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+AVAILABILITY
+.UNINDENT
+.UNINDENT
+.sp
+The current availability of the device. Valid values are AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+FORM_FACTOR
+.UNINDENT
+.UNINDENT
+.sp
+The device form factor. Valid values are PHONE or TABLET.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+MANUFACTURER
+.UNINDENT
+.UNINDENT
+.sp
+The device manufacturer (for example, Apple).
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+REMOTE_ACCESS_ENABLED
+.UNINDENT
+.UNINDENT
+.sp
+Whether the device is enabled for remote access. Valid values are TRUE or FALSE.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+REMOTE_DEBUG_ENABLED
+.UNINDENT
+.UNINDENT
+.sp
+Whether the device is enabled for remote debugging. Valid values are TRUE or FALSE.
+.sp
+Supported operators: \fBEQUALS\fP
+.sp
+Because remote debugging is \fI\%no longer supported\fP , this filter is ignored.
+.INDENT 0.0
+.INDENT 3.5
+INSTANCE_ARN
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Resource Name (ARN) of the device instance.
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+INSTANCE_LABELS
+.UNINDENT
+.UNINDENT
+.sp
+The label of the device instance.
+.sp
+Supported operators: \fBCONTAINS\fP
+.INDENT 0.0
+.INDENT 3.5
+FLEET_TYPE
+.UNINDENT
+.UNINDENT
+.sp
+The fleet type. Valid values are PUBLIC or PRIVATE.
+.sp
+Supported operators: \fBEQUALS\fP
+.UNINDENT
+.UNINDENT
+.sp
+operator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how Device Farm compares the filter\(aqs attribute to the value. See the attribute descriptions.
+.UNINDENT
+.UNINDENT
+.sp
+values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of one or more filter values used in a device filter.
+.INDENT 0.0
+.INDENT 3.5
+\fBOperator Values\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+The IN and NOT_IN operators can take a values array that has more than one element.
+.IP \(bu 2
+The other operators require an array with a single element.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAttribute Values\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+The PLATFORM attribute can be set to ANDROID or IOS.
+.IP \(bu 2
+The AVAILABILITY attribute can be set to AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.IP \(bu 2
+The FORM_FACTOR attribute can be set to PHONE or TABLET.
+.IP \(bu 2
+The FLEET_TYPE attribute can be set to PUBLIC or PRIVATE.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+matchedDevicesCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of devices that matched the device filter selection criteria.
+.UNINDENT
+.UNINDENT
+.sp
+maxDevices \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of devices to be selected by a device filter and included in a test run.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

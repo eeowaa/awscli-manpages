@@ -1,0 +1,367 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "APIGATEWAYV2-CREATE-AUTHORIZER" "a" "" ""
+.SH NAME
+apigatewayv2-create-authorizer \- Creates an Authorizer for an API
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an Authorizer for an API.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-authorizer
+\-\-api\-id <value>
+[\-\-authorizer\-credentials\-arn <value>]
+[\-\-authorizer\-payload\-format\-version <value>]
+[\-\-authorizer\-result\-ttl\-in\-seconds <value>]
+\-\-authorizer\-type <value>
+[\-\-authorizer\-uri <value>]
+[\-\-enable\-simple\-responses | \-\-no\-enable\-simple\-responses]
+\-\-identity\-source <value>
+[\-\-identity\-validation\-expression <value>]
+[\-\-jwt\-configuration <value>]
+\-\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-api\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The API identifier.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-authorizer\-credentials\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the required credentials as an IAM role for API Gateway to invoke the authorizer. To specify an IAM role for API Gateway to assume, use the role\(aqs Amazon Resource Name (ARN). To use resource\-based permissions on the Lambda function, don\(aqt specify this parameter. Supported only for REQUEST authorizers.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-authorizer\-payload\-format\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the format of the payload sent to an HTTP API Lambda authorizer. Required for HTTP API Lambda authorizers. Supported values are 1.0 and 2.0. To learn more, see \fI\%Working with AWS Lambda authorizers for HTTP APIs\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-authorizer\-result\-ttl\-in\-seconds\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time to live (TTL) for cached authorizer results, in seconds. If it equals 0, authorization caching is disabled. If it is greater than 0, API Gateway caches authorizer responses. The maximum value is 3600, or 1 hour. Supported only for HTTP API Lambda authorizers.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-authorizer\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The authorizer type. Specify REQUEST for a Lambda function using incoming request parameters. Specify JWT to use JSON Web Tokens (supported only for HTTP APIs).
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBREQUEST\fP
+.IP \(bu 2
+\fBJWT\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-authorizer\-uri\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The authorizer\(aqs Uniform Resource Identifier (URI). For REQUEST authorizers, this must be a well\-formed Lambda function URI, for example, arn:aws:apigateway:us\-west\-2:lambda:path/2015\-03\-31/functions/arn:aws:lambda:us\-west\-2:{account_id}:function:{lambda_function_name}/invocations. In general, the URI has this form: arn:aws:apigateway:{region}:lambda:path/{service_api}, where {region} is the same as the region hosting the Lambda function, path indicates that the remaining substring in the URI should be treated as the path to the resource, including the initial /. For Lambda functions, this is usually of the form /2015\-03\-31/functions/[FunctionARN]/invocations. Supported only for REQUEST authorizers.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enable\-simple\-responses\fP | \fB\-\-no\-enable\-simple\-responses\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether a Lambda authorizer returns a response in a simple format. By default, a Lambda authorizer must return an IAM policy. If enabled, the Lambda authorizer can return a boolean value instead of an IAM policy. Supported only for HTTP APIs. To learn more, see \fI\%Working with AWS Lambda authorizers for HTTP APIs\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-identity\-source\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The identity source for which authorization is requested.
+.sp
+For a REQUEST authorizer, this is optional. The value is a set of one or more mapping expressions of the specified request parameters. The identity source can be headers, query string parameters, stage variables, and context parameters. For example, if an Auth header and a Name query string parameter are defined as identity sources, this value is route.request.header.Auth, route.request.querystring.Name for WebSocket APIs. For HTTP APIs, use selection expressions prefixed with $, for example, $request.header.Auth, $request.querystring.Name. These parameters are used to perform runtime validation for Lambda\-based authorizers by verifying all of the identity\-related request parameters are present in the request, not null, and non\-empty. Only when this is true does the authorizer invoke the authorizer Lambda function. Otherwise, it returns a 401 Unauthorized response without calling the Lambda function. For HTTP APIs, identity sources are also used as the cache key when caching is enabled. To learn more, see \fI\%Working with AWS Lambda authorizers for HTTP APIs\fP .
+.sp
+For JWT, a single entry that specifies where to extract the JSON Web Token (JWT) from inbound requests. Currently only header\-based and query parameter\-based selections are supported, for example $request.header.Authorization.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-identity\-validation\-expression\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is not used.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-jwt\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the configuration of a JWT authorizer. Required for the JWT authorizer type. Supported only for HTTP APIs.
+.sp
+Audience \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the intended recipients of the JWT. A valid JWT must provide an aud that matches at least one entry in this list. See \fI\%RFC 7519\fP . Supported only for HTTP APIs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Issuer \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The base domain of the identity provider that issues JSON Web Tokens. For example, an Amazon Cognito user pool has the following format: \fI\%https://cognito\-idp\fP\&.{region}.amazonaws.com/{userPoolId}. Required for the JWT authorizer type. Supported only for HTTP APIs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Audience=string,string,Issuer=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Audience": ["string", ...],
+  "Issuer": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the authorizer.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a JWT authorizer for an HTTP API\fP
+.sp
+The following \fBcreate\-authorizer\fP example creates a JWT authorizer that uses Amazon Cognito as an identity provider.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws apigatewayv2 create\-authorizer \e
+    \-\-name my\-jwt\-authorizer \e
+    \-\-api\-id a1b2c3d4 \e
+    \-\-authorizer\-type JWT \e
+    \-\-identity\-source \(aq$request.header.Authorization\(aq \e
+    \-\-jwt\-configuration Audience=123456abc,Issuer=https://cognito\-idp.us\-west\-2.amazonaws.com/us\-west\-2_abc123
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AuthorizerId": "a1b2c3",
+    "AuthorizerType": "JWT",
+    "IdentitySource": [
+        "$request.header.Authorization"
+    ],
+    "JwtConfiguration": {
+        "Audience": [
+            "123456abc"
+        ],
+        "Issuer": "https://cognito\-idp.us\-west\-2.amazonaws.com/us\-west\-2_abc123"
+    },
+    "Name": "my\-jwt\-authorizer"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Controlling access to HTTP APIs with JWT authorizers\fP in the \fIAmazon API Gateway Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+AuthorizerCredentialsArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the required credentials as an IAM role for API Gateway to invoke the authorizer. To specify an IAM role for API Gateway to assume, use the role\(aqs Amazon Resource Name (ARN). To use resource\-based permissions on the Lambda function, don\(aqt specify this parameter. Supported only for REQUEST authorizers.
+.UNINDENT
+.UNINDENT
+.sp
+AuthorizerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The authorizer identifier.
+.UNINDENT
+.UNINDENT
+.sp
+AuthorizerPayloadFormatVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the format of the payload sent to an HTTP API Lambda authorizer. Required for HTTP API Lambda authorizers. Supported values are 1.0 and 2.0. To learn more, see \fI\%Working with AWS Lambda authorizers for HTTP APIs\fP .
+.UNINDENT
+.UNINDENT
+.sp
+AuthorizerResultTtlInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time to live (TTL) for cached authorizer results, in seconds. If it equals 0, authorization caching is disabled. If it is greater than 0, API Gateway caches authorizer responses. The maximum value is 3600, or 1 hour. Supported only for HTTP API Lambda authorizers.
+.UNINDENT
+.UNINDENT
+.sp
+AuthorizerType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The authorizer type. Specify REQUEST for a Lambda function using incoming request parameters. Specify JWT to use JSON Web Tokens (supported only for HTTP APIs).
+.UNINDENT
+.UNINDENT
+.sp
+AuthorizerUri \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The authorizer\(aqs Uniform Resource Identifier (URI). For REQUEST authorizers, this must be a well\-formed Lambda function URI, for example, arn:aws:apigateway:us\-west\-2:lambda:path/2015\-03\-31/functions/arn:aws:lambda:us\-west\-2:{account_id}:function:{lambda_function_name}/invocations. In general, the URI has this form: arn:aws:apigateway:{region}:lambda:path/{service_api}, where {region} is the same as the region hosting the Lambda function, path indicates that the remaining substring in the URI should be treated as the path to the resource, including the initial /. For Lambda functions, this is usually of the form /2015\-03\-31/functions/[FunctionARN]/invocations. Supported only for REQUEST authorizers.
+.UNINDENT
+.UNINDENT
+.sp
+EnableSimpleResponses \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether a Lambda authorizer returns a response in a simple format. If enabled, the Lambda authorizer can return a boolean value instead of an IAM policy. Supported only for HTTP APIs. To learn more, see \fI\%Working with AWS Lambda authorizers for HTTP APIs\fP
+.UNINDENT
+.UNINDENT
+.sp
+IdentitySource \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The identity source for which authorization is requested.
+.sp
+For a REQUEST authorizer, this is optional. The value is a set of one or more mapping expressions of the specified request parameters. The identity source can be headers, query string parameters, stage variables, and context parameters. For example, if an Auth header and a Name query string parameter are defined as identity sources, this value is route.request.header.Auth, route.request.querystring.Name for WebSocket APIs. For HTTP APIs, use selection expressions prefixed with $, for example, $request.header.Auth, $request.querystring.Name. These parameters are used to perform runtime validation for Lambda\-based authorizers by verifying all of the identity\-related request parameters are present in the request, not null, and non\-empty. Only when this is true does the authorizer invoke the authorizer Lambda function. Otherwise, it returns a 401 Unauthorized response without calling the Lambda function. For HTTP APIs, identity sources are also used as the cache key when caching is enabled. To learn more, see \fI\%Working with AWS Lambda authorizers for HTTP APIs\fP .
+.sp
+For JWT, a single entry that specifies where to extract the JSON Web Token (JWT) from inbound requests. Currently only header\-based and query parameter\-based selections are supported, for example $request.header.Authorization.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+IdentityValidationExpression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The validation expression does not apply to the REQUEST authorizer.
+.UNINDENT
+.UNINDENT
+.sp
+JwtConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the configuration of a JWT authorizer. Required for the JWT authorizer type. Supported only for HTTP APIs.
+.sp
+Audience \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the intended recipients of the JWT. A valid JWT must provide an aud that matches at least one entry in this list. See \fI\%RFC 7519\fP . Supported only for HTTP APIs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Issuer \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The base domain of the identity provider that issues JSON Web Tokens. For example, an Amazon Cognito user pool has the following format: \fI\%https://cognito\-idp\fP\&.{region}.amazonaws.com/{userPoolId}. Required for the JWT authorizer type. Supported only for HTTP APIs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the authorizer.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

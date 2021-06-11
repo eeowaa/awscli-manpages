@@ -1,0 +1,317 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ATHENA-START-QUERY-EXECUTION" "a" "" ""
+.SH NAME
+athena-start-query-execution \- Runs the SQL query statements contained in the Query 
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Runs the SQL query statements contained in the \fBQuery\fP . Requires you to have access to the workgroup in which the query ran. Running queries against an external catalog requires  GetDataCatalog permission to the catalog. For code samples using the AWS SDK for Java, see \fI\%Examples and Code Samples\fP in the \fIAmazon Athena User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-query\-execution
+\-\-query\-string <value>
+[\-\-client\-request\-token <value>]
+[\-\-query\-execution\-context <value>]
+[\-\-result\-configuration <value>]
+[\-\-work\-group <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-query\-string\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The SQL query statements to be executed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique case\-sensitive string used to ensure the request to create the query is idempotent (executes only once). If another \fBStartQueryExecution\fP request is received, the same response is returned and another query is not created. If a parameter has changed, for example, the \fBQueryString\fP , an error is returned.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+This token is listed as not required because AWS SDKs (for example the AWS SDK for Java) auto\-generate the token for users. If you are not using the AWS SDK or the AWS CLI, you must provide this token or the action will fail.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-query\-execution\-context\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The database within which the query executes.
+.sp
+Database \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the database used in the query execution.
+.UNINDENT
+.UNINDENT
+.sp
+Catalog \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the data catalog used in the query execution.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Database=string,Catalog=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Database": "string",
+  "Catalog": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-result\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies information about where and how to save the results of the query execution. If the query runs in a workgroup, then workgroup\(aqs settings may override query settings. This affects the query results location. The workgroup settings override is specified in EnforceWorkGroupConfiguration (true/false) in the WorkGroupConfiguration. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration .
+.sp
+OutputLocation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location in Amazon S3 where your query results are stored, such as \fBs3://path/to/query/bucket/\fP . To run the query, you must specify the query results location using one of the ways: either for individual queries using either this setting (client\-side), or in the workgroup, using  WorkGroupConfiguration . If none of them is set, Athena issues an error that no output location is provided. For more information, see \fI\%Query Results\fP . If workgroup settings override client\-side settings, then the query uses the settings specified for the workgroup. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration .
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If query results are encrypted in Amazon S3, indicates the encryption option used (for example, \fBSSE\-KMS\fP or \fBCSE\-KMS\fP ) and key information. This is a client\-side setting. If workgroup settings override client\-side settings, then the query uses the encryption configuration that is specified for the workgroup, and also uses the location for storing query results specified in the workgroup. See  WorkGroupConfiguration$EnforceWorkGroupConfiguration and \fI\%Workgroup Settings Override Client\-Side Settings\fP .
+.sp
+EncryptionOption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether Amazon S3 server\-side encryption with Amazon S3\-managed keys (\fBSSE\-S3\fP ), server\-side encryption with KMS\-managed keys (\fBSSE\-KMS\fP ), or client\-side encryption with KMS\-managed keys (CSE\-KMS) is used.
+.sp
+If a query runs in a workgroup and the workgroup overrides client\-side settings, then the workgroup\(aqs setting for encryption is used. It specifies whether query results must be encrypted, for all queries that run in this workgroup.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For \fBSSE\-KMS\fP and \fBCSE\-KMS\fP , this is the KMS key ARN or ID.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+OutputLocation=string,EncryptionConfiguration={EncryptionOption=string,KmsKey=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "OutputLocation": "string",
+  "EncryptionConfiguration": {
+    "EncryptionOption": "SSE_S3"|"SSE_KMS"|"CSE_KMS",
+    "KmsKey": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-work\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the workgroup in which the query is being started.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To run a query in a workgroup on the specified table in the specified database and data catalog\fP
+.sp
+The following \fBstart\-query\-execution\fP example uses the \fBAthenaAdmin\fP workgroup to run a query on the \fBcloudfront_logs\fP table in the \fBcflogsdatabase\fP in the \fBAwsDataCatalog\fP data catalog.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws athena start\-query\-execution \e
+    \-\-query\-string "select date, location, browser, uri, status from cloudfront_logs where method = \(aqGET\(aq and status = 200 and location like \(aqSFO%\(aq limit 10" \e
+    \-\-work\-group "AthenaAdmin" \e
+    \-\-query\-execution\-context Database=cflogsdatabase,Catalog=AwsDataCatalog
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+"QueryExecutionId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Running SQL Queries Using Amazon Athena\fP in the \fIAmazon Athena User Guide\fP\&.
+.sp
+\fBExample 2: To run a query that uses a specified workgroup to create a database in the specified data catalog\fP
+.sp
+The following \fBstart\-query\-execution\fP example uses the \fBAthenaAdmin\fP workgroup to create the database \fBnewdb\fP in the default data catalog \fBAwsDataCatalog\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws athena start\-query\-execution \e
+    \-\-query\-string "create database if not exists newdb" \e
+    \-\-work\-group "AthenaAdmin"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+"QueryExecutionId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11112"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Running SQL Queries Using Amazon Athena\fP in the \fIAmazon Athena User Guide\fP\&.
+.sp
+\fBExample 3: To run a query that creates a view on a table in the specified database and data catalog\fP
+.sp
+The following \fBstart\-query\-execution\fP example uses  a \fBSELECT\fP statement on the \fBcloudfront_logs\fP table in the \fBcflogsdatabase\fP to create the view \fBcf10\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws athena start\-query\-execution \e
+    \-\-query\-string  "CREATE OR REPLACE VIEW cf10 AS SELECT * FROM cloudfront_logs limit 10" \e
+    \-\-query\-execution\-context Database=cflogsdatabase
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+"QueryExecutionId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11113"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Running SQL Queries Using Amazon Athena\fP in the \fIAmazon Athena User Guide\fP\&.
+.SH OUTPUT
+.sp
+QueryExecutionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique ID of the query that ran as a result of this request.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

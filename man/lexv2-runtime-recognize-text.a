@@ -1,0 +1,816 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LEXV2-RUNTIME-RECOGNIZE-TEXT" "a" "" ""
+.SH NAME
+lexv2-runtime-recognize-text \- Sends user input to Amazon Lex
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Sends user input to Amazon Lex. Client applications use this API to send requests to Amazon Lex at runtime. Amazon Lex then interprets the user input using the machine learning model that it build for the bot.
+.sp
+In response, Amazon Lex returns the next message to convey to the user and an optional response card to display.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  recognize\-text
+\-\-bot\-id <value>
+\-\-bot\-alias\-id <value>
+\-\-locale\-id <value>
+\-\-session\-id <value>
+\-\-text <value>
+[\-\-session\-state <value>]
+[\-\-request\-attributes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bot\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the bot that processes the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bot\-alias\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The alias identifier in use for the bot that processes the request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-locale\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The locale where the session is in use.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-session\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the user session that is having the conversation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-text\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that the user entered. Amazon Lex interprets this text.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-session\-state\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the dialog between the user and the bot.
+.sp
+dialogAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The next step that Amazon Lex should take in the conversation with a user.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next action that the bot should take in its interaction with the user. The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBClose\fP \- Indicates that there will not be a response from the user. For example, the statement "Your order has been placed" does not require a response.
+.IP \(bu 2
+\fBConfirmIntent\fP \- The next action is asking the user if the intent is complete and ready to be fulfilled. This is a yes/no question such as "Place the order?"
+.IP \(bu 2
+\fBDelegate\fP \- The next action is determined by Amazon Lex.
+.IP \(bu 2
+\fBElicitSlot\fP \- The next action is to elicit a slot value from the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+slotToElicit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the slot that should be elicited from the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+intent \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The active intent that Amazon Lex is processing.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the intent.
+.UNINDENT
+.UNINDENT
+.sp
+slots \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of all of the slots for the intent. The name of the slot maps to the value of the slot. If a slot has not been filled, the value is null.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A value that Amazon Lex uses to fulfill an intent.
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current value of the slot.
+.sp
+originalValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text of the utterance from the user that was entered for the slot.
+.UNINDENT
+.UNINDENT
+.sp
+interpretedValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that Amazon Lex determines for the slot. The actual value depends on the setting of the value selection strategy for the bot. You can choose to use the value entered by the user, or you can have Amazon Lex choose the first value in the \fBresolvedValues\fP list.
+.UNINDENT
+.UNINDENT
+.sp
+resolvedValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of additional values that have been recognized for the slot.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+state \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains fulfillment information for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+confirmationState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about whether fulfillment of the intent has been confirmed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+activeContexts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more contexts that indicate to Amazon Lex the context of a request. When a context is active, Amazon Lex considers intents with the matching context as a trigger as the next intent in a session.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the contexts that a user is using in a session. You can configure Amazon Lex to set a context when an intent is fulfilled, or you can set a context using the , , or operations.
+.sp
+Use a context to indicate to Amazon Lex intents that should be used as follow\-up intents. For example, if the active context is \fBorder\-fulfilled\fP , only intents that have \fBorder\-fulfilled\fP configured as a trigger are considered for follow up.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the context.
+.UNINDENT
+.UNINDENT
+.sp
+timeToLive \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the number of turns or seconds that the context is active. Once the time to live expires, the context is no longer returned in a response.
+.sp
+timeToLiveInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of seconds that the context is active. You can specify between 5 and 86400 seconds (24 hours).
+.UNINDENT
+.UNINDENT
+.sp
+turnsToLive \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of turns that the context is active. You can specify up to 20 turns. Each request and response from the bot is a turn.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+contextAttributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A lis tof contexts active for the request. A context can be activated when a previous intent is fulfilled, or by including the context in the request.
+.sp
+If you don\(aqt specify a list of contexts, Amazon Lex will use the current list of contexts for the session. If you specify an empty list, all contexts for the session are cleared.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+sessionAttributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Map of key/value pairs representing session\-specific context information. It contains application information passed between Amazon Lex and a client application.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+originatingRequestId \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "dialogAction": {
+    "type": "Close"|"ConfirmIntent"|"Delegate"|"ElicitIntent"|"ElicitSlot",
+    "slotToElicit": "string"
+  },
+  "intent": {
+    "name": "string",
+    "slots": {"string": {
+          "value": {
+            "originalValue": "string",
+            "interpretedValue": "string",
+            "resolvedValues": ["string", ...]
+          }
+        }
+      ...},
+    "state": "Failed"|"Fulfilled"|"InProgress"|"ReadyForFulfillment"|"Waiting",
+    "confirmationState": "Confirmed"|"Denied"|"None"
+  },
+  "activeContexts": [
+    {
+      "name": "string",
+      "timeToLive": {
+        "timeToLiveInSeconds": integer,
+        "turnsToLive": integer
+      },
+      "contextAttributes": {"string": "string"
+        ...}
+    }
+    ...
+  ],
+  "sessionAttributes": {"string": "string"
+    ...},
+  "originatingRequestId": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Request\-specific information passed between the client application and Amazon Lex
+.sp
+The namespace \fBx\-amz\-lex:\fP is reserved for special attributes. Don\(aqt create any request attributes with the prefix \fBx\-amz\-lex:\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+messages \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of messages last sent to the user. The messages are ordered based on the order that you returned the messages from your Lambda function or the order that the messages are defined in the bot.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for text that is returned to the customer..
+.sp
+content \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text of the message.
+.UNINDENT
+.UNINDENT
+.sp
+contentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the type of response.
+.UNINDENT
+.UNINDENT
+.sp
+imageResponseCard \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A card that is shown to the user by a messaging platform. You define the contents of the card, the card is displayed by the platform.
+.sp
+When you use a response card, the response from the user is constrained to the text associated with a button on the card.
+.sp
+title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title to display on the response card. The format of the title is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+subtitle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subtitle to display on the response card. The format of the subtitle is determined by the platform displaying the response card.
+.UNINDENT
+.UNINDENT
+.sp
+imageUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of an image to display on the response card. The image URL must be publicly available so that the platform displaying the response card has access to the image.
+.UNINDENT
+.UNINDENT
+.sp
+buttons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of buttons that should be displayed on the response card. The arrangement of the buttons is determined by the platform that displays the button.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A button that appears on a response card show to the user.
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text that is displayed on the button.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value returned to Amazon Lex when a user chooses the button.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+sessionState \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the current state of the dialog between the user and the bot.
+.sp
+Use this to determine the progress of the conversation and what the next action may be.
+.sp
+dialogAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The next step that Amazon Lex should take in the conversation with a user.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The next action that the bot should take in its interaction with the user. The possible values are:
+.INDENT 0.0
+.IP \(bu 2
+\fBClose\fP \- Indicates that there will not be a response from the user. For example, the statement "Your order has been placed" does not require a response.
+.IP \(bu 2
+\fBConfirmIntent\fP \- The next action is asking the user if the intent is complete and ready to be fulfilled. This is a yes/no question such as "Place the order?"
+.IP \(bu 2
+\fBDelegate\fP \- The next action is determined by Amazon Lex.
+.IP \(bu 2
+\fBElicitSlot\fP \- The next action is to elicit a slot value from the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+slotToElicit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the slot that should be elicited from the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+intent \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The active intent that Amazon Lex is processing.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the intent.
+.UNINDENT
+.UNINDENT
+.sp
+slots \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of all of the slots for the intent. The name of the slot maps to the value of the slot. If a slot has not been filled, the value is null.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A value that Amazon Lex uses to fulfill an intent.
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current value of the slot.
+.sp
+originalValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text of the utterance from the user that was entered for the slot.
+.UNINDENT
+.UNINDENT
+.sp
+interpretedValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that Amazon Lex determines for the slot. The actual value depends on the setting of the value selection strategy for the bot. You can choose to use the value entered by the user, or you can have Amazon Lex choose the first value in the \fBresolvedValues\fP list.
+.UNINDENT
+.UNINDENT
+.sp
+resolvedValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of additional values that have been recognized for the slot.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+state \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains fulfillment information for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+confirmationState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about whether fulfillment of the intent has been confirmed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+activeContexts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more contexts that indicate to Amazon Lex the context of a request. When a context is active, Amazon Lex considers intents with the matching context as a trigger as the next intent in a session.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the contexts that a user is using in a session. You can configure Amazon Lex to set a context when an intent is fulfilled, or you can set a context using the , , or operations.
+.sp
+Use a context to indicate to Amazon Lex intents that should be used as follow\-up intents. For example, if the active context is \fBorder\-fulfilled\fP , only intents that have \fBorder\-fulfilled\fP configured as a trigger are considered for follow up.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the context.
+.UNINDENT
+.UNINDENT
+.sp
+timeToLive \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the number of turns or seconds that the context is active. Once the time to live expires, the context is no longer returned in a response.
+.sp
+timeToLiveInSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of seconds that the context is active. You can specify between 5 and 86400 seconds (24 hours).
+.UNINDENT
+.UNINDENT
+.sp
+turnsToLive \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of turns that the context is active. You can specify up to 20 turns. Each request and response from the bot is a turn.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+contextAttributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A lis tof contexts active for the request. A context can be activated when a previous intent is fulfilled, or by including the context in the request.
+.sp
+If you don\(aqt specify a list of contexts, Amazon Lex will use the current list of contexts for the session. If you specify an empty list, all contexts for the session are cleared.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+sessionAttributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Map of key/value pairs representing session\-specific context information. It contains application information passed between Amazon Lex and a client application.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+originatingRequestId \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+interpretations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of intents that Amazon Lex determined might satisfy the user\(aqs utterance.
+.sp
+Each interpretation includes the intent, a score that indicates now confident Amazon Lex is that the interpretation is the correct one, and an optional sentiment response that indicates the sentiment expressed in the utterance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An intent that Amazon Lex determined might satisfy the user\(aqs utterance. The intents are ordered by the confidence score.
+.sp
+nluConfidence \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Determines the threshold where Amazon Lex will insert the \fBAMAZON.FallbackIntent\fP , \fBAMAZON.KendraSearchIntent\fP , or both when returning alternative intents in a response. \fBAMAZON.FallbackIntent\fP and \fBAMAZON.KendraSearchIntent\fP are only inserted if they are configured for the bot.
+.sp
+score \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+A score that indicates how confident Amazon Lex is that an intent satisfies the user\(aqs intent. Ranges between 0.00 and 1.00. Higher scores indicate higher confidence.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+sentimentResponse \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The sentiment expressed in an utterance.
+.sp
+When the bot is configured to send utterances to Amazon Comprehend for sentiment analysis, this field contains the result of the analysis.
+.sp
+sentiment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The overall sentiment expressed in the user\(aqs response. This is the sentiment most likely expressed by the user based on the analysis by Amazon Comprehend.
+.UNINDENT
+.UNINDENT
+.sp
+sentimentScore \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The individual sentiment responses for the utterance.
+.sp
+positive \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend has in the accuracy of its detection of the \fBPOSITIVE\fP sentiment.
+.UNINDENT
+.UNINDENT
+.sp
+negative \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend has in the accuracy of its detection of the \fBNEGATIVE\fP sentiment.
+.UNINDENT
+.UNINDENT
+.sp
+neutral \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend has in the accuracy of its detection of the \fBNEUTRAL\fP sentiment.
+.UNINDENT
+.UNINDENT
+.sp
+mixed \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The level of confidence that Amazon Comprehend has in the accuracy of its detection of the \fBMIXED\fP sentiment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+intent \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A list of intents that might satisfy the user\(aqs utterance. The intents are ordered by the confidence score.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the intent.
+.UNINDENT
+.UNINDENT
+.sp
+slots \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of all of the slots for the intent. The name of the slot maps to the value of the slot. If a slot has not been filled, the value is null.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A value that Amazon Lex uses to fulfill an intent.
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current value of the slot.
+.sp
+originalValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The text of the utterance from the user that was entered for the slot.
+.UNINDENT
+.UNINDENT
+.sp
+interpretedValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value that Amazon Lex determines for the slot. The actual value depends on the setting of the value selection strategy for the bot. You can choose to use the value entered by the user, or you can have Amazon Lex choose the first value in the \fBresolvedValues\fP list.
+.UNINDENT
+.UNINDENT
+.sp
+resolvedValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of additional values that have been recognized for the slot.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+state \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains fulfillment information for the intent.
+.UNINDENT
+.UNINDENT
+.sp
+confirmationState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about whether fulfillment of the intent has been confirmed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+requestAttributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+The attributes sent in the request.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+sessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the session in use.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

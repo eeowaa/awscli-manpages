@@ -1,0 +1,190 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DATAPIPELINE-GET-PIPELINE-DEFINITION" "a" "" ""
+.SH NAME
+datapipeline-get-pipeline-definition \- Gets the definition of the specified pipeline
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets the definition of the specified pipeline. You can call \fBGetPipelineDefinition\fP to retrieve the pipeline definition that you provided using  PutPipelineDefinition .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-pipeline\-definition
+\-\-pipeline\-id <value>
+[\-\-pipeline\-version <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-pipeline\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the pipeline.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-pipeline\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the pipeline definition to retrieve. Set this parameter to \fBlatest\fP (default) to use the last definition saved to the pipeline or \fBactive\fP to use the last definition that was activated.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get a pipeline definition\fP
+.sp
+This example gets the pipeline definition for the specified pipeline:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws datapipeline get\-pipeline\-definition \-\-pipeline\-id df\-00627471SOVYZEXAMPLE
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following is example output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "parameters": [
+      {
+          "type": "AWS::S3::ObjectKey",
+          "id": "myS3OutputLoc",
+          "description": "S3 output folder"
+      },
+      {
+          "default": "s3://us\-east\-1.elasticmapreduce.samples/pig\-apache\-logs/data",
+          "type": "AWS::S3::ObjectKey",
+          "id": "myS3InputLoc",
+          "description": "S3 input folder"
+      },
+      {
+          "default": "grep \-rc \e"GET\e" ${INPUT1_STAGING_DIR}/* > ${OUTPUT1_STAGING_DIR}/output.txt",
+          "type": "String",
+          "id": "myShellCmd",
+          "description": "Shell command to run"
+      }
+  ],
+  "objects": [
+      {
+          "type": "Ec2Resource",
+          "terminateAfter": "20 Minutes",
+          "instanceType": "t1.micro",
+          "id": "EC2ResourceObj",
+          "name": "EC2ResourceObj"
+      },
+      {
+          "name": "Default",
+          "failureAndRerunMode": "CASCADE",
+          "resourceRole": "DataPipelineDefaultResourceRole",
+          "schedule": {
+              "ref": "DefaultSchedule"
+          },
+          "role": "DataPipelineDefaultRole",
+          "scheduleType": "cron",
+          "id": "Default"
+      },
+      {
+          "directoryPath": "#{myS3OutputLoc}/#{format(@scheduledStartTime, \(aqYYYY\-MM\-dd\-HH\-mm\-ss\(aq)}",
+          "type": "S3DataNode",
+          "id": "S3OutputLocation",
+          "name": "S3OutputLocation"
+      },
+      {
+          "directoryPath": "#{myS3InputLoc}",
+          "type": "S3DataNode",
+          "id": "S3InputLocation",
+          "name": "S3InputLocation"
+      },
+      {
+          "startAt": "FIRST_ACTIVATION_DATE_TIME",
+          "name": "Every 15 minutes",
+          "period": "15 minutes",
+          "occurrences": "4",
+          "type": "Schedule",
+          "id": "DefaultSchedule"
+      },
+      {
+          "name": "ShellCommandActivityObj",
+          "command": "#{myShellCmd}",
+          "output": {
+              "ref": "S3OutputLocation"
+          },
+          "input": {
+              "ref": "S3InputLocation"
+          },
+          "stage": "true",
+          "type": "ShellCommandActivity",
+          "id": "ShellCommandActivityObj",
+          "runsOn": {
+              "ref": "EC2ResourceObj"
+          }
+      }
+  ],
+  "values": {
+      "myS3OutputLoc": "s3://my\-s3\-bucket/",
+      "myS3InputLoc": "s3://us\-east\-1.elasticmapreduce.samples/pig\-apache\-logs/data",
+      "myShellCmd": "grep \-rc \e"GET\e" ${INPUT1_STAGING_DIR}/* > ${OUTPUT1_STAGING_DIR}/output.txt"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+The output of this command is the pipeline definition, which is documented in the \fI\%Pipeline Definition File Syntax\fP
+.\" Generated by docutils manpage writer.
+.

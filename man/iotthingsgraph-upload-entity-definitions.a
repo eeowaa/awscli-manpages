@@ -1,0 +1,174 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOTTHINGSGRAPH-UPLOAD-ENTITY-DEFINITIONS" "a" "" ""
+.SH NAME
+iotthingsgraph-upload-entity-definitions \- Asynchronously uploads one or more entity definitions to the user(aqs namespace
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Asynchronously uploads one or more entity definitions to the user\(aqs namespace. The \fBdocument\fP parameter is required if \fBsyncWithPublicNamespace\fP and \fBdeleteExistingEntites\fP are false. If the \fBsyncWithPublicNamespace\fP parameter is set to \fBtrue\fP , the user\(aqs namespace will synchronize with the latest version of the public namespace. If \fBdeprecateExistingEntities\fP is set to true, all entities in the latest version will be deleted before the new \fBDefinitionDocument\fP is uploaded.
+.sp
+When a user uploads entity definitions for the first time, the service creates a new namespace for the user. The new namespace tracks the public namespace. Currently users can have only one namespace. The namespace version increments whenever a user uploads entity definitions that are backwards\-incompatible and whenever a user sets the \fBsyncWithPublicNamespace\fP parameter or the \fBdeprecateExistingEntities\fP parameter to \fBtrue\fP .
+.sp
+The IDs for all of the entities should be in URN format. Each entity must be in the user\(aqs namespace. Users can\(aqt create entities in the public namespace, but entity definitions can refer to entities in the public namespace.
+.sp
+Valid entities are \fBDevice\fP , \fBDeviceModel\fP , \fBService\fP , \fBCapability\fP , \fBState\fP , \fBAction\fP , \fBEvent\fP , \fBProperty\fP , \fBMapping\fP , \fBEnum\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  upload\-entity\-definitions
+[\-\-document <value>]
+[\-\-sync\-with\-public\-namespace | \-\-no\-sync\-with\-public\-namespace]
+[\-\-deprecate\-existing\-entities | \-\-no\-deprecate\-existing\-entities]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-document\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBDefinitionDocument\fP that defines the updated entities.
+.sp
+language \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The language used to define the entity. \fBGRAPHQL\fP is the only valid value.
+.UNINDENT
+.UNINDENT
+.sp
+text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The GraphQL text that defines the entity.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+language=string,text=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "language": "GRAPHQL",
+  "text": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sync\-with\-public\-namespace\fP | \fB\-\-no\-sync\-with\-public\-namespace\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A Boolean that specifies whether to synchronize with the latest version of the public namespace. If set to \fBtrue\fP , the upload will create a new namespace version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-deprecate\-existing\-entities\fP | \fB\-\-no\-deprecate\-existing\-entities\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A Boolean that specifies whether to deprecate all entities in the latest version before uploading the new \fBDefinitionDocument\fP . If set to \fBtrue\fP , the upload will create a new namespace version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo upload entity definitions\fP
+.sp
+The following \fBupload\-entity\-definitions\fP example uploads entity definitions to your namespace. The value of \fBMyEntityDefinitions\fP is the GraphQL that models the entities.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iotthingsgraph upload\-entity\-definitions \e
+    \-\-document language=GRAPHQL,text="MyEntityDefinitions"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "uploadId": "f6294f1e\-b109\-4bbe\-9073\-f451a2dda2da"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Modeling Entities\fP in the \fIAWS IoT Things Graph User Guide\fP\&.
+.SH OUTPUT
+.sp
+uploadId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID that specifies the upload action. You can use this to track the status of the upload.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,276 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-MODIFY-DB-PARAMETER-GROUP" "a" "" ""
+.SH NAME
+rds-modify-db-parameter-group \- Modifies the parameters of a DB parameter group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Modifies the parameters of a DB parameter group. To modify more than one parameter, submit a list of the following: \fBParameterName\fP , \fBParameterValue\fP , and \fBApplyMethod\fP . A maximum of 20 parameters can be modified in a single request.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Changes to dynamic parameters are applied immediately. Changes to static parameters require a reboot without failover to the DB instance associated with the parameter group before the change can take effect.
+.UNINDENT
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+After you modify a DB parameter group, you should wait at least 5 minutes before creating your first DB instance that uses that DB parameter group as the default parameter group. This allows Amazon RDS to fully complete the modify action before the parameter group is used as the default for a new DB instance. This is especially important for parameters that are critical when creating the default database for a DB instance, such as the character set for the default database defined by the \fBcharacter_set_database\fP parameter. You can use the \fIParameter Groups\fP option of the \fI\%Amazon RDS console\fP or the \fIDescribeDBParameters\fP command to verify that your DB parameter group has been created or modified.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  modify\-db\-parameter\-group
+\-\-db\-parameter\-group\-name <value>
+\-\-parameters <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-db\-parameter\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DB parameter group.
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+If supplied, must match the name of an existing \fBDBParameterGroup\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parameters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of parameter names, values, and the apply method for the parameter update. At least one parameter name, value, and apply method must be supplied; later arguments are optional. A maximum of 20 parameters can be modified in a single request.
+.sp
+Valid Values (for the application method): \fBimmediate | pending\-reboot\fP
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can use the immediate value with dynamic parameters only. You can use the pending\-reboot value for both dynamic and static parameters, and changes are applied when you reboot the DB instance without failover.
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+This data type is used as a request parameter in the \fBModifyDBParameterGroup\fP and \fBResetDBParameterGroup\fP actions.
+.sp
+This data type is used as a response element in the \fBDescribeEngineDefaultParameters\fP and \fBDescribeDBParameters\fP actions.
+.sp
+ParameterName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+ParameterValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the value of the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides a description of the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+Source \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the source of the parameter value.
+.UNINDENT
+.UNINDENT
+.sp
+ApplyType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the engine specific parameters type.
+.UNINDENT
+.UNINDENT
+.sp
+DataType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the valid data type for the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+AllowedValues \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the valid range of values for the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+IsModifiable \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether (\fBtrue\fP ) or not (\fBfalse\fP ) the parameter can be modified. Some parameters have security or operational implications that prevent them from being changed.
+.UNINDENT
+.UNINDENT
+.sp
+MinimumEngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The earliest engine version to which the parameter can apply.
+.UNINDENT
+.UNINDENT
+.sp
+ApplyMethod \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates when to apply parameter updates.
+.UNINDENT
+.UNINDENT
+.sp
+SupportedEngineModes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The valid DB engine modes.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ParameterName=string,ParameterValue=string,Description=string,Source=string,ApplyType=string,DataType=string,AllowedValues=string,IsModifiable=boolean,MinimumEngineVersion=string,ApplyMethod=string,SupportedEngineModes=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ParameterName": "string",
+    "ParameterValue": "string",
+    "Description": "string",
+    "Source": "string",
+    "ApplyType": "string",
+    "DataType": "string",
+    "AllowedValues": "string",
+    "IsModifiable": true|false,
+    "MinimumEngineVersion": "string",
+    "ApplyMethod": "immediate"|"pending\-reboot",
+    "SupportedEngineModes": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo modify a DB parameter group\fP
+.sp
+The following \fBmodify\-db\-parameter\-group\fP example changes the value of the \fBclr enabled\fP parameter in a DB parameter group. The \fB\-\-apply\-immediately\fP parameter causes the DB parameter group to be modified immediately, instead of waiting until the next maintenance window.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds modify\-db\-parameter\-group \e
+    \-\-db\-parameter\-group\-name test\-sqlserver\-se\-2017 \e
+    \-\-parameters "ParameterName=\(aqclr enabled\(aq,ParameterValue=1,ApplyMethod=immediate"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DBParameterGroupName": "test\-sqlserver\-se\-2017"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Modifying Parameters in a DB Parameter Group\fP in the \fIAmazon RDS User Guide\fP\&.
+.SH OUTPUT
+.sp
+DBParameterGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DB parameter group.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

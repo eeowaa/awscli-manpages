@@ -1,0 +1,261 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-GET-PUBLIC-KEY" "a" "" ""
+.SH NAME
+kms-get-public-key \- Returns the public key of an asymmetric CMK
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the public key of an asymmetric CMK. Unlike the private key of a asymmetric CMK, which never leaves AWS KMS unencrypted, callers with \fBkms:GetPublicKey\fP permission can download the public key of an asymmetric CMK. You can share the public key to allow others to encrypt messages and verify signatures outside of AWS KMS. For information about symmetric and asymmetric CMKs, see \fI\%Using Symmetric and Asymmetric CMKs\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+You do not need to download the public key. Instead, you can use the public key within AWS KMS by calling the  Encrypt ,  ReEncrypt , or  Verify operations with the identifier of an asymmetric CMK. When you use the public key within AWS KMS, you benefit from the authentication, authorization, and logging that are part of every AWS KMS operation. You also reduce of risk of encrypting data that cannot be decrypted. These features are not effective outside of AWS KMS. For details, see \fI\%Special Considerations for Downloading Public Keys\fP .
+.sp
+To help you use the public key safely outside of AWS KMS, \fBGetPublicKey\fP returns important information about the public key in the response, including:
+.INDENT 0.0
+.IP \(bu 2
+\fI\%CustomerMasterKeySpec\fP : The type of key material in the public key, such as \fBRSA_4096\fP or \fBECC_NIST_P521\fP .
+.IP \(bu 2
+\fI\%KeyUsage\fP : Whether the key is used for encryption or signing.
+.IP \(bu 2
+\fI\%EncryptionAlgorithms\fP or \fI\%SigningAlgorithms\fP : A list of the encryption algorithms or the signing algorithms for the key.
+.UNINDENT
+.sp
+Although AWS KMS cannot enforce these restrictions on external operations, it is crucial that you use this information to prevent the public key from being used improperly. For example, you can prevent a public signing key from being used encrypt data, or prevent a public key from being used with an encryption algorithm that is not supported by AWS KMS. You can also avoid errors, such as using the wrong signing algorithm in a verification operation.
+.sp
+The CMK that you use for this operation must be in a compatible key state. For details, see \fI\%How Key State Affects Use of a Customer Master Key\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : Yes. To perform this operation with a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the \fBKeyId\fP parameter.
+.sp
+\fBRequired permissions\fP : \fI\%kms:GetPublicKey\fP (key policy)
+.sp
+\fBRelated operations\fP :  CreateKey
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-public\-key
+\-\-key\-id <value>
+[\-\-grant\-tokens <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the asymmetric CMK that includes the public key.
+.sp
+To specify a CMK, use its key ID, Amazon Resource Name (ARN), alias name, or alias ARN. When using an alias name, prefix it with \fB"alias/"\fP . To specify a CMK in a different AWS account, you must use the key ARN or alias ARN.
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Alias name: \fBalias/ExampleAlias\fP
+.IP \(bu 2
+Alias ARN: \fBarn:aws:kms:us\-east\-2:111122223333:alias/ExampleAlias\fP
+.UNINDENT
+.sp
+To get the key ID and key ARN for a CMK, use  ListKeys or  DescribeKey . To get the alias name and alias ARN, use  ListAliases .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-tokens\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of grant tokens.
+.sp
+For more information, see \fI\%Grant Tokens\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To download the public key of an asymmetric CMK\fP
+.sp
+The following \fBget\-public\-key\fP example downloads the public key of an asymmetric CMK.
+.sp
+In addition to returning the public key, the output includes information that you need to use the public key safely outside of AWS KMS, including the key usage and supported encryption algorithms.
+.sp
+Before running this command, replace the example key ID with a valid key ID from your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms get\-public\-key \e
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "KeyId": "arn:aws:kms:us\-west\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab",
+    "PublicKey": "jANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAl5epvg1/QtJhxSi2g9SDEVg8QV/...",
+    "CustomerMasterKeySpec": "RSA_4096",
+    "KeyUsage": "ENCRYPT_DECRYPT",
+    "EncryptionAlgorithms": [
+        "RSAES_OAEP_SHA_1",
+        "RSAES_OAEP_SHA_256"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information about using asymmetric CMKs in AWS KMS, see \fI\%Using Symmetric and Asymmetric Keys\fP in the \fIAWS Key Management Service API Reference\fP\&.
+.sp
+\fBExample 2: To convert a public key to DER format (Linux and macOS)\fP
+.sp
+The following \fBget\-public\-key\fP example downloads the public key of an asymmetric CMK and saves it in a DER file.
+.sp
+When you use the \fBget\-public\-key\fP command in the AWS CLI, it returns a DER\-encoded X.509 public key that is Base64\-encoded. This example gets the value of the PublicKey property as text. It Base64\-decodes the \fBPublicKey\fP and saves it in the \fBpublic_key.der\fP file. The \fBoutput\fP parameter returns the output as text, instead of JSON. The \fB\-\-query\fP parameter gets only the \fBPublicKey\fP property, not the properties that you need to use the public key safely outside of AWS KMS.
+.sp
+Before running this command, replace the example key ID with a valid key ID from your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms get\-public\-key \e
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab \e
+    \-\-output text \e
+    \-\-query PublicKey | base64 \-\-decode > public_key.der
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information about using asymmetric CMKs in AWS KMS, see \fI\%Using Symmetric and Asymmetric Keys\fP in the \fIAWS Key Management Service API Reference\fP\&.
+.SH OUTPUT
+.sp
+KeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%key ARN\fP ) of the asymmetric CMK from which the public key was downloaded.
+.UNINDENT
+.UNINDENT
+.sp
+PublicKey \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The exported public key.
+.sp
+The value is a DER\-encoded X.509 public key, also known as \fBSubjectPublicKeyInfo\fP (SPKI), as defined in \fI\%RFC 5280\fP . When you use the HTTP API or the AWS CLI, the value is Base64\-encoded. Otherwise, it is not Base64\-encoded.
+.UNINDENT
+.UNINDENT
+.sp
+CustomerMasterKeySpec \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the of the public key that was downloaded.
+.UNINDENT
+.UNINDENT
+.sp
+KeyUsage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The permitted use of the public key. Valid values are \fBENCRYPT_DECRYPT\fP or \fBSIGN_VERIFY\fP .
+.sp
+This information is critical. If a public key with \fBSIGN_VERIFY\fP key usage encrypts data outside of AWS KMS, the ciphertext cannot be decrypted.
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionAlgorithms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The encryption algorithms that AWS KMS supports for this key.
+.sp
+This information is critical. If a public key encrypts data outside of AWS KMS by using an unsupported encryption algorithm, the ciphertext cannot be decrypted.
+.sp
+This field appears in the response only when the \fBKeyUsage\fP of the public key is \fBENCRYPT_DECRYPT\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SigningAlgorithms \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The signing algorithms that AWS KMS supports for this key.
+.sp
+This field appears in the response only when the \fBKeyUsage\fP of the public key is \fBSIGN_VERIFY\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

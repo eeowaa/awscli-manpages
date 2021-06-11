@@ -1,0 +1,250 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFORMATION-REGISTER-TYPE" "a" "" ""
+.SH NAME
+cloudformation-register-type \- Registers an extension with the CloudFormation service
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Registers an extension with the CloudFormation service. Registering an extension makes it available for use in CloudFormation templates in your AWS account, and includes:
+.INDENT 0.0
+.IP \(bu 2
+Validating the extension schema
+.IP \(bu 2
+Determining which handlers, if any, have been specified for the extension
+.IP \(bu 2
+Making the extension available for use in your account
+.UNINDENT
+.sp
+For more information on how to develop extensions and ready them for registeration, see \fI\%Creating Resource Providers\fP in the \fICloudFormation CLI User Guide\fP .
+.sp
+You can have a maximum of 50 resource extension versions registered at a time. This maximum is per account and per region. Use \fI\%DeregisterType\fP to deregister specific extension versions if necessary.
+.sp
+Once you have initiated a registration request using \(ga\(ga  RegisterType \(ga\(ga , you can use \(ga\(ga  DescribeTypeRegistration \(ga\(ga to monitor the progress of the registration request.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-type
+[\-\-type <value>]
+\-\-type\-name <value>
+\-\-schema\-handler\-package <value>
+[\-\-logging\-config <value>]
+[\-\-execution\-role\-arn <value>]
+[\-\-client\-request\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The kind of extension.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRESOURCE\fP
+.IP \(bu 2
+\fBMODULE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-type\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the extension being registered.
+.sp
+We recommend that extension names adhere to the following pattern: \fIcompany_or_organization\fP ::\fIservice\fP ::\fItype\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The following organization namespaces are reserved and cannot be used in your extension names:
+.INDENT 0.0
+.IP \(bu 2
+\fBAlexa\fP
+.IP \(bu 2
+\fBAMZN\fP
+.IP \(bu 2
+\fBAmazon\fP
+.IP \(bu 2
+\fBAWS\fP
+.IP \(bu 2
+\fBCustom\fP
+.IP \(bu 2
+\fBDev\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schema\-handler\-package\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A url to the S3 bucket containing the extension project package that contains the neccessary files for the extension you want to register.
+.sp
+For information on generating a schema handler package for the extension you want to register, see \fI\%submit\fP in the \fICloudFormation CLI User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The user registering the extension must be able to access the package in the S3 bucket. That is, the user needs to have \fI\%GetObject\fP permissions for the schema handler package. For more information, see \fI\%Actions, Resources, and Condition Keys for Amazon S3\fP in the \fIAWS Identity and Access Management User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-logging\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies logging configuration information for an extension.
+.sp
+LogRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that CloudFormation should assume when sending log entries to CloudWatch logs.
+.UNINDENT
+.UNINDENT
+.sp
+LogGroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon CloudWatch log group to which CloudFormation sends error logging information when invoking the type\(aqs handlers.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LogRoleArn=string,LogGroupName=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "LogRoleArn": "string",
+  "LogGroupName": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-execution\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM role for CloudFormation to assume when invoking the extension. If your extension calls AWS APIs in any of its handlers, you must create an * \fI\%IAM execution role\fP * that includes the necessary permissions to call those AWS APIs, and provision that execution role in your account. When CloudFormation needs to invoke the extension handler, CloudFormation assumes this execution role to create a temporary session token, which it then passes to the extension handler, thereby supplying your extension with the appropriate credentials.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-request\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier that acts as an idempotency key for this registration request. Specifying a client request token prevents CloudFormation from generating more than one version of an extension from the same registeration request, even if the request is submitted multiple times.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo register a resource type\fP
+.sp
+The following \fBregister\-type\fP example registers the specified resource type as a private resource type in the user\(aqs account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation register\-type \e
+    \-\-type\-name My::Organization::ResourceName \e
+    \-\-schema\-handler\-package s3://bucket_name/my\-organization\-resource_name.zip \e
+    \-\-type RESOURCE
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "RegistrationToken": "f5525280\-104e\-4d35\-bef5\-8f1f1example"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Registering Resource Providers\fP in the \fICloudFormation Command Line Interface User Guide for Type Development\fP\&.
+.SH OUTPUT
+.sp
+RegistrationToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for this registration request.
+.sp
+Use this registration token when calling \(ga\(ga  DescribeTypeRegistration \(ga\(ga , which returns information about the status and IDs of the extension registration.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

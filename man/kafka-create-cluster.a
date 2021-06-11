@@ -1,0 +1,719 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KAFKA-CREATE-CLUSTER" "a" "" ""
+.SH NAME
+kafka-create-cluster \- Creates a new MSK cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new MSK cluster.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-cluster
+\-\-broker\-node\-group\-info <value>
+[\-\-client\-authentication <value>]
+\-\-cluster\-name <value>
+[\-\-configuration\-info <value>]
+[\-\-encryption\-info <value>]
+[\-\-enhanced\-monitoring <value>]
+[\-\-open\-monitoring <value>]
+\-\-kafka\-version <value>
+[\-\-logging\-info <value>]
+\-\-number\-of\-broker\-nodes <value>
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-broker\-node\-group\-info\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the broker nodes in the cluster.
+.INDENT 0.0
+.INDENT 3.5
+BrokerAZDistribution \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The distribution of broker nodes across Availability Zones. This is an optional parameter. If you don\(aqt specify it, Amazon MSK gives it the value DEFAULT. You can also explicitly set this parameter to the value DEFAULT. No other values are currently allowed.
+.sp
+Amazon MSK distributes the broker nodes evenly across the Availability Zones that correspond to the subnets you provide when you create the cluster.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ClientSubnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of subnets to connect to in the client virtual private cloud (VPC). AWS creates elastic network interfaces inside these subnets. Client applications use elastic network interfaces to produce and consume data. Client subnets can\(aqt be in Availability Zone us\-east\-1e.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of Amazon EC2 instances to use for Kafka brokers. The following instance types are allowed: kafka.m5.large, kafka.m5.xlarge, kafka.m5.2xlarge, kafka.m5.4xlarge, kafka.m5.12xlarge, and kafka.m5.24xlarge.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS security groups to associate with the elastic network interfaces in order to specify who can connect to and communicate with the Amazon MSK cluster. If you don\(aqt specify a security group, Amazon MSK uses the default security group associated with the VPC.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+StorageInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about storage volumes attached to MSK broker nodes.
+.sp
+EbsStorageInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+EBS volume information.
+.sp
+VolumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size in GiB of the EBS volume for the data drive on each broker node.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+BrokerAZDistribution=string,ClientSubnets=string,string,InstanceType=string,SecurityGroups=string,string,StorageInfo={EbsStorageInfo={VolumeSize=integer}}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "BrokerAZDistribution": "DEFAULT",
+  "ClientSubnets": ["string", ...],
+  "InstanceType": "string",
+  "SecurityGroups": ["string", ...],
+  "StorageInfo": {
+    "EbsStorageInfo": {
+      "VolumeSize": integer
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-authentication\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Includes all client authentication related information.
+.INDENT 0.0
+.INDENT 3.5
+Sasl \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details for ClientAuthentication using SASL.
+.sp
+Scram \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details for SASL/SCRAM client authentication.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+SASL/SCRAM authentication is enabled or not.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Iam \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether IAM access control is enabled.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether IAM access control is enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tls \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Details for ClientAuthentication using TLS.
+.sp
+CertificateAuthorityArnList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of ACM Certificate Authority ARNs.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Sasl={Scram={Enabled=boolean},Iam={Enabled=boolean}},Tls={CertificateAuthorityArnList=[string,string]}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Sasl": {
+    "Scram": {
+      "Enabled": true|false
+    },
+    "Iam": {
+      "Enabled": true|false
+    }
+  },
+  "Tls": {
+    "CertificateAuthorityArnList": ["string", ...]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cluster\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-configuration\-info\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the configuration that you want MSK to use for the brokers in a cluster.
+.INDENT 0.0
+.INDENT 3.5
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the configuration to use.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Revision \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The revision of the configuration to use.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Arn=string,Revision=long
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Arn": "string",
+  "Revision": long
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encryption\-info\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Includes all encryption\-related information.
+.INDENT 0.0
+.INDENT 3.5
+EncryptionAtRest \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The data\-volume encryption details.
+.sp
+DataVolumeKMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the AWS KMS key for encrypting data at rest. If you don\(aqt specify a KMS key, MSK creates one for you and uses it.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EncryptionInTransit \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The details for encryption in transit.
+.sp
+ClientBroker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the encryption setting for data in transit between clients and brokers. The following are the possible values.
+.sp
+TLS means that client\-broker communication is enabled with TLS only.
+.sp
+TLS_PLAINTEXT means that client\-broker communication is enabled for both TLS\-encrypted, as well as plaintext data.
+.sp
+PLAINTEXT means that client\-broker communication is enabled in plaintext only.
+.sp
+The default value is TLS_PLAINTEXT.
+.UNINDENT
+.UNINDENT
+.sp
+InCluster \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When set to true, it indicates that data communication among the broker nodes of the cluster is encrypted. When set to false, the communication happens in plaintext.
+.sp
+The default value is true.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+EncryptionAtRest={DataVolumeKMSKeyId=string},EncryptionInTransit={ClientBroker=string,InCluster=boolean}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "EncryptionAtRest": {
+    "DataVolumeKMSKeyId": "string"
+  },
+  "EncryptionInTransit": {
+    "ClientBroker": "TLS"|"TLS_PLAINTEXT"|"PLAINTEXT",
+    "InCluster": true|false
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enhanced\-monitoring\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the level of monitoring for the MSK cluster. The possible values are DEFAULT, PER_BROKER, PER_TOPIC_PER_BROKER, and PER_TOPIC_PER_PARTITION.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBDEFAULT\fP
+.IP \(bu 2
+\fBPER_BROKER\fP
+.IP \(bu 2
+\fBPER_TOPIC_PER_BROKER\fP
+.IP \(bu 2
+\fBPER_TOPIC_PER_PARTITION\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-open\-monitoring\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The settings for open monitoring.
+.INDENT 0.0
+.INDENT 3.5
+Prometheus \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Prometheus settings.
+.sp
+JmxExporter \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether you want to enable or disable the JMX Exporter.
+.sp
+EnabledInBroker \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether you want to enable or disable the JMX Exporter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NodeExporter \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether you want to enable or disable the Node Exporter.
+.sp
+EnabledInBroker \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether you want to enable or disable the Node Exporter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Prometheus={JmxExporter={EnabledInBroker=boolean},NodeExporter={EnabledInBroker=boolean}}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Prometheus": {
+    "JmxExporter": {
+      "EnabledInBroker": true|false
+    },
+    "NodeExporter": {
+      "EnabledInBroker": true|false
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kafka\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of Apache Kafka.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-logging\-info\fP (structure)
+BrokerLogs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+CloudWatchLogs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Enabled \-> (boolean)
+.sp
+LogGroup \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Firehose \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+DeliveryStream \-> (string)
+.sp
+Enabled \-> (boolean)
+.UNINDENT
+.UNINDENT
+.sp
+S3 \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Bucket \-> (string)
+.sp
+Enabled \-> (boolean)
+.sp
+Prefix \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+BrokerLogs={CloudWatchLogs={Enabled=boolean,LogGroup=string},Firehose={DeliveryStream=string,Enabled=boolean},S3={Bucket=string,Enabled=boolean,Prefix=string}}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "BrokerLogs": {
+    "CloudWatchLogs": {
+      "Enabled": true|false,
+      "LogGroup": "string"
+    },
+    "Firehose": {
+      "DeliveryStream": "string",
+      "Enabled": true|false
+    },
+    "S3": {
+      "Bucket": "string",
+      "Enabled": true|false,
+      "Prefix": "string"
+    }
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-number\-of\-broker\-nodes\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of broker nodes in the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Create tags when creating the cluster.
+.INDENT 0.0
+.INDENT 3.5
+key \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,KeyName2=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an Amazon MSK cluster\fP
+.sp
+The following \fBcreate\-cluster\fP example creates an MSK cluster named \fBMessagingCluster\fP with three broker nodes. A JSON file named \fBbrokernodegroupinfo.json\fP specifies the three subnets over which you want Amazon MSK to distribute the broker nodes. This example doesn\(aqt specify the monitoring level, so the cluster gets the \fBDEFAULT\fP level.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kafka create\-cluster \e
+    \-\-cluster\-name "MessagingCluster" \e
+    \-\-broker\-node\-group\-info file://brokernodegroupinfo.json \e
+    \-\-kafka\-version "2.2.1" \e
+    \-\-number\-of\-broker\-nodes 3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBbrokernodegroupinfo.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "InstanceType": "kafka.m5.xlarge",
+    "BrokerAZDistribution": "DEFAULT",
+    "ClientSubnets": [
+        "subnet\-0123456789111abcd",
+        "subnet\-0123456789222abcd",
+        "subnet\-0123456789333abcd"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ClusterArn": "arn:aws:kafka:us\-west\-2:123456789012:cluster/MessagingCluster/a1b2c3d4\-5678\-90ab\-cdef\-11111EXAMPLE\-2",
+    "ClusterName": "MessagingCluster",
+    "State": "CREATING"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Create an Amazon MSK Cluster\fP in the \fIAmazon Managed Streaming for Apache Kafka\fP\&.
+.SH OUTPUT
+.sp
+ClusterArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+ClusterName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the MSK cluster.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the cluster. The possible states are ACTIVE, CREATING, DELETING, FAILED, HEALING, MAINTENANCE, REBOOTING_BROKER, and UPDATING.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

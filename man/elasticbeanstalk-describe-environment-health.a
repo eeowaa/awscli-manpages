@@ -1,0 +1,408 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELASTICBEANSTALK-DESCRIBE-ENVIRONMENT-HEALTH" "a" "" ""
+.SH NAME
+elasticbeanstalk-describe-environment-health \- Returns information about the overall health of the specified environment
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about the overall health of the specified environment. The \fBDescribeEnvironmentHealth\fP operation is only available with AWS Elastic Beanstalk Enhanced Health.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-environment\-health
+[\-\-environment\-name <value>]
+[\-\-environment\-id <value>]
+[\-\-attribute\-names <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-environment\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify the environment by name.
+.sp
+You must specify either this or an EnvironmentName, or both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-environment\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify the environment by ID.
+.sp
+You must specify either this or an EnvironmentName, or both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attribute\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specify the response elements to return. To retrieve all attributes, set to \fBAll\fP . If no attribute names are specified, returns the name of the environment.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  Status
+  Color
+  Causes
+  ApplicationMetrics
+  InstancesHealth
+  All
+  HealthStatus
+  RefreshedAt
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo view environment health\fP
+.sp
+The following command retrieves overall health information for an environment named \fBmy\-env\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elasticbeanstalk describe\-environment\-health \-\-environment\-name my\-env \-\-attribute\-names All
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Status": "Ready",
+    "EnvironmentName": "my\-env",
+    "Color": "Green",
+    "ApplicationMetrics": {
+        "Duration": 10,
+        "Latency": {
+            "P99": 0.004,
+            "P75": 0.002,
+            "P90": 0.003,
+            "P95": 0.004,
+            "P85": 0.003,
+            "P10": 0.001,
+            "P999": 0.004,
+            "P50": 0.001
+        },
+        "RequestCount": 45,
+        "StatusCodes": {
+            "Status3xx": 0,
+            "Status2xx": 45,
+            "Status5xx": 0,
+            "Status4xx": 0
+        }
+    },
+    "RefreshedAt": "2015\-08\-20T21:09:18Z",
+    "HealthStatus": "Ok",
+    "InstancesHealth": {
+        "Info": 0,
+        "Ok": 1,
+        "Unknown": 0,
+        "Severe": 0,
+        "Warning": 0,
+        "Degraded": 0,
+        "NoData": 0,
+        "Pending": 0
+    },
+    "Causes": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Health information is only available for environments with enhanced health reporting enabled. For more information, see \fI\%Enhanced Health Reporting and Monitoring\fP in the \fIAWS Elastic Beanstalk Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+EnvironmentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The environment\(aqs name.
+.UNINDENT
+.UNINDENT
+.sp
+HealthStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%health status\fP of the environment. For example, \fBOk\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The environment\(aqs operational status. \fBReady\fP , \fBLaunching\fP , \fBUpdating\fP , \fBTerminating\fP , or \fBTerminated\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Color \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%health color\fP of the environment.
+.UNINDENT
+.UNINDENT
+.sp
+Causes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Descriptions of the data that contributed to the environment\(aqs current health status.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ApplicationMetrics \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Application request metrics for the environment.
+.sp
+Duration \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that the metrics cover (usually 10 seconds). For example, you might have 5 requests (\fBrequest_count\fP ) within the most recent time slice of 10 seconds (\fBduration\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+RequestCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Average number of requests handled by the web server per second over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+StatusCodes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the percentage of requests over the last 10 seconds that resulted in each type of status code response.
+.sp
+Status2xx \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of requests over the last 10 seconds that resulted in a 2xx (200, 201, etc.) status code.
+.UNINDENT
+.UNINDENT
+.sp
+Status3xx \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of requests over the last 10 seconds that resulted in a 3xx (300, 301, etc.) status code.
+.UNINDENT
+.UNINDENT
+.sp
+Status4xx \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of requests over the last 10 seconds that resulted in a 4xx (400, 401, etc.) status code.
+.UNINDENT
+.UNINDENT
+.sp
+Status5xx \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of requests over the last 10 seconds that resulted in a 5xx (500, 501, etc.) status code.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Latency \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the average latency for the slowest X percent of requests over the last 10 seconds. Latencies are in seconds with one millisecond resolution.
+.sp
+P999 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 0.1 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+P99 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 1 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+P95 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 5 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+P90 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 10 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+P85 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 15 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+P75 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 25 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+P50 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 50 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.sp
+P10 \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The average latency for the slowest 90 percent of requests over the last 10 seconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstancesHealth \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Summary health information for the instances in the environment.
+.sp
+NoData \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBGrey.\fP AWS Elastic Beanstalk and the health agent are reporting no data on an instance.
+.UNINDENT
+.UNINDENT
+.sp
+Unknown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBGrey.\fP AWS Elastic Beanstalk and the health agent are reporting an insufficient amount of data on an instance.
+.UNINDENT
+.UNINDENT
+.sp
+Pending \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBGrey.\fP An operation is in progress on an instance within the command timeout.
+.UNINDENT
+.UNINDENT
+.sp
+Ok \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBGreen.\fP An instance is passing health checks and the health agent is not reporting any problems.
+.UNINDENT
+.UNINDENT
+.sp
+Info \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBGreen.\fP An operation is in progress on an instance.
+.UNINDENT
+.UNINDENT
+.sp
+Warning \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBYellow.\fP The health agent is reporting a moderate number of request failures or other issues for an instance or environment.
+.UNINDENT
+.UNINDENT
+.sp
+Degraded \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBRed.\fP The health agent is reporting a high number of request failures or other issues for an instance or environment.
+.UNINDENT
+.UNINDENT
+.sp
+Severe \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+\fBRed.\fP The health agent is reporting a very high number of request failures or other issues for an instance or environment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RefreshedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the health information was retrieved.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,121 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-PUT-WARM-POOL" "a" "" ""
+.SH NAME
+autoscaling-put-warm-pool \- Creates or updates a warm pool for the specified Auto Scaling group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates or updates a warm pool for the specified Auto Scaling group. A warm pool is a pool of pre\-initialized EC2 instances that sits alongside the Auto Scaling group. Whenever your application needs to scale out, the Auto Scaling group can draw on the warm pool to meet its new desired capacity. For more information and example configurations, see \fI\%Warm pools for Amazon EC2 Auto Scaling\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+This operation must be called from the Region in which the Auto Scaling group was created. This operation cannot be called on an Auto Scaling group that has a mixed instances policy or a launch template or launch configuration that requests Spot Instances.
+.sp
+You can view the instances in the warm pool using the  DescribeWarmPool API call. If you are no longer using a warm pool, you can delete it by calling the  DeleteWarmPool API.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-warm\-pool
+\-\-auto\-scaling\-group\-name <value>
+[\-\-max\-group\-prepared\-capacity <value>]
+[\-\-min\-size <value>]
+[\-\-pool\-state <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-auto\-scaling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-group\-prepared\-capacity\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the maximum number of instances that are allowed to be in the warm pool or in any state except \fBTerminated\fP for the Auto Scaling group. This is an optional property. Specify it only if you do not want the warm pool size to be determined by the difference between the group\(aqs maximum capacity and its desired capacity.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If a value for \fBMaxGroupPreparedCapacity\fP is not specified, Amazon EC2 Auto Scaling launches and maintains the difference between the group\(aqs maximum capacity and its desired capacity. If you specify a value for \fBMaxGroupPreparedCapacity\fP , Amazon EC2 Auto Scaling uses the difference between the \fBMaxGroupPreparedCapacity\fP and the desired capacity instead.
+.sp
+The size of the warm pool is dynamic. Only when \fBMaxGroupPreparedCapacity\fP and \fBMinSize\fP are set to the same value does the warm pool have an absolute size.
+.UNINDENT
+.UNINDENT
+.sp
+If the desired capacity of the Auto Scaling group is higher than the \fBMaxGroupPreparedCapacity\fP , the capacity of the warm pool is 0, unless you specify a value for \fBMinSize\fP . To remove a value that you previously set, include the property but specify \-1 for the value.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-min\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the minimum number of instances to maintain in the warm pool. This helps you to ensure that there is always a certain number of warmed instances available to handle traffic spikes. Defaults to 0 if not specified.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-pool\-state\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets the instance state to transition to after the lifecycle actions are complete. Default is \fBStopped\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBStopped\fP
+.IP \(bu 2
+\fBRunning\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

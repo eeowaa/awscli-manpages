@@ -1,0 +1,674 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DEVICEFARM-LIST-DEVICES" "a" "" ""
+.SH NAME
+devicefarm-list-devices \- Gets information about unique device types
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets information about unique device types.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-devices\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBdevices\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-devices
+[\-\-arn <value>]
+[\-\-filters <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the project.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Used to select a set of devices. A filter is made up of an attribute, an operator, and one or more values.
+.INDENT 0.0
+.IP \(bu 2
+Attribute: The aspect of a device such as platform or model used as the selection criteria in a device filter. Allowed values include:
+.INDENT 2.0
+.IP \(bu 2
+ARN: The Amazon Resource Name (ARN) of the device (for example, \fBarn:aws:devicefarm:us\-west\-2::device:12345Example\fP ).
+.IP \(bu 2
+PLATFORM: The device platform. Valid values are ANDROID or IOS.
+.IP \(bu 2
+OS_VERSION: The operating system version (for example, 10.3.2).
+.IP \(bu 2
+MODEL: The device model (for example, iPad 5th Gen).
+.IP \(bu 2
+AVAILABILITY: The current availability of the device. Valid values are AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.IP \(bu 2
+FORM_FACTOR: The device form factor. Valid values are PHONE or TABLET.
+.IP \(bu 2
+MANUFACTURER: The device manufacturer (for example, Apple).
+.IP \(bu 2
+REMOTE_ACCESS_ENABLED: Whether the device is enabled for remote access. Valid values are TRUE or FALSE.
+.IP \(bu 2
+REMOTE_DEBUG_ENABLED: Whether the device is enabled for remote debugging. Valid values are TRUE or FALSE. Because remote debugging is \fI\%no longer supported\fP , this attribute is ignored.
+.IP \(bu 2
+INSTANCE_ARN: The Amazon Resource Name (ARN) of the device instance.
+.IP \(bu 2
+INSTANCE_LABELS: The label of the device instance.
+.IP \(bu 2
+FLEET_TYPE: The fleet type. Valid values are PUBLIC or PRIVATE.
+.UNINDENT
+.IP \(bu 2
+Operator: The filter operator.
+.INDENT 2.0
+.IP \(bu 2
+The EQUALS operator is available for every attribute except INSTANCE_LABELS.
+.IP \(bu 2
+The CONTAINS operator is available for the INSTANCE_LABELS and MODEL attributes.
+.IP \(bu 2
+The IN and NOT_IN operators are available for the ARN, OS_VERSION, MODEL, MANUFACTURER, and INSTANCE_ARN attributes.
+.IP \(bu 2
+The LESS_THAN, GREATER_THAN, LESS_THAN_OR_EQUALS, and GREATER_THAN_OR_EQUALS operators are also available for the OS_VERSION attribute.
+.UNINDENT
+.IP \(bu 2
+Values: An array of one or more filter values.
+.INDENT 2.0
+.IP \(bu 2
+The IN and NOT_IN operators take a values array that has one or more elements.
+.IP \(bu 2
+The other operators require an array with a single element.
+.IP \(bu 2
+In a request, the AVAILABILITY attribute takes the following values: AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a device filter used to select a set of devices to be included in a test run. This data structure is passed in as the \fBdeviceSelectionConfiguration\fP parameter to \fBScheduleRun\fP . For an example of the JSON request syntax, see  ScheduleRun .
+.sp
+It is also passed in as the \fBfilters\fP parameter to \fBListDevices\fP . For an example of the JSON request syntax, see  ListDevices .
+.sp
+attribute \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The aspect of a device such as platform or model used as the selection criteria in a device filter.
+.sp
+The supported operators for each attribute are provided in the following list.
+.INDENT 0.0
+.INDENT 3.5
+ARN
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Resource Name (ARN) of the device (for example, \fBarn:aws:devicefarm:us\-west\-2::device:12345Example\fP ).
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+PLATFORM
+.UNINDENT
+.UNINDENT
+.sp
+The device platform. Valid values are ANDROID or IOS.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+OS_VERSION
+.UNINDENT
+.UNINDENT
+.sp
+The operating system version (for example, 10.3.2).
+.sp
+Supported operators: \fBEQUALS\fP , \fBGREATER_THAN\fP , \fBGREATER_THAN_OR_EQUALS\fP , \fBIN\fP , \fBLESS_THAN\fP , \fBLESS_THAN_OR_EQUALS\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+MODEL
+.UNINDENT
+.UNINDENT
+.sp
+The device model (for example, iPad 5th Gen).
+.sp
+Supported operators: \fBCONTAINS\fP , \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+AVAILABILITY
+.UNINDENT
+.UNINDENT
+.sp
+The current availability of the device. Valid values are AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+FORM_FACTOR
+.UNINDENT
+.UNINDENT
+.sp
+The device form factor. Valid values are PHONE or TABLET.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+MANUFACTURER
+.UNINDENT
+.UNINDENT
+.sp
+The device manufacturer (for example, Apple).
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+REMOTE_ACCESS_ENABLED
+.UNINDENT
+.UNINDENT
+.sp
+Whether the device is enabled for remote access. Valid values are TRUE or FALSE.
+.sp
+Supported operators: \fBEQUALS\fP
+.INDENT 0.0
+.INDENT 3.5
+REMOTE_DEBUG_ENABLED
+.UNINDENT
+.UNINDENT
+.sp
+Whether the device is enabled for remote debugging. Valid values are TRUE or FALSE.
+.sp
+Supported operators: \fBEQUALS\fP
+.sp
+Because remote debugging is \fI\%no longer supported\fP , this filter is ignored.
+.INDENT 0.0
+.INDENT 3.5
+INSTANCE_ARN
+.UNINDENT
+.UNINDENT
+.sp
+The Amazon Resource Name (ARN) of the device instance.
+.sp
+Supported operators: \fBEQUALS\fP , \fBIN\fP , \fBNOT_IN\fP
+.INDENT 0.0
+.INDENT 3.5
+INSTANCE_LABELS
+.UNINDENT
+.UNINDENT
+.sp
+The label of the device instance.
+.sp
+Supported operators: \fBCONTAINS\fP
+.INDENT 0.0
+.INDENT 3.5
+FLEET_TYPE
+.UNINDENT
+.UNINDENT
+.sp
+The fleet type. Valid values are PUBLIC or PRIVATE.
+.sp
+Supported operators: \fBEQUALS\fP
+.UNINDENT
+.UNINDENT
+.sp
+operator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how Device Farm compares the filter\(aqs attribute to the value. See the attribute descriptions.
+.UNINDENT
+.UNINDENT
+.sp
+values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of one or more filter values used in a device filter.
+.INDENT 0.0
+.INDENT 3.5
+\fBOperator Values\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+The IN and NOT_IN operators can take a values array that has more than one element.
+.IP \(bu 2
+The other operators require an array with a single element.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAttribute Values\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+The PLATFORM attribute can be set to ANDROID or IOS.
+.IP \(bu 2
+The AVAILABILITY attribute can be set to AVAILABLE, HIGHLY_AVAILABLE, BUSY, or TEMPORARY_NOT_AVAILABLE.
+.IP \(bu 2
+The FORM_FACTOR attribute can be set to PHONE or TABLET.
+.IP \(bu 2
+The FLEET_TYPE attribute can be set to PUBLIC or PRIVATE.
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+attribute=string,operator=string,values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "attribute": "ARN"|"PLATFORM"|"OS_VERSION"|"MODEL"|"AVAILABILITY"|"FORM_FACTOR"|"MANUFACTURER"|"REMOTE_ACCESS_ENABLED"|"REMOTE_DEBUG_ENABLED"|"INSTANCE_ARN"|"INSTANCE_LABELS"|"FLEET_TYPE",
+    "operator": "EQUALS"|"LESS_THAN"|"LESS_THAN_OR_EQUALS"|"GREATER_THAN"|"GREATER_THAN_OR_EQUALS"|"IN"|"NOT_IN"|"CONTAINS",
+    "values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+devices \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the devices.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a device type that an app is tested against.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs ARN.
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs display name.
+.UNINDENT
+.UNINDENT
+.sp
+manufacturer \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs manufacturer name.
+.UNINDENT
+.UNINDENT
+.sp
+model \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs model name.
+.UNINDENT
+.UNINDENT
+.sp
+modelId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs model ID.
+.UNINDENT
+.UNINDENT
+.sp
+formFactor \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs form factor.
+.sp
+Allowed values include:
+.INDENT 0.0
+.IP \(bu 2
+PHONE
+.IP \(bu 2
+TABLET
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs platform.
+.sp
+Allowed values include:
+.INDENT 0.0
+.IP \(bu 2
+ANDROID
+.IP \(bu 2
+IOS
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+os \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs operating system type.
+.UNINDENT
+.UNINDENT
+.sp
+cpu \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the device\(aqs CPU.
+.sp
+frequency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The CPU\(aqs frequency.
+.UNINDENT
+.UNINDENT
+.sp
+architecture \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The CPU\(aqs architecture (for example, x86 or ARM).
+.UNINDENT
+.UNINDENT
+.sp
+clock \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The clock speed of the device\(aqs CPU, expressed in hertz (Hz). For example, a 1.2 GHz CPU is expressed as 1200000000.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+resolution \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The resolution of the device.
+.sp
+width \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The screen resolution\(aqs width, expressed in pixels.
+.UNINDENT
+.UNINDENT
+.sp
+height \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The screen resolution\(aqs height, expressed in pixels.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+heapSize \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs heap size, expressed in bytes.
+.UNINDENT
+.UNINDENT
+.sp
+memory \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs total memory size, expressed in bytes.
+.UNINDENT
+.UNINDENT
+.sp
+image \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs image name.
+.UNINDENT
+.UNINDENT
+.sp
+carrier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs carrier.
+.UNINDENT
+.UNINDENT
+.sp
+radio \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device\(aqs radio.
+.UNINDENT
+.UNINDENT
+.sp
+remoteAccessEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether remote access has been enabled for the specified device.
+.UNINDENT
+.UNINDENT
+.sp
+remoteDebugEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+This flag is set to \fBtrue\fP if remote debugging is enabled for the device.
+.sp
+Remote debugging is \fI\%no longer supported\fP .
+.UNINDENT
+.UNINDENT
+.sp
+fleetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of fleet to which this device belongs. Possible values are PRIVATE and PUBLIC.
+.UNINDENT
+.UNINDENT
+.sp
+fleetName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the fleet to which this device belongs.
+.UNINDENT
+.UNINDENT
+.sp
+instances \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The instances that belong to this device.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the device instance.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the device instance.
+.UNINDENT
+.UNINDENT
+.sp
+deviceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the device.
+.UNINDENT
+.UNINDENT
+.sp
+labels \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings that describe the device instance.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the device instance. Valid values are listed here.
+.UNINDENT
+.UNINDENT
+.sp
+udid \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique device identifier for the device instance.
+.UNINDENT
+.UNINDENT
+.sp
+instanceProfile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A object that contains information about the instance profile.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the instance profile.
+.UNINDENT
+.UNINDENT
+.sp
+packageCleanup \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When set to \fBtrue\fP , Device Farm removes app packages after a test run. The default value is \fBfalse\fP for private devices.
+.UNINDENT
+.UNINDENT
+.sp
+excludeAppPackagesFromCleanup \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of strings containing the list of app packages that should not be cleaned up from the device after a test run completes.
+.sp
+The list of packages is considered only if you set \fBpackageCleanup\fP to \fBtrue\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+rebootAfterUse \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+When set to \fBtrue\fP , Device Farm reboots the instance after a test run. The default value is \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the instance profile.
+.UNINDENT
+.UNINDENT
+.sp
+description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the instance profile.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+availability \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates how likely a device is available for a test run. Currently available in the  ListDevices and GetDevice API methods.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+nextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the number of items that are returned is significantly large, this is an identifier that is also returned. It can be used in a subsequent call to this operation to return the next set of items in the list.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

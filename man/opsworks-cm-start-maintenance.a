@@ -1,0 +1,421 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "OPSWORKS-CM-START-MAINTENANCE" "a" "" ""
+.SH NAME
+opsworks-cm-start-maintenance \- Manually starts server maintenance
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Manually starts server maintenance. This command can be useful if an earlier maintenance attempt failed, and the underlying cause of maintenance failure has been resolved. The server is in an \fBUNDER_MAINTENANCE\fP state while maintenance is in progress.
+.sp
+Maintenance can only be started on servers in \fBHEALTHY\fP and \fBUNHEALTHY\fP states. Otherwise, an \fBInvalidStateException\fP is thrown. A \fBResourceNotFoundException\fP is thrown when the server does not exist. A \fBValidationException\fP is raised when parameters of the request are not valid.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  start\-maintenance
+\-\-server\-name <value>
+[\-\-engine\-attributes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-server\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the server on which to run maintenance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-engine\-attributes\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Engine attributes that are specific to the server on which you want to run maintenance.
+.INDENT 0.0
+.INDENT 3.5
+\fBAttributes accepted in a StartMaintenance request for Chef\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBCHEF_MAJOR_UPGRADE\fP : If a Chef Automate server is eligible for upgrade to Chef Automate 2, add this engine attribute to a \fBStartMaintenance\fP request and set the value to \fBtrue\fP to upgrade the server to Chef Automate 2. For more information, see \fI\%Upgrade an AWS OpsWorks for Chef Automate Server to Chef Automate 2\fP .
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A name and value pair that is specific to the engine of the server.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the engine attribute.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the engine attribute.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo start maintenance\fP
+.sp
+The following \fBstart\-maintenance\fP example manually starts maintenance on the specified Chef Automate or Puppet Enterprise server in your default region. This command is useful if an earlier, automated maintenance attempt failed, and the underlying cause of maintenance failure has been resolved.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws opsworks\-cm start\-maintenance \e
+    \-\-server\-name \(aqautomate\-06\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Server": {
+        "AssociatePublicIpAddress": true,
+        "BackupRetentionCount": 10,
+        "ServerName": "automate\-06",
+        "CreatedAt": 1569229584.842,
+        "CloudFormationStackArn": "arn:aws:cloudformation:us\-west\-2:123456789012:stack/aws\-opsworks\-cm\-instance\-automate\-06\-1606611794746/EXAMPLE0\-31de\-11eb\-bdb0\-0a5b0a1353b8",
+        "DisableAutomatedBackup": false,
+        "Endpoint": "automate\-06\-EXAMPLEvr8gjfk5f.us\-west\-2.opsworks\-cm.io",
+        "Engine": "ChefAutomate",
+        "EngineModel": "Single",
+        "EngineAttributes": [],
+        "EngineVersion": "2020\-07",
+        "InstanceProfileArn": "arn:aws:iam::123456789012:instance\-profile/aws\-opsworks\-cm\-ec2\-role",
+        "InstanceType": "m5.large",
+        "PreferredMaintenanceWindow": "Sun:01:00",
+        "PreferredBackupWindow": "Sun:15:00",
+        "SecurityGroupIds": [
+            "sg\-EXAMPLE"
+        ],
+        "ServiceRoleArn": "arn:aws:iam::123456789012:role/service\-role/aws\-opsworks\-cm\-service\-role",
+        "Status": "UNDER_MAINTENANCE",
+        "SubnetIds": [
+            "subnet\-EXAMPLE"
+        ],
+        "ServerArn": "arn:aws:opsworks\-cm:us\-west\-2:123456789012:server/automate\-06/0148382d\-66b0\-4196\-8274\-d1a2b6dff8d1"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%System Maintenance (Puppet Enterprise servers)\fP or \fI\%System Maintenance (Chef Automate servers)\fP in the \fIAWS OpsWorks User Guide\fP\&.
+.SH OUTPUT
+.sp
+Server \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the response to a \fBStartMaintenance\fP request.
+.sp
+AssociatePublicIpAddress \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Associate a public IP address with a server that you are launching.
+.UNINDENT
+.UNINDENT
+.sp
+BackupRetentionCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of automated backups to keep.
+.UNINDENT
+.UNINDENT
+.sp
+ServerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the server.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time stamp of server creation. Example \fB2016\-07\-29T13:38:47.520Z\fP
+.UNINDENT
+.UNINDENT
+.sp
+CloudFormationStackArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the CloudFormation stack that was used to create the server.
+.UNINDENT
+.UNINDENT
+.sp
+CustomDomain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional public endpoint of a server, such as \fBhttps://aws.my\-company.com\fP . You cannot access the server by using the \fBEndpoint\fP value if the server has a \fBCustomDomain\fP specified.
+.UNINDENT
+.UNINDENT
+.sp
+DisableAutomatedBackup \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Disables automated backups. The number of stored backups is dependent on the value of PreferredBackupCount.
+.UNINDENT
+.UNINDENT
+.sp
+Endpoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A DNS name that can be used to access the engine. Example: \fBmyserver\-asdfghjkl.us\-east\-1.opsworks.io\fP . You cannot access the server by using the \fBEndpoint\fP value if the server has a \fBCustomDomain\fP specified.
+.UNINDENT
+.UNINDENT
+.sp
+Engine \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The engine type of the server. Valid values in this release include \fBChefAutomate\fP and \fBPuppet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+EngineModel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The engine model of the server. Valid values in this release include \fBMonolithic\fP for Puppet and \fBSingle\fP for Chef.
+.UNINDENT
+.UNINDENT
+.sp
+EngineAttributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The response of a createServer() request returns the master credential to access the server in EngineAttributes. These credentials are not stored by AWS OpsWorks CM; they are returned only as part of the result of createServer().
+.INDENT 0.0
+.INDENT 3.5
+\fBAttributes returned in a createServer response for Chef\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBCHEF_AUTOMATE_PIVOTAL_KEY\fP : A base64\-encoded RSA private key that is generated by AWS OpsWorks for Chef Automate. This private key is required to access the Chef API.
+.IP \(bu 2
+\fBCHEF_STARTER_KIT\fP : A base64\-encoded ZIP file. The ZIP file contains a Chef starter kit, which includes a README, a configuration file, and the required RSA private key. Save this file, unzip it, and then change to the directory where you\(aqve unzipped the file contents. From this directory, you can run Knife commands.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBAttributes returned in a createServer response for Puppet\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBPUPPET_STARTER_KIT\fP : A base64\-encoded ZIP file. The ZIP file contains a Puppet starter kit, including a README and a required private key. Save this file, unzip it, and then change to the directory where you\(aqve unzipped the file contents.
+.IP \(bu 2
+\fBPUPPET_ADMIN_PASSWORD\fP : An administrator password that you can use to sign in to the Puppet Enterprise console after the server is online.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A name and value pair that is specific to the engine of the server.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the engine attribute.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the engine attribute.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EngineVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The engine version of the server. For a Chef server, the valid value for EngineVersion is currently \fB2\fP . For a Puppet server, specify either \fB2019\fP or \fB2017\fP .
+.UNINDENT
+.UNINDENT
+.sp
+InstanceProfileArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance profile ARN of the server.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type for the server, as specified in the CloudFormation stack. This might not be the same instance type that is shown in the EC2 console.
+.UNINDENT
+.UNINDENT
+.sp
+KeyPair \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key pair associated with the server.
+.UNINDENT
+.UNINDENT
+.sp
+MaintenanceStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the most recent server maintenance run. Shows \fBSUCCESS\fP or \fBFAILED\fP .
+.UNINDENT
+.UNINDENT
+.sp
+PreferredMaintenanceWindow \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred maintenance period specified for the server.
+.UNINDENT
+.UNINDENT
+.sp
+PreferredBackupWindow \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preferred backup period specified for the server.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroupIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The security group IDs for the server, as specified in the CloudFormation stack. These might not be the same security groups that are shown in the EC2 console.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ServiceRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The service role ARN used to create the server.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The server\(aqs status. This field displays the states of actions in progress, such as creating, running, or backing up the server, as well as the server\(aqs health state.
+.UNINDENT
+.UNINDENT
+.sp
+StatusReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Depending on the server status, this field has either a human\-readable message (such as a create or backup error), or an escaped block of JSON (used for health check results).
+.UNINDENT
+.UNINDENT
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The subnet IDs specified in a CreateServer request.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ServerArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the server.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

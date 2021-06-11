@@ -1,0 +1,261 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESIS-VIDEO-ARCHIVED-MEDIA-LIST-FRAGMENTS" "a" "" ""
+.SH NAME
+kinesis-video-archived-media-list-fragments \- Returns a list of  Fragment objects from the specified stream and timestamp range within the archived data
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns a list of  Fragment objects from the specified stream and timestamp range within the archived data.
+.sp
+Listing fragments is eventually consistent. This means that even if the producer receives an acknowledgment that a fragment is persisted, the result might not be returned immediately from a request to \fBListFragments\fP . However, results are typically available in less than one second.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must first call the \fBGetDataEndpoint\fP API to get an endpoint. Then send the \fBListFragments\fP requests to this endpoint using the \fI\%\-\-endpoint\-url parameter\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If an error is thrown after invoking a Kinesis Video Streams archived media API, in addition to the HTTP status code and the response body, it includes the following pieces of information:
+.INDENT 0.0
+.IP \(bu 2
+\fBx\-amz\-ErrorType\fP HTTP header – contains a more specific error type in addition to what the HTTP status code provides.
+.IP \(bu 2
+\fBx\-amz\-RequestId\fP HTTP header – if you want to report an issue to AWS, the support team can better diagnose the problem if given the Request Id.
+.UNINDENT
+.sp
+Both the HTTP status code and the ErrorType header can be utilized to make programmatic decisions about whether errors are retry\-able and under what conditions, as well as provide information on what actions the client programmer might need to take in order to successfully try again.
+.sp
+For more information, see the \fBErrors\fP section at the bottom of this topic, as well as \fI\%Common Errors\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-fragments\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBFragments\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-fragments
+[\-\-stream\-name <value>]
+[\-\-stream\-arn <value>]
+[\-\-fragment\-selector <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stream from which to retrieve a fragment list. Specify either this parameter or the \fBStreamARN\fP parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stream\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the stream from which to retrieve a fragment list. Specify either this parameter or the \fBStreamName\fP parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-fragment\-selector\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the timestamp range and timestamp origin for the range of fragments to return.
+.sp
+FragmentSelectorType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The origin of the timestamps to use (Server or Producer).
+.UNINDENT
+.UNINDENT
+.sp
+TimestampRange \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The range of timestamps to return.
+.sp
+StartTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The starting timestamp in the range of timestamps for which to return fragments.
+.UNINDENT
+.UNINDENT
+.sp
+EndTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The ending timestamp in the range of timestamps for which to return fragments.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FragmentSelectorType=string,TimestampRange={StartTimestamp=timestamp,EndTimestamp=timestamp}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "FragmentSelectorType": "PRODUCER_TIMESTAMP"|"SERVER_TIMESTAMP",
+  "TimestampRange": {
+    "StartTimestamp": timestamp,
+    "EndTimestamp": timestamp
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Fragments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of archived  Fragment objects from the stream that meet the selector criteria. Results are in no specific order, even across pages.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a segment of video or other time\-delimited data.
+.sp
+FragmentNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the fragment. This value monotonically increases based on the ingestion order.
+.UNINDENT
+.UNINDENT
+.sp
+FragmentSizeInBytes \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The total fragment size, including information about the fragment and contained media data.
+.UNINDENT
+.UNINDENT
+.sp
+ProducerTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp from the producer corresponding to the fragment.
+.UNINDENT
+.UNINDENT
+.sp
+ServerTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp from the AWS server corresponding to the fragment.
+.UNINDENT
+.UNINDENT
+.sp
+FragmentLengthInMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The playback duration or other time value associated with the fragment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the returned list is truncated, the operation returns this token to use to retrieve the next page of results. This value is \fBnull\fP when there are no more results to return.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

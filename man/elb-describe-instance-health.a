@@ -1,0 +1,301 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELB-DESCRIBE-INSTANCE-HEALTH" "a" "" ""
+.SH NAME
+elb-describe-instance-health \- Describes the state of the specified instances with respect to the specified load balancer
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes the state of the specified instances with respect to the specified load balancer. If no instances are specified, the call describes the state of all instances that are currently registered with the load balancer. If instances are specified, their state is returned even if they are no longer registered with the load balancer. The state of terminated instances is not returned.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-instance\-health
+\-\-load\-balancer\-name <value>
+[\-\-instances <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-load\-balancer\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the load balancer.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instances\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the instances.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The ID of an EC2 instance.
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance ID.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+\-\-instances InstanceId1 InstanceId2 InstanceId3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "InstanceId": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo describe the health of the instances for a load balancer\fP
+.sp
+This example describes the health of the instances for the specified load balancer.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elb describe\-instance\-health \-\-load\-balancer\-name my\-load\-balancer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceStates": [
+      {
+          "InstanceId": "i\-207d9717",
+          "ReasonCode": "N/A",
+          "State": "InService",
+          "Description": "N/A"
+      },
+      {
+          "InstanceId": "i\-afefb49b",
+          "ReasonCode": "N/A",
+          "State": "InService",
+          "Description": "N/A"
+      }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBTo describe the health of an instance for a load balancer\fP
+.sp
+This example describes the health of the specified instance for the specified load balancer.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elb describe\-instance\-health \-\-load\-balancer\-name my\-load\-balancer \-\-instances i\-7299c809
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following is an example response for an instance that is registering.
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceStates": [
+      {
+          "InstanceId": "i\-7299c809",
+          "ReasonCode": "ELB",
+          "State": "OutOfService",
+          "Description": "Instance registration is still in progress."
+    }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following is an example response for an unhealthy instance.
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "InstanceStates": [
+      {
+          "InstanceId": "i\-7299c809",
+          "ReasonCode": "Instance",
+          "State": "OutOfService",
+          "Description": "Instance has failed at least the UnhealthyThreshold number of health checks consecutively."
+      }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+InstanceStates \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the health of the instances.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the state of an EC2 instance.
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.sp
+Valid values: \fBInService\fP | \fBOutOfService\fP | \fBUnknown\fP
+.UNINDENT
+.UNINDENT
+.sp
+ReasonCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Information about the cause of \fBOutOfService\fP instances. Specifically, whether the cause is Elastic Load Balancing or the instance.
+.sp
+Valid values: \fBELB\fP | \fBInstance\fP | \fBN/A\fP
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the instance state. This string can contain one or more of the following messages.
+.INDENT 0.0
+.IP \(bu 2
+\fBN/A\fP
+.IP \(bu 2
+\fBA transient error occurred. Please try again later.\fP
+.IP \(bu 2
+\fBInstance has failed at least the UnhealthyThreshold number of health checks consecutively.\fP
+.IP \(bu 2
+\fBInstance has not passed the configured HealthyThreshold number of health checks consecutively.\fP
+.IP \(bu 2
+\fBInstance registration is still in progress.\fP
+.IP \(bu 2
+\fBInstance is in the EC2 Availability Zone for which LoadBalancer is not configured to route traffic to.\fP
+.IP \(bu 2
+\fBInstance is not currently registered with the LoadBalancer.\fP
+.IP \(bu 2
+\fBInstance deregistration currently in progress.\fP
+.IP \(bu 2
+\fBDisable Availability Zone is currently in progress.\fP
+.IP \(bu 2
+\fBInstance is in pending state.\fP
+.IP \(bu 2
+\fBInstance is in stopped state.\fP
+.IP \(bu 2
+\fBInstance is in terminated state.\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

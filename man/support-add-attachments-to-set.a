@@ -1,0 +1,195 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SUPPORT-ADD-ATTACHMENTS-TO-SET" "a" "" ""
+.SH NAME
+support-add-attachments-to-set \- Adds one or more attachments to an attachment set
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds one or more attachments to an attachment set.
+.sp
+An attachment set is a temporary container for attachments that you add to a case or case communication. The set is available for 1 hour after it\(aqs created. The \fBexpiryTime\fP returned in the response is when the set expires.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+You must have a Business or Enterprise Support plan to use the AWS Support API.
+.IP \(bu 2
+If you call the AWS Support API from an account that does not have a Business or Enterprise Support plan, the \fBSubscriptionRequiredException\fP error message appears. For information about changing your support plan, see \fI\%AWS Support\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  add\-attachments\-to\-set
+[\-\-attachment\-set\-id <value>]
+\-\-attachments <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-attachment\-set\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the attachment set. If an \fBattachmentSetId\fP is not specified, a new attachment set is created, and the ID of the set is returned in the response. If an \fBattachmentSetId\fP is specified, the attachments are added to the specified set, if it exists.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attachments\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more attachments to add to the set. You can add up to three attachments per set. The size limit is 5 MB per attachment.
+.sp
+In the \fBAttachment\fP object, use the \fBdata\fP parameter to specify the contents of the attachment file. In the previous request syntax, the value for \fBdata\fP appear as \fBblob\fP , which is represented as a base64\-encoded string. The value for \fBfileName\fP is the name of the attachment, such as \fBtroubleshoot\-screenshot.png\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An attachment to a case communication. The attachment consists of the file name and the content of the file.
+.sp
+fileName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attachment file.
+.UNINDENT
+.UNINDENT
+.sp
+data \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The content of the attachment file.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+fileName=string,data=blob ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "fileName": "string",
+    "data": blob
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo add an attachment to a set\fP
+.sp
+The following \fBadd\-attachments\-to\-set\fP example adds an image to a set that you can then specify for a support case in your AWS account.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws support add\-attachments\-to\-set \e
+    \-\-attachment\-set\-id "as\-2f5a6faa2a4a1e600\-mu\-nk5xQlBr70\-G1cUos5LZkd38KOAHZa9BMDVzNEXAMPLE" \e
+    \-\-attachments fileName=troubleshoot\-screenshot.png,data=base64\-encoded\-string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "attachmentSetId": "as\-2f5a6faa2a4a1e600\-mu\-nk5xQlBr70\-G1cUos5LZkd38KOAHZa9BMDVzNEXAMPLE",
+    "expiryTime": "2020\-05\-14T17:04:40.790+0000"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Case management\fP in the \fIAWS Support User Guide\fP\&.
+.SH OUTPUT
+.sp
+attachmentSetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the attachment set. If an \fBattachmentSetId\fP was not specified, a new attachment set is created, and the ID of the set is returned in the response. If an \fBattachmentSetId\fP was specified, the attachments are added to the specified set, if it exists.
+.UNINDENT
+.UNINDENT
+.sp
+expiryTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time and date when the attachment set expires.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

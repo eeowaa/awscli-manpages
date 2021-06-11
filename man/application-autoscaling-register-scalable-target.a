@@ -1,0 +1,537 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "APPLICATION-AUTOSCALING-REGISTER-SCALABLE-TARGET" "a" "" ""
+.SH NAME
+application-autoscaling-register-scalable-target \- Registers or updates a scalable target
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Registers or updates a scalable target.
+.sp
+A scalable target is a resource that Application Auto Scaling can scale out and scale in. Scalable targets are uniquely identified by the combination of resource ID, scalable dimension, and namespace.
+.sp
+When you register a new scalable target, you must specify values for minimum and maximum capacity. Current capacity will be adjusted within the specified range when scaling starts. Application Auto Scaling scaling policies will not scale capacity to values that are outside of this range.
+.sp
+After you register a scalable target, you do not need to register it again to use other Application Auto Scaling operations. To see which resources have been registered, use \fI\%DescribeScalableTargets\fP . You can also view the scaling policies for a service namespace by using \fI\%DescribeScalableTargets\fP . If you no longer need a scalable target, you can deregister it by using \fI\%DeregisterScalableTarget\fP .
+.sp
+To update a scalable target, specify the parameters that you want to change. Include the parameters that identify the scalable target: resource ID, scalable dimension, and namespace. Any parameters that you don\(aqt specify are not changed by this update request.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  register\-scalable\-target
+\-\-service\-namespace <value>
+\-\-resource\-id <value>
+\-\-scalable\-dimension <value>
+[\-\-min\-capacity <value>]
+[\-\-max\-capacity <value>]
+[\-\-role\-arn <value>]
+[\-\-suspended\-state <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-service\-namespace\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace of the AWS service that provides the resource. For a resource provided by your own application or service, use \fBcustom\-resource\fP instead.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBecs\fP
+.IP \(bu 2
+\fBelasticmapreduce\fP
+.IP \(bu 2
+\fBec2\fP
+.IP \(bu 2
+\fBappstream\fP
+.IP \(bu 2
+\fBdynamodb\fP
+.IP \(bu 2
+\fBrds\fP
+.IP \(bu 2
+\fBsagemaker\fP
+.IP \(bu 2
+\fBcustom\-resource\fP
+.IP \(bu 2
+\fBcomprehend\fP
+.IP \(bu 2
+\fBlambda\fP
+.IP \(bu 2
+\fBcassandra\fP
+.IP \(bu 2
+\fBkafka\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the resource that is associated with the scalable target. This string consists of the resource type and unique identifier.
+.INDENT 0.0
+.IP \(bu 2
+ECS service \- The resource type is \fBservice\fP and the unique identifier is the cluster name and service name. Example: \fBservice/default/sample\-webapp\fP .
+.IP \(bu 2
+Spot Fleet request \- The resource type is \fBspot\-fleet\-request\fP and the unique identifier is the Spot Fleet request ID. Example: \fBspot\-fleet\-request/sfr\-73fbd2ce\-aa30\-494c\-8788\-1cee4EXAMPLE\fP .
+.IP \(bu 2
+EMR cluster \- The resource type is \fBinstancegroup\fP and the unique identifier is the cluster ID and instance group ID. Example: \fBinstancegroup/j\-2EEZNYKUA1NTV/ig\-1791Y4E1L8YI0\fP .
+.IP \(bu 2
+AppStream 2.0 fleet \- The resource type is \fBfleet\fP and the unique identifier is the fleet name. Example: \fBfleet/sample\-fleet\fP .
+.IP \(bu 2
+DynamoDB table \- The resource type is \fBtable\fP and the unique identifier is the table name. Example: \fBtable/my\-table\fP .
+.IP \(bu 2
+DynamoDB global secondary index \- The resource type is \fBindex\fP and the unique identifier is the index name. Example: \fBtable/my\-table/index/my\-table\-index\fP .
+.IP \(bu 2
+Aurora DB cluster \- The resource type is \fBcluster\fP and the unique identifier is the cluster name. Example: \fBcluster:my\-db\-cluster\fP .
+.IP \(bu 2
+Amazon SageMaker endpoint variant \- The resource type is \fBvariant\fP and the unique identifier is the resource ID. Example: \fBendpoint/my\-end\-point/variant/KMeansClustering\fP .
+.IP \(bu 2
+Custom resources are not supported with a resource type. This parameter must specify the \fBOutputValue\fP from the CloudFormation template stack used to access the resources. The unique identifier is defined by the service provider. More information is available in our \fI\%GitHub repository\fP .
+.IP \(bu 2
+Amazon Comprehend document classification endpoint \- The resource type and unique identifier are specified using the endpoint ARN. Example: \fBarn:aws:comprehend:us\-west\-2:123456789012:document\-classifier\-endpoint/EXAMPLE\fP .
+.IP \(bu 2
+Amazon Comprehend entity recognizer endpoint \- The resource type and unique identifier are specified using the endpoint ARN. Example: \fBarn:aws:comprehend:us\-west\-2:123456789012:entity\-recognizer\-endpoint/EXAMPLE\fP .
+.IP \(bu 2
+Lambda provisioned concurrency \- The resource type is \fBfunction\fP and the unique identifier is the function name with a function version or alias name suffix that is not \fB$LATEST\fP . Example: \fBfunction:my\-function:prod\fP or \fBfunction:my\-function:1\fP .
+.IP \(bu 2
+Amazon Keyspaces table \- The resource type is \fBtable\fP and the unique identifier is the table name. Example: \fBkeyspace/mykeyspace/table/mytable\fP .
+.IP \(bu 2
+Amazon MSK cluster \- The resource type and unique identifier are specified using the cluster ARN. Example: \fBarn:aws:kafka:us\-east\-1:123456789012:cluster/demo\-cluster\-1/6357e0b2\-0e6a\-4b86\-a0b4\-70df934c2e31\-5\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scalable\-dimension\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The scalable dimension associated with the scalable target. This string consists of the service namespace, resource type, and scaling property.
+.INDENT 0.0
+.IP \(bu 2
+\fBecs:service:DesiredCount\fP \- The desired task count of an ECS service.
+.IP \(bu 2
+\fBec2:spot\-fleet\-request:TargetCapacity\fP \- The target capacity of a Spot Fleet request.
+.IP \(bu 2
+\fBelasticmapreduce:instancegroup:InstanceCount\fP \- The instance count of an EMR Instance Group.
+.IP \(bu 2
+\fBappstream:fleet:DesiredCapacity\fP \- The desired capacity of an AppStream 2.0 fleet.
+.IP \(bu 2
+\fBdynamodb:table:ReadCapacityUnits\fP \- The provisioned read capacity for a DynamoDB table.
+.IP \(bu 2
+\fBdynamodb:table:WriteCapacityUnits\fP \- The provisioned write capacity for a DynamoDB table.
+.IP \(bu 2
+\fBdynamodb:index:ReadCapacityUnits\fP \- The provisioned read capacity for a DynamoDB global secondary index.
+.IP \(bu 2
+\fBdynamodb:index:WriteCapacityUnits\fP \- The provisioned write capacity for a DynamoDB global secondary index.
+.IP \(bu 2
+\fBrds:cluster:ReadReplicaCount\fP \- The count of Aurora Replicas in an Aurora DB cluster. Available for Aurora MySQL\-compatible edition and Aurora PostgreSQL\-compatible edition.
+.IP \(bu 2
+\fBsagemaker:variant:DesiredInstanceCount\fP \- The number of EC2 instances for an Amazon SageMaker model endpoint variant.
+.IP \(bu 2
+\fBcustom\-resource:ResourceType:Property\fP \- The scalable dimension for a custom resource provided by your own application or service.
+.IP \(bu 2
+\fBcomprehend:document\-classifier\-endpoint:DesiredInferenceUnits\fP \- The number of inference units for an Amazon Comprehend document classification endpoint.
+.IP \(bu 2
+\fBcomprehend:entity\-recognizer\-endpoint:DesiredInferenceUnits\fP \- The number of inference units for an Amazon Comprehend entity recognizer endpoint.
+.IP \(bu 2
+\fBlambda:function:ProvisionedConcurrency\fP \- The provisioned concurrency for a Lambda function.
+.IP \(bu 2
+\fBcassandra:table:ReadCapacityUnits\fP \- The provisioned read capacity for an Amazon Keyspaces table.
+.IP \(bu 2
+\fBcassandra:table:WriteCapacityUnits\fP \- The provisioned write capacity for an Amazon Keyspaces table.
+.IP \(bu 2
+\fBkafka:broker\-storage:VolumeSize\fP \- The provisioned volume size (in GiB) for brokers in an Amazon MSK cluster.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBecs:service:DesiredCount\fP
+.IP \(bu 2
+\fBec2:spot\-fleet\-request:TargetCapacity\fP
+.IP \(bu 2
+\fBelasticmapreduce:instancegroup:InstanceCount\fP
+.IP \(bu 2
+\fBappstream:fleet:DesiredCapacity\fP
+.IP \(bu 2
+\fBdynamodb:table:ReadCapacityUnits\fP
+.IP \(bu 2
+\fBdynamodb:table:WriteCapacityUnits\fP
+.IP \(bu 2
+\fBdynamodb:index:ReadCapacityUnits\fP
+.IP \(bu 2
+\fBdynamodb:index:WriteCapacityUnits\fP
+.IP \(bu 2
+\fBrds:cluster:ReadReplicaCount\fP
+.IP \(bu 2
+\fBsagemaker:variant:DesiredInstanceCount\fP
+.IP \(bu 2
+\fBcustom\-resource:ResourceType:Property\fP
+.IP \(bu 2
+\fBcomprehend:document\-classifier\-endpoint:DesiredInferenceUnits\fP
+.IP \(bu 2
+\fBcomprehend:entity\-recognizer\-endpoint:DesiredInferenceUnits\fP
+.IP \(bu 2
+\fBlambda:function:ProvisionedConcurrency\fP
+.IP \(bu 2
+\fBcassandra:table:ReadCapacityUnits\fP
+.IP \(bu 2
+\fBcassandra:table:WriteCapacityUnits\fP
+.IP \(bu 2
+\fBkafka:broker\-storage:VolumeSize\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-min\-capacity\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum value that you plan to scale in to. When a scaling policy is in effect, Application Auto Scaling can scale in (contract) as needed to the minimum capacity limit in response to changing demand. This property is required when registering a new scalable target.
+.sp
+For certain resources, the minimum value allowed is 0. This includes Lambda provisioned concurrency, Spot Fleet, ECS services, Aurora DB clusters, EMR clusters, and custom resources. For all other resources, the minimum value allowed is 1.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-capacity\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum value that you plan to scale out to. When a scaling policy is in effect, Application Auto Scaling can scale out (expand) as needed to the maximum capacity limit in response to changing demand. This property is required when registering a new scalable target.
+.sp
+Although you can specify a large maximum capacity, note that service quotas may impose lower limits. Each service has its own default quotas for the maximum capacity of the resource. If you want to specify a higher limit, you can request an increase. For more information, consult the documentation for that service. For information about the default quotas for each service, see \fI\%Service Endpoints and Quotas\fP in the \fIAmazon Web Services General Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is required for services that do not support service\-linked roles (such as Amazon EMR), and it must specify the ARN of an IAM role that allows Application Auto Scaling to modify the scalable target on your behalf.
+.sp
+If the service supports service\-linked roles, Application Auto Scaling uses a service\-linked role, which it creates if it does not yet exist. For more information, see \fI\%Application Auto Scaling IAM roles\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-suspended\-state\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An embedded object that contains attributes and attribute values that are used to suspend and resume automatic scaling. Setting the value of an attribute to \fBtrue\fP suspends the specified scaling activities. Setting it to \fBfalse\fP (default) resumes the specified scaling activities.
+.INDENT 0.0
+.INDENT 3.5
+\fBSuspension Outcomes\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+For \fBDynamicScalingInSuspended\fP , while a suspension is in effect, all scale\-in activities that are triggered by a scaling policy are suspended.
+.IP \(bu 2
+For \fBDynamicScalingOutSuspended\fP , while a suspension is in effect, all scale\-out activities that are triggered by a scaling policy are suspended.
+.IP \(bu 2
+For \fBScheduledScalingSuspended\fP , while a suspension is in effect, all scaling activities that involve scheduled actions are suspended.
+.UNINDENT
+.sp
+For more information, see \fI\%Suspending and resuming scaling\fP in the \fIApplication Auto Scaling User Guide\fP .
+.sp
+DynamicScalingInSuspended \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether scale in by a target tracking scaling policy or a step scaling policy is suspended. Set the value to \fBtrue\fP if you don\(aqt want Application Auto Scaling to remove capacity when a scaling policy is triggered. The default is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DynamicScalingOutSuspended \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether scale out by a target tracking scaling policy or a step scaling policy is suspended. Set the value to \fBtrue\fP if you don\(aqt want Application Auto Scaling to add capacity when a scaling policy is triggered. The default is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ScheduledScalingSuspended \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether scheduled scaling is suspended. Set the value to \fBtrue\fP if you don\(aqt want Application Auto Scaling to add or remove capacity by initiating scheduled actions. The default is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DynamicScalingInSuspended=boolean,DynamicScalingOutSuspended=boolean,ScheduledScalingSuspended=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "DynamicScalingInSuspended": true|false,
+  "DynamicScalingOutSuspended": true|false,
+  "ScheduledScalingSuspended": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To register a new scalable target for Amazon ECS\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers a scalable target for an Amazon ECS service called web\-app, running on the default cluster, with a minimum desired count of 1 task and a maximum desired count of 10 tasks.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace ecs \e
+    \-\-scalable\-dimension ecs:service:DesiredCount \e
+    \-\-resource\-id service/default/web\-app \e
+    \-\-min\-capacity 1 \e
+    \-\-max\-capacity 10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To register a new scalable target for a Spot Fleet\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the target capacity of an Amazon EC2 Spot Fleet request using its request ID, with a minimum capacity of 2 instances and a maximum capacity of 10 instances.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace ec2 \e
+    \-\-scalable\-dimension ec2:spot\-fleet\-request:TargetCapacity \e
+    \-\-resource\-id spot\-fleet\-request/sfr\-73fbd2ce\-aa30\-494c\-8788\-1cee4EXAMPLE \e
+    \-\-min\-capacity 2 \e
+    \-\-max\-capacity 10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To register a new scalable target for AppStream 2.0\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the desired capacity of an AppStream 2.0 fleet called sample\-fleet, with a minimum capacity of 1 fleet instance and a maximum capacity of 5 fleet instances.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace appstream \e
+    \-\-scalable\-dimension appstream:fleet:DesiredCapacity \e
+    \-\-resource\-id fleet/sample\-fleet \e
+    \-\-min\-capacity 1 \e
+    \-\-max\-capacity 5
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 4: To register a new scalable target for a DynamoDB table\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the provisioned write capacity of a DynamoDB table called my\-table, with a minimum capacity of 5 write capacity units and a maximum capacity of 10 write capacity units.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace dynamodb \e
+    \-\-scalable\-dimension dynamodb:table:WriteCapacityUnits \e
+    \-\-resource\-id table/my\-table \e
+    \-\-min\-capacity 5 \e
+    \-\-max\-capacity 10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 5: To register a new scalable target for a DynamoDB global secondary index\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the provisioned write capacity of a DynamoDB global secondary index called my\-table\-index, with a minimum capacity of 5 write capacity units and a maximum capacity of 10 write capacity units.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace dynamodb \e
+    \-\-scalable\-dimension dynamodb:index:WriteCapacityUnits \e
+    \-\-resource\-id table/my\-table/index/my\-table\-index \e
+    \-\-min\-capacity 5 \e
+    \-\-max\-capacity 10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 6: To register a new scalable target for Aurora DB\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the count of Aurora Replicas in an Aurora DB cluster called my\-db\-cluster, with a minimum capacity of 1 Aurora Replica and a maximum capacity of 8 Aurora Replicas.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace rds \e
+    \-\-scalable\-dimension rds:cluster:ReadReplicaCount \e
+    \-\-resource\-id cluster:my\-db\-cluster \e
+    \-\-min\-capacity 1 \e
+    \-\-max\-capacity 8
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 7: To register a new scalable target for Amazon Sagemaker\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the desired EC2 instance count for an Amazon Sagemaker product variant called my\-variant, running on the my\-endpoint endpoint, with a minimum capacity of 1 instance and a maximum capacity of 8 instances.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace sagemaker \e
+    \-\-scalable\-dimension sagemaker:variant:DesiredInstanceCount \e
+    \-\-resource\-id endpoint/my\-endpoint/variant/my\-variant \e
+    \-\-min\-capacity 1 \e
+    \-\-max\-capacity 8
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 8: To register a new scalable target for a custom resource\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers a custom resource as a scalable target, with a minimum desired count of 1 capacity unit and a maximum desired count of 10 capacity units. The \fBcustom\-resource\-id.txt\fP file contains a string that identifies the Resource ID, which for a custom resource is the path to the custom resource through your Amazon API Gateway endpoint.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace custom\-resource \e
+    \-\-scalable\-dimension custom\-resource:ResourceType:Property \e
+    \-\-resource\-id file://~/custom\-resource\-id.txt \e
+    \-\-min\-capacity 1 \e
+    \-\-max\-capacity 10
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBcustom\-resource\-id.txt\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+https://example.execute\-api.us\-west\-2.amazonaws.com/prod/scalableTargetDimensions/1\-23456789
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 9: To register a new scalable target for Amazon Comprehend\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the desired number of inference units to be used by the model for an Amazon Comprehend document classifier endpoint using the endpoint\(aqs ARN, with a minimum capacity of 1 inference unit and a maximum capacity of 3 inference units. Each inference unit represents a throughput of 100 characters per second.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace comprehend \e
+    \-\-scalable\-dimension comprehend:document\-classifier\-endpoint:DesiredInferenceUnits \e
+    \-\-resource\-id arn:aws:comprehend:us\-west\-2:123456789012:document\-classifier\-endpoint/EXAMPLE \e
+    \-\-min\-capacity 1 \e
+    \-\-max\-capacity 3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 10: To register a new scalable target for AWS Lambda\fP
+.sp
+The following \fBregister\-scalable\-target\fP example registers the provisioned concurrency for an alias called \fBBLUE\fP for the Lambda function called \fBmy\-function\fP, with a minimum capacity of 0 and a maximum capacity of 100.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws application\-autoscaling register\-scalable\-target \e
+    \-\-service\-namespace lambda \e
+    \-\-scalable\-dimension lambda:function:ProvisionedConcurrency \e
+    \-\-resource\-id function:my\-function:BLUE \e
+    \-\-min\-capacity 0 \e
+    \-\-max\-capacity 100
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see the \fI\%Application Auto Scaling User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

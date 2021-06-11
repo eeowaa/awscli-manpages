@@ -1,0 +1,330 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDFORMATION-DETECT-STACK-RESOURCE-DRIFT" "a" "" ""
+.SH NAME
+cloudformation-detect-stack-resource-drift \- Returns information about whether a resource(aqs actual configuration differs, or has drifted , from it(aqs expected configuration, as defined in the stack template and any values specified as template parameters
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns information about whether a resource\(aqs actual configuration differs, or has \fIdrifted\fP , from it\(aqs expected configuration, as defined in the stack template and any values specified as template parameters. This information includes actual and expected property values for resources in which AWS CloudFormation detects drift. Only resource properties explicitly defined in the stack template are checked for drift. For more information about stack and resource drift, see \fI\%Detecting Unregulated Configuration Changes to Stacks and Resources\fP .
+.sp
+Use \fBDetectStackResourceDrift\fP to detect drift on individual resources, or  DetectStackDrift to detect drift on all resources in a given stack that support drift detection.
+.sp
+Resources that do not currently support drift detection cannot be checked. For a list of resources that support drift detection, see \fI\%Resources that Support Drift Detection\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  detect\-stack\-resource\-drift
+\-\-stack\-name <value>
+\-\-logical\-resource\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stack\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the stack to which the resource belongs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-logical\-resource\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The logical name of the resource for which to return drift information.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo detect drift for a resource\fP
+.sp
+The following \fBdetect\-stack\-resource\-drift\fP example checks a resource named \fBMyFunction\fP in a stack named \fBMyStack\fP for drift:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudformation detect\-stack\-resource\-drift \e
+   \-\-stack\-name MyStack \e
+   \-\-logical\-resource\-id MyFunction
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output shows an AWS Lambda function that was modified out\-of\-band:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "StackResourceDrift": {
+        "StackId": "arn:aws:cloudformation:us\-west\-2:123456789012:stack/MyStack/d0a825a0\-e4cd\-xmpl\-b9fb\-061c69e99204",
+        "LogicalResourceId": "MyFunction",
+        "PhysicalResourceId": "my\-function\-SEZV4XMPL4S5",
+        "ResourceType": "AWS::Lambda::Function",
+        "ExpectedProperties": "{\e"Description\e":\e"Write a file to S3.\e",\e"Environment\e":{\e"Variables\e":{\e"bucket\e":\e"my\-stack\-bucket\-1vc62xmplgguf\e"}},\e"Handler\e":\e"index.handler\e",\e"MemorySize\e":128,\e"Role\e":\e"arn:aws:iam::123456789012:role/my\-functionRole\-HIZXMPLEOM9E\e",\e"Runtime\e":\e"nodejs10.x\e",\e"Tags\e":[{\e"Key\e":\e"lambda:createdBy\e",\e"Value\e":\e"SAM\e"}],\e"Timeout\e":900,\e"TracingConfig\e":{\e"Mode\e":\e"Active\e"}}",
+        "ActualProperties": "{\e"Description\e":\e"Write a file to S3.\e",\e"Environment\e":{\e"Variables\e":{\e"bucket\e":\e"my\-stack\-bucket\-1vc62xmplgguf\e"}},\e"Handler\e":\e"index.handler\e",\e"MemorySize\e":256,\e"Role\e":\e"arn:aws:iam::123456789012:role/my\-functionRole\-HIZXMPLEOM9E\e",\e"Runtime\e":\e"nodejs10.x\e",\e"Tags\e":[{\e"Key\e":\e"lambda:createdBy\e",\e"Value\e":\e"SAM\e"}],\e"Timeout\e":22,\e"TracingConfig\e":{\e"Mode\e":\e"Active\e"}}",
+        "PropertyDifferences": [
+            {
+                "PropertyPath": "/MemorySize",
+                "ExpectedValue": "128",
+                "ActualValue": "256",
+                "DifferenceType": "NOT_EQUAL"
+            },
+            {
+                "PropertyPath": "/Timeout",
+                "ExpectedValue": "900",
+                "ActualValue": "22",
+                "DifferenceType": "NOT_EQUAL"
+            }
+        ],
+        "StackResourceDriftStatus": "MODIFIED",
+        "Timestamp": "2019\-10\-02T05:58:47.433Z"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+StackResourceDrift \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about whether the resource\(aqs actual configuration has drifted from its expected template configuration, including actual and expected property values and any differences detected.
+.sp
+StackId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the stack.
+.UNINDENT
+.UNINDENT
+.sp
+LogicalResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The logical name of the resource specified in the template.
+.UNINDENT
+.UNINDENT
+.sp
+PhysicalResourceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or unique identifier that corresponds to a physical instance ID of a resource supported by AWS CloudFormation.
+.UNINDENT
+.UNINDENT
+.sp
+PhysicalResourceIdContext \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Context information that enables AWS CloudFormation to uniquely identify a resource. AWS CloudFormation uses context key\-value pairs in cases where a resource\(aqs logical and physical IDs are not enough to uniquely identify that resource. Each context key\-value pair specifies a unique resource that contains the targeted resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Context information that enables AWS CloudFormation to uniquely identify a resource. AWS CloudFormation uses context key\-value pairs in cases where a resource\(aqs logical and physical IDs are not enough to uniquely identify that resource. Each context key\-value pair specifies a resource that contains the targeted resource.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource context key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource context value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the resource.
+.UNINDENT
+.UNINDENT
+.sp
+ExpectedProperties \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A JSON structure containing the expected property values of the stack resource, as defined in the stack template and any values specified as template parameters.
+.sp
+For resources whose \fBStackResourceDriftStatus\fP is \fBDELETED\fP , this structure will not be present.
+.UNINDENT
+.UNINDENT
+.sp
+ActualProperties \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A JSON structure containing the actual property values of the stack resource.
+.sp
+For resources whose \fBStackResourceDriftStatus\fP is \fBDELETED\fP , this structure will not be present.
+.UNINDENT
+.UNINDENT
+.sp
+PropertyDifferences \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of the resource properties whose actual values differ from their expected values. These will be present only for resources whose \fBStackResourceDriftStatus\fP is \fBMODIFIED\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a resource property whose actual value differs from its expected value, as defined in the stack template and any values specified as template parameters. These will be present only for resources whose \fBStackResourceDriftStatus\fP is \fBMODIFIED\fP . For more information, see \fI\%Detecting Unregulated Configuration Changes to Stacks and Resources\fP .
+.sp
+PropertyPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fully\-qualified path to the resource property.
+.UNINDENT
+.UNINDENT
+.sp
+ExpectedValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The expected property value of the resource property, as defined in the stack template and any values specified as template parameters.
+.UNINDENT
+.UNINDENT
+.sp
+ActualValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The actual property value of the resource property.
+.UNINDENT
+.UNINDENT
+.sp
+DifferenceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of property difference.
+.INDENT 0.0
+.IP \(bu 2
+\fBADD\fP : A value has been added to a resource property that is an array or list data type.
+.IP \(bu 2
+\fBREMOVE\fP : The property has been removed from the current resource configuration.
+.IP \(bu 2
+\fBNOT_EQUAL\fP : The current property value differs from its expected value (as defined in the stack template and any values specified as template parameters).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StackResourceDriftStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Status of the resource\(aqs actual configuration compared to its expected configuration
+.INDENT 0.0
+.IP \(bu 2
+\fBDELETED\fP : The resource differs from its expected template configuration because the resource has been deleted.
+.IP \(bu 2
+\fBMODIFIED\fP : One or more resource properties differ from their expected values (as defined in the stack template and any values specified as template parameters).
+.IP \(bu 2
+\fBIN_SYNC\fP : The resources\(aqs actual configuration matches its expected template configuration.
+.IP \(bu 2
+\fBNOT_CHECKED\fP : AWS CloudFormation does not currently return this value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Timestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time at which AWS CloudFormation performed drift detection on the stack resource.
+.UNINDENT
+.UNINDENT
+.sp
+ModuleInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the module from which the resource was created, if the resource was created from a module included in the stack template.
+.sp
+TypeHierarchy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A concantenated list of the the module type or types containing the resource. Module types are listed starting with the inner\-most nested module, and separated by \fB/\fP .
+.sp
+In the following example, the resource was created from a module of type \fBAWS::First::Example::MODULE\fP , that is nested inside a parent module of type \fBAWS::Second::Example::MODULE\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBAWS::First::Example::MODULE/AWS::Second::Example::MODULE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogicalIdHierarchy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A concantenated list of the logical IDs of the module or modules containing the resource. Modules are listed starting with the inner\-most nested module, and separated by \fB/\fP .
+.sp
+In the following example, the resource was created from a module, \fBmoduleA\fP , that is nested inside a parent module, \fBmoduleB\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBmoduleA/moduleB\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Referencing resources in a module\fP in the \fICloudFormation User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

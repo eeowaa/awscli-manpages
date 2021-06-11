@@ -1,0 +1,275 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-GET-PARAMETERS" "a" "" ""
+.SH NAME
+ssm-get-parameters \- Get details of a parameter
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Get details of a parameter. Don\(aqt confuse this API action with the  GetParameter API action.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-parameters
+\-\-names <value>
+[\-\-with\-decryption | \-\-no\-with\-decryption]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Names of the parameters for which you want to query information.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-with\-decryption\fP | \fB\-\-no\-with\-decryption\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Return decrypted secure string value. Return decrypted values for secure string parameters. This flag is ignored for String and StringList parameter types.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To list the values for a parameter\fP
+.sp
+The following \fBget\-parameters\fP example lists the values for the three specified parameters.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm get\-parameters \e
+    \-\-names "MyStringParameter" "MyStringListParameter" "MyInvalidParameterName"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Parameters": [
+        {
+            "Name": "MyStringListParameter",
+            "Type": "StringList",
+            "Value": "alpha,beta,gamma",
+            "Version": 1,
+            "LastModifiedDate": 1582154764.222,
+            "ARN": "arn:aws:ssm:us\-east\-2:111222333444:parameter/MyStringListParameter"
+        },
+        {
+            "Name": "MyStringParameter",
+            "Type": "String",
+            "Value": "Vici",
+            "Version": 3,
+            "LastModifiedDate": 1582156117.545,
+            "ARN": "arn:aws:ssm:us\-east\-2:111222333444:parameter/MyStringParameter"
+        }
+    ],
+    "InvalidParameters": [
+        "MyInvalidParameterName"
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Working with Parameter Store\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.sp
+\fBExample 2: To list names and values of multiple parameters using the \(ga\(ga\-\-query\(ga\(ga option\fP
+.sp
+The following \fBget\-parameters\fP example lists the names and values for the specified parameters.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm get\-parameters \e
+    \-\-names MyStringParameter MyStringListParameter \e
+    \-\-query "Parameters[*].{Name:Name,Value:Value}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "Name": "MyStringListParameter",
+        "Value": "alpha,beta,gamma"
+    },
+    {
+        "Name": "MyStringParameter",
+        "Value": "Vidi"
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Working with Parameter Store\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+Parameters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of details for a parameter.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An Systems Manager parameter in Parameter Store.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of parameter. Valid values include the following: \fBString\fP , \fBStringList\fP , and \fBSecureString\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The parameter value.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The parameter version.
+.UNINDENT
+.UNINDENT
+.sp
+Selector \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Either the version number or the label used to retrieve the parameter value. Specify selectors by using one of the following formats:
+.sp
+parameter_name:version
+.sp
+parameter_name:label
+.UNINDENT
+.UNINDENT
+.sp
+SourceResult \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Applies to parameters that reference information in other AWS services. SourceResult is the raw result or response from the source.
+.UNINDENT
+.UNINDENT
+.sp
+LastModifiedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Date the parameter was last changed or updated and the parameter version was created.
+.UNINDENT
+.UNINDENT
+.sp
+ARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the parameter.
+.UNINDENT
+.UNINDENT
+.sp
+DataType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data type of the parameter, such as \fBtext\fP or \fBaws:ec2:image\fP . The default is \fBtext\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InvalidParameters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of parameters that are not formatted correctly or do not run during an execution.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

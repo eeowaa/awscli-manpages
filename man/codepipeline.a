@@ -1,0 +1,231 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEPIPELINE" "a" "" ""
+.SH NAME
+codepipeline \- This is the AWS CodePipeline API Reference
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.INDENT 0.0
+.INDENT 3.5
+\fBOverview\fP
+.UNINDENT
+.UNINDENT
+.sp
+This is the AWS CodePipeline API Reference. This guide provides descriptions of the actions and data types for AWS CodePipeline. Some functionality for your pipeline can only be configured through the API. For more information, see the \fI\%AWS CodePipeline User Guide\fP .
+.sp
+You can use the AWS CodePipeline API to work with pipelines, stages, actions, and transitions.
+.INDENT 0.0
+.INDENT 3.5
+\fIPipelines\fP are models of automated release processes. Each pipeline is uniquely named, and consists of stages, actions, and transitions.
+.UNINDENT
+.UNINDENT
+.sp
+You can work with pipelines by calling:
+.INDENT 0.0
+.IP \(bu 2
+CreatePipeline , which creates a uniquely named pipeline.
+.IP \(bu 2
+DeletePipeline , which deletes the specified pipeline.
+.IP \(bu 2
+GetPipeline , which returns information about the pipeline structure and pipeline metadata, including the pipeline Amazon Resource Name (ARN).
+.IP \(bu 2
+GetPipelineExecution , which returns information about a specific execution of a pipeline.
+.IP \(bu 2
+GetPipelineState , which returns information about the current state of the stages and actions of a pipeline.
+.IP \(bu 2
+ListActionExecutions , which returns action\-level details for past executions. The details include full stage and action\-level details, including individual action duration, status, any errors that occurred during the execution, and input and output artifact location details.
+.IP \(bu 2
+ListPipelines , which gets a summary of all of the pipelines associated with your account.
+.IP \(bu 2
+ListPipelineExecutions , which gets a summary of the most recent executions for a pipeline.
+.IP \(bu 2
+StartPipelineExecution , which runs the most recent revision of an artifact through the pipeline.
+.IP \(bu 2
+StopPipelineExecution , which stops the specified pipeline execution from continuing through the pipeline.
+.IP \(bu 2
+UpdatePipeline , which updates a pipeline with edits or changes to the structure of the pipeline.
+.UNINDENT
+.sp
+Pipelines include \fIstages\fP . Each stage contains one or more actions that must complete before the next stage begins. A stage results in success or failure. If a stage fails, the pipeline stops at that stage and remains stopped until either a new version of an artifact appears in the source location, or a user takes action to rerun the most recent artifact through the pipeline. You can call  GetPipelineState , which displays the status of a pipeline, including the status of stages in the pipeline, or  GetPipeline , which returns the entire structure of the pipeline, including the stages of that pipeline. For more information about the structure of stages and actions, see \fI\%AWS CodePipeline Pipeline Structure Reference\fP .
+.sp
+Pipeline stages include \fIactions\fP that are categorized into categories such as source or build actions performed in a stage of a pipeline. For example, you can use a source action to import artifacts into a pipeline from a source such as Amazon S3. Like stages, you do not work with actions directly in most cases, but you do define and interact with actions when working with pipeline operations such as  CreatePipeline and  GetPipelineState . Valid action categories are:
+.INDENT 0.0
+.IP \(bu 2
+Source
+.IP \(bu 2
+Build
+.IP \(bu 2
+Test
+.IP \(bu 2
+Deploy
+.IP \(bu 2
+Approval
+.IP \(bu 2
+Invoke
+.UNINDENT
+.sp
+Pipelines also include \fItransitions\fP , which allow the transition of artifacts from one stage to the next in a pipeline after the actions in one stage complete.
+.sp
+You can work with transitions by calling:
+.INDENT 0.0
+.IP \(bu 2
+DisableStageTransition , which prevents artifacts from transitioning to the next stage in a pipeline.
+.IP \(bu 2
+EnableStageTransition , which enables transition of artifacts between stages in a pipeline.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBUsing the API to integrate with AWS CodePipeline\fP
+.UNINDENT
+.UNINDENT
+.sp
+For third\-party integrators or developers who want to create their own integrations with AWS CodePipeline, the expected sequence varies from the standard API user. To integrate with AWS CodePipeline, developers need to work with the following items:
+.INDENT 0.0
+.INDENT 3.5
+\fBJobs\fP , which are instances of an action. For example, a job for a source action might import a revision of an artifact from a source.
+.UNINDENT
+.UNINDENT
+.sp
+You can work with jobs by calling:
+.INDENT 0.0
+.IP \(bu 2
+AcknowledgeJob , which confirms whether a job worker has received the specified job.
+.IP \(bu 2
+GetJobDetails , which returns the details of a job.
+.IP \(bu 2
+PollForJobs , which determines whether there are any jobs to act on.
+.IP \(bu 2
+PutJobFailureResult , which provides details of a job failure.
+.IP \(bu 2
+PutJobSuccessResult , which provides details of a job success.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBThird party jobs\fP , which are instances of an action created by a partner action and integrated into AWS CodePipeline. Partner actions are created by members of the AWS Partner Network.
+.UNINDENT
+.UNINDENT
+.sp
+You can work with third party jobs by calling:
+.INDENT 0.0
+.IP \(bu 2
+AcknowledgeThirdPartyJob , which confirms whether a job worker has received the specified job.
+.IP \(bu 2
+GetThirdPartyJobDetails , which requests the details of a job for a partner action.
+.IP \(bu 2
+PollForThirdPartyJobs , which determines whether there are any jobs to act on.
+.IP \(bu 2
+PutThirdPartyJobFailureResult , which provides details of a job failure.
+.IP \(bu 2
+PutThirdPartyJobSuccessResult , which provides details of a job success.
+.UNINDENT
+.SH AVAILABLE COMMANDS
+.INDENT 0.0
+.IP \(bu 2
+acknowledge\-job
+.IP \(bu 2
+acknowledge\-third\-party\-job
+.IP \(bu 2
+create\-custom\-action\-type
+.IP \(bu 2
+create\-pipeline
+.IP \(bu 2
+delete\-custom\-action\-type
+.IP \(bu 2
+delete\-pipeline
+.IP \(bu 2
+delete\-webhook
+.IP \(bu 2
+deregister\-webhook\-with\-third\-party
+.IP \(bu 2
+disable\-stage\-transition
+.IP \(bu 2
+enable\-stage\-transition
+.IP \(bu 2
+get\-action\-type
+.IP \(bu 2
+get\-job\-details
+.IP \(bu 2
+get\-pipeline
+.IP \(bu 2
+get\-pipeline\-execution
+.IP \(bu 2
+get\-pipeline\-state
+.IP \(bu 2
+get\-third\-party\-job\-details
+.IP \(bu 2
+help
+.IP \(bu 2
+list\-action\-executions
+.IP \(bu 2
+list\-action\-types
+.IP \(bu 2
+list\-pipeline\-executions
+.IP \(bu 2
+list\-pipelines
+.IP \(bu 2
+list\-tags\-for\-resource
+.IP \(bu 2
+list\-webhooks
+.IP \(bu 2
+poll\-for\-jobs
+.IP \(bu 2
+poll\-for\-third\-party\-jobs
+.IP \(bu 2
+put\-action\-revision
+.IP \(bu 2
+put\-approval\-result
+.IP \(bu 2
+put\-job\-failure\-result
+.IP \(bu 2
+put\-job\-success\-result
+.IP \(bu 2
+put\-third\-party\-job\-failure\-result
+.IP \(bu 2
+put\-third\-party\-job\-success\-result
+.IP \(bu 2
+put\-webhook
+.IP \(bu 2
+register\-webhook\-with\-third\-party
+.IP \(bu 2
+retry\-stage\-execution
+.IP \(bu 2
+start\-pipeline\-execution
+.IP \(bu 2
+stop\-pipeline\-execution
+.IP \(bu 2
+tag\-resource
+.IP \(bu 2
+untag\-resource
+.IP \(bu 2
+update\-action\-type
+.IP \(bu 2
+update\-pipeline
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

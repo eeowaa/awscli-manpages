@@ -1,0 +1,416 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SAGEMAKER-CREATE-NOTEBOOK-INSTANCE" "a" "" ""
+.SH NAME
+sagemaker-create-notebook-instance \- Creates an Amazon SageMaker notebook instance
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an Amazon SageMaker notebook instance. A notebook instance is a machine learning (ML) compute instance running on a Jupyter notebook.
+.sp
+In a \fBCreateNotebookInstance\fP request, specify the type of ML compute instance that you want to run. Amazon SageMaker launches the instance, installs common libraries that you can use to explore datasets for model training, and attaches an ML storage volume to the notebook instance.
+.sp
+Amazon SageMaker also provides a set of example notebooks. Each notebook demonstrates how to use Amazon SageMaker with a specific algorithm or with a machine learning framework.
+.sp
+After receiving the request, Amazon SageMaker does the following:
+.INDENT 0.0
+.IP \(bu 2
+Creates a network interface in the Amazon SageMaker VPC.
+.IP \(bu 2
+(Option) If you specified \fBSubnetId\fP , Amazon SageMaker creates a network interface in your own VPC, which is inferred from the subnet ID that you provide in the input. When creating this network interface, Amazon SageMaker attaches the security group that you specified in the request to the network interface that it creates in your VPC.
+.IP \(bu 2
+Launches an EC2 instance of the type specified in the request in the Amazon SageMaker VPC. If you specified \fBSubnetId\fP of your VPC, Amazon SageMaker specifies both network interfaces when launching this instance. This enables inbound traffic from your own VPC to the notebook instance, assuming that the security groups allow it.
+.UNINDENT
+.sp
+After creating the notebook instance, Amazon SageMaker returns its Amazon Resource Name (ARN). You can\(aqt change the name of a notebook instance after you create it.
+.sp
+After Amazon SageMaker creates the notebook instance, you can connect to the Jupyter server and work in Jupyter notebooks. For example, you can write code to explore a dataset that you can use for model training, train a model, host models by creating Amazon SageMaker endpoints, and validate hosted models.
+.sp
+For more information, see \fI\%How It Works\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-notebook\-instance
+\-\-notebook\-instance\-name <value>
+\-\-instance\-type <value>
+[\-\-subnet\-id <value>]
+[\-\-security\-group\-ids <value>]
+\-\-role\-arn <value>
+[\-\-kms\-key\-id <value>]
+[\-\-tags <value>]
+[\-\-lifecycle\-config\-name <value>]
+[\-\-direct\-internet\-access <value>]
+[\-\-volume\-size\-in\-gb <value>]
+[\-\-accelerator\-types <value>]
+[\-\-default\-code\-repository <value>]
+[\-\-additional\-code\-repositories <value>]
+[\-\-root\-access <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-notebook\-instance\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the new notebook instance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of ML compute instance to launch for the notebook instance.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBml.t2.medium\fP
+.IP \(bu 2
+\fBml.t2.large\fP
+.IP \(bu 2
+\fBml.t2.xlarge\fP
+.IP \(bu 2
+\fBml.t2.2xlarge\fP
+.IP \(bu 2
+\fBml.t3.medium\fP
+.IP \(bu 2
+\fBml.t3.large\fP
+.IP \(bu 2
+\fBml.t3.xlarge\fP
+.IP \(bu 2
+\fBml.t3.2xlarge\fP
+.IP \(bu 2
+\fBml.m4.xlarge\fP
+.IP \(bu 2
+\fBml.m4.2xlarge\fP
+.IP \(bu 2
+\fBml.m4.4xlarge\fP
+.IP \(bu 2
+\fBml.m4.10xlarge\fP
+.IP \(bu 2
+\fBml.m4.16xlarge\fP
+.IP \(bu 2
+\fBml.m5.xlarge\fP
+.IP \(bu 2
+\fBml.m5.2xlarge\fP
+.IP \(bu 2
+\fBml.m5.4xlarge\fP
+.IP \(bu 2
+\fBml.m5.12xlarge\fP
+.IP \(bu 2
+\fBml.m5.24xlarge\fP
+.IP \(bu 2
+\fBml.c4.xlarge\fP
+.IP \(bu 2
+\fBml.c4.2xlarge\fP
+.IP \(bu 2
+\fBml.c4.4xlarge\fP
+.IP \(bu 2
+\fBml.c4.8xlarge\fP
+.IP \(bu 2
+\fBml.c5.xlarge\fP
+.IP \(bu 2
+\fBml.c5.2xlarge\fP
+.IP \(bu 2
+\fBml.c5.4xlarge\fP
+.IP \(bu 2
+\fBml.c5.9xlarge\fP
+.IP \(bu 2
+\fBml.c5.18xlarge\fP
+.IP \(bu 2
+\fBml.c5d.xlarge\fP
+.IP \(bu 2
+\fBml.c5d.2xlarge\fP
+.IP \(bu 2
+\fBml.c5d.4xlarge\fP
+.IP \(bu 2
+\fBml.c5d.9xlarge\fP
+.IP \(bu 2
+\fBml.c5d.18xlarge\fP
+.IP \(bu 2
+\fBml.p2.xlarge\fP
+.IP \(bu 2
+\fBml.p2.8xlarge\fP
+.IP \(bu 2
+\fBml.p2.16xlarge\fP
+.IP \(bu 2
+\fBml.p3.2xlarge\fP
+.IP \(bu 2
+\fBml.p3.8xlarge\fP
+.IP \(bu 2
+\fBml.p3.16xlarge\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-subnet\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnet in a VPC to which you would like to have a connectivity from your ML compute instance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-group\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The VPC security group IDs, in the form sg\-xxxxxxxx. The security groups must be for the same VPC as specified in the subnet.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+When you send any requests to AWS resources from the notebook instance, Amazon SageMaker assumes this role to perform tasks on your behalf. You must grant this role necessary permissions so Amazon SageMaker can perform these tasks. The policy must allow the Amazon SageMaker service principal (sagemaker.amazonaws.com) permissions to assume this role. For more information, see \fI\%Amazon SageMaker Roles\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To be able to pass this role to Amazon SageMaker, the caller of this API must have the \fBiam:PassRole\fP permission.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of a AWS Key Management Service key that Amazon SageMaker uses to encrypt data on the storage volume attached to your notebook instance. The KMS key you provide must be enabled. For information, see \fI\%Enabling and Disabling Keys\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of key\-value pairs. You can use tags to categorize your AWS resources in different ways, for example, by purpose, owner, or environment. For more information, see \fI\%Tagging AWS Resources\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-lifecycle\-config\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of a lifecycle configuration to associate with the notebook instance. For information about lifestyle configurations, see \fI\%Step 2.1: (Optional) Customize a Notebook Instance\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-direct\-internet\-access\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Sets whether Amazon SageMaker provides internet access to the notebook instance. If you set this to \fBDisabled\fP this notebook instance is able to access resources only in your VPC, and is not be able to connect to Amazon SageMaker training and endpoint services unless you configure a NAT Gateway in your VPC.
+.sp
+For more information, see \fI\%Notebook Instances Are Internet\-Enabled by Default\fP . You can set the value of this parameter to \fBDisabled\fP only if you set a value for the \fBSubnetId\fP parameter.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBEnabled\fP
+.IP \(bu 2
+\fBDisabled\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-volume\-size\-in\-gb\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size, in GB, of the ML storage volume to attach to the notebook instance. The default value is 5 GB.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-accelerator\-types\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of Elastic Inference (EI) instance types to associate with this notebook instance. Currently, only one instance type can be associated with a notebook instance. For more information, see \fI\%Using Elastic Inference in Amazon SageMaker\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  ml.eia1.medium
+  ml.eia1.large
+  ml.eia1.xlarge
+  ml.eia2.medium
+  ml.eia2.large
+  ml.eia2.xlarge
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-code\-repository\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A Git repository to associate with the notebook instance as its default code repository. This can be either the name of a Git repository stored as a resource in your account, or the URL of a Git repository in \fI\%AWS CodeCommit\fP or in any other Git repository. When you open a notebook instance, it opens in the directory that contains this repository. For more information, see \fI\%Associating Git Repositories with Amazon SageMaker Notebook Instances\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-additional\-code\-repositories\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of up to three Git repositories to associate with the notebook instance. These can be either the names of Git repositories stored as resources in your account, or the URL of Git repositories in \fI\%AWS CodeCommit\fP or in any other Git repository. These repositories are cloned at the same level as the default repository of your notebook instance. For more information, see \fI\%Associating Git Repositories with Amazon SageMaker Notebook Instances\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-root\-access\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether root access is enabled or disabled for users of the notebook instance. The default value is \fBEnabled\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Lifecycle configurations need root access to be able to set up a notebook instance. Because of this, lifecycle configurations associated with a notebook instance always run with root access even if you disable root access for users.
+.UNINDENT
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBEnabled\fP
+.IP \(bu 2
+\fBDisabled\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+NotebookInstanceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the notebook instance.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

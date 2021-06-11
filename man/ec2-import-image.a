@@ -1,0 +1,782 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-IMPORT-IMAGE" "a" "" ""
+.SH NAME
+ec2-import-image \- Import single or multi-volume disk images or EBS snapshots into an Amazon Machine Image (AMI)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Import single or multi\-volume disk images or EBS snapshots into an Amazon Machine Image (AMI).
+.sp
+For more information, see \fI\%Importing a VM as an image using VM Import/Export\fP in the \fIVM Import/Export User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  import\-image
+[\-\-architecture <value>]
+[\-\-client\-data <value>]
+[\-\-client\-token <value>]
+[\-\-description <value>]
+[\-\-disk\-containers <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-encrypted | \-\-no\-encrypted]
+[\-\-hypervisor <value>]
+[\-\-kms\-key\-id <value>]
+[\-\-license\-type <value>]
+[\-\-platform <value>]
+[\-\-role\-name <value>]
+[\-\-license\-specifications <value>]
+[\-\-tag\-specifications <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-architecture\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The architecture of the virtual machine.
+.sp
+Valid values: \fBi386\fP | \fBx86_64\fP | \fBarm64\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-data\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The client\-specific data.
+.sp
+Comment \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined comment about the disk upload.
+.UNINDENT
+.UNINDENT
+.sp
+UploadEnd \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that the disk upload ends.
+.UNINDENT
+.UNINDENT
+.sp
+UploadSize \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The size of the uploaded disk image, in GiB.
+.UNINDENT
+.UNINDENT
+.sp
+UploadStart \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time that the disk upload starts.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Comment=string,UploadEnd=timestamp,UploadSize=double,UploadStart=timestamp
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Comment": "string",
+  "UploadEnd": timestamp,
+  "UploadSize": double,
+  "UploadStart": timestamp
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to enable idempotency for VM import requests.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description string for the import image task.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-disk\-containers\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the disk containers.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the disk container object for an import image task.
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the disk image.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The block device mapping for the disk.
+.UNINDENT
+.UNINDENT
+.sp
+Format \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the disk image being imported.
+.sp
+Valid values: \fBOVA\fP | \fBVHD\fP | \fBVHDX\fP | \fBVMDK\fP | \fBRAW\fP
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the EBS snapshot to be used for importing the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+Url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL to the Amazon S3\-based disk image being imported. The URL can either be a https URL (\fI\%https://\fP\&..) or an Amazon S3 URL (s3://..)
+.UNINDENT
+.UNINDENT
+.sp
+UserBucket \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket for the disk image.
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon S3 bucket where the disk image is located.
+.UNINDENT
+.UNINDENT
+.sp
+S3Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file name of the disk image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Description=string,DeviceName=string,Format=string,SnapshotId=string,Url=string,UserBucket={S3Bucket=string,S3Key=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Description": "string",
+    "DeviceName": "string",
+    "Format": "string",
+    "SnapshotId": "string",
+    "Url": "string",
+    "UserBucket": {
+      "S3Bucket": "string",
+      "S3Key": "string"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encrypted\fP | \fB\-\-no\-encrypted\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the destination AMI of the imported image should be encrypted. The default CMK for EBS is used unless you specify a non\-default AWS Key Management Service (AWS KMS) CMK using \fBKmsKeyId\fP . For more information, see \fI\%Amazon EBS Encryption\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-hypervisor\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The target hypervisor platform.
+.sp
+Valid values: \fBxen\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for the symmetric AWS Key Management Service (AWS KMS) customer master key (CMK) to use when creating the encrypted AMI. This parameter is only required if you want to use a non\-default CMK; if this parameter is not specified, the default CMK for EBS is used. If a \fBKmsKeyId\fP is specified, the \fBEncrypted\fP flag must also be set.
+.sp
+The CMK identifier may be provided in any of the following formats:
+.INDENT 0.0
+.IP \(bu 2
+Key ID
+.IP \(bu 2
+Key alias. The alias ARN contains the \fBarn:aws:kms\fP namespace, followed by the Region of the CMK, the AWS account ID of the CMK owner, the \fBalias\fP namespace, and then the CMK alias. For example, arn:aws:kms:\fIus\-east\-1\fP :\fI012345678910\fP :alias/\fIExampleAlias\fP .
+.IP \(bu 2
+ARN using key ID. The ID ARN contains the \fBarn:aws:kms\fP namespace, followed by the Region of the CMK, the AWS account ID of the CMK owner, the \fBkey\fP namespace, and then the CMK ID. For example, arn:aws:kms:\fIus\-east\-1\fP :\fI012345678910\fP :key/\fIabcd1234\-a123\-456a\-a12b\-a123b4cd56ef\fP .
+.IP \(bu 2
+ARN using key alias. The alias ARN contains the \fBarn:aws:kms\fP namespace, followed by the Region of the CMK, the AWS account ID of the CMK owner, the \fBalias\fP namespace, and then the CMK alias. For example, arn:aws:kms:\fIus\-east\-1\fP :\fI012345678910\fP :alias/\fIExampleAlias\fP .
+.UNINDENT
+.sp
+AWS parses \fBKmsKeyId\fP asynchronously, meaning that the action you call may appear to complete even though you provided an invalid identifier. This action will eventually report failure.
+.sp
+The specified CMK must exist in the Region that the AMI is being copied to.
+.sp
+Amazon EBS does not support asymmetric CMKs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-license\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The license type to be used for the Amazon Machine Image (AMI) after importing.
+.sp
+By default, we detect the source\-system operating system (OS) and apply the appropriate license. Specify \fBAWS\fP to replace the source\-system license with an AWS license, if appropriate. Specify \fBBYOL\fP to retain the source\-system license, if appropriate.
+.sp
+To use \fBBYOL\fP , you must have existing licenses with rights to use these licenses in a third party cloud, such as AWS. For more information, see \fI\%Prerequisites\fP in the VM Import/Export User Guide.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-platform\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The operating system of the virtual machine.
+.sp
+Valid values: \fBWindows\fP | \fBLinux\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the role to use when not using the default role, \(aqvmimport\(aq.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-license\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The ARNs of the license configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The request information of license configurations.
+.sp
+LicenseConfigurationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a license configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LicenseConfigurationArn=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "LicenseConfigurationArn": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the import image task during creation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to a resource when the resource is being created.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to tag. Currently, the resource types that support tagging on creation are: \fBcapacity\-reservation\fP | \fBcarrier\-gateway\fP | \fBclient\-vpn\-endpoint\fP | \fBcustomer\-gateway\fP | \fBdedicated\-host\fP | \fBdhcp\-options\fP | \fBegress\-only\-internet\-gateway\fP | \fBelastic\-ip\fP | \fBelastic\-gpu\fP | \fBexport\-image\-task\fP | \fBexport\-instance\-task\fP | \fBfleet\fP | \fBfpga\-image\fP | \fBhost\-reservation\fP | \fBimage\fP | \fBimport\-image\-task\fP | \fBimport\-snapshot\-task\fP | \fBinstance\fP | \fBinternet\-gateway\fP | \fBipv4pool\-ec2\fP | \fBipv6pool\-ec2\fP | \fBkey\-pair\fP | \fBlaunch\-template\fP | \fBlocal\-gateway\-route\-table\-vpc\-association\fP | \fBplacement\-group\fP | \fBprefix\-list\fP | \fBnatgateway\fP | \fBnetwork\-acl\fP | \fBnetwork\-interface\fP | \fBreserved\-instances\fP 
+.nf
+|
+.fi
+\fBroute\-table\fP | \fBsecurity\-group\fP | \fBsnapshot\fP | \fBspot\-fleet\-request\fP | \fBspot\-instances\-request\fP | \fBsnapshot\fP | \fBsubnet\fP | \fBtraffic\-mirror\-filter\fP | \fBtraffic\-mirror\-session\fP | \fBtraffic\-mirror\-target\fP | \fBtransit\-gateway\fP | \fBtransit\-gateway\-attachment\fP | \fBtransit\-gateway\-multicast\-domain\fP | \fBtransit\-gateway\-route\-table\fP | \fBvolume\fP 
+.nf
+|
+.fi
+\fBvpc\fP | \fBvpc\-peering\-connection\fP | \fBvpc\-endpoint\fP (for interface and gateway endpoints) | \fBvpc\-endpoint\-service\fP (for AWS PrivateLink) | \fBvpc\-flow\-log\fP | \fBvpn\-connection\fP | \fBvpn\-gateway\fP .
+.IP "System Message: WARNING/2 (<string>:, line 440)"
+Inline substitution_reference start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 440)"
+Inline substitution_reference start\-string without end\-string.
+.sp
+To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResourceType=string,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ResourceType": "client\-vpn\-endpoint"|"customer\-gateway"|"dedicated\-host"|"dhcp\-options"|"egress\-only\-internet\-gateway"|"elastic\-ip"|"elastic\-gpu"|"export\-image\-task"|"export\-instance\-task"|"fleet"|"fpga\-image"|"host\-reservation"|"image"|"import\-image\-task"|"import\-snapshot\-task"|"instance"|"internet\-gateway"|"key\-pair"|"launch\-template"|"local\-gateway\-route\-table\-vpc\-association"|"natgateway"|"network\-acl"|"network\-interface"|"network\-insights\-analysis"|"network\-insights\-path"|"placement\-group"|"reserved\-instances"|"route\-table"|"security\-group"|"snapshot"|"spot\-fleet\-request"|"spot\-instances\-request"|"subnet"|"traffic\-mirror\-filter"|"traffic\-mirror\-session"|"traffic\-mirror\-target"|"transit\-gateway"|"transit\-gateway\-attachment"|"transit\-gateway\-connect\-peer"|"transit\-gateway\-multicast\-domain"|"transit\-gateway\-route\-table"|"volume"|"vpc"|"vpc\-peering\-connection"|"vpn\-connection"|"vpn\-gateway"|"vpc\-flow\-log",
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo import a VM image file as an AMI\fP
+.sp
+The following \fBimport\-image\fP example imports the specified OVA.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 import\-image \e
+  \-\-disk\-containers Format=ova,UserBucket="{S3Bucket=my\-import\-bucket,S3Key=vms/my\-server\-vm.ova}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ImportTaskId": "import\-ami\-1234567890abcdef0",
+    "Progress": "2",
+    "SnapshotDetails": [
+        {
+            "DiskImageSize": 0.0,
+            "Format": "ova",
+            "UserBucket": {
+                "S3Bucket": "my\-import\-bucket",
+                "S3Key": "vms/my\-server\-vm.ova"
+            }
+        }
+    ],
+    "Status": "active",
+    "StatusMessage": "pending"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Architecture \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The architecture of the virtual machine.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the import task.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the AMI is encrypted.
+.UNINDENT
+.UNINDENT
+.sp
+Hypervisor \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The target hypervisor of the import task.
+.UNINDENT
+.UNINDENT
+.sp
+ImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Amazon Machine Image (AMI) created by the import task.
+.UNINDENT
+.UNINDENT
+.sp
+ImportTaskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The task ID of the import image task.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the symmetric AWS Key Management Service (AWS KMS) customer master key (CMK) that was used to create the encrypted AMI.
+.UNINDENT
+.UNINDENT
+.sp
+LicenseType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The license type of the virtual machine.
+.UNINDENT
+.UNINDENT
+.sp
+Platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The operating system of the virtual machine.
+.UNINDENT
+.UNINDENT
+.sp
+Progress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The progress of the task.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotDetails \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the snapshots.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the snapshot created from the imported disk.
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description for the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The block device mapping for the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+DiskImageSize \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The size of the disk in the snapshot, in GiB.
+.UNINDENT
+.UNINDENT
+.sp
+Format \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The format of the disk image from which the snapshot is created.
+.UNINDENT
+.UNINDENT
+.sp
+Progress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of progress for the task.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The snapshot ID of the disk being imported.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A brief status of the snapshot creation.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed status message for the snapshot creation.
+.UNINDENT
+.UNINDENT
+.sp
+Url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL used to access the disk image.
+.UNINDENT
+.UNINDENT
+.sp
+UserBucket \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket for the disk image.
+.sp
+S3Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 bucket from which the disk image was created.
+.UNINDENT
+.UNINDENT
+.sp
+S3Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The file name of the disk image.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A brief status of the task.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed status message of the import task.
+.UNINDENT
+.UNINDENT
+.sp
+LicenseSpecifications \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The ARNs of the license configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The response information for license configurations.
+.sp
+LicenseConfigurationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a license configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the import image task.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

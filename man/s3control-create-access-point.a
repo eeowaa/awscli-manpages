@@ -1,0 +1,286 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3CONTROL-CREATE-ACCESS-POINT" "a" "" ""
+.SH NAME
+s3control-create-access-point \- Creates an access point and associates it with the specified bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an access point and associates it with the specified bucket. For more information, see \fI\%Managing Data Access with Amazon S3 Access Points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+S3 on Outposts only supports VPC\-style access points.
+.sp
+For more information, see \fI\%Accessing Amazon S3 on Outposts using virtual private cloud (VPC) only access points\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+All Amazon S3 on Outposts REST API requests for this action require an additional parameter of \fBx\-amz\-outpost\-id\fP to be passed with the request and an S3 on Outposts endpoint hostname prefix instead of \fBs3\-control\fP . For an example of the request syntax for Amazon S3 on Outposts that uses the S3 on Outposts endpoint hostname prefix and the \fBx\-amz\-outpost\-id\fP derived using the access point ARN, see the \fI\%Examples\fP section.
+.sp
+The following actions are related to \fBCreateAccessPoint\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%GetAccessPoint\fP
+.IP \(bu 2
+\fI\%DeleteAccessPoint\fP
+.IP \(bu 2
+\fI\%ListAccessPoints\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-access\-point
+\-\-account\-id <value>
+\-\-name <value>
+\-\-bucket <value>
+[\-\-vpc\-configuration <value>]
+[\-\-public\-access\-block\-configuration <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID for the owner of the bucket for which you want to create an access point.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name you want to assign to this access point.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the bucket that you want to associate this access point with.
+.sp
+For using this parameter with Amazon S3 on Outposts with the REST API, you must specify the name and the x\-amz\-outpost\-id as well.
+.sp
+For using this parameter with S3 on Outposts with the AWS SDK and CLI, you must specify the ARN of the bucket accessed in the format \fBarn:aws:s3\-outposts:<Region>:<account\-id>:outpost/<outpost\-id>/bucket/<my\-bucket\-name>\fP . For example, to access the bucket \fBreports\fP through outpost \fBmy\-outpost\fP owned by account \fB123456789012\fP in Region \fBus\-west\-2\fP , use the URL encoding of \fBarn:aws:s3\-outposts:us\-west\-2:123456789012:outpost/my\-outpost/bucket/reports\fP . The value must be URL encoded.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+If you include this field, Amazon S3 restricts access to this access point to requests from the specified virtual private cloud (VPC).
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This is required for creating an access point for Amazon S3 on Outposts buckets.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If this field is specified, this access point will only allow connections from the specified VPC ID.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+VpcId=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "VpcId": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-public\-access\-block\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fBPublicAccessBlock\fP configuration that you want to apply to the access point.
+.sp
+BlockPublicAcls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether Amazon S3 should block public access control lists (ACLs) for buckets in this account. Setting this element to \fBTRUE\fP causes the following behavior:
+.INDENT 0.0
+.IP \(bu 2
+PUT Bucket acl and PUT Object acl calls fail if the specified ACL is public.
+.IP \(bu 2
+PUT Object calls fail if the request includes a public ACL.
+.IP \(bu 2
+PUT Bucket calls fail if the request includes a public ACL.
+.UNINDENT
+.sp
+Enabling this setting doesn\(aqt affect existing policies or ACLs.
+.sp
+This is not supported for Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+IgnorePublicAcls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether Amazon S3 should ignore public ACLs for buckets in this account. Setting this element to \fBTRUE\fP causes Amazon S3 to ignore all public ACLs on buckets in this account and any objects that they contain.
+.sp
+Enabling this setting doesn\(aqt affect the persistence of any existing ACLs and doesn\(aqt prevent new public ACLs from being set.
+.sp
+This is not supported for Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+BlockPublicPolicy \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether Amazon S3 should block public bucket policies for buckets in this account. Setting this element to \fBTRUE\fP causes Amazon S3 to reject calls to PUT Bucket policy if the specified bucket policy allows public access.
+.sp
+Enabling this setting doesn\(aqt affect existing bucket policies.
+.sp
+This is not supported for Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.sp
+RestrictPublicBuckets \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether Amazon S3 should restrict public bucket policies for buckets in this account. Setting this element to \fBTRUE\fP restricts access to buckets with public policies to only AWS service principals and authorized users within this account.
+.sp
+Enabling this setting doesn\(aqt affect previously stored bucket policies, except that public and cross\-account access within any public bucket policy, including non\-public delegation to specific accounts, is blocked.
+.sp
+This is not supported for Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+BlockPublicAcls=boolean,IgnorePublicAcls=boolean,BlockPublicPolicy=boolean,RestrictPublicBuckets=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "BlockPublicAcls": true|false,
+  "IgnorePublicAcls": true|false,
+  "BlockPublicPolicy": true|false,
+  "RestrictPublicBuckets": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create an access point\fP
+.sp
+The following \fBcreate\-access\-point\fP example creates an access point named \fBfinance\-ap\fP for the bucket \fBbusiness\-records\fP in account 123456789012. Before running this example, replace the access point name, bucket name, and account number with appropriate values for your use case.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3control create\-access\-point \e
+    \-\-account\-id 123456789012 \e
+    \-\-bucket business\-records \e
+    \-\-name finance\-ap
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Creating Access Points\fP in the \fIAmazon Simple Storage Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+AccessPointArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the access point.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This is only supported by Amazon S3 on Outposts.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

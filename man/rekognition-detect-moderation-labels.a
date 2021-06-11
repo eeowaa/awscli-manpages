@@ -1,0 +1,352 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "REKOGNITION-DETECT-MODERATION-LABELS" "a" "" ""
+.SH NAME
+rekognition-detect-moderation-labels \- Detects unsafe content in a specified JPEG or PNG format image
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Detects unsafe content in a specified JPEG or PNG format image. Use \fBDetectModerationLabels\fP to moderate images depending on your requirements. For example, you might want to filter images that contain nudity, but not images containing suggestive content.
+.sp
+To filter images, use the labels returned by \fBDetectModerationLabels\fP to determine which types of content are appropriate.
+.sp
+For information about moderation labels, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.
+.sp
+You pass the input image either as base64\-encoded image bytes or as a reference to an image in an Amazon S3 bucket. If you use the AWS CLI to call Amazon Rekognition operations, passing image bytes is not supported. The image must be either a PNG or JPEG formatted file.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  detect\-moderation\-labels
+[\-\-image <value>]
+[\-\-min\-confidence <value>]
+[\-\-human\-loop\-config <value>]
+[\-\-image\-bytes <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-image\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The input image as base64\-encoded bytes or an S3 object. If you use the AWS CLI to call Amazon Rekognition operations, passing base64\-encoded image bytes is not supported.
+.sp
+If you are using an AWS SDK to call Amazon Rekognition, you might not need to base64\-encode image bytes passed using the \fBBytes\fP field. For more information, see Images in the Amazon Rekognition developer guide.
+.sp
+To specify a local file use \fB\-\-image\-bytes\fP instead.
+.sp
+Bytes \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Blob of image bytes up to 5 MBs.
+.UNINDENT
+.UNINDENT
+.sp
+S3Object \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an S3 object as the image source.
+.sp
+Bucket \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+S3 object key name.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the bucket is versioning enabled, you can specify the object version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Bytes=blob,S3Object={Bucket=string,Name=string,Version=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Bytes": blob,
+  "S3Object": {
+    "Bucket": "string",
+    "Name": "string",
+    "Version": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-min\-confidence\fP (float)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the minimum confidence level for the labels to return. Amazon Rekognition doesn\(aqt return any labels with a confidence level lower than this specified value.
+.sp
+If you don\(aqt specify \fBMinConfidence\fP , the operation returns labels with confidence values greater than or equal to 50 percent.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-human\-loop\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Sets up the configuration for human evaluation, including the FlowDefinition the image will be sent to.
+.sp
+HumanLoopName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the human review used for this image. This should be kept unique within a region.
+.UNINDENT
+.UNINDENT
+.sp
+FlowDefinitionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the flow definition. You can create a flow definition by using the Amazon Sagemaker \fI\%CreateFlowDefinition\fP Operation.
+.UNINDENT
+.UNINDENT
+.sp
+DataAttributes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Sets attributes of the input data.
+.sp
+ContentClassifiers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Sets whether the input image is free of personally identifiable information.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+HumanLoopName=string,FlowDefinitionArn=string,DataAttributes={ContentClassifiers=[string,string]}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "HumanLoopName": "string",
+  "FlowDefinitionArn": "string",
+  "DataAttributes": {
+    "ContentClassifiers": ["FreeOfPersonallyIdentifiableInformation"|"FreeOfAdultContent", ...]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-image\-bytes\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The content of the image to be uploaded. To specify the content of a local file use the fileb:// prefix. Example: fileb://image.png
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo detect unsafe content in an image\fP
+.sp
+The following \fBdetect\-moderation\-labels\fP command detects unsafe content in the specified image stored in an Amazon S3 bucket.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rekognition detect\-moderation\-labels \e
+    \-\-image "S3Object={Bucket=MyImageS3Bucket,Name=gun.jpg}"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ModerationModelVersion": "3.0",
+    "ModerationLabels": [
+        {
+            "Confidence": 97.29618072509766,
+            "ParentName": "Violence",
+            "Name": "Weapon Violence"
+        },
+        {
+            "Confidence": 97.29618072509766,
+            "ParentName": "",
+            "Name": "Violence"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Detecting Unsafe Images\fP in the \fIAmazon Rekognition Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+ModerationLabels \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Array of detected Moderation labels and the time, in milliseconds from the start of the video, they were detected.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides information about a single type of unsafe content found in an image or video. Each type of moderated content has a label within a hierarchical taxonomy. For more information, see Detecting Unsafe Content in the Amazon Rekognition Developer Guide.
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the confidence that Amazon Rekognition has that the label has been correctly identified.
+.sp
+If you don\(aqt specify the \fBMinConfidence\fP parameter in the call to \fBDetectModerationLabels\fP , the operation returns labels with a confidence value greater than or equal to 50 percent.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The label name for the type of unsafe content detected in the image.
+.UNINDENT
+.UNINDENT
+.sp
+ParentName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the parent label. Labels at the top level of the hierarchy have the parent label \fB""\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ModerationModelVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Version number of the moderation detection model that was used to detect unsafe content.
+.UNINDENT
+.UNINDENT
+.sp
+HumanLoopActivationOutput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Shows the results of the human in the loop evaluation.
+.sp
+HumanLoopArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the HumanLoop created.
+.UNINDENT
+.UNINDENT
+.sp
+HumanLoopActivationReasons \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Shows if and why human review was needed.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+HumanLoopActivationConditionsEvaluationResults \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Shows the result of condition evaluations, including those conditions which activated a human review.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

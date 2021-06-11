@@ -1,0 +1,308 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-SIGN" "a" "" ""
+.SH NAME
+kms-sign \- Creates a %digital signature for a message or message digest by using the private key in an asymmetric CMK
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a \fI\%digital signature\fP for a message or message digest by using the private key in an asymmetric CMK. To verify the signature, use the  Verify operation, or use the public key in the same asymmetric CMK outside of AWS KMS. For information about symmetric and asymmetric CMKs, see \fI\%Using Symmetric and Asymmetric CMKs\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+Digital signatures are generated and verified by using asymmetric key pair, such as an RSA or ECC pair that is represented by an asymmetric customer master key (CMK). The key owner (or an authorized user) uses their private key to sign a message. Anyone with the public key can verify that the message was signed with that particular private key and that the message hasn\(aqt changed since it was signed.
+.sp
+To use the \fBSign\fP operation, provide the following information:
+.INDENT 0.0
+.IP \(bu 2
+Use the \fBKeyId\fP parameter to identify an asymmetric CMK with a \fBKeyUsage\fP value of \fBSIGN_VERIFY\fP . To get the \fBKeyUsage\fP value of a CMK, use the  DescribeKey operation. The caller must have \fBkms:Sign\fP permission on the CMK.
+.IP \(bu 2
+Use the \fBMessage\fP parameter to specify the message or message digest to sign. You can submit messages of up to 4096 bytes. To sign a larger message, generate a hash digest of the message, and then provide the hash digest in the \fBMessage\fP parameter. To indicate whether the message is a full message or a digest, use the \fBMessageType\fP parameter.
+.IP \(bu 2
+Choose a signing algorithm that is compatible with the CMK.
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+When signing a message, be sure to record the CMK and the signing algorithm. This information is required to verify the signature.
+.UNINDENT
+.UNINDENT
+.sp
+To verify the signature that this operation generates, use the  Verify operation. Or use the  GetPublicKey operation to download the public key and then use the public key to verify the signature outside of AWS KMS.
+.sp
+The CMK that you use for this operation must be in a compatible key state. For details, see \fI\%How Key State Affects Use of a Customer Master Key\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : Yes. To perform this operation with a CMK in a different AWS account, specify the key ARN or alias ARN in the value of the \fBKeyId\fP parameter.
+.sp
+\fBRequired permissions\fP : \fI\%kms:Sign\fP (key policy)
+.sp
+\fBRelated operations\fP :  Verify
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  sign
+\-\-key\-id <value>
+\-\-message <value>
+[\-\-message\-type <value>]
+[\-\-grant\-tokens <value>]
+\-\-signing\-algorithm <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an asymmetric CMK. AWS KMS uses the private key in the asymmetric CMK to sign the message. The \fBKeyUsage\fP type of the CMK must be \fBSIGN_VERIFY\fP . To find the \fBKeyUsage\fP of a CMK, use the  DescribeKey operation.
+.sp
+To specify a CMK, use its key ID, Amazon Resource Name (ARN), alias name, or alias ARN. When using an alias name, prefix it with \fB"alias/"\fP . To specify a CMK in a different AWS account, you must use the key ARN or alias ARN.
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+Key ID: \fB1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Key ARN: \fBarn:aws:kms:us\-east\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab\fP
+.IP \(bu 2
+Alias name: \fBalias/ExampleAlias\fP
+.IP \(bu 2
+Alias ARN: \fBarn:aws:kms:us\-east\-2:111122223333:alias/ExampleAlias\fP
+.UNINDENT
+.sp
+To get the key ID and key ARN for a CMK, use  ListKeys or  DescribeKey . To get the alias name and alias ARN, use  ListAliases .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the message or message digest to sign. Messages can be 0\-4096 bytes. To sign a larger message, provide the message digest.
+.sp
+If you provide a message, AWS KMS generates a hash digest of the message and then signs it.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Tells AWS KMS whether the value of the \fBMessage\fP parameter is a message or message digest. The default value, RAW, indicates a message. To indicate a message digest, enter \fBDIGEST\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRAW\fP
+.IP \(bu 2
+\fBDIGEST\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-grant\-tokens\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of grant tokens.
+.sp
+For more information, see \fI\%Grant Tokens\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-signing\-algorithm\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the signing algorithm to use when signing the message.
+.sp
+Choose an algorithm that is compatible with the type and size of the specified asymmetric CMK.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRSASSA_PSS_SHA_256\fP
+.IP \(bu 2
+\fBRSASSA_PSS_SHA_384\fP
+.IP \(bu 2
+\fBRSASSA_PSS_SHA_512\fP
+.IP \(bu 2
+\fBRSASSA_PKCS1_V1_5_SHA_256\fP
+.IP \(bu 2
+\fBRSASSA_PKCS1_V1_5_SHA_384\fP
+.IP \(bu 2
+\fBRSASSA_PKCS1_V1_5_SHA_512\fP
+.IP \(bu 2
+\fBECDSA_SHA_256\fP
+.IP \(bu 2
+\fBECDSA_SHA_384\fP
+.IP \(bu 2
+\fBECDSA_SHA_512\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To generate a digital signature for a message\fP
+.sp
+The following \fBsign\fP example generates a cryptographic signature for a short message. The output of the command includes a base\-64 encoded \fBSignature\fP field that you can verify by using the \fBverify\fP command.
+.sp
+You must also specify a signing algorithm that your CMK supports. To get the signing algorithms for your CMK, use the \fBdescribe\-key\fP command.
+.sp
+Before running this command, replace the example key ID with a valid key ID from your AWS account. The key ID must represent an asymmetric CMK with a key usage of SIGN_VERIFY.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms sign \e
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab \e
+    \-\-message \(aqhello world\(aq \e
+    \-\-message\-type RAW \e
+    \-\-signing\-algorithm RSASSA_PKCS1_V1_5_SHA_256
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "KeyId": "arn:aws:kms:us\-west\-2:111122223333:key/1234abcd\-12ab\-34cd\-56ef\-1234567890ab",
+    "Signature": "ABCDEFhpyVYyTxbafE74ccSvEJLJr3zuoV1Hfymz4qv+/fxmxNLA7SE1SiF8lHw80fKZZ3bJ...",
+    "SigningAlgorithm": "RSASSA_PKCS1_V1_5_SHA_256"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information about using asymmetric CMKs in AWS KMS, see 
+.nf
+\(gaUsing Symmetric and Asymmetric Keys<https://docs.aws.amazon.com/kms/latest/developerguide/symmetric\-asymmetric.html>\(ga__
+.fi
+ in the \fIAWS Key Management Service API Reference\fP\&.
+.sp
+\fBExample 2: To save a digital signature in a file (Linux and macOs)\fP
+.sp
+The following \fBsign\fP example generates a cryptographic signature for a short message stored in a local file. The command also gets the Signature property from the response, Base64\-decodes it and saves it in the ExampleSignature file. You can use the signature file in a \fBverify\fP command that verifies the signature.
+.sp
+The \fBsign\fP command requires a signing algorithm. To get the signing algorithms that your CMK supports, use the \fBdescribe\-key\fP command.
+.sp
+Before running this command, replace the example key ID with a valid key ID from your AWS account. The key ID must represent an asymmetric CMK with a key usage of SIGN_VERIFY.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms sign \e
+    \-\-key\-id 1234abcd\-12ab\-34cd\-56ef\-1234567890ab \e
+    \-\-message fileb://originalString \e
+    \-\-message\-type RAW \e
+    \-\-signing\-algorithm RSASSA_PKCS1_V1_5_SHA_256 \e
+    \-\-output text \e
+    \-\-query Signature | base64 \-\-decode > ExampleSignature
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output. This example extracts the \fBSignature\fP property of the output and saves it in a file.
+.sp
+For more information about using asymmetric CMKs in AWS KMS, see \fI\%Using Symmetric and Asymmetric Keys\fP in the \fIAWS Key Management Service API Reference\fP\&.
+.SH OUTPUT
+.sp
+KeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%key ARN\fP ) of the asymmetric CMK that was used to sign the message.
+.UNINDENT
+.UNINDENT
+.sp
+Signature \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The cryptographic signature that was generated for the message.
+.INDENT 0.0
+.IP \(bu 2
+When used with the supported RSA signing algorithms, the encoding of this value is defined by \fI\%PKCS #1 in RFC 8017\fP .
+.IP \(bu 2
+When used with the \fBECDSA_SHA_256\fP , \fBECDSA_SHA_384\fP , or \fBECDSA_SHA_512\fP signing algorithms, this value is a DER\-encoded object as defined by ANS X9.62–2005 and \fI\%RFC 3279 Section 2.2.3\fP . This is the most commonly used signature format and is appropriate for most uses.
+.UNINDENT
+.sp
+When you use the HTTP API or the AWS CLI, the value is Base64\-encoded. Otherwise, it is not Base64\-encoded.
+.UNINDENT
+.UNINDENT
+.sp
+SigningAlgorithm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The signing algorithm that was used to sign the message.
+.UNINDENT
+.UNINDENT
+.SH DOCUTILS SYSTEM MESSAGES
+.IP "System Message: ERROR/3 (<string>:)"
+Anonymous hyperlink mismatch: 1 references but 0 targets.
+See "backrefs" attribute for IDs.
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,428 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-TEST-AUTHORIZATION" "a" "" ""
+.SH NAME
+iot-test-authorization \- Tests if a specified principal is authorized to perform an AWS IoT action on a specified resource
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Tests if a specified principal is authorized to perform an AWS IoT action on a specified resource. Use this to test and debug the authorization behavior of devices that connect to the AWS IoT device gateway.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  test\-authorization
+[\-\-principal <value>]
+[\-\-cognito\-identity\-pool\-id <value>]
+\-\-auth\-infos <value>
+[\-\-client\-id <value>]
+[\-\-policy\-names\-to\-add <value>]
+[\-\-policy\-names\-to\-skip <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-principal\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The principal. Valid principals are CertificateArn (arn:aws:iot:\fIregion\fP :\fIaccountId\fP :cert/\fIcertificateId\fP ), thingGroupArn (arn:aws:iot:\fIregion\fP :\fIaccountId\fP :thinggroup/\fIgroupName\fP ) and CognitoId (\fIregion\fP :\fIid\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cognito\-identity\-pool\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Cognito identity pool ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auth\-infos\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of authorization info objects. Simulating authorization will create a response for each \fBauthInfo\fP object in the list.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A collection of authorization information.
+.sp
+actionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of action for which the principal is being authorized.
+.UNINDENT
+.UNINDENT
+.sp
+resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The resources for which the principal is being authorized to perform the specified action.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+actionType=string,resources=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "actionType": "PUBLISH"|"SUBSCRIBE"|"RECEIVE"|"CONNECT",
+    "resources": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The MQTT client ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-names\-to\-add\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+When testing custom authorization, the policies specified here are treated as if they are attached to the principal being authorized.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-names\-to\-skip\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+When testing custom authorization, the policies specified here are treated as if they are not attached to the principal being authorized.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo test your AWS IoT policies\fP
+.sp
+The following \fBtest\-authorization\fP example tests the AWS IoT policies associated with the specified principal.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot test\-authorization \e
+    \-\-auth\-infos actionType=CONNECT,resources=arn:aws:iot:us\-east\-1:123456789012:client/client1 \e
+    \-\-principal arn:aws:iot:us\-west\-2:123456789012:cert/aab1068f7f43ac3e3cae4b3a8aa3f308d2a750e6350507962e32c1eb465d9775
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "authResults": [
+        {
+            "authInfo": {
+                "actionType": "CONNECT",
+                "resources": [
+                    "arn:aws:iot:us\-east\-1:123456789012:client/client1"
+                ]
+            },
+            "allowed": {
+                "policies": [
+                    {
+                        "policyName": "TestPolicyAllowed",
+                        "policyArn": "arn:aws:iot:us\-west\-2:123456789012:policy/TestPolicyAllowed"
+                    }
+                ]
+            },
+            "denied": {
+                "implicitDeny": {
+                    "policies": [
+                        {
+                            "policyName": "TestPolicyDenied",
+                            "policyArn": "arn:aws:iot:us\-west\-2:123456789012:policy/TestPolicyDenied"
+                        }
+                    ]
+                },
+                "explicitDeny": {
+                    "policies": [
+                        {
+                            "policyName": "TestPolicyExplicitDenied",
+                            "policyArn": "arn:aws:iot:us\-west\-2:123456789012:policy/TestPolicyExplicitDenied"
+                        }
+                    ]
+                }
+            },
+            "authDecision": "IMPLICIT_DENY",
+            "missingContextValues": []
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%TestAuthorization\fP in the \fIAWS IoT API Reference\fP\&.
+.SH OUTPUT
+.sp
+authResults \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The authentication results.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The authorizer result.
+.sp
+authInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Authorization information.
+.sp
+actionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of action for which the principal is being authorized.
+.UNINDENT
+.UNINDENT
+.sp
+resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The resources for which the principal is being authorized to perform the specified action.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+allowed \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The policies and statements that allowed the specified action.
+.sp
+policies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of policies that allowed the authentication.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an AWS IoT policy.
+.sp
+policyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy name.
+.UNINDENT
+.UNINDENT
+.sp
+policyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy ARN.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+denied \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The policies and statements that denied the specified action.
+.sp
+implicitDeny \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information that implicitly denies the authorization. When a policy doesn\(aqt explicitly deny or allow an action on a resource it is considered an implicit deny.
+.sp
+policies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Policies that don\(aqt contain a matching allow or deny statement for the specified action on the specified resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an AWS IoT policy.
+.sp
+policyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy name.
+.UNINDENT
+.UNINDENT
+.sp
+policyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy ARN.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+explicitDeny \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information that explicitly denies the authorization.
+.sp
+policies \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The policies that denied the authorization.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an AWS IoT policy.
+.sp
+policyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy name.
+.UNINDENT
+.UNINDENT
+.sp
+policyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The policy ARN.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+authDecision \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The final authorization decision of this scenario. Multiple statements are taken into account when determining the authorization decision. An explicit deny statement can override multiple allow statements.
+.UNINDENT
+.UNINDENT
+.sp
+missingContextValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains any missing context values found while evaluating policy.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

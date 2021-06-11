@@ -1,0 +1,1180 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-CREATE-ASSOCIATION" "a" "" ""
+.SH NAME
+ssm-create-association \- A State Manager association defines the state that you want to maintain on your instances
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+A State Manager association defines the state that you want to maintain on your instances. For example, an association can specify that anti\-virus software must be installed and running on your instances, or that certain ports must be closed. For static targets, the association specifies a schedule for when the configuration is reapplied. For dynamic targets, such as an AWS Resource Group or an AWS Autoscaling Group, State Manager applies the configuration when new instances are added to the group. The association also specifies actions to take when applying the configuration. For example, an association for anti\-virus software might run once a day. If the software is not installed, then State Manager installs it. If the software is installed, but the service is not running, then the association might instruct State Manager to start the service.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-association
+\-\-name <value>
+[\-\-document\-version <value>]
+[\-\-instance\-id <value>]
+[\-\-parameters <value>]
+[\-\-targets <value>]
+[\-\-schedule\-expression <value>]
+[\-\-output\-location <value>]
+[\-\-association\-name <value>]
+[\-\-automation\-target\-parameter\-name <value>]
+[\-\-max\-errors <value>]
+[\-\-max\-concurrency <value>]
+[\-\-compliance\-severity <value>]
+[\-\-sync\-compliance <value>]
+[\-\-apply\-only\-at\-cron\-interval | \-\-no\-apply\-only\-at\-cron\-interval]
+[\-\-calendar\-names <value>]
+[\-\-target\-locations <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the SSM document that contains the configuration information for the instance. You can specify Command or Automation documents.
+.sp
+You can specify AWS\-predefined documents, documents you created, or a document that is shared with you from another account.
+.sp
+For SSM documents that are shared with you from other AWS accounts, you must specify the complete SSM document ARN, in the following format:
+.INDENT 0.0
+.INDENT 3.5
+
+.nf
+\(ga\(ga
+.fi
+arn:\fIpartition\fP :ssm:\fIregion\fP :\fIaccount\-id\fP :document/\fIdocument\-name\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 75)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.sp
+For example:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:ssm:us\-east\-2:12345678912:document/My\-Shared\-Document\fP
+.UNINDENT
+.UNINDENT
+.sp
+For AWS\-predefined documents and SSM documents you created in your account, you only need to specify the document name. For example, \fBAWS\-ApplyPatchBaseline\fP or \fBMy\-Document\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-document\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The document version you want to associate with the target(s). Can be a specific version or the default version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance ID.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBInstanceId\fP has been deprecated. To specify an instance ID for an association, use the \fBTargets\fP parameter. Requests that include the parameter \fBInstanceID\fP with SSM documents that use schema version 2.0 or later will fail. In addition, if you use the parameter \fBInstanceId\fP , you cannot use the parameters \fBAssociationName\fP , \fBDocumentVersion\fP , \fBMaxErrors\fP , \fBMaxConcurrency\fP , \fBOutputLocation\fP , or \fBScheduleExpression\fP . To use these parameters, you must use the \fBTargets\fP parameter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-parameters\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+The parameters for the runtime configuration of the document.
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=string,string,KeyName2=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": ["string", ...]
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-targets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The targets for the association. You can target instances by using tags, AWS Resource Groups, all instances in an AWS account, or individual instance IDs. For more information about choosing targets for an association, see \fI\%Using targets and rate controls with State Manager associations\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An array of search criteria that targets instances using a Key,Value combination that you specify.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+One or more targets must be specified for maintenance window Run Command\-type tasks. Depending on the task, targets are optional for other maintenance window task types (Automation, AWS Lambda, and AWS Step Functions). For more information about running tasks that do not specify targets, see \fI\%Registering maintenance window tasks without targets\fP in the \fIAWS Systems Manager User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Supported formats include the following.
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=InstanceIds,Values=*instance\-id\-1* ,*instance\-id\-2* ,*instance\-id\-3* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 184)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=tag:\fImy\-tag\-key\fP ,Values=*my\-tag\-value\-1* ,*my\-tag\-value\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 186)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=tag\-key,Values=*my\-tag\-key\-1* ,*my\-tag\-key\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 188)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBRun Command and Maintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:Name,Values=*resource\-group\-name* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 190)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBMaintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:ResourceTypeFilters,Values=*resource\-type\-1* ,*resource\-type\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 192)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBAutomation targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=ResourceGroup;Values=*resource\-group\-name* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 194)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+\fBKey=InstanceIds,Values=i\-02573cafcfEXAMPLE,i\-0471e04240EXAMPLE,i\-07782c72faEXAMPLE\fP
+.IP \(bu 2
+\fBKey=tag:CostCenter,Values=CostCenter1,CostCenter2,CostCenter3\fP
+.IP \(bu 2
+\fBKey=tag\-key,Values=Name,Instance\-Type,CostCenter\fP
+.IP \(bu 2
+\fBRun Command and Maintenance window targets only\fP : \fBKey=resource\-groups:Name,Values=ProductionResourceGroup\fP   This example demonstrates how to target all resources in the resource group \fBProductionResourceGroup\fP in your maintenance window.
+.IP \(bu 2
+\fBMaintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:ResourceTypeFilters,Values=*AWS::EC2::INSTANCE* ,*AWS::EC2::VPC* \(ga\(ga   This example demonstrates how to target only EC2 instances and VPCs in your maintenance window.
+.IP "System Message: WARNING/2 (<string>:, line 212)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBAutomation targets only\fP : \fBKey=ResourceGroup,Values=MyResourceGroup\fP
+.IP \(bu 2
+\fBState Manager association targets only\fP : \fBKey=InstanceIds,Values=*\fP   This example demonstrates how to target all managed instances in the AWS Region where the association was created.
+.UNINDENT
+.sp
+For more information about how to send commands that target instances using \fBKey,Value\fP parameters, see \fI\%Targeting multiple instances\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+User\-defined criteria for sending commands that target instances that meet the criteria.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+User\-defined criteria that maps to \fBKey\fP . For example, if you specified \fBtag:ServerRole\fP , you could specify \fBvalue:WebServer\fP to run a command on instances that include EC2 tags of \fBServerRole,WebServer\fP .
+.sp
+Depending on the type of \fBTarget\fP , the maximum number of values for a \fBKey\fP might be lower than the global maximum of 50.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schedule\-expression\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A cron expression when the association will be applied to the target(s).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-output\-location\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An S3 bucket where you want to store the output details of the request.
+.sp
+S3Location \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An S3 bucket where you want to store the results of this request.
+.sp
+OutputS3Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Deprecated) You can no longer specify this parameter. The system ignores it. Instead, Systems Manager automatically determines the Region of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket subfolder.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+S3Location={OutputS3Region=string,OutputS3BucketName=string,OutputS3KeyPrefix=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Location": {
+    "OutputS3Region": "string",
+    "OutputS3BucketName": "string",
+    "OutputS3KeyPrefix": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-association\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify a descriptive name for the association.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-automation\-target\-parameter\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify the target for the association. This target is required for associations that use an Automation document and target resources by using rate controls.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-errors\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of errors that are allowed before the system stops sending requests to run the association on additional targets. You can specify either an absolute number of errors, for example 10, or a percentage of the target set, for example 10%. If you specify 3, for example, the system stops sending requests when the fourth error is received. If you specify 0, then the system stops sending requests after the first error is returned. If you run an association on 50 instances and set MaxError to 10%, then the system stops sending the request when the sixth error is received.
+.sp
+Executions that are already running an association when MaxErrors is reached are allowed to complete, but some of these executions may fail as well. If you need to ensure that there won\(aqt be more than max\-errors failed executions, set MaxConcurrency to 1 so that executions proceed one at a time.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-concurrency\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of targets allowed to run the association at the same time. You can specify a number, for example 10, or a percentage of the target set, for example 10%. The default value is 100%, which means all targets run the association at the same time.
+.sp
+If a new instance starts and attempts to run an association while Systems Manager is running MaxConcurrency associations, the association is allowed to run. During the next association interval, the new instance will process its association within the limit specified for MaxConcurrency.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-compliance\-severity\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The severity level to assign to the association.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCRITICAL\fP
+.IP \(bu 2
+\fBHIGH\fP
+.IP \(bu 2
+\fBMEDIUM\fP
+.IP \(bu 2
+\fBLOW\fP
+.IP \(bu 2
+\fBUNSPECIFIED\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sync\-compliance\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The mode for generating association compliance. You can specify \fBAUTO\fP or \fBMANUAL\fP . In \fBAUTO\fP mode, the system uses the status of the association execution to determine the compliance status. If the association execution runs successfully, then the association is \fBCOMPLIANT\fP . If the association execution doesn\(aqt run successfully, the association is \fBNON\-COMPLIANT\fP .
+.sp
+In \fBMANUAL\fP mode, you must specify the \fBAssociationId\fP as a parameter for the  PutComplianceItems API action. In this case, compliance data is not managed by State Manager. It is managed by your direct call to the  PutComplianceItems API action.
+.sp
+By default, all associations use \fBAUTO\fP mode.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAUTO\fP
+.IP \(bu 2
+\fBMANUAL\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-apply\-only\-at\-cron\-interval\fP | \fB\-\-no\-apply\-only\-at\-cron\-interval\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+By default, when you create a new association, the system runs it immediately after it is created and then according to the schedule you specified. Specify this option if you don\(aqt want an association to run immediately after you create it. This parameter is not supported for rate expressions.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-calendar\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The names or Amazon Resource Names (ARNs) of the Systems Manager Change Calendar type documents you want to gate your associations under. The associations only run when that Change Calendar is open. For more information, see \fI\%AWS Systems Manager Change Calendar\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-locations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A location is a combination of AWS Regions and AWS accounts where you want to run the association. Use this action to create an association in multiple Regions and multiple accounts.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The combination of AWS Regions and accounts targeted by the current Automation execution.
+.sp
+Accounts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS accounts targeted by the current Automation execution.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Regions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Regions targeted by the current Automation execution.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+TargetLocationMaxConcurrency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of AWS accounts and AWS regions allowed to run the Automation concurrently.
+.UNINDENT
+.UNINDENT
+.sp
+TargetLocationMaxErrors \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of errors allowed before the system stops queueing additional Automation executions for the currently running Automation.
+.UNINDENT
+.UNINDENT
+.sp
+ExecutionRoleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Automation execution role used by the currently running Automation. If not specified, the default value is \fBAWS\-SystemsManager\-AutomationExecutionRole\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Accounts=string,string,Regions=string,string,TargetLocationMaxConcurrency=string,TargetLocationMaxErrors=string,ExecutionRoleName=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Accounts": ["string", ...],
+    "Regions": ["string", ...],
+    "TargetLocationMaxConcurrency": "string",
+    "TargetLocationMaxErrors": "string",
+    "ExecutionRoleName": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To associate a document using instance IDs\fP
+.sp
+This example associates a configuration document with an instance, using instance IDs.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm create\-association \e
+    \-\-instance\-id "i\-0cb2b964d3e14fd9f" \e
+    \-\-name "AWS\-UpdateSSMAgent"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AssociationDescription": {
+        "Status": {
+            "Date": 1487875500.33,
+            "Message": "Associated with AWS\-UpdateSSMAgent",
+            "Name": "Associated"
+        },
+        "Name": "AWS\-UpdateSSMAgent",
+        "InstanceId": "i\-0cb2b964d3e14fd9f",
+        "Overview": {
+            "Status": "Pending",
+            "DetailedStatus": "Creating"
+        },
+        "AssociationId": "b7c3266e\-a544\-44db\-877e\-b20d3a108189",
+        "DocumentVersion": "$DEFAULT",
+        "LastUpdateAssociationDate": 1487875500.33,
+        "Date": 1487875500.33,
+        "Targets": [
+            {
+                "Values": [
+                    "i\-0cb2b964d3e14fd9f"
+                ],
+                "Key": "InstanceIds"
+            }
+        ]
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%CreateAssociation\fP in the \fIAWS Systems Manager API Reference\fP\&.
+.sp
+\fBExample 2: To associate a document using targets\fP
+.sp
+This example associates a configuration document with an instance, using targets.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm create\-association \e
+    \-\-name "AWS\-UpdateSSMAgent" \e
+    \-\-targets "Key=instanceids,Values=i\-0cb2b964d3e14fd9f"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AssociationDescription": {
+        "Status": {
+            "Date": 1487875500.33,
+            "Message": "Associated with AWS\-UpdateSSMAgent",
+            "Name": "Associated"
+        },
+        "Name": "AWS\-UpdateSSMAgent",
+        "InstanceId": "i\-0cb2b964d3e14fd9f",
+        "Overview": {
+            "Status": "Pending",
+            "DetailedStatus": "Creating"
+        },
+        "AssociationId": "b7c3266e\-a544\-44db\-877e\-b20d3a108189",
+        "DocumentVersion": "$DEFAULT",
+        "LastUpdateAssociationDate": 1487875500.33,
+        "Date": 1487875500.33,
+        "Targets": [
+            {
+                "Values": [
+                    "i\-0cb2b964d3e14fd9f"
+                ],
+                "Key": "InstanceIds"
+            }
+        ]
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%CreateAssociation\fP in the \fIAWS Systems Manager API Reference\fP\&.
+.sp
+\fBExample 3: To create an association that runs only once\fP
+.sp
+This example creates a new association that only runs once on the specified date and time. Associations created with a date in the past or present (by the time it is processed the date is in the past) run immediately.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm create\-association \e
+    \-\-name "AWS\-UpdateSSMAgent" \e
+    \-\-targets "Key=instanceids,Values=i\-0cb2b964d3e14fd9f" \e
+    \-\-schedule\-expression "at(2020\-05\-14T15:55:00)"  \e
+    \-\-apply\-only\-at\-cron\-interval
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AssociationDescription": {
+        "Status": {
+            "Date": 1487875500.33,
+            "Message": "Associated with AWS\-UpdateSSMAgent",
+            "Name": "Associated"
+        },
+        "Name": "AWS\-UpdateSSMAgent",
+        "InstanceId": "i\-0cb2b964d3e14fd9f",
+        "Overview": {
+            "Status": "Pending",
+            "DetailedStatus": "Creating"
+        },
+        "AssociationId": "b7c3266e\-a544\-44db\-877e\-b20d3a108189",
+        "DocumentVersion": "$DEFAULT",
+        "LastUpdateAssociationDate": 1487875500.33,
+        "Date": 1487875500.33,
+        "Targets": [
+            {
+                "Values": [
+                    "i\-0cb2b964d3e14fd9f"
+                ],
+                "Key": "InstanceIds"
+            }
+        ]
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%CreateAssociation\fP in the \fIAWS Systems Manager API Reference\fP or \fI\%Reference: Cron and rate expressions for Systems Manager\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+AssociationDescription \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the association.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Systems Manager document.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+AssociationVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The association version.
+.UNINDENT
+.UNINDENT
+.sp
+Date \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the association was made.
+.UNINDENT
+.UNINDENT
+.sp
+LastUpdateAssociationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the association was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The association status.
+.sp
+Date \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date when the status changed.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the status.
+.UNINDENT
+.UNINDENT
+.sp
+AdditionalInfo \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A user\-defined string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Overview \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the association.
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the association. Status can be: Pending, Success, or Failed.
+.UNINDENT
+.UNINDENT
+.sp
+DetailedStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A detailed status of the association.
+.UNINDENT
+.UNINDENT
+.sp
+AssociationStatusAggregatedCount \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Returns the number of targets for the association status. For example, if you created an association with two instances, and one of them was successful, this would return the count of instances by status.
+.sp
+key \-> (string)
+.sp
+value \-> (integer)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DocumentVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The document version.
+.UNINDENT
+.UNINDENT
+.sp
+AutomationTargetParameterName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify the target for the association. This target is required for associations that use an Automation document and target resources by using rate controls.
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A description of the parameters for a document.
+.sp
+key \-> (string)
+.sp
+value \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AssociationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The association ID.
+.UNINDENT
+.UNINDENT
+.sp
+Targets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The instances targeted by the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An array of search criteria that targets instances using a Key,Value combination that you specify.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+One or more targets must be specified for maintenance window Run Command\-type tasks. Depending on the task, targets are optional for other maintenance window task types (Automation, AWS Lambda, and AWS Step Functions). For more information about running tasks that do not specify targets, see \fI\%Registering maintenance window tasks without targets\fP in the \fIAWS Systems Manager User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Supported formats include the following.
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=InstanceIds,Values=*instance\-id\-1* ,*instance\-id\-2* ,*instance\-id\-3* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 966)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=tag:\fImy\-tag\-key\fP ,Values=*my\-tag\-value\-1* ,*my\-tag\-value\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 968)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+\(ga\(ga
+.fi
+Key=tag\-key,Values=*my\-tag\-key\-1* ,*my\-tag\-key\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 970)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBRun Command and Maintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:Name,Values=*resource\-group\-name* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 972)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBMaintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:ResourceTypeFilters,Values=*resource\-type\-1* ,*resource\-type\-2* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 974)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBAutomation targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=ResourceGroup;Values=*resource\-group\-name* \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 976)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.sp
+For example:
+.INDENT 0.0
+.IP \(bu 2
+\fBKey=InstanceIds,Values=i\-02573cafcfEXAMPLE,i\-0471e04240EXAMPLE,i\-07782c72faEXAMPLE\fP
+.IP \(bu 2
+\fBKey=tag:CostCenter,Values=CostCenter1,CostCenter2,CostCenter3\fP
+.IP \(bu 2
+\fBKey=tag\-key,Values=Name,Instance\-Type,CostCenter\fP
+.IP \(bu 2
+\fBRun Command and Maintenance window targets only\fP : \fBKey=resource\-groups:Name,Values=ProductionResourceGroup\fP   This example demonstrates how to target all resources in the resource group \fBProductionResourceGroup\fP in your maintenance window.
+.IP \(bu 2
+\fBMaintenance window targets only\fP : 
+.nf
+\(ga\(ga
+.fi
+Key=resource\-groups:ResourceTypeFilters,Values=*AWS::EC2::INSTANCE* ,*AWS::EC2::VPC* \(ga\(ga   This example demonstrates how to target only EC2 instances and VPCs in your maintenance window.
+.IP "System Message: WARNING/2 (<string>:, line 994)"
+Inline literal start\-string without end\-string.
+.IP \(bu 2
+\fBAutomation targets only\fP : \fBKey=ResourceGroup,Values=MyResourceGroup\fP
+.IP \(bu 2
+\fBState Manager association targets only\fP : \fBKey=InstanceIds,Values=*\fP   This example demonstrates how to target all managed instances in the AWS Region where the association was created.
+.UNINDENT
+.sp
+For more information about how to send commands that target instances using \fBKey,Value\fP parameters, see \fI\%Targeting multiple instances\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+User\-defined criteria for sending commands that target instances that meet the criteria.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+User\-defined criteria that maps to \fBKey\fP . For example, if you specified \fBtag:ServerRole\fP , you could specify \fBvalue:WebServer\fP to run a command on instances that include EC2 tags of \fBServerRole,WebServer\fP .
+.sp
+Depending on the type of \fBTarget\fP , the maximum number of values for a \fBKey\fP might be lower than the global maximum of 50.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ScheduleExpression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A cron expression that specifies a schedule when the association runs.
+.UNINDENT
+.UNINDENT
+.sp
+OutputLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An S3 bucket where you want to store the output details of the request.
+.sp
+S3Location \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An S3 bucket where you want to store the results of this request.
+.sp
+OutputS3Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(Deprecated) You can no longer specify this parameter. The system ignores it. Instead, Systems Manager automatically determines the Region of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+OutputS3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The S3 bucket subfolder.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LastExecutionDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date on which the association was last run.
+.UNINDENT
+.UNINDENT
+.sp
+LastSuccessfulExecutionDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last date on which the association was successfully run.
+.UNINDENT
+.UNINDENT
+.sp
+AssociationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The association name.
+.UNINDENT
+.UNINDENT
+.sp
+MaxErrors \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The number of errors that are allowed before the system stops sending requests to run the association on additional targets. You can specify either an absolute number of errors, for example 10, or a percentage of the target set, for example 10%. If you specify 3, for example, the system stops sending requests when the fourth error is received. If you specify 0, then the system stops sending requests after the first error is returned. If you run an association on 50 instances and set MaxError to 10%, then the system stops sending the request when the sixth error is received.
+.sp
+Executions that are already running an association when MaxErrors is reached are allowed to complete, but some of these executions may fail as well. If you need to ensure that there won\(aqt be more than max\-errors failed executions, set MaxConcurrency to 1 so that executions proceed one at a time.
+.UNINDENT
+.UNINDENT
+.sp
+MaxConcurrency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of targets allowed to run the association at the same time. You can specify a number, for example 10, or a percentage of the target set, for example 10%. The default value is 100%, which means all targets run the association at the same time.
+.sp
+If a new instance starts and attempts to run an association while Systems Manager is running MaxConcurrency associations, the association is allowed to run. During the next association interval, the new instance will process its association within the limit specified for MaxConcurrency.
+.UNINDENT
+.UNINDENT
+.sp
+ComplianceSeverity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The severity level that is assigned to the association.
+.UNINDENT
+.UNINDENT
+.sp
+SyncCompliance \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The mode for generating association compliance. You can specify \fBAUTO\fP or \fBMANUAL\fP . In \fBAUTO\fP mode, the system uses the status of the association execution to determine the compliance status. If the association execution runs successfully, then the association is \fBCOMPLIANT\fP . If the association execution doesn\(aqt run successfully, the association is \fBNON\-COMPLIANT\fP .
+.sp
+In \fBMANUAL\fP mode, you must specify the \fBAssociationId\fP as a parameter for the  PutComplianceItems API action. In this case, compliance data is not managed by State Manager. It is managed by your direct call to the  PutComplianceItems API action.
+.sp
+By default, all associations use \fBAUTO\fP mode.
+.UNINDENT
+.UNINDENT
+.sp
+ApplyOnlyAtCronInterval \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+By default, when you create a new associations, the system runs it immediately after it is created and then according to the schedule you specified. Specify this option if you don\(aqt want an association to run immediately after you create it. This parameter is not supported for rate expressions.
+.UNINDENT
+.UNINDENT
+.sp
+CalendarNames \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The names or Amazon Resource Names (ARNs) of the Systems Manager Change Calendar type documents your associations are gated under. The associations only run when that Change Calendar is open. For more information, see \fI\%AWS Systems Manager Change Calendar\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+TargetLocations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The combination of AWS Regions and AWS accounts where you want to run the association.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The combination of AWS Regions and accounts targeted by the current Automation execution.
+.sp
+Accounts \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS accounts targeted by the current Automation execution.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Regions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Regions targeted by the current Automation execution.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+TargetLocationMaxConcurrency \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of AWS accounts and AWS regions allowed to run the Automation concurrently.
+.UNINDENT
+.UNINDENT
+.sp
+TargetLocationMaxErrors \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of errors allowed before the system stops queueing additional Automation executions for the currently running Automation.
+.UNINDENT
+.UNINDENT
+.sp
+ExecutionRoleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Automation execution role used by the currently running Automation. If not specified, the default value is \fBAWS\-SystemsManager\-AutomationExecutionRole\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

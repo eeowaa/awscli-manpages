@@ -1,0 +1,552 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "WAFV2-GET-SAMPLED-REQUESTS" "a" "" ""
+.SH NAME
+wafv2-get-sampled-requests \- Gets detailed information about a specified number of requests--a sample--that AWS WAF randomly selects from among the first 5,000 requests that your AWS resource received during a time range that you choose
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets detailed information about a specified number of requests\-\-a sample\-\-that AWS WAF randomly selects from among the first 5,000 requests that your AWS resource received during a time range that you choose. You can specify a sample size of up to 500 requests, and you can specify any time range in the previous three hours.
+.INDENT 0.0
+.INDENT 3.5
+\fBGetSampledRequests\fP returns a time range, which is usually the time range that you specified. However, if your resource (such as a CloudFront distribution) received 5,000 requests before the specified time range elapsed, \fBGetSampledRequests\fP returns an updated time range. This new time range indicates the actual period during which AWS WAF selected the requests in the sample.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-sampled\-requests
+\-\-web\-acl\-arn <value>
+\-\-rule\-metric\-name <value>
+\-\-scope <value>
+\-\-time\-window <value>
+\-\-max\-items <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-web\-acl\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon resource name (ARN) of the \fBWebACL\fP for which you want a sample of requests.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-rule\-metric\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The metric name assigned to the \fBRule\fP or \fBRuleGroup\fP for which you want a sample of requests.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scope\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether this is for an AWS CloudFront distribution or for a regional application. A regional application can be an Application Load Balancer (ALB), an API Gateway REST API, or an AppSync GraphQL API.
+.sp
+To work with CloudFront, you must also specify the Region US East (N. Virginia) as follows:
+.INDENT 0.0
+.IP \(bu 2
+CLI \- Specify the Region when you use the CloudFront scope: \fB\-\-scope=CLOUDFRONT \-\-region=us\-east\-1\fP .
+.IP \(bu 2
+API and SDKs \- For all calls, use the Region endpoint us\-east\-1.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCLOUDFRONT\fP
+.IP \(bu 2
+\fBREGIONAL\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-time\-window\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The start date and time and the end date and time of the range for which you want \fBGetSampledRequests\fP to return a sample of requests. You must specify the times in Coordinated Universal Time (UTC) format. UTC format includes the special designator, \fBZ\fP . For example, \fB"2016\-09\-27T14:50Z"\fP . You can specify any time range in the previous three hours. If you specify a start time that\(aqs earlier than three hours ago, AWS WAF sets it to three hours ago.
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The beginning of the time range from which you want \fBGetSampledRequests\fP to return a sample of the requests that your AWS resource received. You must specify the times in Coordinated Universal Time (UTC) format. UTC format includes the special designator, \fBZ\fP . For example, \fB"2016\-09\-27T14:50Z"\fP . You can specify any time range in the previous three hours.
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The end of the time range from which you want \fBGetSampledRequests\fP to return a sample of the requests that your AWS resource received. You must specify the times in Coordinated Universal Time (UTC) format. UTC format includes the special designator, \fBZ\fP . For example, \fB"2016\-09\-27T14:50Z"\fP . You can specify any time range in the previous three hours.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+StartTime=timestamp,EndTime=timestamp
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "StartTime": timestamp,
+  "EndTime": timestamp
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of requests that you want AWS WAF to return from among the first 5,000 requests that your AWS resource received during the time range. If your resource received fewer requests than the value of \fBMaxItems\fP , \fBGetSampledRequests\fP returns information about all of them.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo retrieve a sample of web requests for a web ACL\fP
+.sp
+The following \fBget\-sampled\-requests\fP retrieves the sampled web requests for the specified web ACL, rule metric, and time frame.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws wafv2 get\-sampled\-requests \e
+    \-\-web\-acl\-arn arn:aws:wafv2:us\-west\-2:123456789012:regional/webacl/test\-cli/a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111 \e
+    \-\-rule\-metric\-name AWS\-AWSManagedRulesSQLiRuleSet \e
+    \-\-scope=REGIONAL \e
+    \-\-time\-window StartTime=2020\-02\-12T20:00Z,EndTime=2020\-02\-12T21:10Z \e
+    \-\-max\-items 100
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "TimeWindow": {
+    "EndTime": 1581541800.0,
+    "StartTime": 1581537600.0
+    },
+    "SampledRequests": [
+        {
+            "Action": "BLOCK",
+            "Timestamp": 1581541799.564,
+            "RuleNameWithinRuleGroup": "AWS#AWSManagedRulesSQLiRuleSet#SQLi_BODY",
+            "Request": {
+                "Country": "US",
+                "URI": "/",
+                "Headers": [
+                    {
+                        "Name": "Host",
+                        "Value": "alb\-test\-1EXAMPLE1.us\-east\-1.elb.amazonaws.com"
+                    },
+                    {
+                        "Name": "Content\-Length",
+                        "Value": "7456"
+                    },
+                    {
+                        "Name": "User\-Agent",
+                        "Value": "curl/7.53.1"
+                    },
+                    {
+                        "Name": "Accept",
+                        "Value": "/"
+                    },
+                    {
+                        "Name": "Content\-Type",
+                        "Value": "application/x\-www\-form\-urlencoded"
+                    }
+                ],
+                "ClientIP": "198.51.100.08",
+                "Method": "POST",
+                "HTTPVersion": "HTTP/1.1"
+            },
+            "Weight": 1
+        },
+        {
+            "Action": "BLOCK",
+            "Timestamp": 1581541799.988,
+            "RuleNameWithinRuleGroup": "AWS#AWSManagedRulesSQLiRuleSet#SQLi_BODY",
+            "Request": {
+                "Country": "US",
+                "URI": "/",
+                "Headers": [
+                    {
+                        "Name": "Host",
+                        "Value": "alb\-test\-1EXAMPLE1.us\-east\-1.elb.amazonaws.com"
+                    },
+                    {
+                        "Name": "Content\-Length",
+                        "Value": "7456"
+                    },
+                    {
+                        "Name": "User\-Agent",
+                        "Value": "curl/7.53.1"
+                    },
+                    {
+                        "Name": "Accept",
+                        "Value": "/"
+                    },
+                    {
+                        "Name": "Content\-Type",
+                        "Value": "application/x\-www\-form\-urlencoded"
+                    }
+                ],
+                "ClientIP": "198.51.100.08",
+                "Method": "POST",
+                "HTTPVersion": "HTTP/1.1"
+            },
+            "Weight": 3
+        },
+        {
+            "Action": "BLOCK",
+            "Timestamp": 1581541799.846,
+            "RuleNameWithinRuleGroup": "AWS#AWSManagedRulesSQLiRuleSet#SQLi_BODY",
+            "Request": {
+                "Country": "US",
+                "URI": "/",
+                "Headers": [
+                    {
+                        "Name": "Host",
+                        "Value": "alb\-test\-1EXAMPLE1.us\-east\-1.elb.amazonaws.com"
+                    },
+                    {
+                        "Name": "Content\-Length",
+                        "Value": "7456"
+                    },
+                    {
+                        "Name": "User\-Agent",
+                        "Value": "curl/7.53.1"
+                    },
+                    {
+                        "Name": "Accept",
+                        "Value": "/"
+                    },
+                    {
+                        "Name": "Content\-Type",
+                        "Value": "application/x\-www\-form\-urlencoded"
+                    }
+                ],
+                "ClientIP": "198.51.100.08",
+                "Method": "POST",
+                "HTTPVersion": "HTTP/1.1"
+            },
+            "Weight": 1
+        },
+        {
+            "Action": "BLOCK",
+            "Timestamp": 1581541799.4,
+            "RuleNameWithinRuleGroup": "AWS#AWSManagedRulesSQLiRuleSet#SQLi_BODY",
+            "Request": {
+                "Country": "US",
+                "URI": "/",
+                "Headers": [
+                    {
+                        "Name": "Host",
+                        "Value": "alb\-test\-1EXAMPLE1.us\-east\-1.elb.amazonaws.com"
+                    },
+                    {
+                        "Name": "Content\-Length",
+                        "Value": "7456"
+                    },
+                    {
+                        "Name": "User\-Agent",
+                        "Value": "curl/7.53.1"
+                    },
+                    {
+                        "Name": "Accept",
+                        "Value": "/"
+                    },
+                    {
+                        "Name": "Content\-Type",
+                        "Value": "application/x\-www\-form\-urlencoded"
+                    }
+                ],
+                "ClientIP": "198.51.100.08",
+                "Method": "POST",
+                "HTTPVersion": "HTTP/1.1"
+            },
+            "Weight": 1
+        }
+    ],
+    "PopulationSize": 4
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Viewing a Sample of Web Requests\fP in the \fIAWS WAF, AWS Firewall Manager, and AWS Shield Advanced Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+SampledRequests \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains detailed information about each of the requests in the sample.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a single sampled web request. The response from  GetSampledRequests includes a \fBSampledHTTPRequests\fP complex type that appears as \fBSampledRequests\fP in the response syntax. \fBSampledHTTPRequests\fP contains an array of \fBSampledHTTPRequest\fP objects.
+.sp
+Request \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains detailed information about the request.
+.sp
+ClientIP \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP address that the request originated from. If the web ACL is associated with a CloudFront distribution, this is the value of one of the following fields in CloudFront access logs:
+.INDENT 0.0
+.IP \(bu 2
+\fBc\-ip\fP , if the viewer did not use an HTTP proxy or a load balancer to send the request
+.IP \(bu 2
+\fBx\-forwarded\-for\fP , if the viewer did use an HTTP proxy or a load balancer to send the request
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Country \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The two\-letter country code for the country that the request originated from. For a current list of country codes, see the Wikipedia entry \fI\%ISO 3166\-1 alpha\-2\fP .
+.UNINDENT
+.UNINDENT
+.sp
+URI \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The URI path of the request, which identifies the resource, for example, \fB/images/daily\-ad.jpg\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Method \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The HTTP method specified in the sampled web request.
+.UNINDENT
+.UNINDENT
+.sp
+HTTPVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The HTTP version specified in the sampled web request, for example, \fBHTTP/1.1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Headers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains the name and value for each header in the sampled web request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Part of the response from  GetSampledRequests . This is a complex type that appears as \fBHeaders\fP in the response syntax. \fBHTTPHeader\fP contains the names and values of all of the headers that appear in one of the web requests.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the HTTP header.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the HTTP header.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Weight \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates how one result in the response relates proportionally to other results in the response. For example, a result that has a weight of \fB2\fP represents roughly twice as many web requests as a result that has a weight of \fB1\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Timestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which AWS WAF received the request from your AWS resource, in Unix time format (in seconds).
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action for the \fBRule\fP that the request matched: \fBALLOW\fP , \fBBLOCK\fP , or \fBCOUNT\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RuleNameWithinRuleGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the \fBRule\fP that the request matched. For managed rule groups, the format for this name is \fB<vendor name>#<managed rule group name>#<rule name>\fP . For your own rule groups, the format for this name is \fB<rule group name>#<rule name>\fP . If the rule is not in a rule group, this field is absent.
+.UNINDENT
+.UNINDENT
+.sp
+RequestHeadersInserted \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Custom request headers inserted by AWS WAF into the request, according to the custom request configuration for the matching rule action.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Part of the response from  GetSampledRequests . This is a complex type that appears as \fBHeaders\fP in the response syntax. \fBHTTPHeader\fP contains the names and values of all of the headers that appear in one of the web requests.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the HTTP header.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the HTTP header.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResponseCodeSent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The response code that was sent for the request.
+.UNINDENT
+.UNINDENT
+.sp
+Labels \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Labels applied to the web request by matching rules. AWS WAF applies fully qualified labels to matching web requests. A fully qualified label is the concatenation of a label namespace and a rule label. The rule\(aqs rule group or web ACL defines the label namespace.
+.sp
+For example, \fBawswaf:111122223333:myRuleGroup:testRules:testNS1:testNS2:labelNameA\fP or \fBawswaf:managed:aws:managed\-rule\-set:header:encoding:utf8\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A single label container. This is used as an element of a label array in multiple contexts, for example, in \fBRuleLabels\fP inside a  Rule and in \fBLabels\fP inside a  SampledHTTPRequest .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The label string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PopulationSize \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The total number of requests from which \fBGetSampledRequests\fP got a sample of \fBMaxItems\fP requests. If \fBPopulationSize\fP is less than \fBMaxItems\fP , the sample includes every request that your AWS resource received during the specified time range.
+.UNINDENT
+.UNINDENT
+.sp
+TimeWindow \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Usually, \fBTimeWindow\fP is the time range that you specified in the \fBGetSampledRequests\fP request. However, if your AWS resource received more than 5,000 requests during the time range that you specified in the request, \fBGetSampledRequests\fP returns the time range for the first 5,000 requests. Times are in Coordinated Universal Time (UTC) format.
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The beginning of the time range from which you want \fBGetSampledRequests\fP to return a sample of the requests that your AWS resource received. You must specify the times in Coordinated Universal Time (UTC) format. UTC format includes the special designator, \fBZ\fP . For example, \fB"2016\-09\-27T14:50Z"\fP . You can specify any time range in the previous three hours.
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The end of the time range from which you want \fBGetSampledRequests\fP to return a sample of the requests that your AWS resource received. You must specify the times in Coordinated Universal Time (UTC) format. UTC format includes the special designator, \fBZ\fP . For example, \fB"2016\-09\-27T14:50Z"\fP . You can specify any time range in the previous three hours.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

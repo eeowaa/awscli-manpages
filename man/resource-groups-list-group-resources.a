@@ -1,0 +1,384 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RESOURCE-GROUPS-LIST-GROUP-RESOURCES" "a" "" ""
+.SH NAME
+resource-groups-list-group-resources \- Returns a list of ARNs of the resources that are members of a specified resource group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns a list of ARNs of the resources that are members of a specified resource group.
+.INDENT 0.0
+.INDENT 3.5
+\fBMinimum permissions\fP
+.UNINDENT
+.UNINDENT
+.sp
+To run this command, you must have the following permissions:
+.INDENT 0.0
+.IP \(bu 2
+\fBresource\-groups:ListGroupResources\fP
+.IP \(bu 2
+\fBcloudformation:DescribeStacks\fP
+.IP \(bu 2
+\fBcloudformation:ListStackResources\fP
+.IP \(bu 2
+\fBtag:GetResources\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-group\-resources\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBResourceIdentifiers\fP, \fBResources\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-group\-resources
+[\-\-group\-name <value>]
+[\-\-group <value>]
+[\-\-filters <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+\fBDeprecated \- don\(aqt use this parameter. Use the \(ga\(gaGroup\(ga\(ga request field instead.\fP *
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-group\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name or the ARN of the resource group
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Filters, formatted as  ResourceFilter objects, that you want to apply to a \fBListGroupResources\fP operation. Filters the results to include only those of the specified resource types.
+.INDENT 0.0
+.IP \(bu 2
+\fBresource\-type\fP \- Filter resources by their type. Specify up to five resource types in the format \fBAWS::ServiceCode::ResourceType\fP . For example, \fBAWS::EC2::Instance\fP , or \fBAWS::S3::Bucket\fP .
+.UNINDENT
+.sp
+When you specify a \fBresource\-type\fP filter for \fBListGroupResources\fP , AWS Resource Groups validates your filter resource types against the types that are defined in the query associated with the group. For example, if a group contains only S3 buckets because its query specifies only that resource type, but your \fBresource\-type\fP filter includes EC2 instances, AWS Resource Groups does not filter for EC2 instances. In this case, a \fBListGroupResources\fP request returns a \fBBadRequestException\fP error with a message similar to the following:
+.INDENT 0.0
+.INDENT 3.5
+\fBThe resource types specified as filters in the request are not valid.\fP
+.UNINDENT
+.UNINDENT
+.sp
+The error includes a list of resource types that failed the validation because they are not part of the query associated with the group. This validation doesn\(aqt occur when the group query specifies \fBAWS::AllSupported\fP , because a group based on such a query can contain any of the allowed resource types for the query type (tag\-based or AWS CloudFormation stack\-based queries).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A filter name and value pair that is used to obtain more specific results from a list of resources.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter. Filter names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more filter values. Allowed filter values vary by resource filter name, and are case\-sensitive.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "resource\-type",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo list all of the resources in a resource group\fP
+.sp
+Example 1: The following \fBlist\-resource\-groups\fP example lists all of the resources that are part of the specified resource group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws resource\-groups list\-group\-resources \e
+    \-\-group\-name tbq\-WebServer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ResourceIdentifiers": [
+        {
+            "ResourceArn": "arn:aws:ec2:us\-west\-2:123456789012:instance/i\-09f77fa38c12345ab",
+            "ResourceType": "AWS::EC2::Instance"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Example 2: The following example lists all of the resources in the group that also have a \(aqresource\-type\(aq of the \(aqAWS::EC2::Instance\(aq. :
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B aws resource\-groups list\-group\-resources 
+\-\-group\-name tbq\-WebServer \-\-filters Name=resource\-type,Values=AWS::EC2::Instance
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of resources from which you can determine each resource\(aqs identity, type, and group membership status.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure returned by the  ListGroupResources operation that contains identity and group membership status information for one of the resources in the group.
+.sp
+Identifier \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains the ARN of a resource and its resource type.
+.sp
+ResourceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a resource.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type of a resource, such as \fBAWS::EC2::Instance\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains the status of this resource\(aqs membership in the group.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This field is present in the response only if the group is of type \fBAWS::EC2::HostManagement\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResourceIdentifiers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+** \fIDeprecated \- don\(aqt use this parameter. Use the \(ga\(gaResources\(ga\(ga response field instead.\fP **
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains the ARN of a resource and its resource type.
+.sp
+ResourceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of a resource.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource type of a resource, such as \fBAWS::EC2::Instance\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that more output is available than is included in the current response. Use this value in the \fBNextToken\fP request parameter in a subsequent call to the operation to get the next part of the output. You should repeat this until the \fBNextToken\fP response element comes back as \fBnull\fP .
+.UNINDENT
+.UNINDENT
+.sp
+QueryErrors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBQueryError\fP objects. Each error is an object that contains \fBErrorCode\fP and \fBMessage\fP structures. Possible values for \fBErrorCode\fP are \fBCLOUDFORMATION_STACK_INACTIVE\fP and \fBCLOUDFORMATION_STACK_NOT_EXISTING\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A two\-part error structure that can occur in \fBListGroupResources\fP or \fBSearchResources\fP operations on CloudFormation stack\-based queries. The error occurs if the CloudFormation stack on which the query is based either does not exist, or has a status that renders the stack inactive. A \fBQueryError\fP occurrence does not necessarily mean that AWS Resource Groups could not complete the operation, but the resulting group might have no member resources.
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Possible values are \fBCLOUDFORMATION_STACK_INACTIVE\fP and \fBCLOUDFORMATION_STACK_NOT_EXISTING\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A message that explains the \fBErrorCode\fP value. Messages might state that the specified CloudFormation stack does not exist (or no longer exists). For \fBCLOUDFORMATION_STACK_INACTIVE\fP , the message typically states that the CloudFormation stack has a status that is not (or no longer) active, such as \fBCREATE_FAILED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

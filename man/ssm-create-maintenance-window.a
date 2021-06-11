@@ -1,0 +1,321 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-CREATE-MAINTENANCE-WINDOW" "a" "" ""
+.SH NAME
+ssm-create-maintenance-window \- Creates a new maintenance window
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a new maintenance window.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The value you specify for \fBDuration\fP determines the specific end time for the maintenance window based on the time it begins. No maintenance window tasks are permitted to start after the resulting endtime minus the number of hours you specify for \fBCutoff\fP . For example, if the maintenance window starts at 3 PM, the duration is three hours, and the value you specify for \fBCutoff\fP is one hour, no maintenance window tasks can start after 5 PM.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-maintenance\-window
+\-\-name <value>
+[\-\-description <value>]
+[\-\-start\-date <value>]
+[\-\-end\-date <value>]
+\-\-schedule <value>
+[\-\-schedule\-timezone <value>]
+[\-\-schedule\-offset <value>]
+\-\-duration <value>
+\-\-cutoff <value>
+\-\-allow\-unassociated\-targets | \-\-no\-allow\-unassociated\-targets
+[\-\-client\-token <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the maintenance window.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional description for the maintenance window. We recommend specifying a description to help you organize your maintenance windows.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-date\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The date and time, in ISO\-8601 Extended format, for when you want the maintenance window to become active. StartDate allows you to delay activation of the maintenance window until the specified future date.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-date\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The date and time, in ISO\-8601 Extended format, for when you want the maintenance window to become inactive. EndDate allows you to set a date and time in the future when the maintenance window will no longer run.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schedule\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The schedule of the maintenance window in the form of a cron or rate expression.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schedule\-timezone\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The time zone that the scheduled maintenance window executions are based on, in Internet Assigned Numbers Authority (IANA) format. For example: "America/Los_Angeles", "UTC", or "Asia/Seoul". For more information, see the \fI\%Time Zone Database\fP on the IANA website.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schedule\-offset\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of days to wait after the date and time specified by a CRON expression before running the maintenance window.
+.sp
+For example, the following cron expression schedules a maintenance window to run on the third Tuesday of every month at 11:30 PM.
+.INDENT 0.0
+.INDENT 3.5
+\fBcron(30 23 ? * TUE#3 *)\fP
+.UNINDENT
+.UNINDENT
+.sp
+If the schedule offset is \fB2\fP , the maintenance window won\(aqt run until two days later.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-duration\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The duration of the maintenance window in hours.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cutoff\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of hours before the end of the maintenance window that Systems Manager stops scheduling new tasks for execution.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-allow\-unassociated\-targets\fP | \fB\-\-no\-allow\-unassociated\-targets\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enables a maintenance window task to run on managed instances, even if you have not registered those instances as targets. If enabled, then you must specify the unregistered instances (by instance ID) when you register a task with the maintenance window.
+.sp
+If you don\(aqt enable this option, then you must specify previously\-registered targets when you register a task with the maintenance window.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+User\-provided idempotency token.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Optional metadata that you assign to a resource. Tags enable you to categorize a resource in different ways, such as by purpose, owner, or environment. For example, you might want to tag a maintenance window to identify the type of tasks it will run, the types of targets, and the environment it will run in. In this case, you could specify the following key name/value pairs:
+.INDENT 0.0
+.IP \(bu 2
+\fBKey=TaskType,Value=AgentUpdate\fP
+.IP \(bu 2
+\fBKey=OS,Value=Windows\fP
+.IP \(bu 2
+\fBKey=Environment,Value=Production\fP
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To add tags to an existing maintenance window, use the  AddTagsToResource action.
+.UNINDENT
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Metadata that you assign to your AWS resources. Tags enable you to categorize your resources in different ways, for example, by purpose, owner, or environment. In Systems Manager, you can apply tags to documents, managed instances, maintenance windows, Parameter Store parameters, and patch baselines.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a maintenance window\fP
+.sp
+The following \fBcreate\-maintenance\-window\fP example creates a new maintenance window that every five minutes for up to two hours (as needed), prevents new tasks from starting within one hour of the end of the maintenance window execution, allows unassociated targets (instances that you haven\(aqt registered with the maintenance window), and indicates through the use of custom tags that its creator intends to use it in a tutorial.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm create\-maintenance\-window \e
+    \-\-name "My\-Tutorial\-Maintenance\-Window" \e
+    \-\-schedule "rate(5 minutes)" \e
+    \-\-duration 2 \-\-cutoff 1 \e
+    \-\-allow\-unassociated\-targets \e
+    \-\-tags "Key=Purpose,Value=Tutorial"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WindowId": "mw\-0c50858d01EXAMPLE"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To create a maintenance window that runs only once\fP
+.sp
+The following \fBcreate\-maintenance\-window\fP example creates a new maintenance window that only runs one time on the specified date and time.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm create\-maintenance\-window \e
+    \-\-name My\-One\-Time\-Maintenance\-Window \e
+    \-\-schedule "at(2020\-05\-14T15:55:00)" \e
+    \-\-duration 5 \e
+    \-\-cutoff 2 \e
+    \-\-allow\-unassociated\-targets \e
+    \-\-tags "Key=Environment,Value=Production"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "WindowId": "mw\-01234567890abcdef"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Maintenance Windows\fP in the \fIAWS Systems Manager User Guide\fP\&.
+.SH OUTPUT
+.sp
+WindowId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the created maintenance window.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

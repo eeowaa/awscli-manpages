@@ -1,0 +1,372 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-DESCRIBE-MATCHMAKING" "a" "" ""
+.SH NAME
+gamelift-describe-matchmaking \- Retrieves one or more matchmaking tickets
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves one or more matchmaking tickets. Use this operation to retrieve ticket information, including\-\-after a successful match is made\-\-connection information for the resulting new game session.
+.sp
+To request matchmaking tickets, provide a list of up to 10 ticket IDs. If the request is successful, a ticket object is returned for each requested ID that currently exists.
+.sp
+This operation is not designed to be continually called to track matchmaking ticket status. This practice can cause you to exceed your API limit, which results in errors. Instead, as a best practice, set up an Amazon Simple Notification Service (SNS) to receive notifications, and provide the topic ARN in the matchmaking configuration. Continuously poling ticket status with  DescribeMatchmaking should only be used for games in development with low matchmaking usage.
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Add FlexMatch to a game client\fP
+.sp
+\fI\%Set Up FlexMatch event notification\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+StartMatchmaking |  DescribeMatchmaking |  StopMatchmaking |  AcceptMatch |  StartMatchBackfill | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-matchmaking
+\-\-ticket\-ids <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-ticket\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a matchmaking ticket. You can include up to 10 ID values.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+TicketList \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of existing matchmaking ticket objects matching the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Ticket generated to track the progress of a matchmaking request. Each ticket is uniquely identified by a ticket ID, supplied by the requester, when creating a matchmaking request with  StartMatchmaking . Tickets can be retrieved by calling  DescribeMatchmaking with the ticket ID.
+.sp
+TicketId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a matchmaking ticket.
+.UNINDENT
+.UNINDENT
+.sp
+ConfigurationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the  MatchmakingConfiguration that is used with this ticket. Matchmaking configurations determine how players are grouped into a match and how a new game session is created for the match.
+.UNINDENT
+.UNINDENT
+.sp
+ConfigurationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) associated with the GameLift matchmaking configuration resource that is used with this ticket.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Current status of the matchmaking request.
+.INDENT 0.0
+.IP \(bu 2
+\fBQUEUED\fP \-\- The matchmaking request has been received and is currently waiting to be processed.
+.IP \(bu 2
+\fBSEARCHING\fP \-\- The matchmaking request is currently being processed.
+.IP \(bu 2
+\fBREQUIRES_ACCEPTANCE\fP \-\- A match has been proposed and the players must accept the match (see  AcceptMatch ). This status is used only with requests that use a matchmaking configuration with a player acceptance requirement.
+.IP \(bu 2
+\fBPLACING\fP \-\- The FlexMatch engine has matched players and is in the process of placing a new game session for the match.
+.IP \(bu 2
+\fBCOMPLETED\fP \-\- Players have been matched and a game session is ready to host the players. A ticket in this state contains the necessary connection information for players.
+.IP \(bu 2
+\fBFAILED\fP \-\- The matchmaking request was not completed.
+.IP \(bu 2
+\fBCANCELLED\fP \-\- The matchmaking request was canceled. This may be the result of a call to  StopMatchmaking or a proposed match that one or more players failed to accept.
+.IP \(bu 2
+\fBTIMED_OUT\fP \-\- The matchmaking request was not successful within the duration specified in the matchmaking configuration.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Matchmaking requests that fail to successfully complete (statuses FAILED, CANCELLED, TIMED_OUT) can be resubmitted as new requests with new ticket IDs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StatusReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Code to explain the current status. For example, a status reason may indicate when a ticket has returned to \fBSEARCHING\fP status after a proposed match fails to receive player acceptances.
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Additional information about the current status.
+.UNINDENT
+.UNINDENT
+.sp
+StartTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time stamp indicating when this matchmaking request was received. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+EndTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Time stamp indicating when this matchmaking request stopped being processed due to success, failure, or cancellation. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+Players \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of \fBPlayer\fP objects, each representing a player to find matches for. Players are identified by a unique player ID and may include latency data for use during matchmaking. If the ticket is in status \fBCOMPLETED\fP , the \fBPlayer\fP objects include the team the players were assigned to in the resulting match.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a player in matchmaking. When starting a matchmaking request, a player has a player ID, attributes, and may have latency data. Team information is added after a match has been successfully completed.
+.sp
+PlayerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player
+.UNINDENT
+.UNINDENT
+.sp
+PlayerAttributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A collection of key:value pairs containing player information for use in matchmaking. Player attribute keys must match the \fIplayerAttributes\fP used in a matchmaking rule set. Example: \fB"PlayerAttributes": {"skill": {"N": "23"}, "gameMode": {"S": "deathmatch"}}\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Values for use in  Player attribute key\-value pairs. This object lets you specify an attribute value using any of the valid data types: string, number, string array, or data map. Each \fBAttributeValue\fP object can use only one of the available properties.
+.sp
+S \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+For single string values. Maximum string length is 100 characters.
+.UNINDENT
+.UNINDENT
+.sp
+N \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+For number values, expressed as double.
+.UNINDENT
+.UNINDENT
+.sp
+SL \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+For a list of up to 10 strings. Maximum length for each string is 100 characters. Duplicate values are not recognized; all occurrences of the repeated value after the first of a repeated value are ignored.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SDM \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+For a map of up to 10 data type:value pairs. Maximum length for each string value is 100 characters.
+.sp
+key \-> (string)
+.sp
+value \-> (double)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Team \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the team that the player is assigned to in a match. Team names are defined in a matchmaking rule set.
+.UNINDENT
+.UNINDENT
+.sp
+LatencyInMs \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A set of values, expressed in milliseconds, that indicates the amount of latency that a player experiences when connected to AWS Regions. If this property is present, FlexMatch considers placing the match only in Regions for which latency is reported.
+.sp
+If a matchmaker has a rule that evaluates player latency, players must report latency in order to be matched. If no latency is reported in this scenario, FlexMatch assumes that no Regions are available to the player and the ticket is not matchable.
+.sp
+key \-> (string)
+.sp
+value \-> (integer)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionConnectionInfo \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifier and connection information of the game session created for the match. This information is added to the ticket only after the matchmaking request has been successfully completed. This parameter is not set when FlexMatch is being used without GameLift hosting.
+.sp
+GameSessionArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the game session. Use the game session ID.
+.UNINDENT
+.UNINDENT
+.sp
+IpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IP address of the game session. To connect to a GameLift game server, an app needs both the IP address and port number.
+.UNINDENT
+.UNINDENT
+.sp
+DnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS identifier assigned to the instance that is running the game session. Values have the following format:
+.INDENT 0.0
+.IP \(bu 2
+TLS\-enabled fleets: \fB<unique identifier>.<region identifier>.amazongamelift.com\fP .
+.IP \(bu 2
+Non\-TLS\-enabled fleets: \fBec2\-<unique identifier>.compute.amazonaws.com\fP . (See \fI\%Amazon EC2 Instance IP Addressing\fP .)
+.UNINDENT
+.sp
+When connecting to a game session that is running on a TLS\-enabled fleet, you must use the DNS name, not the IP address.
+.UNINDENT
+.UNINDENT
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number for the game session. To connect to a GameLift game server, an app needs both the IP address and port number.
+.UNINDENT
+.UNINDENT
+.sp
+MatchedPlayerSessions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of player session IDs, one for each player ID that was included in the original matchmaking request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents a new player session that is created as a result of a successful FlexMatch match. A successful match automatically creates new player sessions for every player ID in the original matchmaking request.
+.sp
+When players connect to the match\(aqs game session, they must include both player ID and player session ID in order to claim their assigned player slot.
+.sp
+PlayerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player
+.UNINDENT
+.UNINDENT
+.sp
+PlayerSessionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a player session
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EstimatedWaitTime \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Average amount of time (in seconds) that players are currently waiting for a match. If there is not enough recent data, this property may be empty.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

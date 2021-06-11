@@ -1,0 +1,2086 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-DESCRIBE-INSTANCES" "a" "" ""
+.SH NAME
+ec2-describe-instances \- Describes the specified instances or all instances
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes the specified instances or all instances.
+.sp
+If you specify instance IDs, the output includes information for only the specified instances. If you specify filters, the output includes information for only those instances that meet the filter criteria. If you do not specify instance IDs or filters, the output includes information for all instances, which can affect performance. We recommend that you use pagination to ensure that the operation returns quickly and successfully.
+.sp
+If you specify an instance ID that is not valid, an error is returned. If you specify an instance that you do not own, it is not included in the output.
+.sp
+Recently terminated instances might appear in the returned results. This interval is usually less than one hour.
+.sp
+If you describe instances in the rare case where an Availability Zone is experiencing a service disruption and you specify instance IDs that are in the affected zone, or do not specify any instance IDs at all, the call fails. If you describe instances and specify only instance IDs that are in an unaffected zone, the call works normally.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBdescribe\-instances\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBReservations\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-instances
+[\-\-filters <value>]
+[\-\-instance\-ids <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-filters\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The filters.
+.INDENT 0.0
+.IP \(bu 2
+\fBaffinity\fP \- The affinity setting for an instance running on a Dedicated Host (\fBdefault\fP | \fBhost\fP ).
+.IP \(bu 2
+\fBarchitecture\fP \- The instance architecture (\fBi386\fP | \fBx86_64\fP | \fBarm64\fP ).
+.IP \(bu 2
+\fBavailability\-zone\fP \- The Availability Zone of the instance.
+.IP \(bu 2
+\fBblock\-device\-mapping.attach\-time\fP \- The attach time for an EBS volume mapped to the instance, for example, \fB2010\-09\-15T17:15:20.000Z\fP .
+.IP \(bu 2
+\fBblock\-device\-mapping.delete\-on\-termination\fP \- A Boolean that indicates whether the EBS volume is deleted on instance termination.
+.IP \(bu 2
+\fBblock\-device\-mapping.device\-name\fP \- The device name specified in the block device mapping (for example, \fB/dev/sdh\fP or \fBxvdh\fP ).
+.IP \(bu 2
+\fBblock\-device\-mapping.status\fP \- The status for the EBS volume (\fBattaching\fP | \fBattached\fP | \fBdetaching\fP | \fBdetached\fP ).
+.IP \(bu 2
+\fBblock\-device\-mapping.volume\-id\fP \- The volume ID of the EBS volume.
+.IP \(bu 2
+\fBclient\-token\fP \- The idempotency token you provided when you launched the instance.
+.IP \(bu 2
+\fBdns\-name\fP \- The public DNS name of the instance.
+.IP \(bu 2
+\fBgroup\-id\fP \- The ID of the security group for the instance. EC2\-Classic only.
+.IP \(bu 2
+\fBgroup\-name\fP \- The name of the security group for the instance. EC2\-Classic only.
+.IP \(bu 2
+\fBhibernation\-options.configured\fP \- A Boolean that indicates whether the instance is enabled for hibernation. A value of \fBtrue\fP means that the instance is enabled for hibernation.
+.IP \(bu 2
+\fBhost\-id\fP \- The ID of the Dedicated Host on which the instance is running, if applicable.
+.IP \(bu 2
+\fBhypervisor\fP \- The hypervisor type of the instance (\fBovm\fP | \fBxen\fP ). The value \fBxen\fP is used for both Xen and Nitro hypervisors.
+.IP \(bu 2
+\fBiam\-instance\-profile.arn\fP \- The instance profile associated with the instance. Specified as an ARN.
+.IP \(bu 2
+\fBimage\-id\fP \- The ID of the image used to launch the instance.
+.IP \(bu 2
+\fBinstance\-id\fP \- The ID of the instance.
+.IP \(bu 2
+\fBinstance\-lifecycle\fP \- Indicates whether this is a Spot Instance or a Scheduled Instance (\fBspot\fP | \fBscheduled\fP ).
+.IP \(bu 2
+\fBinstance\-state\-code\fP \- The state of the instance, as a 16\-bit unsigned integer. The high byte is used for internal purposes and should be ignored. The low byte is set based on the state represented. The valid values are: 0 (pending), 16 (running), 32 (shutting\-down), 48 (terminated), 64 (stopping), and 80 (stopped).
+.IP \(bu 2
+\fBinstance\-state\-name\fP \- The state of the instance (\fBpending\fP | \fBrunning\fP | \fBshutting\-down\fP | \fBterminated\fP | \fBstopping\fP | \fBstopped\fP ).
+.IP \(bu 2
+\fBinstance\-type\fP \- The type of instance (for example, \fBt2.micro\fP ).
+.IP \(bu 2
+\fBinstance.group\-id\fP \- The ID of the security group for the instance.
+.IP \(bu 2
+\fBinstance.group\-name\fP \- The name of the security group for the instance.
+.IP \(bu 2
+\fBip\-address\fP \- The public IPv4 address of the instance.
+.IP \(bu 2
+\fBkernel\-id\fP \- The kernel ID.
+.IP \(bu 2
+\fBkey\-name\fP \- The name of the key pair used when the instance was launched.
+.IP \(bu 2
+\fBlaunch\-index\fP \- When launching multiple instances, this is the index for the instance in the launch group (for example, 0, 1, 2, and so on).
+.IP \(bu 2
+\fBlaunch\-time\fP \- The time when the instance was launched.
+.IP \(bu 2
+\fBmetadata\-options.http\-tokens\fP \- The metadata request authorization state (\fBoptional\fP | \fBrequired\fP )
+.IP \(bu 2
+\fBmetadata\-options.http\-put\-response\-hop\-limit\fP \- The http metadata request put response hop limit (integer, possible values \fB1\fP to \fB64\fP )
+.IP \(bu 2
+\fBmetadata\-options.http\-endpoint\fP \- Enable or disable metadata access on http endpoint (\fBenabled\fP | \fBdisabled\fP )
+.IP \(bu 2
+\fBmonitoring\-state\fP \- Indicates whether detailed monitoring is enabled (\fBdisabled\fP | \fBenabled\fP ).
+.IP \(bu 2
+\fBnetwork\-interface.addresses.private\-ip\-address\fP \- The private IPv4 address associated with the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.addresses.primary\fP \- Specifies whether the IPv4 address of the network interface is the primary private IPv4 address.
+.IP \(bu 2
+\fBnetwork\-interface.addresses.association.public\-ip\fP \- The ID of the association of an Elastic IP address (IPv4) with a network interface.
+.IP \(bu 2
+\fBnetwork\-interface.addresses.association.ip\-owner\-id\fP \- The owner ID of the private IPv4 address associated with the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.association.public\-ip\fP \- The address of the Elastic IP address (IPv4) bound to the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.association.ip\-owner\-id\fP \- The owner of the Elastic IP address (IPv4) associated with the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.association.allocation\-id\fP \- The allocation ID returned when you allocated the Elastic IP address (IPv4) for your network interface.
+.IP \(bu 2
+\fBnetwork\-interface.association.association\-id\fP \- The association ID returned when the network interface was associated with an IPv4 address.
+.IP \(bu 2
+\fBnetwork\-interface.attachment.attachment\-id\fP \- The ID of the interface attachment.
+.IP \(bu 2
+\fBnetwork\-interface.attachment.instance\-id\fP \- The ID of the instance to which the network interface is attached.
+.IP \(bu 2
+\fBnetwork\-interface.attachment.instance\-owner\-id\fP \- The owner ID of the instance to which the network interface is attached.
+.IP \(bu 2
+\fBnetwork\-interface.attachment.device\-index\fP \- The device index to which the network interface is attached.
+.IP \(bu 2
+\fBnetwork\-interface.attachment.status\fP \- The status of the attachment (\fBattaching\fP | \fBattached\fP | \fBdetaching\fP | \fBdetached\fP ).
+.IP \(bu 2
+\fBnetwork\-interface.attachment.attach\-time\fP \- The time that the network interface was attached to an instance.
+.IP \(bu 2
+\fBnetwork\-interface.attachment.delete\-on\-termination\fP \- Specifies whether the attachment is deleted when an instance is terminated.
+.IP \(bu 2
+\fBnetwork\-interface.availability\-zone\fP \- The Availability Zone for the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.description\fP \- The description of the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.group\-id\fP \- The ID of a security group associated with the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.group\-name\fP \- The name of a security group associated with the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.ipv6\-addresses.ipv6\-address\fP \- The IPv6 address associated with the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.mac\-address\fP \- The MAC address of the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.network\-interface\-id\fP \- The ID of the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.owner\-id\fP \- The ID of the owner of the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.private\-dns\-name\fP \- The private DNS name of the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.requester\-id\fP \- The requester ID for the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.requester\-managed\fP \- Indicates whether the network interface is being managed by AWS.
+.IP \(bu 2
+\fBnetwork\-interface.status\fP \- The status of the network interface (\fBavailable\fP ) | \fBin\-use\fP ).
+.IP \(bu 2
+\fBnetwork\-interface.source\-dest\-check\fP \- Whether the network interface performs source/destination checking. A value of \fBtrue\fP means that checking is enabled, and \fBfalse\fP means that checking is disabled. The value must be \fBfalse\fP for the network interface to perform network address translation (NAT) in your VPC.
+.IP \(bu 2
+\fBnetwork\-interface.subnet\-id\fP \- The ID of the subnet for the network interface.
+.IP \(bu 2
+\fBnetwork\-interface.vpc\-id\fP \- The ID of the VPC for the network interface.
+.IP \(bu 2
+\fBoutpost\-arn\fP \- The Amazon Resource Name (ARN) of the Outpost.
+.IP \(bu 2
+\fBowner\-id\fP \- The AWS account ID of the instance owner.
+.IP \(bu 2
+\fBplacement\-group\-name\fP \- The name of the placement group for the instance.
+.IP \(bu 2
+\fBplacement\-partition\-number\fP \- The partition in which the instance is located.
+.IP \(bu 2
+\fBplatform\fP \- The platform. To list only Windows instances, use \fBwindows\fP .
+.IP \(bu 2
+\fBprivate\-dns\-name\fP \- The private IPv4 DNS name of the instance.
+.IP \(bu 2
+\fBprivate\-ip\-address\fP \- The private IPv4 address of the instance.
+.IP \(bu 2
+\fBproduct\-code\fP \- The product code associated with the AMI used to launch the instance.
+.IP \(bu 2
+\fBproduct\-code.type\fP \- The type of product code (\fBdevpay\fP | \fBmarketplace\fP ).
+.IP \(bu 2
+\fBramdisk\-id\fP \- The RAM disk ID.
+.IP \(bu 2
+\fBreason\fP \- The reason for the current state of the instance (for example, shows "User Initiated [date]" when you stop or terminate the instance). Similar to the state\-reason\-code filter.
+.IP \(bu 2
+\fBrequester\-id\fP \- The ID of the entity that launched the instance on your behalf (for example, AWS Management Console, Auto Scaling, and so on).
+.IP \(bu 2
+\fBreservation\-id\fP \- The ID of the instance\(aqs reservation. A reservation ID is created any time you launch an instance. A reservation ID has a one\-to\-one relationship with an instance launch request, but can be associated with more than one instance if you launch multiple instances using the same launch request. For example, if you launch one instance, you get one reservation ID. If you launch ten instances using the same launch request, you also get one reservation ID.
+.IP \(bu 2
+\fBroot\-device\-name\fP \- The device name of the root device volume (for example, \fB/dev/sda1\fP ).
+.IP \(bu 2
+\fBroot\-device\-type\fP \- The type of the root device volume (\fBebs\fP | \fBinstance\-store\fP ).
+.IP \(bu 2
+\fBsource\-dest\-check\fP \- Indicates whether the instance performs source/destination checking. A value of \fBtrue\fP means that checking is enabled, and \fBfalse\fP means that checking is disabled. The value must be \fBfalse\fP for the instance to perform network address translation (NAT) in your VPC.
+.IP \(bu 2
+\fBspot\-instance\-request\-id\fP \- The ID of the Spot Instance request.
+.IP \(bu 2
+\fBstate\-reason\-code\fP \- The reason code for the state change.
+.IP \(bu 2
+\fBstate\-reason\-message\fP \- A message that describes the state change.
+.IP \(bu 2
+\fBsubnet\-id\fP \- The ID of the subnet for the instance.
+.IP \(bu 2
+\fBtag\fP :<key> \- The key/value combination of a tag assigned to the resource. Use the tag key in the filter name and the tag value as the filter value. For example, to find all resources that have a tag with the key \fBOwner\fP and the value \fBTeamA\fP , specify \fBtag:Owner\fP for the filter name and \fBTeamA\fP for the filter value.
+.IP \(bu 2
+\fBtag\-key\fP \- The key of a tag assigned to the resource. Use this filter to find all resources that have a tag with a specific key, regardless of the tag value.
+.IP \(bu 2
+\fBtenancy\fP \- The tenancy of an instance (\fBdedicated\fP | \fBdefault\fP | \fBhost\fP ).
+.IP \(bu 2
+\fBvirtualization\-type\fP \- The virtualization type of the instance (\fBparavirtual\fP | \fBhvm\fP ).
+.IP \(bu 2
+\fBvpc\-id\fP \- The ID of the VPC that the instance is running in.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A filter name and value pair that is used to return a more specific list of results from a describe operation. Filters can be used to match a set of resources by specific criteria, such as tags, attributes, or IDs.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the filter. Filter names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The filter values. Filter values are case\-sensitive.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Values=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Values": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The instance IDs.
+.sp
+Default: Describes all your instances.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To describe an instance\fP
+.sp
+The following \fBdescribe\-instances\fP example describes the specified instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-instance\-ids i\-1234567890abcdef0
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Reservations": [
+        {
+            "Groups": [],
+            "Instances": [
+                {
+                "AmiLaunchIndex": 0,
+                "ImageId": "ami\-0abcdef1234567890,
+                "InstanceId": "i\-1234567890abcdef0,
+                "InstanceType": "t2.micro",
+                "KeyName": "MyKeyPair",
+                "LaunchTime": "2018\-05\-10T08:05:20.000Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "Placement": {
+                    "AvailabilityZone": "us\-east\-2a",
+                    "GroupName": "",
+                    "Tenancy": "default"
+                },
+                "PrivateDnsName": "ip\-10\-0\-0\-157.us\-east\-2.compute.internal",
+                "PrivateIpAddress": "10.0.0.157",
+                "ProductCodes": [],
+                "PublicDnsName": "",
+                "State": {
+                    "Code": 0,
+                    "Name": "pending"
+                },
+                "StateTransitionReason": "",
+                "SubnetId": "subnet\-04a636d18e83cfacb",
+                "VpcId": "vpc\-1234567890abcdef0",
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [],
+                "ClientToken": "",
+                "EbsOptimized": false,
+                "Hypervisor": "xen",
+                "NetworkInterfaces": [
+                    {
+                        "Attachment": {
+                            "AttachTime": "2018\-05\-10T08:05:20.000Z",
+                            "AttachmentId": "eni\-attach\-0e325c07e928a0405",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attaching"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupName": "MySecurityGroup",
+                                "GroupId": "sg\-0598c7d356eba48d7"
+                            }
+                        ],
+                        "Ipv6Addresses": [],
+                        "MacAddress": "0a:ab:58:e0:67:e2",
+                        "NetworkInterfaceId": "eni\-0c0a29997760baee7",
+                        "OwnerId": "123456789012",
+                        "PrivateDnsName": "ip\-10\-0\-0\-157.us\-east\-2.compute.internal",
+                        "PrivateIpAddress": "10.0.0.157"
+                        "PrivateIpAddresses": [
+                            {
+                                "Primary": true,
+                                "PrivateDnsName": "ip\-10\-0\-0\-157.us\-east\-2.compute.internal",
+                                "PrivateIpAddress": "10.0.0.157"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in\-use",
+                        "SubnetId": "subnet\-04a636d18e83cfacb",
+                        "VpcId": "vpc\-1234567890abcdef0",
+                        "InterfaceType": "interface"
+                    }
+                ],
+                "RootDeviceName": "/dev/xvda",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupName": "MySecurityGroup",
+                        "GroupId": "sg\-0598c7d356eba48d7"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "StateReason": {
+                    "Code": "pending",
+                    "Message": "pending"
+                },
+                "Tags": [],
+                "VirtualizationType": "hvm",
+                "CpuOptions": {
+                    "CoreCount": 1,
+                    "ThreadsPerCore": 1
+                },
+                "CapacityReservationSpecification": {
+                    "CapacityReservationPreference": "open"
+                },
+                "MetadataOptions": {
+                    "State": "pending",
+                    "HttpTokens": "optional",
+                    "HttpPutResponseHopLimit": 1,
+                    "HttpEndpoint": "enabled"
+                }
+            }
+        ],
+        "OwnerId": "123456789012"
+        "ReservationId": "r\-02a3f596d91211712",
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To filter for instances with the specified type\fP
+.sp
+The following \fBdescribe\-instances\fP example uses filters to scope the results to instances of the specified type.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters Name=instance\-type,Values=m5.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For sample of output, see Example 1.
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 3: To filter for instances with the specified type and Availability Zone\fP
+.sp
+The following \fBdescribe\-instances\fP example uses multiple filters to scope the results to instances with the specified type that are also in the specified Availability Zone.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters Name=instance\-type,Values=t2.micro,t3.micro Name=availability\-zone,Values=us\-east\-2c
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For sample of output, see Example 1.
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 4: To filter for instances with the specified type and Availability Zone using a JSON file\fP
+.sp
+The following \fBdescribe\-instances\fP example uses a JSON input file to perform the same filtering as the previous example. When filters get more complicated, they can be easier to specify in a JSON file.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters file://filters.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBfilters.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "Name": "instance\-type",
+        "Values": ["t2.micro", "t3.micro"]
+    },
+    {
+        "Name": "availability\-zone",
+        "Values": ["us\-east\-2c"]
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For sample of output, see Example 1.
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 5: To filter for instances with the specified Owner tag\fP
+.sp
+The following \fBdescribe\-instances\fP example uses tag filters to scope the results to instances that have a tag with the specified tag key (Owner), regardless of the tag value.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters "Name=tag\-key,Values=Owner"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For sample of output, see Example 1.
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 6: To filter for instances with the specified my\-team tag value\fP
+.sp
+The following \fBdescribe\-instances\fP example uses tag filters to scope the results to instances that have a tag with the specified tag value (my\-team), regardless of the tag key.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters "Name=tag\-value,Values=my\-team"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For sample of output, see Example 1.
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 7: To filter for instances with the specified Owner tag and my\-team value\fP
+.sp
+The following \fBdescribe\-instances\fP example uses tag filters to scope the results to instances that have the specified tag (Owner=my\-team).
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters "Name=tag:Owner,Values=my\-team"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For sample of output, see Example 1.
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 8: To display only instance and subnet IDs for all instances\fP
+.sp
+The following \fBdescribe\-instances\fP example uses the \fB\-\-query\fP parameter to display only the instance and subnet IDs for all instances, in JSON format.
+.sp
+Linux and macOS:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-query \(aqReservations[*].Instances[*].{Instance:InstanceId,Subnet:SubnetId}\(aq \e
+    \-\-output json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Windows:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances ^
+    \-\-query "Reservations[*].Instances[*].{Instance:InstanceId,Subnet:SubnetId}" ^
+    \-\-output json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "Instance": "i\-057750d42936e468a",
+        "Subnet": "subnet\-069beee9b12030077"
+    },
+    {
+        "Instance": "i\-001efd250faaa6ffa",
+        "Subnet": "subnet\-0b715c6b7db68927a"
+    },
+    {
+        "Instance": "i\-027552a73f021f3bd",
+        "Subnet": "subnet\-0250c25a1f4e15235"
+    }
+    ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 9: To filter instances of the specified type and only display their instance IDs\fP
+.sp
+The following \fBdescribe\-instances\fP example uses filters to scope the results to instances of the specified type and the \fB\-\-query\fP parameter to display only the instance IDs.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters Name=instance\-type,Values=t2.micro \e
+    \-\-query Reservations[*].Instances[*].[InstanceId] \e
+    \-\-output text
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+i\-031c0dc19de2fb70c
+i\-00d8bff789a736b75
+i\-0b715c6b7db68927a
+i\-0626d4edd54f1286d
+i\-00b8ae04f9f99908e
+i\-0fc71c25d2374130c
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 10: To filter instances of the specified type and only display their instance IDs, Availability Zone and the specified tag value in table format\fP
+.sp
+The following \fBdescribe\-instances\fP example displays the instance ID, Availability Zone, and the value of the \fBName\fP tag for instances that have a tag with the name \fBtag\-key\fP, in table format.
+.sp
+Linux and macOS:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters Name=tag\-key,Values=Name \e
+    \-\-query \(aqReservations[*].Instances[*].{Instance:InstanceId,AZ:Placement.AvailabilityZone,Name:Tags[?Key==\(gaName\(ga]|[0].Value}\(aq \e
+    \-\-output table
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Windows:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances ^
+    \-\-filters Name=tag\-key,Values=Name ^
+    \-\-query "Reservations[*].Instances[*].{Instance:InstanceId,AZ:Placement.AvailabilityZone,Name:Tags[?Key==\(aqName\(aq]|[0].Value}" ^
+    \-\-output table
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+|                     DescribeInstances                     |
++\-\-\-\-\-\-\-\-\-\-\-\-\-\-+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-+
+|      AZ      |       Instance        |        Name        |
++\-\-\-\-\-\-\-\-\-\-\-\-\-\-+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-+
+|  us\-east\-2b  |  i\-057750d42936e468a  |  my\-prod\-server    |
+|  us\-east\-2a  |  i\-001efd250faaa6ffa  |  test\-server\-1     |
+|  us\-east\-2a  |  i\-027552a73f021f3bd  |  test\-server\-2     |
++\-\-\-\-\-\-\-\-\-\-\-\-\-\-+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-+
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 11: To describe instances in a partition placement group\fP
+.sp
+The following \fBdescribe\-instances\fP example describes the specified instance. The output includes the placement information for the instance, which contains the placement group name and the partition number for the instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-instance\-id i\-0123a456700123456
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    ....
+
+    "Placement": {
+        "AvailabilityZone": "us\-east\-1c",
+        "GroupName": "HDFS\-Group\-A",
+        "PartitionNumber": 3,
+        "Tenancy": "default"
+    }
+
+    ....
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.sp
+\fBExample 12: To filter to instances with the specified placement group and partition number\fP
+.sp
+The following \fBdescribe\-instances\fP example filters the results to only those instances with the specified placement group and partition number.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 describe\-instances \e
+    \-\-filters "Name = placement\-group\-name, Values = HDFS\-Group\-A" "Name = placement\-partition\-number, Values = 7"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following shows only the relevant information from the output.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"Instances": [
+    {
+        "InstanceId": "i\-0123a456700123456",
+        "InstanceType": "r4.large",
+        "Placement": {
+            "AvailabilityZone": "us\-east\-1c",
+            "GroupName": "HDFS\-Group\-A",
+            "PartitionNumber": 7,
+            "Tenancy": "default"
+        }
+    },
+    {
+        "InstanceId": "i\-9876a543210987654",
+        "InstanceType": "r4.large",
+        "Placement": {
+            "AvailabilityZone": "us\-east\-1c",
+            "GroupName": "HDFS\-Group\-A",
+            "PartitionNumber": 7,
+            "Tenancy": "default"
+        }
+    ],
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Describing instances in a placement group\fP in the \fIAmazon EC2 Users Guide\fP\&.
+.SH OUTPUT
+.sp
+Reservations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the reservations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a launch request for one or more instances, and includes owner, requester, and security group information that applies to all instances in the launch request.
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-Classic only] The security groups.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group.
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Instances \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The instances.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an instance.
+.sp
+AmiLaunchIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The AMI launch index, which can be used to find this instance in the launch group.
+.UNINDENT
+.UNINDENT
+.sp
+ImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AMI used to launch the instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type.
+.UNINDENT
+.UNINDENT
+.sp
+KernelId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The kernel associated with this instance, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+KeyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key pair, if this instance was launched with an associated key pair.
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the instance was launched.
+.UNINDENT
+.UNINDENT
+.sp
+Monitoring \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The monitoring for the instance.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether detailed monitoring is enabled. Otherwise, basic monitoring is enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Placement \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location where the instance launched, if applicable.
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone of the instance.
+.sp
+If not specified, an Availability Zone will be automatically chosen for you based on the load balancing criteria for the Region.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Affinity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The affinity setting for the instance on the Dedicated Host. This parameter is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the placement group the instance is in.
+.UNINDENT
+.UNINDENT
+.sp
+PartitionNumber \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of the partition the instance is in. Valid only if the placement group strategy is set to \fBpartition\fP .
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+HostId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Dedicated Host on which the instance resides. This parameter is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tenancy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tenancy of the instance (if the instance is running in a VPC). An instance with a tenancy of \fBdedicated\fP runs on single\-tenant hardware. The \fBhost\fP tenancy is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SpreadDomain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Reserved for future use.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+HostResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the host resource group in which to launch the instances. If you specify a host resource group ARN, omit the \fBTenancy\fP parameter or set it to \fBhost\fP .
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value is \fBWindows\fP for Windows instances; otherwise blank.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(IPv4 only) The private DNS hostname name assigned to the instance. This DNS hostname can only be used inside the Amazon EC2 network. This name is not available until the instance enters the \fBrunning\fP state.
+.sp
+[EC2\-VPC] The Amazon\-provided DNS server resolves Amazon\-provided private DNS hostnames if you\(aqve enabled DNS resolution and DNS hostnames in your VPC. If you are not using the Amazon\-provided DNS server in your VPC, your custom domain name servers must resolve the hostname as appropriate.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 address assigned to the instance.
+.UNINDENT
+.UNINDENT
+.sp
+ProductCodes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The product codes attached to this instance, if applicable.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a product code.
+.sp
+ProductCodeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The product code.
+.UNINDENT
+.UNINDENT
+.sp
+ProductCodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of product code.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PublicDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(IPv4 only) The public DNS name assigned to the instance. This name is not available until the instance enters the \fBrunning\fP state. For EC2\-VPC, this name is only available if you\(aqve enabled DNS hostnames for your VPC.
+.UNINDENT
+.UNINDENT
+.sp
+PublicIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public IPv4 address, or the Carrier IP address assigned to the instance, if applicable.
+.sp
+A Carrier IP address only applies to an instance launched in a subnet associated with a Wavelength Zone.
+.UNINDENT
+.UNINDENT
+.sp
+RamdiskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The RAM disk associated with this instance, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.sp
+Code \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The state of the instance as a 16\-bit unsigned integer.
+.sp
+The high byte is all of the bits between 2^8 and (2^16)\-1, which equals decimal values between 256 and 65,535. These numerical values are used for internal purposes and should be ignored.
+.sp
+The low byte is all of the bits between 2^0 and (2^8)\-1, which equals decimal values between 0 and 255.
+.sp
+The valid values for instance\-state\-code will all be in the range of the low byte and they are:
+.INDENT 0.0
+.IP \(bu 2
+\fB0\fP : \fBpending\fP
+.IP \(bu 2
+\fB16\fP : \fBrunning\fP
+.IP \(bu 2
+\fB32\fP : \fBshutting\-down\fP
+.IP \(bu 2
+\fB48\fP : \fBterminated\fP
+.IP \(bu 2
+\fB64\fP : \fBstopping\fP
+.IP \(bu 2
+\fB80\fP : \fBstopped\fP
+.UNINDENT
+.sp
+You can ignore the high byte value by zeroing out all of the bits above 2^8 or 256 in decimal.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StateTransitionReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the most recent state transition. This might be an empty string.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The ID of the subnet in which the instance is running.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The ID of the VPC in which the instance is running.
+.UNINDENT
+.UNINDENT
+.sp
+Architecture \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The architecture of the image.
+.UNINDENT
+.UNINDENT
+.sp
+BlockDeviceMappings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any block device mapping entries for the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a block device mapping.
+.sp
+DeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name (for example, \fB/dev/sdh\fP or \fBxvdh\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+Ebs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters used to automatically set up EBS volumes when the instance is launched.
+.sp
+AttachTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the attachment initiated.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the volume is deleted on instance termination.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The attachment state.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the EBS volume.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ClientToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The idempotency token you provided when you launched the instance, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+EbsOptimized \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instance is optimized for Amazon EBS I/O. This optimization provides dedicated throughput to Amazon EBS and an optimized configuration stack to provide optimal I/O performance. This optimization isn\(aqt available with all instance types. Additional usage charges apply when using an EBS Optimized instance.
+.UNINDENT
+.UNINDENT
+.sp
+EnaSupport \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether enhanced networking with ENA is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+Hypervisor \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The hypervisor type of the instance. The value \fBxen\fP is used for both Xen and Nitro hypervisors.
+.UNINDENT
+.UNINDENT
+.sp
+IamInstanceProfile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The IAM instance profile associated with the instance, if applicable.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the instance profile.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance profile.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstanceLifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this is a Spot Instance or a Scheduled Instance.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic GPU associated with the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the association between an instance and an Elastic Graphics accelerator.
+.sp
+ElasticGpuId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Elastic Graphics accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the association.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociationState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the association between the instance and the Elastic Graphics accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociationTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time the Elastic Graphics accelerator was associated with the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The elastic inference accelerator associated with the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the association between an instance and an elastic inference accelerator.
+.sp
+ElasticInferenceAcceleratorArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the elastic inference accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the association.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociationState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the elastic inference accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the elastic inference accelerator is associated with an instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaces \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The network interfaces for the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a network interface.
+.sp
+Association \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The association information for an Elastic IPv4 associated with the network interface.
+.sp
+CarrierIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The carrier IP address associated with the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+IpOwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the owner of the Elastic IP address.
+.UNINDENT
+.UNINDENT
+.sp
+PublicDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public IP address or Elastic IP address bound to the network interface.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Attachment \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The network interface attachment.
+.sp
+AttachTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the attachment initiated.
+.UNINDENT
+.UNINDENT
+.sp
+AttachmentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network interface attachment.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the network interface is deleted when the instance is terminated.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The index of the device on the instance for the network interface attachment.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The attachment state.
+.UNINDENT
+.UNINDENT
+.sp
+NetworkCardIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The index of the network card.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description.
+.UNINDENT
+.UNINDENT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more security groups.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group.
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6Addresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more IPv6 addresses associated with the network interface.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 address.
+.sp
+Ipv6Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MacAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The MAC address.
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account that created the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 address of the network interface within the subnet.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more private IPv4 addresses associated with the network interface.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a private IPv4 address.
+.sp
+Association \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The association information for an Elastic IP address for the network interface.
+.sp
+CarrierIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The carrier IP address associated with the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+IpOwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the owner of the Elastic IP address.
+.UNINDENT
+.UNINDENT
+.sp
+PublicDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public IP address or Elastic IP address bound to the network interface.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Primary \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this IPv4 address is the primary private IP address of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 address of the network interface.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceDestCheck \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether source/destination checking is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnet.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+InterfaceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the type of network interface.
+.sp
+Valid values: \fBinterface\fP | \fBefa\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Outpost.
+.UNINDENT
+.UNINDENT
+.sp
+RootDeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name of the root device volume (for example, \fB/dev/sda1\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+RootDeviceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The root device type used by the AMI. The AMI can use an EBS volume or an instance store volume.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The security groups for the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group.
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceDestCheck \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether source/destination checking is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+SpotInstanceRequestId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the request is a Spot Instance request, the ID of the request.
+.UNINDENT
+.UNINDENT
+.sp
+SriovNetSupport \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether enhanced networking with the Intel 82599 Virtual Function interface is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+StateReason \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the most recent state transition.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason code for the state change.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message for the state change.
+.INDENT 0.0
+.IP \(bu 2
+\fBServer.InsufficientInstanceCapacity\fP : There was insufficient capacity available to satisfy the launch request.
+.IP \(bu 2
+\fBServer.InternalError\fP : An internal error caused the instance to terminate during launch.
+.IP \(bu 2
+\fBServer.ScheduledStop\fP : The instance was stopped due to a scheduled retirement.
+.IP \(bu 2
+\fBServer.SpotInstanceShutdown\fP : The instance was stopped because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.
+.IP \(bu 2
+\fBServer.SpotInstanceTermination\fP : The instance was terminated because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.
+.IP \(bu 2
+\fBClient.InstanceInitiatedShutdown\fP : The instance was shut down using the \fBshutdown \-h\fP command from the instance.
+.IP \(bu 2
+\fBClient.InstanceTerminated\fP : The instance was terminated or rebooted during AMI creation.
+.IP \(bu 2
+\fBClient.InternalError\fP : A client error caused the instance to terminate during launch.
+.IP \(bu 2
+\fBClient.InvalidSnapshot.NotFound\fP : The specified snapshot was not found.
+.IP \(bu 2
+\fBClient.UserInitiatedHibernate\fP : Hibernation was initiated on the instance.
+.IP \(bu 2
+\fBClient.UserInitiatedShutdown\fP : The instance was shut down using the Amazon EC2 API.
+.IP \(bu 2
+\fBClient.VolumeLimitExceeded\fP : The limit on the number of EBS volumes or total storage was exceeded. Decrease usage or request an increase in your account limits.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VirtualizationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtualization type of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+CpuOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The CPU options for the instance.
+.sp
+CoreCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU cores for the instance.
+.UNINDENT
+.UNINDENT
+.sp
+ThreadsPerCore \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of threads per CPU core.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Capacity Reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Capacity Reservation targeting option.
+.sp
+CapacityReservationPreference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the instance\(aqs Capacity Reservation preferences. Possible preferences include:
+.INDENT 0.0
+.IP \(bu 2
+\fBopen\fP \- The instance can run in any \fBopen\fP Capacity Reservation that has matching attributes (instance type, platform, Availability Zone).
+.IP \(bu 2
+\fBnone\fP \- The instance avoids running in a Capacity Reservation even if one is available. The instance runs in On\-Demand capacity.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationTarget \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the targeted Capacity Reservation or Capacity Reservation group.
+.sp
+CapacityReservationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the targeted Capacity Reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the targeted Capacity Reservation group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HibernationOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instance is enabled for hibernation.
+.sp
+Configured \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If this parameter is set to \fBtrue\fP , your instance is enabled for hibernation; otherwise, it is not enabled for hibernation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Licenses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The license configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a license configuration.
+.sp
+LicenseConfigurationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the license configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MetadataOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata options for the instance.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the metadata option changes.
+.INDENT 0.0
+.INDENT 3.5
+\fBpending\fP \- The metadata options are being updated and the instance is not ready to process metadata traffic with the new selection.
+.sp
+\fBapplied\fP \- The metadata options have been successfully applied on the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HttpTokens \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of token usage for your instance metadata requests. If the parameter is not specified in the request, the default state is \fBoptional\fP .
+.sp
+If the state is \fBoptional\fP , you can choose to retrieve instance metadata with or without a signed token header on your request. If you retrieve the IAM role credentials without a token, the version 1.0 role credentials are returned. If you retrieve the IAM role credentials using a valid signed token, the version 2.0 role credentials are returned.
+.sp
+If the state is \fBrequired\fP , you must send a signed token header with any instance metadata retrieval requests. In this state, retrieving the IAM role credential always returns the version 2.0 credentials; the version 1.0 credentials are not available.
+.UNINDENT
+.UNINDENT
+.sp
+HttpPutResponseHopLimit \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The desired HTTP PUT response hop limit for instance metadata requests. The larger the number, the further instance metadata requests can travel.
+.sp
+Default: 1
+.sp
+Possible values: Integers from 1 to 64
+.UNINDENT
+.UNINDENT
+.sp
+HttpEndpoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter enables or disables the HTTP metadata endpoint on your instances. If the parameter is not specified, the default state is \fBenabled\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify a value of \fBdisabled\fP , you will not be able to access your instance metadata.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EnclaveOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instance is enabled for AWS Nitro Enclaves.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If this parameter is set to \fBtrue\fP , the instance is enabled for AWS Nitro Enclaves; otherwise, it is not enabled for AWS Nitro Enclaves.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BootMode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The boot mode of the instance. For more information, see \fI\%Boot modes\fP in the \fIAmazon EC2 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account that owns the reservation.
+.UNINDENT
+.UNINDENT
+.sp
+RequesterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the requester that launched the instances on your behalf (for example, AWS Management Console or Auto Scaling).
+.UNINDENT
+.UNINDENT
+.sp
+ReservationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the reservation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token to use to retrieve the next page of results. This value is \fBnull\fP when there are no more results to return.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,251 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-MODIFY-DB-CLUSTER-ENDPOINT" "a" "" ""
+.SH NAME
+rds-modify-db-cluster-endpoint \- Modifies the properties of an endpoint in an Amazon Aurora DB cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Modifies the properties of an endpoint in an Amazon Aurora DB cluster.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This action only applies to Aurora DB clusters.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  modify\-db\-cluster\-endpoint
+\-\-db\-cluster\-endpoint\-identifier <value>
+[\-\-endpoint\-type <value>]
+[\-\-static\-members <value>]
+[\-\-excluded\-members <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-db\-cluster\-endpoint\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the endpoint to modify. This parameter is stored as a lowercase string.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-endpoint\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the endpoint. One of: \fBREADER\fP , \fBWRITER\fP , \fBANY\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-static\-members\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+List of DB instance identifiers that are part of the custom endpoint group.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-excluded\-members\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+List of DB instance identifiers that aren\(aqt part of the custom endpoint group. All other eligible instances are reachable through the custom endpoint. Only relevant if the list of static members is empty.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo modify a custom DB cluster endpoint\fP
+.sp
+The following \fBmodify\-db\-cluster\-endpoint\fP example modifies the specified custom DB cluster endpoint.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds modify\-db\-cluster\-endpoint \e
+    \-\-db\-cluster\-endpoint\-identifier mycustomendpoint \e
+    \-\-static\-members dbinstance1 dbinstance2 dbinstance3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DBClusterEndpointIdentifier": "mycustomendpoint",
+    "DBClusterIdentifier": "mydbcluster",
+    "DBClusterEndpointResourceIdentifier": "cluster\-endpoint\-ANPAJ4AE5446DAEXAMPLE",
+    "Endpoint": "mycustomendpoint.cluster\-custom\-cnpexample.us\-east\-1.rds.amazonaws.com",
+    "Status": "modifying",
+    "EndpointType": "CUSTOM",
+    "CustomEndpointType": "READER",
+    "StaticMembers": [
+        "dbinstance1",
+        "dbinstance2",
+        "dbinstance3"
+    ],
+    "ExcludedMembers": [],
+    "DBClusterEndpointArn": "arn:aws:rds:us\-east\-1:123456789012:cluster\-endpoint:mycustomendpoint"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Amazon Aurora Connection Management\fP in the \fIAmazon Aurora User Guide\fP\&.
+.SH OUTPUT
+.sp
+DBClusterEndpointIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier associated with the endpoint. This parameter is stored as a lowercase string.
+.UNINDENT
+.UNINDENT
+.sp
+DBClusterIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DB cluster identifier of the DB cluster associated with the endpoint. This parameter is stored as a lowercase string.
+.UNINDENT
+.UNINDENT
+.sp
+DBClusterEndpointResourceIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique system\-generated identifier for an endpoint. It remains the same for the whole life of the endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+Endpoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The DNS address of the endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the endpoint. One of: \fBcreating\fP , \fBavailable\fP , \fBdeleting\fP , \fBinactive\fP , \fBmodifying\fP . The \fBinactive\fP state applies to an endpoint that can\(aqt be used for a certain kind of cluster, such as a \fBwriter\fP endpoint for a read\-only secondary cluster in a global database.
+.UNINDENT
+.UNINDENT
+.sp
+EndpointType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the endpoint. One of: \fBREADER\fP , \fBWRITER\fP , \fBCUSTOM\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CustomEndpointType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type associated with a custom endpoint. One of: \fBREADER\fP , \fBWRITER\fP , \fBANY\fP .
+.UNINDENT
+.UNINDENT
+.sp
+StaticMembers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of DB instance identifiers that are part of the custom endpoint group.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ExcludedMembers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of DB instance identifiers that aren\(aqt part of the custom endpoint group. All other eligible instances are reachable through the custom endpoint. Only relevant if the list of static members is empty.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+DBClusterEndpointArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for the endpoint.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

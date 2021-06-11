@@ -1,0 +1,253 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "RDS-MODIFY-DB-CLUSTER-SNAPSHOT-ATTRIBUTE" "a" "" ""
+.SH NAME
+rds-modify-db-cluster-snapshot-attribute \- Adds an attribute and values to, or removes an attribute and values from, a manual DB cluster snapshot
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Adds an attribute and values to, or removes an attribute and values from, a manual DB cluster snapshot.
+.sp
+To share a manual DB cluster snapshot with other AWS accounts, specify \fBrestore\fP as the \fBAttributeName\fP and use the \fBValuesToAdd\fP parameter to add a list of IDs of the AWS accounts that are authorized to restore the manual DB cluster snapshot. Use the value \fBall\fP to make the manual DB cluster snapshot public, which means that it can be copied or restored by all AWS accounts.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Don\(aqt add the \fBall\fP value for any manual DB cluster snapshots that contain private information that you don\(aqt want available to all AWS accounts.
+.UNINDENT
+.UNINDENT
+.sp
+If a manual DB cluster snapshot is encrypted, it can be shared, but only by specifying a list of authorized AWS account IDs for the \fBValuesToAdd\fP parameter. You can\(aqt use \fBall\fP as a value for that parameter in this case.
+.sp
+To view which AWS accounts have access to copy or restore a manual DB cluster snapshot, or whether a manual DB cluster snapshot is public or private, use the  DescribeDBClusterSnapshotAttributes API action. The accounts are returned as values for the \fBrestore\fP attribute.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This action only applies to Aurora DB clusters.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  modify\-db\-cluster\-snapshot\-attribute
+\-\-db\-cluster\-snapshot\-identifier <value>
+\-\-attribute\-name <value>
+[\-\-values\-to\-add <value>]
+[\-\-values\-to\-remove <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-db\-cluster\-snapshot\-identifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the DB cluster snapshot to modify the attributes for.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attribute\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the DB cluster snapshot attribute to modify.
+.sp
+To manage authorization for other AWS accounts to copy or restore a manual DB cluster snapshot, set this value to \fBrestore\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To view the list of attributes available to modify, use the  DescribeDBClusterSnapshotAttributes API action.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-values\-to\-add\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of DB cluster snapshot attributes to add to the attribute specified by \fBAttributeName\fP .
+.sp
+To authorize other AWS accounts to copy or restore a manual DB cluster snapshot, set this list to include one or more AWS account IDs, or \fBall\fP to make the manual DB cluster snapshot restorable by any AWS account. Do not add the \fBall\fP value for any manual DB cluster snapshots that contain private information that you don\(aqt want available to all AWS accounts.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-values\-to\-remove\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of DB cluster snapshot attributes to remove from the attribute specified by \fBAttributeName\fP .
+.sp
+To remove authorization for other AWS accounts to copy or restore a manual DB cluster snapshot, set this list to include one or more AWS account identifiers, or \fBall\fP to remove authorization for any AWS account to copy or restore the DB cluster snapshot. If you specify \fBall\fP , an AWS account whose account ID is explicitly added to the \fBrestore\fP attribute can still copy or restore a manual DB cluster snapshot.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo modify a DB cluster snapshot attribute\fP
+.sp
+The following \fBmodify\-db\-cluster\-snapshot\-attribute\fP example makes changes to the specified DB cluster snapshot attribute.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws rds modify\-db\-cluster\-snapshot\-attribute \e
+    \-\-db\-cluster\-snapshot\-identifier myclustersnapshot \e
+    \-\-attribute\-name restore \e
+    \-\-values\-to\-add 123456789012
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "DBClusterSnapshotAttributesResult": {
+        "DBClusterSnapshotIdentifier": "myclustersnapshot",
+        "DBClusterSnapshotAttributes": [
+            {
+                "AttributeName": "restore",
+                "AttributeValues": [
+                    "123456789012"
+                ]
+            }
+        ]
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Restoring from a DB Cluster Snapshot\fP in the \fIAmazon Aurora User Guide\fP\&.
+.SH OUTPUT
+.sp
+DBClusterSnapshotAttributesResult \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the results of a successful call to the \fBDescribeDBClusterSnapshotAttributes\fP API action.
+.sp
+Manual DB cluster snapshot attributes are used to authorize other AWS accounts to copy or restore a manual DB cluster snapshot. For more information, see the \fBModifyDBClusterSnapshotAttribute\fP API action.
+.sp
+DBClusterSnapshotIdentifier \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the manual DB cluster snapshot that the attributes apply to.
+.UNINDENT
+.UNINDENT
+.sp
+DBClusterSnapshotAttributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of attributes and values for the manual DB cluster snapshot.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the name and values of a manual DB cluster snapshot attribute.
+.sp
+Manual DB cluster snapshot attributes are used to authorize other AWS accounts to restore a manual DB cluster snapshot. For more information, see the \fBModifyDBClusterSnapshotAttribute\fP API action.
+.sp
+AttributeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the manual DB cluster snapshot attribute.
+.sp
+The attribute named \fBrestore\fP refers to the list of AWS accounts that have permission to copy or restore the manual DB cluster snapshot. For more information, see the \fBModifyDBClusterSnapshotAttribute\fP API action.
+.UNINDENT
+.UNINDENT
+.sp
+AttributeValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The value(s) for the manual DB cluster snapshot attribute.
+.sp
+If the \fBAttributeName\fP field is set to \fBrestore\fP , then this element returns a list of IDs of the AWS accounts that are authorized to copy or restore the manual DB cluster snapshot. If a value of \fBall\fP is in the list, then the manual DB cluster snapshot is public and available for any AWS account to copy or restore.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

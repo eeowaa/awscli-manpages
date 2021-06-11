@@ -1,0 +1,208 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-DESCRIBE-ACCOUNT-AUDIT-CONFIGURATION" "a" "" ""
+.SH NAME
+iot-describe-account-audit-configuration \- Gets information about the Device Defender audit settings for this account
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets information about the Device Defender audit settings for this account. Settings include how audit notifications are sent and which audit checks are enabled or disabled.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-account\-audit\-configuration
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo view current audit configuration settings\fP
+.sp
+The following \fBdescribe\-account\-audit\-configuration\fP example lists the current settings for your AWS IoT Device Defender audit configuration.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot describe\-account\-audit\-configuration
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "roleArn": "arn:aws:iam::123456789012:role/service\-role/AWSIoTDeviceDefenderAudit_1551201085996",
+    "auditNotificationTargetConfigurations": {
+        "SNS": {
+            "targetArn": "arn:aws:sns:us\-west\-2:123456789012:ddaudits",
+            "roleArn": "arn:aws:iam::123456789012:role/service\-role/AWSIoTDeviceDefenderAudit",
+            "enabled": true
+        }
+    },
+    "auditCheckConfigurations": {
+        "AUTHENTICATED_COGNITO_ROLE_OVERLY_PERMISSIVE_CHECK": {
+            "enabled": true
+        },
+        "CA_CERTIFICATE_EXPIRING_CHECK": {
+            "enabled": true
+        },
+        "CONFLICTING_CLIENT_IDS_CHECK": {
+            "enabled": true
+        },
+        "DEVICE_CERTIFICATE_EXPIRING_CHECK": {
+            "enabled": true
+        },
+        "DEVICE_CERTIFICATE_SHARED_CHECK": {
+            "enabled": true
+        },
+        "IOT_POLICY_OVERLY_PERMISSIVE_CHECK": {
+            "enabled": true
+        },
+        "LOGGING_DISABLED_CHECK": {
+            "enabled": true
+        },
+        "REVOKED_CA_CERTIFICATE_STILL_ACTIVE_CHECK": {
+            "enabled": true
+        },
+        "REVOKED_DEVICE_CERTIFICATE_STILL_ACTIVE_CHECK": {
+            "enabled": true
+        },
+        "UNAUTHENTICATED_COGNITO_ROLE_OVERLY_PERMISSIVE_CHECK": {
+            "enabled": true
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Audit Commands\fP in the \fIAWS IoT Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants permission to AWS IoT to access information about your devices, policies, certificates, and other items as required when performing an audit.
+.sp
+On the first call to \fBUpdateAccountAuditConfiguration\fP , this parameter is required.
+.UNINDENT
+.UNINDENT
+.sp
+auditNotificationTargetConfigurations \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Information about the targets to which audit notifications are sent for this account.
+.sp
+key \-> (string)
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the targets to which audit notifications are sent.
+.sp
+targetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the target (SNS topic) to which audit notifications are sent.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants permission to send notifications to the target.
+.UNINDENT
+.UNINDENT
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if notifications to the target are enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+auditCheckConfigurations \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Which audit checks are enabled and disabled for this account.
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An audit check name. Checks must be enabled for your account. (Use \fBDescribeAccountAuditConfiguration\fP to see the list of all checks, including those that are enabled or use \fBUpdateAccountAuditConfiguration\fP to select which checks are enabled.)
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Which audit checks are enabled and disabled for this account.
+.sp
+enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+True if this audit check is enabled for this account.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

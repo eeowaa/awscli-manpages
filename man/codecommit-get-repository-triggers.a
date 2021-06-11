@@ -1,0 +1,199 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODECOMMIT-GET-REPOSITORY-TRIGGERS" "a" "" ""
+.SH NAME
+codecommit-get-repository-triggers \- Gets information about triggers configured for a repository
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets information about triggers configured for a repository.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-repository\-triggers
+\-\-repository\-name <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-repository\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the repository for which the trigger is configured.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get information about triggers in a repository\fP
+.sp
+This example shows details about triggers configured for an AWS CodeCommit repository named \fBMyDemoRepo\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codecommit get\-repository\-triggers \e
+    \-\-repository\-name MyDemoRepo
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "configurationId": "f7579e13\-b83e\-4027\-aaef\-650c0EXAMPLE",
+    "triggers": [
+        {
+            "destinationArn": "arn:aws:sns:us\-east\-1:111111111111:MyCodeCommitTopic",
+            "branches": [
+                "main",
+                "preprod"
+            ],
+            "name": "MyFirstTrigger",
+            "customData": "",
+            "events": [
+                "all"
+            ]
+        },
+        {
+            "destinationArn": "arn:aws:lambda:us\-east\-1:111111111111:function:MyCodeCommitPythonFunction",
+            "branches": [],
+            "name": "MySecondTrigger",
+            "customData": "EXAMPLE",
+            "events": [
+                "all"
+            ]
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+configurationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The system\-generated unique ID for the trigger.
+.UNINDENT
+.UNINDENT
+.sp
+triggers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The JSON block of configuration information for each trigger.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a trigger for a repository.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the trigger.
+.UNINDENT
+.UNINDENT
+.sp
+destinationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the resource that is the target for a trigger (for example, the ARN of a topic in Amazon SNS).
+.UNINDENT
+.UNINDENT
+.sp
+customData \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Any custom data associated with the trigger to be included in the information sent to the target of the trigger.
+.UNINDENT
+.UNINDENT
+.sp
+branches \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The branches to be included in the trigger configuration. If you specify an empty array, the trigger applies to all branches.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Although no content is required in the array, you must include the array itself.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+events \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The repository events that cause the trigger to run actions in another service, such as sending a notification through Amazon SNS.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The valid value "all" cannot be used with any other values.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

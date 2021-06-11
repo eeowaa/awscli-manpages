@@ -1,0 +1,495 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "STS-ASSUME-ROLE" "a" "" ""
+.SH NAME
+sts-assume-role \- Returns a set of temporary security credentials that you can use to access AWS resources that you might not normally have access to
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns a set of temporary security credentials that you can use to access AWS resources that you might not normally have access to. These temporary credentials consist of an access key ID, a secret access key, and a security token. Typically, you use \fBAssumeRole\fP within your account or for cross\-account access. For a comparison of \fBAssumeRole\fP with other API operations that produce temporary credentials, see \fI\%Requesting Temporary Security Credentials\fP and \fI\%Comparing the AWS STS API operations\fP in the \fIIAM User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBPermissions\fP
+.UNINDENT
+.UNINDENT
+.sp
+The temporary security credentials created by \fBAssumeRole\fP can be used to make API calls to any AWS service with the following exception: You cannot call the AWS STS \fBGetFederationToken\fP or \fBGetSessionToken\fP API operations.
+.sp
+(Optional) You can pass inline or managed \fI\%session policies\fP to this operation. You can pass a single JSON policy document to use as an inline session policy. You can also specify up to 10 managed policies to use as managed session policies. The plaintext that you use for both inline and managed session policies can\(aqt exceed 2,048 characters. Passing policies to this operation returns new temporary credentials. The resulting session\(aqs permissions are the intersection of the role\(aqs identity\-based policy and the session policies. You can use the role\(aqs temporary credentials in subsequent AWS API calls to access resources in the account that owns the role. You cannot use session policies to grant more permissions than those allowed by the identity\-based policy of the role that is being assumed. For more information, see \fI\%Session Policies\fP in the \fIIAM User Guide\fP .
+.sp
+To assume a role from a different account, your AWS account must be trusted by the role. The trust relationship is defined in the role\(aqs trust policy when the role is created. That trust policy states which accounts are allowed to delegate that access to users in the account.
+.sp
+A user who wants to access a role in a different account must also have permissions that are delegated from the user account administrator. The administrator must attach a policy that allows the user to call \fBAssumeRole\fP for the ARN of the role in the other account. If the user is in the same account as the role, then you can do either of the following:
+.INDENT 0.0
+.IP \(bu 2
+Attach a policy to the user (identical to the previous user in a different account).
+.IP \(bu 2
+Add the user as a principal directly in the role\(aqs trust policy.
+.UNINDENT
+.sp
+In this case, the trust policy acts as an IAM resource\-based policy. Users in the same account as the role do not need explicit permission to assume the role. For more information about trust policies and resource\-based policies, see \fI\%IAM Policies\fP in the \fIIAM User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBTags\fP
+.UNINDENT
+.UNINDENT
+.sp
+(Optional) You can pass tag key\-value pairs to your session. These tags are called session tags. For more information about session tags, see \fI\%Passing Session Tags in STS\fP in the \fIIAM User Guide\fP .
+.sp
+An administrator must grant you the permissions necessary to pass session tags. The administrator can also create granular permissions to allow you to pass only specific session tags. For more information, see \fI\%Tutorial: Using Tags for Attribute\-Based Access Control\fP in the \fIIAM User Guide\fP .
+.sp
+You can set the session tags as transitive. Transitive tags persist during role chaining. For more information, see \fI\%Chaining Roles with Session Tags\fP in the \fIIAM User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBUsing MFA with AssumeRole\fP
+.UNINDENT
+.UNINDENT
+.sp
+(Optional) You can include multi\-factor authentication (MFA) information when you call \fBAssumeRole\fP . This is useful for cross\-account scenarios to ensure that the user that assumes the role has been authenticated with an AWS MFA device. In that scenario, the trust policy of the role being assumed includes a condition that tests for MFA authentication. If the caller does not include valid MFA information, the request to assume the role is denied. The condition in a trust policy that tests for MFA authentication might look like the following example.
+.INDENT 0.0
+.INDENT 3.5
+\fB"Condition": {"Bool": {"aws:MultiFactorAuthPresent": true}}\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Configuring MFA\-Protected API Access\fP in the \fIIAM User Guide\fP guide.
+.sp
+To use MFA with \fBAssumeRole\fP , you pass values for the \fBSerialNumber\fP and \fBTokenCode\fP parameters. The \fBSerialNumber\fP value identifies the user\(aqs hardware or virtual MFA device. The \fBTokenCode\fP is the time\-based one\-time password (TOTP) that the MFA device produces.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  assume\-role
+\-\-role\-arn <value>
+\-\-role\-session\-name <value>
+[\-\-policy\-arns <value>]
+[\-\-policy <value>]
+[\-\-duration\-seconds <value>]
+[\-\-tags <value>]
+[\-\-transitive\-tag\-keys <value>]
+[\-\-external\-id <value>]
+[\-\-serial\-number <value>]
+[\-\-token\-code <value>]
+[\-\-source\-identity <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the role to assume.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-session\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier for the assumed role session.
+.sp
+Use the role session name to uniquely identify a session when the same role is assumed by different principals or for different reasons. In cross\-account scenarios, the role session name is visible to, and can be logged by the account that owns the role. The role session name is also used in the ARN of the assumed role principal. This means that subsequent cross\-account API requests that use the temporary security credentials will expose the role session name to the external account in their AWS CloudTrail logs.
+.sp
+The regex used to validate this parameter is a string of characters consisting of upper\- and lower\-case alphanumeric characters with no spaces. You can also include underscores or any of the following characters: =,.@\-
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\-arns\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Names (ARNs) of the IAM managed policies that you want to use as managed session policies. The policies must exist in the same account as the role.
+.sp
+This parameter is optional. You can provide up to 10 managed policy ARNs. However, the plaintext that you use for both inline and managed session policies can\(aqt exceed 2,048 characters. For more information about ARNs, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the AWS General Reference.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An AWS conversion compresses the passed session policies and session tags into a packed binary format that has a separate limit. Your request can fail for this limit even if your plaintext meets the other requirements. The \fBPackedPolicySize\fP response element indicates by percentage how close the policies and tags for your request are to the upper size limit.
+.UNINDENT
+.UNINDENT
+.sp
+Passing policies to this operation returns new temporary credentials. The resulting session\(aqs permissions are the intersection of the role\(aqs identity\-based policy and the session policies. You can use the role\(aqs temporary credentials in subsequent AWS API calls to access resources in the account that owns the role. You cannot use session policies to grant more permissions than those allowed by the identity\-based policy of the role that is being assumed. For more information, see \fI\%Session Policies\fP in the \fIIAM User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A reference to the IAM managed policy that is passed as a session policy for a role session or a federated user session.
+.sp
+arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the IAM managed policy to use as a session policy for the role. For more information about ARNs, see \fI\%Amazon Resource Names (ARNs) and AWS Service Namespaces\fP in the \fIAWS General Reference\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+arn=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "arn": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An IAM policy in JSON format that you want to use as an inline session policy.
+.sp
+This parameter is optional. Passing policies to this operation returns new temporary credentials. The resulting session\(aqs permissions are the intersection of the role\(aqs identity\-based policy and the session policies. You can use the role\(aqs temporary credentials in subsequent AWS API calls to access resources in the account that owns the role. You cannot use session policies to grant more permissions than those allowed by the identity\-based policy of the role that is being assumed. For more information, see \fI\%Session Policies\fP in the \fIIAM User Guide\fP .
+.sp
+The plaintext that you use for both inline and managed session policies can\(aqt exceed 2,048 characters. The JSON policy characters can be any ASCII character from the space character to the end of the valid character list (u0020 through u00FF). It can also include the tab (u0009), linefeed (u000A), and carriage return (u000D) characters.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An AWS conversion compresses the passed session policies and session tags into a packed binary format that has a separate limit. Your request can fail for this limit even if your plaintext meets the other requirements. The \fBPackedPolicySize\fP response element indicates by percentage how close the policies and tags for your request are to the upper size limit.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-duration\-seconds\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The duration, in seconds, of the role session. The value specified can can range from 900 seconds (15 minutes) up to the maximum session duration that is set for the role. The maximum session duration setting can have a value from 1 hour to 12 hours. If you specify a value higher than this setting or the administrator setting (whichever is lower), the operation fails. For example, if you specify a session duration of 12 hours, but your administrator set the maximum session duration to 6 hours, your operation fails. To learn how to view the maximum value for your role, see \fI\%View the Maximum Session Duration Setting for a Role\fP in the \fIIAM User Guide\fP .
+.sp
+By default, the value is set to \fB3600\fP seconds.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBDurationSeconds\fP parameter is separate from the duration of a console session that you might request using the returned credentials. The request to the federation endpoint for a console sign\-in token takes a \fBSessionDuration\fP parameter that specifies the maximum length of the console session. For more information, see \fI\%Creating a URL that Enables Federated Users to Access the AWS Management Console\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of session tags that you want to pass. Each session tag consists of a key name and an associated value. For more information about session tags, see \fI\%Tagging AWS STS Sessions\fP in the \fIIAM User Guide\fP .
+.sp
+This parameter is optional. You can pass up to 50 session tags. The plaintext session tag keys can’t exceed 128 characters, and the values can’t exceed 256 characters. For these and additional limits, see \fI\%IAM and STS Character Limits\fP in the \fIIAM User Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+An AWS conversion compresses the passed session policies and session tags into a packed binary format that has a separate limit. Your request can fail for this limit even if your plaintext meets the other requirements. The \fBPackedPolicySize\fP response element indicates by percentage how close the policies and tags for your request are to the upper size limit.
+.UNINDENT
+.UNINDENT
+.sp
+You can pass a session tag with the same key as a tag that is already attached to the role. When you do, session tags override a role tag with the same key.
+.sp
+Tag key–value pairs are not case sensitive, but case is preserved. This means that you cannot have separate \fBDepartment\fP and \fBdepartment\fP tag keys. Assume that the role has the \fBDepartment\fP =\(ga\(gaMarketing\(ga\(ga tag and you pass the \fBdepartment\fP =\(ga\(gaengineering\(ga\(ga session tag. \fBDepartment\fP and \fBdepartment\fP are not saved as separate tags, and the session tag passed in the request takes precedence over the role tag.
+.sp
+Additionally, if you used temporary credentials to perform this operation, the new session inherits any transitive session tags from the calling session. If you pass a session tag with the same key as an inherited tag, the operation fails. To view the inherited tags for a session, see the AWS CloudTrail logs. For more information, see \fI\%Viewing Session Tags in CloudTrail\fP in the \fIIAM User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+You can pass custom key\-value pair attributes when you assume a role or federate a user. These are called session tags. You can then use the session tags to control access to resources. For more information, see \fI\%Tagging AWS STS Sessions\fP in the \fIIAM User Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for a session tag.
+.sp
+You can pass up to 50 session tags. The plain text session tag keys can’t exceed 128 characters. For these and additional limits, see \fI\%IAM and STS Character Limits\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value for a session tag.
+.sp
+You can pass up to 50 session tags. The plain text session tag values can’t exceed 256 characters. For these and additional limits, see \fI\%IAM and STS Character Limits\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-transitive\-tag\-keys\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of keys for session tags that you want to set as transitive. If you set a tag key as transitive, the corresponding key and value passes to subsequent sessions in a role chain. For more information, see \fI\%Chaining Roles with Session Tags\fP in the \fIIAM User Guide\fP .
+.sp
+This parameter is optional. When you set session tags as transitive, the session policy and session tags packed binary limit is not affected.
+.sp
+If you choose not to specify a transitive tag key, then no tags are passed from this session to any subsequent sessions.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-external\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier that might be required when you assume a role in another account. If the administrator of the account to which the role belongs provided you with an external ID, then provide that value in the \fBExternalId\fP parameter. This value can be any string, such as a passphrase or account number. A cross\-account role is usually set up to trust everyone in an account. Therefore, the administrator of the trusting account might send an external ID to the administrator of the trusted account. That way, only someone with the ID can assume the role, rather than everyone in the account. For more information about the external ID, see \fI\%How to Use an External ID When Granting Access to Your AWS Resources to a Third Party\fP in the \fIIAM User Guide\fP .
+.sp
+The regex used to validate this parameter is a string of characters consisting of upper\- and lower\-case alphanumeric characters with no spaces. You can also include underscores or any of the following characters: =,.@:/\-
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-serial\-number\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identification number of the MFA device that is associated with the user who is making the \fBAssumeRole\fP call. Specify this value if the trust policy of the role being assumed includes a condition that requires MFA authentication. The value is either the serial number for a hardware device (such as \fBGAHT12345678\fP ) or an Amazon Resource Name (ARN) for a virtual device (such as \fBarn:aws:iam::123456789012:mfa/user\fP ).
+.sp
+The regex used to validate this parameter is a string of characters consisting of upper\- and lower\-case alphanumeric characters with no spaces. You can also include underscores or any of the following characters: =,.@\-
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-token\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The value provided by the MFA device, if the trust policy of the role being assumed requires MFA. (In other words, if the policy includes a condition that tests for MFA). If the role being assumed requires MFA and if the \fBTokenCode\fP value is missing or expired, the \fBAssumeRole\fP call returns an "access denied" error.
+.sp
+The format for this parameter, as described by its regex pattern, is a sequence of six numeric digits.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-identity\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The source identity specified by the principal that is calling the \fBAssumeRole\fP operation.
+.sp
+You can require users to specify a source identity when they assume a role. You do this by using the \fBsts:SourceIdentity\fP condition key in a role trust policy. You can use source identity information in AWS CloudTrail logs to determine who took actions with a role. You can use the \fBaws:SourceIdentity\fP condition key to further control access to AWS resources based on the value of source identity. For more information about using source identity, see \fI\%Monitor and control actions taken with assumed roles\fP in the \fIIAM User Guide\fP .
+.sp
+The regex used to validate this parameter is a string of characters consisting of upper\- and lower\-case alphanumeric characters with no spaces. You can also include underscores or any of the following characters: =,.@\-. You cannot use a value that begins with the text \fBaws:\fP . This prefix is reserved for AWS internal use.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+To assume a role:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sts assume\-role \-\-role\-arn arn:aws:iam::123456789012:role/xaccounts3access \-\-role\-session\-name s3\-access\-example
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output of the command contains an access key, secret key, and session token that you can use to authenticate to AWS:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "AssumedRoleUser": {
+        "AssumedRoleId": "AROA3XFRBF535PLBIFPI4:s3\-access\-example",
+        "Arn": "arn:aws:sts::123456789012:assumed\-role/xaccounts3access/s3\-access\-example"
+    },
+    "Credentials": {
+        "SecretAccessKey": "9drTJvcXLB89EXAMPLELB8923FB892xMFI",
+        "SessionToken": "AQoXdzELDDY//////////wEaoAK1wvxJY12r2IrDFT2IvAzTCn3zHoZ7YNtpiQLF0MqZye/qwjzP2iEXAMPLEbw/m3hsj8VBTkPORGvr9jM5sgP+w9IZWZnU+LWhmg+a5fDi2oTGUYcdg9uexQ4mtCHIHfi4citgqZTgco40Yqr4lIlo4V2b2Dyauk0eYFNebHtYlFVgAUj+7Indz3LU0aTWk1WKIjHmmMCIoTkyYp/k7kUG7moeEYKSitwQIi6Gjn+nyzM+PtoA3685ixzv0R7i5rjQi0YE0lf1oeie3bDiNHncmzosRM6SFiPzSvp6h/32xQuZsjcypmwsPSDtTPYcs0+YN/8BRi2/IcrxSpnWEXAMPLEXSDFTAQAM6Dl9zR0tXoybnlrZIwMLlMi1Kcgo5OytwU=",
+        "Expiration": "2016\-03\-15T00:05:07Z",
+        "AccessKeyId": "ASIAJEXAMPLEXEG2JICEA"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For AWS CLI use, you can set up a named profile associated with a role. When you use the profile, the AWS CLI will call assume\-role and manage credentials for you. See \fI\%Assuming a Role\fP in the \fIAWS CLI User Guide\fP for instructions.
+.SH OUTPUT
+.sp
+Credentials \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The temporary security credentials, which include an access key ID, a secret access key, and a security (or session) token.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The size of the security token that STS API operations return is not fixed. We strongly recommend that you make no assumptions about the maximum size.
+.UNINDENT
+.UNINDENT
+.sp
+AccessKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The access key ID that identifies the temporary security credentials.
+.UNINDENT
+.UNINDENT
+.sp
+SecretAccessKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The secret access key that can be used to sign requests.
+.UNINDENT
+.UNINDENT
+.sp
+SessionToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token that users must pass to the service API to use the temporary credentials.
+.UNINDENT
+.UNINDENT
+.sp
+Expiration \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date on which the current credentials expire.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AssumedRoleUser \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) and the assumed role ID, which are identifiers that you can use to refer to the resulting temporary security credentials. For example, you can reference these credentials as a principal in a resource\-based policy by using the ARN or assumed role ID. The ARN and ID include the \fBRoleSessionName\fP that you specified when you called \fBAssumeRole\fP .
+.sp
+AssumedRoleId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier that contains the role ID and the role session name of the role that is being assumed. The role ID is generated by AWS when the role is created.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the temporary security credentials that are returned from the  AssumeRole action. For more information about ARNs and how to use them in policies, see \fI\%IAM Identifiers\fP in the \fIIAM User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PackedPolicySize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A percentage value that indicates the packed size of the session policies and session tags combined passed in the request. The request fails if the packed size is greater than 100 percent, which means the policies and tags exceeded the allowed space.
+.UNINDENT
+.UNINDENT
+.sp
+SourceIdentity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source identity specified by the principal that is calling the \fBAssumeRole\fP operation.
+.sp
+You can require users to specify a source identity when they assume a role. You do this by using the \fBsts:SourceIdentity\fP condition key in a role trust policy. You can use source identity information in AWS CloudTrail logs to determine who took actions with a role. You can use the \fBaws:SourceIdentity\fP condition key to further control access to AWS resources based on the value of source identity. For more information about using source identity, see \fI\%Monitor and control actions taken with assumed roles\fP in the \fIIAM User Guide\fP .
+.sp
+The regex used to validate this parameter is a string of characters consisting of upper\- and lower\-case alphanumeric characters with no spaces. You can also include underscores or any of the following characters: =,.@\-
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

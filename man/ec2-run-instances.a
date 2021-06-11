@@ -1,0 +1,3944 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-RUN-INSTANCES" "a" "" ""
+.SH NAME
+ec2-run-instances \- Launches the specified number of instances using an AMI for which you have permissions
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Launches the specified number of instances using an AMI for which you have permissions.
+.sp
+You can specify a number of options, or leave the default options. The following rules apply:
+.INDENT 0.0
+.IP \(bu 2
+[EC2\-VPC] If you don\(aqt specify a subnet ID, we choose a default subnet from your default VPC for you. If you don\(aqt have a default VPC, you must specify a subnet ID in the request.
+.IP \(bu 2
+[EC2\-Classic] If don\(aqt specify an Availability Zone, we choose one for you.
+.IP \(bu 2
+Some instance types must be launched into a VPC. If you do not have a default VPC, or if you do not specify a subnet ID, the request fails. For more information, see \fI\%Instance types available only in a VPC\fP .
+.IP \(bu 2
+[EC2\-VPC] All instances have a network interface with a primary private IPv4 address. If you don\(aqt specify this address, we choose one from the IPv4 range of your subnet.
+.IP \(bu 2
+Not all instance types support IPv6 addresses. For more information, see \fI\%Instance types\fP .
+.IP \(bu 2
+If you don\(aqt specify a security group ID, we use the default security group. For more information, see \fI\%Security groups\fP .
+.IP \(bu 2
+If any of the AMIs have a product code attached for which the user has not subscribed, the request fails.
+.UNINDENT
+.sp
+You can create a \fI\%launch template\fP , which is a resource that contains the parameters to launch an instance. When you launch an instance using  RunInstances , you can specify the launch template instead of specifying the launch parameters.
+.sp
+To ensure faster instance launches, break up large requests into smaller batches. For example, create five separate launch requests for 100 instances each instead of one launch request for 500 instances.
+.sp
+An instance is ready for you to use when it\(aqs in the \fBrunning\fP state. You can check the state of your instance using  DescribeInstances . You can tag instances and EBS volumes during launch, after launch, or both. For more information, see  CreateTags and \fI\%Tagging your Amazon EC2 resources\fP .
+.sp
+Linux instances have access to the public key of the key pair at boot. You can use this key to provide secure access to the instance. Amazon EC2 public images use this feature to provide secure access without passwords. For more information, see \fI\%Key pairs\fP .
+.sp
+For troubleshooting, see \fI\%What to do if an instance immediately terminates\fP , and \fI\%Troubleshooting connecting to your instance\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  run\-instances
+[\-\-block\-device\-mappings <value>]
+[\-\-image\-id <value>]
+[\-\-instance\-type <value>]
+[\-\-ipv6\-address\-count <value>]
+[\-\-ipv6\-addresses <value>]
+[\-\-kernel\-id <value>]
+[\-\-key\-name <value>]
+[\-\-monitoring <value>]
+[\-\-placement <value>]
+[\-\-ramdisk\-id <value>]
+[\-\-security\-group\-ids <value>]
+[\-\-security\-groups <value>]
+[\-\-subnet\-id <value>]
+[\-\-user\-data <value>]
+[\-\-additional\-info <value>]
+[\-\-client\-token <value>]
+[\-\-disable\-api\-termination | \-\-enable\-api\-termination]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-ebs\-optimized | \-\-no\-ebs\-optimized]
+[\-\-iam\-instance\-profile <value>]
+[\-\-instance\-initiated\-shutdown\-behavior <value>]
+[\-\-network\-interfaces <value>]
+[\-\-private\-ip\-address <value>]
+[\-\-elastic\-gpu\-specification <value>]
+[\-\-elastic\-inference\-accelerators <value>]
+[\-\-tag\-specifications <value>]
+[\-\-launch\-template <value>]
+[\-\-instance\-market\-options <value>]
+[\-\-credit\-specification <value>]
+[\-\-cpu\-options <value>]
+[\-\-capacity\-reservation\-specification <value>]
+[\-\-hibernation\-options <value>]
+[\-\-license\-specifications <value>]
+[\-\-metadata\-options <value>]
+[\-\-enclave\-options <value>]
+[\-\-count <value>]
+[\-\-secondary\-private\-ip\-addresses <value>]
+[\-\-secondary\-private\-ip\-address\-count <value>]
+[\-\-associate\-public\-ip\-address | \-\-no\-associate\-public\-ip\-address]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-block\-device\-mappings\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The block device mapping entries.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a block device mapping.
+.sp
+DeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name (for example, \fB/dev/sdh\fP or \fBxvdh\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+VirtualName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtual device name (\fBephemeral\fP N). Instance store volumes are numbered starting from 0. An instance type with 2 available instance store volumes can specify mappings for \fBephemeral0\fP and \fBephemeral1\fP . The number of available instance store volumes depends on the instance type. After you connect to the instance, you must mount the volume.
+.sp
+NVMe instance store volumes are automatically enumerated and assigned a device name. Including them in your block device mapping has no effect.
+.sp
+Constraints: For M3 instances, you must specify instance store volumes in the block device mapping for the instance. When you launch an M3 instance, we ignore any instance store volumes specified in the block device mapping for the AMI.
+.UNINDENT
+.UNINDENT
+.sp
+Ebs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters used to automatically set up EBS volumes when the instance is launched.
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the EBS volume is deleted on instance termination. For more information, see \fI\%Preserving Amazon EBS volumes on instance termination\fP in the \fIAmazon EC2 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of I/O operations per second (IOPS). For \fBgp3\fP , \fBio1\fP , and \fBio2\fP volumes, this represents the number of IOPS that are provisioned for the volume. For \fBgp2\fP volumes, this represents the baseline performance of the volume and the rate at which the volume accumulates I/O credits for bursting.
+.sp
+The following are the supported values for each volume type:
+.INDENT 0.0
+.IP \(bu 2
+\fBgp3\fP : 3,000\-16,000 IOPS
+.IP \(bu 2
+\fBio1\fP : 100\-64,000 IOPS
+.IP \(bu 2
+\fBio2\fP : 100\-64,000 IOPS
+.UNINDENT
+.sp
+For \fBio1\fP and \fBio2\fP volumes, we guarantee 64,000 IOPS only for \fI\%Instances built on the Nitro System\fP . Other instance families guarantee performance up to 32,000 IOPS.
+.sp
+This parameter is required for \fBio1\fP and \fBio2\fP volumes. The default for \fBgp3\fP volumes is 3,000 IOPS. This parameter is not supported for \fBgp2\fP , \fBst1\fP , \fBsc1\fP , or \fBstandard\fP volumes.
+.UNINDENT
+.UNINDENT
+.sp
+SnapshotId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the snapshot.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeSize \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of the volume, in GiBs. You must specify either a snapshot ID or a volume size. If you specify a snapshot, the default is the snapshot size. You can specify a volume size that is equal to or larger than the snapshot size.
+.sp
+The following are the supported volumes sizes for each volume type:
+.INDENT 0.0
+.IP \(bu 2
+\fBgp2\fP and \fBgp3\fP :1\-16,384
+.IP \(bu 2
+\fBio1\fP and \fBio2\fP : 4\-16,384
+.IP \(bu 2
+\fBst1\fP and \fBsc1\fP : 125\-16,384
+.IP \(bu 2
+\fBstandard\fP : 1\-1,024
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The volume type. For more information, see \fI\%Amazon EBS volume types\fP in the \fIAmazon EC2 User Guide\fP . If the volume type is \fBio1\fP or \fBio2\fP , you must specify the IOPS that the volume supports.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifier (key ID, key alias, ID ARN, or alias ARN) for a customer managed CMK under which the EBS volume is encrypted.
+.sp
+This parameter is only supported on \fBBlockDeviceMapping\fP objects called by \fI\%RunInstances\fP , \fI\%RequestSpotFleet\fP , and \fI\%RequestSpotInstances\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Throughput \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The throughput that the volume supports, in MiB/s.
+.sp
+This parameter is valid only for \fBgp3\fP volumes.
+.sp
+Valid Range: Minimum value of 125. Maximum value of 1000.
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Outpost on which the snapshot is stored.
+.UNINDENT
+.UNINDENT
+.sp
+Encrypted \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the encryption state of an EBS volume is changed while being restored from a backing snapshot. The effect of setting the encryption state to \fBtrue\fP depends on the volume origin (new or from a snapshot), starting encryption state, ownership, and whether encryption by default is enabled. For more information, see \fI\%Amazon EBS encryption\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+In no case can you remove encryption from an encrypted volume.
+.sp
+Encrypted volumes can only be attached to instances that support Amazon EBS encryption. For more information, see \fI\%Supported instance types\fP .
+.sp
+This parameter is not returned by .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NoDevice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+To omit the device from the block device mapping, specify an empty string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+DeviceName=string,VirtualName=string,Ebs={DeleteOnTermination=boolean,Iops=integer,SnapshotId=string,VolumeSize=integer,VolumeType=string,KmsKeyId=string,Throughput=integer,OutpostArn=string,Encrypted=boolean},NoDevice=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "DeviceName": "string",
+    "VirtualName": "string",
+    "Ebs": {
+      "DeleteOnTermination": true|false,
+      "Iops": integer,
+      "SnapshotId": "string",
+      "VolumeSize": integer,
+      "VolumeType": "standard"|"io1"|"io2"|"gp2"|"sc1"|"st1"|"gp3",
+      "KmsKeyId": "string",
+      "Throughput": integer,
+      "OutpostArn": "string",
+      "Encrypted": true|false
+    },
+    "NoDevice": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-image\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AMI. An AMI ID is required to launch an instance and must be specified here or in a launch template.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type. For more information, see \fI\%Instance types\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+Default: \fBm1.small\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBt1.micro\fP
+.IP \(bu 2
+\fBt2.nano\fP
+.IP \(bu 2
+\fBt2.micro\fP
+.IP \(bu 2
+\fBt2.small\fP
+.IP \(bu 2
+\fBt2.medium\fP
+.IP \(bu 2
+\fBt2.large\fP
+.IP \(bu 2
+\fBt2.xlarge\fP
+.IP \(bu 2
+\fBt2.2xlarge\fP
+.IP \(bu 2
+\fBt3.nano\fP
+.IP \(bu 2
+\fBt3.micro\fP
+.IP \(bu 2
+\fBt3.small\fP
+.IP \(bu 2
+\fBt3.medium\fP
+.IP \(bu 2
+\fBt3.large\fP
+.IP \(bu 2
+\fBt3.xlarge\fP
+.IP \(bu 2
+\fBt3.2xlarge\fP
+.IP \(bu 2
+\fBt3a.nano\fP
+.IP \(bu 2
+\fBt3a.micro\fP
+.IP \(bu 2
+\fBt3a.small\fP
+.IP \(bu 2
+\fBt3a.medium\fP
+.IP \(bu 2
+\fBt3a.large\fP
+.IP \(bu 2
+\fBt3a.xlarge\fP
+.IP \(bu 2
+\fBt3a.2xlarge\fP
+.IP \(bu 2
+\fBt4g.nano\fP
+.IP \(bu 2
+\fBt4g.micro\fP
+.IP \(bu 2
+\fBt4g.small\fP
+.IP \(bu 2
+\fBt4g.medium\fP
+.IP \(bu 2
+\fBt4g.large\fP
+.IP \(bu 2
+\fBt4g.xlarge\fP
+.IP \(bu 2
+\fBt4g.2xlarge\fP
+.IP \(bu 2
+\fBm1.small\fP
+.IP \(bu 2
+\fBm1.medium\fP
+.IP \(bu 2
+\fBm1.large\fP
+.IP \(bu 2
+\fBm1.xlarge\fP
+.IP \(bu 2
+\fBm3.medium\fP
+.IP \(bu 2
+\fBm3.large\fP
+.IP \(bu 2
+\fBm3.xlarge\fP
+.IP \(bu 2
+\fBm3.2xlarge\fP
+.IP \(bu 2
+\fBm4.large\fP
+.IP \(bu 2
+\fBm4.xlarge\fP
+.IP \(bu 2
+\fBm4.2xlarge\fP
+.IP \(bu 2
+\fBm4.4xlarge\fP
+.IP \(bu 2
+\fBm4.10xlarge\fP
+.IP \(bu 2
+\fBm4.16xlarge\fP
+.IP \(bu 2
+\fBm2.xlarge\fP
+.IP \(bu 2
+\fBm2.2xlarge\fP
+.IP \(bu 2
+\fBm2.4xlarge\fP
+.IP \(bu 2
+\fBcr1.8xlarge\fP
+.IP \(bu 2
+\fBr3.large\fP
+.IP \(bu 2
+\fBr3.xlarge\fP
+.IP \(bu 2
+\fBr3.2xlarge\fP
+.IP \(bu 2
+\fBr3.4xlarge\fP
+.IP \(bu 2
+\fBr3.8xlarge\fP
+.IP \(bu 2
+\fBr4.large\fP
+.IP \(bu 2
+\fBr4.xlarge\fP
+.IP \(bu 2
+\fBr4.2xlarge\fP
+.IP \(bu 2
+\fBr4.4xlarge\fP
+.IP \(bu 2
+\fBr4.8xlarge\fP
+.IP \(bu 2
+\fBr4.16xlarge\fP
+.IP \(bu 2
+\fBr5.large\fP
+.IP \(bu 2
+\fBr5.xlarge\fP
+.IP \(bu 2
+\fBr5.2xlarge\fP
+.IP \(bu 2
+\fBr5.4xlarge\fP
+.IP \(bu 2
+\fBr5.8xlarge\fP
+.IP \(bu 2
+\fBr5.12xlarge\fP
+.IP \(bu 2
+\fBr5.16xlarge\fP
+.IP \(bu 2
+\fBr5.24xlarge\fP
+.IP \(bu 2
+\fBr5.metal\fP
+.IP \(bu 2
+\fBr5a.large\fP
+.IP \(bu 2
+\fBr5a.xlarge\fP
+.IP \(bu 2
+\fBr5a.2xlarge\fP
+.IP \(bu 2
+\fBr5a.4xlarge\fP
+.IP \(bu 2
+\fBr5a.8xlarge\fP
+.IP \(bu 2
+\fBr5a.12xlarge\fP
+.IP \(bu 2
+\fBr5a.16xlarge\fP
+.IP \(bu 2
+\fBr5a.24xlarge\fP
+.IP \(bu 2
+\fBr5b.large\fP
+.IP \(bu 2
+\fBr5b.xlarge\fP
+.IP \(bu 2
+\fBr5b.2xlarge\fP
+.IP \(bu 2
+\fBr5b.4xlarge\fP
+.IP \(bu 2
+\fBr5b.8xlarge\fP
+.IP \(bu 2
+\fBr5b.12xlarge\fP
+.IP \(bu 2
+\fBr5b.16xlarge\fP
+.IP \(bu 2
+\fBr5b.24xlarge\fP
+.IP \(bu 2
+\fBr5b.metal\fP
+.IP \(bu 2
+\fBr5d.large\fP
+.IP \(bu 2
+\fBr5d.xlarge\fP
+.IP \(bu 2
+\fBr5d.2xlarge\fP
+.IP \(bu 2
+\fBr5d.4xlarge\fP
+.IP \(bu 2
+\fBr5d.8xlarge\fP
+.IP \(bu 2
+\fBr5d.12xlarge\fP
+.IP \(bu 2
+\fBr5d.16xlarge\fP
+.IP \(bu 2
+\fBr5d.24xlarge\fP
+.IP \(bu 2
+\fBr5d.metal\fP
+.IP \(bu 2
+\fBr5ad.large\fP
+.IP \(bu 2
+\fBr5ad.xlarge\fP
+.IP \(bu 2
+\fBr5ad.2xlarge\fP
+.IP \(bu 2
+\fBr5ad.4xlarge\fP
+.IP \(bu 2
+\fBr5ad.8xlarge\fP
+.IP \(bu 2
+\fBr5ad.12xlarge\fP
+.IP \(bu 2
+\fBr5ad.16xlarge\fP
+.IP \(bu 2
+\fBr5ad.24xlarge\fP
+.IP \(bu 2
+\fBr6g.metal\fP
+.IP \(bu 2
+\fBr6g.medium\fP
+.IP \(bu 2
+\fBr6g.large\fP
+.IP \(bu 2
+\fBr6g.xlarge\fP
+.IP \(bu 2
+\fBr6g.2xlarge\fP
+.IP \(bu 2
+\fBr6g.4xlarge\fP
+.IP \(bu 2
+\fBr6g.8xlarge\fP
+.IP \(bu 2
+\fBr6g.12xlarge\fP
+.IP \(bu 2
+\fBr6g.16xlarge\fP
+.IP \(bu 2
+\fBr6gd.metal\fP
+.IP \(bu 2
+\fBr6gd.medium\fP
+.IP \(bu 2
+\fBr6gd.large\fP
+.IP \(bu 2
+\fBr6gd.xlarge\fP
+.IP \(bu 2
+\fBr6gd.2xlarge\fP
+.IP \(bu 2
+\fBr6gd.4xlarge\fP
+.IP \(bu 2
+\fBr6gd.8xlarge\fP
+.IP \(bu 2
+\fBr6gd.12xlarge\fP
+.IP \(bu 2
+\fBr6gd.16xlarge\fP
+.IP \(bu 2
+\fBx1.16xlarge\fP
+.IP \(bu 2
+\fBx1.32xlarge\fP
+.IP \(bu 2
+\fBx1e.xlarge\fP
+.IP \(bu 2
+\fBx1e.2xlarge\fP
+.IP \(bu 2
+\fBx1e.4xlarge\fP
+.IP \(bu 2
+\fBx1e.8xlarge\fP
+.IP \(bu 2
+\fBx1e.16xlarge\fP
+.IP \(bu 2
+\fBx1e.32xlarge\fP
+.IP \(bu 2
+\fBi2.xlarge\fP
+.IP \(bu 2
+\fBi2.2xlarge\fP
+.IP \(bu 2
+\fBi2.4xlarge\fP
+.IP \(bu 2
+\fBi2.8xlarge\fP
+.IP \(bu 2
+\fBi3.large\fP
+.IP \(bu 2
+\fBi3.xlarge\fP
+.IP \(bu 2
+\fBi3.2xlarge\fP
+.IP \(bu 2
+\fBi3.4xlarge\fP
+.IP \(bu 2
+\fBi3.8xlarge\fP
+.IP \(bu 2
+\fBi3.16xlarge\fP
+.IP \(bu 2
+\fBi3.metal\fP
+.IP \(bu 2
+\fBi3en.large\fP
+.IP \(bu 2
+\fBi3en.xlarge\fP
+.IP \(bu 2
+\fBi3en.2xlarge\fP
+.IP \(bu 2
+\fBi3en.3xlarge\fP
+.IP \(bu 2
+\fBi3en.6xlarge\fP
+.IP \(bu 2
+\fBi3en.12xlarge\fP
+.IP \(bu 2
+\fBi3en.24xlarge\fP
+.IP \(bu 2
+\fBi3en.metal\fP
+.IP \(bu 2
+\fBhi1.4xlarge\fP
+.IP \(bu 2
+\fBhs1.8xlarge\fP
+.IP \(bu 2
+\fBc1.medium\fP
+.IP \(bu 2
+\fBc1.xlarge\fP
+.IP \(bu 2
+\fBc3.large\fP
+.IP \(bu 2
+\fBc3.xlarge\fP
+.IP \(bu 2
+\fBc3.2xlarge\fP
+.IP \(bu 2
+\fBc3.4xlarge\fP
+.IP \(bu 2
+\fBc3.8xlarge\fP
+.IP \(bu 2
+\fBc4.large\fP
+.IP \(bu 2
+\fBc4.xlarge\fP
+.IP \(bu 2
+\fBc4.2xlarge\fP
+.IP \(bu 2
+\fBc4.4xlarge\fP
+.IP \(bu 2
+\fBc4.8xlarge\fP
+.IP \(bu 2
+\fBc5.large\fP
+.IP \(bu 2
+\fBc5.xlarge\fP
+.IP \(bu 2
+\fBc5.2xlarge\fP
+.IP \(bu 2
+\fBc5.4xlarge\fP
+.IP \(bu 2
+\fBc5.9xlarge\fP
+.IP \(bu 2
+\fBc5.12xlarge\fP
+.IP \(bu 2
+\fBc5.18xlarge\fP
+.IP \(bu 2
+\fBc5.24xlarge\fP
+.IP \(bu 2
+\fBc5.metal\fP
+.IP \(bu 2
+\fBc5a.large\fP
+.IP \(bu 2
+\fBc5a.xlarge\fP
+.IP \(bu 2
+\fBc5a.2xlarge\fP
+.IP \(bu 2
+\fBc5a.4xlarge\fP
+.IP \(bu 2
+\fBc5a.8xlarge\fP
+.IP \(bu 2
+\fBc5a.12xlarge\fP
+.IP \(bu 2
+\fBc5a.16xlarge\fP
+.IP \(bu 2
+\fBc5a.24xlarge\fP
+.IP \(bu 2
+\fBc5ad.large\fP
+.IP \(bu 2
+\fBc5ad.xlarge\fP
+.IP \(bu 2
+\fBc5ad.2xlarge\fP
+.IP \(bu 2
+\fBc5ad.4xlarge\fP
+.IP \(bu 2
+\fBc5ad.8xlarge\fP
+.IP \(bu 2
+\fBc5ad.12xlarge\fP
+.IP \(bu 2
+\fBc5ad.16xlarge\fP
+.IP \(bu 2
+\fBc5ad.24xlarge\fP
+.IP \(bu 2
+\fBc5d.large\fP
+.IP \(bu 2
+\fBc5d.xlarge\fP
+.IP \(bu 2
+\fBc5d.2xlarge\fP
+.IP \(bu 2
+\fBc5d.4xlarge\fP
+.IP \(bu 2
+\fBc5d.9xlarge\fP
+.IP \(bu 2
+\fBc5d.12xlarge\fP
+.IP \(bu 2
+\fBc5d.18xlarge\fP
+.IP \(bu 2
+\fBc5d.24xlarge\fP
+.IP \(bu 2
+\fBc5d.metal\fP
+.IP \(bu 2
+\fBc5n.large\fP
+.IP \(bu 2
+\fBc5n.xlarge\fP
+.IP \(bu 2
+\fBc5n.2xlarge\fP
+.IP \(bu 2
+\fBc5n.4xlarge\fP
+.IP \(bu 2
+\fBc5n.9xlarge\fP
+.IP \(bu 2
+\fBc5n.18xlarge\fP
+.IP \(bu 2
+\fBc5n.metal\fP
+.IP \(bu 2
+\fBc6g.metal\fP
+.IP \(bu 2
+\fBc6g.medium\fP
+.IP \(bu 2
+\fBc6g.large\fP
+.IP \(bu 2
+\fBc6g.xlarge\fP
+.IP \(bu 2
+\fBc6g.2xlarge\fP
+.IP \(bu 2
+\fBc6g.4xlarge\fP
+.IP \(bu 2
+\fBc6g.8xlarge\fP
+.IP \(bu 2
+\fBc6g.12xlarge\fP
+.IP \(bu 2
+\fBc6g.16xlarge\fP
+.IP \(bu 2
+\fBc6gd.metal\fP
+.IP \(bu 2
+\fBc6gd.medium\fP
+.IP \(bu 2
+\fBc6gd.large\fP
+.IP \(bu 2
+\fBc6gd.xlarge\fP
+.IP \(bu 2
+\fBc6gd.2xlarge\fP
+.IP \(bu 2
+\fBc6gd.4xlarge\fP
+.IP \(bu 2
+\fBc6gd.8xlarge\fP
+.IP \(bu 2
+\fBc6gd.12xlarge\fP
+.IP \(bu 2
+\fBc6gd.16xlarge\fP
+.IP \(bu 2
+\fBc6gn.medium\fP
+.IP \(bu 2
+\fBc6gn.large\fP
+.IP \(bu 2
+\fBc6gn.xlarge\fP
+.IP \(bu 2
+\fBc6gn.2xlarge\fP
+.IP \(bu 2
+\fBc6gn.4xlarge\fP
+.IP \(bu 2
+\fBc6gn.8xlarge\fP
+.IP \(bu 2
+\fBc6gn.12xlarge\fP
+.IP \(bu 2
+\fBc6gn.16xlarge\fP
+.IP \(bu 2
+\fBcc1.4xlarge\fP
+.IP \(bu 2
+\fBcc2.8xlarge\fP
+.IP \(bu 2
+\fBg2.2xlarge\fP
+.IP \(bu 2
+\fBg2.8xlarge\fP
+.IP \(bu 2
+\fBg3.4xlarge\fP
+.IP \(bu 2
+\fBg3.8xlarge\fP
+.IP \(bu 2
+\fBg3.16xlarge\fP
+.IP \(bu 2
+\fBg3s.xlarge\fP
+.IP \(bu 2
+\fBg4ad.4xlarge\fP
+.IP \(bu 2
+\fBg4ad.8xlarge\fP
+.IP \(bu 2
+\fBg4ad.16xlarge\fP
+.IP \(bu 2
+\fBg4dn.xlarge\fP
+.IP \(bu 2
+\fBg4dn.2xlarge\fP
+.IP \(bu 2
+\fBg4dn.4xlarge\fP
+.IP \(bu 2
+\fBg4dn.8xlarge\fP
+.IP \(bu 2
+\fBg4dn.12xlarge\fP
+.IP \(bu 2
+\fBg4dn.16xlarge\fP
+.IP \(bu 2
+\fBg4dn.metal\fP
+.IP \(bu 2
+\fBcg1.4xlarge\fP
+.IP \(bu 2
+\fBp2.xlarge\fP
+.IP \(bu 2
+\fBp2.8xlarge\fP
+.IP \(bu 2
+\fBp2.16xlarge\fP
+.IP \(bu 2
+\fBp3.2xlarge\fP
+.IP \(bu 2
+\fBp3.8xlarge\fP
+.IP \(bu 2
+\fBp3.16xlarge\fP
+.IP \(bu 2
+\fBp3dn.24xlarge\fP
+.IP \(bu 2
+\fBp4d.24xlarge\fP
+.IP \(bu 2
+\fBd2.xlarge\fP
+.IP \(bu 2
+\fBd2.2xlarge\fP
+.IP \(bu 2
+\fBd2.4xlarge\fP
+.IP \(bu 2
+\fBd2.8xlarge\fP
+.IP \(bu 2
+\fBd3.xlarge\fP
+.IP \(bu 2
+\fBd3.2xlarge\fP
+.IP \(bu 2
+\fBd3.4xlarge\fP
+.IP \(bu 2
+\fBd3.8xlarge\fP
+.IP \(bu 2
+\fBd3en.xlarge\fP
+.IP \(bu 2
+\fBd3en.2xlarge\fP
+.IP \(bu 2
+\fBd3en.4xlarge\fP
+.IP \(bu 2
+\fBd3en.6xlarge\fP
+.IP \(bu 2
+\fBd3en.8xlarge\fP
+.IP \(bu 2
+\fBd3en.12xlarge\fP
+.IP \(bu 2
+\fBf1.2xlarge\fP
+.IP \(bu 2
+\fBf1.4xlarge\fP
+.IP \(bu 2
+\fBf1.16xlarge\fP
+.IP \(bu 2
+\fBm5.large\fP
+.IP \(bu 2
+\fBm5.xlarge\fP
+.IP \(bu 2
+\fBm5.2xlarge\fP
+.IP \(bu 2
+\fBm5.4xlarge\fP
+.IP \(bu 2
+\fBm5.8xlarge\fP
+.IP \(bu 2
+\fBm5.12xlarge\fP
+.IP \(bu 2
+\fBm5.16xlarge\fP
+.IP \(bu 2
+\fBm5.24xlarge\fP
+.IP \(bu 2
+\fBm5.metal\fP
+.IP \(bu 2
+\fBm5a.large\fP
+.IP \(bu 2
+\fBm5a.xlarge\fP
+.IP \(bu 2
+\fBm5a.2xlarge\fP
+.IP \(bu 2
+\fBm5a.4xlarge\fP
+.IP \(bu 2
+\fBm5a.8xlarge\fP
+.IP \(bu 2
+\fBm5a.12xlarge\fP
+.IP \(bu 2
+\fBm5a.16xlarge\fP
+.IP \(bu 2
+\fBm5a.24xlarge\fP
+.IP \(bu 2
+\fBm5d.large\fP
+.IP \(bu 2
+\fBm5d.xlarge\fP
+.IP \(bu 2
+\fBm5d.2xlarge\fP
+.IP \(bu 2
+\fBm5d.4xlarge\fP
+.IP \(bu 2
+\fBm5d.8xlarge\fP
+.IP \(bu 2
+\fBm5d.12xlarge\fP
+.IP \(bu 2
+\fBm5d.16xlarge\fP
+.IP \(bu 2
+\fBm5d.24xlarge\fP
+.IP \(bu 2
+\fBm5d.metal\fP
+.IP \(bu 2
+\fBm5ad.large\fP
+.IP \(bu 2
+\fBm5ad.xlarge\fP
+.IP \(bu 2
+\fBm5ad.2xlarge\fP
+.IP \(bu 2
+\fBm5ad.4xlarge\fP
+.IP \(bu 2
+\fBm5ad.8xlarge\fP
+.IP \(bu 2
+\fBm5ad.12xlarge\fP
+.IP \(bu 2
+\fBm5ad.16xlarge\fP
+.IP \(bu 2
+\fBm5ad.24xlarge\fP
+.IP \(bu 2
+\fBm5zn.large\fP
+.IP \(bu 2
+\fBm5zn.xlarge\fP
+.IP \(bu 2
+\fBm5zn.2xlarge\fP
+.IP \(bu 2
+\fBm5zn.3xlarge\fP
+.IP \(bu 2
+\fBm5zn.6xlarge\fP
+.IP \(bu 2
+\fBm5zn.12xlarge\fP
+.IP \(bu 2
+\fBm5zn.metal\fP
+.IP \(bu 2
+\fBh1.2xlarge\fP
+.IP \(bu 2
+\fBh1.4xlarge\fP
+.IP \(bu 2
+\fBh1.8xlarge\fP
+.IP \(bu 2
+\fBh1.16xlarge\fP
+.IP \(bu 2
+\fBz1d.large\fP
+.IP \(bu 2
+\fBz1d.xlarge\fP
+.IP \(bu 2
+\fBz1d.2xlarge\fP
+.IP \(bu 2
+\fBz1d.3xlarge\fP
+.IP \(bu 2
+\fBz1d.6xlarge\fP
+.IP \(bu 2
+\fBz1d.12xlarge\fP
+.IP \(bu 2
+\fBz1d.metal\fP
+.IP \(bu 2
+\fBu\-6tb1.56xlarge\fP
+.IP \(bu 2
+\fBu\-6tb1.112xlarge\fP
+.IP \(bu 2
+\fBu\-9tb1.112xlarge\fP
+.IP \(bu 2
+\fBu\-12tb1.112xlarge\fP
+.IP \(bu 2
+\fBu\-6tb1.metal\fP
+.IP \(bu 2
+\fBu\-9tb1.metal\fP
+.IP \(bu 2
+\fBu\-12tb1.metal\fP
+.IP \(bu 2
+\fBu\-18tb1.metal\fP
+.IP \(bu 2
+\fBu\-24tb1.metal\fP
+.IP \(bu 2
+\fBa1.medium\fP
+.IP \(bu 2
+\fBa1.large\fP
+.IP \(bu 2
+\fBa1.xlarge\fP
+.IP \(bu 2
+\fBa1.2xlarge\fP
+.IP \(bu 2
+\fBa1.4xlarge\fP
+.IP \(bu 2
+\fBa1.metal\fP
+.IP \(bu 2
+\fBm5dn.large\fP
+.IP \(bu 2
+\fBm5dn.xlarge\fP
+.IP \(bu 2
+\fBm5dn.2xlarge\fP
+.IP \(bu 2
+\fBm5dn.4xlarge\fP
+.IP \(bu 2
+\fBm5dn.8xlarge\fP
+.IP \(bu 2
+\fBm5dn.12xlarge\fP
+.IP \(bu 2
+\fBm5dn.16xlarge\fP
+.IP \(bu 2
+\fBm5dn.24xlarge\fP
+.IP \(bu 2
+\fBm5n.large\fP
+.IP \(bu 2
+\fBm5n.xlarge\fP
+.IP \(bu 2
+\fBm5n.2xlarge\fP
+.IP \(bu 2
+\fBm5n.4xlarge\fP
+.IP \(bu 2
+\fBm5n.8xlarge\fP
+.IP \(bu 2
+\fBm5n.12xlarge\fP
+.IP \(bu 2
+\fBm5n.16xlarge\fP
+.IP \(bu 2
+\fBm5n.24xlarge\fP
+.IP \(bu 2
+\fBr5dn.large\fP
+.IP \(bu 2
+\fBr5dn.xlarge\fP
+.IP \(bu 2
+\fBr5dn.2xlarge\fP
+.IP \(bu 2
+\fBr5dn.4xlarge\fP
+.IP \(bu 2
+\fBr5dn.8xlarge\fP
+.IP \(bu 2
+\fBr5dn.12xlarge\fP
+.IP \(bu 2
+\fBr5dn.16xlarge\fP
+.IP \(bu 2
+\fBr5dn.24xlarge\fP
+.IP \(bu 2
+\fBr5n.large\fP
+.IP \(bu 2
+\fBr5n.xlarge\fP
+.IP \(bu 2
+\fBr5n.2xlarge\fP
+.IP \(bu 2
+\fBr5n.4xlarge\fP
+.IP \(bu 2
+\fBr5n.8xlarge\fP
+.IP \(bu 2
+\fBr5n.12xlarge\fP
+.IP \(bu 2
+\fBr5n.16xlarge\fP
+.IP \(bu 2
+\fBr5n.24xlarge\fP
+.IP \(bu 2
+\fBinf1.xlarge\fP
+.IP \(bu 2
+\fBinf1.2xlarge\fP
+.IP \(bu 2
+\fBinf1.6xlarge\fP
+.IP \(bu 2
+\fBinf1.24xlarge\fP
+.IP \(bu 2
+\fBm6g.metal\fP
+.IP \(bu 2
+\fBm6g.medium\fP
+.IP \(bu 2
+\fBm6g.large\fP
+.IP \(bu 2
+\fBm6g.xlarge\fP
+.IP \(bu 2
+\fBm6g.2xlarge\fP
+.IP \(bu 2
+\fBm6g.4xlarge\fP
+.IP \(bu 2
+\fBm6g.8xlarge\fP
+.IP \(bu 2
+\fBm6g.12xlarge\fP
+.IP \(bu 2
+\fBm6g.16xlarge\fP
+.IP \(bu 2
+\fBm6gd.metal\fP
+.IP \(bu 2
+\fBm6gd.medium\fP
+.IP \(bu 2
+\fBm6gd.large\fP
+.IP \(bu 2
+\fBm6gd.xlarge\fP
+.IP \(bu 2
+\fBm6gd.2xlarge\fP
+.IP \(bu 2
+\fBm6gd.4xlarge\fP
+.IP \(bu 2
+\fBm6gd.8xlarge\fP
+.IP \(bu 2
+\fBm6gd.12xlarge\fP
+.IP \(bu 2
+\fBm6gd.16xlarge\fP
+.IP \(bu 2
+\fBmac1.metal\fP
+.IP \(bu 2
+\fBx2gd.medium\fP
+.IP \(bu 2
+\fBx2gd.large\fP
+.IP \(bu 2
+\fBx2gd.xlarge\fP
+.IP \(bu 2
+\fBx2gd.2xlarge\fP
+.IP \(bu 2
+\fBx2gd.4xlarge\fP
+.IP \(bu 2
+\fBx2gd.8xlarge\fP
+.IP \(bu 2
+\fBx2gd.12xlarge\fP
+.IP \(bu 2
+\fBx2gd.16xlarge\fP
+.IP \(bu 2
+\fBx2gd.metal\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ipv6\-address\-count\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The number of IPv6 addresses to associate with the primary network interface. Amazon EC2 chooses the IPv6 addresses from the range of your subnet. You cannot specify this option and the option to assign specific IPv6 addresses in the same request. You can specify this option if you\(aqve specified a minimum number of instances to launch.
+.sp
+You cannot specify this option and the network interfaces option in the same request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ipv6\-addresses\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The IPv6 addresses from the range of the subnet to associate with the primary network interface. You cannot specify this option and the option to assign a number of IPv6 addresses in the same request. You cannot specify this option if you\(aqve specified a minimum number of instances to launch.
+.sp
+You cannot specify this option and the network interfaces option in the same request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 address.
+.sp
+Ipv6Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Ipv6Address=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Ipv6Address": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kernel\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the kernel.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+We recommend that you use PV\-GRUB instead of kernels and RAM disks. For more information, see \fI\%PV\-GRUB\fP in the \fIAmazon EC2 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key pair. You can create a key pair using \fI\%CreateKeyPair\fP or \fI\%ImportKeyPair\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you do not specify a key pair, you can\(aqt connect to the instance unless you choose an AMI that is configured to allow users another way to log in.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-monitoring\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether detailed monitoring is enabled for the instance.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether detailed monitoring is enabled. Otherwise, basic monitoring is enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Enabled=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Enabled": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-placement\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The placement for the instance.
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone of the instance.
+.sp
+If not specified, an Availability Zone will be automatically chosen for you based on the load balancing criteria for the Region.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Affinity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The affinity setting for the instance on the Dedicated Host. This parameter is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the placement group the instance is in.
+.UNINDENT
+.UNINDENT
+.sp
+PartitionNumber \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of the partition the instance is in. Valid only if the placement group strategy is set to \fBpartition\fP .
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+HostId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Dedicated Host on which the instance resides. This parameter is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tenancy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tenancy of the instance (if the instance is running in a VPC). An instance with a tenancy of \fBdedicated\fP runs on single\-tenant hardware. The \fBhost\fP tenancy is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SpreadDomain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Reserved for future use.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+HostResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the host resource group in which to launch the instances. If you specify a host resource group ARN, omit the \fBTenancy\fP parameter or set it to \fBhost\fP .
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AvailabilityZone=string,Affinity=string,GroupName=string,PartitionNumber=integer,HostId=string,Tenancy=string,SpreadDomain=string,HostResourceGroupArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AvailabilityZone": "string",
+  "Affinity": "string",
+  "GroupName": "string",
+  "PartitionNumber": integer,
+  "HostId": "string",
+  "Tenancy": "default"|"dedicated"|"host",
+  "SpreadDomain": "string",
+  "HostResourceGroupArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ramdisk\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the RAM disk to select. Some kernels require additional drivers at launch. Check the kernel requirements for information about whether you need to specify a RAM disk. To find kernel requirements, go to the AWS Resource Center and search for the kernel ID.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+We recommend that you use PV\-GRUB instead of kernels and RAM disks. For more information, see \fI\%PV\-GRUB\fP in the \fIAmazon EC2 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-group\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups. You can create a security group using \fI\%CreateSecurityGroup\fP .
+.sp
+If you specify a network interface, you must specify any security groups as part of the network interface.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-groups\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-Classic, default VPC] The names of the security groups. For a nondefault VPC, you must use security group IDs instead.
+.sp
+If you specify a network interface, you must specify any security groups as part of the network interface.
+.sp
+Default: Amazon EC2 uses the default security group.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-subnet\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The ID of the subnet to launch the instance into.
+.sp
+If you specify a network interface, you must specify any subnets as part of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-user\-data\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The user data to make available to the instance. For more information, see \fI\%Running commands on your Linux instance at launch\fP (Linux) and \fI\%Adding User Data\fP (Windows). If you are using a command line tool, base64\-encoding is performed for you, and you can load the text from a file. Otherwise, you must provide base64\-encoded text. User data is limited to 16 KB.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-additional\-info\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Reserved.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique, case\-sensitive identifier you provide to ensure the idempotency of the request. If you do not specify a client token, a randomly generated token is used for the request to ensure idempotency.
+.sp
+For more information, see \fI\%Ensuring Idempotency\fP .
+.sp
+Constraints: Maximum 64 ASCII characters
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-disable\-api\-termination\fP | \fB\-\-enable\-api\-termination\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If you set this parameter to \fBtrue\fP , you can\(aqt terminate the instance using the Amazon EC2 console, CLI, or API; otherwise, you can. To change this attribute after launch, use \fI\%ModifyInstanceAttribute\fP . Alternatively, if you set \fBInstanceInitiatedShutdownBehavior\fP to \fBterminate\fP , you can terminate the instance by running the shutdown command from the instance.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ebs\-optimized\fP | \fB\-\-no\-ebs\-optimized\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instance is optimized for Amazon EBS I/O. This optimization provides dedicated throughput to Amazon EBS and an optimized configuration stack to provide optimal Amazon EBS I/O performance. This optimization isn\(aqt available with all instance types. Additional usage charges apply when using an EBS\-optimized instance.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-iam\-instance\-profile\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The name or Amazon Resource Name (ARN) of an IAM instance profile.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the instance profile.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the instance profile.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Arn=string,Name=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Arn": "string",
+  "Name": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-initiated\-shutdown\-behavior\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether an instance stops or terminates when you initiate shutdown from the instance (using the operating system command for system shutdown).
+.sp
+Default: \fBstop\fP
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBstop\fP
+.IP \(bu 2
+\fBterminate\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-network\-interfaces\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The network interfaces to associate with the instance. If you specify a network interface, you must specify any security groups and subnets as part of the network interface.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a network interface.
+.sp
+AssociatePublicIpAddress \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to assign a public IPv4 address to an instance you launch in a VPC. The public IP address can only be assigned to a network interface for eth0, and can only be assigned to a new network interface, not an existing one. You cannot specify more than one network interface in the request. If launching into a default subnet, the default value is \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If set to \fBtrue\fP , the interface is deleted when the instance is terminated. You can specify \fBtrue\fP only if creating a new network interface when launching an instance.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the network interface. Applies only if creating a network interface when launching an instance.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The position of the network interface in the attachment order. A primary network interface has a device index of 0.
+.sp
+If you specify a network interface when launching an instance, you must specify the device index.
+.UNINDENT
+.UNINDENT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups for the network interface. Applies only if creating a network interface when launching an instance.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6AddressCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A number of IPv6 addresses to assign to the network interface. Amazon EC2 chooses the IPv6 addresses from the range of the subnet. You cannot specify this option and the option to assign specific IPv6 addresses in the same request. You can specify this option if you\(aqve specified a minimum number of instances to launch.
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6Addresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more IPv6 addresses to assign to the network interface. You cannot specify this option and the option to assign a number of IPv6 addresses in the same request. You cannot specify this option if you\(aqve specified a minimum number of instances to launch.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 address.
+.sp
+Ipv6Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network interface.
+.sp
+If you are creating a Spot Fleet, omit this parameter because you can’t specify a network interface ID in a launch specification.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 address of the network interface. Applies only if creating a network interface when launching an instance. You cannot specify this option if you\(aqre launching more than one instance in a \fI\%RunInstances\fP request.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more private IPv4 addresses to assign to the network interface. Only one private IPv4 address can be designated as primary. You cannot specify this option if you\(aqre launching more than one instance in a \fI\%RunInstances\fP request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a secondary private IPv4 address for a network interface.
+.sp
+Primary \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the private IPv4 address is the primary private IPv4 address. Only one IPv4 address can be designated as primary.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 addresses.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SecondaryPrivateIpAddressCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of secondary private IPv4 addresses. You can\(aqt specify this option and specify more than one private IP address using the private IP addresses option. You cannot specify this option if you\(aqre launching more than one instance in a \fI\%RunInstances\fP request.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnet associated with the network interface. Applies only if creating a network interface when launching an instance.
+.UNINDENT
+.UNINDENT
+.sp
+AssociateCarrierIpAddress \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to assign a carrier IP address to the network interface.
+.sp
+You can only assign a carrier IP address to a network interface that is in a subnet in a Wavelength Zone. For more information about carrier IP addresses, see Carrier IP addresses in the AWS Wavelength Developer Guide.
+.UNINDENT
+.UNINDENT
+.sp
+InterfaceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of network interface.
+.sp
+To create an Elastic Fabric Adapter (EFA), specify \fBefa\fP . For more information, see \fI\%Elastic Fabric Adapter\fP in the \fIAmazon Elastic Compute Cloud User Guide\fP .
+.sp
+If you are not creating an EFA, specify \fBinterface\fP or omit this parameter.
+.sp
+Valid values: \fBinterface\fP | \fBefa\fP
+.UNINDENT
+.UNINDENT
+.sp
+NetworkCardIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The index of the network card. Some instance types support multiple network cards. The primary network interface must be assigned to network card index 0. The default is network card index 0.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AssociatePublicIpAddress=boolean,DeleteOnTermination=boolean,Description=string,DeviceIndex=integer,Groups=string,string,Ipv6AddressCount=integer,Ipv6Addresses=[{Ipv6Address=string},{Ipv6Address=string}],NetworkInterfaceId=string,PrivateIpAddress=string,PrivateIpAddresses=[{Primary=boolean,PrivateIpAddress=string},{Primary=boolean,PrivateIpAddress=string}],SecondaryPrivateIpAddressCount=integer,SubnetId=string,AssociateCarrierIpAddress=boolean,InterfaceType=string,NetworkCardIndex=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "AssociatePublicIpAddress": true|false,
+    "DeleteOnTermination": true|false,
+    "Description": "string",
+    "DeviceIndex": integer,
+    "Groups": ["string", ...],
+    "Ipv6AddressCount": integer,
+    "Ipv6Addresses": [
+      {
+        "Ipv6Address": "string"
+      }
+      ...
+    ],
+    "NetworkInterfaceId": "string",
+    "PrivateIpAddress": "string",
+    "PrivateIpAddresses": [
+      {
+        "Primary": true|false,
+        "PrivateIpAddress": "string"
+      }
+      ...
+    ],
+    "SecondaryPrivateIpAddressCount": integer,
+    "SubnetId": "string",
+    "AssociateCarrierIpAddress": true|false,
+    "InterfaceType": "string",
+    "NetworkCardIndex": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-private\-ip\-address\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The primary IPv4 address. You must specify a value from the IPv4 address range of the subnet.
+.sp
+Only one private IP address can be designated as primary. You can\(aqt specify this option if you\(aqve specified the option to designate a private IP address as the primary IP address in a network interface specification. You cannot specify this option if you\(aqre launching more than one instance in the request.
+.sp
+You cannot specify this option and the network interfaces option in the same request.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-elastic\-gpu\-specification\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An elastic GPU to associate with the instance. An Elastic GPU is a GPU resource that you can attach to your Windows instance to accelerate the graphics performance of your applications. For more information, see \fI\%Amazon EC2 Elastic GPUs\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A specification for an Elastic Graphics accelerator.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of Elastic Graphics accelerator. For more information about the values to specify for \fBType\fP , see \fI\%Elastic Graphics Basics\fP , specifically the Elastic Graphics accelerator column, in the \fIAmazon Elastic Compute Cloud User Guide for Windows Instances\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Type": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-elastic\-inference\-accelerators\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An elastic inference accelerator to associate with the instance. Elastic inference accelerators are a resource you can attach to your Amazon EC2 instances to accelerate your Deep Learning (DL) inference workloads.
+.sp
+You cannot specify accelerators from different generations in the same request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an elastic inference accelerator.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of elastic inference accelerator. The possible values are \fBeia1.medium\fP , \fBeia1.large\fP , \fBeia1.xlarge\fP , \fBeia2.medium\fP , \fBeia2.large\fP , and \fBeia2.xlarge\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Count \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of elastic inference accelerators to attach to the instance.
+.sp
+Default: 1
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type=string,Count=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Type": "string",
+    "Count": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tag\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resources during launch. You can only tag instances and volumes on launch. The specified tags are applied to all instances or volumes that are created during launch. To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to a resource when the resource is being created.
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of resource to tag. Currently, the resource types that support tagging on creation are: \fBcapacity\-reservation\fP | \fBcarrier\-gateway\fP | \fBclient\-vpn\-endpoint\fP | \fBcustomer\-gateway\fP | \fBdedicated\-host\fP | \fBdhcp\-options\fP | \fBegress\-only\-internet\-gateway\fP | \fBelastic\-ip\fP | \fBelastic\-gpu\fP | \fBexport\-image\-task\fP | \fBexport\-instance\-task\fP | \fBfleet\fP | \fBfpga\-image\fP | \fBhost\-reservation\fP | \fBimage\fP | \fBimport\-image\-task\fP | \fBimport\-snapshot\-task\fP | \fBinstance\fP | \fBinternet\-gateway\fP | \fBipv4pool\-ec2\fP | \fBipv6pool\-ec2\fP | \fBkey\-pair\fP | \fBlaunch\-template\fP | \fBlocal\-gateway\-route\-table\-vpc\-association\fP | \fBplacement\-group\fP | \fBprefix\-list\fP | \fBnatgateway\fP | \fBnetwork\-acl\fP | \fBnetwork\-interface\fP | \fBreserved\-instances\fP 
+.nf
+|
+.fi
+\fBroute\-table\fP | \fBsecurity\-group\fP | \fBsnapshot\fP | \fBspot\-fleet\-request\fP | \fBspot\-instances\-request\fP | \fBsnapshot\fP | \fBsubnet\fP | \fBtraffic\-mirror\-filter\fP | \fBtraffic\-mirror\-session\fP | \fBtraffic\-mirror\-target\fP | \fBtransit\-gateway\fP | \fBtransit\-gateway\-attachment\fP | \fBtransit\-gateway\-multicast\-domain\fP | \fBtransit\-gateway\-route\-table\fP | \fBvolume\fP 
+.nf
+|
+.fi
+\fBvpc\fP | \fBvpc\-peering\-connection\fP | \fBvpc\-endpoint\fP (for interface and gateway endpoints) | \fBvpc\-endpoint\-service\fP (for AWS PrivateLink) | \fBvpc\-flow\-log\fP | \fBvpn\-connection\fP | \fBvpn\-gateway\fP .
+.IP "System Message: WARNING/2 (<string>:, line 2523)"
+Inline substitution_reference start\-string without end\-string.
+.IP "System Message: WARNING/2 (<string>:, line 2523)"
+Inline substitution_reference start\-string without end\-string.
+.sp
+To tag a resource after it has been created, see \fI\%CreateTags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags to apply to the resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ResourceType=string,Tags=[{Key=string,Value=string},{Key=string,Value=string}] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "ResourceType": "client\-vpn\-endpoint"|"customer\-gateway"|"dedicated\-host"|"dhcp\-options"|"egress\-only\-internet\-gateway"|"elastic\-ip"|"elastic\-gpu"|"export\-image\-task"|"export\-instance\-task"|"fleet"|"fpga\-image"|"host\-reservation"|"image"|"import\-image\-task"|"import\-snapshot\-task"|"instance"|"internet\-gateway"|"key\-pair"|"launch\-template"|"local\-gateway\-route\-table\-vpc\-association"|"natgateway"|"network\-acl"|"network\-interface"|"network\-insights\-analysis"|"network\-insights\-path"|"placement\-group"|"reserved\-instances"|"route\-table"|"security\-group"|"snapshot"|"spot\-fleet\-request"|"spot\-instances\-request"|"subnet"|"traffic\-mirror\-filter"|"traffic\-mirror\-session"|"traffic\-mirror\-target"|"transit\-gateway"|"transit\-gateway\-attachment"|"transit\-gateway\-connect\-peer"|"transit\-gateway\-multicast\-domain"|"transit\-gateway\-route\-table"|"volume"|"vpc"|"vpc\-peering\-connection"|"vpn\-connection"|"vpn\-gateway"|"vpc\-flow\-log",
+    "Tags": [
+      {
+        "Key": "string",
+        "Value": "string"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-launch\-template\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The launch template to use to launch the instances. Any parameters that you specify in  RunInstances override the same parameters in the launch template. You can specify either the name or ID of a launch template, but not both.
+.sp
+LaunchTemplateId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the launch template.
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTemplateName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the launch template.
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the launch template.
+.sp
+Default: The default version for the launch template.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LaunchTemplateId=string,LaunchTemplateName=string,Version=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "LaunchTemplateId": "string",
+  "LaunchTemplateName": "string",
+  "Version": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-market\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The market (purchasing) option for the instances.
+.sp
+For  RunInstances , persistent Spot Instance requests are only supported when \fBInstanceInterruptionBehavior\fP is set to either \fBhibernate\fP or \fBstop\fP .
+.sp
+MarketType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The market type.
+.UNINDENT
+.UNINDENT
+.sp
+SpotOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The options for Spot Instances.
+.sp
+MaxPrice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The maximum hourly price you\(aqre willing to pay for the Spot Instances. The default is the On\-Demand price.
+.UNINDENT
+.UNINDENT
+.sp
+SpotInstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Spot Instance request type. For \fI\%RunInstances\fP , persistent Spot Instance requests are only supported when the instance interruption behavior is either \fBhibernate\fP or \fBstop\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BlockDurationMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The required duration for the Spot Instances (also known as Spot blocks), in minutes. This value must be a multiple of 60 (60, 120, 180, 240, 300, or 360).
+.sp
+The duration period starts as soon as your Spot Instance receives its instance ID. At the end of the duration period, Amazon EC2 marks the Spot Instance for termination and provides a Spot Instance termination notice, which gives the instance a two\-minute warning before it terminates.
+.sp
+You can\(aqt specify an Availability Zone group or a launch group if you specify a duration.
+.sp
+New accounts or accounts with no previous billing history with AWS are not eligible for Spot Instances with a defined duration (also known as Spot blocks).
+.UNINDENT
+.UNINDENT
+.sp
+ValidUntil \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The end date of the request, in UTC format (\fIYYYY\fP \-\fIMM\fP \-\fIDD\fP T*HH* :\fIMM\fP :\fISS\fP Z). Supported only for persistent requests.
+.INDENT 0.0
+.IP \(bu 2
+For a persistent request, the request remains active until the \fBValidUntil\fP date and time is reached. Otherwise, the request remains active until you cancel it.
+.IP \(bu 2
+For a one\-time request, \fBValidUntil\fP is not supported. The request remains active until all instances launch or you cancel the request.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstanceInterruptionBehavior \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The behavior when a Spot Instance is interrupted. The default is \fBterminate\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+MarketType=string,SpotOptions={MaxPrice=string,SpotInstanceType=string,BlockDurationMinutes=integer,ValidUntil=timestamp,InstanceInterruptionBehavior=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "MarketType": "spot",
+  "SpotOptions": {
+    "MaxPrice": "string",
+    "SpotInstanceType": "one\-time"|"persistent",
+    "BlockDurationMinutes": integer,
+    "ValidUntil": timestamp,
+    "InstanceInterruptionBehavior": "hibernate"|"stop"|"terminate"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-credit\-specification\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The credit option for CPU usage of the burstable performance instance. Valid values are \fBstandard\fP and \fBunlimited\fP . To change this attribute after launch, use \fI\%ModifyInstanceCreditSpecification\fP . For more information, see \fI\%Burstable performance instances\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+Default: \fBstandard\fP (T2 instances) or \fBunlimited\fP (T3/T3a instances)
+.sp
+CpuCredits \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The credit option for CPU usage of a T2, T3, or T3a instance. Valid values are \fBstandard\fP and \fBunlimited\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CpuCredits=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CpuCredits": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cpu\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The CPU options for the instance. For more information, see \fI\%Optimizing CPU options\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+CoreCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU cores for the instance.
+.UNINDENT
+.UNINDENT
+.sp
+ThreadsPerCore \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of threads per CPU core. To disable multithreading for the instance, specify a value of \fB1\fP . Otherwise, specify the default value of \fB2\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CoreCount=integer,ThreadsPerCore=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CoreCount": integer,
+  "ThreadsPerCore": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-capacity\-reservation\-specification\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Capacity Reservation targeting option. If you do not specify this parameter, the instance\(aqs Capacity Reservation preference defaults to \fBopen\fP , which enables it to run in any open Capacity Reservation that has matching attributes (instance type, platform, Availability Zone).
+.sp
+CapacityReservationPreference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the instance\(aqs Capacity Reservation preferences. Possible preferences include:
+.INDENT 0.0
+.IP \(bu 2
+\fBopen\fP \- The instance can run in any \fBopen\fP Capacity Reservation that has matching attributes (instance type, platform, Availability Zone).
+.IP \(bu 2
+\fBnone\fP \- The instance avoids running in a Capacity Reservation even if one is available. The instance runs as an On\-Demand Instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationTarget \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the target Capacity Reservation or Capacity Reservation group.
+.sp
+CapacityReservationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Capacity Reservation in which to run the instance.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Capacity Reservation resource group in which to run the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CapacityReservationPreference=string,CapacityReservationTarget={CapacityReservationId=string,CapacityReservationResourceGroupArn=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CapacityReservationPreference": "open"|"none",
+  "CapacityReservationTarget": {
+    "CapacityReservationId": "string",
+    "CapacityReservationResourceGroupArn": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-hibernation\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether an instance is enabled for hibernation. For more information, see \fI\%Hibernate your instance\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+You can\(aqt enable hibernation and AWS Nitro Enclaves on the same instance.
+.sp
+Configured \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If you set this parameter to \fBtrue\fP , your instance is enabled for hibernation.
+.sp
+Default: \fBfalse\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Configured=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Configured": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-license\-specifications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The license configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a license configuration.
+.sp
+LicenseConfigurationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the license configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LicenseConfigurationArn=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "LicenseConfigurationArn": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metadata\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata options for the instance. For more information, see \fI\%Instance metadata and user data\fP .
+.sp
+HttpTokens \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of token usage for your instance metadata requests. If the parameter is not specified in the request, the default state is \fBoptional\fP .
+.sp
+If the state is \fBoptional\fP , you can choose to retrieve instance metadata with or without a signed token header on your request. If you retrieve the IAM role credentials without a token, the version 1.0 role credentials are returned. If you retrieve the IAM role credentials using a valid signed token, the version 2.0 role credentials are returned.
+.sp
+If the state is \fBrequired\fP , you must send a signed token header with any instance metadata retrieval requests. In this state, retrieving the IAM role credentials always returns the version 2.0 credentials; the version 1.0 credentials are not available.
+.UNINDENT
+.UNINDENT
+.sp
+HttpPutResponseHopLimit \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The desired HTTP PUT response hop limit for instance metadata requests. The larger the number, the further instance metadata requests can travel.
+.sp
+Default: 1
+.sp
+Possible values: Integers from 1 to 64
+.UNINDENT
+.UNINDENT
+.sp
+HttpEndpoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter enables or disables the HTTP metadata endpoint on your instances. If the parameter is not specified, the default state is \fBenabled\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify a value of \fBdisabled\fP , you will not be able to access your instance metadata.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+HttpTokens=string,HttpPutResponseHopLimit=integer,HttpEndpoint=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "HttpTokens": "optional"|"required",
+  "HttpPutResponseHopLimit": integer,
+  "HttpEndpoint": "disabled"|"enabled"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enclave\-options\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instance is enabled for AWS Nitro Enclaves. For more information, see \fI\%What is AWS Nitro Enclaves?\fP in the \fIAWS Nitro Enclaves User Guide\fP .
+.sp
+You can\(aqt enable AWS Nitro Enclaves and hibernation on the same instance.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+To enable the instance for AWS Nitro Enclaves, set this parameter to \fBtrue\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Enabled=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Enabled": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-count\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Number of instances to launch. If a single number is provided, it is assumed to be the minimum to launch (defaults to 1). If a range is provided in the form \fBmin:max\fP then the first number is interpreted as the minimum number of instances to launch and the second is interpreted as the maximum number of instances to launch.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-secondary\-private\-ip\-addresses\fP (string)
+[EC2\-VPC] A secondary private IP address for the network interface or instance. You can specify this multiple times to assign multiple secondary IP addresses. If you want additional private IP addresses but do not need a specific address, use the \-\-secondary\-private\-ip\-address\-count option.
+.sp
+\fB\-\-secondary\-private\-ip\-address\-count\fP (string)
+[EC2\-VPC] The number of secondary IP addresses to assign to the network interface or instance.
+.sp
+\fB\-\-associate\-public\-ip\-address\fP | \fB\-\-no\-associate\-public\-ip\-address\fP (boolean)
+[EC2\-VPC] If specified a public IP address will be assigned to the new instance in a VPC.
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To launch an instance into a default subnet\fP
+.sp
+The following \fBrun\-instances\fP example launches a single instance of type \fBt2.micro\fP into the default subnet for the current Region and associates it with the default subnet for the default VPC for the Region. The key pair is optional if you do not plan to connect to your instance using SSH (Linux) or RDP (Windows).
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-instances \e
+    \-\-image\-id ami\-0abcdef1234567890 \e
+    \-\-instance\-type t2.micro \e
+    \-\-key\-name MyKeyPair
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Instances": [
+        {
+            "AmiLaunchIndex": 0,
+            "ImageId": "ami\-0abcdef1234567890",
+            "InstanceId": "i\-1231231230abcdef0",
+            "InstanceType": "t2.micro",
+            "KeyName": "MyKeyPair",
+            "LaunchTime": "2018\-05\-10T08:05:20.000Z",
+            "Monitoring": {
+                "State": "disabled"
+            },
+            "Placement": {
+                "AvailabilityZone": "us\-east\-2a",
+                "GroupName": "",
+                "Tenancy": "default"
+            },
+            "PrivateDnsName": "ip\-10\-0\-0\-157.us\-east\-2.compute.internal",
+            "PrivateIpAddress": "10.0.0.157",
+            "ProductCodes": [],
+            "PublicDnsName": "",
+            "State": {
+                "Code": 0,
+                "Name": "pending"
+            },
+            "StateTransitionReason": "",
+            "SubnetId": "subnet\-04a636d18e83cfacb",
+            "VpcId": "vpc\-1234567890abcdef0",
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [],
+            "ClientToken": "",
+            "EbsOptimized": false,
+            "Hypervisor": "xen",
+            "NetworkInterfaces": [
+                {
+                    "Attachment": {
+                        "AttachTime": "2018\-05\-10T08:05:20.000Z",
+                        "AttachmentId": "eni\-attach\-0e325c07e928a0405",
+                        "DeleteOnTermination": true,
+                        "DeviceIndex": 0,
+                        "Status": "attaching"
+                    },
+                    "Description": "",
+                    "Groups": [
+                        {
+                            "GroupName": "MySecurityGroup",
+                            "GroupId": "sg\-0598c7d356eba48d7"
+                        }
+                    ],
+                    "Ipv6Addresses": [],
+                    "MacAddress": "0a:ab:58:e0:67:e2",
+                    "NetworkInterfaceId": "eni\-0c0a29997760baee7",
+                    "OwnerId": "123456789012",
+                    "PrivateDnsName": "ip\-10\-0\-0\-157.us\-east\-2.compute.internal",
+                    "PrivateIpAddress": "10.0.0.157",
+                    "PrivateIpAddresses": [
+                        {
+                            "Primary": true,
+                            "PrivateDnsName": "ip\-10\-0\-0\-157.us\-east\-2.compute.internal",
+                            "PrivateIpAddress": "10.0.0.157"
+                        }
+                    ],
+                    "SourceDestCheck": true,
+                    "Status": "in\-use",
+                    "SubnetId": "subnet\-04a636d18e83cfacb",
+                    "VpcId": "vpc\-1234567890abcdef0",
+                    "InterfaceType": "interface"
+                }
+            ],
+            "RootDeviceName": "/dev/xvda",
+            "RootDeviceType": "ebs",
+            "SecurityGroups": [
+                {
+                    "GroupName": "MySecurityGroup",
+                    "GroupId": "sg\-0598c7d356eba48d7"
+                }
+            ],
+            "SourceDestCheck": true,
+            "StateReason": {
+                "Code": "pending",
+                "Message": "pending"
+            },
+            "Tags": [],
+            "VirtualizationType": "hvm",
+            "CpuOptions": {
+                "CoreCount": 1,
+                "ThreadsPerCore": 1
+            },
+            "CapacityReservationSpecification": {
+                "CapacityReservationPreference": "open"
+            },
+            "MetadataOptions": {
+                "State": "pending",
+                "HttpTokens": "optional",
+                "HttpPutResponseHopLimit": 1,
+                "HttpEndpoint": "enabled"
+            }
+        }
+    ],
+    "OwnerId": "123456789012",
+    "ReservationId": "r\-02a3f596d91211712"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To launch an instance into a non\-default subnet and add a public IP address\fP
+.sp
+The following \fBrun\-instances\fP example requests a public IP address for an instance that you\(aqre launching into a nondefault subnet. The instance is associated with the specified security group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-instances \e
+    \-\-image\-id ami\-0abcdef1234567890 \e
+    \-\-instance\-type t2.micro \e
+    \-\-subnet\-id subnet\-08fc749671b2d077c \e
+    \-\-security\-group\-ids sg\-0b0384b66d7d692f9 \e
+    \-\-associate\-public\-ip\-address \e
+    \-\-key\-name MyKeyPair
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For an example of the output for \fBrun\-instances\fP, see Example 1.
+.sp
+\fBExample 3: To launch an instance with additional volumes\fP
+.sp
+The following \fBrun\-instances\fP example uses a block device mapping, specified in mapping.json, to attach additional volumes at launch. A block device mapping can specify EBS volumes, instance store volumes, or both EBS volumes and instance store volumes.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-instances \e
+    \-\-image\-id ami\-0abcdef1234567890 \e
+    \-\-instance\-type t2.micro \e
+    \-\-subnet\-id subnet\-08fc749671b2d077c \e
+    \-\-security\-group\-ids sg\-0b0384b66d7d692f9 \e
+    \-\-key\-name MyKeyPair \e
+    \-\-block\-device\-mappings file://mapping.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBmapping.json\fP\&. This example adds \fB/dev/sdh\fP an empty EBS volume with a size of 100 GiB.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "DeviceName": "/dev/sdh",
+        "Ebs": {
+            "VolumeSize": 100
+        }
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBmapping.json\fP\&. This example adds \fBephemeral1\fP as an instance store volume.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "DeviceName": "/dev/sdc",
+        "VirtualName": "ephemeral1"
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For an example of the output for \fBrun\-instances\fP, see Example 1.
+.sp
+For more information about block device mappings, see \fI\%Block device mapping\fP in the \fIAmazon EC2 User Guide\fP\&.
+.sp
+\fBExample 4: To launch an instance and add tags on creation\fP
+.sp
+The following \fBrun\-instances\fP example adds a tag with a key of \fBwebserver\fP and value of \fBproduction\fP to the instance. The command also applies a tag with a key of \fBcost\-center\fP and a value of \fBcc123\fP to any EBS volume that\(aqs created (in this case, the root volume).
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-instances \e
+    \-\-image\-id ami\-0abcdef1234567890 \e
+    \-\-instance\-type t2.micro \e
+    \-\-count 1 \e
+    \-\-subnet\-id subnet\-08fc749671b2d077c \e
+    \-\-key\-name MyKeyPair \e
+    \-\-security\-group\-ids sg\-0b0384b66d7d692f9 \e
+    \-\-tag\-specifications \(aqResourceType=instance,Tags=[{Key=webserver,Value=production}]\(aq \(aqResourceType=volume,Tags=[{Key=cost\-center,Value=cc123}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For an example of the output for \fBrun\-instances\fP, see Example 1.
+.sp
+\fBExample 5: To launch an instance with user data\fP
+.sp
+The following \fBrun\-instances\fP example passes user data in a file called \fBmy_script.txt\fP that contains a configuration script for your instance. The script runs at launch.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-instances \e
+    \-\-image\-id ami\-0abcdef1234567890 \e
+    \-\-instance\-type t2.micro \e
+    \-\-count 1 \e
+    \-\-subnet\-id subnet\-08fc749671b2d077c \e
+    \-\-key\-name MyKeyPair \e
+    \-\-security\-group\-ids sg\-0b0384b66d7d692f9 \e
+    \-\-user\-data file://my_script.txt
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For an example of the output for \fBrun\-instances\fP, see Example 1.
+.sp
+For more information about instance user data, see \fI\%Working with instance user data\fP in the \fIAmazon EC2 User Guide\fP\&.
+.sp
+\fBExample 6: To launch a burstable performance instance\fP
+.sp
+The following \fBrun\-instances\fP example launches a t2.micro instance with the \fBunlimited\fP credit option. When you launch a T2 instance, if you do not specify \fB\-\-credit\-specification\fP, the default is the \fBstandard\fP credit option. When you launch a T3 instance, the default is the \fBunlimited\fP credit option.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 run\-instances \e
+    \-\-image\-id ami\-0abcdef1234567890 \e
+    \-\-instance\-type t2.micro \e
+    \-\-count 1 \e
+    \-\-subnet\-id subnet\-08fc749671b2d077c \e
+    \-\-key\-name MyKeyPair \e
+    \-\-security\-group\-ids sg\-0b0384b66d7d692f9 \e
+    \-\-credit\-specification CpuCredits=unlimited
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For an example of the output for \fBrun\-instances\fP, see Example 1.
+.sp
+For more information about burstable performance instances, see \fI\%Burstable performance instances\fP in the \fIAmazon EC2 User Guide\fP\&.
+.SH OUTPUT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-Classic only] The security groups.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group.
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Instances \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The instances.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an instance.
+.sp
+AmiLaunchIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The AMI launch index, which can be used to find this instance in the launch group.
+.UNINDENT
+.UNINDENT
+.sp
+ImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AMI used to launch the instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance type.
+.UNINDENT
+.UNINDENT
+.sp
+KernelId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The kernel associated with this instance, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+KeyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the key pair, if this instance was launched with an associated key pair.
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the instance was launched.
+.UNINDENT
+.UNINDENT
+.sp
+Monitoring \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The monitoring for the instance.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether detailed monitoring is enabled. Otherwise, basic monitoring is enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Placement \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location where the instance launched, if applicable.
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone of the instance.
+.sp
+If not specified, an Availability Zone will be automatically chosen for you based on the load balancing criteria for the Region.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Affinity \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The affinity setting for the instance on the Dedicated Host. This parameter is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the placement group the instance is in.
+.UNINDENT
+.UNINDENT
+.sp
+PartitionNumber \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of the partition the instance is in. Valid only if the placement group strategy is set to \fBpartition\fP .
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+HostId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Dedicated Host on which the instance resides. This parameter is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Tenancy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tenancy of the instance (if the instance is running in a VPC). An instance with a tenancy of \fBdedicated\fP runs on single\-tenant hardware. The \fBhost\fP tenancy is not supported for the \fI\%ImportInstance\fP command.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SpreadDomain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Reserved for future use.
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.sp
+HostResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the host resource group in which to launch the instances. If you specify a host resource group ARN, omit the \fBTenancy\fP parameter or set it to \fBhost\fP .
+.sp
+This parameter is not supported by \fI\%CreateFleet\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value is \fBWindows\fP for Windows instances; otherwise blank.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(IPv4 only) The private DNS hostname name assigned to the instance. This DNS hostname can only be used inside the Amazon EC2 network. This name is not available until the instance enters the \fBrunning\fP state.
+.sp
+[EC2\-VPC] The Amazon\-provided DNS server resolves Amazon\-provided private DNS hostnames if you\(aqve enabled DNS resolution and DNS hostnames in your VPC. If you are not using the Amazon\-provided DNS server in your VPC, your custom domain name servers must resolve the hostname as appropriate.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 address assigned to the instance.
+.UNINDENT
+.UNINDENT
+.sp
+ProductCodes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The product codes attached to this instance, if applicable.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a product code.
+.sp
+ProductCodeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The product code.
+.UNINDENT
+.UNINDENT
+.sp
+ProductCodeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of product code.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PublicDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+(IPv4 only) The public DNS name assigned to the instance. This name is not available until the instance enters the \fBrunning\fP state. For EC2\-VPC, this name is only available if you\(aqve enabled DNS hostnames for your VPC.
+.UNINDENT
+.UNINDENT
+.sp
+PublicIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public IPv4 address, or the Carrier IP address assigned to the instance, if applicable.
+.sp
+A Carrier IP address only applies to an instance launched in a subnet associated with a Wavelength Zone.
+.UNINDENT
+.UNINDENT
+.sp
+RamdiskId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The RAM disk associated with this instance, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.sp
+Code \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The state of the instance as a 16\-bit unsigned integer.
+.sp
+The high byte is all of the bits between 2^8 and (2^16)\-1, which equals decimal values between 256 and 65,535. These numerical values are used for internal purposes and should be ignored.
+.sp
+The low byte is all of the bits between 2^0 and (2^8)\-1, which equals decimal values between 0 and 255.
+.sp
+The valid values for instance\-state\-code will all be in the range of the low byte and they are:
+.INDENT 0.0
+.IP \(bu 2
+\fB0\fP : \fBpending\fP
+.IP \(bu 2
+\fB16\fP : \fBrunning\fP
+.IP \(bu 2
+\fB32\fP : \fBshutting\-down\fP
+.IP \(bu 2
+\fB48\fP : \fBterminated\fP
+.IP \(bu 2
+\fB64\fP : \fBstopping\fP
+.IP \(bu 2
+\fB80\fP : \fBstopped\fP
+.UNINDENT
+.sp
+You can ignore the high byte value by zeroing out all of the bits above 2^8 or 256 in decimal.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StateTransitionReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the most recent state transition. This might be an empty string.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The ID of the subnet in which the instance is running.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The ID of the VPC in which the instance is running.
+.UNINDENT
+.UNINDENT
+.sp
+Architecture \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The architecture of the image.
+.UNINDENT
+.UNINDENT
+.sp
+BlockDeviceMappings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any block device mapping entries for the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a block device mapping.
+.sp
+DeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name (for example, \fB/dev/sdh\fP or \fBxvdh\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+Ebs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Parameters used to automatically set up EBS volumes when the instance is launched.
+.sp
+AttachTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the attachment initiated.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the volume is deleted on instance termination.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The attachment state.
+.UNINDENT
+.UNINDENT
+.sp
+VolumeId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the EBS volume.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ClientToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The idempotency token you provided when you launched the instance, if applicable.
+.UNINDENT
+.UNINDENT
+.sp
+EbsOptimized \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instance is optimized for Amazon EBS I/O. This optimization provides dedicated throughput to Amazon EBS and an optimized configuration stack to provide optimal I/O performance. This optimization isn\(aqt available with all instance types. Additional usage charges apply when using an EBS Optimized instance.
+.UNINDENT
+.UNINDENT
+.sp
+EnaSupport \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether enhanced networking with ENA is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+Hypervisor \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The hypervisor type of the instance. The value \fBxen\fP is used for both Xen and Nitro hypervisors.
+.UNINDENT
+.UNINDENT
+.sp
+IamInstanceProfile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The IAM instance profile associated with the instance, if applicable.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the instance profile.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance profile.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstanceLifecycle \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this is a Spot Instance or a Scheduled Instance.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Elastic GPU associated with the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the association between an instance and an Elastic Graphics accelerator.
+.sp
+ElasticGpuId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Elastic Graphics accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the association.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociationState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the association between the instance and the Elastic Graphics accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticGpuAssociationTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time the Elastic Graphics accelerator was associated with the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The elastic inference accelerator associated with the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the association between an instance and an elastic inference accelerator.
+.sp
+ElasticInferenceAcceleratorArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the elastic inference accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the association.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociationState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the elastic inference accelerator.
+.UNINDENT
+.UNINDENT
+.sp
+ElasticInferenceAcceleratorAssociationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time at which the elastic inference accelerator is associated with an instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaces \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+[EC2\-VPC] The network interfaces for the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a network interface.
+.sp
+Association \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The association information for an Elastic IPv4 associated with the network interface.
+.sp
+CarrierIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The carrier IP address associated with the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+IpOwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the owner of the Elastic IP address.
+.UNINDENT
+.UNINDENT
+.sp
+PublicDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public IP address or Elastic IP address bound to the network interface.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Attachment \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The network interface attachment.
+.sp
+AttachTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time stamp when the attachment initiated.
+.UNINDENT
+.UNINDENT
+.sp
+AttachmentId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network interface attachment.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteOnTermination \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the network interface is deleted when the instance is terminated.
+.UNINDENT
+.UNINDENT
+.sp
+DeviceIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The index of the device on the instance for the network interface attachment.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The attachment state.
+.UNINDENT
+.UNINDENT
+.sp
+NetworkCardIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The index of the network card.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description.
+.UNINDENT
+.UNINDENT
+.sp
+Groups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more security groups.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group.
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Ipv6Addresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more IPv6 addresses associated with the network interface.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes an IPv6 address.
+.sp
+Ipv6Address \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv6 address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MacAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The MAC address.
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+OwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AWS account that created the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 address of the network interface within the subnet.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+One or more private IPv4 addresses associated with the network interface.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a private IPv4 address.
+.sp
+Association \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The association information for an Elastic IP address for the network interface.
+.sp
+CarrierIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The carrier IP address associated with the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+IpOwnerId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the owner of the Elastic IP address.
+.UNINDENT
+.UNINDENT
+.sp
+PublicDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public IP address or Elastic IP address bound to the network interface.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Primary \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this IPv4 address is the primary private IP address of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 DNS name.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IPv4 address of the network interface.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceDestCheck \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether source/destination checking is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the subnet.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC.
+.UNINDENT
+.UNINDENT
+.sp
+InterfaceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the type of network interface.
+.sp
+Valid values: \fBinterface\fP | \fBefa\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the Outpost.
+.UNINDENT
+.UNINDENT
+.sp
+RootDeviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The device name of the root device volume (for example, \fB/dev/sda1\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+RootDeviceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The root device type used by the AMI. The AMI can use an EBS volume or an instance store volume.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The security groups for the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a security group.
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security group.
+.UNINDENT
+.UNINDENT
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the security group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SourceDestCheck \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether source/destination checking is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+SpotInstanceRequestId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the request is a Spot Instance request, the ID of the request.
+.UNINDENT
+.UNINDENT
+.sp
+SriovNetSupport \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether enhanced networking with the Intel 82599 Virtual Function interface is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+StateReason \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The reason for the most recent state transition.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The reason code for the state change.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The message for the state change.
+.INDENT 0.0
+.IP \(bu 2
+\fBServer.InsufficientInstanceCapacity\fP : There was insufficient capacity available to satisfy the launch request.
+.IP \(bu 2
+\fBServer.InternalError\fP : An internal error caused the instance to terminate during launch.
+.IP \(bu 2
+\fBServer.ScheduledStop\fP : The instance was stopped due to a scheduled retirement.
+.IP \(bu 2
+\fBServer.SpotInstanceShutdown\fP : The instance was stopped because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.
+.IP \(bu 2
+\fBServer.SpotInstanceTermination\fP : The instance was terminated because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.
+.IP \(bu 2
+\fBClient.InstanceInitiatedShutdown\fP : The instance was shut down using the \fBshutdown \-h\fP command from the instance.
+.IP \(bu 2
+\fBClient.InstanceTerminated\fP : The instance was terminated or rebooted during AMI creation.
+.IP \(bu 2
+\fBClient.InternalError\fP : A client error caused the instance to terminate during launch.
+.IP \(bu 2
+\fBClient.InvalidSnapshot.NotFound\fP : The specified snapshot was not found.
+.IP \(bu 2
+\fBClient.UserInitiatedHibernate\fP : Hibernation was initiated on the instance.
+.IP \(bu 2
+\fBClient.UserInitiatedShutdown\fP : The instance was shut down using the Amazon EC2 API.
+.IP \(bu 2
+\fBClient.VolumeLimitExceeded\fP : The limit on the number of EBS volumes or total storage was exceeded. Decrease usage or request an increase in your account limits.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Any tags assigned to the instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag.
+.sp
+Constraints: Tag keys are case\-sensitive and accept a maximum of 127 Unicode characters. May not begin with \fBaws:\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag.
+.sp
+Constraints: Tag values are case\-sensitive and accept a maximum of 255 Unicode characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VirtualizationType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The virtualization type of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+CpuOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The CPU options for the instance.
+.sp
+CoreCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of CPU cores for the instance.
+.UNINDENT
+.UNINDENT
+.sp
+ThreadsPerCore \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of threads per CPU core.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the Capacity Reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the Capacity Reservation targeting option.
+.sp
+CapacityReservationPreference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the instance\(aqs Capacity Reservation preferences. Possible preferences include:
+.INDENT 0.0
+.IP \(bu 2
+\fBopen\fP \- The instance can run in any \fBopen\fP Capacity Reservation that has matching attributes (instance type, platform, Availability Zone).
+.IP \(bu 2
+\fBnone\fP \- The instance avoids running in a Capacity Reservation even if one is available. The instance runs in On\-Demand capacity.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationTarget \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the targeted Capacity Reservation or Capacity Reservation group.
+.sp
+CapacityReservationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the targeted Capacity Reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the targeted Capacity Reservation group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HibernationOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether the instance is enabled for hibernation.
+.sp
+Configured \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If this parameter is set to \fBtrue\fP , your instance is enabled for hibernation; otherwise, it is not enabled for hibernation.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Licenses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The license configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a license configuration.
+.sp
+LicenseConfigurationArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the license configuration.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MetadataOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata options for the instance.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the metadata option changes.
+.INDENT 0.0
+.INDENT 3.5
+\fBpending\fP \- The metadata options are being updated and the instance is not ready to process metadata traffic with the new selection.
+.sp
+\fBapplied\fP \- The metadata options have been successfully applied on the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT

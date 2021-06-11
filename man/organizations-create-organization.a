@@ -1,0 +1,263 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ORGANIZATIONS-CREATE-ORGANIZATION" "a" "" ""
+.SH NAME
+organizations-create-organization \- Creates an AWS organization
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an AWS organization. The account whose user is calling the \fBCreateOrganization\fP operation automatically becomes the \fI\%management account\fP of the new organization.
+.sp
+This operation must be called using credentials from the account that is to become the new organization\(aqs management account. The principal must also have the relevant IAM permissions.
+.sp
+By default (or if you set the \fBFeatureSet\fP parameter to \fBALL\fP ), the new organization is created with all features enabled and service control policies automatically enabled in the root. If you instead choose to create the organization supporting only the consolidated billing features by setting the \fBFeatureSet\fP parameter to \fBCONSOLIDATED_BILLING"\fP , no policy types are enabled by default, and you can\(aqt use organization policies
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-organization
+[\-\-feature\-set <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-feature\-set\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the feature set supported by the new organization. Each feature set supports different levels of functionality.
+.INDENT 0.0
+.IP \(bu 2
+\fBCONSOLIDATED_BILLING\fP : All member accounts have their bills consolidated to and paid by the management account. For more information, see \fI\%Consolidated billing\fP in the \fIAWS Organizations User Guide.\fP   The consolidated billing feature subset isn\(aqt available for organizations in the AWS GovCloud (US) Region.
+.IP \(bu 2
+\fBALL\fP : In addition to all the features supported by the consolidated billing feature set, the management account can also apply any policy type to any member account in the organization. For more information, see \fI\%All features\fP in the \fIAWS Organizations User Guide.\fP
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBALL\fP
+.IP \(bu 2
+\fBCONSOLIDATED_BILLING\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a new organization\fP
+.sp
+Bill wants to create an organization using credentials from account 111111111111. The following example shows that the account becomes the master account in the new organization. Because he does not specify a features set, the new organization defaults to all features enabled and service control policies are enabled on the root.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws organizations create\-organization
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output includes an organization object with details about the new organization:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+        "Organization": {
+                "AvailablePolicyTypes": [
+                        {
+                                "Status": "ENABLED",
+                                "Type": "SERVICE_CONTROL_POLICY"
+                        }
+                ],
+                "MasterAccountId": "111111111111",
+                "MasterAccountArn": "arn:aws:organizations::111111111111:account/o\-exampleorgid/111111111111",
+                "MasterAccountEmail": "bill@example.com",
+                "FeatureSet": "ALL",
+                "Id": "o\-exampleorgid",
+                "Arn": "arn:aws:organizations::111111111111:organization/o\-exampleorgid"
+        }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To create a new organization with only consolidated billing features enabled\fP
+.sp
+The following example creates an organization that supports only the consolidated billing features:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws organizations create\-organization \-\-feature\-set CONSOLIDATED_BILLING
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output includes an organization object with details about the new organization:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+        "Organization": {
+                "Arn": "arn:aws:organizations::111111111111:organization/o\-exampleorgid",
+                "AvailablePolicyTypes": [],
+                "Id": "o\-exampleorgid",
+                "MasterAccountArn": "arn:aws:organizations::111111111111:account/o\-exampleorgid/111111111111",
+                "MasterAccountEmail": "bill@example.com",
+                "MasterAccountId": "111111111111",
+                "FeatureSet": "CONSOLIDATED_BILLING"
+        }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating an Organization\fP in the \fIAWS Organizations Users Guide\fP\&.
+.SH OUTPUT
+.sp
+Organization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains details about the newly created organization.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) of an organization.
+.sp
+The \fI\%regex pattern\fP for an organization ID string requires "o\-" followed by from 10 to 32 lowercase letters or digits.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an organization.
+.sp
+For more information about ARNs in Organizations, see \fI\%ARN Formats Supported by Organizations\fP in the \fIAWS Service Authorization Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+FeatureSet \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the functionality that currently is available to the organization. If set to "ALL", then all features are enabled and policies can be applied to accounts in the organization. If set to "CONSOLIDATED_BILLING", then only consolidated billing functionality is available. For more information, see \fI\%Enabling All Features in Your Organization\fP in the \fIAWS Organizations User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MasterAccountArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the account that is designated as the management account for the organization.
+.sp
+For more information about ARNs in Organizations, see \fI\%ARN Formats Supported by Organizations\fP in the \fIAWS Service Authorization Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+MasterAccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) of the management account of an organization.
+.sp
+The \fI\%regex pattern\fP for an account ID string requires exactly 12 digits.
+.UNINDENT
+.UNINDENT
+.sp
+MasterAccountEmail \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The email address that is associated with the AWS account that is designated as the management account for the organization.
+.UNINDENT
+.UNINDENT
+.sp
+AvailablePolicyTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Do not use. This field is deprecated and doesn\(aqt provide complete information about the policies in your organization.
+.UNINDENT
+.UNINDENT
+.sp
+To determine the policies that are enabled and available for use in your organization, use the  ListRoots operation instead.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a policy type and its status in the associated root.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the policy type.
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the policy type as it relates to the associated root. To attach a policy of the specified type to a root or to an OU or account in that root, it must be available in the organization and enabled for that root.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

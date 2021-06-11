@@ -1,0 +1,706 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESISANALYTICS-CREATE-APPLICATION" "a" "" ""
+.SH NAME
+kinesisanalytics-create-application \- This documentation is for version 1 of the Amazon Kinesis Data Analytics API, which only supports SQL applications
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This documentation is for version 1 of the Amazon Kinesis Data Analytics API, which only supports SQL applications. Version 2 of the API supports SQL and Java applications. For more information about version 2, see \fI\%Amazon Kinesis Data Analytics API V2 Documentation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Creates an Amazon Kinesis Analytics application. You can configure each application with one streaming source as input, application code to process the input, and up to three destinations where you want Amazon Kinesis Analytics to write the output data from your application. For an overview, see \fI\%How it Works\fP .
+.sp
+In the input configuration, you map the streaming source to an in\-application stream, which you can think of as a constantly updating table. In the mapping, you must provide a schema for the in\-application stream and map each data column in the in\-application stream to a data element in the streaming source.
+.sp
+Your application code is one or more SQL statements that read input data, transform it, and generate output. Your application code can create one or more SQL artifacts like SQL streams or pumps.
+.sp
+In the output configuration, you can configure the application to write data from in\-application streams created in your applications to up to three destinations.
+.sp
+To read data from your source stream or write data to destination streams, Amazon Kinesis Analytics needs your permissions. You grant these permissions by creating IAM roles. This operation requires permissions to perform the \fBkinesisanalytics:CreateApplication\fP action.
+.sp
+For introductory exercises to create an Amazon Kinesis Analytics application, see \fI\%Getting Started\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-application
+\-\-application\-name <value>
+[\-\-application\-description <value>]
+[\-\-inputs <value>]
+[\-\-outputs <value>]
+[\-\-cloud\-watch\-logging\-options <value>]
+[\-\-application\-code <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-application\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of your Amazon Kinesis Analytics application (for example, \fBsample\-app\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-application\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Summary description of the application.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-inputs\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Use this parameter to configure the application input.
+.sp
+You can configure your application to receive input from a single streaming source. In this configuration, you map this streaming source to an in\-application stream that is created. Your application code can then query the in\-application stream like a table (you can think of it as a constantly updating table).
+.sp
+For the streaming source, you provide its Amazon Resource Name (ARN) and format of data on the stream (for example, JSON, CSV, etc.). You also must provide an IAM role that Amazon Kinesis Analytics can assume to read this stream on your behalf.
+.sp
+To create the in\-application stream, you need to specify a schema to transform your data into a schematized version used in SQL. In the schema, you provide the necessary mapping of the data elements in the streaming source to record columns in the in\-app stream.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+When you configure the application input, you specify the streaming source, the in\-application stream name that is created, and the mapping between the two. For more information, see \fI\%Configuring Application Input\fP .
+.sp
+NamePrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name prefix to use when creating an in\-application stream. Suppose that you specify a prefix "MyInApplicationStream." Amazon Kinesis Analytics then creates one or more (as per the \fBInputParallelism\fP count you specified) in\-application streams with names "MyInApplicationStream_001," "MyInApplicationStream_002," and so on.
+.UNINDENT
+.UNINDENT
+.sp
+InputProcessingConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%InputProcessingConfiguration\fP for the input. An input processor transforms records as they are received from the stream, before the application\(aqs SQL code executes. Currently, the only input processing configuration available is \fI\%InputLambdaProcessor\fP .
+.sp
+InputLambdaProcessor \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The \fI\%InputLambdaProcessor\fP that is used to preprocess the records in the stream before being processed by your application code.
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the \fI\%AWS Lambda\fP function that operates on records in the stream.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To specify an earlier version of the Lambda function than the latest, include the Lambda function version in the Lambda function ARN. For more information about Lambda ARNs, see \fI\%Example ARNs: AWS Lambda\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role that is used to access the AWS Lambda function.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisStreamsInput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If the streaming source is an Amazon Kinesis stream, identifies the stream\(aqs Amazon Resource Name (ARN) and an IAM role that enables Amazon Kinesis Analytics to access the stream on your behalf.
+.sp
+Note: Either \fBKinesisStreamsInput\fP or \fBKinesisFirehoseInput\fP is required.
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the input Amazon Kinesis stream to read.
+.UNINDENT
+.UNINDENT
+.sp
+RoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role that Amazon Kinesis Analytics can assume to access the stream on your behalf. You need to grant the necessary permissions to this role.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisFirehoseInput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+If the streaming source is an Amazon Kinesis Firehose delivery stream, identifies the delivery stream\(aqs ARN and an IAM role that enables Amazon Kinesis Analytics to access the stream on your behalf.
+.sp
+Note: Either \fBKinesisStreamsInput\fP or \fBKinesisFirehoseInput\fP is required.
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the input delivery stream.
+.UNINDENT
+.UNINDENT
+.sp
+RoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role that Amazon Kinesis Analytics can assume to access the stream on your behalf. You need to make sure that the role has the necessary permissions to access the stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputParallelism \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the number of in\-application streams to create.
+.sp
+Data from your source is routed to these in\-application input streams.
+.sp
+(see \fI\%Configuring Application Input\fP .
+.sp
+Count \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Number of in\-application streams to create. For more information, see \fI\%Limits\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InputSchema \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the format of the data in the streaming source, and how each data element maps to corresponding columns in the in\-application stream that is being created.
+.sp
+Also used to describe the format of the reference data source.
+.sp
+RecordFormat \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the format of the records on the streaming source.
+.sp
+RecordFormatType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of record format.
+.UNINDENT
+.UNINDENT
+.sp
+MappingParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+When configuring application input at the time of creating or updating an application, provides additional mapping information specific to the record format (such as JSON, CSV, or record fields delimited by some delimiter) on the streaming source.
+.sp
+JSONMappingParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides additional mapping information when JSON is the record format on the streaming source.
+.sp
+RecordRowPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Path to the top\-level parent that contains the records.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CSVMappingParameters \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides additional mapping information when the record format uses delimiters (for example, CSV).
+.sp
+RecordRowDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Row delimiter. For example, in a CSV format, \fI\(aqn\(aq\fP is the typical row delimiter.
+.UNINDENT
+.UNINDENT
+.sp
+RecordColumnDelimiter \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Column delimiter. For example, in a CSV format, a comma (",") is the typical column delimiter.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RecordEncoding \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the encoding of the records in the streaming source. For example, UTF\-8.
+.UNINDENT
+.UNINDENT
+.sp
+RecordColumns \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBRecordColumn\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the mapping of each data element in the streaming source to the corresponding column in the in\-application stream.
+.sp
+Also used to describe the format of the reference data source.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the column created in the in\-application input stream or reference table.
+.UNINDENT
+.UNINDENT
+.sp
+Mapping \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Reference to the data element in the streaming input or the reference data source. This element is required if the \fI\%RecordFormatType\fP is \fBJSON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SqlType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Type of column created in the in\-application input stream or reference table.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "NamePrefix": "string",
+    "InputProcessingConfiguration": {
+      "InputLambdaProcessor": {
+        "ResourceARN": "string",
+        "RoleARN": "string"
+      }
+    },
+    "KinesisStreamsInput": {
+      "ResourceARN": "string",
+      "RoleARN": "string"
+    },
+    "KinesisFirehoseInput": {
+      "ResourceARN": "string",
+      "RoleARN": "string"
+    },
+    "InputParallelism": {
+      "Count": integer
+    },
+    "InputSchema": {
+      "RecordFormat": {
+        "RecordFormatType": "JSON"|"CSV",
+        "MappingParameters": {
+          "JSONMappingParameters": {
+            "RecordRowPath": "string"
+          },
+          "CSVMappingParameters": {
+            "RecordRowDelimiter": "string",
+            "RecordColumnDelimiter": "string"
+          }
+        }
+      },
+      "RecordEncoding": "string",
+      "RecordColumns": [
+        {
+          "Name": "string",
+          "Mapping": "string",
+          "SqlType": "string"
+        }
+        ...
+      ]
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-outputs\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+You can configure application output to write data from any of the in\-application streams to up to three destinations.
+.sp
+These destinations can be Amazon Kinesis streams, Amazon Kinesis Firehose delivery streams, AWS Lambda destinations, or any combination of the three.
+.sp
+In the configuration, you specify the in\-application stream name, the destination stream or Lambda function Amazon Resource Name (ARN), and the format to use when writing data. You must also provide an IAM role that Amazon Kinesis Analytics can assume to write to the destination stream or Lambda function on your behalf.
+.sp
+In the output configuration, you also provide the output stream or Lambda function ARN. For stream destinations, you provide the format of data in the stream (for example, JSON, CSV). You also must provide an IAM role that Amazon Kinesis Analytics can assume to write to the stream or Lambda function on your behalf.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes application output configuration in which you identify an in\-application stream and a destination where you want the in\-application stream data to be written. The destination can be an Amazon Kinesis stream or an Amazon Kinesis Firehose delivery stream.
+.sp
+For limits on how many destinations an application can write and other limitations, see \fI\%Limits\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the in\-application stream.
+.UNINDENT
+.UNINDENT
+.sp
+KinesisStreamsOutput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an Amazon Kinesis stream as the destination.
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the destination Amazon Kinesis stream to write to.
+.UNINDENT
+.UNINDENT
+.sp
+RoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role that Amazon Kinesis Analytics can assume to write to the destination stream on your behalf. You need to grant the necessary permissions to this role.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+KinesisFirehoseOutput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an Amazon Kinesis Firehose delivery stream as the destination.
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the destination Amazon Kinesis Firehose delivery stream to write to.
+.UNINDENT
+.UNINDENT
+.sp
+RoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role that Amazon Kinesis Analytics can assume to write to the destination stream on your behalf. You need to grant the necessary permissions to this role.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LambdaOutput \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies an AWS Lambda function as the destination.
+.sp
+ResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon Resource Name (ARN) of the destination Lambda function to write to.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+To specify an earlier version of the Lambda function than the latest, include the Lambda function version in the Lambda function ARN. For more information about Lambda ARNs, see \fI\%Example ARNs: AWS Lambda\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the IAM role that Amazon Kinesis Analytics can assume to write to the destination function on your behalf. You need to grant the necessary permissions to this role.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DestinationSchema \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the data format when records are written to the destination. For more information, see \fI\%Configuring Application Output\fP .
+.sp
+RecordFormatType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the format of the records on the output stream.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,KinesisStreamsOutput={ResourceARN=string,RoleARN=string},KinesisFirehoseOutput={ResourceARN=string,RoleARN=string},LambdaOutput={ResourceARN=string,RoleARN=string},DestinationSchema={RecordFormatType=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "KinesisStreamsOutput": {
+      "ResourceARN": "string",
+      "RoleARN": "string"
+    },
+    "KinesisFirehoseOutput": {
+      "ResourceARN": "string",
+      "RoleARN": "string"
+    },
+    "LambdaOutput": {
+      "ResourceARN": "string",
+      "RoleARN": "string"
+    },
+    "DestinationSchema": {
+      "RecordFormatType": "JSON"|"CSV"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cloud\-watch\-logging\-options\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Use this parameter to configure a CloudWatch log stream to monitor application configuration errors. For more information, see \fI\%Working with Amazon CloudWatch Logs\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Provides a description of CloudWatch logging options, including the log stream Amazon Resource Name (ARN) and the role ARN.
+.sp
+LogStreamARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the CloudWatch log to receive application messages.
+.UNINDENT
+.UNINDENT
+.sp
+RoleARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+IAM ARN of the role to use to send application messages. Note: To write application messages to CloudWatch, the IAM role that is used must have the \fBPutLogEvents\fP policy action enabled.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LogStreamARN=string,RoleARN=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "LogStreamARN": "string",
+    "RoleARN": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-application\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+One or more SQL statements that read input data, transform it, and generate output. For example, you can write a SQL statement that reads data from one in\-application stream, generates a running average of the number of advertisement clicks by vendor, and insert resulting rows in another in\-application stream using pumps. For more information about the typical pattern, see \fI\%Application Code\fP .
+.sp
+You can provide such series of SQL statements, where output of one statement can be used as the input for the next statement. You store intermediate results by creating in\-application streams and pumps.
+.sp
+Note that the application code must create the streams with names specified in the \fBOutputs\fP . For example, if your \fBOutputs\fP defines output streams named \fBExampleOutputStream1\fP and \fBExampleOutputStream2\fP , then your application code must create these streams.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of one or more tags to assign to the application. A tag is a key\-value pair that identifies an application. Note that the maximum number of application tags includes system tags. The maximum number of user\-defined application tags is 50. For more information, see \fI\%Using Tagging\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A key\-value pair (the value is optional) that you can define and assign to AWS resources. If you specify a tag that already exists, the tag value is replaced with the value that you specify in the request. Note that the maximum number of application tags includes system tags. The maximum number of user\-defined application tags is 50. For more information, see \fI\%Using Tagging\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the key\-value tag.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the key\-value tag. The value is optional.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ApplicationSummary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+In response to your \fBCreateApplication\fP request, Amazon Kinesis Analytics returns a response with a summary of the application it created, including the application Amazon Resource Name (ARN), name, and status.
+.sp
+ApplicationName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the application.
+.UNINDENT
+.UNINDENT
+.sp
+ApplicationARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ARN of the application.
+.UNINDENT
+.UNINDENT
+.sp
+ApplicationStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Status of the application.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

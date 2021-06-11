@@ -1,0 +1,497 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "TEXTRACT-GET-DOCUMENT-TEXT-DETECTION" "a" "" ""
+.SH NAME
+textract-get-document-text-detection \- Gets the results for an Amazon Textract asynchronous operation that detects text in a document
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets the results for an Amazon Textract asynchronous operation that detects text in a document. Amazon Textract can detect lines of text and the words that make up a line of text.
+.sp
+You start asynchronous text detection by calling  StartDocumentTextDetection , which returns a job identifier (\fBJobId\fP ). When the text detection operation finishes, Amazon Textract publishes a completion status to the Amazon Simple Notification Service (Amazon SNS) topic that\(aqs registered in the initial call to \fBStartDocumentTextDetection\fP . To get the results of the text\-detection operation, first check that the status value published to the Amazon SNS topic is \fBSUCCEEDED\fP . If so, call \fBGetDocumentTextDetection\fP , and pass the job identifier (\fBJobId\fP ) from the initial call to \fBStartDocumentTextDetection\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBGetDocumentTextDetection\fP returns an array of  Block objects.
+.UNINDENT
+.UNINDENT
+.sp
+Each document page has as an associated \fBBlock\fP of type PAGE. Each PAGE \fBBlock\fP object is the parent of LINE \fBBlock\fP objects that represent the lines of detected text on a page. A LINE \fBBlock\fP object is a parent for each word that makes up the line. Words are represented by \fBBlock\fP objects of type WORD.
+.sp
+Use the MaxResults parameter to limit the number of blocks that are returned. If there are more results than specified in \fBMaxResults\fP , the value of \fBNextToken\fP in the operation response contains a pagination token for getting the next set of results. To get the next page of results, call \fBGetDocumentTextDetection\fP , and populate the \fBNextToken\fP request parameter with the token value that\(aqs returned from the previous call to \fBGetDocumentTextDetection\fP .
+.sp
+For more information, see \fI\%Document Text Detection\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-document\-text\-detection
+\-\-job\-id <value>
+[\-\-max\-results <value>]
+[\-\-next\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-job\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the text detection job. The \fBJobId\fP is returned from \fBStartDocumentTextDetection\fP . A \fBJobId\fP value is only valid for 7 days.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-results\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of results to return per paginated call. The largest value you can specify is 1,000. If you specify a value greater than 1,000, a maximum of 1,000 results is returned. The default value is 1,000.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If the previous response was incomplete (because there are more blocks to retrieve), Amazon Textract returns a pagination token in the response. You can use this pagination token to retrieve the next set of blocks.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the results of asynchronous text detection in a multi\-page document\fP
+.sp
+The following \fBget\-document\-text\-detection\fP example shows how to get the results of asynchronous text detection in a multi\-page document.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws textract get\-document\-text\-detection \-\-job\-id 57849a3dc627d4df74123dca269d69f7b89329c870c65bb16c9fd63409d200b9 \-\-max\-results 1000
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Blocks": [
+        {
+            "Geometry": {
+                "BoundingBox": {
+                    "Width": 1.0,
+                    "Top": 0.0,
+                    "Left": 0.0,
+                    "Height": 1.0
+                },
+                "Polygon": [
+                    {
+                        "Y": 0.0,
+                        "X": 0.0
+                    },
+                    {
+                        "Y": 0.0,
+                        "X": 1.0
+                    },
+                    {
+                        "Y": 1.0,
+                        "X": 1.0
+                    },
+                    {
+                        "Y": 1.0,
+                        "X": 0.0
+                    }
+                ]
+            },
+            "Relationships": [
+                {
+                    "Type": "CHILD",
+                    "Ids": [
+                        "1b926a34\-0357\-407b\-ac8f\-ec473160c6a9",
+                        "0c35dc17\-3605\-4c9d\-af1a\-d9451059df51",
+                        "dea3db8a\-52c2\-41c0\-b50c\-81f66f4aa758"
+                    ]
+                }
+            ],
+            "BlockType": "PAGE",
+            "Id": "84671a5e\-8c99\-43be\-a9d1\-6838965da33e",
+            "Page": 1
+        }
+    ],
+    "NextToken": "GcqyoAJuZwujOT35EN4LCI3EUzMtiLq3nKyFFHvU5q1SaIdEBcSty+njNgoWwuMP/muqc96S4o5NzDqehhXvhkodMyVO5OJGyms5lsrCxibWJw==",
+    "DocumentMetadata": {
+        "Pages": 1
+    },
+    "JobStatus": "SUCCEEDED"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Detecting and Analyzing Text in Multi\-Page Documents\fP in the \fIAmazon Textract Developers Guide\fP
+.SH OUTPUT
+.sp
+DocumentMetadata \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a document that Amazon Textract processed. \fBDocumentMetadata\fP is returned in every page of paginated responses from an Amazon Textract video operation.
+.sp
+Pages \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of pages that are detected in the document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JobStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current status of the text detection job.
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If the response is truncated, Amazon Textract returns this token. You can use this token in the subsequent request to retrieve the next set of text\-detection results.
+.UNINDENT
+.UNINDENT
+.sp
+Blocks \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The results of the text\-detection operation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBBlock\fP represents items that are recognized in a document within a group of pixels close to each other. The information returned in a \fBBlock\fP object depends on the type of operation. In text detection for documents (for example  DetectDocumentText ), you get information about the detected words and lines of text. In text analysis (for example  AnalyzeDocument ), you can also get information about the fields, tables, and selection elements that are detected in the document.
+.sp
+An array of \fBBlock\fP objects is returned by both synchronous and asynchronous operations. In synchronous operations, such as  DetectDocumentText , the array of \fBBlock\fP objects is the entire set of results. In asynchronous operations, such as  GetDocumentAnalysis , the array is returned over one or more responses.
+.sp
+For more information, see \fI\%How Amazon Textract Works\fP .
+.sp
+BlockType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of text item that\(aqs recognized. In operations for text detection, the following types are returned:
+.INDENT 0.0
+.IP \(bu 2
+\fIPAGE\fP \- Contains a list of the LINE \fBBlock\fP objects that are detected on a document page.
+.IP \(bu 2
+\fIWORD\fP \- A word detected on a document page. A word is one or more ISO basic Latin script characters that aren\(aqt separated by spaces.
+.IP \(bu 2
+\fILINE\fP \- A string of tab\-delimited, contiguous words that are detected on a document page.
+.UNINDENT
+.sp
+In text analysis operations, the following types are returned:
+.INDENT 0.0
+.IP \(bu 2
+\fIPAGE\fP \- Contains a list of child \fBBlock\fP objects that are detected on a document page.
+.IP \(bu 2
+\fIKEY_VALUE_SET\fP \- Stores the KEY and VALUE \fBBlock\fP objects for linked text that\(aqs detected on a document page. Use the \fBEntityType\fP field to determine if a KEY_VALUE_SET object is a KEY \fBBlock\fP object or a VALUE \fBBlock\fP object.
+.IP \(bu 2
+\fIWORD\fP \- A word that\(aqs detected on a document page. A word is one or more ISO basic Latin script characters that aren\(aqt separated by spaces.
+.IP \(bu 2
+\fILINE\fP \- A string of tab\-delimited, contiguous words that are detected on a document page.
+.IP \(bu 2
+\fITABLE\fP \- A table that\(aqs detected on a document page. A table is grid\-based information with two or more rows or columns, with a cell span of one row and one column each.
+.IP \(bu 2
+\fICELL\fP \- A cell within a detected table. The cell is the parent of the block that contains the text in the cell.
+.IP \(bu 2
+\fISELECTION_ELEMENT\fP \- A selection element such as an option button (radio button) or a check box that\(aqs detected on a document page. Use the value of \fBSelectionStatus\fP to determine the status of the selection element.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The confidence score that Amazon Textract has in the accuracy of the recognized text and the accuracy of the geometry points around the recognized text.
+.UNINDENT
+.UNINDENT
+.sp
+Text \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The word or line of text that\(aqs recognized by Amazon Textract.
+.UNINDENT
+.UNINDENT
+.sp
+TextType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The kind of text that Amazon Textract has detected. Can check for handwritten text and printed text.
+.UNINDENT
+.UNINDENT
+.sp
+RowIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The row in which a table cell is located. The first row position is 1. \fBRowIndex\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ColumnIndex \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The column in which a table cell appears. The first column position is 1. \fBColumnIndex\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RowSpan \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of rows that a table cell spans. Currently this value is always 1, even if the number of rows spanned is greater than 1. \fBRowSpan\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ColumnSpan \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of columns that a table cell spans. Currently this value is always 1, even if the number of columns spanned is greater than 1. \fBColumnSpan\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Geometry \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location of the recognized text on the image. It includes an axis\-aligned, coarse bounding box that surrounds the text, and a finer\-grain polygon for more accurate spatial information.
+.sp
+BoundingBox \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An axis\-aligned coarse representation of the location of the recognized item on the document page.
+.sp
+Width \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The width of the bounding box as a ratio of the overall document page width.
+.UNINDENT
+.UNINDENT
+.sp
+Height \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The height of the bounding box as a ratio of the overall document page height.
+.UNINDENT
+.UNINDENT
+.sp
+Left \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The left coordinate of the bounding box as a ratio of overall document page width.
+.UNINDENT
+.UNINDENT
+.sp
+Top \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The top coordinate of the bounding box as a ratio of overall document page height.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Polygon \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Within the bounding box, a fine\-grained polygon around the recognized item.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The X and Y coordinates of a point on a document page. The X and Y values that are returned are ratios of the overall document page size. For example, if the input document is 700 x 200 and the operation returns X=0.5 and Y=0.25, then the point is at the (350,50) pixel coordinate on the document page.
+.sp
+An array of \fBPoint\fP objects, \fBPolygon\fP , is returned by  DetectDocumentText . \fBPolygon\fP represents a fine\-grained polygon around detected text. For more information, see Geometry in the Amazon Textract Developer Guide.
+.sp
+X \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The value of the X coordinate for a point on a \fBPolygon\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Y \-> (float)
+.INDENT 0.0
+.INDENT 3.5
+The value of the Y coordinate for a point on a \fBPolygon\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier for the recognized text. The identifier is only unique for a single operation.
+.UNINDENT
+.UNINDENT
+.sp
+Relationships \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of child blocks of the current block. For example, a LINE object has child blocks for each WORD block that\(aqs part of the line of text. There aren\(aqt Relationship objects in the list for relationships that don\(aqt exist, such as when the current block has no child blocks. The list size can be the following:
+.INDENT 0.0
+.IP \(bu 2
+0 \- The block has no child blocks.
+.IP \(bu 2
+1 \- The block has child blocks.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about how blocks are related to each other. A \fBBlock\fP object contains 0 or more \fBRelation\fP objects in a list, \fBRelationships\fP . For more information, see  Block .
+.sp
+The \fBType\fP element provides the type of the relationship for all blocks in the \fBIDs\fP array.
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of relationship that the blocks in the IDs array have with the current block. The relationship can be \fBVALUE\fP or \fBCHILD\fP . A relationship of type VALUE is a list that contains the ID of the VALUE block that\(aqs associated with the KEY of a key\-value pair. A relationship of type CHILD is a list of IDs that identify WORD blocks in the case of lines Cell blocks in the case of Tables, and WORD blocks in the case of Selection Elements.
+.UNINDENT
+.UNINDENT
+.sp
+Ids \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of IDs for related blocks. You can get the type of the relationship from the \fBType\fP element.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EntityTypes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The type of entity. The following can be returned:
+.INDENT 0.0
+.IP \(bu 2
+\fIKEY\fP \- An identifier for a field on the document.
+.IP \(bu 2
+\fIVALUE\fP \- The field text.
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fBEntityTypes\fP isn\(aqt returned by \fBDetectDocumentText\fP and \fBGetDocumentTextDetection\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+SelectionStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The selection status of a selection element, such as an option button or check box.
+.UNINDENT
+.UNINDENT
+.sp
+Page \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The page on which a block was detected. \fBPage\fP is returned by asynchronous operations. Page values greater than 1 are only returned for multipage documents that are in PDF format. A scanned image (JPEG/PNG), even if it contains multiple document pages, is considered to be a single\-page document. The value of \fBPage\fP is always 1. Synchronous operations don\(aqt return \fBPage\fP because every input document is considered to be a single\-page document.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Warnings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of warnings that occurred during the text\-detection operation for the document.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A warning about an issue that occurred during asynchronous text analysis ( StartDocumentAnalysis ) or asynchronous document text detection ( StartDocumentTextDetection ).
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code for the warning.
+.UNINDENT
+.UNINDENT
+.sp
+Pages \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the pages that the warning applies to.
+.sp
+(integer)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StatusMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Returns if the detection job could not be completed. Contains explanation for what error occured.
+.UNINDENT
+.UNINDENT
+.sp
+DetectDocumentTextModelVersion \-> (string)
+.\" Generated by docutils manpage writer.
+.

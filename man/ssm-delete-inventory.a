@@ -1,0 +1,257 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SSM-DELETE-INVENTORY" "a" "" ""
+.SH NAME
+ssm-delete-inventory \- Delete a custom inventory type or the data associated with a custom Inventory type
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Delete a custom inventory type or the data associated with a custom Inventory type. Deleting a custom inventory type is also referred to as deleting a custom inventory schema.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  delete\-inventory
+\-\-type\-name <value>
+[\-\-schema\-delete\-option <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-client\-token <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-type\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the custom inventory type for which you want to delete either all previously collected data or the inventory type itself.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schema\-delete\-option\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Use the \fBSchemaDeleteOption\fP to delete a custom inventory type (schema). If you don\(aqt choose this option, the system only deletes existing inventory data associated with the custom inventory type. Choose one of the following options:
+.sp
+DisableSchema: If you choose this option, the system ignores all inventory data for the specified version, and any earlier versions. To enable this schema again, you must call the \fBPutInventory\fP action for a version greater than the disabled version.
+.sp
+DeleteSchema: This option deletes the specified custom type from the Inventory service. You can recreate the schema later, if you want.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBDisableSchema\fP
+.IP \(bu 2
+\fBDeleteSchema\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Use this option to view a summary of the deletion request without deleting any data or the data type. This option is useful when you only want to understand what will be deleted. Once you validate that the data to be deleted is what you intend to delete, you can run the same command without specifying the \fBDryRun\fP option.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-client\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+User\-provided idempotency token.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo delete a custom inventory type\fP
+.sp
+This example deletes a custom inventory schema.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm delete\-inventory \-\-type\-name "Custom:RackInfo" \-\-schema\-delete\-option "DeleteSchema"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "DeletionId": "d72ac9e8\-1f60\-4d40\-b1c6\-bf8c78c68c4d",
+  "TypeName": "Custom:RackInfo",
+  "DeletionSummary": {
+      "TotalCount": 1,
+      "RemainingCount": 1,
+      "SummaryItems": [
+          {
+              "Version": "1.0",
+              "Count": 1,
+              "RemainingCount": 1
+          }
+      ]
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBTo disable a custom inventory type\fP
+.sp
+This example disables a custom inventory schema.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ssm delete\-inventory \-\-type\-name "Custom:RackInfo" \-\-schema\-delete\-option "DisableSchema"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "DeletionId": "6961492a\-8163\-44ec\-aa1e\-923364dd0850",
+  "TypeName": "Custom:RackInformation",
+  "DeletionSummary": {
+      "TotalCount": 0,
+      "RemainingCount": 0,
+      "SummaryItems": []
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+DeletionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Every \fBDeleteInventory\fP action is assigned a unique ID. This option returns a unique ID. You can use this ID to query the status of a delete operation. This option is useful for ensuring that a delete operation has completed before you begin other actions.
+.UNINDENT
+.UNINDENT
+.sp
+TypeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the inventory data type specified in the request.
+.UNINDENT
+.UNINDENT
+.sp
+DeletionSummary \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A summary of the delete operation. For more information about this summary, see \fI\%Deleting custom inventory\fP in the \fIAWS Systems Manager User Guide\fP .
+.sp
+TotalCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to delete. This count does not change during the delete operation.
+.UNINDENT
+.UNINDENT
+.sp
+RemainingCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Remaining number of items to delete.
+.UNINDENT
+.UNINDENT
+.sp
+SummaryItems \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of counts and versions for deleted items.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Either a count, remaining count, or a version number in a delete inventory summary.
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The inventory type version.
+.UNINDENT
+.UNINDENT
+.sp
+Count \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A count of the number of deleted items.
+.UNINDENT
+.UNINDENT
+.sp
+RemainingCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The remaining number of items to delete.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

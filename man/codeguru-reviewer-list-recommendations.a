@@ -1,0 +1,192 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CODEGURU-REVIEWER-LIST-RECOMMENDATIONS" "a" "" ""
+.SH NAME
+codeguru-reviewer-list-recommendations \- Returns the list of all recommendations for a completed code review
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns the list of all recommendations for a completed code review.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-recommendations
+[\-\-next\-token <value>]
+[\-\-max\-results <value>]
+\-\-code\-review\-arn <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-next\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Pagination token.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-results\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of results that are returned per call. The default is 100.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-code\-review\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the \(ga \fBCodeReview\fP \fI\%https://docs.aws.amazon.com/codeguru/latest/reviewer\-api/API_CodeReview\fP\&.html\(ga__ object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo list the recommendations for a completed code review\fP
+.sp
+The following \fBlist\-recommendations\fP example lists the recommendations for a comleted code review. This code review has one recommendations.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws codeguru\-reviewer list\-recommendations \e
+    \-\-code\-review\-arn arn:aws:codeguru\-reviewer:us\-west\-2:544120495673:code\-review:a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE11111
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "RecommendationSummaries": [
+        {
+            "Description": "\en\en**Problem**  \en You are using a \(gaConcurrentHashMap\(ga, but your usage of \(gacontainsKey()\(ga and \(gaget()\(ga may not be thread\-safe at lines: **63 and 64**. In between the check and the \(gaget()\(ga another thread can remove the key and the \(gaget()\(ga will return \(ganull\(ga. The remove that can remove the key is at line: **59**.\en\en**Fix**  \en Consider calling \(gaget()\(ga, checking instead of your current check if the returned object is \(ganull\(ga, and then using that object only, without calling \(gaget()\(ga again.\en\en**More info**  \en [View an example on GitHub](https://github.com/apache/hadoop/blob/f16cf877e565084c66bc63605659b157c4394dc8/hadoop\-tools/hadoop\-aws/src/main/java/org/apache/hadoop/fs/s3a/s3guard/S3Guard.java#L302\-L304) (external link).",
+            "RecommendationId": "a1b2c3d4\-5678\-90ab\-cdef\-EXAMPLE22222",
+            "StartLine": 63,
+            "EndLine": 64,
+            "FilePath": "src/main/java/com/company/sample/application/CreateOrderThread.java"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see 
+.nf
+\(gaListRecommendations<https://docs.aws.amazon.com/codeguru/latest/reviewer\-api/API_ListRecommendations.html>\(ga__
+.fi
+ in the \fIAmazon DevOps Guru API Reference\fP\&.
+.SH OUTPUT
+.sp
+RecommendationSummaries \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of recommendations for the requested code review.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about recommendations.
+.sp
+FilePath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the file on which a recommendation is provided.
+.UNINDENT
+.UNINDENT
+.sp
+RecommendationId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The recommendation ID that can be used to track the provided recommendations. Later on it can be used to collect the feedback.
+.UNINDENT
+.UNINDENT
+.sp
+StartLine \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Start line from where the recommendation is applicable in the source commit or source branch.
+.UNINDENT
+.UNINDENT
+.sp
+EndLine \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Last line where the recommendation is applicable in the source commit or source branch. For a single line comment the start line and end line values are the same.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the recommendation generated by CodeGuru Reviewer for the lines of code between the start line and the end line.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Pagination token.
+.UNINDENT
+.UNINDENT
+.SH DOCUTILS SYSTEM MESSAGES
+.IP "System Message: ERROR/3 (<string>:)"
+Anonymous hyperlink mismatch: 1 references but 0 targets.
+See "backrefs" attribute for IDs.
+.\" Generated by docutils manpage writer.
+.

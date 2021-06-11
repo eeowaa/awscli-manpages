@@ -1,0 +1,1337 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3API-DELETE-OBJECTS" "a" "" ""
+.SH NAME
+s3api-delete-objects \- This action enables you to delete multiple objects from a bucket using a single HTTP request
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This action enables you to delete multiple objects from a bucket using a single HTTP request. If you know the object keys that you want to delete, then this action provides a suitable alternative to sending individual delete requests, reducing per\-request overhead.
+.sp
+The request contains a list of up to 1000 keys that you want to delete. In the XML, you provide the object key names, and optionally, version IDs if you want to delete a specific version of the object from a versioning\-enabled bucket. For each key, Amazon S3 performs a delete action and returns the result of that delete, success, or failure, in the response. Note that if the object specified in the request is not found, Amazon S3 returns the result as deleted.
+.sp
+The action supports two modes for the response: verbose and quiet. By default, the action uses verbose mode in which the response includes the result of deletion of each key in your request. In quiet mode the response includes only keys where the delete action encountered an error. For a successful deletion, the action does not return any information about the delete in the response body.
+.sp
+When performing this action on an MFA Delete enabled bucket, that attempts to delete any versioned objects, you must include an MFA token. If you do not provide one, the entire request will fail, even if there are non\-versioned objects you are trying to delete. If you provide an invalid token, whether there are versioned keys in the request or not, the entire Multi\-Object Delete request will fail. For information about MFA Delete, see \fI\%MFA Delete\fP .
+.sp
+Finally, the Content\-MD5 header is required for all Multi\-Object Delete requests. Amazon S3 uses the header value to ensure that your request body has not been altered in transit.
+.sp
+The following operations are related to \fBDeleteObjects\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%CreateMultipartUpload\fP
+.IP \(bu 2
+\fI\%UploadPart\fP
+.IP \(bu 2
+\fI\%CompleteMultipartUpload\fP
+.IP \(bu 2
+\fI\%ListParts\fP
+.IP \(bu 2
+\fI\%AbortMultipartUpload\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  delete\-objects
+\-\-bucket <value>
+\-\-delete <value>
+[\-\-mfa <value>]
+[\-\-request\-payer <value>]
+[\-\-bypass\-governance\-retention | \-\-no\-bypass\-governance\-retention]
+[\-\-expected\-bucket\-owner <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The bucket name containing the objects to delete.
+.sp
+When using this action with an access point, you must direct requests to the access point hostname. The access point hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .s3\-accesspoint.*Region* .amazonaws.com. When using this action with an access point through the AWS SDKs, you provide the access point ARN in place of the bucket name. For more information about access point ARNs, see \fI\%Using access points\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+When using this action with Amazon S3 on Outposts, you must direct requests to the S3 on Outposts hostname. The S3 on Outposts hostname takes the form \fIAccessPointName\fP \-\fIAccountId\fP .*outpostID* .s3\-outposts.*Region* .amazonaws.com. When using this action using S3 on Outposts through the AWS SDKs, you provide the Outposts bucket ARN in place of the bucket name. For more information about S3 on Outposts ARNs, see \fI\%Using S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delete\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for the request.
+.sp
+Objects \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The objects to delete.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Object Identifier is unique value to identify objects.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Key name of the object.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Replacement must be made for object keys containing special characters (such as carriage returns) when using XML requests. For more information, see \fI\%XML related object key constraints\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+VersionId for the specific version of the object to delete.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Quiet \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Element to enable quiet mode for the request. When you add this element, you must set its value to true.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Objects=[{Key=string,VersionId=string},{Key=string,VersionId=string}],Quiet=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Objects": [
+    {
+      "Key": "string",
+      "VersionId": "string"
+    }
+    ...
+  ],
+  "Quiet": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-mfa\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The concatenation of the authentication device\(aqs serial number, a space, and the value that is displayed on your authentication device. Required to permanently delete a versioned object if versioning is configured with MFA delete enabled.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-request\-payer\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Confirms that the requester knows that they will be charged for the request. Bucket owners need not specify this parameter in their requests. For information about downloading objects from requester pays buckets, see \fI\%Downloading Objects in Requestor Pays Buckets\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBrequester\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bypass\-governance\-retention\fP | \fB\-\-no\-bypass\-governance\-retention\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether you want to delete this object even if it has a Governance\-type Object Lock in place. You must have sufficient permissions to perform this operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-bucket\-owner\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The account ID of the expected bucket owner. If the bucket is owned by a different account, the request will fail with an HTTP \fB403 (Access Denied)\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command deletes an object from a bucket named \fBmy\-bucket\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws s3api delete\-objects \-\-bucket my\-bucket \-\-delete file://delete.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBdelete.json\fP is a JSON document in the current directory that specifies the object to delete:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Objects": [
+    {
+      "Key": "test1.txt"
+    }
+  ],
+  "Quiet": false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Deleted": [
+        {
+            "DeleteMarkerVersionId": "mYAT5Mc6F7aeUL8SS7FAAqUPO1koHwzU",
+            "Key": "test1.txt",
+            "DeleteMarker": true
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Deleted \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Container element for a successful delete. It identifies the object that was successfully deleted.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the deleted object.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the deleted object.
+.UNINDENT
+.UNINDENT
+.sp
+VersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version ID of the deleted object.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteMarker \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the versioned object that was permanently deleted was (true) or was not (false) a delete marker. In a simple DELETE, this header indicates whether (true) or not (false) a delete marker was created.
+.UNINDENT
+.UNINDENT
+.sp
+DeleteMarkerVersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version ID of the delete marker created as a result of the DELETE operation. If you delete a specific object version, the value returned by this header is the version ID of the object version deleted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharged \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If present, indicates that the requester was successfully charged for the request.
+.UNINDENT
+.UNINDENT
+.sp
+Errors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Container for a failed delete action that describes the object that Amazon S3 attempted to delete and the error it encountered.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Container for all error elements.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error key.
+.UNINDENT
+.UNINDENT
+.sp
+VersionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version ID of the error.
+.UNINDENT
+.UNINDENT
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code is a string that uniquely identifies an error condition. It is meant to be read and understood by programs that detect and handle errors by type.
+.INDENT 0.0
+.INDENT 3.5
+\fBAmazon S3 error codes\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP AccessDenied
+.IP \(bu 2
+\fIDescription:\fP Access Denied
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP AccountProblem
+.IP \(bu 2
+\fIDescription:\fP There is a problem with your AWS account that prevents the action from completing successfully. Contact AWS Support for further assistance.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP AllAccessDisabled
+.IP \(bu 2
+\fIDescription:\fP All access to this Amazon S3 resource has been disabled. Contact AWS Support for further assistance.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP AmbiguousGrantByEmailAddress
+.IP \(bu 2
+\fIDescription:\fP The email address you provided is associated with more than one account.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP AuthorizationHeaderMalformed
+.IP \(bu 2
+\fIDescription:\fP The authorization header you provided is invalid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fIHTTP Status Code:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP BadDigest
+.IP \(bu 2
+\fIDescription:\fP The Content\-MD5 you specified did not match what we received.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP BucketAlreadyExists
+.IP \(bu 2
+\fIDescription:\fP The requested bucket name is not available. The bucket namespace is shared by all users of the system. Please select a different name and try again.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 409 Conflict
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP BucketAlreadyOwnedByYou
+.IP \(bu 2
+\fIDescription:\fP The bucket you tried to create already exists, and you own it. Amazon S3 returns this error in all AWS Regions except in the North Virginia Region. For legacy compatibility, if you re\-create an existing bucket that you already own in the North Virginia Region, Amazon S3 returns 200 OK and resets the bucket access control lists (ACLs).
+.IP \(bu 2
+\fICode:\fP 409 Conflict (in all Regions except the North Virginia Region)
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP BucketNotEmpty
+.IP \(bu 2
+\fIDescription:\fP The bucket you tried to delete is not empty.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 409 Conflict
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP CredentialsNotSupported
+.IP \(bu 2
+\fIDescription:\fP This request does not support credentials.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP CrossLocationLoggingProhibited
+.IP \(bu 2
+\fIDescription:\fP Cross\-location logging not allowed. Buckets in one geographic location cannot log information to a bucket in another location.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP EntityTooSmall
+.IP \(bu 2
+\fIDescription:\fP Your proposed upload is smaller than the minimum allowed object size.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP EntityTooLarge
+.IP \(bu 2
+\fIDescription:\fP Your proposed upload exceeds the maximum allowed object size.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP ExpiredToken
+.IP \(bu 2
+\fIDescription:\fP The provided token has expired.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP IllegalVersioningConfigurationException
+.IP \(bu 2
+\fIDescription:\fP Indicates that the versioning configuration specified in the request is invalid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP IncompleteBody
+.IP \(bu 2
+\fIDescription:\fP You did not provide the number of bytes specified by the Content\-Length HTTP header
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP IncorrectNumberOfFilesInPostRequest
+.IP \(bu 2
+\fIDescription:\fP POST requires exactly one file upload per request.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InlineDataTooLarge
+.IP \(bu 2
+\fIDescription:\fP Inline data exceeds the maximum allowed size.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InternalError
+.IP \(bu 2
+\fIDescription:\fP We encountered an internal error. Please try again.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 500 Internal Server Error
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Server
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidAccessKeyId
+.IP \(bu 2
+\fIDescription:\fP The AWS access key ID you provided does not exist in our records.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidAddressingHeader
+.IP \(bu 2
+\fIDescription:\fP You must specify the Anonymous role.
+.IP \(bu 2
+\fIHTTP Status Code:\fP N/A
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidArgument
+.IP \(bu 2
+\fIDescription:\fP Invalid Argument
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidBucketName
+.IP \(bu 2
+\fIDescription:\fP The specified bucket is not valid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidBucketState
+.IP \(bu 2
+\fIDescription:\fP The request is not valid with the current state of the bucket.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 409 Conflict
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidDigest
+.IP \(bu 2
+\fIDescription:\fP The Content\-MD5 you specified is not valid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidEncryptionAlgorithmError
+.IP \(bu 2
+\fIDescription:\fP The encryption request you specified is not valid. The valid value is AES256.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidLocationConstraint
+.IP \(bu 2
+\fIDescription:\fP The specified location constraint is not valid. For more information about Regions, see \fI\%How to Select a Region for Your Buckets\fP .
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidObjectState
+.IP \(bu 2
+\fIDescription:\fP The action is not valid for the current state of the object.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidPart
+.IP \(bu 2
+\fIDescription:\fP One or more of the specified parts could not be found. The part might not have been uploaded, or the specified entity tag might not have matched the part\(aqs entity tag.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidPartOrder
+.IP \(bu 2
+\fIDescription:\fP The list of parts was not in ascending order. Parts list must be specified in order by part number.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidPayer
+.IP \(bu 2
+\fIDescription:\fP All access to this object has been disabled. Please contact AWS Support for further assistance.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidPolicyDocument
+.IP \(bu 2
+\fIDescription:\fP The content of the form does not meet the conditions specified in the policy document.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRange
+.IP \(bu 2
+\fIDescription:\fP The requested range cannot be satisfied.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 416 Requested Range Not Satisfiable
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Please use AWS4\-HMAC\-SHA256.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP SOAP requests must be made over an HTTPS connection.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Amazon S3 Transfer Acceleration is not supported for buckets with non\-DNS compliant names.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Amazon S3 Transfer Acceleration is not supported for buckets with periods (.) in their names.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Amazon S3 Transfer Accelerate endpoint only supports virtual style requests.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Amazon S3 Transfer Accelerate is not configured on this bucket.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Amazon S3 Transfer Accelerate is disabled on this bucket.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Amazon S3 Transfer Acceleration is not supported on this bucket. Contact AWS Support for more information.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidRequest
+.IP \(bu 2
+\fIDescription:\fP Amazon S3 Transfer Acceleration cannot be enabled on this bucket. Contact AWS Support for more information.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fICode:\fP N/A
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidSecurity
+.IP \(bu 2
+\fIDescription:\fP The provided security credentials are not valid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidSOAPRequest
+.IP \(bu 2
+\fIDescription:\fP The SOAP request body is invalid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidStorageClass
+.IP \(bu 2
+\fIDescription:\fP The storage class you specified is not valid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidTargetBucketForLogging
+.IP \(bu 2
+\fIDescription:\fP The target bucket for logging does not exist, is not owned by you, or does not have the appropriate grants for the log\-delivery group.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidToken
+.IP \(bu 2
+\fIDescription:\fP The provided token is malformed or otherwise invalid.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP InvalidURI
+.IP \(bu 2
+\fIDescription:\fP Couldn\(aqt parse the specified URI.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP KeyTooLongError
+.IP \(bu 2
+\fIDescription:\fP Your key is too long.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MalformedACLError
+.IP \(bu 2
+\fIDescription:\fP The XML you provided was not well\-formed or did not validate against our published schema.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MalformedPOSTRequest
+.IP \(bu 2
+\fIDescription:\fP The body of your POST request is not well\-formed multipart/form\-data.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MalformedXML
+.IP \(bu 2
+\fIDescription:\fP This happens when the user sends malformed XML (XML that doesn\(aqt conform to the published XSD) for the configuration. The error message is, "The XML you provided was not well\-formed or did not validate against our published schema."
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MaxMessageLengthExceeded
+.IP \(bu 2
+\fIDescription:\fP Your request was too big.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MaxPostPreDataLengthExceededError
+.IP \(bu 2
+\fIDescription:\fP Your POST request fields preceding the upload file were too large.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MetadataTooLarge
+.IP \(bu 2
+\fIDescription:\fP Your metadata headers exceed the maximum allowed metadata size.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MethodNotAllowed
+.IP \(bu 2
+\fIDescription:\fP The specified method is not allowed against this resource.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 405 Method Not Allowed
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MissingAttachment
+.IP \(bu 2
+\fIDescription:\fP A SOAP attachment was expected, but none were found.
+.IP \(bu 2
+\fIHTTP Status Code:\fP N/A
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MissingContentLength
+.IP \(bu 2
+\fIDescription:\fP You must provide the Content\-Length HTTP header.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 411 Length Required
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MissingRequestBodyError
+.IP \(bu 2
+\fIDescription:\fP This happens when the user sends an empty XML document as a request. The error message is, "Request body is empty."
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MissingSecurityElement
+.IP \(bu 2
+\fIDescription:\fP The SOAP 1.1 request is missing a security element.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP MissingSecurityHeader
+.IP \(bu 2
+\fIDescription:\fP Your request is missing a required header.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NoLoggingStatusForKey
+.IP \(bu 2
+\fIDescription:\fP There is no such thing as a logging status subresource for a key.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NoSuchBucket
+.IP \(bu 2
+\fIDescription:\fP The specified bucket does not exist.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 404 Not Found
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NoSuchBucketPolicy
+.IP \(bu 2
+\fIDescription:\fP The specified bucket does not have a bucket policy.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 404 Not Found
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NoSuchKey
+.IP \(bu 2
+\fIDescription:\fP The specified key does not exist.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 404 Not Found
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NoSuchLifecycleConfiguration
+.IP \(bu 2
+\fIDescription:\fP The lifecycle configuration does not exist.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 404 Not Found
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NoSuchUpload
+.IP \(bu 2
+\fIDescription:\fP The specified multipart upload does not exist. The upload ID might be invalid, or the multipart upload might have been aborted or completed.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 404 Not Found
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NoSuchVersion
+.IP \(bu 2
+\fIDescription:\fP Indicates that the version ID specified in the request does not match an existing version.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 404 Not Found
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NotImplemented
+.IP \(bu 2
+\fIDescription:\fP A header you provided implies functionality that is not implemented.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 501 Not Implemented
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Server
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP NotSignedUp
+.IP \(bu 2
+\fIDescription:\fP Your account is not signed up for the Amazon S3 service. You must sign up before you can use Amazon S3. You can sign up at the following URL: \fI\%https://aws.amazon.com/s3\fP
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP OperationAborted
+.IP \(bu 2
+\fIDescription:\fP A conflicting conditional action is currently in progress against this resource. Try again.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 409 Conflict
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP PermanentRedirect
+.IP \(bu 2
+\fIDescription:\fP The bucket you are attempting to access must be addressed using the specified endpoint. Send all future requests to this endpoint.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 301 Moved Permanently
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP PreconditionFailed
+.IP \(bu 2
+\fIDescription:\fP At least one of the preconditions you specified did not hold.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 412 Precondition Failed
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP Redirect
+.IP \(bu 2
+\fIDescription:\fP Temporary redirect.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 307 Moved Temporarily
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP RestoreAlreadyInProgress
+.IP \(bu 2
+\fIDescription:\fP Object restore is already in progress.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 409 Conflict
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP RequestIsNotMultiPartContent
+.IP \(bu 2
+\fIDescription:\fP Bucket POST must be of the enclosure\-type multipart/form\-data.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP RequestTimeout
+.IP \(bu 2
+\fIDescription:\fP Your socket connection to the server was not read from or written to within the timeout period.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP RequestTimeTooSkewed
+.IP \(bu 2
+\fIDescription:\fP The difference between the request time and the server\(aqs time is too large.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP RequestTorrentOfBucketError
+.IP \(bu 2
+\fIDescription:\fP Requesting the torrent file of a bucket is not permitted.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP SignatureDoesNotMatch
+.IP \(bu 2
+\fIDescription:\fP The request signature we calculated does not match the signature you provided. Check your AWS secret access key and signing method. For more information, see \fI\%REST Authentication\fP and \fI\%SOAP Authentication\fP for details.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 403 Forbidden
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP ServiceUnavailable
+.IP \(bu 2
+\fIDescription:\fP Reduce your request rate.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 503 Service Unavailable
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Server
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP SlowDown
+.IP \(bu 2
+\fIDescription:\fP Reduce your request rate.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 503 Slow Down
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Server
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP TemporaryRedirect
+.IP \(bu 2
+\fIDescription:\fP You are being redirected to the bucket while DNS updates.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 307 Moved Temporarily
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP TokenRefreshRequired
+.IP \(bu 2
+\fIDescription:\fP The provided token must be refreshed.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP TooManyBuckets
+.IP \(bu 2
+\fIDescription:\fP You have attempted to create more buckets than allowed.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP UnexpectedContent
+.IP \(bu 2
+\fIDescription:\fP This request does not support content.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP UnresolvableGrantByEmailAddress
+.IP \(bu 2
+\fIDescription:\fP The email address you provided does not match any account on record.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.IP \(bu 2
+.INDENT 2.0
+.IP \(bu 2
+\fICode:\fP UserKeyMustBeSpecified
+.IP \(bu 2
+\fIDescription:\fP The bucket POST must contain the specified field name. If it is specified, check the order of the fields.
+.IP \(bu 2
+\fIHTTP Status Code:\fP 400 Bad Request
+.IP \(bu 2
+\fISOAP Fault Code Prefix:\fP Client
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message contains a generic description of the error condition in English. It is intended for a human audience. Simple programs display the message directly to the end user if they encounter an error condition they don\(aqt know how or don\(aqt care to handle. Sophisticated programs with more exhaustive error handling and proper internationalization are more likely to ignore the error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

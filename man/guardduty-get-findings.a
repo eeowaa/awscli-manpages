@@ -1,0 +1,1556 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GUARDDUTY-GET-FINDINGS" "a" "" ""
+.SH NAME
+guardduty-get-findings \- Describes Amazon GuardDuty findings specified by finding IDs
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Describes Amazon GuardDuty findings specified by finding IDs.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-findings
+\-\-detector\-id <value>
+\-\-finding\-ids <value>
+[\-\-sort\-criteria <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-detector\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the detector that specifies the GuardDuty service whose findings you want to retrieve.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-finding\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the findings that you want to retrieve.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sort\-criteria\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Represents the criteria used for sorting findings.
+.sp
+AttributeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Represents the finding attribute (for example, accountId) to sort findings by.
+.UNINDENT
+.UNINDENT
+.sp
+OrderBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The order by which the sorted findings are to be displayed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+AttributeName=string,OrderBy=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "AttributeName": "string",
+  "OrderBy": "ASC"|"DESC"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To retrieve the details of a specific finding\fP
+.sp
+The following \fBget\-findings\fP example retrieves the full JSON finding details of the specified finding.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws guardduty get\-findings \e
+    \-\-detector\-id 12abc34d567e8fa901bc2d34eexample \e
+    \-\-finding\-id 1ab92989eaf0e742df4a014d5example
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Findings": [
+        {
+            "Resource": {
+                "ResourceType": "AccessKey",
+                "AccessKeyDetails": {
+                    "UserName": "testuser",
+                    "UserType": "IAMUser",
+                    "PrincipalId": "AIDACKCEVSQ6C2EXAMPLE",
+                    "AccessKeyId": "ASIASZ4SI7REEEXAMPLE"
+                }
+            },
+            "Description": "APIs commonly used to discover the users, groups, policies and permissions in an account, was invoked by IAM principal testuser under unusual circumstances. Such activity is not typically seen from this principal.",
+            "Service": {
+                "Count": 5,
+                "Archived": false,
+                "ServiceName": "guardduty",
+                "EventFirstSeen": "2020\-05\-26T22:02:24Z",
+                "ResourceRole": "TARGET",
+                "EventLastSeen": "2020\-05\-26T22:33:55Z",
+                "DetectorId": "d4b040365221be2b54a6264dcexample",
+                "Action": {
+                    "ActionType": "AWS_API_CALL",
+                    "AwsApiCallAction": {
+                        "RemoteIpDetails": {
+                            "GeoLocation": {
+                                "Lat": 51.5164,
+                                "Lon": \-0.093
+                            },
+                            "City": {
+                                "CityName": "London"
+                            },
+                            "IpAddressV4": "52.94.36.7",
+                            "Organization": {
+                                "Org": "Amazon.com",
+                                "Isp": "Amazon.com",
+                                "Asn": "16509",
+                                "AsnOrg": "AMAZON\-02"
+                            },
+                            "Country": {
+                                "CountryName": "United Kingdom"
+                            }
+                        },
+                        "Api": "ListPolicyVersions",
+                        "ServiceName": "iam.amazonaws.com",
+                        "CallerType": "Remote IP"
+                    }
+                }
+            },
+            "Title": "Unusual user permission reconnaissance activity by testuser.",
+            "Type": "Recon:IAMUser/UserPermissions",
+            "Region": "us\-east\-1",
+            "Partition": "aws",
+            "Arn": "arn:aws:guardduty:us\-east\-1:111122223333:detector/d4b040365221be2b54a6264dcexample/finding/1ab92989eaf0e742df4a014d5example",
+            "UpdatedAt": "2020\-05\-26T22:55:21.703Z",
+            "SchemaVersion": "2.0",
+            "Severity": 5,
+            "Id": "1ab92989eaf0e742df4a014d5example",
+            "CreatedAt": "2020\-05\-26T22:21:48.385Z",
+            "AccountId": "111122223333"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Findings\fP in the GuardDuty User Guide.
+.SH OUTPUT
+.sp
+Findings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of findings.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the finding, which is generated when abnormal or suspicious activity is detected.
+.sp
+AccountId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the account in which the finding was generated.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the finding.
+.UNINDENT
+.UNINDENT
+.sp
+Confidence \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The confidence score for the finding.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedAt \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time and date when the finding was created.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the finding.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the finding.
+.UNINDENT
+.UNINDENT
+.sp
+Partition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The partition associated with the finding.
+.UNINDENT
+.UNINDENT
+.sp
+Region \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Region where the finding was generated.
+.UNINDENT
+.UNINDENT
+.sp
+Resource \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the AWS resource associated with the activity that prompted GuardDuty to generate a finding.
+.sp
+AccessKeyDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The IAM access key details (IAM user information) of a user that engaged in the activity that prompted GuardDuty to generate a finding.
+.sp
+AccessKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The access key ID of the user.
+.UNINDENT
+.UNINDENT
+.sp
+PrincipalId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The principal ID of the user.
+.UNINDENT
+.UNINDENT
+.sp
+UserName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the user.
+.UNINDENT
+.UNINDENT
+.sp
+UserType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the user.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+S3BucketDetails \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on the S3 bucket.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on the S3 bucket.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes whether the bucket is a source or destination bucket.
+.UNINDENT
+.UNINDENT
+.sp
+CreatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time the bucket was created at.
+.UNINDENT
+.UNINDENT
+.sp
+Owner \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The owner of the S3 bucket.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The canonical user ID of the bucket owner. For information about locating your canonical user ID see \fI\%Finding Your Account Canonical User ID.\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+All tags attached to the S3 bucket
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a tag associated with the EC2 instance.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 instance tag key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 instance tag value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DefaultServerSideEncryption \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the server side encryption method used in the S3 bucket.
+.sp
+EncryptionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of encryption used for objects within the S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+KmsMasterKeyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the KMS encryption key. Only available if the bucket \fBEncryptionType\fP is \fBaws:kms\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PublicAccess \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the public access policies that apply to the S3 bucket.
+.sp
+PermissionConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about how permissions are configured for the S3 bucket.
+.sp
+BucketLevelPermissions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the bucket level permissions for the S3 bucket.
+.sp
+AccessControlList \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on how Access Control Policies are applied to the bucket.
+.sp
+AllowsPublicReadAccess \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether public read access for the bucket is enabled through an Access Control List (ACL).
+.UNINDENT
+.UNINDENT
+.sp
+AllowsPublicWriteAccess \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether public write access for the bucket is enabled through an Access Control List (ACL).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BucketPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on the bucket policies for the S3 bucket.
+.sp
+AllowsPublicReadAccess \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether public read access for the bucket is enabled through a bucket policy.
+.UNINDENT
+.UNINDENT
+.sp
+AllowsPublicWriteAccess \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+A value that indicates whether public write access for the bucket is enabled through a bucket policy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BlockPublicAccess \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information on which account level S3 Block Public Access settings are applied to the S3 bucket.
+.sp
+IgnorePublicAcls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBIgnorePublicAcls\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RestrictPublicBuckets \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBRestrictPublicBuckets\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BlockPublicAcls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBBlockPublicAcls\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BlockPublicPolicy \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBBlockPublicPolicy\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AccountLevelPermissions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the account level permissions on the S3 bucket.
+.sp
+BlockPublicAccess \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes the S3 Block Public Access settings of the bucket\(aqs parent account.
+.sp
+IgnorePublicAcls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBIgnorePublicAcls\fP .
+.UNINDENT
+.UNINDENT
+.sp
+RestrictPublicBuckets \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBRestrictPublicBuckets\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BlockPublicAcls \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBBlockPublicAcls\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BlockPublicPolicy \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates if S3 Block Public Access is set to \fBBlockPublicPolicy\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EffectivePermission \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Describes the effective permission on this bucket after factoring all attached policies.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+InstanceDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The information about the EC2 instance associated with the activity that prompted GuardDuty to generate a finding.
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+IamInstanceProfile \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The profile information of the EC2 instance.
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The profile ARN of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The profile ID of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ImageDescription \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The image description of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+ImageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The image ID of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+OutpostArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the AWS Outpost. Only applicable to AWS Outposts instances.
+.UNINDENT
+.UNINDENT
+.sp
+LaunchTime \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The launch time of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaces \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The elastic network interface information of the EC2 instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the elastic network interface of the EC2 instance.
+.sp
+Ipv6Addresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of IPv6 addresses for the EC2 instance.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NetworkInterfaceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the network interface.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private DNS name of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IP address of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddresses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Other private IP address information of the EC2 instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains other private IP address information of the EC2 instance.
+.sp
+PrivateDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private DNS name of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+PrivateIpAddress \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The private IP address of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PublicDnsName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public DNS name of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+PublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The public IP address of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+SecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The security groups associated with the EC2 instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the security groups associated with the EC2 instance.
+.sp
+GroupId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The security group ID of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+GroupName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The security group name of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The subnet ID of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+VpcId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The VPC ID of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Platform \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform of the EC2 instance.
+.UNINDENT
+.UNINDENT
+.sp
+ProductCodes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The product code of the EC2 instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the product code for the EC2 instance.
+.sp
+Code \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The product code information.
+.UNINDENT
+.UNINDENT
+.sp
+ProductType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The product code type.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags of the EC2 instance.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about a tag associated with the EC2 instance.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 instance tag key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 instance tag value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ResourceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of AWS resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SchemaVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The version of the schema used for the finding.
+.UNINDENT
+.UNINDENT
+.sp
+Service \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains additional information about the generated finding.
+.sp
+Action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the activity that is described in a finding.
+.sp
+ActionType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The GuardDuty finding activity type.
+.UNINDENT
+.UNINDENT
+.sp
+AwsApiCallAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the AWS_API_CALL action described in this finding.
+.sp
+Api \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS API name.
+.UNINDENT
+.UNINDENT
+.sp
+CallerType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS API caller type.
+.UNINDENT
+.UNINDENT
+.sp
+DomainDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The domain information for the AWS API call.
+.sp
+Domain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The domain information for the AWS API call.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code of the failed AWS API action.
+.UNINDENT
+.UNINDENT
+.sp
+RemoteIpDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The remote IP information of the connection that initiated the AWS API call.
+.sp
+City \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The city information of the remote IP address.
+.sp
+CityName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The city name of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Country \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The country code of the remote IP address.
+.sp
+CountryCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The country code of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+CountryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The country name of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GeoLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location information of the remote IP address.
+.sp
+Lat \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The latitude information of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+Lon \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The longitude information of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IpAddressV4 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 remote address of the connection.
+.UNINDENT
+.UNINDENT
+.sp
+Organization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The ISP organization information of the remote IP address.
+.sp
+Asn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Autonomous System Number (ASN) of the internet provider of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+AsnOrg \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The organization that registered this ASN.
+.UNINDENT
+.UNINDENT
+.sp
+Isp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ISP information for the internet provider.
+.UNINDENT
+.UNINDENT
+.sp
+Org \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the internet provider.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ServiceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS service name whose API was invoked.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+DnsRequestAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the DNS_REQUEST action described in this finding.
+.sp
+Domain \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The domain information for the API request.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NetworkConnectionAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the NETWORK_CONNECTION action described in this finding.
+.sp
+Blocked \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether EC2 blocked the network connection to your instance.
+.UNINDENT
+.UNINDENT
+.sp
+ConnectionDirection \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The network connection direction.
+.UNINDENT
+.UNINDENT
+.sp
+LocalPortDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The local port information of the connection.
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number of the local connection.
+.UNINDENT
+.UNINDENT
+.sp
+PortName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The port name of the local connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Protocol \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The network connection protocol.
+.UNINDENT
+.UNINDENT
+.sp
+LocalIpDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The local IP information of the connection.
+.sp
+IpAddressV4 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 local address of the connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RemoteIpDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The remote IP information of the connection.
+.sp
+City \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The city information of the remote IP address.
+.sp
+CityName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The city name of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Country \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The country code of the remote IP address.
+.sp
+CountryCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The country code of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+CountryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The country name of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GeoLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location information of the remote IP address.
+.sp
+Lat \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The latitude information of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+Lon \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The longitude information of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IpAddressV4 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 remote address of the connection.
+.UNINDENT
+.UNINDENT
+.sp
+Organization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The ISP organization information of the remote IP address.
+.sp
+Asn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Autonomous System Number (ASN) of the internet provider of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+AsnOrg \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The organization that registered this ASN.
+.UNINDENT
+.UNINDENT
+.sp
+Isp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ISP information for the internet provider.
+.UNINDENT
+.UNINDENT
+.sp
+Org \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the internet provider.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RemotePortDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The remote port information of the connection.
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number of the remote connection.
+.UNINDENT
+.UNINDENT
+.sp
+PortName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The port name of the remote connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+PortProbeAction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about the PORT_PROBE action described in this finding.
+.sp
+Blocked \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether EC2 blocked the port probe to the instance, such as with an ACL.
+.UNINDENT
+.UNINDENT
+.sp
+PortProbeDetails \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of objects related to port probe details.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains information about the port probe details.
+.sp
+LocalPortDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The local port information of the connection.
+.sp
+Port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port number of the local connection.
+.UNINDENT
+.UNINDENT
+.sp
+PortName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The port name of the local connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LocalIpDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The local IP information of the connection.
+.sp
+IpAddressV4 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 local address of the connection.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RemoteIpDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The remote IP information of the connection.
+.sp
+City \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The city information of the remote IP address.
+.sp
+CityName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The city name of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Country \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The country code of the remote IP address.
+.sp
+CountryCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The country code of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+CountryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The country name of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+GeoLocation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The location information of the remote IP address.
+.sp
+Lat \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The latitude information of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+Lon \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The longitude information of the remote IP address.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IpAddressV4 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The IPv4 remote address of the connection.
+.UNINDENT
+.UNINDENT
+.sp
+Organization \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The ISP organization information of the remote IP address.
+.sp
+Asn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Autonomous System Number (ASN) of the internet provider of the remote IP address.
+.UNINDENT
+.UNINDENT
+.sp
+AsnOrg \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The organization that registered this ASN.
+.UNINDENT
+.UNINDENT
+.sp
+Isp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ISP information for the internet provider.
+.UNINDENT
+.UNINDENT
+.sp
+Org \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the internet provider.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Evidence \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+An evidence object associated with the service.
+.sp
+ThreatIntelligenceDetails \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of threat intelligence details related to the evidence.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An instance of a threat intelligence detail that constitutes evidence for the finding.
+.sp
+ThreatListName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the threat intelligence list that triggered the finding.
+.UNINDENT
+.UNINDENT
+.sp
+ThreatNames \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of names of the threats in the threat intelligence list that triggered the finding.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Archived \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether this finding is archived.
+.UNINDENT
+.UNINDENT
+.sp
+Count \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total count of the occurrences of this finding type.
+.UNINDENT
+.UNINDENT
+.sp
+DetectorId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The detector ID for the GuardDuty service.
+.UNINDENT
+.UNINDENT
+.sp
+EventFirstSeen \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The first\-seen timestamp of the activity that prompted GuardDuty to generate this finding.
+.UNINDENT
+.UNINDENT
+.sp
+EventLastSeen \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The last\-seen timestamp of the activity that prompted GuardDuty to generate this finding.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The resource role information for this finding.
+.UNINDENT
+.UNINDENT
+.sp
+ServiceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the AWS service (GuardDuty) that generated a finding.
+.UNINDENT
+.UNINDENT
+.sp
+UserFeedback \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Feedback that was submitted about the finding.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Severity \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The severity of the finding.
+.UNINDENT
+.UNINDENT
+.sp
+Title \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The title of the finding.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of finding.
+.UNINDENT
+.UNINDENT
+.sp
+UpdatedAt \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The time and date when the finding was last updated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

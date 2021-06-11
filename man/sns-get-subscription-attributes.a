@@ -1,0 +1,157 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SNS-GET-SUBSCRIPTION-ATTRIBUTES" "a" "" ""
+.SH NAME
+sns-get-subscription-attributes \- Returns all of the properties of a subscription
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Returns all of the properties of a subscription.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-subscription\-attributes
+\-\-subscription\-arn <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-subscription\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the subscription whose properties you want to get.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo retrieve subscription attributes for a topic\fP
+.sp
+The following \fBget\-subscription\-attributes\fP displays the attributes of the specified subscription. You can get the \fBsubscription\-arn\fP from the output of the \fBlist\-subscriptions\fP command.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sns get\-subscription\-attributes \e
+    \-\-subscription\-arn "arn:aws:sns:us\-west\-2:123456789012:my\-topic:8a21d249\-4329\-4871\-acc6\-7be709c6ea7f"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Attributes": {
+        "Endpoint": "my\-email@example.com",
+        "Protocol": "email",
+        "RawMessageDelivery": "false",
+        "ConfirmationWasAuthenticated": "false",
+        "Owner": "123456789012",
+        "SubscriptionArn": "arn:aws:sns:us\-west\-2:123456789012:my\-topic:8a21d249\-4329\-4871\-acc6\-7be709c6ea7f",
+        "TopicArn": "arn:aws:sns:us\-west\-2:123456789012:my\-topic"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Attributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A map of the subscription\(aqs attributes. Attributes in this map include the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBConfirmationWasAuthenticated\fP – \fBtrue\fP if the subscription confirmation request was authenticated.
+.IP \(bu 2
+\fBDeliveryPolicy\fP – The JSON serialization of the subscription\(aqs delivery policy.
+.IP \(bu 2
+\fBEffectiveDeliveryPolicy\fP – The JSON serialization of the effective delivery policy that takes into account the topic delivery policy and account system defaults.
+.IP \(bu 2
+\fBFilterPolicy\fP – The filter policy JSON that is assigned to the subscription. For more information, see \fI\%Amazon SNS Message Filtering\fP in the \fIAmazon SNS Developer Guide\fP .
+.IP \(bu 2
+\fBOwner\fP – The AWS account ID of the subscription\(aqs owner.
+.IP \(bu 2
+\fBPendingConfirmation\fP – \fBtrue\fP if the subscription hasn\(aqt been confirmed. To confirm a pending subscription, call the \fBConfirmSubscription\fP action with a confirmation token.
+.IP \(bu 2
+\fBRawMessageDelivery\fP – \fBtrue\fP if raw message delivery is enabled for the subscription. Raw messages are free of JSON formatting and can be sent to HTTP/S and Amazon SQS endpoints.
+.IP \(bu 2
+\fBRedrivePolicy\fP – When specified, sends undeliverable messages to the specified Amazon SQS dead\-letter queue. Messages that can\(aqt be delivered due to client errors (for example, when the subscribed endpoint is unreachable) or server errors (for example, when the service that powers the subscribed endpoint becomes unavailable) are held in the dead\-letter queue for further analysis or reprocessing.
+.IP \(bu 2
+\fBSubscriptionArn\fP – The subscription\(aqs ARN.
+.IP \(bu 2
+\fBTopicArn\fP – The topic ARN that the subscription is associated with.
+.UNINDENT
+.sp
+The following attribute applies only to Amazon Kinesis Data Firehose delivery stream subscriptions:
+.INDENT 0.0
+.IP \(bu 2
+\fBSubscriptionRoleArn\fP – The ARN of the IAM role that has the following:
+.INDENT 2.0
+.IP \(bu 2
+Permission to write to the Kinesis Data Firehose delivery stream
+.IP \(bu 2
+Amazon SNS listed as a trusted entity
+.UNINDENT
+.UNINDENT
+.sp
+Specifying a valid ARN for this attribute is required for Kinesis Data Firehose delivery stream subscriptions. For more information, see \fI\%Fanout to Kinesis Data Firehose delivery streams\fP in the \fIAmazon SNS Developer Guide\fP .
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

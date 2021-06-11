@@ -1,0 +1,181 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-CREATE-CUSTOM-KEY-STORE" "a" "" ""
+.SH NAME
+kms-create-custom-key-store \- Creates a %custom key store that is associated with an %AWS CloudHSM cluster that you own and manage
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a \fI\%custom key store\fP that is associated with an \fI\%AWS CloudHSM cluster\fP that you own and manage.
+.sp
+This operation is part of the \fI\%Custom Key Store feature\fP feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single\-tenant key store.
+.sp
+Before you create the custom key store, you must assemble the required elements, including an AWS CloudHSM cluster that fulfills the requirements for a custom key store. For details about the required elements, see \fI\%Assemble the Prerequisites\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.sp
+When the operation completes successfully, it returns the ID of the new custom key store. Before you can use your new custom key store, you need to use the  ConnectCustomKeyStore operation to connect the new key store to its AWS CloudHSM cluster. Even if you are not going to use your custom key store immediately, you might want to connect it to verify that all settings are correct and then disconnect it until you are ready to use it.
+.sp
+For help with failures, see \fI\%Troubleshooting a Custom Key Store\fP in the \fIAWS Key Management Service Developer Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : No. You cannot perform this operation on a custom key store in a different AWS account.
+.sp
+\fBRequired permissions\fP : \fI\%kms:CreateCustomKeyStore\fP (IAM policy).
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+ConnectCustomKeyStore
+.IP \(bu 2
+DeleteCustomKeyStore
+.IP \(bu 2
+DescribeCustomKeyStores
+.IP \(bu 2
+DisconnectCustomKeyStore
+.IP \(bu 2
+UpdateCustomKeyStore
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-custom\-key\-store
+\-\-custom\-key\-store\-name <value>
+\-\-cloud\-hsm\-cluster\-id <value>
+\-\-trust\-anchor\-certificate <value>
+\-\-key\-store\-password <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-custom\-key\-store\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a friendly name for the custom key store. The name must be unique in your AWS account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cloud\-hsm\-cluster\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the AWS CloudHSM cluster for the custom key store. Enter the cluster ID of any active AWS CloudHSM cluster that is not already associated with a custom key store. To find the cluster ID, use the \fI\%DescribeClusters\fP operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-trust\-anchor\-certificate\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Enter the content of the trust anchor certificate for the cluster. This is the content of the \fBcustomerCA.crt\fP file that you created when you \fI\%initialized the cluster\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-key\-store\-password\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Enter the password of the \(ga \fBkmsuser\fP crypto user (CU) account <\fI\%https://docs.aws.amazon.com/kms/latest/developerguide/key\-store\-concepts.html#concept\-kmsuser\fP>\(ga__ in the specified AWS CloudHSM cluster. AWS KMS logs into the cluster as this user to manage key material on your behalf.
+.sp
+The password must be a string of 7 to 32 characters. Its value is case sensitive.
+.sp
+This parameter tells AWS KMS the \fBkmsuser\fP account password; it does not change the password in the AWS CloudHSM cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo create a custom key store\fP
+.sp
+The following \fBcreate\-custom\-key\-store\fP example creates a custom key store with an existing custom key store.
+.INDENT 0.0
+.IP \(bu 2
+This example uses the \fBcustom\-key\-store\-name\fP parameter to assign \fBExampleKeyStore\fP as a friendly name for the key store.
+.IP \(bu 2
+It uses the \fBcloud\-hsm\-cluster\-id\fP parameter to identify the \fBcluster\-1a23b4cdefg\fP cluster.
+.IP \(bu 2
+It uses the \fBkey\-store\-password\fP parameter to provide the password of the \fBkmsuser\fP user in the \fBcluster\-1a23b4cdefg\fP cluster. This gives AWS KMS permission to use the cluster on your behalf.
+.IP \(bu 2
+It uses the \fBtrust\-anchor\-certificate\fP parameter to specify the \fBcustomerCA.crt\fP file. In the AWS CLI, the \fBfile://\fP prefix is required.
+.INDENT 2.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kms create\-custom\-key\-store \e
+    \-\-custom\-key\-store\-name ExampleKeyStore \e
+    \-\-cloud\-hsm\-cluster\-id cluster\-1a23b4cdefg \e
+    \-\-key\-store\-password kmsPswd \e
+    \-\-trust\-anchor\-certificate file://customerCA.crt
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+The output of this command includes the ID of the new custom key store. You can use this ID to identify the custom key store in other AWS KMS CLI commands.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "CustomKeyStoreId": cks\-1234567890abcdef0
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Creating a Custom Key Store\fP in the \fIAWS Key Management Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+CustomKeyStoreId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the new custom key store.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,236 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "MEDIASTORE-DATA-PUT-OBJECT" "a" "" ""
+.SH NAME
+mediastore-data-put-object \- Uploads an object to the specified path
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Uploads an object to the specified path. Object sizes are limited to 25 MB for standard upload availability and 10 MB for streaming upload availability.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-object
+\-\-body <value>
+\-\-path <value>
+[\-\-content\-type <value>]
+[\-\-cache\-control <value>]
+[\-\-storage\-class <value>]
+[\-\-upload\-availability <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-body\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The bytes to be stored.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-path\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The path (including the file name) where the object is stored in the container. Format: <folder name>/<folder name>/<file name>
+.sp
+For example, to upload the file \fBmlaw.avi\fP to the folder path \fBpremium\ecanada\fP in the container \fBmovies\fP , enter the path \fBpremium/canada/mlaw.avi\fP .
+.sp
+Do not include the container name in this path.
+.sp
+If the path includes any folders that don\(aqt exist yet, the service creates them. For example, suppose you have an existing \fBpremium/usa\fP subfolder. If you specify \fBpremium/canada\fP , the service creates a \fBcanada\fP subfolder in the \fBpremium\fP folder. You then have two subfolders, \fBusa\fP and \fBcanada\fP , in the \fBpremium\fP folder.
+.sp
+There is no correlation between the path to the source and the path (folders) in the container in AWS Elemental MediaStore.
+.sp
+For more information about folders and how they exist in a container, see the \fI\%AWS Elemental MediaStore User Guide\fP .
+.sp
+The file name is the name that is assigned to the file that you upload. The file can have the same name inside and outside of AWS Elemental MediaStore, or it can have the same name. The file name can include or omit an extension.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The content type of the object.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cache\-control\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional \fBCacheControl\fP header that allows the caller to control the object\(aqs cache behavior. Headers can be passed in as specified in the HTTP at \fI\%https://www.w3.org/Protocols/rfc2616/rfc2616\-sec14.html#sec14.9\fP .
+.sp
+Headers with a custom user\-defined value are also accepted.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-storage\-class\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the storage class of a \fBPut\fP request. Defaults to high\-performance temporal storage class, and objects are persisted into durable storage shortly after being received.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTEMPORAL\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-upload\-availability\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates the availability of an object while it is still uploading. If the value is set to \fBstreaming\fP , the object is available for downloading after some initial buffering but before the object is uploaded completely. If the value is set to \fBstandard\fP , the object is available for downloading only when it is uploaded completely. The default value for this header is \fBstandard\fP .
+.sp
+To use this header, you must also set the HTTP \fBTransfer\-Encoding\fP header to \fBchunked\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSTANDARD\fP
+.IP \(bu 2
+\fBSTREAMING\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To upload an object to a container\fP
+.sp
+The following \fBput\-object\fP example upload an object to the specified container.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws mediastore\-data put\-object \e
+    \-\-endpoint https://aaabbbcccdddee.data.mediastore.us\-west\-2.amazonaws.com \e
+    \-\-body ReadMe.md \e
+    \-\-path ReadMe.md \e
+    \-\-cache\-control "max\-age=6, public" \e
+    \-\-content\-type binary/octet\-stream
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ContentSHA256": "f29bc64a9d3732b4b9035125fdb3285f5b6455778edca72414671e0ca3b2e0de",
+    "StorageClass": "TEMPORAL",
+    "ETag": "2aa333bbcc8d8d22d777e999c88d4aa9eeeeee4dd89ff7f555555555555da6d3"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To upload an object to a folder within a container\fP
+.sp
+The following \fBput\-object\fP example upload an object to the specified folder within a container.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws mediastore\-data put\-object \e
+    \-\-endpoint https://aaabbbcccdddee.data.mediastore.us\-west\-2.amazonaws.com \e
+    \-\-body ReadMe.md \e
+    \-\-path /september\-events/ReadMe.md \e
+    \-\-cache\-control "max\-age=6, public" \e
+    \-\-content\-type binary/octet\-stream
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "ETag": "2aa333bbcc8d8d22d777e999c88d4aa9eeeeee4dd89ff7f555555555555da6d3",
+    "ContentSHA256": "f29bc64a9d3732b4b9035125fdb3285f5b6455778edca72414671e0ca3b2e0de",
+    "StorageClass": "TEMPORAL"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Uploading an Object\fP in the \fIAWS Elemental MediaStore User Guide\fP\&.
+.SH OUTPUT
+.sp
+ContentSHA256 \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 digest of the object that is persisted.
+.UNINDENT
+.UNINDENT
+.sp
+ETag \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier of the object in the container.
+.UNINDENT
+.UNINDENT
+.sp
+StorageClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The storage class where the object was persisted. The class should be “Temporal”.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

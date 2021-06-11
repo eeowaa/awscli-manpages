@@ -1,0 +1,150 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SQS-CHANGE-MESSAGE-VISIBILITY" "a" "" ""
+.SH NAME
+sqs-change-message-visibility \- Changes the visibility timeout of a specified message in a queue to a new value
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Changes the visibility timeout of a specified message in a queue to a new value. The default visibility timeout for a message is 30 seconds. The minimum is 0 seconds. The maximum is 12 hours. For more information, see \fI\%Visibility Timeout\fP in the \fIAmazon Simple Queue Service Developer Guide\fP .
+.sp
+For example, you have a message with a visibility timeout of 5 minutes. After 3 minutes, you call \fBChangeMessageVisibility\fP with a timeout of 10 minutes. You can continue to call \fBChangeMessageVisibility\fP to extend the visibility timeout to the maximum allowed time. If you try to extend the visibility timeout beyond the maximum, your request is rejected.
+.sp
+An Amazon SQS message has three basic states:
+.INDENT 0.0
+.IP \(bu 2
+Sent to a queue by a producer.
+.IP \(bu 2
+Received from the queue by a consumer.
+.IP \(bu 2
+Deleted from the queue.
+.UNINDENT
+.sp
+A message is considered to be \fIstored\fP after it is sent to a queue by a producer, but not yet received from the queue by a consumer (that is, between states 1 and 2). There is no limit to the number of stored messages. A message is considered to be \fIin flight\fP after it is received from a queue by a consumer, but not yet deleted from the queue (that is, between states 2 and 3). There is a limit to the number of inflight messages.
+.sp
+Limits that apply to inflight messages are unrelated to the \fIunlimited\fP number of stored messages.
+.sp
+For most standard queues (depending on queue traffic and message backlog), there can be a maximum of approximately 120,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns the \fBOverLimit\fP error message. To avoid reaching the limit, you should delete messages from the queue after they\(aqre processed. You can also increase the number of queues you use to process your messages. To request a limit increase, \fI\%file a support request\fP .
+.sp
+For FIFO queues, there can be a maximum of 20,000 inflight messages (received from a queue by a consumer, but not yet deleted from the queue). If you reach this limit, Amazon SQS returns no error messages.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you attempt to set the \fBVisibilityTimeout\fP to a value greater than the maximum time left, Amazon SQS returns an error. Amazon SQS doesn\(aqt automatically recalculate and increase the timeout to the maximum remaining time.
+.sp
+Unlike with a queue, when you change the visibility timeout for a specific message the timeout value is applied immediately but isn\(aqt saved in memory for that message. If you don\(aqt delete a message after it is received, the visibility timeout for the message reverts to the original timeout value (not to the value you set using the \fBChangeMessageVisibility\fP action) the next time the message is received.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  change\-message\-visibility
+\-\-queue\-url <value>
+\-\-receipt\-handle <value>
+\-\-visibility\-timeout <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-queue\-url\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The URL of the Amazon SQS queue whose message\(aqs visibility is changed.
+.sp
+Queue URLs and names are case\-sensitive.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-receipt\-handle\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The receipt handle associated with the message whose visibility timeout is changed. This parameter is returned by the \(ga\(ga  ReceiveMessage \(ga\(ga action.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-visibility\-timeout\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The new value for the message\(aqs visibility timeout (in seconds). Values range: \fB0\fP to \fB43200\fP . Maximum: 12 hours.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo change a message\(aqs timeout visibility\fP
+.sp
+This example changes the specified message\(aqs timeout visibility to 10 hours (10 hours * 60 minutes * 60 seconds).
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sqs change\-message\-visibility \-\-queue\-url https://sqs.us\-east\-1.amazonaws.com/80398EXAMPLE/MyQueue \-\-receipt\-handle AQEBTpyI...t6HyQg== \-\-visibility\-timeout 36000
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+None.
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

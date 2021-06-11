@@ -1,0 +1,240 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "AUTOSCALING-PUT-LIFECYCLE-HOOK" "a" "" ""
+.SH NAME
+autoscaling-put-lifecycle-hook \- Creates or updates a lifecycle hook for the specified Auto Scaling group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates or updates a lifecycle hook for the specified Auto Scaling group.
+.sp
+A lifecycle hook tells Amazon EC2 Auto Scaling to perform an action on an instance when the instance launches (before it is put into service) or as the instance terminates (before it is fully terminated).
+.sp
+This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:
+.INDENT 0.0
+.IP \(bu 2
+(Optional) Create a Lambda function and a rule that allows CloudWatch Events to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates instances.
+.IP \(bu 2
+(Optional) Create a notification target and an IAM role. The target can be either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon EC2 Auto Scaling to publish lifecycle notifications to the target.
+.IP \(bu 2
+\fBCreate the lifecycle hook. Specify whether the hook is used when the instances launch or terminate.\fP
+.IP \(bu 2
+If you need more time, record the lifecycle action heartbeat to keep the instance in a pending state using the  RecordLifecycleActionHeartbeat API call.
+.IP \(bu 2
+If you finish before the timeout period ends, complete the lifecycle action using the  CompleteLifecycleAction API call.
+.UNINDENT
+.sp
+For more information, see \fI\%Amazon EC2 Auto Scaling lifecycle hooks\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP .
+.sp
+If you exceed your maximum limit of lifecycle hooks, which by default is 50 per Auto Scaling group, the call fails.
+.sp
+You can view the lifecycle hooks for an Auto Scaling group using the  DescribeLifecycleHooks API call. If you are no longer using a lifecycle hook, you can delete it by calling the  DeleteLifecycleHook API.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-lifecycle\-hook
+\-\-lifecycle\-hook\-name <value>
+\-\-auto\-scaling\-group\-name <value>
+[\-\-lifecycle\-transition <value>]
+[\-\-role\-arn <value>]
+[\-\-notification\-target\-arn <value>]
+[\-\-notification\-metadata <value>]
+[\-\-heartbeat\-timeout <value>]
+[\-\-default\-result <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-lifecycle\-hook\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the lifecycle hook.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-scaling\-group\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Auto Scaling group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-lifecycle\-transition\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The instance state to which you want to attach the lifecycle hook. The valid values are:
+.INDENT 0.0
+.IP \(bu 2
+autoscaling:EC2_INSTANCE_LAUNCHING
+.IP \(bu 2
+autoscaling:EC2_INSTANCE_TERMINATING
+.UNINDENT
+.sp
+Required for new lifecycle hooks, but optional when updating existing hooks.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role that allows the Auto Scaling group to publish to the specified notification target, for example, an Amazon SNS topic or an Amazon SQS queue.
+.sp
+Required for new lifecycle hooks, but optional when updating existing hooks.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-target\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the notification target that Amazon EC2 Auto Scaling uses to notify you when an instance is in the transition state for the lifecycle hook. This target can be either an SQS queue or an SNS topic.
+.sp
+If you specify an empty string, this overrides the current ARN.
+.sp
+This operation uses the JSON format when sending notifications to an Amazon SQS queue, and an email key\-value pair format when sending notifications to an Amazon SNS topic.
+.sp
+When you specify a notification target, Amazon EC2 Auto Scaling sends it a test message. Test messages contain the following additional key\-value pair: \fB"Event": "autoscaling:TEST_NOTIFICATION"\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\-metadata\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Additional information that you want to include any time Amazon EC2 Auto Scaling sends a message to the notification target.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-heartbeat\-timeout\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum time, in seconds, that can elapse before the lifecycle hook times out. The range is from \fB30\fP to \fB7200\fP seconds. The default value is \fB3600\fP seconds (1 hour).
+.sp
+If the lifecycle hook times out, Amazon EC2 Auto Scaling performs the action that you specified in the \fBDefaultResult\fP parameter. You can prevent the lifecycle hook from timing out by calling the  RecordLifecycleActionHeartbeat API.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-result\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines the action the Auto Scaling group should take when the lifecycle hook timeout elapses or if an unexpected failure occurs. This parameter can be either \fBCONTINUE\fP or \fBABANDON\fP . The default value is \fBABANDON\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a lifecycle hook\fP
+.sp
+This example creates a lifecycle hook that will invoke on any newly launched instances, with a timeout of 4800 seconds. This is useful for keeping the instances in a wait state until the user data scripts have finished, or for invoking an AWS Lambda function using EventBridge.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling put\-lifecycle\-hook \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-lifecycle\-hook\-name my\-launch\-hook \e
+    \-\-lifecycle\-transition autoscaling:EC2_INSTANCE_LAUNCHING \e
+    \-\-heartbeat\-timeout 4800
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.  If a lifecycle hook with the same name already exists, it will be overwritten by the new lifecycle hook.
+.sp
+For more information, see \fI\%Amazon EC2 Auto Scaling lifecycle hooks\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 2: To send an Amazon SNS email message to notify you of instance state transitions\fP
+.sp
+This example creates a lifecycle hook with the Amazon SNS topic and IAM role to use to receive notification at instance launch.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling put\-lifecycle\-hook \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-lifecycle\-hook\-name my\-launch\-hook \e
+    \-\-lifecycle\-transition autoscaling:EC2_INSTANCE_LAUNCHING \e
+    \-\-notification\-target\-arn arn:aws:sns:us\-west\-2:123456789012:my\-sns\-topic \e
+    \-\-role\-arn arn:aws:iam::123456789012:role/my\-auto\-scaling\-role
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Amazon EC2 Auto Scaling lifecycle hooks\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.sp
+\fBExample 3: To publish a message to an Amazon SQS queue\fP
+.sp
+This example creates a lifecycle hook that publishes a message with metadata to the specified Amazon SQS queue.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws autoscaling put\-lifecycle\-hook \e
+    \-\-auto\-scaling\-group\-name my\-asg \e
+    \-\-lifecycle\-hook\-name my\-launch\-hook \e
+    \-\-lifecycle\-transition autoscaling:EC2_INSTANCE_LAUNCHING \e
+    \-\-notification\-target\-arn arn:aws:sqs:us\-west\-2:123456789012:my\-sqs\-queue \e
+    \-\-role\-arn arn:aws:iam::123456789012:role/my\-notification\-role \e
+    \-\-notification\-metadata "SQS message metadata"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+For more information, see \fI\%Amazon EC2 Auto Scaling lifecycle hooks\fP in the \fIAmazon EC2 Auto Scaling User Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

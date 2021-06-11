@@ -1,0 +1,275 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EC2-MODIFY-INSTANCE-METADATA-OPTIONS" "a" "" ""
+.SH NAME
+ec2-modify-instance-metadata-options \- Modify the instance metadata parameters on a running or stopped instance
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Modify the instance metadata parameters on a running or stopped instance. When you modify the parameters on a stopped instance, they are applied when the instance is started. When you modify the parameters on a running instance, the API responds with a state of “pending”. After the parameter modifications are successfully applied to the instance, the state of the modifications changes from “pending” to “applied” in subsequent describe\-instances API calls. For more information, see \fI\%Instance metadata and user data\fP in the \fIAmazon EC2 User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  modify\-instance\-metadata\-options
+\-\-instance\-id <value>
+[\-\-http\-tokens <value>]
+[\-\-http\-put\-response\-hop\-limit <value>]
+[\-\-http\-endpoint <value>]
+[\-\-dry\-run | \-\-no\-dry\-run]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-http\-tokens\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of token usage for your instance metadata requests. If the parameter is not specified in the request, the default state is \fBoptional\fP .
+.sp
+If the state is \fBoptional\fP , you can choose to retrieve instance metadata with or without a signed token header on your request. If you retrieve the IAM role credentials without a token, the version 1.0 role credentials are returned. If you retrieve the IAM role credentials using a valid signed token, the version 2.0 role credentials are returned.
+.sp
+If the state is \fBrequired\fP , you must send a signed token header with any instance metadata retrieval requests. In this state, retrieving the IAM role credential always returns the version 2.0 credentials; the version 1.0 credentials are not available.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBoptional\fP
+.IP \(bu 2
+\fBrequired\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-http\-put\-response\-hop\-limit\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The desired HTTP PUT response hop limit for instance metadata requests. The larger the number, the further instance metadata requests can travel. If no parameter is specified, the existing state is maintained.
+.sp
+Possible values: Integers from 1 to 64
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-http\-endpoint\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter enables or disables the HTTP metadata endpoint on your instances. If the parameter is not specified, the existing state is maintained.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify a value of \fBdisabled\fP , you will not be able to access your instance metadata.
+.UNINDENT
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBdisabled\fP
+.IP \(bu 2
+\fBenabled\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dry\-run\fP | \fB\-\-no\-dry\-run\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Checks whether you have the required permissions for the action, without actually making the request, and provides an error response. If you have the required permissions, the error response is \fBDryRunOperation\fP . Otherwise, it is \fBUnauthorizedOperation\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To enable IMDSv2\fP
+.sp
+The following \fBmodify\-instance\-metadata\-options\fP example configures the use of IMDSv2 on the specified instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 modify\-instance\-metadata\-options \e
+    \-\-instance\-id i\-1234567898abcdef0 \e
+    \-\-http\-tokens required \e
+    \-\-http\-endpoint enabled
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "InstanceId": "i\-1234567898abcdef0",
+    "InstanceMetadataOptions": {
+        "State": "pending",
+        "HttpTokens": "required",
+        "HttpPutResponseHopLimit": 1,
+        "HttpEndpoint": "enabled"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Instance metadata and user data\fP in the \fIAmazon Elastic Compute Cloud User Guide for Linux Instances\fP\&.
+.sp
+\fBExample 2: To disable instance metadata\fP
+.sp
+The following \fBmodify\-instance\-metadata\-options\fP example disables the use of all versions of instance metadata on the specified instance.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ec2 modify\-instance\-metadata\-options \e
+    \-\-instance\-id i\-1234567898abcdef0 \e
+    \-\-http\-endpoint disabled
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "InstanceId": "i\-1234567898abcdef0",
+    "InstanceMetadataOptions": {
+        "State": "pending",
+        "HttpTokens": "required",
+        "HttpPutResponseHopLimit": 1,
+        "HttpEndpoint": "disabled"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Instance metadata and user data\fP in the \fIAmazon Elastic Compute Cloud User Guide for Linux Instances\fP\&.
+.SH OUTPUT
+.sp
+InstanceId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceMetadataOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata options for the instance.
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of the metadata option changes.
+.INDENT 0.0
+.INDENT 3.5
+\fBpending\fP \- The metadata options are being updated and the instance is not ready to process metadata traffic with the new selection.
+.sp
+\fBapplied\fP \- The metadata options have been successfully applied on the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+HttpTokens \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The state of token usage for your instance metadata requests. If the parameter is not specified in the request, the default state is \fBoptional\fP .
+.sp
+If the state is \fBoptional\fP , you can choose to retrieve instance metadata with or without a signed token header on your request. If you retrieve the IAM role credentials without a token, the version 1.0 role credentials are returned. If you retrieve the IAM role credentials using a valid signed token, the version 2.0 role credentials are returned.
+.sp
+If the state is \fBrequired\fP , you must send a signed token header with any instance metadata retrieval requests. In this state, retrieving the IAM role credential always returns the version 2.0 credentials; the version 1.0 credentials are not available.
+.UNINDENT
+.UNINDENT
+.sp
+HttpPutResponseHopLimit \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The desired HTTP PUT response hop limit for instance metadata requests. The larger the number, the further instance metadata requests can travel.
+.sp
+Default: 1
+.sp
+Possible values: Integers from 1 to 64
+.UNINDENT
+.UNINDENT
+.sp
+HttpEndpoint \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter enables or disables the HTTP metadata endpoint on your instances. If the parameter is not specified, the default state is \fBenabled\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you specify a value of \fBdisabled\fP , you will not be able to access your instance metadata.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

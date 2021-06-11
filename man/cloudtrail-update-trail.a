@@ -1,0 +1,330 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "CLOUDTRAIL-UPDATE-TRAIL" "a" "" ""
+.SH NAME
+cloudtrail-update-trail \- Updates the settings that specify delivery of log files
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the settings that specify delivery of log files. Changes to a trail do not require stopping the CloudTrail service. Use this action to designate an existing bucket for log delivery. If the existing bucket has previously been a target for CloudTrail log files, an IAM policy exists for the bucket. \fBUpdateTrail\fP must be called from the region in which the trail was created; otherwise, an \fBInvalidHomeRegionException\fP is thrown.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-trail
+\-\-name <value>
+[\-\-s3\-bucket\-name <value>]
+[\-\-s3\-key\-prefix <value>]
+[\-\-sns\-topic\-name <value>]
+[\-\-include\-global\-service\-events | \-\-no\-include\-global\-service\-events]
+[\-\-is\-multi\-region\-trail | \-\-no\-is\-multi\-region\-trail]
+[\-\-enable\-log\-file\-validation | \-\-no\-enable\-log\-file\-validation]
+[\-\-cloud\-watch\-logs\-log\-group\-arn <value>]
+[\-\-cloud\-watch\-logs\-role\-arn <value>]
+[\-\-kms\-key\-id <value>]
+[\-\-is\-organization\-trail | \-\-no\-is\-organization\-trail]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the trail or trail ARN. If \fBName\fP is a trail name, the string must meet the following requirements:
+.INDENT 0.0
+.IP \(bu 2
+Contain only ASCII letters (a\-z, A\-Z), numbers (0\-9), periods (.), underscores (_), or dashes (\-)
+.IP \(bu 2
+Start with a letter or number, and end with a letter or number
+.IP \(bu 2
+Be between 3 and 128 characters
+.IP \(bu 2
+Have no adjacent periods, underscores or dashes. Names like \fBmy\-_namespace\fP and \fBmy\-\-namespace\fP are invalid.
+.IP \(bu 2
+Not be in IP address format (for example, 192.168.5.4)
+.UNINDENT
+.sp
+If \fBName\fP is a trail ARN, it must be in the format:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:cloudtrail:us\-east\-2:123456789012:trail/MyTrail\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-bucket\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the Amazon S3 bucket designated for publishing log files. See \fI\%Amazon S3 Bucket Naming Requirements\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-s3\-key\-prefix\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Amazon S3 key prefix that comes after the name of the bucket you have designated for log file delivery. For more information, see \fI\%Finding Your CloudTrail Log Files\fP . The maximum length is 200 characters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sns\-topic\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the Amazon SNS topic defined for notification of log file delivery. The maximum length is 256 characters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-include\-global\-service\-events\fP | \fB\-\-no\-include\-global\-service\-events\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the trail is publishing events from global services such as IAM to the log files.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-is\-multi\-region\-trail\fP | \fB\-\-no\-is\-multi\-region\-trail\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the trail applies only to the current region or to all regions. The default is false. If the trail exists only in the current region and this value is set to true, shadow trails (replications of the trail) will be created in the other regions. If the trail exists in all regions and this value is set to false, the trail will remain in the region where it was created, and its shadow trails in other regions will be deleted. As a best practice, consider using trails that log events in all regions.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enable\-log\-file\-validation\fP | \fB\-\-no\-enable\-log\-file\-validation\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether log file validation is enabled. The default is false.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+When you disable log file integrity validation, the chain of digest files is broken after one hour. CloudTrail will not create digest files for log files that were delivered during a period in which log file integrity validation was disabled. For example, if you enable log file integrity validation at noon on January 1, disable it at noon on January 2, and re\-enable it at noon on January 10, digest files will not be created for the log files delivered from noon on January 2 to noon on January 10. The same applies whenever you stop CloudTrail logging or delete a trail.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cloud\-watch\-logs\-log\-group\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a log group name using an Amazon Resource Name (ARN), a unique identifier that represents the log group to which CloudTrail logs will be delivered. Not required unless you specify CloudWatchLogsRoleArn.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cloud\-watch\-logs\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the role for the CloudWatch Logs endpoint to assume to write to a user\(aqs log group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the KMS key ID to use to encrypt the logs delivered by CloudTrail. The value can be an alias name prefixed by "alias/", a fully specified ARN to an alias, a fully specified ARN to a key, or a globally unique identifier.
+.sp
+Examples:
+.INDENT 0.0
+.IP \(bu 2
+alias/MyAliasName
+.IP \(bu 2
+arn:aws:kms:us\-east\-2:123456789012:alias/MyAliasName
+.IP \(bu 2
+arn:aws:kms:us\-east\-2:123456789012:key/12345678\-1234\-1234\-1234\-123456789012
+.IP \(bu 2
+12345678\-1234\-1234\-1234\-123456789012
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-is\-organization\-trail\fP | \fB\-\-no\-is\-organization\-trail\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the trail is applied to all accounts in an organization in AWS Organizations, or only for the current AWS account. The default is false, and cannot be true unless the call is made on behalf of an AWS account that is the master account for an organization in AWS Organizations. If the trail is not an organization trail and this is set to true, the trail will be created in all AWS accounts that belong to the organization. If the trail is an organization trail and this is set to false, the trail will remain in the current AWS account but be deleted from all member accounts in the organization.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update a trail\fP
+.sp
+The following \fBupdate\-trail\fP command updates a trail to use an existing bucket for log delivery:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws cloudtrail update\-trail \-\-name Trail1 \-\-s3\-bucket\-name my\-bucket
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "IncludeGlobalServiceEvents": true,
+  "Name": "Trail1",
+  "TrailARN": "arn:aws:cloudtrail:us\-west\-2:123456789012:trail/Trail1",
+  "LogFileValidationEnabled": false,
+  "IsMultiRegionTrail": true,
+  "S3BucketName": "my\-bucket"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the trail.
+.UNINDENT
+.UNINDENT
+.sp
+S3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of the Amazon S3 bucket designated for publishing log files.
+.UNINDENT
+.UNINDENT
+.sp
+S3KeyPrefix \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Amazon S3 key prefix that comes after the name of the bucket you have designated for log file delivery. For more information, see \fI\%Finding Your CloudTrail Log Files\fP .
+.UNINDENT
+.UNINDENT
+.sp
+SnsTopicName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This field is no longer in use. Use SnsTopicARN.
+.UNINDENT
+.UNINDENT
+.sp
+SnsTopicARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ARN of the Amazon SNS topic that CloudTrail uses to send notifications when log files are delivered. The format of a topic ARN is:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:sns:us\-east\-2:123456789012:MyTopic\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IncludeGlobalServiceEvents \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the trail is publishing events from global services such as IAM to the log files.
+.UNINDENT
+.UNINDENT
+.sp
+IsMultiRegionTrail \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the trail exists in one region or in all regions.
+.UNINDENT
+.UNINDENT
+.sp
+TrailARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the ARN of the trail that was updated. The format of a trail ARN is:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:cloudtrail:us\-east\-2:123456789012:trail/MyTrail\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LogFileValidationEnabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether log file integrity validation is enabled.
+.UNINDENT
+.UNINDENT
+.sp
+CloudWatchLogsLogGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Amazon Resource Name (ARN) of the log group to which CloudTrail logs will be delivered.
+.UNINDENT
+.UNINDENT
+.sp
+CloudWatchLogsRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the role for the CloudWatch Logs endpoint to assume to write to a user\(aqs log group.
+.UNINDENT
+.UNINDENT
+.sp
+KmsKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the KMS key ID that encrypts the logs delivered by CloudTrail. The value is a fully specified ARN to a KMS key in the format:
+.INDENT 0.0
+.INDENT 3.5
+\fBarn:aws:kms:us\-east\-2:123456789012:key/12345678\-1234\-1234\-1234\-123456789012\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+IsOrganizationTrail \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the trail is an organization trail.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

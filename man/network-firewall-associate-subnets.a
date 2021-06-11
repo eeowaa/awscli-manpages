@@ -1,0 +1,195 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "NETWORK-FIREWALL-ASSOCIATE-SUBNETS" "a" "" ""
+.SH NAME
+network-firewall-associate-subnets \- Associates the specified subnets in the Amazon VPC to the firewall
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Associates the specified subnets in the Amazon VPC to the firewall. You can specify one subnet for each of the Availability Zones that the VPC spans.
+.sp
+This request creates an AWS Network Firewall firewall endpoint in each of the subnets. To enable the firewall\(aqs protections, you must also modify the VPC\(aqs route tables for each subnet\(aqs Availability Zone, to redirect the traffic that\(aqs coming into and going out of the zone through the firewall endpoint.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  associate\-subnets
+[\-\-update\-token <value>]
+[\-\-firewall\-arn <value>]
+[\-\-firewall\-name <value>]
+\-\-subnet\-mappings <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-update\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional token that you can use for optimistic locking. Network Firewall returns a token to your requests that access the firewall. The token marks the state of the firewall resource at the time of the request.
+.sp
+To make an unconditional change to the firewall, omit the token in your update request. Without the token, Network Firewall performs your updates regardless of whether the firewall has changed since you last retrieved it.
+.sp
+To make a conditional change to the firewall, provide the token in your update request. Network Firewall uses the token to ensure that the firewall hasn\(aqt changed since you last retrieved it. If it has changed, the operation fails with an \fBInvalidTokenException\fP . If this happens, retrieve the firewall again to get a current copy of it with a new token. Reapply your changes as needed, then try the operation again using the new token.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-firewall\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the firewall.
+.sp
+You must specify the ARN or the name, and you can specify both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-firewall\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the firewall. You can\(aqt change the name of a firewall after you create it.
+.sp
+You must specify the ARN or the name, and you can specify both.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-subnet\-mappings\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets that you want to associate with the firewall.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The ID for a subnet that you want to associate with the firewall. This is used with  CreateFirewall and  AssociateSubnets . AWS Network Firewall creates an instance of the associated firewall in each subnet that you specify, to filter traffic in the subnet\(aqs Availability Zone.
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the subnet.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SubnetId=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "SubnetId": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+FirewallArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the firewall.
+.UNINDENT
+.UNINDENT
+.sp
+FirewallName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The descriptive name of the firewall. You can\(aqt change the name of a firewall after you create it.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetMappings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets that are associated with the firewall.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The ID for a subnet that you want to associate with the firewall. This is used with  CreateFirewall and  AssociateSubnets . AWS Network Firewall creates an instance of the associated firewall in each subnet that you specify, to filter traffic in the subnet\(aqs Availability Zone.
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for the subnet.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+UpdateToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional token that you can use for optimistic locking. Network Firewall returns a token to your requests that access the firewall. The token marks the state of the firewall resource at the time of the request.
+.sp
+To make an unconditional change to the firewall, omit the token in your update request. Without the token, Network Firewall performs your updates regardless of whether the firewall has changed since you last retrieved it.
+.sp
+To make a conditional change to the firewall, provide the token in your update request. Network Firewall uses the token to ensure that the firewall hasn\(aqt changed since you last retrieved it. If it has changed, the operation fails with an \fBInvalidTokenException\fP . If this happens, retrieve the firewall again to get a current copy of it with a new token. Reapply your changes as needed, then try the operation again using the new token.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

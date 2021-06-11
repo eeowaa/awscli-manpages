@@ -1,0 +1,183 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLUE-DELETE-SCHEMA-VERSIONS" "a" "" ""
+.SH NAME
+glue-delete-schema-versions \- Remove versions from the specified schema
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Remove versions from the specified schema. A version number or range may be supplied. If the compatibility mode forbids deleting of a version that is necessary, such as BACKWARDS_FULL, an error is returned. Calling the \fBGetSchemaVersions\fP API after this call will list the status of the deleted versions.
+.sp
+When the range of version numbers contain check pointed version, the API will return a 409 conflict and will not proceed with the deletion. You have to remove the checkpoint first using the \fBDeleteSchemaCheckpoint\fP API before using this API.
+.sp
+You cannot use the \fBDeleteSchemaVersions\fP API to delete the first schema version in the schema set. The first schema version can only be deleted by the \fBDeleteSchema\fP API. This operation will also delete the attached \fBSchemaVersionMetadata\fP under the schema versions. Hard deletes will be enforced on the database.
+.sp
+If the compatibility mode forbids deleting of a version that is necessary, such as BACKWARDS_FULL, an error is returned.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  delete\-schema\-versions
+\-\-schema\-id <value>
+\-\-versions <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-schema\-id\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+This is a wrapper structure that may contain the schema name and Amazon Resource Name (ARN).
+.sp
+SchemaArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the schema. One of \fBSchemaArn\fP or \fBSchemaName\fP has to be provided.
+.UNINDENT
+.UNINDENT
+.sp
+SchemaName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the schema. One of \fBSchemaArn\fP or \fBSchemaName\fP has to be provided.
+.UNINDENT
+.UNINDENT
+.sp
+RegistryName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the schema registry that contains the schema.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SchemaArn=string,SchemaName=string,RegistryName=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SchemaArn": "string",
+  "SchemaName": "string",
+  "RegistryName": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-versions\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A version range may be supplied which may be of the format:
+.INDENT 0.0
+.IP \(bu 2
+a single version number, 5
+.IP \(bu 2
+a range, 5\-8 : deletes versions 5, 6, 7, 8
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+SchemaVersionErrors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of \fBSchemaVersionErrorItem\fP objects, each containing an error and schema version.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object that contains the error details for an operation on a schema version.
+.sp
+VersionNumber \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The version number of the schema.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorDetails \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of the error for the schema version.
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code for an error.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message for an error.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

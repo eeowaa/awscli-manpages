@@ -1,0 +1,358 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SNS-PUBLISH" "a" "" ""
+.SH NAME
+sns-publish \- Sends a message to an Amazon SNS topic, a text message (SMS message) directly to a phone number, or a message to a mobile platform endpoint (when you specify the TargetArn )
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Sends a message to an Amazon SNS topic, a text message (SMS message) directly to a phone number, or a message to a mobile platform endpoint (when you specify the \fBTargetArn\fP ).
+.sp
+If you send a message to a topic, Amazon SNS delivers the message to each endpoint that is subscribed to the topic. The format of the message depends on the notification protocol for each subscribed endpoint.
+.sp
+When a \fBmessageId\fP is returned, the message has been saved and Amazon SNS will attempt to deliver it shortly.
+.sp
+To use the \fBPublish\fP action for sending a message to a mobile endpoint, such as an app on a Kindle device or mobile phone, you must specify the EndpointArn for the TargetArn parameter. The EndpointArn is returned when making a call with the \fBCreatePlatformEndpoint\fP action.
+.sp
+For more information about formatting messages, see \fI\%Send Custom Platform\-Specific Payloads in Messages to Mobile Devices\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can publish messages only to topics and endpoints in the same AWS Region.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  publish
+[\-\-topic\-arn <value>]
+[\-\-target\-arn <value>]
+[\-\-phone\-number <value>]
+\-\-message <value>
+[\-\-subject <value>]
+[\-\-message\-structure <value>]
+[\-\-message\-attributes <value>]
+[\-\-message\-deduplication\-id <value>]
+[\-\-message\-group\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-topic\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The topic you want to publish to.
+.sp
+If you don\(aqt specify a value for the \fBTopicArn\fP parameter, you must specify a value for the \fBPhoneNumber\fP or \fBTargetArn\fP parameters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If you don\(aqt specify a value for the \fBTargetArn\fP parameter, you must specify a value for the \fBPhoneNumber\fP or \fBTopicArn\fP parameters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-phone\-number\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The phone number to which you want to deliver an SMS message. Use E.164 format.
+.sp
+If you don\(aqt specify a value for the \fBPhoneNumber\fP parameter, you must specify a value for the \fBTargetArn\fP or \fBTopicArn\fP parameters.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The message you want to send.
+.sp
+If you are publishing to a topic and you want to send the same message to all transport protocols, include the text of the message as a String value. If you want to send different messages for each transport protocol, set the value of the \fBMessageStructure\fP parameter to \fBjson\fP and use a JSON object for the \fBMessage\fP parameter.
+.sp
+Constraints:
+.INDENT 0.0
+.IP \(bu 2
+With the exception of SMS, messages must be UTF\-8 encoded strings and at most 256 KB in size (262,144 bytes, not 262,144 characters).
+.IP \(bu 2
+For SMS, each message can contain up to 140 characters. This character limit depends on the encoding schema. For example, an SMS message can contain 160 GSM characters, 140 ASCII characters, or 70 UCS\-2 characters. If you publish a message that exceeds this size limit, Amazon SNS sends the message as multiple messages, each fitting within the size limit. Messages aren\(aqt truncated mid\-word but are cut off at whole\-word boundaries. The total size limit for a single SMS \fBPublish\fP action is 1,600 characters.
+.UNINDENT
+.sp
+JSON\-specific constraints:
+.INDENT 0.0
+.IP \(bu 2
+Keys in the JSON object that correspond to supported transport protocols must have simple JSON string values.
+.IP \(bu 2
+The values will be parsed (unescaped) before they are used in outgoing messages.
+.IP \(bu 2
+Outbound notifications are JSON encoded (meaning that the characters will be reescaped for sending).
+.IP \(bu 2
+Values have a minimum length of 0 (the empty string, "", is allowed).
+.IP \(bu 2
+Values have a maximum length bounded by the overall message size (so, including multiple protocols may limit message sizes).
+.IP \(bu 2
+Non\-string values will cause the key to be ignored.
+.IP \(bu 2
+Keys that do not correspond to supported transport protocols are ignored.
+.IP \(bu 2
+Duplicate keys are not allowed.
+.IP \(bu 2
+Failure to parse or validate any key or value in the message will cause the \fBPublish\fP call to return an error (no partial delivery).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-subject\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Optional parameter to be used as the "Subject" line when the message is delivered to email endpoints. This field will also be included, if present, in the standard JSON messages delivered to other endpoints.
+.sp
+Constraints: Subjects must be ASCII text that begins with a letter, number, or punctuation mark; must not include line breaks or control characters; and must be less than 100 characters long.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-structure\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Set \fBMessageStructure\fP to \fBjson\fP if you want to send a different message for each protocol. For example, using one publish action, you can send a short message to your SMS subscribers and a longer message to your email subscribers. If you set \fBMessageStructure\fP to \fBjson\fP , the value of the \fBMessage\fP parameter must:
+.INDENT 0.0
+.IP \(bu 2
+be a syntactically valid JSON object; and
+.IP \(bu 2
+contain at least a top\-level JSON key of "default" with a value that is a string.
+.UNINDENT
+.sp
+You can define other top\-level keys that define the message you want to send to a specific transport protocol (e.g., "http").
+.sp
+Valid value: \fBjson\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Message attributes for Publish action.
+.sp
+Name \-> (string)
+.sp
+Value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The user\-specified message attribute value. For string data types, the value attribute has the same restrictions on the content as the message body. For more information, see \fI\%Publish\fP .
+.sp
+Name, type, and value must not be empty or null. In addition, the message body should not be empty or null. All parts of the message attribute, including name, type, and value, are included in the message size restriction, which is currently 256 KB (262,144 bytes). For more information, see \fI\%Amazon SNS message attributes\fP and \fI\%Publishing to a mobile phone\fP in the \fIAmazon SNS Developer Guide.\fP
+.sp
+DataType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon SNS supports the following logical data types: String, String.Array, Number, and Binary. For more information, see \fI\%Message Attribute Data Types\fP .
+.UNINDENT
+.UNINDENT
+.sp
+StringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Strings are Unicode with UTF8 binary encoding. For a list of code values, see \fI\%ASCII Printable Characters\fP .
+.UNINDENT
+.UNINDENT
+.sp
+BinaryValue \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Binary type attributes can store any binary data, for example, compressed data, encrypted data, or images.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName1=DataType=string,StringValue=string,BinaryValue=blob,KeyName2=DataType=string,StringValue=string,BinaryValue=blob
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"string": {
+      "DataType": "string",
+      "StringValue": "string",
+      "BinaryValue": blob
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-deduplication\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter applies only to FIFO (first\-in\-first\-out) topics. The \fBMessageDeduplicationId\fP can contain up to 128 alphanumeric characters (a\-z, A\-Z, 0\-9) and punctuation \fB(!"#$%&\(aq()*+,\-./:;<=>?@[\e]^_\(ga{|}~)\fP .
+.sp
+Every message must have a unique \fBMessageDeduplicationId\fP , which is a token used for deduplication of sent messages. If a message with a particular \fBMessageDeduplicationId\fP is sent successfully, any message sent with the same \fBMessageDeduplicationId\fP during the 5\-minute deduplication interval is treated as a duplicate.
+.sp
+If the topic has \fBContentBasedDeduplication\fP set, the system generates a \fBMessageDeduplicationId\fP based on the contents of the message. Your \fBMessageDeduplicationId\fP overrides the generated one.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-message\-group\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter applies only to FIFO (first\-in\-first\-out) topics. The \fBMessageGroupId\fP can contain up to 128 alphanumeric characters (a\-z, A\-Z, 0\-9) and punctuation \fB(!"#$%&\(aq()*+,\-./:;<=>?@[\e]^_\(ga{|}~)\fP .
+.sp
+The \fBMessageGroupId\fP is a tag that specifies that a message belongs to a specific message group. Messages that belong to the same message group are processed in a FIFO manner (however, messages in different message groups might be processed out of order). Every message must include a \fBMessageGroupId\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To publish a message to a topic\fP
+.sp
+The following \fBpublish\fP example publishes the specified message to the specified SNS topic. The message comes from a text file, which enables you to include line breaks.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sns publish \e
+    \-\-topic\-arn "arn:aws:sns:us\-west\-2:123456789012:my\-topic" \e
+    \-\-message file://message.txt
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBmessage.txt\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Hello World
+Second Line
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "MessageId": "123a45b6\-7890\-12c3\-45d6\-111122223333"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To publish an SMS message to a phone number\fP
+.sp
+The following \fBpublish\fP example publishes the message \fBHello world!\fP to the phone number \fB+1\-555\-555\-0100\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws sns publish \e
+    \-\-message "Hello world!" \e
+    \-\-phone\-number +1\-555\-555\-0100
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "MessageId": "123a45b6\-7890\-12c3\-45d6\-333322221111"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+MessageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Unique identifier assigned to the published message.
+.sp
+Length Constraint: Maximum 100 characters
+.UNINDENT
+.UNINDENT
+.sp
+SequenceNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This response element applies only to FIFO (first\-in\-first\-out) topics.
+.sp
+The sequence number is a large, non\-consecutive number that Amazon SNS assigns to each message. The length of \fBSequenceNumber\fP is 128 bits. \fBSequenceNumber\fP continues to increase for each \fBMessageGroupId\fP .
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,169 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLACIER-UPLOAD-MULTIPART-PART" "a" "" ""
+.SH NAME
+glacier-upload-multipart-part \- This operation uploads a part of an archive
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This operation uploads a part of an archive. You can upload archive parts in any order. You can also upload them in parallel. You can upload up to 10,000 parts for a multipart upload.
+.sp
+Amazon Glacier rejects your upload part request if any of the following conditions is true:
+.INDENT 0.0
+.IP \(bu 2
+\fBSHA256 tree hash does not match\fP To ensure that part data is not corrupted in transmission, you compute a SHA256 tree hash of the part and include it in your request. Upon receiving the part data, Amazon S3 Glacier also computes a SHA256 tree hash. If these hash values don\(aqt match, the operation fails. For information about computing a SHA256 tree hash, see \fI\%Computing Checksums\fP .
+.IP \(bu 2
+\fBPart size does not match\fP The size of each part except the last must match the size specified in the corresponding  InitiateMultipartUpload request. The size of the last part must be the same size as, or smaller than, the specified size.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you upload a part whose size is smaller than the part size you specified in your initiate multipart upload request and that part is not the last part, then the upload part request will succeed. However, the subsequent Complete Multipart Upload request will fail.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBRange does not align\fP The byte range value in the request does not align with the part size specified in the corresponding initiate request. For example, if you specify a part size of 4194304 bytes (4 MB), then 0 to 4194303 bytes (4 MB \- 1) and 4194304 (4 MB) to 8388607 (8 MB \- 1) are valid part ranges. However, if you set a range value of 2 MB to 6 MB, the range does not align with the part size and the upload will fail.
+.UNINDENT
+.sp
+This operation is idempotent. If you upload the same part multiple times, the data included in the most recent request overwrites the previously uploaded data.
+.sp
+An AWS account has full permission to perform all operations (actions). However, AWS Identity and Access Management (IAM) users don\(aqt have any permissions by default. You must grant them explicit permission to perform specific actions. For more information, see \fI\%Access Control Using AWS Identity and Access Management (IAM)\fP .
+.sp
+For conceptual information and underlying REST API, see \fI\%Uploading Large Archives in Parts (Multipart Upload)\fP and \fI\%Upload Part\fP in the \fIAmazon Glacier Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  upload\-multipart\-part
+\-\-account\-id <value>
+\-\-vault\-name <value>
+\-\-upload\-id <value>
+[\-\-checksum <value>]
+[\-\-range <value>]
+[\-\-body <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBAccountId\fP value is the AWS account ID of the account that owns the vault. You can either specify an AWS account ID or optionally a single \(aq\fB\-\fP \(aq (hyphen), in which case Amazon S3 Glacier uses the AWS account ID associated with the credentials used to sign the request. If you use an account ID, do not include any hyphens (\(aq\-\(aq) in the ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vault\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the vault.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-upload\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The upload ID of the multipart upload.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-checksum\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 tree hash of the data being uploaded.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-range\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the range of bytes in the assembled archive that will be uploaded in this part. Amazon S3 Glacier uses this information to assemble the archive in the proper sequence. The format of this header follows RFC 2616. An example header is Content\-Range:bytes 0\-4194303/
+.nf
+*
+.fi
+\&.
+.IP "System Message: WARNING/2 (<string>:, line 113)"
+Inline emphasis start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-body\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+The data to upload.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command uploads the first 1 MiB (1024 x 1024 bytes) part of an archive:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws glacier upload\-multipart\-part \-\-body part1 \-\-range \(aqbytes 0\-1048575/*\(aq \-\-account\-id \- \-\-vault\-name my\-vault \-\-upload\-id 19gaRezEXAMPLES6Ry5YYdqthHOC_kGRCT03L9yetr220UmPtBYKk\-OssZtLqyFu7sY1_lR7vgFuJV6NtcV5zpsJ
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Amazon Glacier requires an account ID argument when performing operations, but you can use a hyphen to specify the in\-use account.
+.sp
+The body parameter takes a path to a part file on the local filesystem. The range parameter takes an HTTP content range indicating the bytes that the part occupies in the completed archive. The upload ID is returned by the \fBaws glacier initiate\-multipart\-upload\fP command and can also be obtained by using \fBaws glacier list\-multipart\-uploads\fP\&.
+.sp
+For more information on multipart uploads to Amazon Glacier using the AWS CLI, see \fI\%Using Amazon Glacier\fP in the \fIAWS CLI User Guide\fP\&.
+.SH OUTPUT
+.sp
+checksum \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The SHA256 tree hash that Amazon S3 Glacier computed for the uploaded part.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,700 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "QLDB-SESSION-SEND-COMMAND" "a" "" ""
+.SH NAME
+qldb-session-send-command \- Sends a command to an Amazon QLDB ledger
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Sends a command to an Amazon QLDB ledger.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Instead of interacting directly with this API, we recommend using the QLDB driver or the QLDB shell to execute data transactions on a ledger.
+.INDENT 0.0
+.IP \(bu 2
+If you are working with an AWS SDK, use the QLDB driver. The driver provides a high\-level abstraction layer above this \fIQLDB Session\fP data plane and manages \fBSendCommand\fP API calls for you. For information and a list of supported programming languages, see \fI\%Getting started with the driver\fP in the \fIAmazon QLDB Developer Guide\fP .
+.IP \(bu 2
+If you are working with the AWS Command Line Interface (AWS CLI), use the QLDB shell. The shell is a command line interface that uses the QLDB driver to interact with a ledger. For information, see \fI\%Accessing Amazon QLDB using the QLDB shell\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  send\-command
+[\-\-session\-token <value>]
+[\-\-start\-session <value>]
+[\-\-start\-transaction <value>]
+[\-\-end\-session <value>]
+[\-\-commit\-transaction <value>]
+[\-\-abort\-transaction <value>]
+[\-\-execute\-statement <value>]
+[\-\-fetch\-page <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-session\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the session token for the current command. A session token is constant throughout the life of the session.
+.sp
+To obtain a session token, run the \fBStartSession\fP command. This \fBSessionToken\fP is required for every subsequent command that is issued during the current session.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-session\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Command to start a new session. A session token is obtained as part of the response.
+.sp
+LedgerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the ledger to start a new session against.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+LedgerName=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "LedgerName": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-start\-transaction\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Command to start a new transaction.
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-end\-session\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Command to end the current session.
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-commit\-transaction\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Command to commit the specified transaction.
+.sp
+TransactionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the transaction ID of the transaction to commit.
+.UNINDENT
+.UNINDENT
+.sp
+CommitDigest \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the commit digest for the transaction to commit. For every active transaction, the commit digest must be passed. QLDB validates \fBCommitDigest\fP and rejects the commit with an error if the digest computed on the client does not match the digest computed by QLDB.
+.sp
+The purpose of the \fBCommitDigest\fP parameter is to ensure that QLDB commits a transaction if and only if the server has processed the exact set of statements sent by the client, in the same order that client sent them, and with no duplicates.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TransactionId=string,CommitDigest=blob
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TransactionId": "string",
+  "CommitDigest": blob
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-abort\-transaction\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Command to abort the current transaction.
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-execute\-statement\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Command to execute a statement in the specified transaction.
+.sp
+TransactionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the transaction ID of the request.
+.UNINDENT
+.UNINDENT
+.sp
+Statement \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the statement of the request.
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the parameters for the parameterized statement in the request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that can contain a value in multiple encoding formats.
+.sp
+IonBinary \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Ion binary value contained in a \fBValueHolder\fP structure.
+.UNINDENT
+.UNINDENT
+.sp
+IonText \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Ion plaintext value contained in a \fBValueHolder\fP structure.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TransactionId=string,Statement=string,Parameters=[{IonBinary=blob,IonText=string},{IonBinary=blob,IonText=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TransactionId": "string",
+  "Statement": "string",
+  "Parameters": [
+    {
+      "IonBinary": blob,
+      "IonText": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-fetch\-page\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Command to fetch a page.
+.sp
+TransactionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the transaction ID of the page to be fetched.
+.UNINDENT
+.UNINDENT
+.sp
+NextPageToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the next page token of the page to be fetched.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TransactionId=string,NextPageToken=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TransactionId": "string",
+  "NextPageToken": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+StartSession \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the started session that includes a session token. This \fBSessionToken\fP is required for every subsequent command that is issued during the current session.
+.sp
+SessionToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Session token of the started session. This \fBSessionToken\fP is required for every subsequent command that is issued during the current session.
+.UNINDENT
+.UNINDENT
+.sp
+TimingInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains server\-side performance information for the command.
+.sp
+ProcessingTimeMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that QLDB spent on processing the command, measured in milliseconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+StartTransaction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the started transaction.
+.sp
+TransactionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The transaction ID of the started transaction.
+.UNINDENT
+.UNINDENT
+.sp
+TimingInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains server\-side performance information for the command.
+.sp
+ProcessingTimeMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that QLDB spent on processing the command, measured in milliseconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+EndSession \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the ended session.
+.sp
+TimingInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains server\-side performance information for the command.
+.sp
+ProcessingTimeMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that QLDB spent on processing the command, measured in milliseconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CommitTransaction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the committed transaction.
+.sp
+TransactionId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The transaction ID of the committed transaction.
+.UNINDENT
+.UNINDENT
+.sp
+CommitDigest \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The commit digest of the committed transaction.
+.UNINDENT
+.UNINDENT
+.sp
+TimingInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains server\-side performance information for the command.
+.sp
+ProcessingTimeMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that QLDB spent on processing the command, measured in milliseconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ConsumedIOs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains metrics about the number of I/O requests that were consumed.
+.sp
+ReadIOs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of read I/O requests that the command made.
+.UNINDENT
+.UNINDENT
+.sp
+WriteIOs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of write I/O requests that the command made.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AbortTransaction \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the aborted transaction.
+.sp
+TimingInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains server\-side performance information for the command.
+.sp
+ProcessingTimeMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that QLDB spent on processing the command, measured in milliseconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ExecuteStatement \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the executed statement.
+.sp
+FirstPage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the first fetched page.
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains values in multiple encoding formats.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that can contain a value in multiple encoding formats.
+.sp
+IonBinary \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Ion binary value contained in a \fBValueHolder\fP structure.
+.UNINDENT
+.UNINDENT
+.sp
+IonText \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Ion plaintext value contained in a \fBValueHolder\fP structure.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextPageToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token of the next page.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TimingInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains server\-side performance information for the command.
+.sp
+ProcessingTimeMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that QLDB spent on processing the command, measured in milliseconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ConsumedIOs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains metrics about the number of I/O requests that were consumed.
+.sp
+ReadIOs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of read I/O requests that the command made.
+.UNINDENT
+.UNINDENT
+.sp
+WriteIOs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of write I/O requests that the command made.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FetchPage \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the details of the fetched page.
+.sp
+Page \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains details of the fetched page.
+.sp
+Values \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains values in multiple encoding formats.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that can contain a value in multiple encoding formats.
+.sp
+IonBinary \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Ion binary value contained in a \fBValueHolder\fP structure.
+.UNINDENT
+.UNINDENT
+.sp
+IonText \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Ion plaintext value contained in a \fBValueHolder\fP structure.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextPageToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The token of the next page.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+TimingInformation \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains server\-side performance information for the command.
+.sp
+ProcessingTimeMilliseconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time that QLDB spent on processing the command, measured in milliseconds.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+ConsumedIOs \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains metrics about the number of I/O requests that were consumed.
+.sp
+ReadIOs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of read I/O requests that the command made.
+.UNINDENT
+.UNINDENT
+.sp
+WriteIOs \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The number of write I/O requests that the command made.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

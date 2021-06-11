@@ -1,0 +1,199 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "S3CONTROL-PUT-BUCKET-TAGGING" "a" "" ""
+.SH NAME
+s3control-put-bucket-tagging \- This action puts tags on an Amazon S3 on Outposts bucket
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This action puts tags on an Amazon S3 on Outposts bucket. To put tags on an S3 bucket, see \fI\%PutBucketTagging\fP in the \fIAmazon S3 API Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Sets the tags for an S3 on Outposts bucket. For more information, see \fI\%Using Amazon S3 on Outposts\fP in the \fIAmazon S3 User Guide\fP .
+.sp
+Use tags to organize your AWS bill to reflect your own cost structure. To do this, sign up to get your AWS account bill with tag key values included. Then, to see the cost of combined resources, organize your billing information according to resources with the same tag key values. For example, you can tag several resources with a specific application name, and then organize your billing information to see the total cost of that application across several services. For more information, see \fI\%Cost allocation and tagging\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Within a bucket, if you add a tag that has the same key as an existing tag, the new value overwrites the old value. For more information, see \fI\%Using cost allocation in Amazon S3 bucket tags\fP .
+.UNINDENT
+.UNINDENT
+.sp
+To use this action, you must have permissions to perform the \fBs3\-outposts:PutBucketTagging\fP action. The Outposts bucket owner has this permission by default and can grant this permission to others. For more information about permissions, see \fI\%Permissions Related to Bucket Subresource Operations\fP and \fI\%Managing access permissions to your Amazon S3 resources\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBPutBucketTagging\fP has the following special errors:
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+Error code: \fBInvalidTagError\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: The tag provided was not a valid tag. This error can occur if the tag did not pass input validation. For information about tag restrictions, see \fI\%User\-Defined Tag Restrictions\fP and \fI\%AWS\-Generated Cost Allocation Tag Restrictions\fP .
+.UNINDENT
+.IP \(bu 2
+Error code: \fBMalformedXMLError\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: The XML provided does not match the schema.
+.UNINDENT
+.IP \(bu 2
+Error code: \fBOperationAbortedError\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: A conflicting conditional action is currently in progress against this resource. Try again.
+.UNINDENT
+.IP \(bu 2
+Error code: \fBInternalError\fP
+.INDENT 2.0
+.IP \(bu 2
+Description: The service was unable to apply the provided tag to the bucket.
+.UNINDENT
+.UNINDENT
+.sp
+All Amazon S3 on Outposts REST API requests for this action require an additional parameter of \fBx\-amz\-outpost\-id\fP to be passed with the request and an S3 on Outposts endpoint hostname prefix instead of \fBs3\-control\fP . For an example of the request syntax for Amazon S3 on Outposts that uses the S3 on Outposts endpoint hostname prefix and the \fBx\-amz\-outpost\-id\fP derived using the access point ARN, see the \fI\%Examples\fP section.
+.sp
+The following actions are related to \fBPutBucketTagging\fP :
+.INDENT 0.0
+.IP \(bu 2
+\fI\%GetBucketTagging\fP
+.IP \(bu 2
+\fI\%DeleteBucketTagging\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  put\-bucket\-tagging
+\-\-account\-id <value>
+\-\-bucket <value>
+\-\-tagging <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID of the Outposts bucket.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bucket\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the bucket.
+.sp
+For using this parameter with Amazon S3 on Outposts with the REST API, you must specify the name and the x\-amz\-outpost\-id as well.
+.sp
+For using this parameter with S3 on Outposts with the AWS SDK and CLI, you must specify the ARN of the bucket accessed in the format \fBarn:aws:s3\-outposts:<Region>:<account\-id>:outpost/<outpost\-id>/bucket/<my\-bucket\-name>\fP . For example, to access the bucket \fBreports\fP through outpost \fBmy\-outpost\fP owned by account \fB123456789012\fP in Region \fBus\-west\-2\fP , use the URL encoding of \fBarn:aws:s3\-outposts:us\-west\-2:123456789012:outpost/my\-outpost/bucket/reports\fP . The value must be URL encoded.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tagging\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+TagSet \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection for a set of tags.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Key \-> (string)
+.sp
+Value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+TagSet=[{Key=string,Value=string},{Key=string,Value=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "TagSet": [
+    {
+      "Key": "string",
+      "Value": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

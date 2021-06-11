@@ -1,0 +1,320 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KINESIS-LIST-SHARDS" "a" "" ""
+.SH NAME
+kinesis-list-shards \- Lists the shards in a stream and provides information about each shard
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Lists the shards in a stream and provides information about each shard. This operation has a limit of 100 transactions per second per data stream.
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+This API is a new operation that is used by the Amazon Kinesis Client Library (KCL). If you have a fine\-grained IAM policy that only allows specific operations, you must update your policy to allow calls to this API. For more information, see \fI\%Controlling Access to Amazon Kinesis Data Streams Resources Using IAM\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-shards\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBShards\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-shards
+[\-\-stream\-name <value>]
+[\-\-exclusive\-start\-shard\-id <value>]
+[\-\-stream\-creation\-timestamp <value>]
+[\-\-shard\-filter <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-page\-size <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-stream\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the data stream whose shards you want to list.
+.sp
+You cannot specify this parameter if you specify the \fBNextToken\fP parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-exclusive\-start\-shard\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify this parameter to indicate that you want to list the shards starting with the shard whose ID immediately follows \fBExclusiveStartShardId\fP .
+.sp
+If you don\(aqt specify this parameter, the default behavior is for \fBListShards\fP to list the shards starting with the first one in the stream.
+.sp
+You cannot specify this parameter if you specify \fBNextToken\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stream\-creation\-timestamp\fP (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+Specify this input parameter to distinguish data streams that have the same name. For example, if you create a data stream and then delete it, and you later create another data stream with the same name, you can use this input parameter to specify which of the two streams you want to list the shards for.
+.sp
+You cannot specify this parameter if you specify the \fBNextToken\fP parameter.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-shard\-filter\fP (structure)
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+ShardId \-> (string)
+.sp
+Timestamp \-> (timestamp)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type=string,ShardId=string,Timestamp=timestamp
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Type": "AFTER_SHARD_ID"|"AT_TRIM_HORIZON"|"FROM_TRIM_HORIZON"|"AT_LATEST"|"AT_TIMESTAMP"|"FROM_TIMESTAMP",
+  "ShardId": "string",
+  "Timestamp": timestamp
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-page\-size\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The size of each page to get in the AWS service call. This does not affect the number of items returned in the command\(aqs output. Setting a smaller page size results in more calls to the AWS service, retrieving fewer items in each call. This can help prevent the AWS service calls from timing out.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo list shards in a data stream\fP
+.sp
+The following \fBlist\-shards\fP example lists all shards in the specified stream starting with the shard whose ID immediately follows the specified \fBexclusive\-start\-shard\-id\fP of \fBshardId\-000000000000\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws kinesis list\-shards \e
+    \-\-stream\-name samplestream \e
+    \-\-exclusive\-start\-shard\-id shardId\-000000000000
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Shards": [
+        {
+            "ShardId": "shardId\-000000000001",
+            "HashKeyRange": {
+                "StartingHashKey": "113427455640312821154458202477256070485",
+                "EndingHashKey": "226854911280625642308916404954512140969"
+            },
+            "SequenceNumberRange": {
+                "StartingSequenceNumber": "49600871682979337187563555549332609155523708941634633746"
+            }
+        },
+        {
+            "ShardId": "shardId\-000000000002",
+            "HashKeyRange": {
+                "StartingHashKey": "226854911280625642308916404954512140970",
+                "EndingHashKey": "340282366920938463463374607431768211455"
+            },
+            "SequenceNumberRange": {
+                "StartingSequenceNumber": "49600871683001637932762086172474144873796357303140614178"
+            }
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Listing Shards\fP in the \fIAmazon Kinesis Data Streams Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Shards \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of JSON objects. Each object represents one shard and specifies the IDs of the shard, the shard\(aqs parent, and the shard that\(aqs adjacent to the shard\(aqs parent. Each object also contains the starting and ending hash keys and the starting and ending sequence numbers for the shard.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A uniquely identified group of data records in a Kinesis data stream.
+.sp
+ShardId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier of the shard within the stream.
+.UNINDENT
+.UNINDENT
+.sp
+ParentShardId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The shard ID of the shard\(aqs parent.
+.UNINDENT
+.UNINDENT
+.sp
+AdjacentParentShardId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The shard ID of the shard adjacent to the shard\(aqs parent.
+.UNINDENT
+.UNINDENT
+.sp
+HashKeyRange \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The range of possible hash key values for the shard, which is a set of ordered contiguous positive integers.
+.sp
+StartingHashKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The starting hash key of the hash key range.
+.UNINDENT
+.UNINDENT
+.sp
+EndingHashKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ending hash key of the hash key range.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SequenceNumberRange \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The range of possible sequence numbers for the shard.
+.sp
+StartingSequenceNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The starting sequence number for the range.
+.UNINDENT
+.UNINDENT
+.sp
+EndingSequenceNumber \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ending sequence number for the range. Shards that are in the OPEN state have an ending sequence number of \fBnull\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When the number of shards in the data stream is greater than the default value for the \fBMaxResults\fP parameter, or if you explicitly specify a value for \fBMaxResults\fP that is less than the number of shards in the data stream, the response includes a pagination token named \fBNextToken\fP . You can specify this \fBNextToken\fP value in a subsequent call to \fBListShards\fP to list the next set of shards. For more information about the use of this pagination token when calling the \fBListShards\fP operation, see  ListShardsInput$NextToken .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Tokens expire after 300 seconds. When you obtain a value for \fBNextToken\fP in the response to a call to \fBListShards\fP , you have 300 seconds to use that value. If you specify an expired token in a call to \fBListShards\fP , you get \fBExpiredNextTokenException\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

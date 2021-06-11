@@ -1,0 +1,423 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SES-SEND-RAW-EMAIL" "a" "" ""
+.SH NAME
+ses-send-raw-email \- Composes an email message and immediately queues it for sending
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Composes an email message and immediately queues it for sending.
+.sp
+This operation is more flexible than the \fBSendEmail\fP API operation. When you use the \fBSendRawEmail\fP operation, you can specify the headers of the message as well as its content. This flexibility is useful, for example, when you want to send a multipart MIME email (such a message that contains both a text and an HTML version). You can also use this operation to send messages that include attachments.
+.sp
+The \fBSendRawEmail\fP operation has the following requirements:
+.INDENT 0.0
+.IP \(bu 2
+You can only send email from \fI\%verified email addresses or domains\fP . If you try to send email from an address that isn\(aqt verified, the operation results in an "Email address not verified" error.
+.IP \(bu 2
+If your account is still in the \fI\%Amazon SES sandbox\fP , you can only send email to other verified addresses in your account, or to addresses that are associated with the \fI\%Amazon SES mailbox simulator\fP .
+.IP \(bu 2
+The maximum message size, including attachments, is 10 MB.
+.IP \(bu 2
+Each message has to include at least one recipient address. A recipient address includes any address on the To:, CC:, or BCC: lines.
+.IP \(bu 2
+If you send a single message to more than one recipient address, and one of the recipient addresses isn\(aqt in a valid format (that is, it\(aqs not in the format \fIUserName@[SubDomain.]Domain.TopLevelDomain\fP ), Amazon SES rejects the entire message, even if the other addresses are valid.
+.IP \(bu 2
+Each message can include up to 50 recipient addresses across the To:, CC:, or BCC: lines. If you need to send a single message to more than 50 recipients, you have to split the list of recipient addresses into groups of less than 50 recipients, and send separate messages to each group.
+.IP \(bu 2
+Amazon SES allows you to specify 8\-bit Content\-Transfer\-Encoding for MIME message parts. However, if Amazon SES has to modify the contents of your message (for example, if you use open and click tracking), 8\-bit content isn\(aqt preserved. For this reason, we highly recommend that you encode all content that isn\(aqt 7\-bit ASCII. For more information, see \fI\%MIME Encoding\fP in the \fIAmazon SES Developer Guide\fP .
+.UNINDENT
+.sp
+Additionally, keep the following considerations in mind when using the \fBSendRawEmail\fP operation:
+.INDENT 0.0
+.IP \(bu 2
+Although you can customize the message headers when using the \fBSendRawEmail\fP operation, Amazon SES will automatically apply its own \fBMessage\-ID\fP and \fBDate\fP headers; if you passed these headers when creating the message, they will be overwritten by the values that Amazon SES provides.
+.IP \(bu 2
+If you are using sending authorization to send on behalf of another user, \fBSendRawEmail\fP enables you to specify the cross\-account identity for the email\(aqs Source, From, and Return\-Path parameters in one of two ways: you can pass optional parameters \fBSourceArn\fP , \fBFromArn\fP , and/or \fBReturnPathArn\fP to the API, or you can include the following X\-headers in the header of your raw email:
+.INDENT 2.0
+.IP \(bu 2
+\fBX\-SES\-SOURCE\-ARN\fP
+.IP \(bu 2
+\fBX\-SES\-FROM\-ARN\fP
+.IP \(bu 2
+\fBX\-SES\-RETURN\-PATH\-ARN\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Don\(aqt include these X\-headers in the DKIM signature. Amazon SES removes these before it sends the email.
+.UNINDENT
+.UNINDENT
+.sp
+If you only specify the \fBSourceIdentityArn\fP parameter, Amazon SES sets the From and Return\-Path addresses to the same identity that you specified.
+.sp
+For more information about sending authorization, see the \fI\%Using Sending Authorization with Amazon SES\fP in the \fIAmazon SES Developer Guide.\fP
+.INDENT 0.0
+.IP \(bu 2
+For every message that you send, the total number of recipients (including each recipient in the To:, CC: and BCC: fields) is counted against the maximum number of emails you can send in a 24\-hour period (your \fIsending quota\fP ). For more information about sending quotas in Amazon SES, see \fI\%Managing Your Amazon SES Sending Limits\fP in the \fIAmazon SES Developer Guide.\fP
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  send\-raw\-email
+[\-\-source <value>]
+[\-\-destinations <value>]
+\-\-raw\-message <value>
+[\-\-from\-arn <value>]
+[\-\-source\-arn <value>]
+[\-\-return\-path\-arn <value>]
+[\-\-tags <value>]
+[\-\-configuration\-set\-name <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-source\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The identity\(aqs email address. If you do not provide a value for this parameter, you must specify a "From" address in the raw text of the message. (You can also specify both.)
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Amazon SES does not support the SMTPUTF8 extension, as described in\(gaRFC6531 <\fI\%https://tools.ietf.org/html/rfc6531\fP>\(ga__ . For this reason, the \fIlocal part\fP of a source email address (the part of the email address that precedes the @ sign) may only contain \fI\%7\-bit ASCII characters\fP . If the \fIdomain part\fP of an address (the part after the @ sign) contains non\-ASCII characters, they must be encoded using Punycode, as described in \fI\%RFC3492\fP . The sender name (also known as the \fIfriendly name\fP ) may contain non\-ASCII characters. These characters must be encoded using MIME encoded\-word syntax, as described in \fI\%RFC 2047\fP . MIME encoded\-word syntax uses the following form: \fB=?charset?encoding?encoded\-text?=\fP .
+.UNINDENT
+.UNINDENT
+.sp
+If you specify the \fBSource\fP parameter and have feedback forwarding enabled, then bounces and complaints will be sent to this email address. This takes precedence over any Return\-Path header that you might include in the raw text of the message.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-destinations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of destinations for the message, consisting of To:, CC:, and BCC: addresses.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-raw\-message\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The raw email message itself. The message has to meet the following criteria:
+.INDENT 0.0
+.IP \(bu 2
+The message has to contain a header and a body, separated by a blank line.
+.IP \(bu 2
+All of the required header fields must be present in the message.
+.IP \(bu 2
+Each part of a multipart MIME message must be formatted properly.
+.IP \(bu 2
+Attachments must be of a content type that Amazon SES supports. For a list on unsupported content types, see \fI\%Unsupported Attachment Types\fP in the \fIAmazon SES Developer Guide\fP .
+.IP \(bu 2
+The entire message must be base64\-encoded.
+.IP \(bu 2
+If any of the MIME parts in your message contain content that is outside of the 7\-bit ASCII character range, we highly recommend that you encode that content. For more information, see \fI\%Sending Raw Email\fP in the \fIAmazon SES Developer Guide\fP .
+.IP \(bu 2
+Per \fI\%RFC 5321\fP , the maximum length of each line of text, including the <CRLF>, must not exceed 1,000 characters.
+.UNINDENT
+.sp
+Data \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+The raw data of the message. This data needs to base64\-encoded if you are accessing Amazon SES directly through the HTTPS interface. If you are accessing Amazon SES using an AWS SDK, the SDK takes care of the base 64\-encoding for you. In all cases, the client must ensure that the message format complies with Internet email standards regarding email header fields, MIME types, and MIME encoding.
+.sp
+The To:, CC:, and BCC: headers in the raw message can contain a group list.
+.sp
+If you are using \fBSendRawEmail\fP with sending authorization, you can include X\-headers in the raw message to specify the "Source," "From," and "Return\-Path" addresses. For more information, see the documentation for \fBSendRawEmail\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Do not include these X\-headers in the DKIM signature, because they are removed by Amazon SES before sending the email.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, go to the \fI\%Amazon SES Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Data=blob
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Data": blob
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-from\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is used only for sending authorization. It is the ARN of the identity that is associated with the sending authorization policy that permits you to specify a particular "From" address in the header of the raw email.
+.sp
+Instead of using this parameter, you can use the X\-header \fBX\-SES\-FROM\-ARN\fP in the raw message of the email. If you use both the \fBFromArn\fP parameter and the corresponding X\-header, Amazon SES uses the value of the \fBFromArn\fP parameter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For information about when to use this parameter, see the description of \fBSendRawEmail\fP in this guide, or see the \fI\%Amazon SES Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is used only for sending authorization. It is the ARN of the identity that is associated with the sending authorization policy that permits you to send for the email address specified in the \fBSource\fP parameter.
+.sp
+For example, if the owner of \fBexample.com\fP (which has ARN \fBarn:aws:ses:us\-east\-1:123456789012:identity/example.com\fP ) attaches a policy to it that authorizes you to send from \fBuser@example.com\fP , then you would specify the \fBSourceArn\fP to be \fBarn:aws:ses:us\-east\-1:123456789012:identity/example.com\fP , and the \fBSource\fP to be \fBuser@example.com\fP .
+.sp
+Instead of using this parameter, you can use the X\-header \fBX\-SES\-SOURCE\-ARN\fP in the raw message of the email. If you use both the \fBSourceArn\fP parameter and the corresponding X\-header, Amazon SES uses the value of the \fBSourceArn\fP parameter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For information about when to use this parameter, see the description of \fBSendRawEmail\fP in this guide, or see the \fI\%Amazon SES Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-return\-path\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter is used only for sending authorization. It is the ARN of the identity that is associated with the sending authorization policy that permits you to use the email address specified in the \fBReturnPath\fP parameter.
+.sp
+For example, if the owner of \fBexample.com\fP (which has ARN \fBarn:aws:ses:us\-east\-1:123456789012:identity/example.com\fP ) attaches a policy to it that authorizes you to use \fBfeedback@example.com\fP , then you would specify the \fBReturnPathArn\fP to be \fBarn:aws:ses:us\-east\-1:123456789012:identity/example.com\fP , and the \fBReturnPath\fP to be \fBfeedback@example.com\fP .
+.sp
+Instead of using this parameter, you can use the X\-header \fBX\-SES\-RETURN\-PATH\-ARN\fP in the raw message of the email. If you use both the \fBReturnPathArn\fP parameter and the corresponding X\-header, Amazon SES uses the value of the \fBReturnPathArn\fP parameter.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For information about when to use this parameter, see the description of \fBSendRawEmail\fP in this guide, or see the \fI\%Amazon SES Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags, in the form of name/value pairs, to apply to an email that you send using \fBSendRawEmail\fP . Tags correspond to characteristics of the email that you define, so that you can publish email sending events.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the name and value of a tag that you can provide to \fBSendEmail\fP or \fBSendRawEmail\fP to apply to an email.
+.sp
+Message tags, which you use with configuration sets, enable you to publish email sending events. For information about using configuration sets, see the \fI\%Amazon SES Developer Guide\fP .
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the tag. The name must:
+.INDENT 0.0
+.IP \(bu 2
+This value can only contain ASCII letters (a\-z, A\-Z), numbers (0\-9), underscores (_), or dashes (\-).
+.IP \(bu 2
+Contain less than 256 characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag. The value must:
+.INDENT 0.0
+.IP \(bu 2
+This value can only contain ASCII letters (a\-z, A\-Z), numbers (0\-9), underscores (_), or dashes (\-).
+.IP \(bu 2
+Contain less than 256 characters.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-configuration\-set\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the configuration set to use when you send an email using \fBSendRawEmail\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo send a raw email using Amazon SES\fP
+.sp
+The following example uses the \fBsend\-raw\-email\fP command to send an email with a TXT attachment:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ses send\-raw\-email \e
+\-\-cli\-binary\-format raw\-in\-base64\-out \e
+\-\-raw\-message file://message.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+   "MessageId": "EXAMPLEf3f73d99b\-c63fb06f\-d263\-41f8\-a0fb\-d0dc67d56c07\-000000"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The raw message is a JSON data structure saved in a file named \fBmessage.json\fP in the current directory. It contains the following:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+   "Data": "From: sender@example.com\enTo: recipient@example.com\enSubject: Test email sent using the AWS CLI (contains an attachment)\enMIME\-Version: 1.0\enContent\-type: Multipart/Mixed; boundary=\e"NextPart\e"\en\en\-\-NextPart\enContent\-Type: text/plain\en\enThis is the message body.\en\en\-\-NextPart\enContent\-Type: text/plain;\enContent\-Disposition: attachment; filename=\e"attachment.txt\e"\en\enThis is the text in the attachment.\en\en\-\-NextPart\-\-"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+As you can see, "Data" is one long string that contains the entire raw email content in MIME format, including an attachment called attachment.txt.
+.sp
+Replace \fI\%sender@example.com\fP and \fI\%recipient@example.com\fP with the addresses you want to use. Note that the sender\(aqs email address must be verified with Amazon SES. Until you are granted production access to Amazon SES, you must also verify the email address of the recipient
+unless the recipient is the Amazon SES mailbox simulator. For more information on verification, see \fI\%Verifying Email Addresses and Domains in Amazon SES\fP in the \fIAmazon Simple Email Service Developer Guide\fP\&.
+.sp
+The Message ID in the output indicates that the call to send\-raw\-email was successful.
+.sp
+If you don\(aqt receive the email, check your Junk box.
+.sp
+For more information on sending raw email, see \fI\%Sending Raw Email Using the Amazon SES API\fP in the \fIAmazon Simple Email Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+MessageId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique message identifier returned from the \fBSendRawEmail\fP action.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,252 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "DYNAMODB-LIST-TAGS-OF-RESOURCE" "a" "" ""
+.SH NAME
+dynamodb-list-tags-of-resource \- List all tags on an Amazon DynamoDB resource
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10 times per second, per account.
+.sp
+For an overview on tagging DynamoDB resources, see \fI\%Tagging for DynamoDB\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.sp
+\fBlist\-tags\-of\-resource\fP is a paginated operation. Multiple API calls may be issued in order to retrieve the entire data set of results. You can disable pagination by providing the \fB\-\-no\-paginate\fP argument.
+When using \fB\-\-output text\fP and the \fB\-\-query\fP argument on a paginated response, the \fB\-\-query\fP argument must extract data from the results of the following query expressions: \fBTags\fP
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  list\-tags\-of\-resource
+\-\-resource\-arn <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-starting\-token <value>]
+[\-\-max\-items <value>]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-resource\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon DynamoDB resource with tags to be listed. This value is an Amazon Resource Name (ARN).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-starting\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A token to specify where to start paginating. This is the \fBNextToken\fP from a previously truncated response.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-max\-items\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The total number of items to return in the command\(aqs output. If the total number of items available is more than the value specified, a \fBNextToken\fP is provided in the command\(aqs output. To resume pagination, provide the \fBNextToken\fP value in the \fBstarting\-token\fP argument of a subsequent command. \fBDo not\fP use the \fBNextToken\fP response element directly outside of the AWS CLI.
+.sp
+For usage examples, see \fI\%Pagination\fP in the \fIAWS Command Line Interface User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To list tags of a DynamoDB resource\fP
+.sp
+The following \fBlist\-tags\-of\-resource\fP example displays tags for the \fBMusicCollection\fP table.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb list\-tags\-of\-resource \e
+    \-\-resource\-arn arn:aws:dynamodb:us\-west\-2:123456789012:table/MusicCollection
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Tags": [
+        {
+            "Key": "Owner",
+            "Value": "blueTeam"
+        },
+        {
+            "Key": "Environment",
+            "Value": "Production"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Tagging for DynamoDB\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.sp
+\fBExample 2: To limit the number of tags returned\fP
+.sp
+The following example limits the number of tags returned to 1. The response includes a \fBNextToken\fP value with which to retrieve the next page of results.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb list\-tags\-of\-resource \e
+    \-\-resource\-arn arn:aws:dynamodb:us\-west\-2:123456789012:table/MusicCollection \e
+    \-\-max\-items 1
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Tags": [
+        {
+            "Key": "Owner",
+            "Value": "blueTeam"
+        }
+    ],
+    "NextToken": "abCDeFGhiJKlmnOPqrSTuvwxYZ1aBCdEFghijK7LM51nOpqRSTuv3WxY3ZabC5dEFGhI2Jk3LmnoPQ6RST9"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Tagging for DynamoDB\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.sp
+\fBExample 3: To retrieve the next page of results\fP
+.sp
+The following command uses the \fBNextToken\fP value from a previous call to the \fBlist\-tags\-of\-resource\fP command to retrieve another page of results. Since the response in this case does not include a \fBNextToken\fP value, we know that we have reached the end of the results.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws dynamodb list\-tags\-of\-resource \e
+    \-\-resource\-arn arn:aws:dynamodb:us\-west\-2:123456789012:table/MusicCollection \e
+    \-\-starting\-token abCDeFGhiJKlmnOPqrSTuvwxYZ1aBCdEFghijK7LM51nOpqRSTuv3WxY3ZabC5dEFGhI2Jk3LmnoPQ6RST9
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Tags": [
+        {
+            "Key": "Environment",
+            "Value": "Production"
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Tagging for DynamoDB\fP in the \fIAmazon DynamoDB Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The tags currently associated with the Amazon DynamoDB resource.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Describes a tag. A tag is a key\-value pair. You can add up to 50 tags to a single DynamoDB table.
+.sp
+AWS\-assigned tag names and values are automatically assigned the \fBaws:\fP prefix, which the user cannot assign. AWS\-assigned tag names do not count towards the tag limit of 50. User\-assigned tag names have the prefix \fBuser:\fP in the Cost Allocation Report. You cannot backdate the application of a tag.
+.sp
+For an overview on tagging DynamoDB resources, see \fI\%Tagging for DynamoDB\fP in the \fIAmazon DynamoDB Developer Guide\fP .
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key of the tag. Tag keys are case sensitive. Each DynamoDB table can only have up to one tag with the same key. If you try to add an existing tag (same key), the existing tag value will be updated to the new value.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the tag. Tag values are case\-sensitive and can be null.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+NextToken \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+If this value is returned, there are additional results to be displayed. To retrieve them, call ListTagsOfResource again, with NextToken set to this value.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

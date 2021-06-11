@@ -1,0 +1,143 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ECR-GET-DOWNLOAD-URL-FOR-LAYER" "a" "" ""
+.SH NAME
+ecr-get-download-url-for-layer \- Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves the pre\-signed Amazon S3 download URL corresponding to an image layer. You can only get URLs for image layers that are referenced in an image.
+.sp
+When an image is pulled, the GetDownloadUrlForLayer API is called once per image layer that is not already cached.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+This operation is used by the Amazon ECR proxy and is not generally used by customers for pulling and pushing images. In most cases, you should use the \fBdocker\fP CLI to pull, tag, and push images.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-download\-url\-for\-layer
+[\-\-registry\-id <value>]
+\-\-repository\-name <value>
+\-\-layer\-digest <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-registry\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS account ID associated with the registry that contains the image layer to download. If you do not specify a registry, the default registry is assumed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-repository\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the repository that is associated with the image layer to download.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-layer\-digest\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The digest of the image layer to download.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get the download URL of a layer\fP
+.sp
+The following \fBget\-download\-url\-for\-layer\fP example displays the download URL of a layer with the digest \fBsha256:6171c7451a50945f8ddd72f7732cc04d7a0d1f48138a426b2e64387fdeb834ed\fP in the \fBcluster\-autoscaler\fP repository.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ecr get\-download\-url\-for\-layer \e
+    \-\-repository\-name cluster\-autoscaler  \e
+    \-\-layer\-digest sha256:6171c7451a50945f8ddd72f7732cc04d7a0d1f48138a426b2e64387fdeb834ed
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "downloadUrl": "https://prod\-us\-west\-2\-starport\-layer\-bucket.s3.us\-west\-2.amazonaws.com/e501\-012345678910\-9cb60dc0\-7284\-5643\-3987\-da6dac0465f0/04620aac\-66a5\-4167\-8232\-55ee7ef6d565?X\-Amz\-Algorithm=AWS4\-HMAC\-SHA256&X\-Amz\-Date=20190814T220617Z&X\-Amz\-SignedHeaders=host&X\-Amz\-Expires=3600&X\-Amz\-Credential=AKIA32P3D2JDNMVAJLGF%2F20190814%2Fus\-west\-2%2Fs3%2Faws4_request&X\-Amz\-Signature=9161345894947a1672467a0da7a1550f2f7157318312fe4941b59976239c3337",
+    "layerDigest": "sha256:6171c7451a50945f8ddd72f7732cc04d7a0d1f48138a426b2e64387fdeb834ed"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+downloadUrl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The pre\-signed Amazon S3 download URL for the requested layer.
+.UNINDENT
+.UNINDENT
+.sp
+layerDigest \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The digest of the image layer to download.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

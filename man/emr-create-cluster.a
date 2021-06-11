@@ -1,0 +1,2824 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "EMR-CREATE-CLUSTER" "a" "" ""
+.SH NAME
+emr-create-cluster \- Creates an Amazon EMR cluster with the specified configurations
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an Amazon EMR cluster with the specified configurations.
+.sp
+Quick start:
+.sp
+aws emr create\-cluster \-\-release\-label <release\-label> \-\-instance\-type <instance\-type> \-\-instance\-count <instance\-count>
+.sp
+Values for the following can be set in the AWS CLI config file using the "aws configure set" command: \-\-service\-role, \-\-log\-uri, and InstanceProfile and KeyName arguments under \-\-ec2\-attributes.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ create\-cluster
+\-\-release\-label <value>   | \-\-ami\-version <value>
+\-\-instance\-fleets <value> | \-\-instance\-groups <value> | \-\-instance\-type <value> \-\-instance\-count <value>
+[\-\-auto\-terminate | \-\-no\-auto\-terminate]
+[\-\-use\-default\-roles]
+[\-\-service\-role <value>]
+[\-\-configurations <value>]
+[\-\-name <value>]
+[\-\-log\-uri <value>]
+[\-\-log\-encryption\-kms\-key\-id <value>]
+[\-\-additional\-info <value>]
+[\-\-ec2\-attributes <value>]
+[\-\-termination\-protected | \-\-no\-termination\-protected]
+[\-\-scale\-down\-behavior <value>]
+[\-\-visible\-to\-all\-users | \-\-no\-visible\-to\-all\-users]
+[\-\-enable\-debugging | \-\-no\-enable\-debugging]
+[\-\-tags <value>]
+[\-\-applications <value>]
+[\-\-emrfs <value>]
+[\-\-bootstrap\-actions <value>]
+[\-\-steps <value>]
+[\-\-restore\-from\-hbase\-backup <value>]
+[\-\-security\-configuration <value>]
+[\-\-custom\-ami\-id <value>]
+[\-\-ebs\-root\-volume\-size <value>]
+[\-\-repo\-upgrade\-on\-boot <value>]
+[\-\-kerberos\-attributes <value>]
+[\-\-managed\-scaling\-policy <value>]
+[\-\-placement\-group\-configs <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-release\-label\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the Amazon EMR release version, which determines the versions of application software that are installed on the cluster. For example, \fB\-\-release\-label emr\-5.15.0\fP installs the application versions and features available in that version. For details about application versions and features available in each release, see the Amazon EMR Release Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ReleaseGuide\fP
+.sp
+Use \fB\-\-release\-label\fP only for Amazon EMR release version 4.0 and later. Use \fB\-\-ami\-version\fP for earlier versions. You cannot specify both a release label and AMI version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ami\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Applies only to Amazon EMR release versions earlier than 4.0. Use \fB\-\-release\-label\fP for 4.0 and later. Specifies the version of Amazon Linux Amazon Machine Image (AMI) to use when launching Amazon EC2 instances in the cluster. For example, \fB\-\-ami\-version 3.1.0\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-groups\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the number and type of Amazon EC2 instances to create for each node type in a cluster, using uniform instance groups. You can specify either \fB\-\-instance\-groups\fP or \fB\-\-instance\-fleets\fP but not both. For more information, see the following topic in the EMR Management Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr\-instance\-group\-configuration.html\fP
+.sp
+You can specify arguments individually using multiple \fBInstanceGroupType\fP argument blocks, one for the \fBMASTER\fP instance group, one for a \fBCORE\fP instance group, and optional, multiple \fBTASK\fP instance groups.
+.sp
+If you specify inline JSON structures, enclose the entire \fBInstanceGroupType\fP argument block in single quotation marks.
+.sp
+Each \fBInstanceGroupType\fP block takes the following inline arguments. Optional arguments are shown in [square brackets].
+.INDENT 0.0
+.IP \(bu 2
+\fB[Name]\fP \- An optional friendly name for the instance group.
+.IP \(bu 2
+\fBInstanceGroupType\fP \- \fBMASTER\fP , \fBCORE\fP , or \fBTASK\fP .
+.IP \(bu 2
+\fBInstanceType\fP \- The type of EC2 instance, for example \fBm4.large\fP , to use for all nodes in the instance group.
+.IP \(bu 2
+\fBInstanceCount\fP \- The number of EC2 instances to provision in the instance group.
+.IP \(bu 2
+\fB[BidPrice]\fP \- If specified, indicates that the instance group uses Spot Instances. This is the maximum price you are willing to pay for Spot Instances. Specify OnDemandPrice to set the amount equal to the On\-Demand price, or specify an amount in USD.
+.IP \(bu 2
+\fB[EbsConfiguration]\fP \- Specifies additional Amazon EBS storage volumes attached to EC2 instances using an inline JSON structure.
+.IP \(bu 2
+\fB[AutoScalingPolicy]\fP \- Specifies an automatic scaling policy for the instance group using an inline JSON structure.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Friendly name given to the instance group.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceGroupType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the instance group in the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+BidPrice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Bid price for each Amazon EC2 instance in the instance group when launching nodes as Spot Instances, expressed in USD.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon EC2 instance type for all instances in the instance group.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Target number of Amazon EC2 instances for the instance group
+.UNINDENT
+.UNINDENT
+.sp
+EbsConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+EBS configuration that will be associated with the instance group.
+.sp
+EbsOptimized \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean flag used to tag EBS\-optimized instances.
+.UNINDENT
+.UNINDENT
+.sp
+EbsBlockDeviceConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+VolumeSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume specification that will be created and attached to every instance in this instance group.
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume type that is attached to all the instances in the instance group. Valid types are: gp2, io1, and standard.
+.UNINDENT
+.UNINDENT
+.sp
+SizeInGB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume size, in GB, that is attached to all the instances in the instance group.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The IOPS of the EBS volume that is attached to all the instances in the instance group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumesPerInstance \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of EBS volumes that will be created and attached to each instance in the instance group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+AutoScalingPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Auto Scaling policy that will be associated with the instance group.
+.sp
+Constraints \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Constraints that will be associated to an Auto Scaling policy.
+.sp
+MinCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The minimum value for the instances to scale in to in response to scaling activities.
+.UNINDENT
+.UNINDENT
+.sp
+MaxCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum value for the instances to scale out to in response to scaling activities
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Rules associated to an Auto Scaling policy.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the Auto Scaling rule.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Description of the Auto Scaling rule.
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Action associated to an Auto Scaling rule.
+.sp
+Market \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Market type of the Amazon EC2 instances used to create a cluster node by Auto Scaling action.
+.UNINDENT
+.UNINDENT
+.sp
+SimpleScalingPolicyConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Simple scaling configuration that will be associatedto Auto Scaling action.
+.sp
+AdjustmentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies how the ScalingAdjustment parameter is interpreted.
+.UNINDENT
+.UNINDENT
+.sp
+ScalingAdjustment \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount by which to scale, based on the specified adjustment type.
+.UNINDENT
+.UNINDENT
+.sp
+CoolDown \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Trigger \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Trigger associated to an Auto Scaling rule.
+.sp
+CloudWatchAlarmDefinition \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Alarm to be registered with CloudWatch, to trigger scaling activities.
+.sp
+ComparisonOperator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The arithmetic operation to use when comparing the specified Statistic and Threshold.
+.UNINDENT
+.UNINDENT
+.sp
+EvaluationPeriods \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of periods over which data is compared to the specified threshold.
+.UNINDENT
+.UNINDENT
+.sp
+MetricName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name for the alarm\(aqs associated metric.
+.UNINDENT
+.UNINDENT
+.sp
+Namespace \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The namespace for the alarm\(aqs associated metric.
+.UNINDENT
+.UNINDENT
+.sp
+Period \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The period in seconds over which the specified statistic is applied.
+.UNINDENT
+.UNINDENT
+.sp
+Statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic to apply to the alarm\(aqs associated metric.
+.UNINDENT
+.UNINDENT
+.sp
+Threshold \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value against which the specified statistic is compared.
+.UNINDENT
+.UNINDENT
+.sp
+Unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The statistic\(aqs unit of measure.
+.UNINDENT
+.UNINDENT
+.sp
+Dimensions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The dimensions for the alarm\(aqs associated metric.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Dimension Key.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Dimension Value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Instance group application configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration classification name
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration properties
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration key
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration value
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Instance group application configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration classification name
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration properties
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration key
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration value
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "InstanceGroupType": "MASTER"|"CORE"|"TASK",
+    "BidPrice": "string",
+    "InstanceType": "string",
+    "InstanceCount": integer,
+    "EbsConfiguration": {
+      "EbsOptimized": true|false,
+      "EbsBlockDeviceConfigs": [
+        {
+          "VolumeSpecification": {
+            "VolumeType": "string",
+            "SizeInGB": integer,
+            "Iops": integer
+          },
+          "VolumesPerInstance": integer
+        }
+        ...
+      ]
+    },
+    "AutoScalingPolicy": {
+      "Constraints": {
+        "MinCapacity": integer,
+        "MaxCapacity": integer
+      },
+      "Rules": [
+        {
+          "Name": "string",
+          "Description": "string",
+          "Action": {
+            "Market": "ON_DEMAND"|"SPOT",
+            "SimpleScalingPolicyConfiguration": {
+              "AdjustmentType": "CHANGE_IN_CAPACITY"|"PERCENT_CHANGE_IN_CAPACITY"|"EXACT_CAPACITY",
+              "ScalingAdjustment": integer,
+              "CoolDown": integer
+            }
+          },
+          "Trigger": {
+            "CloudWatchAlarmDefinition": {
+              "ComparisonOperator": "string",
+              "EvaluationPeriods": integer,
+              "MetricName": "string",
+              "Namespace": "string",
+              "Period": integer,
+              "Statistic": "string",
+              "Threshold": double,
+              "Unit": "string",
+              "Dimensions": [
+                {
+                  "Key": "string",
+                  "Value": "string"
+                }
+                ...
+              ]
+            }
+          }
+        }
+        ...
+      ]
+    },
+    "Configurations": [
+      {
+        "Classification": "string",
+        "Properties": {"string": "string"
+          ...},
+        "Configurations": [
+          {
+            "Classification": "string",
+            "Properties": {"string": "string"
+              ...}
+          }
+          ...
+        ]
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Shortcut parameter as an alternative to \fB\-\-instance\-groups\fP . Specifies the type of Amazon EC2 instance to use in a cluster. If used without the \fB\-\-instance\-count\fP parameter, the cluster consists of a single master node running on the EC2 instance type specified. When used together with \fB\-\-instance\-count\fP , one instance is used for the master node, and the remainder are used for the core node type.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-count\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Shortcut parameter as an alternative to \fB\-\-instance\-groups\fP when used together with \fB\-\-instance\-type\fP . Specifies the number of Amazon EC2 instances to create for a cluster. One instance is used for the master node, and the remainder are used for the core node type.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-terminate\fP | \fB\-\-no\-auto\-terminate\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the cluster should terminate after completing all the steps. Auto termination is off by default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-fleets\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Applies only to Amazon EMR release version 5.0 and later. Specifies the number and type of Amazon EC2 instances to create for each node type in a cluster, using instance fleets. You can specify either \fB\-\-instance\-fleets\fP or \fB\-\-instance\-groups\fP but not both. For more information and examples, see the following topic in the Amazon EMR Management Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr\-instance\-fleet.html\fP
+.sp
+You can specify arguments individually using multiple \fBInstanceFleetType\fP argument blocks, one for the \fBMASTER\fP instance fleet, one for a \fBCORE\fP instance fleet, and an optional \fBTASK\fP instance fleet.
+.sp
+The following arguments can be specified for each instance fleet. Optional arguments are shown in [square brackets].
+.INDENT 0.0
+.IP \(bu 2
+\fB[Name]\fP \- An optional friendly name for the instance fleet.
+.IP \(bu 2
+\fBInstanceFleetType\fP \- \fBMASTER\fP , \fBCORE\fP , or \fBTASK\fP .
+.IP \(bu 2
+\fBTargetOnDemandCapacity\fP \- The target capacity of On\-Demand units for the instance fleet, which determines how many On\-Demand Instances to provision. The \fBWeightedCapacity\fP specified for an instance type within \fBInstanceTypeConfigs\fP counts toward this total when an instance type with the On\-Demand purchasing option launches.
+.IP \(bu 2
+\fBTargetSpotCapacity\fP \- The target capacity of Spot units for the instance fleet, which determines how many Spot Instances to provision. The \fBWeightedCapacity\fP specified for an instance type within \fBInstanceTypeConfigs\fP counts toward this total when an instance type with the Spot purchasing option launches.
+.IP \(bu 2
+\fB[LaunchSpecifications]\fP \- When \fBTargetSpotCapacity\fP is specified, specifies the block duration and timeout action for Spot Instances.
+.IP \(bu 2
+\fBInstanceTypeConfigs\fP \- Specifies up to five EC2 instance types to use in the instance fleet, including details such as Spot price and Amazon EBS configuration.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Friendly name given to the instance fleet.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceFleetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of the instance fleet in the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+TargetOnDemandCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Target on\-demand capacity for the instance fleet.
+.UNINDENT
+.UNINDENT
+.sp
+TargetSpotCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Target spot capacity for the instance fleet.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceTypeConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon EC2 instance type for the instance fleet.
+.UNINDENT
+.UNINDENT
+.sp
+WeightedCapacity \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The weight assigned to an instance type, which will impact the overall fulfillment of the capacity.
+.UNINDENT
+.UNINDENT
+.sp
+BidPrice \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Bid price for each Amazon EC2 instance in the instance fleet when launching nodes as Spot Instances, expressed in USD.
+.UNINDENT
+.UNINDENT
+.sp
+BidPriceAsPercentageOfOnDemandPrice \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+Bid price as percentage of on\-demand price.
+.UNINDENT
+.UNINDENT
+.sp
+EbsConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+EBS configuration that is associated with the instance group.
+.sp
+EbsOptimized \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean flag used to tag EBS\-optimized instances.
+.UNINDENT
+.UNINDENT
+.sp
+EbsBlockDeviceConfigs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+VolumeSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume specification that is created and attached to each instance in the instance group.
+.sp
+VolumeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume type that is attached to all the instances in the instance group. Valid types are: gp2, io1, and standard.
+.UNINDENT
+.UNINDENT
+.sp
+SizeInGB \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The EBS volume size, in GB, that is attached to all the instances in the instance group.
+.UNINDENT
+.UNINDENT
+.sp
+Iops \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The IOPS of the EBS volume that is attached to all the instances in the instance group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+VolumesPerInstance \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of EBS volumes that will be created and attached to each instance in the instance group.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Instance group application configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration classification name
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration properties
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration key
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration value
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Configurations \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Instance group application configurations.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Classification \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration classification name
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Application configuration properties
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration key
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Configuration value
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LaunchSpecifications \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+OnDemandSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+AllocationStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The strategy to use in launching On\-Demand instance fleets.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationOptions \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+UsageStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The strategy of whether to use unused Capacity Reservations for fulfilling On\-Demand capacity.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationPreference \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The preference of the instance\(aqs Capacity Reservation.
+.UNINDENT
+.UNINDENT
+.sp
+CapacityReservationResourceGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the Capacity Reservation resource group in which to run the instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+SpotSpecification \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+TimeoutDurationMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time, in minutes, after which the action specified in TimeoutAction field will be performed if requested resources are unavailable.
+.UNINDENT
+.UNINDENT
+.sp
+TimeoutAction \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action that is performed after TimeoutDurationMinutes.
+.UNINDENT
+.UNINDENT
+.sp
+BlockDurationMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Block duration in minutes.
+.UNINDENT
+.UNINDENT
+.sp
+AllocationStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The strategy to use in launching Spot instance fleets.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "InstanceFleetType": "MASTER"|"CORE"|"TASK",
+    "TargetOnDemandCapacity": integer,
+    "TargetSpotCapacity": integer,
+    "InstanceTypeConfigs": [
+      {
+        "InstanceType": "string",
+        "WeightedCapacity": integer,
+        "BidPrice": "string",
+        "BidPriceAsPercentageOfOnDemandPrice": double,
+        "EbsConfiguration": {
+          "EbsOptimized": true|false,
+          "EbsBlockDeviceConfigs": [
+            {
+              "VolumeSpecification": {
+                "VolumeType": "string",
+                "SizeInGB": integer,
+                "Iops": integer
+              },
+              "VolumesPerInstance": integer
+            }
+            ...
+          ]
+        },
+        "Configurations": [
+          {
+            "Classification": "string",
+            "Properties": {"string": "string"
+              ...},
+            "Configurations": [
+              {
+                "Classification": "string",
+                "Properties": {"string": "string"
+                  ...}
+              }
+              ...
+            ]
+          }
+          ...
+        ]
+      }
+      ...
+    ],
+    "LaunchSpecifications": {
+      "OnDemandSpecification": {
+        "AllocationStrategy": "lowest\-price",
+        "CapacityReservationOptions": {
+          "UsageStrategy": "use\-capacity\-reservations\-first",
+          "CapacityReservationPreference": "open"|"none",
+          "CapacityReservationResourceGroupArn": "string"
+        }
+      },
+      "SpotSpecification": {
+        "TimeoutDurationMinutes": integer,
+        "TimeoutAction": "TERMINATE_CLUSTER"|"SWITCH_TO_ONDEMAND",
+        "BlockDurationMinutes": integer,
+        "AllocationStrategy": "capacity\-optimized"
+      }
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the cluster. If not provided, the default is "Development Cluster".
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-uri\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the location in Amazon S3 to which log files are periodically written. If a value is not provided, logs files are not written to Amazon S3 from the master node and are lost if the master node terminates.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-encryption\-kms\-key\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the KMS Id utilized for log encryption. If a value is not provided, log files will be encrypted by default encryption method AES\-256. This attribute is only available with EMR version 5.30.0 and later, excluding EMR 6.0.0.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies an IAM service role, which Amazon EMR requires to call other AWS services on your behalf during cluster operation. This parameter is usually specified when a customized service role is used. To specify the default service role, as well as the default instance profile, use the \fB\-\-use\-default\-roles\fP parameter. If the role and instance profile do not already exist, use the \fBaws emr create\-default\-roles\fP command to create them.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-auto\-scaling\-role\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify \fB\-\-auto\-scaling\-role EMR_AutoScaling_DefaultRole\fP if an automatic scaling policy is specified for an instance group using the \fB\-\-instance\-groups\fP parameter. This default IAM role allows the automatic scaling feature to launch and terminate Amazon EC2 instances during scaling operations.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-use\-default\-roles\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies that the cluster should use the default service role (EMR_DefaultRole) and instance profile (EMR_EC2_DefaultRole) for permissions to access other AWS services.
+.sp
+Make sure that the role and instance profile exist first. To create them, use the \fBcreate\-default\-roles\fP command.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-configurations\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a JSON file that contains configuration classifications, which you can use to customize applications that Amazon EMR installs when cluster instances launch. Applies only to Amazon EMR 4.0 and later. The file referenced can either be stored locally (for example, \fB\-\-configurations file://configurations.json\fP ) or stored in Amazon S3 (for example, \fB\-\-configurations https://s3.amazonaws.com/myBucket/configurations.json\fP ). Each classification usually corresponds to the xml configuration file for an application, such as \fByarn\-site\fP for YARN. For a list of available configuration classifications and example JSON, see the following topic in the Amazon EMR Release Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr\-configure\-apps.html\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ec2\-attributes\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configures cluster and Amazon EC2 instance configurations. Accepts the following arguments:
+.INDENT 0.0
+.IP \(bu 2
+\fBKeyName\fP \- Specifies the name of the AWS EC2 key pair that will be used for SSH connections to the master node and other instances on the cluster.
+.IP \(bu 2
+\fBAvailabilityZone\fP \- Specifies the availability zone in which to launch the cluster. For example, \fBus\-west\-1b\fP .
+.IP \(bu 2
+\fBSubnetId\fP \- Specifies the VPC subnet in which to create the cluster.
+.IP \(bu 2
+\fBInstanceProfile\fP \- An IAM role that allows EC2 instances to access other AWS services, such as Amazon S3, that are required for operations.
+.IP \(bu 2
+\fBEmrManagedMasterSecurityGroup\fP \- The security group ID of the Amazon EC2 security group for the master node.
+.IP \(bu 2
+\fBEmrManagedSlaveSecurityGroup\fP \- The security group ID of the Amazon EC2 security group for the slave nodes.
+.IP \(bu 2
+\fBServiceAccessSecurityGroup\fP \- The security group ID of the Amazon EC2 security group for Amazon EMR access to clusters in VPC private subnets.
+.IP \(bu 2
+\fBAdditionalMasterSecurityGroups\fP \- A list of additional Amazon EC2 security group IDs for the master node.
+.IP \(bu 2
+\fBAdditionalSlaveSecurityGroups\fP \- A list of additional Amazon EC2 security group IDs for the slave nodes.
+.UNINDENT
+.IP "System Message: WARNING/2 (<string>:, line 1015)"
+Bullet list ends without a blank line; unexpected unindent.
+.sp
+KeyName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Amazon EC2 key pair that can be used to ssh to the master node as the user \(aqhadoop\(aq.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+To launch the cluster in Amazon Virtual Private Cloud (Amazon VPC), set this parameter to the identifier of the Amazon VPC subnet where you want the cluster to launch. If you do not specify this value, the cluster is launched in the normal Amazon Web Services cloud, outside of an Amazon VPC.
+.UNINDENT
+.UNINDENT
+.sp
+SubnetIds \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of SubnetIds.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZone \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Availability Zone the cluster will run in.
+.UNINDENT
+.UNINDENT
+.sp
+AvailabilityZones \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+List of AvailabilityZones.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+InstanceProfile \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An IAM role for the cluster. The EC2 instances of the cluster assume this role. The default role is EMR_EC2_DefaultRole. In order to use the default role, you must have already created it using the \fBcreate\-default\-roles\fP command.
+.UNINDENT
+.UNINDENT
+.sp
+EmrManagedMasterSecurityGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the Amazon EC2 security group for the master node.
+.UNINDENT
+.UNINDENT
+.sp
+EmrManagedSlaveSecurityGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the Amazon EC2 security group for the slave nodes.
+.UNINDENT
+.UNINDENT
+.sp
+ServiceAccessSecurityGroup \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The identifier of the Amazon EC2 security group for Amazon EMR to access clusters in VPC private subnets.
+.UNINDENT
+.UNINDENT
+.sp
+AdditionalMasterSecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of additional Amazon EC2 security group IDs for the master node
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+AdditionalSlaveSecurityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of additional Amazon EC2 security group IDs for the slave nodes.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+KeyName=string,SubnetId=string,SubnetIds=string,string,AvailabilityZone=string,AvailabilityZones=string,string,InstanceProfile=string,EmrManagedMasterSecurityGroup=string,EmrManagedSlaveSecurityGroup=string,ServiceAccessSecurityGroup=string,AdditionalMasterSecurityGroups=string,string,AdditionalSlaveSecurityGroups=string,string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "KeyName": "string",
+  "SubnetId": "string",
+  "SubnetIds": ["string", ...],
+  "AvailabilityZone": "string",
+  "AvailabilityZones": ["string", ...],
+  "InstanceProfile": "string",
+  "EmrManagedMasterSecurityGroup": "string",
+  "EmrManagedSlaveSecurityGroup": "string",
+  "ServiceAccessSecurityGroup": "string",
+  "AdditionalMasterSecurityGroups": ["string", ...],
+  "AdditionalSlaveSecurityGroups": ["string", ...]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-termination\-protected\fP | \fB\-\-no\-termination\-protected\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether to lock the cluster to prevent the Amazon EC2 instances from being terminated by API call, user intervention, or an error.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-scale\-down\-behavior\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the way that individual Amazon EC2 instances terminate when an automatic scale\-in activity occurs or an instance group is resized.
+.sp
+Accepted values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTERMINATE_AT_TASK_COMPLETION\fP \- Specifies that Amazon EMR blacklists and drains tasks from nodes before terminating the instance.
+.IP \(bu 2
+\fBTERMINATE_AT_INSTANCE_HOUR\fP \- Specifies that Amazon EMR terminate EC2 instances at the instance\-hour boundary, regardless of when the request to terminate was submitted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-visible\-to\-all\-users\fP | \fB\-\-no\-visible\-to\-all\-users\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the cluster is visible to all IAM users of the AWS account associated with the cluster. If set to \fB\-\-visible\-to\-all\-users\fP , all IAM users of that AWS account can view it. If they have the proper policy permissions set, they can also manage the cluster. If it is set to \fB\-\-no\-visible\-to\-all\-users\fP , only the IAM user that created the cluster can view and manage it. Clusters are visible by default.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enable\-debugging\fP | \fB\-\-no\-enable\-debugging\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies that the debugging tool is enabled for the cluster, which allows you to browse log files using the Amazon EMR console. Turning debugging on requires that you specify \fB\-\-log\-uri\fP because log files must be stored in Amazon S3 so that Amazon EMR can index them for viewing in the console.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of tags to associate with a cluster, which apply to each Amazon EC2 instance in the cluster. Tags are key\-value pairs that consist of a required key string with a maximum of 128 characters, and an optional value string with a maximum of 256 characters.
+.sp
+You can specify tags in \fBkey=value\fP format or you can add a tag without a value using only the key name, for example \fBkey\fP . Use a space to separate multiple tags.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-bootstrap\-actions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a list of bootstrap actions to run on each EC2 instance when a cluster is created. Bootstrap actions run on each instance immediately after Amazon EMR provisions the EC2 instance and before Amazon EMR installs specified applications.
+.sp
+You can specify a bootstrap action as an inline JSON structure enclosed in single quotation marks, or you can use a shorthand syntax, specifying multiple bootstrap actions, each separated by a space. When using the shorthand syntax, each bootstrap action takes the following parameters, separated by commas with no trailing space. Optional parameters are shown in [square brackets].
+.INDENT 0.0
+.IP \(bu 2
+\fBPath\fP \- The path and file name of the script to run, which must be accessible to each instance in the cluster. For example, \fBPath=s3://mybucket/myscript.sh\fP .
+.IP \(bu 2
+\fB[Name]\fP \- A friendly name to help you identify the bootstrap action. For example, \fBName=BootstrapAction1\fP
+.IP \(bu 2
+\fB[Args]\fP \- A comma\-separated list of arguments to pass to the bootstrap action script. Arguments can be either a list of values (\fBArgs=arg1,arg2,arg3\fP ) or a list of key\-value pairs, as well as optional values, enclosed in square brackets (\fBArgs=[arg1,arg2=arg2value,arg3])\fP .
+.UNINDENT
+.IP "System Message: WARNING/2 (<string>:, line 1230)"
+Bullet list ends without a blank line; unexpected unindent.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.sp
+Path \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Location of the script to run during a bootstrap action. Can be either a location in Amazon S3 or on a local file system.
+.UNINDENT
+.UNINDENT
+.sp
+Args \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of command line arguments to pass to the bootstrap action script
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Path=string,Args=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "string",
+    "Path": "string",
+    "Args": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-applications\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the applications to install on the cluster. Available applications and their respective versions vary by Amazon EMR release. For more information, see the Amazon EMR Release Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ReleaseGuide/\fP
+.sp
+When using versions of Amazon EMR earlier than 4.0, some applications take optional arguments for configuration. Arguments should either be a comma\-separated list of values (\fBArgs=arg1,arg2,arg3\fP ) or a bracket\-enclosed list of values and key\-value pairs (\fBArgs=[arg1,arg2=arg3,arg4]\fP ).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Application name.
+.UNINDENT
+.UNINDENT
+.sp
+Args \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of arguments to pass to the application.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Args=string,string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Name": "MapR"|"HUE"|"HIVE"|"PIG"|"HBASE"|"IMPALA"|"GANGLIA"|"HADOOP"|"SPARK",
+    "Args": ["string", ...]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-emrfs\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies EMRFS configuration options, such as consistent view and Amazon S3 encryption parameters.
+.sp
+When you use Amazon EMR release version 4.8.0 or later, we recommend that you use the \fB\-\-configurations\fP option together with the \fBemrfs\-site\fP configuration classification to configure EMRFS, and use security configurations to configure encryption for EMRFS data in Amazon S3 instead. For more information, see the following topic in the Amazon EMR Management Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ManagementGuide/emrfs\-configure\-consistent\-view.html\fP
+.sp
+Consistent \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enable EMRFS consistent view.
+.UNINDENT
+.UNINDENT
+.sp
+SSE \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Enable Amazon S3 server\-side encryption on files written to S3 by EMRFS.
+.UNINDENT
+.UNINDENT
+.sp
+RetryCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of times to retry upon S3 inconsistency.
+.UNINDENT
+.UNINDENT
+.sp
+RetryPeriod \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The amount of time (in seconds) until the first retry. Subsequent retries use an exponential back\-off.
+.UNINDENT
+.UNINDENT
+.sp
+Args \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of arguments to pass for additional EMRFS configuration.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Encryption \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+EMRFS encryption type.
+.UNINDENT
+.UNINDENT
+.sp
+ProviderType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+EMRFS client\-side encryption provider type.
+.UNINDENT
+.UNINDENT
+.sp
+KMSKeyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+AWS KMS\(aqs customer master key identifier
+.UNINDENT
+.UNINDENT
+.sp
+CustomProviderLocation \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Custom encryption provider JAR location.
+.UNINDENT
+.UNINDENT
+.sp
+CustomProviderClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Custom encryption provider full class name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Consistent=boolean,SSE=boolean,RetryCount=integer,RetryPeriod=integer,Args=string,string,Encryption=string,ProviderType=string,KMSKeyId=string,CustomProviderLocation=string,CustomProviderClass=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Consistent": true|false,
+  "SSE": true|false,
+  "RetryCount": integer,
+  "RetryPeriod": integer,
+  "Args": ["string", ...],
+  "Encryption": "SERVERSIDE"|"CLIENTSIDE",
+  "ProviderType": "KMS"|"CUSTOM",
+  "KMSKeyId": "string",
+  "CustomProviderLocation": "string",
+  "CustomProviderClass": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-steps\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies a list of steps to be executed by the cluster. Steps run only on the master node after applications are installed and are used to submit work to a cluster. A step can be specified using the shorthand syntax, by referencing a JSON file or by specifying an inline JSON structure. \fBArgs\fP supplied with steps should be a comma\-separated list of values (\fBArgs=arg1,arg2,arg3\fP ) or a bracket\-enclosed list of values and key\-value pairs (\fBArgs=[arg1,arg2=value,arg4\fP ).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of a step to be added to the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the step.
+.UNINDENT
+.UNINDENT
+.sp
+ActionOnFailure \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The action to take if the cluster step fails.
+.UNINDENT
+.UNINDENT
+.sp
+Jar \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A path to a JAR file run during the step.
+.UNINDENT
+.UNINDENT
+.sp
+Args \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of command line arguments to pass to the step.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+MainClass \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the main class in the specified Java file. If not specified, the JAR file should specify a Main\-Class in its manifest file.
+.UNINDENT
+.UNINDENT
+.sp
+Properties \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A list of Java properties that are set when the step runs. You can use these properties to pass key value pairs to your main function.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type=string,Name=string,ActionOnFailure=string,Jar=string,Args=string,string,MainClass=string,Properties=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Type": "CUSTOM_JAR"|"STREAMING"|"HIVE"|"PIG"|"IMPALA",
+    "Name": "string",
+    "ActionOnFailure": "TERMINATE_CLUSTER"|"CANCEL_AND_WAIT"|"CONTINUE",
+    "Jar": "string",
+    "Args": ["string", ...],
+    "MainClass": "string",
+    "Properties": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-additional\-info\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies additional information during cluster creation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-restore\-from\-hbase\-backup\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Applies only when using Amazon EMR release versions earlier than 4.0. Launches a new HBase cluster and populates it with data from a previous backup of an HBase cluster. HBase must be installed using the \fB\-\-applications\fP option.
+.sp
+Dir \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon S3 location of the Hbase backup. Example: \fBs3://mybucket/mybackup\fP , where \fBmybucket\fP is the specified Amazon S3 bucket and mybackup is the specified backup location. The path argument must begin with s3://, which refers to an Amazon S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+BackupVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The backup version to restore from. If not specified, the latest backup in the specified location is used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Dir=string,BackupVersion=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Dir": "string",
+  "BackupVersion": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-configuration\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the name of a security configuration to use for the cluster. A security configuration defines data encryption settings and other security options. For more information, see the following topic in the Amazon EMR Management Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr\-encryption\-enable\-security\-configuration.html\fP
+.sp
+Use \fBlist\-security\-configurations\fP to get a list of available security configurations in the active account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-ami\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Applies only to Amazon EMR release version 5.7.0 and later. Specifies the AMI ID of a custom AMI to use when Amazon EMR provisions EC2 instances. A custom AMI can be used to encrypt the Amazon EBS root volume. It can also be used instead of bootstrap actions to customize cluster node configurations. For more information, see the following topic in the Amazon EMR Management Guide:
+.sp
+\fI\%https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr\-custom\-ami.html\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ebs\-root\-volume\-size\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+This option is available only with Amazon EMR version 4.x and later. Specifies the size, in GiB, of the EBS root device volume of the Amazon Linux AMI that is used for each EC2 instance in the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-repo\-upgrade\-on\-boot\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Applies only when a \fB\-\-custom\-ami\-id\fP is specified. On first boot, by default, Amazon Linux AMIs connect to package repositories to install security updates before other services start. You can set this parameter using \fB\-\-rep\-upgrade\-on\-boot NONE\fP to disable these updates. CAUTION: This creates additional security risks.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kerberos\-attributes\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Specifies required cluster attributes for Kerberos when Kerberos authentication is enabled in the specified \fB\-\-security\-configuration\fP . Takes the following arguments:
+.INDENT 0.0
+.IP \(bu 2
+\fBRealm\fP \- Specifies the name of the Kerberos realm to which all nodes in a cluster belong. For example, \fBRealm=EC2.INTERNAL\fP .
+.IP \(bu 2
+\fBKdcAdminPassword\fP \- Specifies the password used within the cluster for the kadmin service, which maintains Kerberos principals, password policies, and keytabs for the cluster.
+.IP \(bu 2
+\fBCrossRealmTrustPrincipalPassword\fP \- Required when establishing a cross\-realm trust with a KDC in a different realm. This is the cross\-realm principal password, which must be identical across realms.
+.IP \(bu 2
+\fBADDomainJoinUser\fP \- Required when establishing trust with an Active Directory domain. This is the User logon name of an AD account with sufficient privileges to join resouces to the domain.
+.IP \(bu 2
+\fBADDomainJoinPassword\fP \- The AD password for \fBADDomainJoinUser\fP .
+.UNINDENT
+.IP "System Message: WARNING/2 (<string>:, line 1645)"
+Bullet list ends without a blank line; unexpected unindent.
+.sp
+Realm \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of Kerberos realm.
+.UNINDENT
+.UNINDENT
+.sp
+KdcAdminPassword \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The password of Kerberos administrator.
+.UNINDENT
+.UNINDENT
+.sp
+CrossRealmTrustPrincipalPassword \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The password to establish cross\-realm trusts.
+.UNINDENT
+.UNINDENT
+.sp
+ADDomainJoinUser \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the user with privileges to join instances to Active Directory.
+.UNINDENT
+.UNINDENT
+.sp
+ADDomainJoinPassword \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The password of the user with privileges to join instances to Active Directory.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Realm=string,KdcAdminPassword=string,CrossRealmTrustPrincipalPassword=string,ADDomainJoinUser=string,ADDomainJoinPassword=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Realm": "string",
+  "KdcAdminPassword": "string",
+  "CrossRealmTrustPrincipalPassword": "string",
+  "ADDomainJoinUser": "string",
+  "ADDomainJoinPassword": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-step\-concurrency\-level\fP (integer)
+This command specifies the step concurrency level of the cluster.Default is 1 which is non\-concurrent.
+.sp
+\fB\-\-managed\-scaling\-policy\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Managed scaling policy for an Amazon EMR cluster. The policy specifies the limits for resources that can be added or terminated from a cluster. You can specify the ComputeLimits which include the MaximumCapacityUnits, MaximumCoreCapacityUnits, MinimumCapacityUnits, MaximumOnDemandCapacityUnits and UnitType. For an InstanceFleet cluster, the UnitType must be InstanceFleetUnits. For InstanceGroup clusters, the UnitType can be either VCPU or Instances.
+.sp
+ComputeLimits \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 unit limits for a managed scaling policy. The managed scaling activity of a cluster is not allowed to go above or below these limits. The limits apply to CORE and TASK groups and exclude the capacity of the MASTER group.
+.sp
+MinimumCapacityUnits \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The lower boundary of EC2 units. It is measured through VCPU cores or instances for instance groups and measured through units for instance fleets. Managed scaling activities are not allowed beyond this boundary.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumCapacityUnits \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper boundary of EC2 units. It is measured through VCPU cores or instances for instance groups and measured through units for instance fleets. Managed scaling activities are not allowed beyond this boundary.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumOnDemandCapacityUnits \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper boundary of on\-demand EC2 units. It is measured through VCPU cores or instances for instance groups and measured through units for instance fleets. The on\-demand units are not allowed to scale beyond this boundary. This value must be lower than MaximumCapacityUnits.
+.UNINDENT
+.UNINDENT
+.sp
+UnitType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit type used for specifying a managed scaling policy.
+.UNINDENT
+.UNINDENT
+.sp
+MaximumCoreCapacityUnits \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The upper boundary of EC2 units for core node type in a cluster. It is measured through VCPU cores or instances for instance groups and measured through units for instance fleets. The core units are not allowed to scale beyond this boundary. The parameter is used to split capacity allocation between core and task nodes.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ComputeLimits={MinimumCapacityUnits=integer,MaximumCapacityUnits=integer,MaximumOnDemandCapacityUnits=integer,UnitType=string,MaximumCoreCapacityUnits=integer}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ComputeLimits": {
+    "MinimumCapacityUnits": integer,
+    "MaximumCapacityUnits": integer,
+    "MaximumOnDemandCapacityUnits": integer,
+    "UnitType": "VCPU"|"Instances"|"InstanceFleetUnits",
+    "MaximumCoreCapacityUnits": integer
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-placement\-group\-configs\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Placement group configuration for an Amazon EMR cluster. The configuration specifies the EC2 placement group strategy associated with each EMR Instance Role.
+.sp
+Currently, we support placement group only for \fBMASTER\fP role with \fBSPREAD\fP strategy by default. You can opt\-in by passing \fB\-\-placement\-group\-configs InstanceRole=MASTER\fP during cluster creation.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+InstanceRole \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Role of the instance in the cluster.
+.UNINDENT
+.UNINDENT
+.sp
+PlacementStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+EC2 Placement Group strategy associated with instance role.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+InstanceRole=string,PlacementStrategy=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "InstanceRole": "MASTER"|"CORE"|"TASK",
+    "PlacementStrategy": "SPREAD"|"PARTITION"|"CLUSTER"|"NONE"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+Most of the following examples assume that you specified your Amazon EMR service role and Amazon EC2 instance profile. If you have not done this, you must specify each required IAM role or use the \fB\-\-use\-default\-roles\fP parameter when creating your cluster. For more information about specifying IAM roles, see \fI\%Configure IAM Roles for Amazon EMR Permissions to AWS Services\fP in the \fIAmazon EMR Management Guide\fP\&.
+.sp
+\fBExample 1: To create a cluster\fP
+.sp
+The following \fBcreate\-cluster\fP example creates a simple EMR cluster.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.14.0 \e
+    \-\-instance\-type m4.large \e
+    \-\-instance\-count 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command produces no output.
+.sp
+\fBExample 2: To create an Amazon EMR cluster with default ServiceRole and InstanceProfile roles\fP
+.sp
+The following \fBcreate\-cluster\fP example creates an Amazon EMR cluster that uses the \fB\-\-instance\-groups\fP configuration.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.14.0 \e
+    \-\-service\-role EMR_DefaultRole \e
+    \-\-ec2\-attributes InstanceProfile=EMR_EC2_DefaultRole \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To create an Amazon EMR cluster that uses an instance fleet\fP
+.sp
+The following \fBcreate\-cluster\fP example creates an Amazon EMR cluster that uses the \fB\-\-instance\-fleets\fP configuration, specifying two instance types for each fleet and two EC2 Subnets.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.14.0 \e
+    \-\-service\-role EMR_DefaultRole \e
+    \-\-ec2\-attributes InstanceProfile=EMR_EC2_DefaultRole,SubnetIds=[\(aqsubnet\-ab12345c\(aq,\(aqsubnet\-de67890f\(aq] \e
+    \-\-instance\-fleets InstanceFleetType=MASTER,TargetOnDemandCapacity=1,InstanceTypeConfigs=[\(aq{InstanceType=m4.large}\(aq] InstanceFleetType=CORE,TargetSpotCapacity=11,InstanceTypeConfigs=[\(aq{InstanceType=m4.large,BidPrice=0.5,WeightedCapacity=3}\(aq,\(aq{InstanceType=m4.2xlarge,BidPrice=0.9,WeightedCapacity=5}\(aq],LaunchSpecifications={SpotSpecification=\(aq{TimeoutDurationMinutes=120,TimeoutAction=SWITCH_TO_ON_DEMAND}\(aq}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 4: To create a cluster with default roles\fP
+.sp
+The following \fBcreate\-cluster\fP example uses the \fB\-\-use\-default\-roles\fP parameter to specify the default service role and instance profile.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-use\-default\-roles \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 5: To create a cluster and specify the applications to install\fP
+.sp
+The following \fBcreate\-cluster\fP example uses the \fB\-\-applications\fP parameter to specify the applications that Amazon EMR installs. This example installs Hadoop, Hive and Pig.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-applications Name=Hadoop Name=Hive Name=Pig \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 6: To create a cluster that includes Spark\fP
+.sp
+The following example installs Spark.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-applications Name=Spark \e
+    \-\-ec2\-attributes KeyName=myKey \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 7: To specify a custom AMI to use for cluster instances\fP
+.sp
+The following \fBcreate\-cluster\fP example creates a cluster instance based on the Amazon Linux AMI with ID \fBami\-a518e6df\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-name "Cluster with My Custom AMI" \e
+    \-\-custom\-ami\-id ami\-a518e6df \e
+    \-\-ebs\-root\-volume\-size 20 \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-use\-default\-roles \e
+    \-\-instance\-count 2 \e
+    \-\-instance\-type m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 8: To customize application configurations\fP
+.sp
+The following examples use the \fB\-\-configurations\fP parameter to specify a JSON configuration file that contains application customizations for Hadoop. For more information, see \fI\%Configuring Applications\fP in the \fIAmazon EMR Release Guide\fP\&.
+.sp
+Contents of \fBconfigurations.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+       "Classification": "mapred\-site",
+       "Properties": {
+           "mapred.tasktracker.map.tasks.maximum": 2
+       }
+    },
+    {
+        "Classification": "hadoop\-env",
+        "Properties": {},
+        "Configurations": [
+            {
+                "Classification": "export",
+                "Properties": {
+                    "HADOOP_DATANODE_HEAPSIZE": 2048,
+                    "HADOOP_NAMENODE_OPTS": "\-XX:GCTimeRatio=19"
+                }
+            }
+        ]
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example references \fBconfigurations.json\fP as a local file.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-configurations file://configurations.json \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example references \fBconfigurations.json\fP as a file in Amazon S3.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-configurations https://s3.amazonaws.com/myBucket/configurations.json \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 9: To create a cluster with master, core, and task instance groups\fP
+.sp
+The following \fBcreate\-cluster\fP example uses \fB\-\-instance\-groups\fP to specify the type and number of EC2 instances to use for master, core, and task instance groups.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups Name=Master,InstanceGroupType=MASTER,InstanceType=m4.large,InstanceCount=1 Name=Core,InstanceGroupType=CORE,InstanceType=m4.large,InstanceCount=2 Name=Task,InstanceGroupType=TASK,InstanceType=m4.large,InstanceCount=2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 10: To specify that a cluster should terminate after completing all steps\fP
+.sp
+The following \fBcreate\-cluster\fP example uses \fB\-\-auto\-terminate\fP to specify that the cluster should shut down automatically after completing all steps.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large  InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 11: To specify cluster configuration details such as the Amazon EC2 key pair, network configuration, and security groups\fP
+.sp
+The following \fBcreate\-cluster\fP example creates a cluster with the Amazon EC2 key pair named \fBmyKey\fP and a customized instance profile named \fBmyProfile\fP\&. Key pairs are used to authorize SSH connections to cluster nodes, most often the master node. For more information, see \fI\%Use an Amazon EC2 Key Pair for SSH Credentials\fP in the \fIAmazon EMR Management Guide\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-ec2\-attributes KeyName=myKey,InstanceProfile=myProfile \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example creates a cluster in an Amazon VPC subnet.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-ec2\-attributes SubnetId=subnet\-xxxxx \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example creates a cluster in the \fBus\-east\-1b\fP availability zone.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-ec2\-attributes AvailabilityZone=us\-east\-1b \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example creates a cluster and specifies only the Amazon EMR\-managed security groups.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-service\-role myServiceRole \e
+    \-\-ec2\-attributes InstanceProfile=myRole,EmrManagedMasterSecurityGroup=sg\-master1,EmrManagedSlaveSecurityGroup=sg\-slave1 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example creates a cluster and specifies only additional Amazon EC2 security groups.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-service\-role myServiceRole \e
+    \-\-ec2\-attributes InstanceProfile=myRole,AdditionalMasterSecurityGroups=[sg\-addMaster1,sg\-addMaster2,sg\-addMaster3,sg\-addMaster4],AdditionalSlaveSecurityGroups=[sg\-addSlave1,sg\-addSlave2,sg\-addSlave3,sg\-addSlave4] \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example creates a cluster and specifies the EMR\-Managed security groups, as well as additional security groups.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-service\-role myServiceRole \e
+    \-\-ec2\-attributes InstanceProfile=myRole,EmrManagedMasterSecurityGroup=sg\-master1,EmrManagedSlaveSecurityGroup=sg\-slave1,AdditionalMasterSecurityGroups=[sg\-addMaster1,sg\-addMaster2,sg\-addMaster3,sg\-addMaster4],AdditionalSlaveSecurityGroups=[sg\-addSlave1,sg\-addSlave2,sg\-addSlave3,sg\-addSlave4] \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example creates a cluster in a VPC private subnet and use a specific Amazon EC2 security group to enable Amazon EMR service access, which is required for clusters in private subnets.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-service\-role myServiceRole \e
+    \-\-ec2\-attributes InstanceProfile=myRole,ServiceAccessSecurityGroup=sg\-service\-access,EmrManagedMasterSecurityGroup=sg\-master,EmrManagedSlaveSecurityGroup=sg\-slave \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example specifies security group configuration parameters using a JSON file named \fBec2_attributes.json\fP that is stored locally.
+NOTE: JSON arguments must include options and values as their own items in the list.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-service\-role myServiceRole \e
+    \-\-ec2\-attributes file://ec2_attributes.json  \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBec2_attributes.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "SubnetId": "subnet\-xxxxx",
+        "KeyName": "myKey",
+        "InstanceProfile":"myRole",
+        "EmrManagedMasterSecurityGroup": "sg\-master1",
+        "EmrManagedSlaveSecurityGroup": "sg\-slave1",
+        "ServiceAccessSecurityGroup": "sg\-service\-access",
+        "AdditionalMasterSecurityGroups": ["sg\-addMaster1","sg\-addMaster2","sg\-addMaster3","sg\-addMaster4"],
+        "AdditionalSlaveSecurityGroups": ["sg\-addSlave1","sg\-addSlave2","sg\-addSlave3","sg\-addSlave4"]
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 12: To enable debugging and specify a log URI\fP
+.sp
+The following \fBcreate\-cluster\fP example uses the \fB\-\-enable\-debugging\fP parameter, which allows you to view log files more easily using the debugging tool in the Amazon EMR console. The \fB\-\-log\-uri\fP parameter is required with \fB\-\-enable\-debugging\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-enable\-debugging \e
+    \-\-log\-uri s3://myBucket/myLog \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 13: To add tags when creating a cluster\fP
+.sp
+Tags are key\-value pairs that help you identify and manage clusters. The following \fBcreate\-cluster\fP example uses the \fB\-\-tags\fP parameter to create three tags for a cluster, one with the key name \fBname\fP and the value \fBShirley Rodriguez\fP, a second with the key name \fBage\fP and the value \fB29\fP, and a third tag with the key name \fBdepartment\fP and the value \fBAnalytics\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-tags name="Shirley Rodriguez" age=29 department="Analytics" \e
+    \-\-release\-label emr\-5.32.0 \e
+    \-\-instance\-type m5.xlarge \e
+    \-\-instance\-count 3 \e
+    \-\-use\-default\-roles
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example lists the tags applied to a cluster.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr describe\-cluster \e
+    \-\-cluster\-id j\-XXXXXXYY \e
+    \-\-query Cluster.Tags
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 14: To use a security configuration that enables encryption and other security features\fP
+.sp
+The following \fBcreate\-cluster\fP example uses the \fB\-\-security\-configuration\fP parameter to specify a security configuration for an EMR cluster. You can use security configurations with Amazon EMR version 4.8.0 or later.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-instance\-type m4.large \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-security\-configuration mySecurityConfiguration
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 15: To create a cluster with additional EBS storage volumes configured for the instance groups\fP
+.sp
+When specifying additional EBS volumes, the following arguments are required: \fBVolumeType\fP, \fBSizeInGB\fP if \fBEbsBlockDeviceConfigs\fP is specified.
+.sp
+The following \fBcreate\-cluster\fP example creates a cluster with multiple EBS volumes attached to EC2 instances in the core instance group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0  \e
+    \-\-use\-default\-roles \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=d2.xlarge \(aqInstanceGroupType=CORE,InstanceCount=2,InstanceType=d2.xlarge,EbsConfiguration={EbsOptimized=true,EbsBlockDeviceConfigs=[{VolumeSpecification={VolumeType=gp2,SizeInGB=100}},{VolumeSpecification={VolumeType=io1,SizeInGB=100,Iops=100},VolumesPerInstance=4}]}\(aq \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example creates a cluster with multiple EBS volumes attached to EC2 instances in the master instance group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-use\-default\-roles \e
+    \-\-instance\-groups \(aqInstanceGroupType=MASTER, InstanceCount=1, InstanceType=d2.xlarge, EbsConfiguration={EbsOptimized=true, EbsBlockDeviceConfigs=[{VolumeSpecification={VolumeType=io1, SizeInGB=100, Iops=100}},{VolumeSpecification={VolumeType=standard,SizeInGB=50},VolumesPerInstance=3}]}\(aq InstanceGroupType=CORE,InstanceCount=2,InstanceType=d2.xlarge \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 16: To create a cluster with an automatic scaling policy\fP
+.sp
+You can attach automatic scaling policies to core and task instance groups using Amazon EMR version 4.0 and later. The automatic scaling policy dynamically adds and removes EC2 instances in response to an Amazon CloudWatch metric. For more information, see \fIUsing Automatic Scaling in Amazon EMR\fP <\fI\%http://docs.aws.amazon.com/emr/latest/ManagementGuide/emr\-automatic\-scaling.html\fP>\(ga_ in the \fIAmazon EMR Management Guide\fP\&.
+.sp
+When attaching an automatic scaling policy, you must also specify the default role for automatic scaling using \fB\-\-auto\-scaling\-role EMR_AutoScaling_DefaultRole\fP\&.
+.sp
+The following \fBcreate\-cluster\fP example specifies the automatic scaling policy for the \fBCORE\fP instance group using the \fBAutoScalingPolicy\fP argument with an embedded JSON structure, which specifies the scaling policy configuration. Instance groups with an embedded JSON structure must have the entire collection of arguments enclosed in single quotes. Using single quotes is optional for instance groups without an embedded JSON structure.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-use\-default\-roles \-\-auto\-scaling\-role EMR_AutoScaling_DefaultRole \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceType=d2.xlarge,InstanceCount=1 \(aqInstanceGroupType=CORE,InstanceType=d2.xlarge,InstanceCount=2,AutoScalingPolicy={Constraints={MinCapacity=1,MaxCapacity=5},Rules=[{Name=TestRule,Description=TestDescription,Action={Market=ON_DEMAND,SimpleScalingPolicyConfiguration={AdjustmentType=EXACT_CAPACITY,ScalingAdjustment=2}},Trigger={CloudWatchAlarmDefinition={ComparisonOperator=GREATER_THAN,EvaluationPeriods=5,MetricName=TestMetric,Namespace=EMR,Period=3,Statistic=MAXIMUM,Threshold=4.5,Unit=NONE,Dimensions=[{Key=TestKey,Value=TestValue}]}}}]}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example uses a JSON file, \fBinstancegroupconfig.json\fP, to specify the configuration of all instance groups in a cluster. The JSON file specifies the automatic scaling policy configuration for the core instance group.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-service\-role EMR_DefaultRole \e
+    \-\-ec2\-attributes InstanceProfile=EMR_EC2_DefaultRole \e
+    \-\-instance\-groups s3://mybucket/instancegroupconfig.json \e
+    \-\-auto\-scaling\-role EMR_AutoScaling_DefaultRole
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBinstancegroupconfig.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "InstanceCount": 1,
+        "Name": "MyMasterIG",
+        "InstanceGroupType": "MASTER",
+        "InstanceType": "m4.large"
+    },
+    {
+        "InstanceCount": 2,
+        "Name": "MyCoreIG",
+        "InstanceGroupType": "CORE",
+        "InstanceType": "m4.large",
+        "AutoScalingPolicy": {
+            "Constraints": {
+                "MinCapacity": 2,
+                "MaxCapacity": 10
+            },
+            "Rules": [
+                {
+                    "Name": "Default\-scale\-out",
+                    "Description": "Replicates the default scale\-out rule in the console for YARN memory.",
+                    "Action": {
+                        "SimpleScalingPolicyConfiguration": {
+                            "AdjustmentType": "CHANGE_IN_CAPACITY",
+                            "ScalingAdjustment": 1,
+                            "CoolDown": 300
+                        }
+                    },
+                    "Trigger": {
+                        "CloudWatchAlarmDefinition": {
+                            "ComparisonOperator": "LESS_THAN",
+                            "EvaluationPeriods": 1,
+                            "MetricName": "YARNMemoryAvailablePercentage",
+                            "Namespace": "AWS/ElasticMapReduce",
+                            "Period": 300,
+                            "Threshold": 15,
+                            "Statistic": "AVERAGE",
+                            "Unit": "PERCENT",
+                            "Dimensions": [
+                                {
+                                    "Key": "JobFlowId",
+                                    "Value": "${emr.clusterId}"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 17: Add custom JAR steps when creating a cluster\fP
+.sp
+The following \fBcreate\-cluster\fP example adds steps by specifying a JAR file stored in Amazon S3. Steps submit work to a cluster. The main function defined in the JAR file executes after EC2 instances are provisioned, any bootstrap actions have executed, and applications are installed. The steps are specified using \fBType=CUSTOM_JAR\fP\&.
+.sp
+Custom JAR steps require the \fBJar=\fP parameter, which specifies the path and file name of the JAR. Optional parameters are \fBType\fP, \fBName\fP, \fBActionOnFailure\fP, \fBArgs\fP, and \fBMainClass\fP\&. If main class is not specified, the JAR file should specify \fBMain\-Class\fP in its manifest file.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-steps Type=CUSTOM_JAR,Name=CustomJAR,ActionOnFailure=CONTINUE,Jar=s3://myBucket/mytest.jar,Args=arg1,arg2,arg3 Type=CUSTOM_JAR,Name=CustomJAR,ActionOnFailure=CONTINUE,Jar=s3://myBucket/mytest.jar,MainClass=mymainclass,Args=arg1,arg2,arg3  \e
+    \-\-release\-label emr\-5.3.1 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 18: To add streaming steps when creating a cluster\fP
+.sp
+The following \fBcreate\-cluster\fP examples add a streaming step to a cluster that terminates after all steps run. Streaming steps require parameters \fBType\fP and \fBArgs\fP\&. Streaming steps optional parameters are \fBName\fP and \fBActionOnFailure\fP\&.
+.sp
+The following example specifies the step inline.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-steps Type=STREAMING,Name=\(aqStreaming Program\(aq,ActionOnFailure=CONTINUE,Args=[\-files,s3://elasticmapreduce/samples/wordcount/wordSplitter.py,\-mapper,wordSplitter.py,\-reducer,aggregate,\-input,s3://elasticmapreduce/samples/wordcount/input,\-output,s3://mybucket/wordcount/output] \e
+    \-\-release\-label emr\-5.3.1 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example uses a locally stored JSON configuration file named \fBmultiplefiles.json\fP\&. The JSON configuration specifies multiple files. To specify multiple files within a step, you must use a JSON configuration file to specify the step. JSON arguments must include options and values as their own items in the list.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-steps file://./multiplefiles.json \e
+    \-\-release\-label emr\-5.9.0  \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBmultiplefiles.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+    {
+        "Name": "JSON Streaming Step",
+        "Args": [
+            "\-files",
+            "s3://elasticmapreduce/samples/wordcount/wordSplitter.py",
+            "\-mapper",
+            "wordSplitter.py",
+            "\-reducer",
+            "aggregate",
+            "\-input",
+            "s3://elasticmapreduce/samples/wordcount/input",
+            "\-output",
+            "s3://mybucket/wordcount/output"
+        ],
+        "ActionOnFailure": "CONTINUE",
+        "Type": "STREAMING"
+    }
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 19: To add Hive steps when creating a cluster\fP
+.sp
+The following example add Hive steps when creating a cluster. Hive steps require parameters \fBType\fP and \fBArgs\fP\&. Hive steps optional parameters are \fBName\fP and \fBActionOnFailure\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-steps Type=HIVE,Name=\(aqHive program\(aq,ActionOnFailure=CONTINUE,ActionOnFailure=TERMINATE_CLUSTER,Args=[\-f,s3://elasticmapreduce/samples/hive\-ads/libs/model\-build.q,\-d,INPUT=s3://elasticmapreduce/samples/hive\-ads/tables,\-d,OUTPUT=s3://mybucket/hive\-ads/output/2014\-04\-18/11\-07\-32,\-d,LIBS=s3://elasticmapreduce/samples/hive\-ads/libs] \e
+    \-\-applications Name=Hive \e
+    \-\-release\-label emr\-5.3.1 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 20: To add Pig steps when creating a cluster\fP
+.sp
+The following example adds Pig steps when creating a cluster. Pig steps required parameters are \fBType\fP and \fBArgs\fP\&. Pig steps optional parameters are \fBName\fP and \fBActionOnFailure\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-steps Type=PIG,Name=\(aqPig program\(aq,ActionOnFailure=CONTINUE,Args=[\-f,s3://elasticmapreduce/samples/pig\-apache/do\-reports2.pig,\-p,INPUT=s3://elasticmapreduce/samples/pig\-apache/input,\-p,OUTPUT=s3://mybucket/pig\-apache/output] \e
+    \-\-applications Name=Pig \e
+    \-\-release\-label emr\-5.3.1 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 21: To add bootstrap actions\fP
+.sp
+The following \fBcreate\-cluster\fP example runs two bootstrap actions defined as scripts that are stored in Amazon S3.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-bootstrap\-actions Path=s3://mybucket/myscript1,Name=BootstrapAction1,Args=[arg1,arg2] Path=s3://mybucket/myscript2,Name=BootstrapAction2,Args=[arg1,arg2] \e
+    \-\-release\-label emr\-5.3.1 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large \e
+    \-\-auto\-terminate
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 22: To enable EMRFS consistent view and customize the RetryCount and RetryPeriod settings\fP
+.sp
+The following \fBcreate\-cluster\fP example specifies the retry count and retry period for EMRFS consistent view. The \fBConsistent=true\fP argument is required.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-instance\-type m4.large \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-emrfs Consistent=true,RetryCount=6,RetryPeriod=30
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following example specifies the same EMRFS configuration as the previous example, using a locally stored JSON configuration file named \fBemrfsconfig.json\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-instance\-type m4.large \e
+    \-\-release\-label emr\-5.9.0 \e
+    \-\-emrfs file://emrfsconfig.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBemrfsconfig.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Consistent": true,
+    "RetryCount": 6,
+    "RetryPeriod": 30
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 23: To create a cluster with Kerberos configured\fP
+.sp
+The following \fBcreate\-cluster\fP examples create a cluster using a security configuration with Kerberos enabled, and establishes Kerberos parameters for the cluster using \fB\-\-kerberos\-attributes\fP\&.
+.sp
+The following command specifies Kerberos attributes for the cluster inline.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-instance\-type m3.xlarge \e
+    \-\-release\-label emr\-5.10.0 \e
+    \-\-service\-role EMR_DefaultRole \e
+    \-\-ec2\-attributes InstanceProfile=EMR_EC2_DefaultRole \e
+    \-\-security\-configuration mySecurityConfiguration \e
+    \-\-kerberos\-attributes Realm=EC2.INTERNAL,KdcAdminPassword=123,CrossRealmTrustPrincipalPassword=123
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following command specifies the same attributes, but references a locally stored JSON file named \fBkerberos_attributes.json\fP\&. In this example, the file is saved in the same directory where you run the command. You can also reference a configuration file saved in Amazon S3.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-instance\-type m3.xlarge \e
+    \-\-release\-label emr\-5.10.0 \e
+    \-\-service\-role EMR_DefaultRole \e
+    \-\-ec2\-attributes InstanceProfile=EMR_EC2_DefaultRole \e
+    \-\-security\-configuration mySecurityConfiguration \e
+    \-\-kerberos\-attributes file://kerberos_attributes.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBkerberos_attributes.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Realm": "EC2.INTERNAL",
+    "KdcAdminPassword": "123",
+    "CrossRealmTrustPrincipalPassword": "123",
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following \fBcreate\-cluster\fP example creates an Amazon EMR cluster that uses the \fB\-\-instance\-groups\fP configuration and has a managed scaling policy.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.30.0 \e
+    \-\-service\-role EMR_DefaultRole \e
+    \-\-ec2\-attributes InstanceProfile=EMR_EC2_DefaultRole \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+    \-\-managed\-scaling\-policy ComputeLimits=\(aq{MinimumCapacityUnits=2,MaximumCapacityUnits=4,UnitType=Instances}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following \fBcreate\-cluster\fP example creates an Amazon EMR cluster that uses the "\-\-log\-encryption\-kms\-key\-id" to define KMS key ID utilized for Log encryption.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.30.0 \e
+    \-\-log\-uri s3://myBucket/myLog \e
+    \-\-log\-encryption\-kms\-key\-id arn:aws:kms:us\-east\-1:110302272565:key/dd559181\-283e\-45d7\-99d1\-66da348c4d33 \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m4.large InstanceGroupType=CORE,InstanceCount=2,InstanceType=m4.large
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following \fBcreate\-cluster\fP example creates an Amazon EMR cluster that uses the "\-\-placement\-group\-configs" configuration to place master nodes in a high\-availability (HA) cluster within an EC2 placement group using \fBSPREAD\fP placement strategy.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws emr create\-cluster \e
+    \-\-release\-label emr\-5.30.0 \e
+    \-\-service\-role EMR_DefaultRole \e
+    \-\-ec2\-attributes InstanceProfile=EMR_EC2_DefaultRole \e
+    \-\-instance\-groups InstanceGroupType=MASTER,InstanceCount=3,InstanceType=m4.largeInstanceGroupType=CORE,InstanceCount=1,InstanceType=m4.large \e
+    \-\-placement\-group\-configs InstanceRole=MASTER
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

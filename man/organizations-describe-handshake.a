@@ -1,0 +1,333 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ORGANIZATIONS-DESCRIBE-HANDSHAKE" "a" "" ""
+.SH NAME
+organizations-describe-handshake \- Retrieves information about a previously requested handshake
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original  InviteAccountToOrganization operation that generated the handshake.
+.sp
+You can access handshakes that are \fBACCEPTED\fP , \fBDECLINED\fP , or \fBCANCELED\fP for only 30 days after they change to that state. They\(aqre then deleted and no longer accessible.
+.sp
+This operation can be called from any account in the organization.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  describe\-handshake
+\-\-handshake\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-handshake\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) of the handshake that you want information about. You can get the ID from the original call to  InviteAccountToOrganization , or from a call to  ListHandshakesForAccount or  ListHandshakesForOrganization .
+.sp
+The \fI\%regex pattern\fP for handshake ID string requires "h\-" followed by from 8 to 32 lowercase letters or digits.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo get information about a handshake\fP
+.sp
+The following example shows you how to request details about a handshake. The handshake ID comes either from the original call to \fBInviteAccountToOrganization\fP, or from a call to \fBListHandshakesForAccount\fP or \fBListHandshakesForOrganization\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws organizations describe\-handshake \-\-handshake\-id h\-examplehandshakeid111
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The output includes a handshake object that has all the details about the requested handshake:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+        "Handshake": {
+                "Id": "h\-examplehandshakeid111",
+                "State": "OPEN",
+                "Resources": [
+                        {
+                                "Type": "ORGANIZATION",
+                                "Value": "o\-exampleorgid",
+                                "Resources": [
+                                        {
+                                                "Type": "MASTER_EMAIL",
+                                                "Value": "bill@example.com"
+                                        },
+                                        {
+                                                "Type": "MASTER_NAME",
+                                                "Value": "Master Account"
+                                        }
+                                ]
+                        },
+                        {
+                                "Type": "EMAIL",
+                                "Value": "anika@example.com"
+                        }
+                ],
+                "Parties": [
+                        {
+                                "Type": "ORGANIZATION",
+                                "Id": "o\-exampleorgid"
+                        },
+                        {
+                                "Type": "EMAIL",
+                                "Id": "anika@example.com"
+                        }
+                ],
+                "Action": "INVITE",
+                "RequestedTimestamp": 1470158698.046,
+                "ExpirationTimestamp": 1471454698.046,
+                "Arn": "arn:aws:organizations::111111111111:handshake/o\-exampleorgid/invite/h\-examplehandshakeid111"
+        }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Handshake \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure that contains information about the specified handshake.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) of a handshake. The originating account creates the ID when it initiates the handshake.
+.sp
+The \fI\%regex pattern\fP for handshake ID string requires "h\-" followed by from 8 to 32 lowercase letters or digits.
+.UNINDENT
+.UNINDENT
+.sp
+Arn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of a handshake.
+.sp
+For more information about ARNs in Organizations, see \fI\%ARN Formats Supported by Organizations\fP in the \fIAWS Service Authorization Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Parties \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the two accounts that are participating in the handshake.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies a participant in a handshake.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier (ID) for the party.
+.sp
+The \fI\%regex pattern\fP for handshake ID string requires "h\-" followed by from 8 to 32 lowercase letters or digits.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of party.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+State \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The current state of the handshake. Use the state to trace the flow of the handshake through the process from its creation to its acceptance. The meaning of each of the valid values is as follows:
+.INDENT 0.0
+.IP \(bu 2
+\fBREQUESTED\fP : This handshake was sent to multiple recipients (applicable to only some handshake types) and not all recipients have responded yet. The request stays in this state until all recipients respond.
+.IP \(bu 2
+\fBOPEN\fP : This handshake was sent to multiple recipients (applicable to only some policy types) and all recipients have responded, allowing the originator to complete the handshake action.
+.IP \(bu 2
+\fBCANCELED\fP : This handshake is no longer active because it was canceled by the originating account.
+.IP \(bu 2
+\fBACCEPTED\fP : This handshake is complete because it has been accepted by the recipient.
+.IP \(bu 2
+\fBDECLINED\fP : This handshake is no longer active because it was declined by the recipient account.
+.IP \(bu 2
+\fBEXPIRED\fP : This handshake is no longer active because the originator did not receive a response of any kind from the recipient before the expiration time (15 days).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RequestedTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the handshake request was made.
+.UNINDENT
+.UNINDENT
+.sp
+ExpirationTimestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The date and time that the handshake expires. If the recipient of the handshake request fails to respond before the specified date and time, the handshake becomes inactive and is no longer valid.
+.UNINDENT
+.UNINDENT
+.sp
+Action \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of handshake, indicating what action occurs when the recipient accepts the handshake. The following handshake types are supported:
+.INDENT 0.0
+.IP \(bu 2
+\fBINVITE\fP : This type of handshake represents a request to join an organization. It is always sent from the management account to only non\-member accounts.
+.IP \(bu 2
+\fBENABLE_ALL_FEATURES\fP : This type of handshake represents a request to enable all features in an organization. It is always sent from the management account to only \fIinvited\fP member accounts. Created accounts do not receive this because those accounts were created by the organization\(aqs management account and approval is inferred.
+.IP \(bu 2
+\fBAPPROVE_ALL_FEATURES\fP : This type of handshake is sent from the Organizations service when all member accounts have approved the \fBENABLE_ALL_FEATURES\fP invitation. It is sent only to the management account and signals the master that it can finalize the process to enable all features.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Additional information that is needed to process the handshake.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains additional data that is needed to process a handshake.
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The information that is passed to the other party in the handshake. The format of the value string must match the requirements of the specified type.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of information being passed, specifying how the value is to be interpreted by the other party:
+.INDENT 0.0
+.IP \(bu 2
+\fBACCOUNT\fP \- Specifies an AWS account ID number.
+.IP \(bu 2
+\fBORGANIZATION\fP \- Specifies an organization ID number.
+.IP \(bu 2
+\fBEMAIL\fP \- Specifies the email address that is associated with the account that receives the handshake.
+.IP \(bu 2
+\fBOWNER_EMAIL\fP \- Specifies the email address associated with the management account. Included as information about an organization.
+.IP \(bu 2
+\fBOWNER_NAME\fP \- Specifies the name associated with the management account. Included as information about an organization.
+.IP \(bu 2
+\fBNOTES\fP \- Additional text provided by the handshake initiator and intended for the recipient to read.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+When needed, contains an additional array of \fBHandshakeResource\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains additional data that is needed to process a handshake.
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The information that is passed to the other party in the handshake. The format of the value string must match the requirements of the specified type.
+.UNINDENT
+.UNINDENT
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of information being passed, specifying how the value is to be interpreted by the other party:
+.INDENT 0.0
+.IP \(bu 2
+\fBACCOUNT\fP \- Specifies an AWS account ID number.
+.IP \(bu 2
+\fBORGANIZATION\fP \- Specifies an organization ID number.
+.IP \(bu 2
+\fBEMAIL\fP \- Specifies the email address that is associated with the account that receives the handshake.
+.IP \(bu 2
+\fBOWNER_EMAIL\fP \- Specifies the email address associated with the management account. Included as information about an organization.
+.IP \(bu 2
+\fBOWNER_NAME\fP \- Specifies the name associated with the management account. Included as information about an organization.
+.IP \(bu 2
+\fBNOTES\fP \- Additional text provided by the handshake initiator and intended for the recipient to read.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

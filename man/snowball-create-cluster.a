@@ -1,0 +1,477 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SNOWBALL-CREATE-CLUSTER" "a" "" ""
+.SH NAME
+snowball-create-cluster \- Creates an empty cluster
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an empty cluster. Each cluster supports five nodes. You use the  CreateJob action separately to create the jobs for each of these nodes. The cluster does not ship until these five node jobs have been created.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-cluster
+\-\-job\-type <value>
+\-\-resources <value>
+[\-\-description <value>]
+\-\-address\-id <value>
+[\-\-kms\-key\-arn <value>]
+\-\-role\-arn <value>
+\-\-snowball\-type <value>
+\-\-shipping\-option <value>
+[\-\-notification <value>]
+[\-\-forwarding\-address\-id <value>]
+[\-\-tax\-documents <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-job\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of job for this cluster. Currently, the only job type supported for clusters is \fBLOCAL_USE\fP .
+.sp
+For more information, see "\fI\%https://docs.aws.amazon.com/snowball/latest/snowcone\-guide/snow\-device\-types.html\fP" (Snow Family Devices and Capacity) in the \fISnowcone User Guide\fP or "\fI\%https://docs.aws.amazon.com/snowball/latest/developer\-guide/snow\-device\-types.html\fP" (Snow Family Devices and Capacity) in the \fISnowcone User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBIMPORT\fP
+.IP \(bu 2
+\fBEXPORT\fP
+.IP \(bu 2
+\fBLOCAL_USE\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resources\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The resources associated with the cluster job. These resources include Amazon S3 buckets and optional AWS Lambda functions written in the Python language.
+.sp
+S3Resources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of \fBS3Resource\fP objects.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Each \fBS3Resource\fP object represents an Amazon S3 bucket that your transferred data will be exported from or imported into. For export jobs, this object can have an optional \fBKeyRange\fP value. The length of the range is defined at job creation, and has either an inclusive \fBBeginMarker\fP , an inclusive \fBEndMarker\fP , or both. Ranges are UTF\-8 binary sorted.
+.sp
+BucketArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an Amazon S3 bucket.
+.UNINDENT
+.UNINDENT
+.sp
+KeyRange \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+For export jobs, you can provide an optional \fBKeyRange\fP within a specific Amazon S3 bucket. The length of the range is defined at job creation, and has either an inclusive \fBBeginMarker\fP , an inclusive \fBEndMarker\fP , or both. Ranges are UTF\-8 binary sorted.
+.sp
+BeginMarker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key that starts an optional key range for an export job. Ranges are inclusive and UTF\-8 binary sorted.
+.UNINDENT
+.UNINDENT
+.sp
+EndMarker \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key that ends an optional key range for an export job. Ranges are inclusive and UTF\-8 binary sorted.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LambdaResources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Python\-language Lambda functions for this job.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Identifies
+.sp
+LambdaArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An Amazon Resource Name (ARN) that represents an AWS Lambda function to be triggered by PUT object actions on the associated local Amazon S3 resource.
+.UNINDENT
+.UNINDENT
+.sp
+EventTriggers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The array of ARNs for  S3Resource objects to trigger the  LambdaResource objects associated with this job.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The container for the  EventTriggerDefinition$EventResourceARN .
+.sp
+EventResourceARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) for any local Amazon S3 resource that is an AWS Lambda function\(aqs event trigger associated with this job.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Ec2AmiResources \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Machine Images (AMIs) associated with this job.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A JSON\-formatted object that contains the IDs for an Amazon Machine Image (AMI), including the Amazon EC2 AMI ID and the Snow device AMI ID. Each AMI has these two IDs to simplify identifying the AMI in both the AWS Cloud and on the device.
+.sp
+AmiId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AMI in Amazon EC2.
+.UNINDENT
+.UNINDENT
+.sp
+SnowballAmiId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the AMI on the Snow device.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "S3Resources": [
+    {
+      "BucketArn": "string",
+      "KeyRange": {
+        "BeginMarker": "string",
+        "EndMarker": "string"
+      }
+    }
+    ...
+  ],
+  "LambdaResources": [
+    {
+      "LambdaArn": "string",
+      "EventTriggers": [
+        {
+          "EventResourceARN": "string"
+        }
+        ...
+      ]
+    }
+    ...
+  ],
+  "Ec2AmiResources": [
+    {
+      "AmiId": "string",
+      "SnowballAmiId": "string"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional description of this specific cluster, for example \fBEnvironmental Data Cluster\-01\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-address\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID for the address that you want the cluster shipped to.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-kms\-key\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBKmsKeyARN\fP value that you want to associate with this cluster. \fBKmsKeyARN\fP values are created by using the \fI\%CreateKey\fP API action in AWS Key Management Service (AWS KMS).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBRoleARN\fP that you want to associate with this cluster. \fBRoleArn\fP values are created by using the \fI\%CreateRole\fP API action in AWS Identity and Access Management (IAM).
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-snowball\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of AWS Snow Family device to use for this cluster.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+For cluster jobs, AWS Snow Family currently supports only the \fBEDGE\fP device type.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see "\fI\%https://docs.aws.amazon.com/snowball/latest/snowcone\-guide/snow\-device\-types.html\fP" (Snow Family Devices and Capacity) in the \fISnowcone User Guide\fP or "\fI\%https://docs.aws.amazon.com/snowball/latest/developer\-guide/snow\-device\-types.html\fP" (Snow Family Devices and Capacity) in the \fISnowcone User Guide\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSTANDARD\fP
+.IP \(bu 2
+\fBEDGE\fP
+.IP \(bu 2
+\fBEDGE_C\fP
+.IP \(bu 2
+\fBEDGE_CG\fP
+.IP \(bu 2
+\fBEDGE_S\fP
+.IP \(bu 2
+\fBSNC1_HDD\fP
+.IP \(bu 2
+\fBSNC1_SSD\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-shipping\-option\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The shipping speed for each node in this cluster. This speed doesn\(aqt dictate how soon you\(aqll get each Snowball Edge device, rather it represents how quickly each device moves to its destination while in transit. Regional shipping speeds are as follows:
+.INDENT 0.0
+.IP \(bu 2
+In Australia, you have access to express shipping. Typically, Snow devices shipped express are delivered in about a day.
+.IP \(bu 2
+In the European Union (EU), you have access to express shipping. Typically, Snow devices shipped express are delivered in about a day. In addition, most countries in the EU have access to standard shipping, which typically takes less than a week, one way.
+.IP \(bu 2
+In India, Snow device are delivered in one to seven days.
+.IP \(bu 2
+In the United States of America (US), you have access to one\-day shipping and two\-day shipping.
+.IP \(bu 2
+In Australia, you have access to express shipping. Typically, devices shipped express are delivered in about a day.
+.IP \(bu 2
+In the European Union (EU), you have access to express shipping. Typically, Snow devices shipped express are delivered in about a day. In addition, most countries in the EU have access to standard shipping, which typically takes less than a week, one way.
+.IP \(bu 2
+In India, Snow device are delivered in one to seven days.
+.IP \(bu 2
+In the US, you have access to one\-day shipping and two\-day shipping.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBSECOND_DAY\fP
+.IP \(bu 2
+\fBNEXT_DAY\fP
+.IP \(bu 2
+\fBEXPRESS\fP
+.IP \(bu 2
+\fBSTANDARD\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-notification\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Simple Notification Service (Amazon SNS) notification settings for this cluster.
+.sp
+SnsTopicARN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The new SNS \fBTopicArn\fP that you want to associate with this job. You can create Amazon Resource Names (ARNs) for topics by using the \fI\%CreateTopic\fP Amazon SNS API action.
+.sp
+You can subscribe email addresses to an Amazon SNS topic through the AWS Management Console, or by using the \fI\%Subscribe\fP AWS Simple Notification Service (SNS) API action.
+.UNINDENT
+.UNINDENT
+.sp
+JobStatesToNotify \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of job states that will trigger a notification for this job.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NotifyAll \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Any change in job state will trigger a notification for this job.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+SnsTopicARN=string,JobStatesToNotify=string,string,NotifyAll=boolean
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "SnsTopicARN": "string",
+  "JobStatesToNotify": ["New"|"PreparingAppliance"|"PreparingShipment"|"InTransitToCustomer"|"WithCustomer"|"InTransitToAWS"|"WithAWSSortingFacility"|"WithAWS"|"InProgress"|"Complete"|"Cancelled"|"Listing"|"Pending", ...],
+  "NotifyAll": true|false
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-forwarding\-address\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The forwarding address ID for a cluster. This field is not supported in most regions.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tax\-documents\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The tax documents required in your AWS Region.
+.sp
+IND \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The tax documents required in AWS Regions in India.
+.sp
+GSTIN \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Goods and Services Tax (GST) documents required in AWS Regions in India.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+IND={GSTIN=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "IND": {
+    "GSTIN": "string"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+ClusterId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The automatically generated ID for a cluster.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

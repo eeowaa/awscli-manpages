@@ -1,0 +1,189 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SAGEMAKER-RUNTIME-INVOKE-ENDPOINT" "a" "" ""
+.SH NAME
+sagemaker-runtime-invoke-endpoint \- After you deploy a model into production using Amazon SageMaker hosting services, your client applications use this API to get inferences from the model hosted at the specified endpoint
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+After you deploy a model into production using Amazon SageMaker hosting services, your client applications use this API to get inferences from the model hosted at the specified endpoint.
+.sp
+For an overview of Amazon SageMaker, see \fI\%How It Works\fP .
+.sp
+Amazon SageMaker strips all POST headers except those supported by the API. Amazon SageMaker might add additional headers. You should not rely on the behavior of headers outside those enumerated in the request syntax.
+.sp
+Calls to \fBInvokeEndpoint\fP are authenticated by using AWS Signature Version 4. For information, see \fI\%Authenticating Requests (AWS Signature Version 4)\fP in the \fIAmazon S3 API Reference\fP .
+.sp
+A customer\(aqs model containers must respond to requests within 60 seconds. The model itself can have a maximum processing time of 60 seconds before responding to invocations. If your model is going to take 50\-60 seconds of processing time, the SDK socket timeout should be set to be 70 seconds.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Endpoints are scoped to an individual account, and are not public. The URL does not contain the account ID, but Amazon SageMaker determines the account ID from the authentication token that is supplied by the caller.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  invoke\-endpoint
+\-\-endpoint\-name <value>
+\-\-body <value>
+[\-\-content\-type <value>]
+[\-\-accept <value>]
+[\-\-custom\-attributes <value>]
+[\-\-target\-model <value>]
+[\-\-target\-variant <value>]
+[\-\-target\-container\-hostname <value>]
+[\-\-inference\-id <value>]
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-endpoint\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the endpoint that you specified when you created the endpoint using the \fI\%CreateEndpoint\fP API.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-body\fP (blob)
+.INDENT 0.0
+.INDENT 3.5
+Provides input data, in the format specified in the \fBContentType\fP request header. Amazon SageMaker passes all of the data in the body to the model.
+.sp
+For information about the format of the request body, see \fI\%Common Data Formats\-Inference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-content\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The MIME type of the input data in the request body.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-accept\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The desired MIME type of the inference in the response.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-attributes\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides additional information about a request for an inference submitted to a model hosted at an Amazon SageMaker endpoint. The information is an opaque value that is forwarded verbatim. You could use this value, for example, to provide an ID that you can use to track a request or to provide other metadata that a service endpoint was programmed to process. The value must consist of no more than 1024 visible US\-ASCII characters as specified in \fI\%Section 3.3.6. Field Value Components\fP of the Hypertext Transfer Protocol (HTTP/1.1).
+.sp
+The code in your model is responsible for setting or updating any custom attributes in the response. If your code does not set this value in the response, an empty value is returned. For example, if a custom attribute represents the trace ID, your model can prepend the custom attribute with \fBTrace ID:\fP in your post\-processing function.
+.sp
+This feature is currently supported in the AWS SDKs but not in the Amazon SageMaker Python SDK.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-model\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The model to request for inference when invoking a multi\-model endpoint.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-variant\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify the production variant to send the inference request to when invoking an endpoint that is running two or more variants. Note that this parameter overrides the default behavior for the endpoint, which is to distribute the invocation traffic based on the variant weights.
+.sp
+For information about how to use variant targeting to perform a/b testing, see \fI\%Test models in production\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-target\-container\-hostname\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If the endpoint hosts multiple containers and is configured to use direct invocation, this parameter specifies the host name of the container to invoke.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-inference\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+If you provide a value, it is added to the captured data when you enable data capture on the endpoint. For information about data capture, see \fI\%Capture Data\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Body \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Includes the inference provided by the model.
+.sp
+For information about the format of the response body, see \fI\%Common Data Formats\-Inference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The MIME type of the inference returned in the response body.
+.UNINDENT
+.UNINDENT
+.sp
+InvokedProductionVariant \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Identifies the production variant that was invoked.
+.UNINDENT
+.UNINDENT
+.sp
+CustomAttributes \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Provides additional information in the response about the inference returned by a model hosted at an Amazon SageMaker endpoint. The information is an opaque value that is forwarded verbatim. You could use this value, for example, to return an ID received in the \fBCustomAttributes\fP header of a request or other metadata that a service endpoint was programmed to produce. The value must consist of no more than 1024 visible US\-ASCII characters as specified in \fI\%Section 3.3.6. Field Value Components\fP of the Hypertext Transfer Protocol (HTTP/1.1). If the customer wants the custom attribute returned, the model must set the custom attribute to be included on the way back.
+.sp
+The code in your model is responsible for setting or updating any custom attributes in the response. If your code does not set this value in the response, an empty value is returned. For example, if a custom attribute represents the trace ID, your model can prepend the custom attribute with \fBTrace ID:\fP in your post\-processing function.
+.sp
+This feature is currently supported in the AWS SDKs but not in the Amazon SageMaker Python SDK.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

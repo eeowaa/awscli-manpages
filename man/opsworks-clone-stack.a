@@ -1,0 +1,585 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "OPSWORKS-CLONE-STACK" "a" "" ""
+.SH NAME
+opsworks-clone-stack \- Creates a clone of a specified stack
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a clone of a specified stack. For more information, see \fI\%Clone a Stack\fP . By default, all parameters are set to the values used by the parent stack.
+.INDENT 0.0
+.INDENT 3.5
+\fBRequired Permissions\fP : To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see \fI\%Managing User Permissions\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  clone\-stack
+\-\-source\-stack\-id <value>
+[\-\-name <value>]
+[\-\-vpc\-id <value>]
+[\-\-attributes <value>]
+\-\-service\-role\-arn <value>
+[\-\-default\-instance\-profile\-arn <value>]
+[\-\-default\-os <value>]
+[\-\-hostname\-theme <value>]
+[\-\-default\-availability\-zone <value>]
+[\-\-default\-subnet\-id <value>]
+[\-\-custom\-json <value>]
+[\-\-configuration\-manager <value>]
+[\-\-chef\-configuration <value>]
+[\-\-use\-custom\-cookbooks | \-\-no\-use\-custom\-cookbooks]
+[\-\-use\-opsworks\-security\-groups | \-\-no\-use\-opsworks\-security\-groups]
+[\-\-custom\-cookbooks\-source <value>]
+[\-\-default\-ssh\-key\-name <value>]
+[\-\-clone\-permissions | \-\-no\-clone\-permissions]
+[\-\-clone\-app\-ids <value>]
+[\-\-default\-root\-device\-type <value>]
+[\-\-agent\-version <value>]
+[\-\-stack\-region <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-source\-stack\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The source stack ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The cloned stack name.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-vpc\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the VPC that the cloned stack is to be launched into. It must be in the specified region. All instances are launched into this VPC, and you cannot change the ID later.
+.INDENT 0.0
+.IP \(bu 2
+If your account supports EC2 Classic, the default value is no VPC.
+.IP \(bu 2
+If your account does not support EC2 Classic, the default value is the default VPC for the specified region.
+.UNINDENT
+.sp
+If the VPC ID corresponds to a default VPC and you have specified either the \fBDefaultAvailabilityZone\fP or the \fBDefaultSubnetId\fP parameter only, AWS OpsWorks Stacks infers the value of the other parameter. If you specify neither parameter, AWS OpsWorks Stacks sets these parameters to the first valid Availability Zone for the specified region and the corresponding default VPC subnet ID, respectively.
+.sp
+If you specify a nondefault VPC ID, note the following:
+.INDENT 0.0
+.IP \(bu 2
+It must belong to a VPC in your account that is in the specified region.
+.IP \(bu 2
+You must specify a value for \fBDefaultSubnetId\fP .
+.UNINDENT
+.sp
+For more information about how to use AWS OpsWorks Stacks with a VPC, see \fI\%Running a Stack in a VPC\fP . For more information about default VPC and EC2 Classic, see \fI\%Supported Platforms\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attributes\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+A list of stack attributes and values as key/value pairs to be added to the cloned stack.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  KeyName1=string,KeyName2=string
+
+Where valid key names are:
+  Color
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"Color": "string"
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The stack AWS Identity and Access Management (IAM) role, which allows AWS OpsWorks Stacks to work with AWS resources on your behalf. You must set this parameter to the Amazon Resource Name (ARN) for an existing IAM role. If you create a stack by using the AWS OpsWorks Stacks console, it creates the role for you. You can obtain an existing stack\(aqs IAM ARN programmatically by calling  DescribePermissions . For more information about IAM ARNs, see \fI\%Using Identifiers\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You must set this parameter to a valid service role ARN or the action will fail; there is no default value. You can specify the source stack\(aqs service role ARN, if you prefer, but you must do so explicitly.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-instance\-profile\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of an IAM profile that is the default profile for all of the stack\(aqs EC2 instances. For more information about IAM ARNs, see \fI\%Using Identifiers\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-os\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The stack\(aqs operating system, which must be set to one of the following.
+.INDENT 0.0
+.IP \(bu 2
+A supported Linux operating system: An Amazon Linux version, such as \fBAmazon Linux 2018.03\fP , \fBAmazon Linux 2017.09\fP , \fBAmazon Linux 2017.03\fP , \fBAmazon Linux 2016.09\fP , \fBAmazon Linux 2016.03\fP , \fBAmazon Linux 2015.09\fP , or \fBAmazon Linux 2015.03\fP .
+.IP \(bu 2
+A supported Ubuntu operating system, such as \fBUbuntu 16.04 LTS\fP , \fBUbuntu 14.04 LTS\fP , or \fBUbuntu 12.04 LTS\fP .
+.IP \(bu 2
+\fBCentOS Linux 7\fP
+.IP \(bu 2
+\fBRed Hat Enterprise Linux 7\fP
+.IP \(bu 2
+\fBMicrosoft Windows Server 2012 R2 Base\fP , \fBMicrosoft Windows Server 2012 R2 with SQL Server Express\fP , \fBMicrosoft Windows Server 2012 R2 with SQL Server Standard\fP , or \fBMicrosoft Windows Server 2012 R2 with SQL Server Web\fP .
+.IP \(bu 2
+A custom AMI: \fBCustom\fP . You specify the custom AMI you want to use when you create instances. For more information about how to use custom AMIs with OpsWorks, see \fI\%Using Custom AMIs\fP .
+.UNINDENT
+.sp
+The default option is the parent stack\(aqs operating system. For more information about supported operating systems, see \fI\%AWS OpsWorks Stacks Operating Systems\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can specify a different Linux operating system for the cloned stack, but you cannot change from Linux to Windows or Windows to Linux.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-hostname\-theme\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The stack\(aqs host name theme, with spaces are replaced by underscores. The theme is used to generate host names for the stack\(aqs instances. By default, \fBHostnameTheme\fP is set to \fBLayer_Dependent\fP , which creates host names by appending integers to the layer\(aqs short name. The other themes are:
+.INDENT 0.0
+.IP \(bu 2
+\fBBaked_Goods\fP
+.IP \(bu 2
+\fBClouds\fP
+.IP \(bu 2
+\fBEurope_Cities\fP
+.IP \(bu 2
+\fBFruits\fP
+.IP \(bu 2
+\fBGreek_Deities_and_Titans\fP
+.IP \(bu 2
+\fBLegendary_creatures_from_Japan\fP
+.IP \(bu 2
+\fBPlanets_and_Moons\fP
+.IP \(bu 2
+\fBRoman_Deities\fP
+.IP \(bu 2
+\fBScottish_Islands\fP
+.IP \(bu 2
+\fBUS_Cities\fP
+.IP \(bu 2
+\fBWild_Cats\fP
+.UNINDENT
+.sp
+To obtain a generated host name, call \fBGetHostNameSuggestion\fP , which returns a host name based on the current theme.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-availability\-zone\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The cloned stack\(aqs default Availability Zone, which must be in the specified region. For more information, see \fI\%Regions and Endpoints\fP . If you also specify a value for \fBDefaultSubnetId\fP , the subnet must be in the same zone. For more information, see the \fBVpcId\fP parameter description.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-subnet\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The stack\(aqs default VPC subnet ID. This parameter is required if you specify a value for the \fBVpcId\fP parameter. All instances are launched into this subnet unless you specify otherwise when you create the instance. If you also specify a value for \fBDefaultAvailabilityZone\fP , the subnet must be in that zone. For information on default values and when this parameter is required, see the \fBVpcId\fP parameter description.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-json\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A string that contains user\-defined, custom JSON. It is used to override the corresponding default stack configuration JSON values. The string should be in the following format:
+.INDENT 0.0
+.INDENT 3.5
+\fB"{\e"key1\e": \e"value1\e", \e"key2\e": \e"value2\e",...}"\fP
+.UNINDENT
+.UNINDENT
+.sp
+For more information about custom JSON, see \fI\%Use Custom JSON to Modify the Stack Configuration Attributes\fP
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-configuration\-manager\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration manager. When you clone a stack we recommend that you use the configuration manager to specify the Chef version: 12, 11.10, or 11.4 for Linux stacks, or 12.2 for Windows stacks. The default value for Linux stacks is currently 12.
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name. This parameter must be set to "Chef".
+.UNINDENT
+.UNINDENT
+.sp
+Version \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Chef version. This parameter must be set to 12, 11.10, or 11.4 for Linux stacks, and to 12.2 for Windows stacks. The default value for Linux stacks is 11.4.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Name=string,Version=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Name": "string",
+  "Version": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-chef\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A \fBChefConfiguration\fP object that specifies whether to enable Berkshelf and the Berkshelf version on Chef 11.10 stacks. For more information, see \fI\%Create a New Stack\fP .
+.sp
+ManageBerkshelf \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to enable Berkshelf.
+.UNINDENT
+.UNINDENT
+.sp
+BerkshelfVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Berkshelf version.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ManageBerkshelf=boolean,BerkshelfVersion=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ManageBerkshelf": true|false,
+  "BerkshelfVersion": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-use\-custom\-cookbooks\fP | \fB\-\-no\-use\-custom\-cookbooks\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to use custom cookbooks.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-use\-opsworks\-security\-groups\fP | \fB\-\-no\-use\-opsworks\-security\-groups\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to associate the AWS OpsWorks Stacks built\-in security groups with the stack\(aqs layers.
+.sp
+AWS OpsWorks Stacks provides a standard set of built\-in security groups, one for each layer, which are associated with layers by default. With \fBUseOpsworksSecurityGroups\fP you can instead provide your own custom security groups. \fBUseOpsworksSecurityGroups\fP has the following settings:
+.INDENT 0.0
+.IP \(bu 2
+True \- AWS OpsWorks Stacks automatically associates the appropriate built\-in security group with each layer (default setting). You can associate additional security groups with a layer after you create it but you cannot delete the built\-in security group.
+.IP \(bu 2
+False \- AWS OpsWorks Stacks does not associate built\-in security groups with layers. You must create appropriate Amazon Elastic Compute Cloud (Amazon EC2) security groups and associate a security group with each layer that you create. However, you can still manually associate a built\-in security group with a layer on creation; custom security groups are required only for those layers that need custom settings.
+.UNINDENT
+.sp
+For more information, see \fI\%Create a New Stack\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-custom\-cookbooks\-source\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains the information required to retrieve an app or cookbook from a repository. For more information, see \fI\%Adding Apps\fP or \fI\%Cookbooks and Recipes\fP .
+.sp
+Type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The repository type.
+.UNINDENT
+.UNINDENT
+.sp
+Url \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The source URL. The following is an example of an Amazon S3 source URL: \fBhttps://s3.amazonaws.com/opsworks\-demo\-bucket/opsworks_cookbook_demo.tar.gz\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Username \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+This parameter depends on the repository type.
+.INDENT 0.0
+.IP \(bu 2
+For Amazon S3 bundles, set \fBUsername\fP to the appropriate IAM access key ID.
+.IP \(bu 2
+For HTTP bundles, Git repositories, and Subversion repositories, set \fBUsername\fP to the user name.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Password \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+When included in a request, the parameter depends on the repository type.
+.INDENT 0.0
+.IP \(bu 2
+For Amazon S3 bundles, set \fBPassword\fP to the appropriate IAM secret access key.
+.IP \(bu 2
+For HTTP bundles and Subversion repositories, set \fBPassword\fP to the password.
+.UNINDENT
+.sp
+For more information on how to safely handle IAM credentials, see \fI\%https://docs.aws.amazon.com/general/latest/gr/aws\-access\-keys\-best\-practices.html\fP .
+.sp
+In responses, AWS OpsWorks Stacks returns \fB*****FILTERED*****\fP instead of the actual value.
+.UNINDENT
+.UNINDENT
+.sp
+SshKey \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+In requests, the repository\(aqs SSH key.
+.sp
+In responses, AWS OpsWorks Stacks returns \fB*****FILTERED*****\fP instead of the actual value.
+.UNINDENT
+.UNINDENT
+.sp
+Revision \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The application\(aqs version. AWS OpsWorks Stacks enables you to easily deploy new versions of an application. One of the simplest approaches is to have branches or revisions in your repository that represent different versions that can potentially be deployed.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Type=string,Url=string,Username=string,Password=string,SshKey=string,Revision=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Type": "git"|"svn"|"archive"|"s3",
+  "Url": "string",
+  "Username": "string",
+  "Password": "string",
+  "SshKey": "string",
+  "Revision": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-ssh\-key\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A default Amazon EC2 key pair name. The default value is none. If you specify a key pair name, AWS OpsWorks installs the public key on the instance and you can use the private key with an SSH client to log in to the instance. For more information, see \fI\%Using SSH to Communicate with an Instance\fP and \fI\%Managing SSH Access\fP . You can override this setting by specifying a different key pair, or no key pair, when you \fI\%create an instance\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-clone\-permissions\fP | \fB\-\-no\-clone\-permissions\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to clone the source stack\(aqs permissions.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-clone\-app\-ids\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of source stack app IDs to be included in the cloned stack.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-default\-root\-device\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The default root device type. This value is used by default for all instances in the cloned stack, but you can override it when you create an instance. For more information, see \fI\%Storage for the Root Device\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBebs\fP
+.IP \(bu 2
+\fBinstance\-store\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-agent\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The default AWS OpsWorks Stacks agent version. You have the following options:
+.INDENT 0.0
+.IP \(bu 2
+Auto\-update \- Set this parameter to \fBLATEST\fP . AWS OpsWorks Stacks automatically installs new agent versions on the stack\(aqs instances as soon as they are available.
+.IP \(bu 2
+Fixed version \- Set this parameter to your preferred agent version. To update the agent version, you must edit the stack configuration and specify a new version. AWS OpsWorks Stacks then automatically installs that version on the stack\(aqs instances.
+.UNINDENT
+.sp
+The default setting is \fBLATEST\fP . To specify an agent version, you must use the complete version number, not the abbreviated number shown on the console. For a list of available agent version numbers, call  DescribeAgentVersions . AgentVersion cannot be set to Chef 12.2.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+You can also specify an agent version when you create or update an instance, which overrides the stack\(aqs default setting.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-stack\-region\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The cloned stack AWS region, such as "ap\-northeast\-2". For more information about AWS regions, see \fI\%Regions and Endpoints\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+StackId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The cloned stack ID.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

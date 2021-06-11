@@ -1,0 +1,206 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "LAMBDA-ADD-PERMISSION" "a" "" ""
+.SH NAME
+lambda-add-permission \- Grants an AWS service or another account permission to use a function
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Grants an AWS service or another account permission to use a function. You can apply the policy at the function level, or specify a qualifier to restrict access to a single version or alias. If you use a qualifier, the invoker must use the full Amazon Resource Name (ARN) of that version or alias to invoke the function.
+.sp
+To grant permission to another account, specify the account ID as the \fBPrincipal\fP . For AWS services, the principal is a domain\-style identifier defined by the service, like \fBs3.amazonaws.com\fP or \fBsns.amazonaws.com\fP . For AWS services, you can also specify the ARN of the associated resource as the \fBSourceArn\fP . If you grant permission to a service principal without specifying the source, other accounts could potentially configure resources in their account to invoke your Lambda function.
+.sp
+This action adds a statement to a resource\-based permissions policy for the function. For more information about function policies, see \fI\%Lambda Function Policies\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  add\-permission
+\-\-function\-name <value>
+\-\-statement\-id <value>
+\-\-action <value>
+\-\-principal <value>
+[\-\-source\-arn <value>]
+[\-\-source\-account <value>]
+[\-\-event\-source\-token <value>]
+[\-\-qualifier <value>]
+[\-\-revision\-id <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-function\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the Lambda function, version, or alias.
+.INDENT 0.0
+.INDENT 3.5
+\fBName formats\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fBFunction name\fP \- \fBmy\-function\fP (name\-only), \fBmy\-function:v1\fP (with alias).
+.IP \(bu 2
+\fBFunction ARN\fP \- \fBarn:aws:lambda:us\-west\-2:123456789012:function:my\-function\fP .
+.IP \(bu 2
+\fBPartial ARN\fP \- \fB123456789012:function:my\-function\fP .
+.UNINDENT
+.sp
+You can append a version number or alias to any of the formats. The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-statement\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A statement identifier that differentiates the statement from others in the same policy.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-action\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The action that the principal can use on the function. For example, \fBlambda:InvokeFunction\fP or \fBlambda:GetFunction\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-principal\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS service or account that invokes the function. If you specify a service, use \fBSourceArn\fP or \fBSourceAccount\fP to limit who can invoke the function through that service.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+For AWS services, the ARN of the AWS resource that invokes the function. For example, an Amazon S3 bucket or Amazon SNS topic.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-source\-account\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+For Amazon S3, the ID of the account that owns the resource. Use this together with \fBSourceArn\fP to ensure that the resource is owned by the specified account. It is possible for an Amazon S3 bucket to be deleted by its owner and recreated by another account.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-event\-source\-token\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+For Alexa Smart Home functions, a token that must be supplied by the invoker.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-qualifier\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specify a version or alias to add permissions to a published version of the function.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-revision\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Only update the policy if the revision ID matches the ID that\(aqs specified. Use this option to avoid modifying a policy that has changed since you last read it.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo add permissions to an existing Lambda function\fP
+.sp
+The following \fBadd\-permission\fP example grants the Amazon SNS service permission to invoke a function named \fBmy\-function\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws lambda add\-permission \e
+    \-\-function\-name my\-function \e
+    \-\-action lambda:InvokeFunction \e
+    \-\-statement\-id sns \e
+    \-\-principal sns.amazonaws.com
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "Statement":
+    {
+        "Sid":"sns",
+        "Effect":"Allow",
+        "Principal":{
+            "Service":"sns.amazonaws.com"
+        },
+        "Action":"lambda:InvokeFunction",
+        "Resource":"arn:aws:lambda:us\-east\-2:123456789012:function:my\-function"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Using Resource\-based Policies for AWS Lambda\fP in the \fIAWS Lambda Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+Statement \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The permission statement that\(aqs added to the function policy.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

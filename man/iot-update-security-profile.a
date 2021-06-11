@@ -1,0 +1,899 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOT-UPDATE-SECURITY-PROFILE" "a" "" ""
+.SH NAME
+iot-update-security-profile \- Updates a Device Defender security profile
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates a Device Defender security profile.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-security\-profile
+\-\-security\-profile\-name <value>
+[\-\-security\-profile\-description <value>]
+[\-\-behaviors <value>]
+[\-\-alert\-targets <value>]
+[\-\-additional\-metrics\-to\-retain <value>]
+[\-\-additional\-metrics\-to\-retain\-v2 <value>]
+[\-\-delete\-behaviors | \-\-no\-delete\-behaviors]
+[\-\-delete\-alert\-targets | \-\-no\-delete\-alert\-targets]
+[\-\-delete\-additional\-metrics\-to\-retain | \-\-no\-delete\-additional\-metrics\-to\-retain]
+[\-\-expected\-version <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-security\-profile\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security profile you want to update.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-security\-profile\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the security profile.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-behaviors\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the behaviors that, when violated by a device (thing), cause an alert.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A Device Defender security profile behavior.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name you\(aqve given to the behavior.
+.UNINDENT
+.UNINDENT
+.sp
+metric \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+What is measured by the behavior.
+.UNINDENT
+.UNINDENT
+.sp
+metricDimension \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dimension for a metric in your behavior. For example, using a \fBTOPIC_FILTER\fP dimension, you can narrow down the scope of the metric to only MQTT topics where the name matches the pattern specified in the dimension. This can\(aqt be used with custom metrics.
+.sp
+dimensionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+operator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines how the \fBdimensionValues\fP of a dimension are interpreted. For example, for dimension type TOPIC_FILTER, the \fBIN\fP operator, a message will be counted only if its topic matches one of the topic filters. With \fBNOT_IN\fP operator, a message will be counted only if it doesn\(aqt match any of the topic filters. The operator is optional: if it\(aqs not provided (is \fBnull\fP ), it will be interpreted as \fBIN\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+criteria \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The criteria that determine if a device is behaving normally in regard to the \fBmetric\fP .
+.sp
+comparisonOperator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The operator that relates the thing measured (\fBmetric\fP ) to the criteria (containing a \fBvalue\fP or \fBstatisticalThreshold\fP ). Valid operators include:
+.INDENT 0.0
+.IP \(bu 2
+\fBstring\-list\fP : \fBin\-set\fP and \fBnot\-in\-set\fP
+.IP \(bu 2
+\fBnumber\-list\fP : \fBin\-set\fP and \fBnot\-in\-set\fP
+.IP \(bu 2
+\fBip\-address\-list\fP : \fBin\-cidr\-set\fP and \fBnot\-in\-cidr\-set\fP
+.IP \(bu 2
+\fBnumber\fP : \fBless\-than\fP , \fBless\-than\-equals\fP , \fBgreater\-than\fP , and \fBgreater\-than\-equals\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value to be compared with the \fBmetric\fP .
+.sp
+count \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+If the \fBcomparisonOperator\fP calls for a numeric value, use this to specify that numeric value to be compared with the \fBmetric\fP .
+.UNINDENT
+.UNINDENT
+.sp
+cidrs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If the \fBcomparisonOperator\fP calls for a set of CIDRs, use this to specify that set to be compared with the \fBmetric\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ports \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If the \fBcomparisonOperator\fP calls for a set of ports, use this to specify that set to be compared with the \fBmetric\fP .
+.sp
+(integer)
+.UNINDENT
+.UNINDENT
+.sp
+number \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The numeral value of a metric.
+.UNINDENT
+.UNINDENT
+.sp
+numbers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The numeral values of a metric.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+strings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The string values of a metric.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+durationSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Use this to specify the time duration over which the behavior is evaluated, for those criteria that have a time dimension (for example, \fBNUM_MESSAGES_SENT\fP ). For a \fBstatisticalThreshhold\fP metric comparison, measurements from all devices are accumulated over this time duration before being used to calculate percentiles, and later, measurements from an individual device are also accumulated over this time duration before being given a percentile rank. Cannot be used with list\-based metric datatypes.
+.UNINDENT
+.UNINDENT
+.sp
+consecutiveDatapointsToAlarm \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If a device is in violation of the behavior for the specified number of consecutive datapoints, an alarm occurs. If not specified, the default is 1.
+.UNINDENT
+.UNINDENT
+.sp
+consecutiveDatapointsToClear \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If an alarm has occurred and the offending device is no longer in violation of the behavior for the specified number of consecutive datapoints, the alarm is cleared. If not specified, the default is 1.
+.UNINDENT
+.UNINDENT
+.sp
+statisticalThreshold \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A statistical ranking (percentile)that indicates a threshold value by which a behavior is determined to be in compliance or in violation of the behavior.
+.sp
+statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The percentile that resolves to a threshold value by which compliance with a behavior is determined. Metrics are collected over the specified period (\fBdurationSeconds\fP ) from all reporting devices in your account and statistical ranks are calculated. Then, the measurements from a device are collected over the same period. If the accumulated measurements from the device fall above or below (\fBcomparisonOperator\fP ) the value associated with the percentile specified, then the device is considered to be in compliance with the behavior, otherwise a violation occurs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+mlDetectionConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration of an ML Detect
+.sp
+confidenceLevel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The sensitivity of anomalous behavior evaluation. Can be \fBLow\fP , \fBMedium\fP , or \fBHigh\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+suppressAlerts \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Suppresses alerts.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "name": "string",
+    "metric": "string",
+    "metricDimension": {
+      "dimensionName": "string",
+      "operator": "IN"|"NOT_IN"
+    },
+    "criteria": {
+      "comparisonOperator": "less\-than"|"less\-than\-equals"|"greater\-than"|"greater\-than\-equals"|"in\-cidr\-set"|"not\-in\-cidr\-set"|"in\-port\-set"|"not\-in\-port\-set"|"in\-set"|"not\-in\-set",
+      "value": {
+        "count": long,
+        "cidrs": ["string", ...],
+        "ports": [integer, ...],
+        "number": double,
+        "numbers": [double, ...],
+        "strings": ["string", ...]
+      },
+      "durationSeconds": integer,
+      "consecutiveDatapointsToAlarm": integer,
+      "consecutiveDatapointsToClear": integer,
+      "statisticalThreshold": {
+        "statistic": "string"
+      },
+      "mlDetectionConfig": {
+        "confidenceLevel": "LOW"|"MEDIUM"|"HIGH"
+      }
+    },
+    "suppressAlerts": true|false
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-alert\-targets\fP (map)
+.INDENT 0.0
+.INDENT 3.5
+Where the alerts are sent. (Alerts are always sent to the console.)
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of alert target: one of "SNS".
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure containing the alert target ARN and the role ARN.
+.sp
+alertTargetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the notification target to which alerts are sent.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants permission to send alerts to the notification target.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  KeyName1=alertTargetArn=string,roleArn=string,KeyName2=alertTargetArn=string,roleArn=string
+
+Where valid key names are:
+  SNS
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{"SNS": {
+      "alertTargetArn": "string",
+      "roleArn": "string"
+    }
+  ...}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-additional\-metrics\-to\-retain\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fIPlease use  UpdateSecurityProfileRequest$additionalMetricsToRetainV2 instead.\fP
+.UNINDENT
+.UNINDENT
+.sp
+A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile\(aqs \fBbehaviors\fP , but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-additional\-metrics\-to\-retain\-v2\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile\(aqs behaviors, but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric you want to retain. Dimensions are optional.
+.sp
+metric \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+What is measured by the behavior.
+.UNINDENT
+.UNINDENT
+.sp
+metricDimension \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dimension of a metric. This can\(aqt be used with custom metrics.
+.sp
+dimensionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+operator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines how the \fBdimensionValues\fP of a dimension are interpreted. For example, for dimension type TOPIC_FILTER, the \fBIN\fP operator, a message will be counted only if its topic matches one of the topic filters. With \fBNOT_IN\fP operator, a message will be counted only if it doesn\(aqt match any of the topic filters. The operator is optional: if it\(aqs not provided (is \fBnull\fP ), it will be interpreted as \fBIN\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+metric=string,metricDimension={dimensionName=string,operator=string} ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "metric": "string",
+    "metricDimension": {
+      "dimensionName": "string",
+      "operator": "IN"|"NOT_IN"
+    }
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delete\-behaviors\fP | \fB\-\-no\-delete\-behaviors\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, delete all \fBbehaviors\fP defined for this security profile. If any \fBbehaviors\fP are defined in the current invocation, an exception occurs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delete\-alert\-targets\fP | \fB\-\-no\-delete\-alert\-targets\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, delete all \fBalertTargets\fP defined for this security profile. If any \fBalertTargets\fP are defined in the current invocation, an exception occurs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-delete\-additional\-metrics\-to\-retain\fP | \fB\-\-no\-delete\-additional\-metrics\-to\-retain\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If true, delete all \fBadditionalMetricsToRetain\fP defined for this security profile. If any \fBadditionalMetricsToRetain\fP are defined in the current invocation, an exception occurs.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-expected\-version\fP (long)
+.INDENT 0.0
+.INDENT 3.5
+The expected version of the security profile. A new version is generated whenever the security profile is updated. If you specify a value that is different from the actual version, a \fBVersionConflictException\fP is thrown.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo change a security profile\fP
+.sp
+The following \fBupdate\-security\-profile\fP example updates both the description and the behaviors for an AWS IoT Device Defender security profile.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iot update\-security\-profile \e
+    \-\-security\-profile\-name PossibleIssue \e
+    \-\-security\-profile\-description "Check to see if authorization fails 12 times in 5 minutes or if cellular bandwidth exceeds 128"  \e
+    \-\-behaviors "[{\e"name\e":\e"CellularBandwidth\e",\e"metric\e":\e"aws:message\-byte\-size\e",\e"criteria\e":{\e"comparisonOperator\e":\e"greater\-than\e",\e"value\e":{\e"count\e":128},\e"consecutiveDatapointsToAlarm\e":1,\e"consecutiveDatapointsToClear\e":1}},{\e"name\e":\e"Authorization\e",\e"metric\e":\e"aws:num\-authorization\-failures\e",\e"criteria\e":{\e"comparisonOperator\e":\e"less\-than\e",\e"value\e":{\e"count\e":12},\e"durationSeconds\e":300,\e"consecutiveDatapointsToAlarm\e":1,\e"consecutiveDatapointsToClear\e":1}}]"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "securityProfileName": "PossibleIssue",
+    "securityProfileArn": "arn:aws:iot:us\-west\-2:123456789012:securityprofile/PossibleIssue",
+    "securityProfileDescription": "check to see if authorization fails 12 times in 5 minutes or if cellular bandwidth exceeds 128",
+    "behaviors": [
+        {
+            "name": "CellularBandwidth",
+            "metric": "aws:message\-byte\-size",
+            "criteria": {
+                "comparisonOperator": "greater\-than",
+                "value": {
+                    "count": 128
+                },
+                "consecutiveDatapointsToAlarm": 1,
+                "consecutiveDatapointsToClear": 1
+            }
+        },
+        {
+            "name": "Authorization",
+            "metric": "aws:num\-authorization\-failures",
+            "criteria": {
+                "comparisonOperator": "less\-than",
+                "value": {
+                    "count": 12
+                },
+                "durationSeconds": 300,
+                "consecutiveDatapointsToAlarm": 1,
+                "consecutiveDatapointsToClear": 1
+            }
+        }
+    ],
+    "version": 2,
+    "creationDate": 1560278102.528,
+    "lastModifiedDate": 1560352711.207
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Detect Commands\fP in the \fIAWS IoT Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+securityProfileName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the security profile that was updated.
+.UNINDENT
+.UNINDENT
+.sp
+securityProfileArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the security profile that was updated.
+.UNINDENT
+.UNINDENT
+.sp
+securityProfileDescription \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The description of the security profile.
+.UNINDENT
+.UNINDENT
+.sp
+behaviors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the behaviors that, when violated by a device (thing), cause an alert.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A Device Defender security profile behavior.
+.sp
+name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name you\(aqve given to the behavior.
+.UNINDENT
+.UNINDENT
+.sp
+metric \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+What is measured by the behavior.
+.UNINDENT
+.UNINDENT
+.sp
+metricDimension \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dimension for a metric in your behavior. For example, using a \fBTOPIC_FILTER\fP dimension, you can narrow down the scope of the metric to only MQTT topics where the name matches the pattern specified in the dimension. This can\(aqt be used with custom metrics.
+.sp
+dimensionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+operator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines how the \fBdimensionValues\fP of a dimension are interpreted. For example, for dimension type TOPIC_FILTER, the \fBIN\fP operator, a message will be counted only if its topic matches one of the topic filters. With \fBNOT_IN\fP operator, a message will be counted only if it doesn\(aqt match any of the topic filters. The operator is optional: if it\(aqs not provided (is \fBnull\fP ), it will be interpreted as \fBIN\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+criteria \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The criteria that determine if a device is behaving normally in regard to the \fBmetric\fP .
+.sp
+comparisonOperator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The operator that relates the thing measured (\fBmetric\fP ) to the criteria (containing a \fBvalue\fP or \fBstatisticalThreshold\fP ). Valid operators include:
+.INDENT 0.0
+.IP \(bu 2
+\fBstring\-list\fP : \fBin\-set\fP and \fBnot\-in\-set\fP
+.IP \(bu 2
+\fBnumber\-list\fP : \fBin\-set\fP and \fBnot\-in\-set\fP
+.IP \(bu 2
+\fBip\-address\-list\fP : \fBin\-cidr\-set\fP and \fBnot\-in\-cidr\-set\fP
+.IP \(bu 2
+\fBnumber\fP : \fBless\-than\fP , \fBless\-than\-equals\fP , \fBgreater\-than\fP , and \fBgreater\-than\-equals\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value to be compared with the \fBmetric\fP .
+.sp
+count \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+If the \fBcomparisonOperator\fP calls for a numeric value, use this to specify that numeric value to be compared with the \fBmetric\fP .
+.UNINDENT
+.UNINDENT
+.sp
+cidrs \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If the \fBcomparisonOperator\fP calls for a set of CIDRs, use this to specify that set to be compared with the \fBmetric\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+ports \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+If the \fBcomparisonOperator\fP calls for a set of ports, use this to specify that set to be compared with the \fBmetric\fP .
+.sp
+(integer)
+.UNINDENT
+.UNINDENT
+.sp
+number \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The numeral value of a metric.
+.UNINDENT
+.UNINDENT
+.sp
+numbers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The numeral values of a metric.
+.sp
+(double)
+.UNINDENT
+.UNINDENT
+.sp
+strings \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The string values of a metric.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+durationSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Use this to specify the time duration over which the behavior is evaluated, for those criteria that have a time dimension (for example, \fBNUM_MESSAGES_SENT\fP ). For a \fBstatisticalThreshhold\fP metric comparison, measurements from all devices are accumulated over this time duration before being used to calculate percentiles, and later, measurements from an individual device are also accumulated over this time duration before being given a percentile rank. Cannot be used with list\-based metric datatypes.
+.UNINDENT
+.UNINDENT
+.sp
+consecutiveDatapointsToAlarm \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If a device is in violation of the behavior for the specified number of consecutive datapoints, an alarm occurs. If not specified, the default is 1.
+.UNINDENT
+.UNINDENT
+.sp
+consecutiveDatapointsToClear \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If an alarm has occurred and the offending device is no longer in violation of the behavior for the specified number of consecutive datapoints, the alarm is cleared. If not specified, the default is 1.
+.UNINDENT
+.UNINDENT
+.sp
+statisticalThreshold \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A statistical ranking (percentile)that indicates a threshold value by which a behavior is determined to be in compliance or in violation of the behavior.
+.sp
+statistic \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The percentile that resolves to a threshold value by which compliance with a behavior is determined. Metrics are collected over the specified period (\fBdurationSeconds\fP ) from all reporting devices in your account and statistical ranks are calculated. Then, the measurements from a device are collected over the same period. If the accumulated measurements from the device fall above or below (\fBcomparisonOperator\fP ) the value associated with the percentile specified, then the device is considered to be in compliance with the behavior, otherwise a violation occurs.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+mlDetectionConfig \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The configuration of an ML Detect
+.sp
+confidenceLevel \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The sensitivity of anomalous behavior evaluation. Can be \fBLow\fP , \fBMedium\fP , or \fBHigh\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+suppressAlerts \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Suppresses alerts.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+alertTargets \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+Where the alerts are sent. (Alerts are always sent to the console.)
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of alert target: one of "SNS".
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A structure containing the alert target ARN and the role ARN.
+.sp
+alertTargetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the notification target to which alerts are sent.
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the role that grants permission to send alerts to the notification target.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+additionalMetricsToRetain \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fIPlease use  UpdateSecurityProfileResponse$additionalMetricsToRetainV2 instead.\fP
+.UNINDENT
+.UNINDENT
+.sp
+A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the security profile\(aqs \fBbehaviors\fP , but it is also retained for any metric specified here.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+additionalMetricsToRetainV2 \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of metrics whose data is retained (stored). By default, data is retained for any metric used in the profile\(aqs behaviors, but it is also retained for any metric specified here. Can be used with custom metrics; cannot be used with dimensions.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metric you want to retain. Dimensions are optional.
+.sp
+metric \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+What is measured by the behavior.
+.UNINDENT
+.UNINDENT
+.sp
+metricDimension \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The dimension of a metric. This can\(aqt be used with custom metrics.
+.sp
+dimensionName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the dimension.
+.UNINDENT
+.UNINDENT
+.sp
+operator \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Defines how the \fBdimensionValues\fP of a dimension are interpreted. For example, for dimension type TOPIC_FILTER, the \fBIN\fP operator, a message will be counted only if its topic matches one of the topic filters. With \fBNOT_IN\fP operator, a message will be counted only if it doesn\(aqt match any of the topic filters. The operator is optional: if it\(aqs not provided (is \fBnull\fP ), it will be interpreted as \fBIN\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+version \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The updated version of the security profile.
+.UNINDENT
+.UNINDENT
+.sp
+creationDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the security profile was created.
+.UNINDENT
+.UNINDENT
+.sp
+lastModifiedDate \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The time the security profile was last modified.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

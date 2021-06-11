@@ -1,0 +1,392 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "IOTSITEWISE-BATCH-PUT-ASSET-PROPERTY-VALUE" "a" "" ""
+.SH NAME
+iotsitewise-batch-put-asset-property-value \- Sends a list of asset property values to AWS IoT SiteWise
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Sends a list of asset property values to AWS IoT SiteWise. Each value is a timestamp\-quality\-value (TQV) data point. For more information, see \fI\%Ingesting data using the API\fP in the \fIAWS IoT SiteWise User Guide\fP .
+.sp
+To identify an asset property, you must specify one of the following:
+.INDENT 0.0
+.IP \(bu 2
+The \fBassetId\fP and \fBpropertyId\fP of an asset property.
+.IP \(bu 2
+A \fBpropertyAlias\fP , which is a data stream alias (for example, \fB/company/windfarm/3/turbine/7/temperature\fP ). To define an asset property\(aqs alias, see \fI\%UpdateAssetProperty\fP .
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+With respect to Unix epoch time, AWS IoT SiteWise accepts only TQVs that have a timestamp of no more than 7 days in the past and no more than 10 minutes in the future. AWS IoT SiteWise rejects timestamps outside of the inclusive range of [\-7 days, +10 minutes] and returns a \fBTimestampOutOfRangeException\fP error.
+.sp
+For each asset property, AWS IoT SiteWise overwrites TQVs with duplicate timestamps unless the newer TQV has a different quality. For example, if you store a TQV \fB{T1, GOOD, V1}\fP , then storing \fB{T1, GOOD, V2}\fP replaces the existing TQV.
+.UNINDENT
+.UNINDENT
+.sp
+AWS IoT SiteWise authorizes access to each \fBBatchPutAssetPropertyValue\fP entry individually. For more information, see \fI\%BatchPutAssetPropertyValue authorization\fP in the \fIAWS IoT SiteWise User Guide\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  batch\-put\-asset\-property\-value
+\-\-entries <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-entries\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of asset property value entries for the batch put request. You can specify up to 10 entries per request.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains a list of value updates for an asset property in the list of asset entries consumed by the \fI\%BatchPutAssetPropertyValue\fP API operation.
+.sp
+entryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The user specified ID for the entry. You can use this ID to identify which entries failed.
+.UNINDENT
+.UNINDENT
+.sp
+assetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the asset to update.
+.UNINDENT
+.UNINDENT
+.sp
+propertyId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the asset property for this entry.
+.UNINDENT
+.UNINDENT
+.sp
+propertyAlias \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The property alias that identifies the property, such as an OPC\-UA server data stream path (for example, \fB/company/windfarm/3/turbine/7/temperature\fP ). For more information, see \fI\%Mapping industrial data streams to asset properties\fP in the \fIAWS IoT SiteWise User Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+propertyValues \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of property values to upload. You can specify up to 10 \fBpropertyValues\fP array elements.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains asset property value information.
+.sp
+value \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The value of the asset property (see \fBVariant\fP ).
+.sp
+stringValue \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Asset property data of type string (sequence of characters).
+.UNINDENT
+.UNINDENT
+.sp
+integerValue \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Asset property data of type integer (whole number).
+.UNINDENT
+.UNINDENT
+.sp
+doubleValue \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+Asset property data of type double (floating point number).
+.UNINDENT
+.UNINDENT
+.sp
+booleanValue \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Asset property data of type Boolean (true or false).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+timestamp \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp of the asset property value.
+.sp
+timeInSeconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp date, in seconds, in the Unix epoch format. Fractional nanosecond data is provided by \fBoffsetInNanos\fP .
+.UNINDENT
+.UNINDENT
+.sp
+offsetInNanos \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The nanosecond offset from \fBtimeInSeconds\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+quality \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The quality of the asset property value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "entryId": "string",
+    "assetId": "string",
+    "propertyId": "string",
+    "propertyAlias": "string",
+    "propertyValues": [
+      {
+        "value": {
+          "stringValue": "string",
+          "integerValue": integer,
+          "doubleValue": double,
+          "booleanValue": true|false
+        },
+        "timestamp": {
+          "timeInSeconds": long,
+          "offsetInNanos": integer
+        },
+        "quality": "GOOD"|"BAD"|"UNCERTAIN"
+      }
+      ...
+    ]
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo send data to asset properties\fP
+.sp
+The following \fBbatch\-put\-asset\-property\-value\fP example sends power and temperature data to the asset properties identified by property aliases.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws iotsitewise batch\-put\-asset\-property\-value \e
+    \-\-cli\-input\-json file://batch\-put\-asset\-property\-value.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBbatch\-put\-asset\-property\-value.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "entries": [
+        {
+            "entryId": "1575691200./company/windfarm/3/turbine/7/power",
+            "propertyAlias": "/company/windfarm/3/turbine/7/power",
+            "propertyValues": [
+                {
+                    "value": {
+                        "doubleValue": 4.92
+                    },
+                    "timestamp": {
+                        "timeInSeconds": 1575691200
+                    },
+                    "quality": "GOOD"
+                }
+            ]
+        },
+        {
+            "entryId": "1575691200./company/windfarm/3/turbine/7/temperature",
+            "propertyAlias": "/company/windfarm/3/turbine/7/temperature",
+            "propertyValues": [
+                {
+                    "value": {
+                        "integerValue": 38
+                    },
+                    "timestamp": {
+                        "timeInSeconds": 1575691200
+                    }
+                }
+            ]
+        }
+    ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "errorEntries": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Ingesting data using the AWS IoT SiteWise API\fP in the \fIAWS IoT SiteWise User Guide\fP\&.
+.SH OUTPUT
+.sp
+errorEntries \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of the errors (if any) associated with the batch put request. Each error entry contains the \fBentryId\fP of the entry that failed.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains error information for asset property value entries that are associated with the \fI\%BatchPutAssetPropertyValue\fP API.
+.sp
+entryId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the failed entry.
+.UNINDENT
+.UNINDENT
+.sp
+errors \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The list of update property value errors.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains error information from updating a batch of asset property values.
+.sp
+errorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code.
+.UNINDENT
+.UNINDENT
+.sp
+errorMessage \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The associated error message.
+.UNINDENT
+.UNINDENT
+.sp
+timestamps \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of timestamps for each error, if any.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Contains a timestamp with optional nanosecond granularity.
+.sp
+timeInSeconds \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The timestamp date, in seconds, in the Unix epoch format. Fractional nanosecond data is provided by \fBoffsetInNanos\fP .
+.UNINDENT
+.UNINDENT
+.sp
+offsetInNanos \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The nanosecond offset from \fBtimeInSeconds\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

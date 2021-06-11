@@ -1,0 +1,250 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-UPDATE-RUNTIME-CONFIGURATION" "a" "" ""
+.SH NAME
+gamelift-update-runtime-configuration \- Updates the current runtime configuration for the specified fleet, which tells GameLift how to launch server processes on all instances in the fleet
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the current runtime configuration for the specified fleet, which tells GameLift how to launch server processes on all instances in the fleet. You can update a fleet\(aqs runtime configuration at any time after the fleet is created; it does not need to be in \fBACTIVE\fP status.
+.sp
+To update runtime configuration, specify the fleet ID and provide a \fBRuntimeConfiguration\fP with an updated set of server process configurations.
+.sp
+If successful, the fleet\(aqs runtime configuration settings are updated. Each instance in the fleet regularly checks for and retrieves updated runtime configurations. Instances immediately begin complying with the new configuration by launching new server processes or not replacing existing processes when they shut down. Updating a fleet\(aqs runtime configuration never affects existing server processes.
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Setting up GameLift fleets\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateFleetLocations |  UpdateFleetAttributes |  UpdateFleetCapacity |  UpdateFleetPortSettings |  UpdateRuntimeConfiguration |  StopFleetActions |  StartFleetActions |  PutScalingPolicy |  DeleteFleet |  DeleteFleetLocations |  DeleteScalingPolicy | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-runtime\-configuration
+\-\-fleet\-id <value>
+\-\-runtime\-configuration <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-fleet\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the fleet to update runtime configuration for. You can use either the fleet ID or ARN value.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-runtime\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Instructions for launching server processes on each instance in the fleet. Server processes run either a custom game build executable or a Realtime Servers script. The runtime configuration lists the types of server processes to run on an instance, how to launch them, and the number of processes to run concurrently.
+.sp
+ServerProcesses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of server process configurations that identify what server processes to run on each instance in a fleet.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A set of instructions for launching server processes on each instance in a fleet. Server processes run either an executable in a custom game build or a Realtime Servers script. Server process configurations are part of a fleet\(aqs  RuntimeConfiguration .
+.sp
+LaunchPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location of a game build executable or the Realtime script file that contains the \fBInit()\fP function. Game builds and Realtime scripts are installed on instances at the root:
+.INDENT 0.0
+.IP \(bu 2
+Windows (custom game builds only): \fBC:\egame\fP . Example: "\fBC:\egame\eMyGame\eserver.exe\fP "
+.IP \(bu 2
+Linux: \fB/local/game\fP . Examples: "\fB/local/game/MyGame/server.exe\fP " or "\fB/local/game/MyRealtimeScript.js\fP "
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional list of parameters to pass to the server executable or Realtime script on launch.
+.UNINDENT
+.UNINDENT
+.sp
+ConcurrentExecutions \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of server processes using this configuration that run concurrently on each instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MaxConcurrentGameSessionActivations \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of game sessions in status \fBACTIVATING\fP to allow on an instance. This setting limits the instance resources that can be used for new game activations at any one time.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionActivationTimeoutSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of time (in seconds) allowed to launch a new game session and have it report ready to host players. During this time, the game session is in status \fBACTIVATING\fP . If the game session does not become active before the timeout, it is ended and the game session status is changed to \fBTERMINATED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ServerProcesses=[{LaunchPath=string,Parameters=string,ConcurrentExecutions=integer},{LaunchPath=string,Parameters=string,ConcurrentExecutions=integer}],MaxConcurrentGameSessionActivations=integer,GameSessionActivationTimeoutSeconds=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ServerProcesses": [
+    {
+      "LaunchPath": "string",
+      "Parameters": "string",
+      "ConcurrentExecutions": integer
+    }
+    ...
+  ],
+  "MaxConcurrentGameSessionActivations": integer,
+  "GameSessionActivationTimeoutSeconds": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+RuntimeConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The runtime configuration currently in use by all instances in the fleet. If the update was successful, all property changes are shown.
+.sp
+ServerProcesses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of server process configurations that identify what server processes to run on each instance in a fleet.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A set of instructions for launching server processes on each instance in a fleet. Server processes run either an executable in a custom game build or a Realtime Servers script. Server process configurations are part of a fleet\(aqs  RuntimeConfiguration .
+.sp
+LaunchPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location of a game build executable or the Realtime script file that contains the \fBInit()\fP function. Game builds and Realtime scripts are installed on instances at the root:
+.INDENT 0.0
+.IP \(bu 2
+Windows (custom game builds only): \fBC:\egame\fP . Example: "\fBC:\egame\eMyGame\eserver.exe\fP "
+.IP \(bu 2
+Linux: \fB/local/game\fP . Examples: "\fB/local/game/MyGame/server.exe\fP " or "\fB/local/game/MyRealtimeScript.js\fP "
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional list of parameters to pass to the server executable or Realtime script on launch.
+.UNINDENT
+.UNINDENT
+.sp
+ConcurrentExecutions \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of server processes using this configuration that run concurrently on each instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MaxConcurrentGameSessionActivations \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of game sessions in status \fBACTIVATING\fP to allow on an instance. This setting limits the instance resources that can be used for new game activations at any one time.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionActivationTimeoutSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of time (in seconds) allowed to launch a new game session and have it report ready to host players. During this time, the game session is in status \fBACTIVATING\fP . If the game session does not become active before the timeout, it is ended and the game session status is changed to \fBTERMINATED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

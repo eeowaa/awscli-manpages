@@ -1,0 +1,1924 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ECS-UPDATE-SERVICE" "a" "" ""
+.SH NAME
+ecs-update-service \- Updating the task placement strategies and constraints on an Amazon ECS service remains in preview and is a Beta Service as defined by and subject to the Beta Service Participation Service Terms located at %https://aws.amazon.com/service-terms ("Beta Terms")
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+Updating the task placement strategies and constraints on an Amazon ECS service remains in preview and is a Beta Service as defined by and subject to the Beta Service Participation Service Terms located at \fI\%https://aws.amazon.com/service\-terms\fP ("Beta Terms"). These Beta Terms apply to your participation in this preview.
+.UNINDENT
+.UNINDENT
+.sp
+Modifies the parameters of a service.
+.sp
+For services using the rolling update (\fBECS\fP ) deployment controller, the desired count, deployment configuration, network configuration, task placement constraints and strategies, or task definition used can be updated.
+.sp
+For services using the blue/green (\fBCODE_DEPLOY\fP ) deployment controller, only the desired count, deployment configuration, task placement constraints and strategies, and health check grace period can be updated using this API. If the network configuration, platform version, or task definition need to be updated, a new AWS CodeDeploy deployment should be created. For more information, see \fI\%CreateDeployment\fP in the \fIAWS CodeDeploy API Reference\fP .
+.sp
+For services using an external deployment controller, you can update only the desired count, task placement constraints and strategies, and health check grace period using this API. If the launch type, load balancer, network configuration, platform version, or task definition need to be updated, you should create a new task set. For more information, see  CreateTaskSet .
+.sp
+You can add to or subtract from the number of instantiations of a task definition in a service by specifying the cluster that the service is running in and a new \fBdesiredCount\fP parameter.
+.sp
+If you have updated the Docker image of your application, you can create a new task definition with that image and deploy it to your service. The service scheduler uses the minimum healthy percent and maximum percent parameters (in the service\(aqs deployment configuration) to determine the deployment strategy.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If your updated Docker image uses the same tag as what is in the existing task definition for your service (for example, \fBmy_image:latest\fP ), you do not need to create a new revision of your task definition. You can update the service using the \fBforceNewDeployment\fP option. The new tasks launched by the deployment pull the current image/tag combination from your repository when they start.
+.UNINDENT
+.UNINDENT
+.sp
+You can also update the deployment configuration of a service. When a deployment is triggered by updating the task definition of a service, the service scheduler uses the deployment configuration parameters, \fBminimumHealthyPercent\fP and \fBmaximumPercent\fP , to determine the deployment strategy.
+.INDENT 0.0
+.IP \(bu 2
+If \fBminimumHealthyPercent\fP is below 100%, the scheduler can ignore \fBdesiredCount\fP temporarily during a deployment. For example, if \fBdesiredCount\fP is four tasks, a minimum of 50% allows the scheduler to stop two existing tasks before starting two new tasks. Tasks for services that do not use a load balancer are considered healthy if they are in the \fBRUNNING\fP state. Tasks for services that use a load balancer are considered healthy if they are in the \fBRUNNING\fP state and the container instance they are hosted on is reported as healthy by the load balancer.
+.IP \(bu 2
+The \fBmaximumPercent\fP parameter represents an upper limit on the number of running tasks during a deployment, which enables you to define the deployment batch size. For example, if \fBdesiredCount\fP is four tasks, a maximum of 200% starts four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available).
+.UNINDENT
+.sp
+When  UpdateService stops a task during a deployment, the equivalent of \fBdocker stop\fP is issued to the containers running in the task. This results in a \fBSIGTERM\fP and a 30\-second timeout, after which \fBSIGKILL\fP is sent and the containers are forcibly stopped. If the container handles the \fBSIGTERM\fP gracefully and exits within 30 seconds from receiving it, no \fBSIGKILL\fP is sent.
+.sp
+When the service scheduler launches new tasks, it determines task placement in your cluster with the following logic:
+.INDENT 0.0
+.IP \(bu 2
+Determine which of the container instances in your cluster can support your service\(aqs task definition (for example, they have the required CPU, memory, ports, and container instance attributes).
+.IP \(bu 2
+By default, the service scheduler attempts to balance tasks across Availability Zones in this manner (although you can choose a different placement strategy):
+.INDENT 2.0
+.IP \(bu 2
+Sort the valid container instances by the fewest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have zero, valid container instances in either zone B or C are considered optimal for placement.
+.IP \(bu 2
+Place the new service task on a valid container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the fewest number of running tasks for this service.
+.UNINDENT
+.UNINDENT
+.sp
+When the service scheduler stops running tasks, it attempts to maintain balance across the Availability Zones in your cluster using the following logic:
+.INDENT 0.0
+.IP \(bu 2
+Sort the container instances by the largest number of running tasks for this service in the same Availability Zone as the instance. For example, if zone A has one running service task and zones B and C each have two, container instances in either zone B or C are considered optimal for termination.
+.IP \(bu 2
+Stop the task on a container instance in an optimal Availability Zone (based on the previous steps), favoring container instances with the largest number of running tasks for this service.
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-service
+[\-\-cluster <value>]
+\-\-service <value>
+[\-\-desired\-count <value>]
+[\-\-task\-definition <value>]
+[\-\-capacity\-provider\-strategy <value>]
+[\-\-deployment\-configuration <value>]
+[\-\-network\-configuration <value>]
+[\-\-placement\-constraints <value>]
+[\-\-placement\-strategy <value>]
+[\-\-platform\-version <value>]
+[\-\-force\-new\-deployment | \-\-no\-force\-new\-deployment]
+[\-\-health\-check\-grace\-period\-seconds <value>]
+[\-\-enable\-execute\-command | \-\-disable\-execute\-command]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-cluster\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name or full Amazon Resource Name (ARN) of the cluster that your service is running on. If you do not specify a cluster, the default cluster is assumed.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-service\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the service to update.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-desired\-count\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of instantiations of the task to place and keep running in your service.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-task\-definition\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBfamily\fP and \fBrevision\fP (\fBfamily:revision\fP ) or full ARN of the task definition to run in your service. If a \fBrevision\fP is not specified, the latest \fBACTIVE\fP revision is used. If you modify the task definition with \fBUpdateService\fP , Amazon ECS spawns a task with the new version of the task definition and then stops an old task after the new version is running.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-capacity\-provider\-strategy\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The capacity provider strategy to update the service to use.
+.sp
+If the service is using the default capacity provider strategy for the cluster, the service can be updated to use one or more capacity providers as opposed to the default capacity provider strategy. However, when a service is using a capacity provider strategy that is not the default capacity provider strategy, the service cannot be updated to use the cluster\(aqs default capacity provider strategy.
+.sp
+A capacity provider strategy consists of one or more capacity providers along with the \fBbase\fP and \fBweight\fP to assign to them. A capacity provider must be associated with the cluster to be used in a capacity provider strategy. The  PutClusterCapacityProviders API is used to associate a capacity provider with a cluster. Only capacity providers with an \fBACTIVE\fP or \fBUPDATING\fP status can be used.
+.sp
+If specifying a capacity provider that uses an Auto Scaling group, the capacity provider must already be created. New capacity providers can be created with the  CreateCapacityProvider API operation.
+.sp
+To use a AWS Fargate capacity provider, specify either the \fBFARGATE\fP or \fBFARGATE_SPOT\fP capacity providers. The AWS Fargate capacity providers are available to all accounts and only need to be associated with a cluster to be used.
+.sp
+The  PutClusterCapacityProviders API operation is used to update the list of available capacity providers for a cluster after the cluster is created.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of a capacity provider strategy. A capacity provider strategy can be set when using the  RunTask or  CreateCluster APIs or as the default capacity provider strategy for a cluster with the  CreateCluster API.
+.sp
+Only capacity providers that are already associated with a cluster and have an \fBACTIVE\fP or \fBUPDATING\fP status can be used in a capacity provider strategy. The  PutClusterCapacityProviders API is used to associate a capacity provider with a cluster.
+.sp
+If specifying a capacity provider that uses an Auto Scaling group, the capacity provider must already be created. New Auto Scaling group capacity providers can be created with the  CreateCapacityProvider API operation.
+.sp
+To use a AWS Fargate capacity provider, specify either the \fBFARGATE\fP or \fBFARGATE_SPOT\fP capacity providers. The AWS Fargate capacity providers are available to all accounts and only need to be associated with a cluster to be used in a capacity provider strategy.
+.sp
+capacityProvider \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name of the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIweight\fP value designates the relative percentage of the total number of tasks launched that should use the specified capacity provider. The \fBweight\fP value is taken into consideration after the \fBbase\fP value, if defined, is satisfied.
+.sp
+If no \fBweight\fP value is specified, the default value of \fB0\fP is used. When multiple capacity providers are specified within a capacity provider strategy, at least one of the capacity providers must have a weight value greater than zero and any capacity providers with a weight of \fB0\fP will not be used to place tasks. If you specify multiple capacity providers in a strategy that all have a weight of \fB0\fP , any \fBRunTask\fP or \fBCreateService\fP actions using the capacity provider strategy will fail.
+.sp
+An example scenario for using weights is defining a strategy that contains two capacity providers and both have a weight of \fB1\fP , then when the \fBbase\fP is satisfied, the tasks will be split evenly across the two capacity providers. Using that same logic, if you specify a weight of \fB1\fP for \fIcapacityProviderA\fP and a weight of \fB4\fP for \fIcapacityProviderB\fP , then for every one task that is run using \fIcapacityProviderA\fP , four tasks would use \fIcapacityProviderB\fP .
+.UNINDENT
+.UNINDENT
+.sp
+base \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIbase\fP value designates how many tasks, at a minimum, to run on the specified capacity provider. Only one capacity provider in a capacity provider strategy can have a \fIbase\fP defined. If no value is specified, the default value of \fB0\fP is used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+capacityProvider=string,weight=integer,base=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "capacityProvider": "string",
+    "weight": integer,
+    "base": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-deployment\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Optional deployment parameters that control how many tasks run during the deployment and the ordering of stopping and starting tasks.
+.sp
+deploymentCircuitBreaker \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The deployment circuit breaker can only be used for services using the rolling update (\fBECS\fP ) deployment type.
+.UNINDENT
+.UNINDENT
+.sp
+The \fBdeployment circuit breaker\fP determines whether a service deployment will fail if the service can\(aqt reach a steady state. If deployment circuit breaker is enabled, a service deployment will transition to a failed state and stop launching new tasks. If rollback is enabled, when a service deployment fails, the service is rolled back to the last deployment that completed successfully.
+.sp
+enable \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to enable the deployment circuit breaker logic for the service.
+.UNINDENT
+.UNINDENT
+.sp
+rollback \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to enable Amazon ECS to roll back the service if a service deployment fails. If rollback is enabled, when a service deployment fails, the service is rolled back to the last deployment that completed successfully.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maximumPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If a service is using the rolling update (\fBECS\fP ) deployment type, the \fBmaximum percent\fP parameter represents an upper limit on the number of tasks in a service that are allowed in the \fBRUNNING\fP or \fBPENDING\fP state during a deployment, as a percentage of the desired number of tasks (rounded down to the nearest integer), and while any container instances are in the \fBDRAINING\fP state if the service contains tasks using the EC2 launch type. This parameter enables you to define the deployment batch size. For example, if your service has a desired number of four tasks and a maximum percent value of 200%, the scheduler may start four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available). The default value for maximum percent is 200%.
+.sp
+If a service is using the blue/green (\fBCODE_DEPLOY\fP ) or \fBEXTERNAL\fP deployment types and tasks that use the EC2 launch type, the \fBmaximum percent\fP value is set to the default value and is used to define the upper limit on the number of the tasks in the service that remain in the \fBRUNNING\fP state while the container instances are in the \fBDRAINING\fP state. If the tasks in the service use the Fargate launch type, the maximum percent value is not used, although it is returned when describing your service.
+.UNINDENT
+.UNINDENT
+.sp
+minimumHealthyPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If a service is using the rolling update (\fBECS\fP ) deployment type, the \fBminimum healthy percent\fP represents a lower limit on the number of tasks in a service that must remain in the \fBRUNNING\fP state during a deployment, as a percentage of the desired number of tasks (rounded up to the nearest integer), and while any container instances are in the \fBDRAINING\fP state if the service contains tasks using the EC2 launch type. This parameter enables you to deploy without using additional cluster capacity. For example, if your service has a desired number of four tasks and a minimum healthy percent of 50%, the scheduler may stop two existing tasks to free up cluster capacity before starting two new tasks. Tasks for services that \fIdo not\fP use a load balancer are considered healthy if they are in the \fBRUNNING\fP state; tasks for services that \fIdo\fP use a load balancer are considered healthy if they are in the \fBRUNNING\fP state and they are reported as healthy by the load balancer. The default value for minimum healthy percent is 100%.
+.sp
+If a service is using the blue/green (\fBCODE_DEPLOY\fP ) or \fBEXTERNAL\fP deployment types and tasks that use the EC2 launch type, the \fBminimum healthy percent\fP value is set to the default value and is used to define the lower limit on the number of the tasks in the service that remain in the \fBRUNNING\fP state while the container instances are in the \fBDRAINING\fP state. If the tasks in the service use the Fargate launch type, the minimum healthy percent value is not used, although it is returned when describing your service.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+deploymentCircuitBreaker={enable=boolean,rollback=boolean},maximumPercent=integer,minimumHealthyPercent=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "deploymentCircuitBreaker": {
+    "enable": true|false,
+    "rollback": true|false
+  },
+  "maximumPercent": integer,
+  "minimumHealthyPercent": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-network\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An object representing the network configuration for the service.
+.sp
+awsvpcConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The VPC subnets and security groups associated with a task.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets and security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets associated with the task or service. There is a limit of 16 subnets that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+securityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups associated with the task or service. If you do not specify a security group, the default security group for the VPC is used. There is a limit of 5 security groups that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+assignPublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the task\(aqs elastic network interface receives a public IP address. The default value is \fBDISABLED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+awsvpcConfiguration={subnets=[string,string],securityGroups=[string,string],assignPublicIp=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "awsvpcConfiguration": {
+    "subnets": ["string", ...],
+    "securityGroups": ["string", ...],
+    "assignPublicIp": "ENABLED"|"DISABLED"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-placement\-constraints\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of task placement constraint objects to update the service to use. If no value is specified, the existing placement constraints for the service will remain unchanged. If this value is specified, it will override any existing placement constraints defined for the service. To remove all existing placement constraints, specify an empty array.
+.sp
+You can specify a maximum of 10 constraints per task (this limit includes constraints in the task definition and those specified at runtime).
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object representing a constraint on task placement. For more information, see \fI\%Task Placement Constraints\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you are using the Fargate launch type, task placement constraints are not supported.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of constraint. Use \fBdistinctInstance\fP to ensure that each task in a particular group is running on a different container instance. Use \fBmemberOf\fP to restrict the selection to a group of valid candidates.
+.UNINDENT
+.UNINDENT
+.sp
+expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A cluster query language expression to apply to the constraint. You cannot specify an expression if the constraint type is \fBdistinctInstance\fP . For more information, see \fI\%Cluster Query Language\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,expression=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "type": "distinctInstance"|"memberOf",
+    "expression": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-placement\-strategy\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The task placement strategy objects to update the service to use. If no value is specified, the existing placement strategy for the service will remain unchanged. If this value is specified, it will override the existing placement strategy defined for the service. To remove an existing placement strategy, specify an empty object.
+.sp
+You can specify a maximum of five strategy rules per service.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The task placement strategy for a task or service. For more information, see \fI\%Task Placement Strategies\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of placement strategy. The \fBrandom\fP placement strategy randomly places tasks on available candidates. The \fBspread\fP placement strategy spreads placement across available candidates evenly based on the \fBfield\fP parameter. The \fBbinpack\fP strategy places tasks on available candidates that have the least available amount of the resource that is specified with the \fBfield\fP parameter. For example, if you binpack on memory, a task is placed on the instance with the least amount of remaining memory (but still enough to run the task).
+.UNINDENT
+.UNINDENT
+.sp
+field \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The field to apply the placement strategy against. For the \fBspread\fP placement strategy, valid values are \fBinstanceId\fP (or \fBhost\fP , which has the same effect), or any platform or custom attribute that is applied to a container instance, such as \fBattribute:ecs.availability\-zone\fP . For the \fBbinpack\fP placement strategy, valid values are \fBcpu\fP and \fBmemory\fP . For the \fBrandom\fP placement strategy, this field is not used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+type=string,field=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "type": "random"|"spread"|"binpack",
+    "field": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-platform\-version\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform version on which your tasks in the service are running. A platform version is only specified for tasks using the Fargate launch type. If a platform version is not specified, the \fBLATEST\fP platform version is used by default. For more information, see \fI\%AWS Fargate Platform Versions\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-force\-new\-deployment\fP | \fB\-\-no\-force\-new\-deployment\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to force a new deployment of the service. Deployments are not forced by default. You can use this option to trigger a new deployment with no service definition changes. For example, you can update a service\(aqs tasks to use a newer Docker image with the same image/tag combination (\fBmy_image:latest\fP ) or to roll Fargate tasks onto a newer platform version.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-health\-check\-grace\-period\-seconds\fP (integer)
+.INDENT 0.0
+.INDENT 3.5
+The period of time, in seconds, that the Amazon ECS service scheduler should ignore unhealthy Elastic Load Balancing target health checks after a task has first started. This is only valid if your service is configured to use a load balancer. If your service\(aqs tasks take a while to start and respond to Elastic Load Balancing health checks, you can specify a health check grace period of up to 2,147,483,647 seconds. During that time, the Amazon ECS service scheduler ignores the Elastic Load Balancing health check status. This grace period can prevent the ECS service scheduler from marking tasks as unhealthy and stopping them before they have time to come up.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-enable\-execute\-command\fP | \fB\-\-disable\-execute\-command\fP (boolean)
+.INDENT 0.0
+.INDENT 3.5
+If \fBtrue\fP , this enables execute command functionality on all task containers.
+.sp
+If you do not want to override the value that was set when the service was created, you can set this to \fBnull\fP when performing this action.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To change the task definition used in a service\fP
+.sp
+The following \fBupdate\-service\fP example updates the \fBmy\-http\-service\fP service to use the \fBamazon\-ecs\-sample\fP task definition.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ecs update\-service \-\-service my\-http\-service \-\-task\-definition amazon\-ecs\-sample
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To change the number of tasks in a service\fP
+.sp
+The following \fBupdate\-service\fP example updates the desired task count of the service \fBmy\-http\-service\fP to 3.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws ecs update\-service \-\-service my\-http\-service \-\-desired\-count 3
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Updating a Service\fP in the \fIAmazon ECS Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+service \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The full description of your service following the update call.
+.sp
+serviceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN that identifies the service. The ARN contains the \fBarn:aws:ecs\fP namespace, followed by the Region of the service, the AWS account ID of the service owner, the \fBservice\fP namespace, and then the service name. For example, \fBarn:aws:ecs:region:012345678910:service/my\-service\fP .
+.UNINDENT
+.UNINDENT
+.sp
+serviceName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of your service. Up to 255 letters (uppercase and lowercase), numbers, underscores, and hyphens are allowed. Service names must be unique within a cluster, but you can have similarly named services in multiple clusters within a Region or across multiple Regions.
+.UNINDENT
+.UNINDENT
+.sp
+clusterArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the cluster that hosts the service.
+.UNINDENT
+.UNINDENT
+.sp
+loadBalancers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of Elastic Load Balancing load balancer objects, containing the load balancer name, the container name (as it appears in a container definition), and the container port to access from the load balancer.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The load balancer configuration to use with a service or task set.
+.sp
+For specific notes and restrictions regarding the use of load balancers with services and task sets, see the CreateService and CreateTaskSet actions.
+.sp
+targetGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full Amazon Resource Name (ARN) of the Elastic Load Balancing target group or groups associated with a service or task set.
+.sp
+A target group ARN is only specified when using an Application Load Balancer or Network Load Balancer. If you are using a Classic Load Balancer the target group ARN should be omitted.
+.sp
+For services using the \fBECS\fP deployment controller, you can specify one or multiple target groups. For more information, see \fI\%Registering Multiple Target Groups with a Service\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+For services using the \fBCODE_DEPLOY\fP deployment controller, you are required to define two target groups for the load balancer. For more information, see \fI\%Blue/Green Deployment with CodeDeploy\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If your service\(aqs task definition uses the \fBawsvpc\fP network mode (which is required for the Fargate launch type), you must choose \fBip\fP as the target type, not \fBinstance\fP , when creating your target groups because tasks that use the \fBawsvpc\fP network mode are associated with an elastic network interface, not an Amazon EC2 instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+loadBalancerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the load balancer to associate with the Amazon ECS service or task set.
+.sp
+A load balancer name is only specified when using a Classic Load Balancer. If you are using an Application Load Balancer or a Network Load Balancer the load balancer name parameter should be omitted.
+.UNINDENT
+.UNINDENT
+.sp
+containerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the container (as it appears in a container definition) to associate with the load balancer.
+.UNINDENT
+.UNINDENT
+.sp
+containerPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port on the container to associate with the load balancer. This port must correspond to a \fBcontainerPort\fP in the task definition the tasks in the service are using. For tasks that use the EC2 launch type, the container instance they are launched on must allow ingress traffic on the \fBhostPort\fP of the port mapping.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+serviceRegistries \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The details of the service discovery registries to assign to this service. For more information, see \fI\%Service Discovery\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details of the service registry.
+.sp
+registryArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the service registry. The currently supported service registry is AWS Cloud Map. For more information, see \fI\%CreateService\fP .
+.UNINDENT
+.UNINDENT
+.sp
+port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port value used if your service discovery service specified an SRV record. This field may be used if both the \fBawsvpc\fP network mode and SRV records are used.
+.UNINDENT
+.UNINDENT
+.sp
+containerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The container name value, already specified in the task definition, to be used for your service discovery service. If the task definition that your service task specifies uses the \fBbridge\fP or \fBhost\fP network mode, you must specify a \fBcontainerName\fP and \fBcontainerPort\fP combination from the task definition. If the task definition that your service task specifies uses the \fBawsvpc\fP network mode and a type SRV DNS record is used, you must specify either a \fBcontainerName\fP and \fBcontainerPort\fP combination or a \fBport\fP value, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+containerPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port value, already specified in the task definition, to be used for your service discovery service. If the task definition your service task specifies uses the \fBbridge\fP or \fBhost\fP network mode, you must specify a \fBcontainerName\fP and \fBcontainerPort\fP combination from the task definition. If the task definition your service task specifies uses the \fBawsvpc\fP network mode and a type SRV DNS record is used, you must specify either a \fBcontainerName\fP and \fBcontainerPort\fP combination or a \fBport\fP value, but not both.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the service. The valid values are \fBACTIVE\fP , \fBDRAINING\fP , or \fBINACTIVE\fP .
+.UNINDENT
+.UNINDENT
+.sp
+desiredCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The desired number of instantiations of the task definition to keep running on the service. This value is specified when the service is created with  CreateService , and it can be modified with  UpdateService .
+.UNINDENT
+.UNINDENT
+.sp
+runningCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks in the cluster that are in the \fBRUNNING\fP state.
+.UNINDENT
+.UNINDENT
+.sp
+pendingCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks in the cluster that are in the \fBPENDING\fP state.
+.UNINDENT
+.UNINDENT
+.sp
+launchType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The infrastructure on which your service is running. For more information, see \fI\%Amazon ECS launch types\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+capacityProviderStrategy \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The capacity provider strategy associated with the service.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of a capacity provider strategy. A capacity provider strategy can be set when using the  RunTask or  CreateCluster APIs or as the default capacity provider strategy for a cluster with the  CreateCluster API.
+.sp
+Only capacity providers that are already associated with a cluster and have an \fBACTIVE\fP or \fBUPDATING\fP status can be used in a capacity provider strategy. The  PutClusterCapacityProviders API is used to associate a capacity provider with a cluster.
+.sp
+If specifying a capacity provider that uses an Auto Scaling group, the capacity provider must already be created. New Auto Scaling group capacity providers can be created with the  CreateCapacityProvider API operation.
+.sp
+To use a AWS Fargate capacity provider, specify either the \fBFARGATE\fP or \fBFARGATE_SPOT\fP capacity providers. The AWS Fargate capacity providers are available to all accounts and only need to be associated with a cluster to be used in a capacity provider strategy.
+.sp
+capacityProvider \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name of the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIweight\fP value designates the relative percentage of the total number of tasks launched that should use the specified capacity provider. The \fBweight\fP value is taken into consideration after the \fBbase\fP value, if defined, is satisfied.
+.sp
+If no \fBweight\fP value is specified, the default value of \fB0\fP is used. When multiple capacity providers are specified within a capacity provider strategy, at least one of the capacity providers must have a weight value greater than zero and any capacity providers with a weight of \fB0\fP will not be used to place tasks. If you specify multiple capacity providers in a strategy that all have a weight of \fB0\fP , any \fBRunTask\fP or \fBCreateService\fP actions using the capacity provider strategy will fail.
+.sp
+An example scenario for using weights is defining a strategy that contains two capacity providers and both have a weight of \fB1\fP , then when the \fBbase\fP is satisfied, the tasks will be split evenly across the two capacity providers. Using that same logic, if you specify a weight of \fB1\fP for \fIcapacityProviderA\fP and a weight of \fB4\fP for \fIcapacityProviderB\fP , then for every one task that is run using \fIcapacityProviderA\fP , four tasks would use \fIcapacityProviderB\fP .
+.UNINDENT
+.UNINDENT
+.sp
+base \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIbase\fP value designates how many tasks, at a minimum, to run on the specified capacity provider. Only one capacity provider in a capacity provider strategy can have a \fIbase\fP defined. If no value is specified, the default value of \fB0\fP is used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+platformVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform version on which to run your service. A platform version is only specified for tasks using the Fargate launch type. If one is not specified, the \fBLATEST\fP platform version is used by default. For more information, see \fI\%AWS Fargate Platform Versions\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+taskDefinition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The task definition to use for tasks in the service. This value is specified when the service is created with  CreateService , and it can be modified with  UpdateService .
+.UNINDENT
+.UNINDENT
+.sp
+deploymentConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Optional deployment parameters that control how many tasks run during the deployment and the ordering of stopping and starting tasks.
+.sp
+deploymentCircuitBreaker \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The deployment circuit breaker can only be used for services using the rolling update (\fBECS\fP ) deployment type.
+.UNINDENT
+.UNINDENT
+.sp
+The \fBdeployment circuit breaker\fP determines whether a service deployment will fail if the service can\(aqt reach a steady state. If deployment circuit breaker is enabled, a service deployment will transition to a failed state and stop launching new tasks. If rollback is enabled, when a service deployment fails, the service is rolled back to the last deployment that completed successfully.
+.sp
+enable \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to enable the deployment circuit breaker logic for the service.
+.UNINDENT
+.UNINDENT
+.sp
+rollback \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether to enable Amazon ECS to roll back the service if a service deployment fails. If rollback is enabled, when a service deployment fails, the service is rolled back to the last deployment that completed successfully.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+maximumPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If a service is using the rolling update (\fBECS\fP ) deployment type, the \fBmaximum percent\fP parameter represents an upper limit on the number of tasks in a service that are allowed in the \fBRUNNING\fP or \fBPENDING\fP state during a deployment, as a percentage of the desired number of tasks (rounded down to the nearest integer), and while any container instances are in the \fBDRAINING\fP state if the service contains tasks using the EC2 launch type. This parameter enables you to define the deployment batch size. For example, if your service has a desired number of four tasks and a maximum percent value of 200%, the scheduler may start four new tasks before stopping the four older tasks (provided that the cluster resources required to do this are available). The default value for maximum percent is 200%.
+.sp
+If a service is using the blue/green (\fBCODE_DEPLOY\fP ) or \fBEXTERNAL\fP deployment types and tasks that use the EC2 launch type, the \fBmaximum percent\fP value is set to the default value and is used to define the upper limit on the number of the tasks in the service that remain in the \fBRUNNING\fP state while the container instances are in the \fBDRAINING\fP state. If the tasks in the service use the Fargate launch type, the maximum percent value is not used, although it is returned when describing your service.
+.UNINDENT
+.UNINDENT
+.sp
+minimumHealthyPercent \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+If a service is using the rolling update (\fBECS\fP ) deployment type, the \fBminimum healthy percent\fP represents a lower limit on the number of tasks in a service that must remain in the \fBRUNNING\fP state during a deployment, as a percentage of the desired number of tasks (rounded up to the nearest integer), and while any container instances are in the \fBDRAINING\fP state if the service contains tasks using the EC2 launch type. This parameter enables you to deploy without using additional cluster capacity. For example, if your service has a desired number of four tasks and a minimum healthy percent of 50%, the scheduler may stop two existing tasks to free up cluster capacity before starting two new tasks. Tasks for services that \fIdo not\fP use a load balancer are considered healthy if they are in the \fBRUNNING\fP state; tasks for services that \fIdo\fP use a load balancer are considered healthy if they are in the \fBRUNNING\fP state and they are reported as healthy by the load balancer. The default value for minimum healthy percent is 100%.
+.sp
+If a service is using the blue/green (\fBCODE_DEPLOY\fP ) or \fBEXTERNAL\fP deployment types and tasks that use the EC2 launch type, the \fBminimum healthy percent\fP value is set to the default value and is used to define the lower limit on the number of the tasks in the service that remain in the \fBRUNNING\fP state while the container instances are in the \fBDRAINING\fP state. If the tasks in the service use the Fargate launch type, the minimum healthy percent value is not used, although it is returned when describing your service.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+taskSets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about a set of Amazon ECS tasks in either an AWS CodeDeploy or an \fBEXTERNAL\fP deployment. An Amazon ECS task set includes details such as the desired number of tasks, how many tasks are running, and whether the task set serves production traffic.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a set of Amazon ECS tasks in either an AWS CodeDeploy or an \fBEXTERNAL\fP deployment. An Amazon ECS task set includes details such as the desired number of tasks, how many tasks are running, and whether the task set serves production traffic.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the task set.
+.UNINDENT
+.UNINDENT
+.sp
+taskSetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the task set.
+.UNINDENT
+.UNINDENT
+.sp
+serviceArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the service the task set exists in.
+.UNINDENT
+.UNINDENT
+.sp
+clusterArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the cluster that the service that hosts the task set exists in.
+.UNINDENT
+.UNINDENT
+.sp
+startedBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The tag specified when a task set is started. If the task set is created by an AWS CodeDeploy deployment, the \fBstartedBy\fP parameter is \fBCODE_DEPLOY\fP . For a task set created for an external deployment, the startedBy field isn\(aqt used.
+.UNINDENT
+.UNINDENT
+.sp
+externalId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The external ID associated with the task set.
+.sp
+If a task set is created by an AWS CodeDeploy deployment, the \fBexternalId\fP parameter contains the AWS CodeDeploy deployment ID.
+.sp
+If a task set is created for an external deployment and is associated with a service discovery registry, the \fBexternalId\fP parameter contains the \fBECS_TASK_SET_EXTERNAL_ID\fP AWS Cloud Map attribute.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the task set. The following describes each state:
+.INDENT 0.0
+.INDENT 3.5
+PRIMARY
+.UNINDENT
+.UNINDENT
+.sp
+The task set is serving production traffic.
+.INDENT 0.0
+.INDENT 3.5
+ACTIVE
+.UNINDENT
+.UNINDENT
+.sp
+The task set is not serving production traffic.
+.INDENT 0.0
+.INDENT 3.5
+DRAINING
+.UNINDENT
+.UNINDENT
+.sp
+The tasks in the task set are being stopped and their corresponding targets are being deregistered from their target group.
+.UNINDENT
+.UNINDENT
+.sp
+taskDefinition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The task definition the task set is using.
+.UNINDENT
+.UNINDENT
+.sp
+computedDesiredCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The computed desired count for the task set. This is calculated by multiplying the service\(aqs \fBdesiredCount\fP by the task set\(aqs \fBscale\fP percentage. The result is always rounded up. For example, if the computed desired count is 1.2, it rounds up to 2 tasks.
+.UNINDENT
+.UNINDENT
+.sp
+pendingCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks in the task set that are in the \fBPENDING\fP status during a deployment. A task in the \fBPENDING\fP state is preparing to enter the \fBRUNNING\fP state. A task set enters the \fBPENDING\fP status when it launches for the first time or when it is restarted after being in the \fBSTOPPED\fP state.
+.UNINDENT
+.UNINDENT
+.sp
+runningCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks in the task set that are in the \fBRUNNING\fP status during a deployment. A task in the \fBRUNNING\fP state is running and ready for use.
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task set was created.
+.UNINDENT
+.UNINDENT
+.sp
+updatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task set was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+launchType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The launch type the tasks in the task set are using. For more information, see \fI\%Amazon ECS launch types\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+capacityProviderStrategy \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The capacity provider strategy associated with the task set.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of a capacity provider strategy. A capacity provider strategy can be set when using the  RunTask or  CreateCluster APIs or as the default capacity provider strategy for a cluster with the  CreateCluster API.
+.sp
+Only capacity providers that are already associated with a cluster and have an \fBACTIVE\fP or \fBUPDATING\fP status can be used in a capacity provider strategy. The  PutClusterCapacityProviders API is used to associate a capacity provider with a cluster.
+.sp
+If specifying a capacity provider that uses an Auto Scaling group, the capacity provider must already be created. New Auto Scaling group capacity providers can be created with the  CreateCapacityProvider API operation.
+.sp
+To use a AWS Fargate capacity provider, specify either the \fBFARGATE\fP or \fBFARGATE_SPOT\fP capacity providers. The AWS Fargate capacity providers are available to all accounts and only need to be associated with a cluster to be used in a capacity provider strategy.
+.sp
+capacityProvider \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name of the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIweight\fP value designates the relative percentage of the total number of tasks launched that should use the specified capacity provider. The \fBweight\fP value is taken into consideration after the \fBbase\fP value, if defined, is satisfied.
+.sp
+If no \fBweight\fP value is specified, the default value of \fB0\fP is used. When multiple capacity providers are specified within a capacity provider strategy, at least one of the capacity providers must have a weight value greater than zero and any capacity providers with a weight of \fB0\fP will not be used to place tasks. If you specify multiple capacity providers in a strategy that all have a weight of \fB0\fP , any \fBRunTask\fP or \fBCreateService\fP actions using the capacity provider strategy will fail.
+.sp
+An example scenario for using weights is defining a strategy that contains two capacity providers and both have a weight of \fB1\fP , then when the \fBbase\fP is satisfied, the tasks will be split evenly across the two capacity providers. Using that same logic, if you specify a weight of \fB1\fP for \fIcapacityProviderA\fP and a weight of \fB4\fP for \fIcapacityProviderB\fP , then for every one task that is run using \fIcapacityProviderA\fP , four tasks would use \fIcapacityProviderB\fP .
+.UNINDENT
+.UNINDENT
+.sp
+base \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIbase\fP value designates how many tasks, at a minimum, to run on the specified capacity provider. Only one capacity provider in a capacity provider strategy can have a \fIbase\fP defined. If no value is specified, the default value of \fB0\fP is used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+platformVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The AWS Fargate platform version on which the tasks in the task set are running. A platform version is only specified for tasks run on AWS Fargate. For more information, see \fI\%AWS Fargate platform versions\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+networkConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The network configuration for the task set.
+.sp
+awsvpcConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The VPC subnets and security groups associated with a task.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets and security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets associated with the task or service. There is a limit of 16 subnets that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+securityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups associated with the task or service. If you do not specify a security group, the default security group for the VPC is used. There is a limit of 5 security groups that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+assignPublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the task\(aqs elastic network interface receives a public IP address. The default value is \fBDISABLED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+loadBalancers \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Details on a load balancer that is used with a task set.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The load balancer configuration to use with a service or task set.
+.sp
+For specific notes and restrictions regarding the use of load balancers with services and task sets, see the CreateService and CreateTaskSet actions.
+.sp
+targetGroupArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The full Amazon Resource Name (ARN) of the Elastic Load Balancing target group or groups associated with a service or task set.
+.sp
+A target group ARN is only specified when using an Application Load Balancer or Network Load Balancer. If you are using a Classic Load Balancer the target group ARN should be omitted.
+.sp
+For services using the \fBECS\fP deployment controller, you can specify one or multiple target groups. For more information, see \fI\%Registering Multiple Target Groups with a Service\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+For services using the \fBCODE_DEPLOY\fP deployment controller, you are required to define two target groups for the load balancer. For more information, see \fI\%Blue/Green Deployment with CodeDeploy\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
+If your service\(aqs task definition uses the \fBawsvpc\fP network mode (which is required for the Fargate launch type), you must choose \fBip\fP as the target type, not \fBinstance\fP , when creating your target groups because tasks that use the \fBawsvpc\fP network mode are associated with an elastic network interface, not an Amazon EC2 instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+loadBalancerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the load balancer to associate with the Amazon ECS service or task set.
+.sp
+A load balancer name is only specified when using a Classic Load Balancer. If you are using an Application Load Balancer or a Network Load Balancer the load balancer name parameter should be omitted.
+.UNINDENT
+.UNINDENT
+.sp
+containerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the container (as it appears in a container definition) to associate with the load balancer.
+.UNINDENT
+.UNINDENT
+.sp
+containerPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port on the container to associate with the load balancer. This port must correspond to a \fBcontainerPort\fP in the task definition the tasks in the service are using. For tasks that use the EC2 launch type, the container instance they are launched on must allow ingress traffic on the \fBhostPort\fP of the port mapping.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+serviceRegistries \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The details of the service discovery registries to assign to this task set. For more information, see \fI\%Service discovery\fP .
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details of the service registry.
+.sp
+registryArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the service registry. The currently supported service registry is AWS Cloud Map. For more information, see \fI\%CreateService\fP .
+.UNINDENT
+.UNINDENT
+.sp
+port \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port value used if your service discovery service specified an SRV record. This field may be used if both the \fBawsvpc\fP network mode and SRV records are used.
+.UNINDENT
+.UNINDENT
+.sp
+containerName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The container name value, already specified in the task definition, to be used for your service discovery service. If the task definition that your service task specifies uses the \fBbridge\fP or \fBhost\fP network mode, you must specify a \fBcontainerName\fP and \fBcontainerPort\fP combination from the task definition. If the task definition that your service task specifies uses the \fBawsvpc\fP network mode and a type SRV DNS record is used, you must specify either a \fBcontainerName\fP and \fBcontainerPort\fP combination or a \fBport\fP value, but not both.
+.UNINDENT
+.UNINDENT
+.sp
+containerPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The port value, already specified in the task definition, to be used for your service discovery service. If the task definition your service task specifies uses the \fBbridge\fP or \fBhost\fP network mode, you must specify a \fBcontainerName\fP and \fBcontainerPort\fP combination from the task definition. If the task definition your service task specifies uses the \fBawsvpc\fP network mode and a type SRV DNS record is used, you must specify either a \fBcontainerName\fP and \fBcontainerPort\fP combination or a \fBport\fP value, but not both.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+scale \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A floating\-point percentage of the desired number of tasks to place and keep running in the task set.
+.sp
+value \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The value, specified as a percent total of a service\(aqs \fBdesiredCount\fP , to scale the task set. Accepted values are numbers between 0 and 100.
+.UNINDENT
+.UNINDENT
+.sp
+unit \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The unit of measure for the scale value.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+stabilityStatus \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The stability status, which indicates whether the task set has reached a steady state. If the following conditions are met, the task set will be in \fBSTEADY_STATE\fP :
+.INDENT 0.0
+.IP \(bu 2
+The task \fBrunningCount\fP is equal to the \fBcomputedDesiredCount\fP .
+.IP \(bu 2
+The \fBpendingCount\fP is \fB0\fP .
+.IP \(bu 2
+There are no tasks running on container instances in the \fBDRAINING\fP status.
+.IP \(bu 2
+All tasks are reporting a healthy status from the load balancers, service discovery, and container health checks.
+.UNINDENT
+.sp
+If any of those conditions are not met, the stability status returns \fBSTABILIZING\fP .
+.UNINDENT
+.UNINDENT
+.sp
+stabilityStatusAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the task set stability status was retrieved.
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to the task set to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A \fBkey\fP is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that make up a tag. A \fBvalue\fP acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deployments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The current state of deployments for the service.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of an Amazon ECS service deployment. This is used only when a service uses the \fBECS\fP deployment controller type.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the deployment.
+.UNINDENT
+.UNINDENT
+.sp
+status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of the deployment. The following describes each state:
+.INDENT 0.0
+.INDENT 3.5
+PRIMARY
+.UNINDENT
+.UNINDENT
+.sp
+The most recent deployment of a service.
+.INDENT 0.0
+.INDENT 3.5
+ACTIVE
+.UNINDENT
+.UNINDENT
+.sp
+A service deployment that still has running tasks, but are in the process of being replaced with a new \fBPRIMARY\fP deployment.
+.INDENT 0.0
+.INDENT 3.5
+INACTIVE
+.UNINDENT
+.UNINDENT
+.sp
+A deployment that has been completely replaced.
+.UNINDENT
+.UNINDENT
+.sp
+taskDefinition \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The most recent task definition that was specified for the tasks in the service to use.
+.UNINDENT
+.UNINDENT
+.sp
+desiredCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The most recent desired count of tasks that was specified for the service to deploy or maintain.
+.UNINDENT
+.UNINDENT
+.sp
+pendingCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks in the deployment that are in the \fBPENDING\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+runningCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of tasks in the deployment that are in the \fBRUNNING\fP status.
+.UNINDENT
+.UNINDENT
+.sp
+failedTasks \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of consecutively failed tasks in the deployment. A task is considered a failure if the service scheduler can\(aqt launch the task, the task doesn\(aqt transition to a \fBRUNNING\fP state, or if it fails any of its defined health checks and is stopped.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Once a service deployment has one or more successfully running tasks, the failed task count resets to zero and stops being evaluated.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the service deployment was created.
+.UNINDENT
+.UNINDENT
+.sp
+updatedAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the service deployment was last updated.
+.UNINDENT
+.UNINDENT
+.sp
+capacityProviderStrategy \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The capacity provider strategy that the deployment is using.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The details of a capacity provider strategy. A capacity provider strategy can be set when using the  RunTask or  CreateCluster APIs or as the default capacity provider strategy for a cluster with the  CreateCluster API.
+.sp
+Only capacity providers that are already associated with a cluster and have an \fBACTIVE\fP or \fBUPDATING\fP status can be used in a capacity provider strategy. The  PutClusterCapacityProviders API is used to associate a capacity provider with a cluster.
+.sp
+If specifying a capacity provider that uses an Auto Scaling group, the capacity provider must already be created. New Auto Scaling group capacity providers can be created with the  CreateCapacityProvider API operation.
+.sp
+To use a AWS Fargate capacity provider, specify either the \fBFARGATE\fP or \fBFARGATE_SPOT\fP capacity providers. The AWS Fargate capacity providers are available to all accounts and only need to be associated with a cluster to be used in a capacity provider strategy.
+.sp
+capacityProvider \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The short name of the capacity provider.
+.UNINDENT
+.UNINDENT
+.sp
+weight \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIweight\fP value designates the relative percentage of the total number of tasks launched that should use the specified capacity provider. The \fBweight\fP value is taken into consideration after the \fBbase\fP value, if defined, is satisfied.
+.sp
+If no \fBweight\fP value is specified, the default value of \fB0\fP is used. When multiple capacity providers are specified within a capacity provider strategy, at least one of the capacity providers must have a weight value greater than zero and any capacity providers with a weight of \fB0\fP will not be used to place tasks. If you specify multiple capacity providers in a strategy that all have a weight of \fB0\fP , any \fBRunTask\fP or \fBCreateService\fP actions using the capacity provider strategy will fail.
+.sp
+An example scenario for using weights is defining a strategy that contains two capacity providers and both have a weight of \fB1\fP , then when the \fBbase\fP is satisfied, the tasks will be split evenly across the two capacity providers. Using that same logic, if you specify a weight of \fB1\fP for \fIcapacityProviderA\fP and a weight of \fB4\fP for \fIcapacityProviderB\fP , then for every one task that is run using \fIcapacityProviderA\fP , four tasks would use \fIcapacityProviderB\fP .
+.UNINDENT
+.UNINDENT
+.sp
+base \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The \fIbase\fP value designates how many tasks, at a minimum, to run on the specified capacity provider. Only one capacity provider in a capacity provider strategy can have a \fIbase\fP defined. If no value is specified, the default value of \fB0\fP is used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+launchType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The launch type the tasks in the service are using. For more information, see \fI\%Amazon ECS Launch Types\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+platformVersion \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The platform version on which your tasks in the service are running. A platform version is only specified for tasks using the Fargate launch type. If one is not specified, the \fBLATEST\fP platform version is used by default. For more information, see \fI\%AWS Fargate Platform Versions\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+networkConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The VPC subnet and security group configuration for tasks that receive their own elastic network interface by using the \fBawsvpc\fP networking mode.
+.sp
+awsvpcConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The VPC subnets and security groups associated with a task.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets and security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets associated with the task or service. There is a limit of 16 subnets that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+securityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups associated with the task or service. If you do not specify a security group, the default security group for the VPC is used. There is a limit of 5 security groups that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+assignPublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the task\(aqs elastic network interface receives a public IP address. The default value is \fBDISABLED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+rolloutState \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBrolloutState\fP of a service is only returned for services that use the rolling update (\fBECS\fP ) deployment type that are not behind a Classic Load Balancer.
+.UNINDENT
+.UNINDENT
+.sp
+The rollout state of the deployment. When a service deployment is started, it begins in an \fBIN_PROGRESS\fP state. When the service reaches a steady state, the deployment will transition to a \fBCOMPLETED\fP state. If the service fails to reach a steady state and circuit breaker is enabled, the deployment will transition to a \fBFAILED\fP state. A deployment in \fBFAILED\fP state will launch no new tasks. For more information, see  DeploymentCircuitBreaker .
+.UNINDENT
+.UNINDENT
+.sp
+rolloutStateReason \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A description of the rollout state of a deployment.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+roleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role associated with the service that allows the Amazon ECS container agent to register container instances with an Elastic Load Balancing load balancer.
+.UNINDENT
+.UNINDENT
+.sp
+events \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The event stream for your service. A maximum of 100 of the latest events are displayed.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Details on an event associated with a service.
+.sp
+id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID string of the event.
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the event was triggered.
+.UNINDENT
+.UNINDENT
+.sp
+message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The event message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+createdAt \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The Unix timestamp for when the service was created.
+.UNINDENT
+.UNINDENT
+.sp
+placementConstraints \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The placement constraints for the tasks in the service.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An object representing a constraint on task placement. For more information, see \fI\%Task Placement Constraints\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+If you are using the Fargate launch type, task placement constraints are not supported.
+.UNINDENT
+.UNINDENT
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of constraint. Use \fBdistinctInstance\fP to ensure that each task in a particular group is running on a different container instance. Use \fBmemberOf\fP to restrict the selection to a group of valid candidates.
+.UNINDENT
+.UNINDENT
+.sp
+expression \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A cluster query language expression to apply to the constraint. You cannot specify an expression if the constraint type is \fBdistinctInstance\fP . For more information, see \fI\%Cluster Query Language\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+placementStrategy \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The placement strategy that determines how tasks for the service are placed.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The task placement strategy for a task or service. For more information, see \fI\%Task Placement Strategies\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of placement strategy. The \fBrandom\fP placement strategy randomly places tasks on available candidates. The \fBspread\fP placement strategy spreads placement across available candidates evenly based on the \fBfield\fP parameter. The \fBbinpack\fP strategy places tasks on available candidates that have the least available amount of the resource that is specified with the \fBfield\fP parameter. For example, if you binpack on memory, a task is placed on the instance with the least amount of remaining memory (but still enough to run the task).
+.UNINDENT
+.UNINDENT
+.sp
+field \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The field to apply the placement strategy against. For the \fBspread\fP placement strategy, valid values are \fBinstanceId\fP (or \fBhost\fP , which has the same effect), or any platform or custom attribute that is applied to a container instance, such as \fBattribute:ecs.availability\-zone\fP . For the \fBbinpack\fP placement strategy, valid values are \fBcpu\fP and \fBmemory\fP . For the \fBrandom\fP placement strategy, this field is not used.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+networkConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The VPC subnet and security group configuration for tasks that receive their own elastic network interface by using the \fBawsvpc\fP networking mode.
+.sp
+awsvpcConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The VPC subnets and security groups associated with a task.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets and security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+subnets \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the subnets associated with the task or service. There is a limit of 16 subnets that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified subnets must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+securityGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The IDs of the security groups associated with the task or service. If you do not specify a security group, the default security group for the VPC is used. There is a limit of 5 security groups that can be specified per \fBAwsVpcConfiguration\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+All specified security groups must be from the same VPC.
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+assignPublicIp \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Whether the task\(aqs elastic network interface receives a public IP address. The default value is \fBDISABLED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+healthCheckGracePeriodSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The period of time, in seconds, that the Amazon ECS service scheduler ignores unhealthy Elastic Load Balancing target health checks after a task has first started.
+.UNINDENT
+.UNINDENT
+.sp
+schedulingStrategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The scheduling strategy to use for the service. For more information, see \fI\%Services\fP .
+.sp
+There are two service scheduler strategies available:
+.INDENT 0.0
+.IP \(bu 2
+\fBREPLICA\fP \-The replica scheduling strategy places and maintains the desired number of tasks across your cluster. By default, the service scheduler spreads tasks across Availability Zones. You can use task placement strategies and constraints to customize task placement decisions.
+.IP \(bu 2
+\fBDAEMON\fP \-The daemon scheduling strategy deploys exactly one task on each active container instance that meets all of the task placement constraints that you specify in your cluster. The service scheduler also evaluates the task placement constraints for running tasks and will stop tasks that do not meet the placement constraints.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Fargate tasks do not support the \fBDAEMON\fP scheduling strategy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+deploymentController \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The deployment controller type the service is using. When using the DescribeServices API, this field is omitted if the service is using the \fBECS\fP deployment controller type.
+.sp
+type \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The deployment controller type to use.
+.sp
+There are three deployment controller types available:
+.INDENT 0.0
+.INDENT 3.5
+ECS
+.UNINDENT
+.UNINDENT
+.sp
+The rolling update (\fBECS\fP ) deployment type involves replacing the current running version of the container with the latest version. The number of containers Amazon ECS adds or removes from the service during a rolling update is controlled by adjusting the minimum and maximum number of healthy tasks allowed during a service deployment, as specified in the  DeploymentConfiguration .
+.INDENT 0.0
+.INDENT 3.5
+CODE_DEPLOY
+.UNINDENT
+.UNINDENT
+.sp
+The blue/green (\fBCODE_DEPLOY\fP ) deployment type uses the blue/green deployment model powered by AWS CodeDeploy, which allows you to verify a new deployment of a service before sending production traffic to it.
+.INDENT 0.0
+.INDENT 3.5
+EXTERNAL
+.UNINDENT
+.UNINDENT
+.sp
+The external (\fBEXTERNAL\fP ) deployment type enables you to use any third\-party deployment controller for full control over the deployment process for an Amazon ECS service.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+tags \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to the service to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case\-sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for either keys or values as it is reserved for AWS use. You cannot edit or delete tag keys or values with this prefix. Tags with this prefix do not count against your tags per resource limit.
+.UNINDENT
+.sp
+key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that make up a tag. A \fBkey\fP is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that make up a tag. A \fBvalue\fP acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+createdBy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The principal that created the service.
+.UNINDENT
+.UNINDENT
+.sp
+enableECSManagedTags \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether to enable Amazon ECS managed tags for the tasks in the service. For more information, see \fI\%Tagging Your Amazon ECS Resources\fP in the \fIAmazon Elastic Container Service Developer Guide\fP .
+.UNINDENT
+.UNINDENT
+.sp
+propagateTags \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether to propagate the tags from the task definition or the service to the task. If no value is specified, the tags are not propagated.
+.UNINDENT
+.UNINDENT
+.sp
+enableExecuteCommand \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Whether or not the execute command functionality is enabled for the service. If \fBtrue\fP , the execute command functionality is enabled for all containers in tasks as part of the service.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

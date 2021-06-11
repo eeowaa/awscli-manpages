@@ -1,0 +1,445 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "POLLY-SYNTHESIZE-SPEECH" "a" "" ""
+.SH NAME
+polly-synthesize-speech \- Synthesizes UTF-8 input, plain text or SSML, to a stream of bytes
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Synthesizes UTF\-8 input, plain text or SSML, to a stream of bytes. SSML input must be valid, well\-formed SSML. Some alphabets might not be available with all the voices (for example, Cyrillic might not be read at all by English voices) unless phoneme mapping is used. For more information, see \fI\%How it Works\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  synthesize\-speech
+[\-\-engine <value>]
+[\-\-language\-code <value>]
+[\-\-lexicon\-names <value>]
+\-\-output\-format <value>
+[\-\-sample\-rate <value>]
+[\-\-speech\-mark\-types <value>]
+\-\-text <value>
+[\-\-text\-type <value>]
+\-\-voice\-id <value>
+<outfile>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-engine\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the engine (\fBstandard\fP or \fBneural\fP ) for Amazon Polly to use when processing input text for speech synthesis. For information on Amazon Polly voices and which voices are available in standard\-only, NTTS\-only, and both standard and NTTS formats, see \fI\%Available Voices\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBNTTS\-only voices\fP
+.UNINDENT
+.UNINDENT
+.sp
+When using NTTS\-only voices such as Kevin (en\-US), this parameter is required and must be set to \fBneural\fP . If the engine is not specified, or is set to \fBstandard\fP , this will result in an error.
+.sp
+Type: String
+.sp
+Valid Values: \fBstandard\fP | \fBneural\fP
+.sp
+Required: Yes
+.INDENT 0.0
+.INDENT 3.5
+\fBStandard voices\fP
+.UNINDENT
+.UNINDENT
+.sp
+For standard voices, this is not required; the engine parameter defaults to \fBstandard\fP . If the engine is not specified, or is set to \fBstandard\fP and an NTTS\-only voice is selected, this will result in an error.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBstandard\fP
+.IP \(bu 2
+\fBneural\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-language\-code\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Optional language code for the Synthesize Speech request. This is only necessary if using a bilingual voice, such as Aditi, which can be used for either Indian English (en\-IN) or Hindi (hi\-IN).
+.sp
+If a bilingual voice is used and no language code is specified, Amazon Polly will use the default language of the bilingual voice. The default language for any voice is the one returned by the \fI\%DescribeVoices\fP operation for the \fBLanguageCode\fP parameter. For example, if no language code is specified, Aditi will use Indian English rather than Hindi.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBarb\fP
+.IP \(bu 2
+\fBcmn\-CN\fP
+.IP \(bu 2
+\fBcy\-GB\fP
+.IP \(bu 2
+\fBda\-DK\fP
+.IP \(bu 2
+\fBde\-DE\fP
+.IP \(bu 2
+\fBen\-AU\fP
+.IP \(bu 2
+\fBen\-GB\fP
+.IP \(bu 2
+\fBen\-GB\-WLS\fP
+.IP \(bu 2
+\fBen\-IN\fP
+.IP \(bu 2
+\fBen\-US\fP
+.IP \(bu 2
+\fBes\-ES\fP
+.IP \(bu 2
+\fBes\-MX\fP
+.IP \(bu 2
+\fBes\-US\fP
+.IP \(bu 2
+\fBfr\-CA\fP
+.IP \(bu 2
+\fBfr\-FR\fP
+.IP \(bu 2
+\fBis\-IS\fP
+.IP \(bu 2
+\fBit\-IT\fP
+.IP \(bu 2
+\fBja\-JP\fP
+.IP \(bu 2
+\fBhi\-IN\fP
+.IP \(bu 2
+\fBko\-KR\fP
+.IP \(bu 2
+\fBnb\-NO\fP
+.IP \(bu 2
+\fBnl\-NL\fP
+.IP \(bu 2
+\fBpl\-PL\fP
+.IP \(bu 2
+\fBpt\-BR\fP
+.IP \(bu 2
+\fBpt\-PT\fP
+.IP \(bu 2
+\fBro\-RO\fP
+.IP \(bu 2
+\fBru\-RU\fP
+.IP \(bu 2
+\fBsv\-SE\fP
+.IP \(bu 2
+\fBtr\-TR\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-lexicon\-names\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+List of one or more pronunciation lexicon names you want the service to apply during synthesis. Lexicons are applied only if the language of the lexicon is the same as the language of the voice. For information about storing lexicons, see \fI\%PutLexicon\fP .
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-output\-format\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The format in which the returned output will be encoded. For audio stream, this will be mp3, ogg_vorbis, or pcm. For speech marks, this will be json.
+.sp
+When pcm is used, the content returned is audio/pcm in a signed 16\-bit, 1 channel (mono), little\-endian format.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBjson\fP
+.IP \(bu 2
+\fBmp3\fP
+.IP \(bu 2
+\fBogg_vorbis\fP
+.IP \(bu 2
+\fBpcm\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-sample\-rate\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The audio frequency specified in Hz.
+.sp
+The valid values for mp3 and ogg_vorbis are "8000", "16000", "22050", and "24000". The default value for standard voices is "22050". The default value for neural voices is "24000".
+.sp
+Valid values for pcm are "8000" and "16000" The default value is "16000".
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-speech\-mark\-types\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The type of speech marks returned for the input text.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+
+Where valid values are:
+  sentence
+  ssml
+  viseme
+  word
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-text\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Input text to synthesize. If you specify \fBssml\fP as the \fBTextType\fP , follow the SSML format for the input text.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-text\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies whether the input text is plain text or SSML. The default value is plain text. For more information, see \fI\%Using SSML\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBssml\fP
+.IP \(bu 2
+\fBtext\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-voice\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Voice ID to use for the synthesis. You can get a list of available voice IDs by calling the \fI\%DescribeVoices\fP operation.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBAditi\fP
+.IP \(bu 2
+\fBAmy\fP
+.IP \(bu 2
+\fBAstrid\fP
+.IP \(bu 2
+\fBBianca\fP
+.IP \(bu 2
+\fBBrian\fP
+.IP \(bu 2
+\fBCamila\fP
+.IP \(bu 2
+\fBCarla\fP
+.IP \(bu 2
+\fBCarmen\fP
+.IP \(bu 2
+\fBCeline\fP
+.IP \(bu 2
+\fBChantal\fP
+.IP \(bu 2
+\fBConchita\fP
+.IP \(bu 2
+\fBCristiano\fP
+.IP \(bu 2
+\fBDora\fP
+.IP \(bu 2
+\fBEmma\fP
+.IP \(bu 2
+\fBEnrique\fP
+.IP \(bu 2
+\fBEwa\fP
+.IP \(bu 2
+\fBFiliz\fP
+.IP \(bu 2
+\fBGabrielle\fP
+.IP \(bu 2
+\fBGeraint\fP
+.IP \(bu 2
+\fBGiorgio\fP
+.IP \(bu 2
+\fBGwyneth\fP
+.IP \(bu 2
+\fBHans\fP
+.IP \(bu 2
+\fBInes\fP
+.IP \(bu 2
+\fBIvy\fP
+.IP \(bu 2
+\fBJacek\fP
+.IP \(bu 2
+\fBJan\fP
+.IP \(bu 2
+\fBJoanna\fP
+.IP \(bu 2
+\fBJoey\fP
+.IP \(bu 2
+\fBJustin\fP
+.IP \(bu 2
+\fBKarl\fP
+.IP \(bu 2
+\fBKendra\fP
+.IP \(bu 2
+\fBKevin\fP
+.IP \(bu 2
+\fBKimberly\fP
+.IP \(bu 2
+\fBLea\fP
+.IP \(bu 2
+\fBLiv\fP
+.IP \(bu 2
+\fBLotte\fP
+.IP \(bu 2
+\fBLucia\fP
+.IP \(bu 2
+\fBLupe\fP
+.IP \(bu 2
+\fBMads\fP
+.IP \(bu 2
+\fBMaja\fP
+.IP \(bu 2
+\fBMarlene\fP
+.IP \(bu 2
+\fBMathieu\fP
+.IP \(bu 2
+\fBMatthew\fP
+.IP \(bu 2
+\fBMaxim\fP
+.IP \(bu 2
+\fBMia\fP
+.IP \(bu 2
+\fBMiguel\fP
+.IP \(bu 2
+\fBMizuki\fP
+.IP \(bu 2
+\fBNaja\fP
+.IP \(bu 2
+\fBNicole\fP
+.IP \(bu 2
+\fBOlivia\fP
+.IP \(bu 2
+\fBPenelope\fP
+.IP \(bu 2
+\fBRaveena\fP
+.IP \(bu 2
+\fBRicardo\fP
+.IP \(bu 2
+\fBRuben\fP
+.IP \(bu 2
+\fBRussell\fP
+.IP \(bu 2
+\fBSalli\fP
+.IP \(bu 2
+\fBSeoyeon\fP
+.IP \(bu 2
+\fBTakumi\fP
+.IP \(bu 2
+\fBTatyana\fP
+.IP \(bu 2
+\fBVicki\fP
+.IP \(bu 2
+\fBVitoria\fP
+.IP \(bu 2
+\fBZeina\fP
+.IP \(bu 2
+\fBZhiyu\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fBoutfile\fP (string)
+Filename where the content will be saved
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+AudioStream \-> (blob)
+.INDENT 0.0
+.INDENT 3.5
+Stream containing the synthesized speech.
+.UNINDENT
+.UNINDENT
+.sp
+ContentType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Specifies the type audio stream. This should reflect the \fBOutputFormat\fP parameter in your request.
+.INDENT 0.0
+.IP \(bu 2
+If you request \fBmp3\fP as the \fBOutputFormat\fP , the \fBContentType\fP returned is audio/mpeg.
+.IP \(bu 2
+If you request \fBogg_vorbis\fP as the \fBOutputFormat\fP , the \fBContentType\fP returned is audio/ogg.
+.IP \(bu 2
+If you request \fBpcm\fP as the \fBOutputFormat\fP , the \fBContentType\fP returned is audio/pcm in a signed 16\-bit, 1 channel (mono), little\-endian format.
+.IP \(bu 2
+If you request \fBjson\fP as the \fBOutputFormat\fP , the \fBContentType\fP returned is audio/json.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+RequestCharacters \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Number of characters synthesized.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

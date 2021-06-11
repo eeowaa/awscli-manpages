@@ -1,0 +1,1346 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GAMELIFT-CREATE-FLEET" "a" "" ""
+.SH NAME
+gamelift-create-fleet \- Creates a fleet of Amazon Elastic Compute Cloud (Amazon EC2) instances to host your custom game server or Realtime Servers
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates a fleet of Amazon Elastic Compute Cloud (Amazon EC2) instances to host your custom game server or Realtime Servers. Use this operation to configure the computing resources for your fleet and provide instructions for running game servers on each instance.
+.sp
+Most GameLift fleets can deploy instances to multiple locations, including the home Region (where the fleet is created) and an optional set of remote locations. Fleets that are created in the following AWS Regions support multiple locations: us\-east\-1 (N. Virginia), us\-west\-2 (Oregon), eu\-central\-1 (Frankfurt), eu\-west\-1 (Ireland), ap\-southeast\-2 (Sydney), ap\-northeast\-1 (Tokyo), and ap\-northeast\-2 (Seoul). Fleets that are created in other GameLift Regions can deploy instances in the fleet\(aqs home Region only. All fleet instances use the same configuration regardless of location; however, you can adjust capacity settings and turn auto\-scaling on/off for each location.
+.sp
+To create a fleet, choose the hardware for your instances, specify a game server build or Realtime script to deploy, and provide a runtime configuration to direct GameLift how to start and run game servers on each instance in the fleet. Set permissions for inbound traffic to your game servers, and enable optional features as needed. When creating a multi\-location fleet, provide a list of additional remote locations.
+.sp
+If successful, this operation creates a new Fleet resource and places it in \fBNEW\fP status, which prompts GameLift to initiate the \fI\%fleet creation workflow\fP . You can track fleet creation by checking fleet status using  DescribeFleetAttributes and  DescribeFleetLocationAttributes /, or by monitoring fleet creation events using  DescribeFleetEvents . As soon as the fleet status changes to \fBACTIVE\fP , you can enable automatic scaling for the fleet with  PutScalingPolicy and set capacity for the home Region with  UpdateFleetCapacity . When the status of each remote location reaches \fBACTIVE\fP , you can set capacity by location using  UpdateFleetCapacity .
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Setting up fleets\fP
+.sp
+\fI\%Debug fleet creation issues\fP
+.sp
+\fI\%Multi\-location fleets\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateFleet |  UpdateFleetCapacity |  PutScalingPolicy |  DescribeEC2InstanceLimits |  DescribeFleetAttributes |  DescribeFleetLocationAttributes |  UpdateFleetAttributes |  StopFleetActions |  DeleteFleet | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-fleet
+\-\-name <value>
+[\-\-description <value>]
+[\-\-build\-id <value>]
+[\-\-script\-id <value>]
+[\-\-server\-launch\-path <value>]
+[\-\-server\-launch\-parameters <value>]
+[\-\-log\-paths <value>]
+\-\-ec2\-instance\-type <value>
+[\-\-ec2\-inbound\-permissions <value>]
+[\-\-new\-game\-session\-protection\-policy <value>]
+[\-\-runtime\-configuration <value>]
+[\-\-resource\-creation\-limit\-policy <value>]
+[\-\-metric\-groups <value>]
+[\-\-peer\-vpc\-aws\-account\-id <value>]
+[\-\-peer\-vpc\-id <value>]
+[\-\-fleet\-type <value>]
+[\-\-instance\-role\-arn <value>]
+[\-\-certificate\-configuration <value>]
+[\-\-locations <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with a fleet. Fleet names do not need to be unique.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-description\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A human\-readable description of the fleet.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-build\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for a custom game server build to be deployed on fleet instances. You can use either the build ID or ARN. The build must be uploaded to GameLift and in \fBREADY\fP status. This fleet property cannot be changed later.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-script\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The unique identifier for a Realtime configuration script to be deployed on fleet instances. You can use either the script ID or ARN. Scripts must be uploaded to GameLift prior to creating the fleet. This fleet property cannot be changed later.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-server\-launch\-path\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+\fBThis parameter is no longer used.\fP Specify a server launch path using the \fBRuntimeConfiguration\fP parameter. Requests that use this parameter instead continue to be valid.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-server\-launch\-parameters\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+\fBThis parameter is no longer used.\fP Specify server launch parameters using the \fBRuntimeConfiguration\fP parameter. Requests that use this parameter instead continue to be valid.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-log\-paths\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fBThis parameter is no longer used.\fP To specify where GameLift should store log files once a server process shuts down, use the GameLift server API \fBProcessReady()\fP and specify one or more directory paths in \fBlogParameters\fP . See more information in the \fI\%Server API Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ec2\-instance\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The GameLift\-supported EC2 instance type to use for all fleet instances. Instance type determines the computing resources that will be used to host your game servers, including CPU, memory, storage, and networking capacity. See \fI\%Amazon EC2 Instance Types\fP for detailed descriptions of EC2 instance types.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBt2.micro\fP
+.IP \(bu 2
+\fBt2.small\fP
+.IP \(bu 2
+\fBt2.medium\fP
+.IP \(bu 2
+\fBt2.large\fP
+.IP \(bu 2
+\fBc3.large\fP
+.IP \(bu 2
+\fBc3.xlarge\fP
+.IP \(bu 2
+\fBc3.2xlarge\fP
+.IP \(bu 2
+\fBc3.4xlarge\fP
+.IP \(bu 2
+\fBc3.8xlarge\fP
+.IP \(bu 2
+\fBc4.large\fP
+.IP \(bu 2
+\fBc4.xlarge\fP
+.IP \(bu 2
+\fBc4.2xlarge\fP
+.IP \(bu 2
+\fBc4.4xlarge\fP
+.IP \(bu 2
+\fBc4.8xlarge\fP
+.IP \(bu 2
+\fBc5.large\fP
+.IP \(bu 2
+\fBc5.xlarge\fP
+.IP \(bu 2
+\fBc5.2xlarge\fP
+.IP \(bu 2
+\fBc5.4xlarge\fP
+.IP \(bu 2
+\fBc5.9xlarge\fP
+.IP \(bu 2
+\fBc5.12xlarge\fP
+.IP \(bu 2
+\fBc5.18xlarge\fP
+.IP \(bu 2
+\fBc5.24xlarge\fP
+.IP \(bu 2
+\fBc5a.large\fP
+.IP \(bu 2
+\fBc5a.xlarge\fP
+.IP \(bu 2
+\fBc5a.2xlarge\fP
+.IP \(bu 2
+\fBc5a.4xlarge\fP
+.IP \(bu 2
+\fBc5a.8xlarge\fP
+.IP \(bu 2
+\fBc5a.12xlarge\fP
+.IP \(bu 2
+\fBc5a.16xlarge\fP
+.IP \(bu 2
+\fBc5a.24xlarge\fP
+.IP \(bu 2
+\fBr3.large\fP
+.IP \(bu 2
+\fBr3.xlarge\fP
+.IP \(bu 2
+\fBr3.2xlarge\fP
+.IP \(bu 2
+\fBr3.4xlarge\fP
+.IP \(bu 2
+\fBr3.8xlarge\fP
+.IP \(bu 2
+\fBr4.large\fP
+.IP \(bu 2
+\fBr4.xlarge\fP
+.IP \(bu 2
+\fBr4.2xlarge\fP
+.IP \(bu 2
+\fBr4.4xlarge\fP
+.IP \(bu 2
+\fBr4.8xlarge\fP
+.IP \(bu 2
+\fBr4.16xlarge\fP
+.IP \(bu 2
+\fBr5.large\fP
+.IP \(bu 2
+\fBr5.xlarge\fP
+.IP \(bu 2
+\fBr5.2xlarge\fP
+.IP \(bu 2
+\fBr5.4xlarge\fP
+.IP \(bu 2
+\fBr5.8xlarge\fP
+.IP \(bu 2
+\fBr5.12xlarge\fP
+.IP \(bu 2
+\fBr5.16xlarge\fP
+.IP \(bu 2
+\fBr5.24xlarge\fP
+.IP \(bu 2
+\fBr5a.large\fP
+.IP \(bu 2
+\fBr5a.xlarge\fP
+.IP \(bu 2
+\fBr5a.2xlarge\fP
+.IP \(bu 2
+\fBr5a.4xlarge\fP
+.IP \(bu 2
+\fBr5a.8xlarge\fP
+.IP \(bu 2
+\fBr5a.12xlarge\fP
+.IP \(bu 2
+\fBr5a.16xlarge\fP
+.IP \(bu 2
+\fBr5a.24xlarge\fP
+.IP \(bu 2
+\fBm3.medium\fP
+.IP \(bu 2
+\fBm3.large\fP
+.IP \(bu 2
+\fBm3.xlarge\fP
+.IP \(bu 2
+\fBm3.2xlarge\fP
+.IP \(bu 2
+\fBm4.large\fP
+.IP \(bu 2
+\fBm4.xlarge\fP
+.IP \(bu 2
+\fBm4.2xlarge\fP
+.IP \(bu 2
+\fBm4.4xlarge\fP
+.IP \(bu 2
+\fBm4.10xlarge\fP
+.IP \(bu 2
+\fBm5.large\fP
+.IP \(bu 2
+\fBm5.xlarge\fP
+.IP \(bu 2
+\fBm5.2xlarge\fP
+.IP \(bu 2
+\fBm5.4xlarge\fP
+.IP \(bu 2
+\fBm5.8xlarge\fP
+.IP \(bu 2
+\fBm5.12xlarge\fP
+.IP \(bu 2
+\fBm5.16xlarge\fP
+.IP \(bu 2
+\fBm5.24xlarge\fP
+.IP \(bu 2
+\fBm5a.large\fP
+.IP \(bu 2
+\fBm5a.xlarge\fP
+.IP \(bu 2
+\fBm5a.2xlarge\fP
+.IP \(bu 2
+\fBm5a.4xlarge\fP
+.IP \(bu 2
+\fBm5a.8xlarge\fP
+.IP \(bu 2
+\fBm5a.12xlarge\fP
+.IP \(bu 2
+\fBm5a.16xlarge\fP
+.IP \(bu 2
+\fBm5a.24xlarge\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-ec2\-inbound\-permissions\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The allowed IP address ranges and port settings that allow inbound traffic to access game sessions on this fleet. If the fleet is hosting a custom game build, this property must be set before players can connect to game sessions. For Realtime Servers fleets, GameLift automatically sets TCP and UDP ranges.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A range of IP addresses and port settings that allow inbound traffic to connect to server processes on an instance in a fleet. New game sessions are assigned an IP address/port number combination, which must fall into the fleet\(aqs allowed ranges. Fleets with custom game builds must have permissions explicitly set. For Realtime Servers fleets, GameLift automatically opens two port ranges, one for TCP messaging and one for UDP.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+DescribeFleetPortSettings
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+FromPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+A starting value for a range of allowed port numbers.
+.UNINDENT
+.UNINDENT
+.sp
+ToPort \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+An ending value for a range of allowed port numbers. Port numbers are end\-inclusive. This value must be higher than \fBFromPort\fP .
+.UNINDENT
+.UNINDENT
+.sp
+IpRange \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A range of allowed IP addresses. This value must be expressed in CIDR notation. Example: "\fB000.000.000.000/[subnet mask]\fP " or optionally the shortened version "\fB0.0.0.0/[subnet mask]\fP ".
+.UNINDENT
+.UNINDENT
+.sp
+Protocol \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The network communication protocol used by the fleet.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+FromPort=integer,ToPort=integer,IpRange=string,Protocol=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "FromPort": integer,
+    "ToPort": integer,
+    "IpRange": "string",
+    "Protocol": "TCP"|"UDP"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-new\-game\-session\-protection\-policy\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The status of termination protection for active game sessions on the fleet. By default, this property is set to \fBNoProtection\fP . You can also set game session protection for an individual game session by calling  UpdateGameSession .
+.INDENT 0.0
+.IP \(bu 2
+\fBNoProtection\fP \- Game sessions can be terminated during active gameplay as a result of a scale\-down event.
+.IP \(bu 2
+\fBFullProtection\fP \- Game sessions in \fBACTIVE\fP status cannot be terminated during a scale\-down event.
+.UNINDENT
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBNoProtection\fP
+.IP \(bu 2
+\fBFullProtection\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-runtime\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Instructions for how to launch and maintain server processes on instances in the fleet. The runtime configuration defines one or more server process configurations, each identifying a build executable or Realtime script file and the number of processes of that type to run concurrently.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBRuntimeConfiguration\fP parameter is required unless the fleet is being configured using the older parameters \fBServerLaunchPath\fP and \fBServerLaunchParameters\fP , which are still supported for backward compatibility.
+.UNINDENT
+.UNINDENT
+.sp
+ServerProcesses \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A collection of server process configurations that identify what server processes to run on each instance in a fleet.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A set of instructions for launching server processes on each instance in a fleet. Server processes run either an executable in a custom game build or a Realtime Servers script. Server process configurations are part of a fleet\(aqs  RuntimeConfiguration .
+.sp
+LaunchPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The location of a game build executable or the Realtime script file that contains the \fBInit()\fP function. Game builds and Realtime scripts are installed on instances at the root:
+.INDENT 0.0
+.IP \(bu 2
+Windows (custom game builds only): \fBC:\egame\fP . Example: "\fBC:\egame\eMyGame\eserver.exe\fP "
+.IP \(bu 2
+Linux: \fB/local/game\fP . Examples: "\fB/local/game/MyGame/server.exe\fP " or "\fB/local/game/MyRealtimeScript.js\fP "
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Parameters \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An optional list of parameters to pass to the server executable or Realtime script on launch.
+.UNINDENT
+.UNINDENT
+.sp
+ConcurrentExecutions \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of server processes using this configuration that run concurrently on each instance.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MaxConcurrentGameSessionActivations \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of game sessions in status \fBACTIVATING\fP to allow on an instance. This setting limits the instance resources that can be used for new game activations at any one time.
+.UNINDENT
+.UNINDENT
+.sp
+GameSessionActivationTimeoutSeconds \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum amount of time (in seconds) allowed to launch a new game session and have it report ready to host players. During this time, the game session is in status \fBACTIVATING\fP . If the game session does not become active before the timeout, it is ended and the game session status is changed to \fBTERMINATED\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+ServerProcesses=[{LaunchPath=string,Parameters=string,ConcurrentExecutions=integer},{LaunchPath=string,Parameters=string,ConcurrentExecutions=integer}],MaxConcurrentGameSessionActivations=integer,GameSessionActivationTimeoutSeconds=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "ServerProcesses": [
+    {
+      "LaunchPath": "string",
+      "Parameters": "string",
+      "ConcurrentExecutions": integer
+    }
+    ...
+  ],
+  "MaxConcurrentGameSessionActivations": integer,
+  "GameSessionActivationTimeoutSeconds": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-resource\-creation\-limit\-policy\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+A policy that limits the number of game sessions that an individual player can create on instances in this fleet within a specified span of time.
+.sp
+NewGameSessionsPerCreator \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of game sessions that an individual can create during the policy period.
+.UNINDENT
+.UNINDENT
+.sp
+PolicyPeriodInMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time span used in evaluating the resource creation limit policy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+NewGameSessionsPerCreator=integer,PolicyPeriodInMinutes=integer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "NewGameSessionsPerCreator": integer,
+  "PolicyPeriodInMinutes": integer
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-metric\-groups\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The name of an AWS CloudWatch metric group to add this fleet to. A metric group is used to aggregate the metrics for multiple fleets. You can specify an existing metric group name or set a new name to create a new metric group. A fleet can be included in only one metric group at a time.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+"string" "string" ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-peer\-vpc\-aws\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Used when peering your GameLift fleet with a VPC, the unique identifier for the AWS account that owns the VPC. You can find your account ID in the AWS Management Console under account settings.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-peer\-vpc\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for a VPC with resources to be accessed by your GameLift fleet. The VPC must be in the same Region as your fleet. To look up a VPC ID, use the \fI\%VPC Dashboard\fP in the AWS Management Console. Learn more about VPC peering in \fI\%VPC Peering with GameLift Fleets\fP .
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-fleet\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether to use On\-Demand or Spot instances for this fleet. By default, this property is set to \fBON_DEMAND\fP . Learn more about when to use \fI\%On\-Demand versus Spot Instances\fP . This property cannot be changed after the fleet is created.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBON_DEMAND\fP
+.IP \(bu 2
+\fBSPOT\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-role\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for an AWS IAM role that manages access to your AWS services. With an instance role ARN set, any application that runs on an instance in this fleet can assume the role, including install scripts, server processes, and daemons (background processes). Create a role or look up a role\(aqs ARN by using the \fI\%IAM dashboard\fP in the AWS Management Console. Learn more about using on\-box credentials for your game servers at \fI\%Access external resources from a game server\fP . This property cannot be changed after the fleet is created.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-certificate\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Prompts GameLift to generate a TLS/SSL certificate for the fleet. TLS certificates are used for encrypting traffic between game clients and the game servers that are running on GameLift. By default, the \fBCertificateConfiguration\fP is set to \fBDISABLED\fP . Learn more at \fI\%Securing Client/Server Communication\fP . This property cannot be changed after the fleet is created.
+.sp
+Note: This feature requires the AWS Certificate Manager (ACM) service, which is not available in all AWS regions. When working in a region that does not support this feature, a fleet creation request with certificate generation fails with a 4xx error.
+.sp
+CertificateType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a TLS/SSL certificate is generated for a fleet.
+.sp
+Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBGENERATED\fP \- Generate a TLS/SSL certificate for this fleet.
+.IP \(bu 2
+\fBDISABLED\fP \- (default) Do not generate a TLS/SSL certificate for this fleet.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CertificateType=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CertificateType": "DISABLED"|"GENERATED"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-locations\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A set of remote locations to deploy additional instances to and manage as part of the fleet. This parameter can only be used when creating fleets in AWS Regions that support multiple locations. You can add any GameLift\-supported AWS Region as a remote location, in the form of an AWS Region code such as \fBus\-west\-2\fP . To create a fleet with instances in the home Region only, omit this parameter.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A remote location where a multi\-location fleet can deploy EC2 instances for game hosting.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateFleet
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An AWS Region code, such as \fBus\-west\-2\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Location=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Location": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of labels to assign to the new fleet resource. Tags are developer\-defined key\-value pairs. Tagging AWS resources are useful for resource management, access management and cost allocation. For more information, see \fI\%Tagging AWS Resources\fP in the \fIAWS General Reference\fP . Once the fleet is created, you can use  TagResource ,  UntagResource , and  ListTagsForResource to add, remove, and view tags. The maximum tag limit may be lower than stated. See the \fIAWS General Reference\fP for actual tagging limits.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A label that can be assigned to a GameLift resource.
+.INDENT 0.0
+.INDENT 3.5
+\fBLearn more\fP
+.sp
+\fI\%Tagging AWS Resources\fP in the \fIAWS General Reference\fP
+.sp
+\fI\%AWS Tagging Strategies\fP
+.sp
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+TagResource |  UntagResource |  ListTagsForResource | \fI\%All APIs by task\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The key for a developer\-defined key:value pair for tagging an AWS resource.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value for a developer\-defined key:value pair for tagging an AWS resource.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBExample 1: To create a basic Linux fleet\fP
+.sp
+The following \fBcreate\-fleet\fP example creates a minimally configured fleet of on\-demand Linux instances to host a custom server build. You can complete the configuration by using \fBupdate\-fleet\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-fleet \e
+    \-\-name MegaFrogRaceServer.NA.v2 \e
+    \-\-description \(aqHosts for v2 North America\(aq \e
+    \-\-build\-id build\-1111aaaa\-22bb\-33cc\-44dd\-5555eeee66ff \e
+    \-\-certificate\-configuration \(aqCertificateType=GENERATED\(aq \e
+    \-\-ec2\-instance\-type c4.large \e
+    \-\-fleet\-type ON_DEMAND \e
+    \-\-runtime\-configuration \(aqServerProcesses=[{LaunchPath=/local/game/release\-na/MegaFrogRace_Server.exe,ConcurrentExecutions=1}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "FleetAttributes": {
+        "BuildId": "build\-1111aaaa\-22bb\-33cc\-44dd\-5555eeee66ff",
+        "CertificateConfiguration": {
+            "CertificateType": "GENERATED"
+        },
+        "CreationTime": 1496365885.44,
+        "Description": "Hosts for v2 North America",
+        "FleetArn": "arn:aws:gamelift:us\-west\-2:444455556666:fleet/fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "FleetId": "fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "FleetType": "ON_DEMAND",
+        "InstanceType": "c4.large",
+        "MetricGroups": ["default"],
+        "Name": "MegaFrogRace.NA.v2",
+        "NewGameSessionProtectionPolicy": "NoProtection",
+        "OperatingSystem": "AMAZON_LINUX",
+        "ServerLaunchPath": "/local/game/release\-na/MegaFrogRace_Server.exe",
+        "Status": "NEW"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 2: To create a basic Windows fleet\fP
+.sp
+The following \fBcreate\-fleet\fP example creates a minimally configured fleet of spot Windows instances to host a custom server build. You can complete the configuration by using \fBupdate\-fleet\fP\&.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-fleet \e
+    \-\-name MegaFrogRace.NA.v2 \e
+    \-\-description \(aqHosts for v2 North America\(aq \e
+    \-\-build\-id build\-2222aaaa\-33bb\-44cc\-55dd\-6666eeee77ff  \e
+    \-\-certificate\-configuration \(aqCertificateType=GENERATED\(aq \e
+    \-\-ec2\-instance\-type c4.large \e
+    \-\-fleet\-type SPOT \e
+    \-\-runtime\-configuration \(aqServerProcesses=[{LaunchPath=C:\egame\eBin64.Release.Dedicated\eMegaFrogRace_Server.exe,ConcurrentExecutions=1}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "FleetAttributes": {
+        "BuildId": "build\-2222aaaa\-33bb\-44cc\-55dd\-6666eeee77ff",
+        "CertificateConfiguration": {
+            "CertificateType": "GENERATED"
+        },
+        "CreationTime": 1496365885.44,
+        "Description": "Hosts for v2 North America",
+        "FleetArn": "arn:aws:gamelift:us\-west\-2:444455556666:fleet/fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "FleetId": "fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "FleetType": "SPOT",
+        "InstanceType": "c4.large",
+        "MetricGroups": ["default"],
+        "Name": "MegaFrogRace.NA.v2",
+        "NewGameSessionProtectionPolicy": "NoProtection",
+        "OperatingSystem": "WINDOWS_2012",
+        "ServerLaunchPath": "C:\egame\eBin64.Release.Dedicated\eMegaFrogRace_Server.exe",
+        "Status": "NEW"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 3: To create a fully configured fleet\fP
+.sp
+The following \fBcreate\-fleet\fP example creates a fleet of Spot Windows instances for a custom server build, with most commonly used configuration settings provided.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-fleet \e
+    \-\-name MegaFrogRace.NA.v2 \e
+    \-\-description \(aqHosts for v2 North America\(aq \e
+    \-\-build\-id build\-2222aaaa\-33bb\-44cc\-55dd\-6666eeee77ff \e
+    \-\-certificate\-configuration \(aqCertificateType=GENERATED\(aq \e
+    \-\-ec2\-instance\-type c4.large \e
+    \-\-ec2\-inbound\-permissions \(aqFromPort=33435,ToPort=33435,IpRange=10.24.34.0/23,Protocol=UDP\(aq \e
+    \-\-fleet\-type SPOT \e
+    \-\-new\-game\-session\-protection\-policy FullProtection \e
+    \-\-runtime\-configuration file://runtime\-config.json \e
+    \-\-metric\-groups default \e
+    \-\-instance\-role\-arn \(aqarn:aws:iam::444455556666:role/GameLiftS3Access\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Contents of \fBruntime\-config.json\fP:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+GameSessionActivationTimeoutSeconds=300,
+ MaxConcurrentGameSessionActivations=2,
+ ServerProcesses=[
+   {LaunchPath=C:\egame\eBin64.Release.Dedicated\eMegaFrogRace_Server.exe,Parameters=\-debug,ConcurrentExecutions=1},
+   {LaunchPath=C:\egame\eBin64.Release.Dedicated\eMegaFrogRace_Server.exe,ConcurrentExecutions=1}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "FleetAttributes": {
+        "InstanceRoleArn": "arn:aws:iam::444455556666:role/GameLiftS3Access",
+        "Status": "NEW",
+        "InstanceType": "c4.large",
+        "FleetArn": "arn:aws:gamelift:us\-west\-2:444455556666:fleet/fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "FleetId": "fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "Description": "Hosts for v2 North America",
+        "FleetType": "SPOT",
+        "OperatingSystem": "WINDOWS_2012",
+        "Name": "MegaFrogRace.NA.v2",
+        "CreationTime": 1569309011.11,
+        "MetricGroups": [
+            "default"
+        ],
+        "BuildId": "build\-2222aaaa\-33bb\-44cc\-55dd\-6666eeee77ff",
+        "ServerLaunchParameters": "abc",
+        "ServerLaunchPath": "C:\e\egame\e\eBin64.Release.Dedicated\e\eMegaFrogRace_Server.exe",
+        "NewGameSessionProtectionPolicy": "FullProtection",
+        "CertificateConfiguration": {
+            "CertificateType": "GENERATED"
+        }
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBExample 4: To create a Realtime Servers fleet\fP
+.sp
+The following \fBcreate\-fleet\fP example creates a fleet of Spot instances with a Realtime configuration script that has been uploaded to Amazon GameLift. All Realtime servers are deployed onto Linux machines. For the purposes of this example, assume that the uploaded Realtime script includes multiple script files, with the \fBInit()\fP function located in the script file called \fBMainScript.js\fP\&. As shown, this file is identified as the launch script in the runtime configuration.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws gamelift create\-fleet \e
+    \-\-name MegaFrogRace.NA.realtime \e
+    \-\-description \(aqMega Frog Race Realtime fleet\(aq \e
+    \-\-script\-id script\-1111aaaa\-22bb\-33cc\-44dd\-5555eeee66ff \e
+    \-\-ec2\-instance\-type c4.large \e
+    \-\-fleet\-type SPOT \e
+    \-\-certificate\-configuration \(aqCertificateType=GENERATED\(aq \-\-runtime\-configuration \(aqServerProcesses=[{LaunchPath=/local/game/MainScript.js,Parameters=+map Winter444,ConcurrentExecutions=5}]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "FleetAttributes": {
+        "FleetId": "fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "Status": "NEW",
+        "CreationTime": 1569310745.212,
+        "InstanceType": "c4.large",
+        "NewGameSessionProtectionPolicy": "NoProtection",
+        "CertificateConfiguration": {
+            "CertificateType": "GENERATED"
+        },
+        "Name": "MegaFrogRace.NA.realtime",
+        "ScriptId": "script\-1111aaaa\-22bb\-33cc\-44dd\-5555eeee66ff",
+        "FleetArn": "arn:aws:gamelift:us\-west\-2:444455556666:fleet/fleet\-2222bbbb\-33cc\-44dd\-55ee\-6666ffff77aa",
+        "FleetType": "SPOT",
+        "MetricGroups": [
+            "default"
+        ],
+        "Description": "Mega Frog Race Realtime fleet",
+        "OperatingSystem": "AMAZON_LINUX"
+    }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+FleetAttributes \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The properties for the new fleet, including the current status. All fleets are placed in \fBNEW\fP status on creation.
+.sp
+FleetId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the fleet.
+.UNINDENT
+.UNINDENT
+.sp
+FleetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) that is assigned to a GameLift fleet resource and uniquely identifies it. ARNs are unique across all Regions. Format is \fBarn:aws:gamelift:<region>::fleet/fleet\-a1234567\-b8c9\-0d1e\-2fa3\-b45c6d7e8912\fP . In a GameLift fleet ARN, the resource ID matches the \fBFleetId\fP value.
+.UNINDENT
+.UNINDENT
+.sp
+FleetType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The kind of instances, On\-Demand or Spot, that this fleet uses.
+.UNINDENT
+.UNINDENT
+.sp
+InstanceType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The EC2 instance type that determines the computing resources of each instance in the fleet. Instance type defines the CPU, memory, storage, and networking capacity. See \fI\%Amazon EC2 Instance Types\fP for detailed descriptions.
+.UNINDENT
+.UNINDENT
+.sp
+Description \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A human\-readable description of the fleet.
+.UNINDENT
+.UNINDENT
+.sp
+Name \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A descriptive label that is associated with a fleet. Fleet names do not need to be unique.
+.UNINDENT
+.UNINDENT
+.sp
+CreationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A time stamp indicating when this data object was created. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+TerminationTime \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+A time stamp indicating when this data object was terminated. Format is a number expressed in Unix time as milliseconds (for example \fB"1469498468.057"\fP ).
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Current status of the fleet. Possible fleet statuses include the following:
+.INDENT 0.0
+.IP \(bu 2
+\fBNEW\fP \-\- A new fleet has been defined and desired instances is set to 1.
+.IP \(bu 2
+\fBDOWNLOADING/VALIDATING/BUILDING/ACTIVATING\fP \-\- GameLift is setting up the new fleet, creating new instances with the game build or Realtime script and starting server processes.
+.IP \(bu 2
+\fBACTIVE\fP \-\- Hosts can now accept game sessions.
+.IP \(bu 2
+\fBERROR\fP \-\- An error occurred when downloading, validating, building, or activating the fleet.
+.IP \(bu 2
+\fBDELETING\fP \-\- Hosts are responding to a delete fleet request.
+.IP \(bu 2
+\fBTERMINATED\fP \-\- The fleet no longer exists.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+BuildId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the build resource that is deployed on instances in this fleet.
+.UNINDENT
+.UNINDENT
+.sp
+BuildArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) associated with the GameLift build resource that is deployed on instances in this fleet. In a GameLift build ARN, the resource ID matches the \fBBuildId\fP value.
+.UNINDENT
+.UNINDENT
+.sp
+ScriptId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the Realtime script resource that is deployed on instances in this fleet.
+.UNINDENT
+.UNINDENT
+.sp
+ScriptArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (\fI\%ARN\fP ) associated with the GameLift script resource that is deployed on instances in this fleet. In a GameLift script ARN, the resource ID matches the \fBScriptId\fP value.
+.UNINDENT
+.UNINDENT
+.sp
+ServerLaunchPath \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+\fBThis parameter is no longer used.\fP Server launch paths are now defined using the fleet\(aqs  RuntimeConfiguration parameter. Requests that use this parameter instead continue to be valid.
+.UNINDENT
+.UNINDENT
+.sp
+ServerLaunchParameters \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+\fBThis parameter is no longer used.\fP Server launch parameters are now defined using the fleet\(aqs  RuntimeConfiguration parameter. Requests that use this parameter instead continue to be valid.
+.UNINDENT
+.UNINDENT
+.sp
+LogPaths \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.INDENT 3.5
+\fBThis parameter is no longer used.\fP Game session log paths are now defined using the GameLift server API \fBProcessReady()\fP  \fBlogParameters\fP . See more information in the \fI\%Server API Reference\fP .
+.UNINDENT
+.UNINDENT
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+NewGameSessionProtectionPolicy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of game session protection to set on all new instances that are started in the fleet.
+.INDENT 0.0
+.IP \(bu 2
+\fBNoProtection\fP \-\- The game session can be terminated during a scale\-down event.
+.IP \(bu 2
+\fBFullProtection\fP \-\- If the game session is in an \fBACTIVE\fP status, it cannot be terminated during a scale\-down event.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+OperatingSystem \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The operating system of the fleet\(aqs computing resources. A fleet\(aqs operating system is determined by the OS of the build or script that is deployed on this fleet.
+.UNINDENT
+.UNINDENT
+.sp
+ResourceCreationLimitPolicy \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+The fleet policy that limits the number of game sessions an individual player can create over a span of time.
+.sp
+NewGameSessionsPerCreator \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of game sessions that an individual can create during the policy period.
+.UNINDENT
+.UNINDENT
+.sp
+PolicyPeriodInMinutes \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The time span used in evaluating the resource creation limit policy.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+MetricGroups \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Name of a metric group that metrics for this fleet are added to. In Amazon CloudWatch, you can view aggregated metrics for fleets that are in a metric group. A fleet can be included in only one metric group at a time.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+StoppedActions \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+A list of fleet activity that has been suspended using  StopFleetActions . This includes fleet auto\-scaling.
+.sp
+(string)
+.UNINDENT
+.UNINDENT
+.sp
+InstanceRoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for an AWS IAM role that manages access to your AWS services. With an instance role ARN set, any application that runs on an instance in this fleet can assume the role, including install scripts, server processes, and daemons (background processes). Create a role or look up a role\(aqs ARN by using the \fI\%IAM dashboard\fP in the AWS Management Console. Learn more about using on\-box credentials for your game servers at \fI\%Access external resources from a game server\fP .
+.UNINDENT
+.UNINDENT
+.sp
+CertificateConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a TLS/SSL certificate was generated for the fleet.
+.sp
+CertificateType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Indicates whether a TLS/SSL certificate is generated for a fleet.
+.sp
+Valid values include:
+.INDENT 0.0
+.IP \(bu 2
+\fBGENERATED\fP \- Generate a TLS/SSL certificate for this fleet.
+.IP \(bu 2
+\fBDISABLED\fP \- (default) Do not generate a TLS/SSL certificate for this fleet.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LocationStates \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The fleet\(aqs locations and life\-cycle status of each location. For new fleets, the status of all locations is set to \fBNEW\fP . During fleet creation, GameLift updates each location status as instances are deployed there and prepared for game hosting. This list includes an entry for the fleet\(aqs home Region. For fleets with no remote locations, only one entry, representing the home Region, is returned.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+A fleet location and its life\-cycle state. A location state object might be used to describe a fleet\(aqs remote location or home Region. Life\-cycle state tracks the progress of launching the first instance in a new location and preparing it for game hosting, and then removing all instances and deleting the location from the fleet.
+.INDENT 0.0
+.INDENT 3.5
+\fBRelated actions\fP
+.INDENT 0.0
+.INDENT 3.5
+CreateFleet |  CreateFleetLocations |  DeleteFleetLocations
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Location \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The fleet location, expressed as an AWS Region code such as \fBus\-west\-2\fP .
+.UNINDENT
+.UNINDENT
+.sp
+Status \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The life\-cycle status of a fleet location.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

@@ -1,0 +1,295 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ELBV2-MODIFY-TARGET-GROUP-ATTRIBUTES" "a" "" ""
+.SH NAME
+elbv2-modify-target-group-attributes \- Modifies the specified attributes of the specified target group
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Modifies the specified attributes of the specified target group.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  modify\-target\-group\-attributes
+\-\-target\-group\-arn <value>
+\-\-attributes <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-target\-group\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the target group.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-attributes\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The attributes.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a target group attribute.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attribute.
+.sp
+The following attribute is supported by all load balancers:
+.INDENT 0.0
+.IP \(bu 2
+\fBderegistration_delay.timeout_seconds\fP \- The amount of time, in seconds, for Elastic Load Balancing to wait before changing the state of a deregistering target from \fBdraining\fP to \fBunused\fP . The range is 0\-3600 seconds. The default value is 300 seconds. If the target is a Lambda function, this attribute is not supported.
+.UNINDENT
+.sp
+The following attributes are supported by both Application Load Balancers and Network Load Balancers:
+.INDENT 0.0
+.IP \(bu 2
+\fBstickiness.enabled\fP \- Indicates whether sticky sessions are enabled. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP .
+.IP \(bu 2
+\fBstickiness.type\fP \- The type of sticky sessions. The possible values are \fBlb_cookie\fP and \fBapp_cookie\fP for Application Load Balancers or \fBsource_ip\fP for Network Load Balancers.
+.UNINDENT
+.sp
+The following attributes are supported only if the load balancer is an Application Load Balancer and the target is an instance or an IP address:
+.INDENT 0.0
+.IP \(bu 2
+\fBload_balancing.algorithm.type\fP \- The load balancing algorithm determines how the load balancer selects targets when routing requests. The value is \fBround_robin\fP or \fBleast_outstanding_requests\fP . The default is \fBround_robin\fP .
+.IP \(bu 2
+\fBslow_start.duration_seconds\fP \- The time period, in seconds, during which a newly registered target receives an increasing share of the traffic to the target group. After this time period ends, the target receives its full share of traffic. The range is 30\-900 seconds (15 minutes). The default is 0 seconds (disabled).
+.IP \(bu 2
+\fBstickiness.app_cookie.cookie_name\fP \- Indicates the name of the application\-based cookie. Names that start with the following names are not allowed: \fBAWSALB\fP , \fBAWSALBAPP\fP , and \fBAWSALBTG\fP . They\(aqre reserved for use by the load balancer.
+.IP \(bu 2
+\fBstickiness.app_cookie.duration_seconds\fP \- The time period, in seconds, during which requests from a client should be routed to the same target. After this time period expires, the application\-based cookie is considered stale. The range is 1 second to 1 week (604800 seconds). The default value is 1 day (86400 seconds).
+.IP \(bu 2
+\fBstickiness.lb_cookie.duration_seconds\fP \- The time period, in seconds, during which requests from a client should be routed to the same target. After this time period expires, the load balancer\-generated cookie is considered stale. The range is 1 second to 1 week (604800 seconds). The default value is 1 day (86400 seconds).
+.UNINDENT
+.sp
+The following attribute is supported only if the load balancer is an Application Load Balancer and the target is a Lambda function:
+.INDENT 0.0
+.IP \(bu 2
+\fBlambda.multi_value_headers.enabled\fP \- Indicates whether the request and response headers that are exchanged between the load balancer and the Lambda function include arrays of values or strings. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP . If the value is \fBfalse\fP and the request contains a duplicate header field name or query parameter key, the load balancer uses the last value sent by the client.
+.UNINDENT
+.sp
+The following attributes are supported only by Network Load Balancers:
+.INDENT 0.0
+.IP \(bu 2
+\fBderegistration_delay.connection_termination.enabled\fP \- Indicates whether the load balancer terminates connections at the end of the deregistration timeout. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP .
+.IP \(bu 2
+\fBpreserve_client_ip.enabled\fP \- Indicates whether client IP preservation is enabled. The value is \fBtrue\fP or \fBfalse\fP . The default is disabled if the target group type is IP address and the target group protocol is TCP or TLS. Otherwise, the default is enabled. Client IP preservation cannot be disabled for UDP and TCP_UDP target groups.
+.IP \(bu 2
+\fBproxy_protocol_v2.enabled\fP \- Indicates whether Proxy Protocol version 2 is enabled. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the attribute.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo modify the deregistration delay timeout\fP
+.sp
+This example sets the deregistration delay timeout to the specified value for the specified target group.
+.sp
+Command:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws elbv2 modify\-target\-group\-attributes \-\-target\-group\-arn arn:aws:elasticloadbalancing:us\-west\-2:123456789012:targetgroup/my\-targets/73e2d6bc24d8a067 \-\-attributes Key=deregistration_delay.timeout_seconds,Value=600
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Attributes": [
+      {
+          "Value": "false",
+          "Key": "stickiness.enabled"
+      },
+      {
+          "Value": "600",
+          "Key": "deregistration_delay.timeout_seconds"
+      },
+      {
+          "Value": "lb_cookie",
+          "Key": "stickiness.type"
+      },
+      {
+          "Value": "86400",
+          "Key": "stickiness.lb_cookie.duration_seconds"
+      }
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+Attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about the attributes.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Information about a target group attribute.
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the attribute.
+.sp
+The following attribute is supported by all load balancers:
+.INDENT 0.0
+.IP \(bu 2
+\fBderegistration_delay.timeout_seconds\fP \- The amount of time, in seconds, for Elastic Load Balancing to wait before changing the state of a deregistering target from \fBdraining\fP to \fBunused\fP . The range is 0\-3600 seconds. The default value is 300 seconds. If the target is a Lambda function, this attribute is not supported.
+.UNINDENT
+.sp
+The following attributes are supported by both Application Load Balancers and Network Load Balancers:
+.INDENT 0.0
+.IP \(bu 2
+\fBstickiness.enabled\fP \- Indicates whether sticky sessions are enabled. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP .
+.IP \(bu 2
+\fBstickiness.type\fP \- The type of sticky sessions. The possible values are \fBlb_cookie\fP and \fBapp_cookie\fP for Application Load Balancers or \fBsource_ip\fP for Network Load Balancers.
+.UNINDENT
+.sp
+The following attributes are supported only if the load balancer is an Application Load Balancer and the target is an instance or an IP address:
+.INDENT 0.0
+.IP \(bu 2
+\fBload_balancing.algorithm.type\fP \- The load balancing algorithm determines how the load balancer selects targets when routing requests. The value is \fBround_robin\fP or \fBleast_outstanding_requests\fP . The default is \fBround_robin\fP .
+.IP \(bu 2
+\fBslow_start.duration_seconds\fP \- The time period, in seconds, during which a newly registered target receives an increasing share of the traffic to the target group. After this time period ends, the target receives its full share of traffic. The range is 30\-900 seconds (15 minutes). The default is 0 seconds (disabled).
+.IP \(bu 2
+\fBstickiness.app_cookie.cookie_name\fP \- Indicates the name of the application\-based cookie. Names that start with the following names are not allowed: \fBAWSALB\fP , \fBAWSALBAPP\fP , and \fBAWSALBTG\fP . They\(aqre reserved for use by the load balancer.
+.IP \(bu 2
+\fBstickiness.app_cookie.duration_seconds\fP \- The time period, in seconds, during which requests from a client should be routed to the same target. After this time period expires, the application\-based cookie is considered stale. The range is 1 second to 1 week (604800 seconds). The default value is 1 day (86400 seconds).
+.IP \(bu 2
+\fBstickiness.lb_cookie.duration_seconds\fP \- The time period, in seconds, during which requests from a client should be routed to the same target. After this time period expires, the load balancer\-generated cookie is considered stale. The range is 1 second to 1 week (604800 seconds). The default value is 1 day (86400 seconds).
+.UNINDENT
+.sp
+The following attribute is supported only if the load balancer is an Application Load Balancer and the target is a Lambda function:
+.INDENT 0.0
+.IP \(bu 2
+\fBlambda.multi_value_headers.enabled\fP \- Indicates whether the request and response headers that are exchanged between the load balancer and the Lambda function include arrays of values or strings. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP . If the value is \fBfalse\fP and the request contains a duplicate header field name or query parameter key, the load balancer uses the last value sent by the client.
+.UNINDENT
+.sp
+The following attributes are supported only by Network Load Balancers:
+.INDENT 0.0
+.IP \(bu 2
+\fBderegistration_delay.connection_termination.enabled\fP \- Indicates whether the load balancer terminates connections at the end of the deregistration timeout. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP .
+.IP \(bu 2
+\fBpreserve_client_ip.enabled\fP \- Indicates whether client IP preservation is enabled. The value is \fBtrue\fP or \fBfalse\fP . The default is disabled if the target group type is IP address and the target group protocol is TCP or TLS. Otherwise, the default is enabled. Client IP preservation cannot be disabled for UDP and TCP_UDP target groups.
+.IP \(bu 2
+\fBproxy_protocol_v2.enabled\fP \- Indicates whether Proxy Protocol version 2 is enabled. The value is \fBtrue\fP or \fBfalse\fP . The default is \fBfalse\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The value of the attribute.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

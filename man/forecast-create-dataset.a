@@ -1,0 +1,388 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "FORECAST-CREATE-DATASET" "a" "" ""
+.SH NAME
+forecast-create-dataset \- Creates an Amazon Forecast dataset
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Creates an Amazon Forecast dataset. The information about the dataset that you provide helps Forecast understand how to consume the data for model training. This includes the following:
+.INDENT 0.0
+.IP \(bu 2
+
+.nf
+*
+.fi
+\fBDataFrequency\fP * \- How frequently your historical time\-series data is collected.
+.IP "System Message: WARNING/2 (<string>:, line 23)"
+Inline emphasis start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+*
+.fi
+\fBDomain\fP * and * \fBDatasetType\fP * \- Each dataset has an associated dataset domain and a type within the domain. Amazon Forecast provides a list of predefined domains and types within each domain. For each unique dataset domain and type within the domain, Amazon Forecast requires your data to include a minimum set of predefined fields.
+.IP "System Message: WARNING/2 (<string>:, line 25)"
+Inline emphasis start\-string without end\-string.
+.IP \(bu 2
+
+.nf
+*
+.fi
+\fBSchema\fP * \- A schema specifies the fields in the dataset, including the field name and data type.
+.IP "System Message: WARNING/2 (<string>:, line 27)"
+Inline emphasis start\-string without end\-string.
+.UNINDENT
+.sp
+After creating a dataset, you import your training data into it and add the dataset to a dataset group. You use the dataset group to create a predictor. For more information, see  howitworks\-datasets\-groups .
+.sp
+To get a list of all your datasets, use the  ListDatasets operation.
+.sp
+For example Forecast datasets, see the \fI\%Amazon Forecast Sample GitHub repository\fP .
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The \fBStatus\fP of a dataset must be \fBACTIVE\fP before you can import training data. Use the  DescribeDataset operation to get the status.
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  create\-dataset
+\-\-dataset\-name <value>
+\-\-domain <value>
+\-\-dataset\-type <value>
+[\-\-data\-frequency <value>]
+\-\-schema <value>
+[\-\-encryption\-config <value>]
+[\-\-tags <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-dataset\-name\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+A name for the dataset.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-domain\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The domain associated with the dataset. When you add a dataset to a dataset group, this value and the value specified for the \fBDomain\fP parameter of the  CreateDatasetGroup operation must match.
+.sp
+The \fBDomain\fP and \fBDatasetType\fP that you choose determine the fields that must be present in the training data that you import to the dataset. For example, if you choose the \fBRETAIL\fP domain and \fBTARGET_TIME_SERIES\fP as the \fBDatasetType\fP , Amazon Forecast requires \fBitem_id\fP , \fBtimestamp\fP , and \fBdemand\fP fields to be present in your data. For more information, see  howitworks\-datasets\-groups .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBRETAIL\fP
+.IP \(bu 2
+\fBCUSTOM\fP
+.IP \(bu 2
+\fBINVENTORY_PLANNING\fP
+.IP \(bu 2
+\fBEC2_CAPACITY\fP
+.IP \(bu 2
+\fBWORK_FORCE\fP
+.IP \(bu 2
+\fBWEB_TRAFFIC\fP
+.IP \(bu 2
+\fBMETRICS\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-dataset\-type\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The dataset type. Valid values depend on the chosen \fBDomain\fP .
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBTARGET_TIME_SERIES\fP
+.IP \(bu 2
+\fBRELATED_TIME_SERIES\fP
+.IP \(bu 2
+\fBITEM_METADATA\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-data\-frequency\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The frequency of data collection. This parameter is required for RELATED_TIME_SERIES datasets.
+.sp
+Valid intervals are Y (Year), M (Month), W (Week), D (Day), H (Hour), 30min (30 minutes), 15min (15 minutes), 10min (10 minutes), 5min (5 minutes), and 1min (1 minute). For example, "D" indicates every day and "15min" indicates every 15 minutes.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-schema\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The schema for the dataset. The schema attributes and their order must match the fields in your data. The dataset \fBDomain\fP and \fBDatasetType\fP that you choose determine the minimum required fields in your training data. For information about the required fields for a specific dataset domain and type, see  howitworks\-domains\-ds\-types .
+.sp
+Attributes \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+An array of attributes specifying the name and type of each field in a dataset.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+An attribute of a schema, which defines a dataset field. A schema attribute is required for every field in a dataset. The  Schema object contains an array of \fBSchemaAttribute\fP objects.
+.sp
+AttributeName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the dataset field.
+.UNINDENT
+.UNINDENT
+.sp
+AttributeType \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The data type of the field.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Attributes=[{AttributeName=string,AttributeType=string},{AttributeName=string,AttributeType=string}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Attributes": [
+    {
+      "AttributeName": "string",
+      "AttributeType": "string"|"integer"|"float"|"timestamp"|"geolocation"
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-encryption\-config\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+An AWS Key Management Service (KMS) key and the AWS Identity and Access Management (IAM) role that Amazon Forecast can assume to access the key.
+.sp
+RoleArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The ARN of the IAM role that Amazon Forecast can assume to access the AWS KMS key.
+.sp
+Passing a role across AWS accounts is not allowed. If you pass a role that isn\(aqt in your account, you get an \fBInvalidInputException\fP error.
+.UNINDENT
+.UNINDENT
+.sp
+KMSKeyArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the KMS key.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+RoleArn=string,KMSKeyArn=string
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "RoleArn": "string",
+  "KMSKeyArn": "string"
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-tags\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+The optional metadata that you apply to the dataset to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50.
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8.
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8.
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for keys as it is reserved for AWS use. You cannot edit or delete tag keys with this prefix. Values can have this prefix. If a tag value has \fBaws\fP as its prefix but the key does not, then Forecast considers it to be a user tag and will count against the limit of 50 tags. Tags with only the key prefix of \fBaws\fP do not count against your tags per resource limit.
+.UNINDENT
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+The optional metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define.
+.sp
+The following basic restrictions apply to tags:
+.INDENT 0.0
+.IP \(bu 2
+Maximum number of tags per resource \- 50.
+.IP \(bu 2
+For each resource, each tag key must be unique, and each tag key can have only one value.
+.IP \(bu 2
+Maximum key length \- 128 Unicode characters in UTF\-8.
+.IP \(bu 2
+Maximum value length \- 256 Unicode characters in UTF\-8.
+.IP \(bu 2
+If your tagging schema is used across multiple services and resources, remember that other services may have restrictions on allowed characters. Generally allowed characters are: letters, numbers, and spaces representable in UTF\-8, and the following characters: + \- = . _ : / @.
+.IP \(bu 2
+Tag keys and values are case sensitive.
+.IP \(bu 2
+Do not use \fBaws:\fP , \fBAWS:\fP , or any upper or lowercase combination of such as a prefix for keys as it is reserved for AWS use. You cannot edit or delete tag keys with this prefix. Values can have this prefix. If a tag value has \fBaws\fP as its prefix but the key does not, then Forecast considers it to be a user tag and will count against the limit of 50 tags. Tags with only the key prefix of \fBaws\fP do not count against your tags per resource limit.
+.UNINDENT
+.sp
+Key \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+One part of a key\-value pair that makes up a tag. A \fBkey\fP is a general label that acts like a category for more specific tag values.
+.UNINDENT
+.UNINDENT
+.sp
+Value \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The optional part of a key\-value pair that makes up a tag. A \fBvalue\fP acts as a descriptor within a tag category (key).
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Key=string,Value=string ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "Key": "string",
+    "Value": "string"
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+DatasetArn \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The Amazon Resource Name (ARN) of the dataset.
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

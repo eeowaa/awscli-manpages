@@ -1,0 +1,224 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "ACM-PCA-UPDATE-CERTIFICATE-AUTHORITY" "a" "" ""
+.SH NAME
+acm-pca-update-certificate-authority \- Updates the status or configuration of a private certificate authority (CA)
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Updates the status or configuration of a private certificate authority (CA). Your private CA must be in the \fBACTIVE\fP or \fBDISABLED\fP state before you can update it. You can disable a private CA that is in the \fBACTIVE\fP state or make a CA that is in the \fBDISABLED\fP state active again.
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+Both PCA and the IAM principal must have permission to write to the S3 bucket that you specify. If the IAM principal making the call does not have permission to write to the bucket, then an exception is thrown. For more information, see \fI\%Configure Access to ACM Private CA\fP .
+.UNINDENT
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  update\-certificate\-authority
+\-\-certificate\-authority\-arn <value>
+[\-\-revocation\-configuration <value>]
+[\-\-status <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-certificate\-authority\-arn\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Amazon Resource Name (ARN) of the private CA that issued the certificate to be revoked. This must be of the form:
+.INDENT 0.0
+.INDENT 3.5
+
+.nf
+\(ga\(ga
+.fi
+arn:aws:acm\-pca:\fIregion\fP :\fIaccount\fP :certificate\-authority/\fI12345678\-1234\-1234\-1234\-123456789012\fP \(ga\(ga
+.IP "System Message: WARNING/2 (<string>:, line 64)"
+Inline literal start\-string without end\-string.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-revocation\-configuration\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+Revocation information for your private CA.
+.sp
+CrlConfiguration \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+Configuration of the certificate revocation list (CRL), if any, maintained by your private CA.
+.sp
+Enabled \-> (boolean)
+.INDENT 0.0
+.INDENT 3.5
+Boolean value that specifies whether certificate revocation lists (CRLs) are enabled. You can use this value to enable certificate revocation for a new CA when you call the \fI\%CreateCertificateAuthority\fP action or for an existing CA when you call the \fI\%UpdateCertificateAuthority\fP action.
+.UNINDENT
+.UNINDENT
+.sp
+ExpirationInDays \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+Validity period of the CRL in days.
+.UNINDENT
+.UNINDENT
+.sp
+CustomCname \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name inserted into the certificate \fBCRL Distribution Points\fP extension that enables the use of an alias for the CRL distribution point. Use this value if you don\(aqt want the name of your S3 bucket to be public.
+.UNINDENT
+.UNINDENT
+.sp
+S3BucketName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Name of the S3 bucket that contains the CRL. If you do not provide a value for the \fBCustomCname\fP argument, the name of your S3 bucket is placed into the \fBCRL Distribution Points\fP extension of the issued certificate. You can change the name of your bucket by calling the \fI\%UpdateCertificateAuthority\fP action. You must specify a \fI\%bucket policy\fP that allows ACM Private CA to write the CRL to your bucket.
+.UNINDENT
+.UNINDENT
+.sp
+S3ObjectAcl \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+Determines whether the CRL will be publicly readable or privately held in the CRL Amazon S3 bucket. If you choose PUBLIC_READ, the CRL will be accessible over the public internet. If you choose BUCKET_OWNER_FULL_CONTROL, only the owner of the CRL S3 bucket can access the CRL, and your PKI clients may need an alternative method of access.
+.sp
+If no value is specified, the default is \fBPUBLIC_READ\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fINote:\fP This default can cause CA creation to fail in some circumstances. If you have have enabled the Block Public Access (BPA) feature in your S3 account, then you must specify the value of this parameter as \fBBUCKET_OWNER_FULL_CONTROL\fP , and not doing so results in an error. If you have disabled BPA in S3, then you can specify either \fBBUCKET_OWNER_FULL_CONTROL\fP or \fBPUBLIC_READ\fP as the value.
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Blocking public access to the S3 bucket\fP .
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+CrlConfiguration={Enabled=boolean,ExpirationInDays=integer,CustomCname=string,S3BucketName=string,S3ObjectAcl=string}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "CrlConfiguration": {
+    "Enabled": true|false,
+    "ExpirationInDays": integer,
+    "CustomCname": "string",
+    "S3BucketName": "string",
+    "S3ObjectAcl": "PUBLIC_READ"|"BUCKET_OWNER_FULL_CONTROL"
+  }
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-status\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Status of your private CA.
+.sp
+Possible values:
+.INDENT 0.0
+.IP \(bu 2
+\fBCREATING\fP
+.IP \(bu 2
+\fBPENDING_CERTIFICATE\fP
+.IP \(bu 2
+\fBACTIVE\fP
+.IP \(bu 2
+\fBDELETED\fP
+.IP \(bu 2
+\fBDISABLED\fP
+.IP \(bu 2
+\fBEXPIRED\fP
+.IP \(bu 2
+\fBFAILED\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo update the configuration of your private certificate authority\fP
+.sp
+The following \fBupdate\-certificate\-authority\fP command updates the status and configuration of the private CA identified by the ARN.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws acm\-pca update\-certificate\-authority \-\-certificate\-authority\-arn arn:aws:acm\-pca:us\-west\-2:123456789012:certificate\-authority/12345678\-1234\-1234\-1234\-1232456789012 \-\-revocation\-configuration file://C:\erevoke_config.txt \-\-status "DISABLED"
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

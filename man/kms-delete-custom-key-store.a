@@ -1,0 +1,127 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "KMS-DELETE-CUSTOM-KEY-STORE" "a" "" ""
+.SH NAME
+kms-delete-custom-key-store \- Deletes a %custom key store 
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Deletes a \fI\%custom key store\fP . This operation does not delete the AWS CloudHSM cluster that is associated with the custom key store, or affect any users or keys in the cluster.
+.sp
+The custom key store that you delete cannot contain any AWS KMS \fI\%customer master keys (CMKs)\fP . Before deleting the key store, verify that you will never need to use any of the CMKs in the key store for any \fI\%cryptographic operations\fP . Then, use  ScheduleKeyDeletion to delete the AWS KMS customer master keys (CMKs) from the key store. When the scheduled waiting period expires, the \fBScheduleKeyDeletion\fP operation deletes the CMKs. Then it makes a best effort to delete the key material from the associated cluster. However, you might need to manually \fI\%delete the orphaned key material\fP from the cluster and its backups.
+.sp
+After all CMKs are deleted from AWS KMS, use  DisconnectCustomKeyStore to disconnect the key store from AWS KMS. Then, you can delete the custom key store.
+.sp
+Instead of deleting the custom key store, consider using  DisconnectCustomKeyStore to disconnect it from AWS KMS. While the key store is disconnected, you cannot create or use the CMKs in the key store. But, you do not need to delete CMKs and you can reconnect a disconnected custom key store at any time.
+.sp
+If the operation succeeds, it returns a JSON object with no properties.
+.sp
+This operation is part of the \fI\%Custom Key Store feature\fP feature in AWS KMS, which combines the convenience and extensive integration of AWS KMS with the isolation and control of a single\-tenant key store.
+.INDENT 0.0
+.INDENT 3.5
+\fBCross\-account use\fP : No. You cannot perform this operation on a custom key store in a different AWS account.
+.sp
+\fBRequired permissions\fP : \fI\%kms:DeleteCustomKeyStore\fP (IAM policy)
+.sp
+\fBRelated operations:\fP
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+ConnectCustomKeyStore
+.IP \(bu 2
+CreateCustomKeyStore
+.IP \(bu 2
+DescribeCustomKeyStores
+.IP \(bu 2
+DisconnectCustomKeyStore
+.IP \(bu 2
+UpdateCustomKeyStore
+.UNINDENT
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  delete\-custom\-key\-store
+\-\-custom\-key\-store\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-custom\-key\-store\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+Enter the ID of the custom key store you want to delete. To find the ID of a custom key store, use the  DescribeCustomKeyStores operation.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo delete a custom key store\fP
+.sp
+The following \fBdelete\-custom\-key\-store\fP example deletes the specified custom key store. This command doesn\(aqt have any effect on the associated CloudHSM cluster.
+.sp
+\fBNOTE:\fP Before you can delete a custom key store, you must schedule the deletion of all CMKs in the custom key store and then wait for those CMKs to be deleted. Then, you must disconnect the custom key store.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+delete\-custom\-key\-store \e
+    \-\-custom\-key\-store\-id cks\-1234567890abcdef0
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+This command does not return any output. To verify that the custom key store is deleted, use the \fBdescribe\-custom\-key\-stores\fP command.
+.sp
+For more information, see \fI\%Deleting a Custom Key Store\fP in the \fIAWS Key Management Service Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

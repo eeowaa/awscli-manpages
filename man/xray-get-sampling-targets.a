@@ -1,0 +1,295 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "XRAY-GET-SAMPLING-TARGETS" "a" "" ""
+.SH NAME
+xray-get-sampling-targets \- Requests a sampling quota for rules that the service is using to sample requests
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Requests a sampling quota for rules that the service is using to sample requests.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-sampling\-targets
+\-\-sampling\-statistics\-documents <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-sampling\-statistics\-documents\fP (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about rules that the service is using to sample requests.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Request sampling results for a single rule from a service. Results are for the last 10 seconds unless the service has been assigned a longer reporting interval after a previous call to  GetSamplingTargets .
+.sp
+RuleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the sampling rule.
+.UNINDENT
+.UNINDENT
+.sp
+ClientID \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique identifier for the service in hexadecimal.
+.UNINDENT
+.UNINDENT
+.sp
+Timestamp \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The current time.
+.UNINDENT
+.UNINDENT
+.sp
+RequestCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of requests that matched the rule.
+.UNINDENT
+.UNINDENT
+.sp
+SampledCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of requests recorded.
+.UNINDENT
+.UNINDENT
+.sp
+BorrowCount \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of requests recorded with borrowed reservoir quota.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+RuleName=string,ClientID=string,Timestamp=timestamp,RequestCount=integer,SampledCount=integer,BorrowCount=integer ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+[
+  {
+    "RuleName": "string",
+    "ClientID": "string",
+    "Timestamp": timestamp,
+    "RequestCount": integer,
+    "SampledCount": integer,
+    "BorrowCount": integer
+  }
+  ...
+]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+\fBTo request a sampling quota\fP
+.sp
+The following \fBget\-sampling\-targets\fP example requests a sampling quota for rules that the service is using to sample requests. The response from AWS X\-Ray includes a quota that can be used instead of borrowing from the reservoir.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws xray get\-sampling\-targets \e
+    \-\-sampling\-statistics\-documents \(aq[ { "RuleName": "base\-scorekeep", "ClientID": "ABCDEF1234567890ABCDEF10", "Timestamp": "2018\-07\-07T00:20:06, "RequestCount": 110, "SampledCount": 20, "BorrowCount": 10 }, { "RuleName": "polling\-scorekeep", 31, "BorrowCount": 0 } ]\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Output:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+    "SamplingTargetDocuments": [
+        {
+            "RuleName": "base\-scorekeep",
+            "FixedRate": 0.1,
+            "ReservoirQuota": 2,
+            "ReservoirQuotaTTL": 1530923107.0,
+            "Interval": 10
+        },
+        {
+            "RuleName": "polling\-scorekeep",
+            "FixedRate": 0.003,
+            "ReservoirQuota": 0,
+            "ReservoirQuotaTTL": 1530923107.0,
+            "Interval": 10
+        }
+    ],
+    "LastRuleModification": 1530920505.0,
+    "UnprocessedStatistics": []
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+For more information, see \fI\%Using Sampling Rules with the X\-Ray API\fP in the \fIAWS X\-Ray Developer Guide\fP\&.
+.SH OUTPUT
+.sp
+SamplingTargetDocuments \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Updated rules that the service should use to sample requests.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Temporary changes to a sampling rule configuration. To meet the global sampling target for a rule, X\-Ray calculates a new reservoir for each service based on the recent sampling results of all services that called  GetSamplingTargets .
+.sp
+RuleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the sampling rule.
+.UNINDENT
+.UNINDENT
+.sp
+FixedRate \-> (double)
+.INDENT 0.0
+.INDENT 3.5
+The percentage of matching requests to instrument, after the reservoir is exhausted.
+.UNINDENT
+.UNINDENT
+.sp
+ReservoirQuota \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of requests per second that X\-Ray allocated for this service.
+.UNINDENT
+.UNINDENT
+.sp
+ReservoirQuotaTTL \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+When the reservoir quota expires.
+.UNINDENT
+.UNINDENT
+.sp
+Interval \-> (integer)
+.INDENT 0.0
+.INDENT 3.5
+The number of seconds for the service to wait before getting sampling targets again.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+LastRuleModification \-> (timestamp)
+.INDENT 0.0
+.INDENT 3.5
+The last time a user changed the sampling rule configuration. If the sampling rule configuration changed since the service last retrieved it, the service should call  GetSamplingRules to get the latest version.
+.UNINDENT
+.UNINDENT
+.sp
+UnprocessedStatistics \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+Information about  SamplingStatisticsDocument that X\-Ray could not process.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Sampling statistics from a call to  GetSamplingTargets that X\-Ray could not process.
+.sp
+RuleName \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The name of the sampling rule.
+.UNINDENT
+.UNINDENT
+.sp
+ErrorCode \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error code.
+.UNINDENT
+.UNINDENT
+.sp
+Message \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The error message.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.

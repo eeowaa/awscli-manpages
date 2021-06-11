@@ -1,0 +1,196 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "GLACIER-SET-DATA-RETRIEVAL-POLICY" "a" "" ""
+.SH NAME
+glacier-set-data-retrieval-policy \- This operation sets and then enacts a data retrieval policy in the region specified in the PUT request
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+This operation sets and then enacts a data retrieval policy in the region specified in the PUT request. You can set one policy per region for an AWS account. The policy is enacted within a few minutes of a successful PUT operation.
+.sp
+The set policy operation does not affect retrieval jobs that were in progress before the policy was enacted. For more information about data retrieval policies, see \fI\%Amazon Glacier Data Retrieval Policies\fP .
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  set\-data\-retrieval\-policy
+\-\-account\-id <value>
+[\-\-policy <value>]
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-account\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The \fBAccountId\fP value is the AWS account ID. This value must match the AWS account ID associated with the credentials used to sign the request. You can either specify an AWS account ID or optionally a single \(aq\fB\-\fP \(aq (hyphen), in which case Amazon Glacier uses the AWS account ID associated with the credentials used to sign the request. If you specify your account ID, do not include any hyphens (\(aq\-\(aq) in the ID.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-policy\fP (structure)
+.INDENT 0.0
+.INDENT 3.5
+The data retrieval policy in JSON format.
+.sp
+Rules \-> (list)
+.INDENT 0.0
+.INDENT 3.5
+The policy rule. Although this is a list type, currently there must be only one rule, which contains a Strategy field and optionally a BytesPerHour field.
+.sp
+(structure)
+.INDENT 0.0
+.INDENT 3.5
+Data retrieval policy rule.
+.sp
+Strategy \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+The type of data retrieval policy to set.
+.sp
+Valid values: BytesPerHour|FreeTier|None
+.UNINDENT
+.UNINDENT
+.sp
+BytesPerHour \-> (long)
+.INDENT 0.0
+.INDENT 3.5
+The maximum number of bytes that can be retrieved in an hour.
+.sp
+This field is required only if the value of the Strategy field is \fBBytesPerHour\fP . Your PUT operation will be rejected if the Strategy field is not set to \fBBytesPerHour\fP and you set this field.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Shorthand Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Rules=[{Strategy=string,BytesPerHour=long},{Strategy=string,BytesPerHour=long}]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+JSON Syntax:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Rules": [
+    {
+      "Strategy": "string",
+      "BytesPerHour": long
+    }
+    ...
+  ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH EXAMPLES
+.sp
+The following command configures a data retrieval policy for the in\-use account:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws glacier set\-data\-retrieval\-policy \-\-account\-id \- \-\-policy file://data\-retrieval\-policy.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBdata\-retrieval\-policy.json\fP is a JSON file in the current folder that specifies a data retrieval policy:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+{
+  "Rules":[
+     {
+         "Strategy":"BytesPerHour",
+         "BytesPerHour":10737418240
+      }
+   ]
+}
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Amazon Glacier requires an account ID argument when performing operations, but you can use a hyphen to specify the in\-use account.
+.sp
+The following command sets the data retrieval policy to \fBFreeTier\fP using inline JSON:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+aws glacier set\-data\-retrieval\-policy \-\-account\-id \- \-\-policy \(aq{"Rules":[{"Strategy":"FreeTier"}]}\(aq
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+See \fI\%Set Data Retrieval Policy\fP in the \fIAmazon Glacier API Reference\fP for details on the policy format.
+.SH OUTPUT
+.sp
+None
+.\" Generated by docutils manpage writer.
+.

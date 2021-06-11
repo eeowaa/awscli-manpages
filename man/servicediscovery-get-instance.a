@@ -1,0 +1,210 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "SERVICEDISCOVERY-GET-INSTANCE" "a" "" ""
+.SH NAME
+servicediscovery-get-instance \- Gets information about a specified instance
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.SH DESCRIPTION
+.sp
+Gets information about a specified instance.
+.sp
+See also: AWS API Documentation
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+  get\-instance
+\-\-service\-id <value>
+\-\-instance\-id <value>
+[\-\-cli\-input\-json | \-\-cli\-input\-yaml]
+[\-\-generate\-cli\-skeleton <value>]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH OPTIONS
+.sp
+\fB\-\-service\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the service that the instance is associated with.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-instance\-id\fP (string)
+.INDENT 0.0
+.INDENT 3.5
+The ID of the instance that you want to get information about.
+.UNINDENT
+.UNINDENT
+.sp
+\fB\-\-cli\-input\-json\fP | \fB\-\-cli\-input\-yaml\fP (string)
+Reads arguments from the JSON string provided. The JSON string follows the format provided by \fB\-\-generate\-cli\-skeleton\fP\&. If other arguments are provided on the command line, those values will override the JSON\-provided values. It is not possible to pass arbitrary binary values using a JSON\-provided value as the string will be taken literally. This may not be specified along with \fB\-\-cli\-input\-yaml\fP\&.
+.sp
+\fB\-\-generate\-cli\-skeleton\fP (string)
+Prints a JSON skeleton to standard output without sending an API request. If provided with no value or the value \fBinput\fP, prints a sample input JSON that can be used as an argument for \fB\-\-cli\-input\-json\fP\&. Similarly, if provided \fByaml\-input\fP it will print a sample input YAML that can be used with \fB\-\-cli\-input\-yaml\fP\&. If provided with the value \fBoutput\fP, it validates the command inputs and returns a sample output JSON for that command.
+.sp
+See \(aqaws help\(aq for descriptions of global parameters.
+.SH OUTPUT
+.sp
+Instance \-> (structure)
+.INDENT 0.0
+.INDENT 3.5
+A complex type that contains information about a specified instance.
+.sp
+Id \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+An identifier that you want to associate with the instance. Note the following:
+.INDENT 0.0
+.IP \(bu 2
+If the service that\(aqs specified by \fBServiceId\fP includes settings for an \fBSRV\fP record, the value of \fBInstanceId\fP is automatically included as part of the value for the \fBSRV\fP record. For more information, see \fI\%DnsRecord > Type\fP .
+.IP \(bu 2
+You can use this value to update an existing instance.
+.IP \(bu 2
+To register a new instance, you must specify a value that\(aqs unique among instances that you register by using the same service.
+.IP \(bu 2
+If you specify an existing \fBInstanceId\fP and \fBServiceId\fP , AWS Cloud Map updates the existing DNS records. If there\(aqs also an existing health check, AWS Cloud Map deletes the old health check and creates a new one.
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+The health check isn\(aqt deleted immediately, so it will still appear for a while if you submit a \fBListHealthChecks\fP request, for example.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+CreatorRequestId \-> (string)
+.INDENT 0.0
+.INDENT 3.5
+A unique string that identifies the request and that allows failed \fBRegisterInstance\fP requests to be retried without the risk of executing the operation twice. You must use a unique \fBCreatorRequestId\fP string every time you submit a \fBRegisterInstance\fP request if you\(aqre registering additional instances for the same namespace and service. \fBCreatorRequestId\fP can be any unique string (for example, a date/time stamp).
+.UNINDENT
+.UNINDENT
+.sp
+Attributes \-> (map)
+.INDENT 0.0
+.INDENT 3.5
+A string map that contains the following information for the service that you specify in \fBServiceId\fP :
+.INDENT 0.0
+.IP \(bu 2
+The attributes that apply to the records that are defined in the service.
+.IP \(bu 2
+For each attribute, the applicable value.
+.UNINDENT
+.sp
+Supported attribute keys include the following:
+.INDENT 0.0
+.INDENT 3.5
+AWS_ALIAS_DNS_NAME
+.UNINDENT
+.UNINDENT
+.sp
+If you want AWS Cloud Map to create a Route 53 alias record that routes traffic to an Elastic Load Balancing load balancer, specify the DNS name that\(aqs associated with the load balancer. For information about how to get the DNS name, see \fI\%AliasTarget\->DNSName\fP in the \fIRoute 53 API Reference\fP .
+.sp
+Note the following:
+.INDENT 0.0
+.IP \(bu 2
+The configuration for the service that\(aqs specified by \fBServiceId\fP must include settings for an \fBA\fP record, an \fBAAAA\fP record, or both.
+.IP \(bu 2
+In the service that\(aqs specified by \fBServiceId\fP , the value of \fBRoutingPolicy\fP must be \fBWEIGHTED\fP .
+.IP \(bu 2
+If the service that\(aqs specified by \fBServiceId\fP includes \fBHealthCheckConfig\fP settings, AWS Cloud Map creates the health check, but it won\(aqt associate the health check with the alias record.
+.IP \(bu 2
+Auto naming currently doesn\(aqt support creating alias records that route traffic to AWS resources other than ELB load balancers.
+.IP \(bu 2
+If you specify a value for \fBAWS_ALIAS_DNS_NAME\fP , don\(aqt specify values for any of the \fBAWS_INSTANCE\fP attributes.
+.sp
+AWS_EC2_INSTANCE_ID
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fIHTTP namespaces only.\fP The Amazon EC2 instance ID for the instance. The \fBAWS_INSTANCE_IPV4\fP attribute contains the primary private IPv4 address.
+.INDENT 0.0
+.INDENT 3.5
+AWS_INIT_HEALTH_STATUS
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+If the service configuration includes \fBHealthCheckCustomConfig\fP , you can optionally use \fBAWS_INIT_HEALTH_STATUS\fP to specify the initial status of the custom health check, \fBHEALTHY\fP or \fBUNHEALTHY\fP . If you don\(aqt specify a value for \fBAWS_INIT_HEALTH_STATUS\fP , the initial status is \fBHEALTHY\fP .
+.INDENT 0.0
+.INDENT 3.5
+AWS_INSTANCE_CNAME
+.UNINDENT
+.UNINDENT
+.sp
+If the service configuration includes a \fBCNAME\fP record, the domain name that you want Route 53 to return in response to DNS queries (for example, \fBexample.com\fP ).
+.sp
+This value is required if the service specified by \fBServiceId\fP includes settings for an \fBCNAME\fP record.
+.INDENT 0.0
+.INDENT 3.5
+AWS_INSTANCE_IPV4
+.UNINDENT
+.UNINDENT
+.sp
+If the service configuration includes an \fBA\fP record, the IPv4 address that you want Route 53 to return in response to DNS queries (for example, \fB192.0.2.44\fP ).
+.sp
+This value is required if the service specified by \fBServiceId\fP includes settings for an \fBA\fP record. If the service includes settings for an \fBSRV\fP record, you must specify a value for \fBAWS_INSTANCE_IPV4\fP , \fBAWS_INSTANCE_IPV6\fP , or both.
+.INDENT 0.0
+.INDENT 3.5
+AWS_INSTANCE_IPV6
+.UNINDENT
+.UNINDENT
+.sp
+If the service configuration includes an \fBAAAA\fP record, the IPv6 address that you want Route 53 to return in response to DNS queries (for example, \fB2001:0db8:85a3:0000:0000:abcd:0001:2345\fP ).
+.sp
+This value is required if the service specified by \fBServiceId\fP includes settings for an \fBAAAA\fP record. If the service includes settings for an \fBSRV\fP record, you must specify a value for \fBAWS_INSTANCE_IPV4\fP , \fBAWS_INSTANCE_IPV6\fP , or both.
+.INDENT 0.0
+.INDENT 3.5
+AWS_INSTANCE_PORT
+.UNINDENT
+.UNINDENT
+.sp
+If the service includes an \fBSRV\fP record, the value that you want Route 53 to return for the port.
+.sp
+If the service includes \fBHealthCheckConfig\fP , the port on the endpoint that you want Route 53 to send requests to.
+.sp
+This value is required if you specified settings for an \fBSRV\fP record or a Route 53 health check when you created the service.
+.sp
+key \-> (string)
+.sp
+value \-> (string)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.
