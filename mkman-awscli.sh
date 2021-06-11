@@ -1,0 +1,180 @@
+#!/bin/sh
+
+# Manual section
+section=a
+
+# Name prefix for service- and command-level manpages
+prefix=
+
+# Create output directories
+outdir=man logdir=log
+mkdir -p "$outdir" "$logdir"
+
+# Clear runtime data files
+>"$logdir"/descriptions.txt
+
+# Write `aws help` output in troff format (requires patch to AWS CLI)
+export OUTPUT=troff
+
+# Function to extract a list of available topics, services, or commands
+list() {
+    case $# in
+       0) cat      # no arguments => manpage is on STDIN
+    ;; *) cat "$*" # 1+ arguments => manpage file was provided
+    esac | awk '
+    # Exit once we have passed through the "AVAILABLE" section
+    x && /^\.SH/ { exit }
+
+    # Find the "AVAILABLE" section
+    /^\.SH AVAILABLE/ { x = 1 }
+
+    # Names come on their own line after ".IP \(bu 2"
+    x && /^\.IP \\\(bu 2/ {
+        getline
+
+        # Remove "\" and ":" from names
+        gsub(/[\\:]/, "")
+
+        # Ignore available "help", as it is redundant
+        if ($0 != "help") print
+    }'
+}
+
+# Function to extract a one-sentence description from a manpage
+describe() {
+    case $# in
+       0) cat      # no arguments => manpage is on STDIN
+    ;; *) cat "$*" # 1+ arguments => manpage file was provided
+    esac | awk '
+    # Find the "DESCRIPTION" section
+    /^\.SH DESCRIPTION/ {
+
+        # Skip lines beginning with "." or "\"
+        do {
+            getline
+            if ($1 == ".SH") {
+                print "ERROR: Empty \"DESCRIPTION\" section" >"/dev/stderr"
+                exit 1
+            }
+        } while (/^[.\\]/)
+
+        # Print the first sentence and exit
+        split($0, sentences, /(\. )|(\.$)/)
+        print sentences[1]
+        exit
+    }'
+}
+
+# Function to wrap different in-place sed implementations
+if sed --version 2>/dev/null | grep GNU >/dev/null
+then sed_is_gnu=true
+else unset sed_is_gnu
+fi
+ised() {
+    if [ "$sed_is_gnu" ]
+    then sed -i "$@"
+    else sed -i '' "$@"
+    fi
+}
+
+# Function to add a short description to the "NAME" section of a manpage.
+# This information is used by makewhatis(8) to create the whatis database,
+# which is used apropos(1) to search for manpages. Also replaces the title
+# and name with the fully-qualified name (e.g. "aws-s3-ls" vs. "ls").
+modify_manpage() {
+    local manpage=$1 name=$2 NAME=`echo "$2" | tr a-z A-Z | sed 's/-/\\-/g'`
+
+    # Remove or transform troublesome strings in the description
+    # Note that a heredoc is used to avoid interpolated control characters
+    local desc=`sed 's/\\\\f.//g' <<EOF | tr -d '\\\\' | sed 's#/#\\\\/#g'
+$3
+EOF
+`
+    # Perform the manpage modification
+    ised -e "s/^\\.TH .*/.TH \"$NAME\" \"$section\" \"\" \"\"/" \
+         -e "/^\\.SH NAME/{n;s/.*/$name \\\\- $desc/;}" \
+         "$manpage"
+
+    # Debugging information
+    printf '%s\t%s\n' "$name" "$desc" >>"$logdir"/descriptions.txt
+}
+
+# Function to generate top-level manpages for AWS CLI
+mkman_awscli() {
+    local name manpage desc sub
+
+    # Generate manpages for aws and aws-topics
+    for sub in '' 'topics'
+    do
+        # Determine and output the name of the manpage 
+        name=aws${sub:+"-$sub"}
+        echo >&2 $name
+
+        # Generate the manpage if it does not already exist
+        manpage=$outdir/$name'.'$section
+        [ -f "$manpage" ] || aws help $sub >"$manpage"
+
+        # Pull a one-sentence description from the manpage
+        desc=`describe <"$manpage"`
+
+        # Modify the title and short description of the manpage
+        modify_manpage "$manpage" "$name" "$desc"
+    done
+}
+
+# Function to generate manpages for special topics of the AWS CLI
+mkman_topics() {
+    local name manpage desc topic
+
+    # Get available topics
+    aws help topics | list | while read topic desc
+    do
+        # Determine and output the name of the manpage 
+        name=aws-$topic
+        echo >&2 "$name"
+
+        # Generate the manpage if it does not already exist
+        manpage=$outdir/$name'.'$section
+        [ -f "$manpage" ] || aws help $topic >"$manpage"
+
+        # Modify the title and short description of the manpage
+        modify_manpage "$manpage" "$name" "$desc"
+    done
+}
+
+# Function to recursively generate manpages for AWS CLI commands. Depth-first
+# traversal is used. Example invocations:
+#
+#   mkman_commands ''             # top-level commands (i.e. services) on down
+#   mkman_commands dynamodb       # dynamodb subcommands on down
+#   mkman_commands dynamodb wait  # dynamodb-wait subcommands on down
+# 
+mkman_commands() {
+    local name manpage desc subcommand command="$*"
+
+    # Get available subcommands
+    aws $command help | list | while read subcommand
+    do
+        # Determine and output the name of the manpage 
+        name=$prefix`echo $command $subcommand | tr ' ' -`
+        echo >&2 "$name"
+
+        # Generate the manpage if it does not already exist
+        manpage=$outdir/$name'.'$section
+        [ -f "$manpage" ] || aws $command $subcommand help >"$manpage"
+
+        # Pull a one-sentence description from the manpage
+        desc=`describe <"$manpage"`
+
+        # Pull a one-sentence description from the manpage
+        modify_manpage "$manpage" "$name" "$desc"
+
+        # Recursive call
+        mkman_commands $command $subcommand
+    done
+}
+
+# Generate all manpages
+mkman_awscli
+mkman_topics
+mkman_commands ''

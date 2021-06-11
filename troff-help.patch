@@ -1,0 +1,27 @@
+--- help.py	2021-06-07 23:24:47.000000000 -0600
++++ help.py	2021-06-07 23:26:11.000000000 -0600
+@@ -48,6 +48,8 @@
+     Return the appropriate HelpRenderer implementation for the
+     current platform.
+     """
++    if 'OUTPUT' in os.environ and os.environ['OUTPUT'] == 'troff':
++        return TroffHelpRenderer()
+     if platform.system() == 'Windows':
+         return WindowsHelpRenderer()
+     else:
+@@ -96,6 +98,15 @@
+         return contents
+ 
+ 
++class TroffHelpRenderer(object):
++    """
++    Render help content as troff code.
++    """
++
++    def render(self, contents):
++        sys.stdout.buffer.write(publish_string(contents, writer=manpage.Writer()))
++
++
+ class PosixHelpRenderer(PagingHelpRenderer):
+     """
+     Render help content on a Posix-like system.  This includes
