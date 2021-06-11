@@ -1,10 +1,19 @@
 #!/bin/sh
 
-# Manual section
-section=a
-
-# Name prefix for service- and command-level manpages
-prefix=
+# Import config variables and check for required values
+[ -f config.sh ] || {
+    cat >&2 <<EOF
+Missing file: config.sh
+Have you copied example-config.sh to config.sh?
+EOF
+    exit 1
+}
+. config.sh
+: "${section?}" "${nameprefix?}" "${outdir?}" "${logdir?}"
+[ $? -eq 0 ] || {
+    echo >&2 'Required config variable(s) unset'
+    exit 1
+}
 
 # Create output directories
 outdir=man logdir=log
@@ -19,8 +28,8 @@ export OUTPUT=troff
 # Function to extract a list of available topics, services, or commands
 list() {
     case $# in
-       0) cat      # no arguments => manpage is on STDIN
-    ;; *) cat "$*" # 1+ arguments => manpage file was provided
+       0) cat      # no arguments => man page is on STDIN
+    ;; *) cat "$*" # 1+ arguments => man page file was provided
     esac | awk '
     # Exit once we have passed through the "AVAILABLE" section
     x && /^\.SH/ { exit }
@@ -40,11 +49,11 @@ list() {
     }'
 }
 
-# Function to extract a one-sentence description from a manpage
+# Function to extract a one-sentence description from a man page
 describe() {
     case $# in
-       0) cat      # no arguments => manpage is on STDIN
-    ;; *) cat "$*" # 1+ arguments => manpage file was provided
+       0) cat      # no arguments => man page is on STDIN
+    ;; *) cat "$*" # 1+ arguments => man page file was provided
     esac | awk '
     # Find the "DESCRIPTION" section
     /^\.SH DESCRIPTION/ {
@@ -77,9 +86,9 @@ ised() {
     fi
 }
 
-# Function to add a short description to the "NAME" section of a manpage.
+# Function to add a short description to the "NAME" section of a man page.
 # This information is used by makewhatis(8) to create the whatis database,
-# which is used apropos(1) to search for manpages. Also replaces the title
+# which is used apropos(1) to search for man pages. Also replaces the title
 # and name with the fully-qualified name (e.g. "aws-s3-ls" vs. "ls").
 modify_manpage() {
     local manpage=$1 name=$2 NAME=`echo "$2" | tr a-z A-Z | sed 's/-/\\-/g'`
@@ -90,7 +99,7 @@ modify_manpage() {
 $3
 EOF
 `
-    # Perform the manpage modification
+    # Perform the man page modification
     ised -e "s/^\\.TH .*/.TH \"$NAME\" \"$section\" \"\" \"\"/" \
          -e "/^\\.SH NAME/{n;s/.*/$name \\\\- $desc/;}" \
          "$manpage"
@@ -99,50 +108,50 @@ EOF
     printf '%s\t%s\n' "$name" "$desc" >>"$logdir"/descriptions.txt
 }
 
-# Function to generate top-level manpages for AWS CLI
+# Function to generate top-level man pages for AWS CLI
 mkman_awscli() {
     local name manpage desc sub
 
-    # Generate manpages for aws and aws-topics
+    # Generate man pages for aws and aws-topics
     for sub in '' 'topics'
     do
-        # Determine and output the name of the manpage 
+        # Determine and output the name of the man page 
         name=aws${sub:+"-$sub"}
         echo >&2 $name
 
-        # Generate the manpage if it does not already exist
+        # Generate the man page if it does not already exist
         manpage=$outdir/$name'.'$section
         [ -f "$manpage" ] || aws help $sub >"$manpage"
 
-        # Pull a one-sentence description from the manpage
+        # Pull a one-sentence description from the man page
         desc=`describe <"$manpage"`
 
-        # Modify the title and short description of the manpage
+        # Modify the title and short description of the man page
         modify_manpage "$manpage" "$name" "$desc"
     done
 }
 
-# Function to generate manpages for special topics of the AWS CLI
+# Function to generate man pages for special topics of the AWS CLI
 mkman_topics() {
     local name manpage desc topic
 
     # Get available topics
     aws help topics | list | while read topic desc
     do
-        # Determine and output the name of the manpage 
+        # Determine and output the name of the man page 
         name=aws-$topic
         echo >&2 "$name"
 
-        # Generate the manpage if it does not already exist
+        # Generate the man page if it does not already exist
         manpage=$outdir/$name'.'$section
         [ -f "$manpage" ] || aws help $topic >"$manpage"
 
-        # Modify the title and short description of the manpage
+        # Modify the title and short description of the man page
         modify_manpage "$manpage" "$name" "$desc"
     done
 }
 
-# Function to recursively generate manpages for AWS CLI commands. Depth-first
+# Function to recursively generate man pages for AWS CLI commands. Depth-first
 # traversal is used. Example invocations:
 #
 #   mkman_commands ''             # top-level commands (i.e. services) on down
@@ -155,18 +164,18 @@ mkman_commands() {
     # Get available subcommands
     aws $command help | list | while read subcommand
     do
-        # Determine and output the name of the manpage 
-        name=$prefix`echo $command $subcommand | tr ' ' -`
+        # Determine and output the name of the man page 
+        name=$nameprefix`echo $command $subcommand | tr ' ' -`
         echo >&2 "$name"
 
-        # Generate the manpage if it does not already exist
+        # Generate the man page if it does not already exist
         manpage=$outdir/$name'.'$section
         [ -f "$manpage" ] || aws $command $subcommand help >"$manpage"
 
-        # Pull a one-sentence description from the manpage
+        # Pull a one-sentence description from the man page
         desc=`describe <"$manpage"`
 
-        # Pull a one-sentence description from the manpage
+        # Pull a one-sentence description from the man page
         modify_manpage "$manpage" "$name" "$desc"
 
         # Recursive call
@@ -174,7 +183,7 @@ mkman_commands() {
     done
 }
 
-# Generate all manpages
+# Generate all man pages
 mkman_awscli
 mkman_topics
 mkman_commands ''

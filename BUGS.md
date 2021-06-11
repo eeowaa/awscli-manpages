@@ -2,25 +2,25 @@
 
 1. The `README.md` is missing some instructions.
 
-2. Manpage generation is extremely slow (on the order of hours on my local
+2. Man page generation is extremely slow (on the order of hours on my local
    machine). Optimization is possible through caching and parallelization.
 
    - It could also be argued that patching the documentation upstream to more
-     easily generate manpages (including short descriptions) would drastically
+     easily generate man pages (including short descriptions) would drastically
      reduce both complexity for the user and compute time in generating
-     manpages.
+     man pages.
 
 
 ## Missing features
 
 1. A configuration file to specify output directory, installation directory,
-   manpage section, etc.
+   man section, etc.
 
 2. Incremental documentation generation via `Makefile`.
 
-3. A script for installing and indexing manpages once generated.
+3. A script for installing and indexing man pages once generated.
 
-4. Automatic retries on partial or total manpage generation failure.  This
+4. Automatic retries on partial or total man page generation failure.  This
    currently requires some shell-fu.
 
 
@@ -45,6 +45,6 @@
    - `aws-sso-admin`
    - `aws-timestream-query`
 
-2. There are lots of warnings during generation of the manpages (see
+2. There are lots of warnings during generation of the man pages (see
    `tools/warnings.txt`), most of which are benign, but are inextricable
    from the documentation source.
