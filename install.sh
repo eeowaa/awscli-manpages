@@ -33,7 +33,8 @@ esac
 os=`uname -s`
 case $os in
 Darwin)
-    sudo /usr/libexec/makewhatis "$installdir" ;;
+    # Ignore indexing errors on macOS (Catalina broke whatis)
+    sudo /usr/libexec/makewhatis "$installdir" 2>/dev/null ;;
 Linux|*)
     # TODO: Add support for different Linux distros
     cat >&2 <<EOF
