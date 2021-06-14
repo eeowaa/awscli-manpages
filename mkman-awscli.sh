@@ -104,6 +104,32 @@ EOF
          -e "/^\\.SH NAME/{n;s/.*/$name \\\\- $desc/;}" \
          "$manpage"
 
+    # FIXME: Combine this and the above ised command
+    # Clean up the "NAME" section for whatis indexing
+    local tmpfile=`mktemp`
+    awk '
+    /^\.SH NAME/ {
+        # Print the "NAME" section
+        print
+        getline
+        print
+
+        # Set a skip-bit
+        x = 1
+        next
+    } {
+        # Skip until we have reached the next section or paragraph (some man
+        # pages only have one section, so we must also look for paragraphs)
+        if (x && !/^\.(SH|sp)/) {
+            next
+        } else {
+            print
+            x = 0
+        }
+    }' "$manpage" >"$tmpfile"
+    mv "$tmpfile" "$manpage"
+    rm -f "$tmpfile"
+
     # Debugging information
     printf '%s\t%s\n' "$name" "$desc" >>"$logdir"/descriptions.txt
 }
