@@ -14,10 +14,10 @@ aws-cli/2.2.8 Python/3.9.5 Darwin/20.5.0 source/x86_64 prompt/off
 ## Installing man pages
 
 Most of the time, you will not want to regenerate man pages, as it takes a long
-time (and can be prone to errors). Simply install the contents of the `man`
-directory into your system like you would any other collection of man pages. Be
-sure to update the `whatis` database to be able to search for the man pages via
-`apropos` and friends.
+time (and can be prone to errors). Simply install the contents of the
+[`man/`](man) directory into your system like you would any other collection of
+man pages. Be sure to update the `whatis` database to be able to search for the
+man pages via `apropos` and friends.
 
 ## Generating man pages
 
@@ -29,7 +29,7 @@ steps:
    configuration variables in the file.
 1. Run `./patch-awscli.sh` to patch the AWS CLI with the ability to produce
    help text in `troff` format.
-2. Run `./mkman-awscli.sh` to create man pages in [`man/`](man).
+2. Run `./mkman-awscli.sh` to create man pages in `man/`.
 3. Run `./check-errors.sh` to check for errors in generation (see the
    _`warnings.txt` and `errors.txt`_ section of [`ref/README.md`](ref/README.md)
    for more information).

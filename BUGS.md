@@ -1,6 +1,6 @@
 ## Bugs
 
-1. The `README.md` is missing some instructions.
+1. [`README.md`](README.md) is missing some instructions.
 
 2. Man page generation is extremely slow (on the order of hours on my local
    machine). Optimization is possible through caching and parallelization.
@@ -13,14 +13,11 @@
 
 ## Missing features
 
-1. A configuration file to specify output directory, installation directory,
-   man section, etc.
+1. Incremental documentation generation via `Makefile`.
 
-2. Incremental documentation generation via `Makefile`.
+2. A script for installing and indexing man pages once generated.
 
-3. A script for installing and indexing man pages once generated.
-
-4. Automatic retries on partial or total man page generation failure.  This
+3. Automatic retries on partial or total man page generation failure.  This
    currently requires some shell-fu.
 
 
@@ -45,6 +42,6 @@
    - `aws-sso-admin`
    - `aws-timestream-query`
 
-2. There are lots of warnings during generation of the man pages (see
-   `tools/warnings.txt`), most of which are benign, but are inextricable
-   from the documentation source.
+2. There are lots of warnings during generation of the man pages (see the
+   _`warnings.txt` and `errors.txt`_ section of [`ref/README.md`](ref/README.md))
+   which are inextricable from the documentation source.

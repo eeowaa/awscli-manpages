@@ -175,7 +175,7 @@ mkman_commands() {
         # Pull a one-sentence description from the man page
         desc=`describe <"$manpage"`
 
-        # Pull a one-sentence description from the man page
+        # Modify the title and short description of the man page
         modify_manpage "$manpage" "$name" "$desc"
 
         # Recursive call
