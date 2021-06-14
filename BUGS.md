@@ -15,7 +15,8 @@
 
 1. Incremental documentation generation via `Makefile`.
 
-2. A script for installing and indexing man pages once generated.
+2. [`install.sh`](install.sh) is missing features for operating systems other
+   than macOS.
 
 3. Automatic retries on partial or total man page generation failure.  This
    currently requires some shell-fu.

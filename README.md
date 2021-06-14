@@ -19,6 +19,8 @@ time (and can be prone to errors). Simply install the contents of the
 man pages. Be sure to update the `whatis` database to be able to search for the
 man pages via `apropos` and friends.
 
+A script has been provided for such purposes: [`install.sh`](install.sh).
+
 ## Generating man pages
 
 The only prerequisite not found on a standard \*nix system is the AWS CLI
@@ -27,10 +29,10 @@ steps:
 
 1. Copy [`example-config.sh`](example-config.sh) to `config.sh` and edit
    configuration variables in the file.
-1. Run `./patch-awscli.sh` to patch the AWS CLI with the ability to produce
+2. Run `./patch-awscli.sh` to patch the AWS CLI with the ability to produce
    help text in `troff` format.
-2. Run `./mkman-awscli.sh` to create man pages in `man/`.
-3. Run `./check-errors.sh` to check for errors in generation (see the
+3. Run `./mkman-awscli.sh` to create man pages in `man/`.
+4. Run `./check-errors.sh` to check for errors in generation (see the
    _`warnings.txt` and `errors.txt`_ section of [`ref/README.md`](ref/README.md)
    for more information).
 
