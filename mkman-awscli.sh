@@ -107,6 +107,15 @@ EOF
     # FIXME: Combine this and the above ised command
     # Clean up the "NAME" section for whatis indexing
     local tmpfile=`mktemp`
+    local prefix
+    case $name in
+    aws)
+        prefix= ;;
+    aws-*)
+        prefix=aws- ;;
+    *)
+        prefix=$name- ;;
+    esac
     awk '
     /^\.SH NAME/ {
         # Print the "NAME" section
@@ -126,7 +135,25 @@ EOF
             print
             x = 0
         }
-    }' "$manpage" >"$tmpfile"
+    }' "$manpage" | awk '
+    x && /^\.SH/ { x = 0 }
+    /^\.SH AVAILABLE/ { x = 1 }
+    x && /^\.IP \\\(bu 2/ {
+        print
+        getline
+
+        # Remove backslashes and colons
+        gsub(/[\\:]/, "")
+
+        # Prepend the name of the current manpage
+        sub(/^/, prefix)
+
+        # Append the manual section in parenthesis to "AVAILABLE" section items
+        sub(/$/, "("section")")
+
+        print
+        next
+    } { print }' prefix=$prefix section=$section >"$tmpfile"
     mv "$tmpfile" "$manpage"
     rm -f "$tmpfile"
 
