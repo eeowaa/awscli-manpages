@@ -46,3 +46,5 @@
 2. There are lots of warnings during generation of the man pages (see the
    _`warnings.txt` and `errors.txt`_ section of [`ref/README.md`](ref/README.md))
    which are inextricable from the documentation source.
+
+3. There are no links between man pages using `.Xr` macros.
