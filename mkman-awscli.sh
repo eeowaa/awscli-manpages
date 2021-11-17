@@ -8,7 +8,7 @@ Have you copied example-config.sh to config.sh?
 EOF
     exit 1
 }
-. config.sh
+. ./config.sh
 : "${section?}" "${nameprefix?}" "${outdir?}" "${logdir?}"
 [ $? -eq 0 ] || {
     echo >&2 'Required config variable(s) unset'
