@@ -1,0 +1,173 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "PROTON" "a" "" ""
+.SH NAME
+proton \- This is the AWS Proton Service API Reference
+.SH DESCRIPTION
+.sp
+This is the AWS Proton Service API Reference. It provides descriptions, syntax and usage examples for each of the \fI\%actions\fP and \fI\%data types\fP for the AWS Proton service.
+.sp
+The documentation for each action shows the Query API request parameters and the XML response.
+.sp
+Alternatively, you can use the AWS CLI to access an API. For more information, see the \fI\%AWS Command Line Interface User Guide\fP .
+.sp
+The AWS Proton service is a two\-pronged automation framework. Administrators create service templates to provide standardized infrastructure and deployment tooling for serverless and container based applications. Developers, in turn, select from the available service templates to automate their application or service deployments.
+.sp
+Because administrators define the infrastructure and tooling that AWS Proton deploys and manages, they need permissions to use all of the listed API operations.
+.sp
+When developers select a specific infrastructure and tooling set, AWS Proton deploys their applications. To monitor their applications that are running on AWS Proton, developers need permissions to the service \fIcreate\fP , \fIlist\fP , \fIupdate\fP and \fIdelete\fP API operations and the service instance \fIlist\fP and \fIupdate\fP API operations.
+.sp
+To learn more about AWS Proton administration, see the \fI\%AWS Proton Administration Guide\fP .
+.sp
+To learn more about deploying serverless and containerized applications on AWS Proton, see the \fI\%AWS Proton User Guide\fP .
+.INDENT 0.0
+.INDENT 3.5
+\fBEnsuring Idempotency\fP
+.UNINDENT
+.UNINDENT
+.sp
+When you make a mutating API request, the request typically returns a result before the asynchronous workflows of the operation are complete. Operations might also time out or encounter other server issues before they\(aqre complete, even if the request already returned a result. This might make it difficult to determine whether the request succeeded. Moreover, you might need to retry the request multiple times to ensure that the operation completes successfully. However, if the original request and the subsequent retries are successful, the operation occurs multiple times. This means that you might create more resources than you intended.
+.INDENT 0.0
+.INDENT 3.5
+\fIIdempotency\fP ensures that an API request action completes no more than one time. With an idempotent request, if the original request action completes successfully, any subsequent retries complete successfully without performing any further actions. However, the result might contain updated information, such as the current creation status.
+.UNINDENT
+.UNINDENT
+.sp
+The following lists of APIs are grouped according to methods that ensure idempotency.
+.INDENT 0.0
+.INDENT 3.5
+\fBIdempotent create APIs with a client token\fP
+.UNINDENT
+.UNINDENT
+.sp
+The API actions in this list support idempotency with the use of a \fIclient token\fP . The corresponding AWS CLI commands also support idempotency using a client token. A client token is a unique, case\-sensitive string of up to 64 ASCII characters. To make an idempotent API request using one of these actions, specify a client token in the request. We recommend that you \fIdon\(aqt\fP reuse the same client token for other API requests. If you don’t provide a client token for these APIs, a default client token is automatically provided by SDKs.
+.sp
+Given a request action that has succeeded:
+.sp
+If you retry the request using the same client token and the same parameters, the retry succeeds without performing any further actions other than returning the original resource detail data in the response.
+.sp
+If you retry the request using the same client token, but one or more of the parameters are different, the retry throws a \fBValidationException\fP with an \fBIdempotentParameterMismatch\fP error.
+.sp
+Client tokens expire eight hours after a request is made. If you retry the request with the expired token, a new resource is created.
+.sp
+If the original resource is deleted and you retry the request, a new resource is created.
+.sp
+Idempotent create APIs with a client token:
+.INDENT 0.0
+.IP \(bu 2
+CreateEnvironmentTemplateVersion
+.IP \(bu 2
+CreateServiceTemplateVersion
+.IP \(bu 2
+CreateEnvironmentAccountConnection
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
+\fB<p> <b>Idempotent delete APIs</b> </p> <p>Given a request action that has succeeded:</p> <p>When you retry the request with an API from this group and the resource was deleted, its metadata is returned in the response.</p> <p>If you retry and the resource doesn\(aqt exist, the response is empty.</p> <p>In both cases, the retry succeeds.</p> <p>Idempotent delete APIs:</p> <ul> <li> <p>DeleteEnvironmentTemplate</p> </li> <li> <p>DeleteEnvironmentTemplateVersion</p> </li> <li> <p>DeleteServiceTemplate</p> </li> <li> <p>DeleteServiceTemplateVersion</p> </li> <li> <p>DeleteEnvironmentAccountConnection</p> </li> </ul> <p> <b>Asynchronous idempotent delete APIs</b> </p> <p>Given a request action that has succeeded:</p> <p>If you retry the request with an API from this group, if the original request delete operation status is <code>DELETE_IN_PROGRESS</code>, the retry returns the resource detail data in the response without performing any further actions.</p> <p>If the original request delete operation is complete, a retry returns an empty response.</p> <p>Asynchronous idempotent delete APIs:</p> <ul> <li> <p>DeleteEnvironment</p> </li> <li> <p>DeleteService</p> </li> </ul>\fP
+.UNINDENT
+.UNINDENT
+.SH AVAILABLE COMMANDS
+.INDENT 0.0
+.IP \(bu 2
+proton-accept-environment-account-connection(a)
+.IP \(bu 2
+proton-cancel-environment-deployment(a)
+.IP \(bu 2
+proton-cancel-service-instance-deployment(a)
+.IP \(bu 2
+proton-cancel-service-pipeline-deployment(a)
+.IP \(bu 2
+proton-create-environment(a)
+.IP \(bu 2
+proton-create-environment-account-connection(a)
+.IP \(bu 2
+proton-create-environment-template(a)
+.IP \(bu 2
+proton-create-environment-template-version(a)
+.IP \(bu 2
+proton-create-service(a)
+.IP \(bu 2
+proton-create-service-template(a)
+.IP \(bu 2
+proton-create-service-template-version(a)
+.IP \(bu 2
+proton-delete-environment(a)
+.IP \(bu 2
+proton-delete-environment-account-connection(a)
+.IP \(bu 2
+proton-delete-environment-template(a)
+.IP \(bu 2
+proton-delete-environment-template-version(a)
+.IP \(bu 2
+proton-delete-service(a)
+.IP \(bu 2
+proton-delete-service-template(a)
+.IP \(bu 2
+proton-delete-service-template-version(a)
+.IP \(bu 2
+proton-get-account-settings(a)
+.IP \(bu 2
+proton-get-environment(a)
+.IP \(bu 2
+proton-get-environment-account-connection(a)
+.IP \(bu 2
+proton-get-environment-template(a)
+.IP \(bu 2
+proton-get-environment-template-version(a)
+.IP \(bu 2
+proton-get-service(a)
+.IP \(bu 2
+proton-get-service-instance(a)
+.IP \(bu 2
+proton-get-service-template(a)
+.IP \(bu 2
+proton-get-service-template-version(a)
+.IP \(bu 2
+proton-help(a)
+.IP \(bu 2
+proton-list-environment-account-connections(a)
+.IP \(bu 2
+proton-list-environment-template-versions(a)
+.IP \(bu 2
+proton-list-environment-templates(a)
+.IP \(bu 2
+proton-list-environments(a)
+.IP \(bu 2
+proton-list-service-instances(a)
+.IP \(bu 2
+proton-list-service-template-versions(a)
+.IP \(bu 2
+proton-list-service-templates(a)
+.IP \(bu 2
+proton-list-services(a)
+.IP \(bu 2
+proton-list-tags-for-resource(a)
+.IP \(bu 2
+proton-reject-environment-account-connection(a)
+.IP \(bu 2
+proton-tag-resource(a)
+.IP \(bu 2
+proton-untag-resource(a)
+.IP \(bu 2
+proton-update-account-settings(a)
+.IP \(bu 2
+proton-update-environment(a)
+.IP \(bu 2
+proton-update-environment-account-connection(a)
+.IP \(bu 2
+proton-update-environment-template(a)
+.IP \(bu 2
+proton-update-environment-template-version(a)
+.IP \(bu 2
+proton-update-service(a)
+.IP \(bu 2
+proton-update-service-instance(a)
+.IP \(bu 2
+proton-update-service-pipeline(a)
+.IP \(bu 2
+proton-update-service-template(a)
+.IP \(bu 2
+proton-update-service-template-version(a)
+.UNINDENT
+.\" Generated by docutils manpage writer.
+.
